@@ -129,6 +129,7 @@ class Profile extends Component {
 
       startTime: "",
       followFlag: false,
+      lochUser: undefined,
     };
   }
 
@@ -154,6 +155,12 @@ class Profile extends Component {
     if (mobileCheck()) {
       this.props.history.push("/home");
     }
+    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (isLochUser) {
+      this.setState({
+        lochUser: isLochUser,
+      });
+    }
     this.props.GetAllPlan();
     this.props.getUser();
     ManageLink(this);
@@ -165,11 +172,20 @@ class Profile extends Component {
       clearInterval(window.checkProfileTimer);
     };
   }
+  CheckApiResponse = () => {
+    this.props.setPageFlagDefault();
+  };
   componentDidUpdate() {
     if (!this.props.commonState.profilePage) {
       this.props.updateWalletListFlag("profilePage", true);
       this.props.GetAllPlan();
       this.props.getUser();
+      const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      if (isLochUser) {
+        this.setState({
+          lochUser: isLochUser,
+        });
+      }
     }
   }
   updateTimer = (first) => {
@@ -257,7 +273,7 @@ class Profile extends Component {
                 updateOnFollow={this.onFollowUpdate}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
-                // history
+                apiResponse={(e) => this.CheckApiResponse(e)}
                 history={this.props.history}
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
@@ -300,6 +316,7 @@ class Profile extends Component {
                     followFlag={this.state.followFlag}
                     isUpdate={this.state.isUpdate}
                     history={this.props.history}
+                    lochUser={this.state.lochUser}
                   />
                 </Col>
               </Row>

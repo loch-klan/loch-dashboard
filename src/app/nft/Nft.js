@@ -276,6 +276,7 @@ class NFT extends BaseReactComponent {
         isLoading: false,
       });
     }
+
     if (!this.props.commonState.nftPage) {
       this.getOtherData();
       this.callApi(this.state.currentPage || START_INDEX);

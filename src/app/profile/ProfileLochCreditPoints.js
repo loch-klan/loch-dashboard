@@ -6,18 +6,12 @@ import {
   UserCreditDiamondIcon,
   UserCreditLinkIcon,
   UserCreditMailIcon,
-  UserCreditScrollLeftArrowIcon,
-  UserCreditScrollRightArrowIcon,
   UserCreditStarIcon,
   UserCreditTelegramIcon,
   UserCreditWalletIcon,
   XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons/index.js";
-import {
-  UserCreditGoClickedMP,
-  UserCreditLeftScrollClickedMP,
-  UserCreditRightScrollClickedMP,
-} from "../../utils/AnalyticsFunctions.js";
+import { UserCreditGoClickedMP } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
 import { updateWalletListFlag } from "../common/Api.js";
@@ -29,19 +23,16 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isLeftArrowDisabled: true,
-      isRightArrowDisabled: false,
       loading: false,
       lochScore: "",
       topPercentage: "",
-
+      isLoggedIn: false,
       tasksDone: [],
       tasksList: [
+        "email_added",
         "address_added",
         "ens_added",
-        "email_added",
         "wallet_connected",
-        "multiple_address_added",
         "exchange_connected",
         "following",
         "x_follower",
@@ -57,105 +48,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     return 12;
     // return this.state.tasksList.length;
   };
-  scrollRight = () => {
-    if (this.state.isRightArrowDisabled) {
-      return;
-    }
-    UserCreditRightScrollClickedMP({
-      session_id: getCurrentUser ? getCurrentUser()?.id : "",
-      email_address: getCurrentUser ? getCurrentUser()?.email : "",
-    });
-    var myElement = document.getElementById("profileCreditPointsScrollBody");
-    var myElementWidth = document.getElementById(
-      "profileCreditPointsScrollBody"
-    ).clientWidth;
-    var myElementCurrentScrollPos = document.getElementById(
-      "profileCreditPointsScrollBody"
-    ).scrollLeft;
 
-    const newPos = myElementCurrentScrollPos + myElementWidth;
-    myElement.scroll({
-      left: newPos,
-      behavior: "smooth",
-    });
-    if (newPos === (this.newPosBase() / 3 - 1) * myElementWidth) {
-      this.setState({
-        isRightArrowDisabled: true,
-        isLeftArrowDisabled: false,
-      });
-    } else {
-      this.setState({
-        isRightArrowDisabled: false,
-        isLeftArrowDisabled: false,
-      });
-    }
-  };
-  scrollLeft = () => {
-    if (this.state.isLeftArrowDisabled) {
-      return;
-    }
-    UserCreditLeftScrollClickedMP({
-      session_id: getCurrentUser ? getCurrentUser()?.id : "",
-      email_address: getCurrentUser ? getCurrentUser()?.email : "",
-    });
-    var myElement = document.getElementById("profileCreditPointsScrollBody");
-    var myElementWidth = document.getElementById(
-      "profileCreditPointsScrollBody"
-    ).clientWidth;
-    var myElementCurrentScrollPos = document.getElementById(
-      "profileCreditPointsScrollBody"
-    ).scrollLeft;
-    const newPos = myElementCurrentScrollPos - myElementWidth;
-
-    myElement.scroll({
-      left: newPos,
-      behavior: "smooth",
-    });
-
-    if (newPos <= 0) {
-      this.setState({
-        isLeftArrowDisabled: true,
-        isRightArrowDisabled: false,
-      });
-    } else {
-      this.setState({
-        isLeftArrowDisabled: false,
-        isRightArrowDisabled: false,
-      });
-    }
-  };
-  handleCreditScroll = () => {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-    this.timeout = setTimeout(() => {
-      var myElementWidth = document.getElementById(
-        "profileCreditPointsScrollBody"
-      ).clientWidth;
-      var newPos = document.getElementById(
-        "profileCreditPointsScrollBody"
-      ).scrollLeft;
-
-      if (newPos === 0) {
-        this.setState({
-          isLeftArrowDisabled: true,
-          isRightArrowDisabled: false,
-        });
-      } else if (newPos === (this.newPosBase() / 3 - 1) * myElementWidth) {
-        this.setState({
-          isLeftArrowDisabled: false,
-          isRightArrowDisabled: true,
-        });
-      } else {
-        this.setState({
-          isLeftArrowDisabled: false,
-          isRightArrowDisabled: false,
-        });
-      }
-    }, 150);
-  };
   componentDidMount() {
     this.callApi();
+    if (this.props.lochUser && this.props.lochUser.email) {
+      this.setState({
+        isLoggedIn: true,
+      });
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -169,20 +69,25 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     if (!this.props.commonState.creditPointsBlock) {
       this.props.updateWalletListFlag("creditPointsBlock", true);
       this.callApi();
-      this.setState({
-        isLeftArrowDisabled: true,
-        isRightArrowDisabled: false,
-      });
     }
     if (this.props.followFlag !== prevProps.followFlag) {
       this.callApi();
+    }
+    if (prevProps.lochUser !== this.props.lochUser) {
+      if (this.props.lochUser && this.props.lochUser.email) {
+        this.setState({
+          isLoggedIn: true,
+        });
+      } else {
+        this.setState({
+          isLoggedIn: false,
+        });
+      }
     }
   }
   callApi() {
     this.setState({
       loading: true,
-      isLeftArrowDisabled: true,
-      isRightArrowDisabled: false,
     });
     this.props.getUserCredits(this);
   }
@@ -197,7 +102,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     };
 
     const openEmailModal = () => {
-      const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      const userDetails = this.props.lochUser;
       if (
         document.getElementById("sidebar-open-sign-in-btn") &&
         !(userDetails && userDetails.email)
@@ -229,28 +134,34 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     };
 
     const goClickAddAddress = () => {
-      UserCreditGoClickedMP({
-        session_id: getCurrentUser ? getCurrentUser()?.id : "",
-        email_address: getCurrentUser ? getCurrentUser()?.email : "",
-        task: "Added one wallet address",
-      });
-      openAddressModal();
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Added one wallet address",
+        });
+        openAddressModal();
+      }
     };
     const goClickAddEns = () => {
-      UserCreditGoClickedMP({
-        session_id: getCurrentUser ? getCurrentUser()?.id : "",
-        email_address: getCurrentUser ? getCurrentUser()?.email : "",
-        task: "Added one ENS",
-      });
-      openAddressModal();
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Added one ENS",
+        });
+        openAddressModal();
+      }
     };
     const goClickAddTwoOrMoreAddresses = () => {
-      UserCreditGoClickedMP({
-        session_id: getCurrentUser ? getCurrentUser()?.id : "",
-        email_address: getCurrentUser ? getCurrentUser()?.email : "",
-        task: "Added two or more wallet addresses",
-      });
-      openAddressModal();
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Added two or more wallet addresses",
+        });
+        openAddressModal();
+      }
     };
     const goClickAddEmail = () => {
       UserCreditGoClickedMP({
@@ -261,72 +172,89 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       openEmailModal();
     };
     const goClickConnectWallet = () => {
-      UserCreditGoClickedMP({
-        session_id: getCurrentUser ? getCurrentUser()?.id : "",
-        email_address: getCurrentUser ? getCurrentUser()?.email : "",
-        task: "Connected wallet",
-      });
-      openConnectWalletModal();
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Connected wallet",
+        });
+        openConnectWalletModal();
+      }
     };
     const goClickOpenFeedback = () => {
-      UserCreditGoClickedMP({
-        session_id: getCurrentUser ? getCurrentUser()?.id : "",
-        email_address: getCurrentUser ? getCurrentUser()?.email : "",
-        task: "Provided feedback",
-      });
-      openProvideFeedbackModal();
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Provided feedback",
+        });
+        openProvideFeedbackModal();
+      }
     };
     const goClickConnectExchange = () => {
-      UserCreditGoClickedMP({
-        session_id: getCurrentUser ? getCurrentUser()?.id : "",
-        email_address: getCurrentUser ? getCurrentUser()?.email : "",
-        task: "Connected exchange",
-      });
-      openConnectExchangeModal();
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Connected exchange",
+        });
+        openConnectExchangeModal();
+      }
     };
     const goClickFollowAnAddress = () => {
-      UserCreditGoClickedMP({
-        session_id: getCurrentUser ? getCurrentUser()?.id : "",
-        email_address: getCurrentUser ? getCurrentUser()?.email : "",
-        task: "Follow an Address",
-      });
-      this.props.history.push("/home-leaderboard");
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Follow an Address",
+        });
+        this.props.history.push("/home-leaderboard");
+      }
     };
     const goClickFollowTwitter = () => {
-      UserCreditGoClickedMP({
-        session_id: getCurrentUser ? getCurrentUser()?.id : "",
-        email_address: getCurrentUser ? getCurrentUser()?.email : "",
-        task: "Followed @loch_chain",
-      });
-      window.open("https://twitter.com/loch_chain", "_blank");
-      const twitterFollow = new URLSearchParams();
-      twitterFollow.append("credits", "x_follower");
-      this.props.addUserCredits(twitterFollow, this);
-      this.callApi();
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Followed @loch_chain",
+        });
+        window.open("https://twitter.com/loch_chain", "_blank");
+        const twitterFollow = new URLSearchParams();
+        twitterFollow.append("credits", "x_follower");
+        this.props.addUserCredits(twitterFollow, this);
+        this.callApi();
+      }
     };
     const goClickJoinTelegram = () => {
-      UserCreditGoClickedMP({
-        session_id: getCurrentUser ? getCurrentUser()?.id : "",
-        email_address: getCurrentUser ? getCurrentUser()?.email : "",
-        task: "Joined Telegram chat",
-      });
-      window.open("https://t.me/loch_chain", "_blank");
-      const joinTelegram = new URLSearchParams();
-      joinTelegram.append("credits", "joined_telegram");
-      this.props.addUserCredits(joinTelegram, this);
-      this.callApi();
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Joined Telegram chat",
+        });
+        window.open("https://t.me/loch_chain", "_blank");
+        const joinTelegram = new URLSearchParams();
+        joinTelegram.append("credits", "joined_telegram");
+        this.props.addUserCredits(joinTelegram, this);
+        this.callApi();
+      }
+    };
+    const isTheTaskDone = () => {
+      if (!this.state.isLoggedIn) {
+        return false;
+      }
+      if (this.state.tasksDone.includes(whichBlock)) {
+        return true;
+      }
+      return false;
     };
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Added one address"
-              : "Add one address"
-          }
+          title={isTheTaskDone() ? "Added one address" : "Add one address"}
           earnPoints={1}
           imageIcon={UserCreditWalletIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickAddAddress}
         />
@@ -334,14 +262,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "ens_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Added one ENS"
-              : "Add one ENS"
-          }
+          title={isTheTaskDone() ? "Added one ENS" : "Add one ENS"}
           earnPoints={2}
           imageIcon={UserCreditDiamondIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickAddEns}
         />
@@ -349,14 +273,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "email_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Verified email"
-              : "Verify email"
-          }
+          title={isTheTaskDone() ? "Verified email" : "Verify email"}
           earnPoints={3}
           imageIcon={UserCreditMailIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickAddEmail}
         />
@@ -364,14 +284,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "wallet_connected") {
       return (
         <ProfileLochCreditPointsBlock
-          title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Connected wallet"
-              : "Connect wallet"
-          }
+          title={isTheTaskDone() ? "Connected wallet" : "Connect wallet"}
           earnPoints={4}
           imageIcon={UserCreditLinkIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickConnectWallet}
         />
@@ -380,13 +296,13 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       return (
         <ProfileLochCreditPointsBlock
           title={
-            this.state.tasksDone.includes(whichBlock)
+            isTheTaskDone()
               ? "Added two or more addresses"
               : "Add two or more addresses"
           }
           earnPoints={3}
           imageIcon={UserCreditWalletIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickAddTwoOrMoreAddresses}
         />
@@ -394,14 +310,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "exchange_connected") {
       return (
         <ProfileLochCreditPointsBlock
-          title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Connected exchange"
-              : "Connect exchange"
-          }
+          title={isTheTaskDone() ? "Connected exchange" : "Connect exchange"}
           earnPoints={3}
           imageIcon={UserCreditLinkIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickConnectExchange}
         />
@@ -409,14 +321,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "following") {
       return (
         <ProfileLochCreditPointsBlock
-          title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Following an Address"
-              : "Follow an Address"
-          }
+          title={isTheTaskDone() ? "Following an Address" : "Follow an Address"}
           earnPoints={2}
           imageIcon={UserCreditWalletIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickFollowAnAddress}
         />
@@ -425,13 +333,13 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       return (
         <ProfileLochCreditPointsBlock
           title={
-            this.state.tasksDone.includes(whichBlock)
+            isTheTaskDone()
               ? "Attended Twitter Spaces"
               : "Attend Twitter Spaces"
           }
           earnPoints={1}
           imageIcon={XFormallyTwitterLogoIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           // onClick={goClickAddEns}
         />
@@ -440,13 +348,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       return (
         <ProfileLochCreditPointsBlock
           title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Followed @loch_chain"
-              : "Follow @loch_chain"
+            isTheTaskDone() ? "Followed @loch_chain" : "Follow @loch_chain"
           }
           earnPoints={2}
           imageIcon={XFormallyTwitterLogoIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickFollowTwitter}
         />
@@ -455,13 +361,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       return (
         <ProfileLochCreditPointsBlock
           title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Joined Telegram chat"
-              : "Join Telegram chat"
+            isTheTaskDone() ? "Joined Telegram chat" : "Join Telegram chat"
           }
           earnPoints={2}
           imageIcon={UserCreditTelegramIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickJoinTelegram}
         />
@@ -469,14 +373,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "feedbacks_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Provided feedback"
-              : "Provide feedback"
-          }
+          title={isTheTaskDone() ? "Provided feedback" : "Provide feedback"}
           earnPoints={2}
           imageIcon={FeedbackCreditIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickOpenFeedback}
         />
@@ -484,14 +384,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "use_referral_code") {
       return (
         <ProfileLochCreditPointsBlock
-          title={
-            this.state.tasksDone.includes(whichBlock)
-              ? "Referral code used"
-              : "Use referral code"
-          }
+          title={isTheTaskDone() ? "Referral code used" : "Use referral code"}
           earnPoints={1}
           imageIcon={UserCreditLinkIcon}
-          isDone={this.state.tasksDone.includes(whichBlock)}
+          isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           // onClick={goClickConnectExchange}
         />
@@ -522,7 +418,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
             </div>
           </div>
           <div className="profileCreditPointsHeaderRight">
-            {this.state.lochScore ? (
+            {this.state.lochScore && this.state.isLoggedIn ? (
               <div className="inter-display-medium f-s-13">
                 <span className="profileCreditPointsHeaderRightGreyText">
                   <span className="profileCreditPointsHeaderRightYellowText">
@@ -539,34 +435,18 @@ class ProfileLochCreditPoints extends BaseReactComponent {
               </span> */}
               </div>
             ) : null}
-            <Image
-              style={{
-                marginRight: "3rem",
-                marginLeft: "2.5rem",
-                opacity: this.state.isLeftArrowDisabled ? 0.5 : 1,
-              }}
-              onClick={this.scrollLeft}
-              className="profileCreditPointsHeaderRightArrowIcon"
-              src={UserCreditScrollLeftArrowIcon}
-            />
-            <Image
-              style={{
-                opacity: this.state.isRightArrowDisabled ? 0.5 : 1,
-              }}
-              onClick={this.scrollRight}
-              className="profileCreditPointsHeaderRightArrowIcon"
-              src={UserCreditScrollRightArrowIcon}
-            />
           </div>
         </div>
         <div className="profileCreditPointsDividerContainer">
           <div
             style={{
               width: `${
-                (this.state.tasksDone.length > this.state.tasksList.length
-                  ? this.state.tasksList.length
-                  : this.state.tasksDone.length / this.state.tasksList.length) *
-                100
+                this.state.isLoggedIn
+                  ? (this.state.tasksDone.length > this.state.tasksList.length
+                      ? this.state.tasksList.length
+                      : this.state.tasksDone.length /
+                        this.state.tasksList.length) * 100
+                  : 0
               }%`,
             }}
             className="profileCreditPointsDivider"
@@ -576,42 +456,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         <div
           id="profileCreditPointsScrollBody"
           className="profileCreditPointsBody"
-          onScroll={this.handleCreditScroll}
         >
-          <div className="profileCreditPointsSection">
-            {this.state.tasksList
-              .slice(0, 3)
-              .map((singleTask, singleTaskIndex) => {
-                return this.returnWhichBlock(singleTask, singleTaskIndex);
-              })}
-          </div>
-          <div className="profileCreditPointsSection">
-            {this.state.tasksList
-              .slice(3, 6)
-              .map((singleTask, singleTaskIndex) => {
-                return this.returnWhichBlock(singleTask, singleTaskIndex);
-              })}
-          </div>
-          <div className="profileCreditPointsSection">
-            {this.state.tasksList
-              .slice(6, 9)
-              .map((singleTask, singleTaskIndex) => {
-                return this.returnWhichBlock(singleTask, singleTaskIndex);
-              })}
-          </div>
-          <div
-            style={{
-              justifyContent: "flex-start",
-              paddingLeft: "2rem",
-            }}
-            className="profileCreditPointsSection"
-          >
-            {this.state.tasksList
-              .slice(9, 10)
-              .map((singleTask, singleTaskIndex) => {
-                return this.returnWhichBlock(singleTask, singleTaskIndex);
-              })}
-          </div>
+          {this.state.tasksList.map((singleTask, singleTaskIndex) => {
+            return this.returnWhichBlock(singleTask, singleTaskIndex);
+          })}
+
           {/* <div className="profileCreditPointsSection">
             {this.state.tasksList
               .slice(9, 12)
