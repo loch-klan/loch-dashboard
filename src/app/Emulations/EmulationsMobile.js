@@ -16,6 +16,7 @@ import TransactionTable from "../intelligence/TransactionTable";
 import { signUpWelcome, verifyUser } from "../onboarding/Api";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal";
 import EmulationsTradeModal from "./EmulationsTradeModal";
+import BasicConfirmModal from "../common/BasicConfirmModal";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -115,6 +116,16 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             isMobile
             confirmOrRejectCopyTrade={this.props.confirmOrRejectCopyTrade}
             executeCopyTradeId={this.props.executeCopyTradeId}
+          />
+        ) : null}
+        {this.props.isRejectModal ? (
+          <BasicConfirmModal
+            show={this.props.isRejectModal}
+            history={this.props.history}
+            handleClose={this.props.closeRejectModal}
+            handleYes={this.props.executeRejectModal}
+            title="Are you sure you want to reject this trade?"
+            isMobile
           />
         ) : null}
         {this.state.authmodal == "login" ? (
@@ -223,9 +234,9 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                         onClick={() => {
                           this.props.goToNewAddress(curTradeData.copyAddress);
                         }}
-                        className="inter-display-medium f-s-16 available-copy-trades-address"
+                        className="inter-display-medium f-s-16 available-copy-trades-address available-copy-trades-address-mobile"
                       >
-                        {TruncateText(curTradeData.wallet)}
+                        {TruncateText(curTradeData.copyAddress)}
                       </div>
                     </div>
                     <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container available-copy-trades-transaction-container-mobile">
@@ -238,10 +249,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                     <div className="available-copy-trades-button-container available-copy-trades-button-container--mobile">
                       <div
                         onClick={() => {
-                          this.props.confirmOrRejectCopyTrade(
-                            curTradeData.id,
-                            false
-                          );
+                          this.props.openRejectModal(curTradeData.id);
                         }}
                         className={`topbar-btn`}
                         id="address-button-two"

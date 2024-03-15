@@ -105,8 +105,9 @@
     .copeTraderBtnContainer {
       padding: 2.5rem 1.5rem;
       padding-bottom: 2rem;
+      align-items: center;
+      justify-content: center;
       .primary-btn {
-        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -132,10 +133,14 @@
     .modal-body {
       .copeTraderBtnContainer {
         justify-content: center;
+        align-items: center;
         width: 100% !important;
         padding-top: 1rem;
+        padding-bottom: 2rem;
         .primary-btn {
-          width: 100% !important;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
       .connect-head {
@@ -199,6 +204,9 @@
         &:hover {
           font-weight: 600;
         }
+      }
+      .available-copy-trades-address-mobile {
+        margin: 0;
       }
     }
     .available-copy-trades-content-container-mobile {
