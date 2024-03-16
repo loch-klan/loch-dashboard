@@ -38,7 +38,6 @@ import {
 import AuthModal from "./AuthModal";
 
 import axios from "axios";
-import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
@@ -484,49 +483,6 @@ class UpgradeModal extends BaseReactComponent {
     });
   };
 
-  connectMetamask = async (isSignin = true) => {
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        const balance = ethers.utils.formatEther(
-          await provider.getBalance(address)
-        );
-        // console.log(
-        //   "plan price",
-        //   this.state.selectedPlan?.price,
-        //   "Eth rate",
-        //   ethRateList.rates.ETH,
-        //   "user balace",
-        //   balance,
-        //   "USD to Eth",
-        //   ethRateList.rates.ETH * this.state.selectedPlan?.price
-        // );
-        this.setState({
-          MetaAddress: address,
-          balance: balance,
-          signer: signer,
-          provider: provider,
-          btnloader: true,
-        });
-
-        // call sigin Api after signin call checkoutModal
-        if (isSignin) {
-          this.SigninWallet();
-        } else {
-          this.handleTransaction();
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      console.error("Please install MetaMask!");
-      toast.error("Please install Metamask extension");
-    }
-  };
-
   // get USDT and USDC amount
   getExchangeRates = async () => {
     try {
@@ -576,198 +532,6 @@ class UpgradeModal extends BaseReactComponent {
   };
 
   // Metamask transaction
-  handleTransaction = async () => {
-    try {
-      this.setState({
-        payLoader: true,
-      });
-      // Prompt the user to connect their Metamask wallet
-      if (this.state.MetaAddress !== "") {
-        // already connected
-
-        if (!this.state.selectedToken.price) {
-          // if selected token null again call function
-          await this.getAmount();
-        }
-
-        let contractAddress,
-          contractABI,
-          txOptions,
-          tx,
-          receipt,
-          amount,
-          gasLimit,
-          gasPrice,
-          usdcContract,
-          usdtContract;
-        let RecipientAddress = "0xb316a003B7b763Dc40Ca6C82F341B58052e46BFD";
-        let testing = false;
-
-        switch (this.state.selectedToken.name) {
-          case "ETH":
-            // Set the transaction options (e.g. recipient address and transaction amount)
-            // console.log(
-            //   this.state.selectedToken.name,
-            //   this.state.selectedToken.price
-            // );
-            txOptions = {
-              to: RecipientAddress, // recipient address - lochpj.eth
-              value: testing
-                ? ethers.utils.parseEther(`0.0001`)
-                : ethers.utils.parseEther(`${this.state.selectedToken.price}`),
-            };
-
-            // Send the transaction
-            tx = await this.state.signer.sendTransaction(txOptions);
-            // Wait for the transaction to be confirmed
-            receipt = await tx.wait();
-            break;
-          case "USDT":
-            // console.log(
-            //   this.state.selectedToken.name,
-            //   this.state.selectedToken.price,
-            //   ethers.utils.parseUnits(this.state.selectedToken.price.toString())
-            //   //  USDT_ABI
-            // );
-
-            gasPrice = await this.state.provider.getGasPrice();
-
-            if (testing) {
-              // for testing
-
-              contractAddress = "0x7c87561b129f46998fc9Afb53F98b7fdaB68696f";
-
-              usdtContract = new ethers.Contract(
-                contractAddress,
-                USDT_ABI,
-                this.state.signer
-              );
-
-              // Hard code for testing
-              gasLimit = await usdtContract.estimateGas.transfer(
-                RecipientAddress,
-                ethers.utils.parseUnits("0", 6)
-              );
-              amount = ethers.utils.parseUnits("0", 6);
-            } else {
-              // for mainnet
-              contractAddress = "0xdAC17F958D2ee523a2206206994597C13D831ec7";
-
-              usdtContract = new ethers.Contract(
-                contractAddress,
-                USDT_ABI,
-                this.state.signer
-              );
-              // for mainnet
-              gasLimit = await usdtContract.estimateGas.transfer(
-                RecipientAddress,
-                ethers.utils.parseUnits(
-                  this.state.selectedToken.price.toString(),
-                  6
-                )
-              );
-
-              amount = ethers.utils.parseUnits(
-                this.state.selectedToken.price.toString(),
-                6
-              );
-            }
-
-            tx = await usdtContract.transfer(RecipientAddress, amount, {
-              gasLimit,
-              gasPrice,
-            });
-            receipt = await tx.wait();
-            break;
-          case "USDC":
-            // console.log(
-            //   this.state.selectedToken.name,
-            //   this.state.selectedToken.price,
-            //   USDC_ABI
-            // );
-
-            gasPrice = await this.state.provider.getGasPrice();
-
-            if (testing) {
-              // if true show testing
-              // for testing
-              contractAddress = "0x9e2e85a927285A97902336Cb23F9De94d5Af0aF5";
-              usdcContract = new ethers.Contract(
-                contractAddress,
-                USDT_ABI,
-                this.state.signer
-              );
-              // for test
-              gasLimit = await usdcContract.estimateGas.transfer(
-                RecipientAddress,
-                ethers.utils.parseUnits("0", 6)
-              );
-
-              amount = ethers.utils.parseUnits("0", 6);
-            } else {
-              // Mainnet
-              contractAddress = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
-
-              usdcContract = new ethers.Contract(
-                contractAddress,
-                USDT_ABI,
-                this.state.signer
-              );
-              // for mainnet
-              gasLimit = await usdcContract.estimateGas.transfer(
-                RecipientAddress,
-                ethers.utils.parseUnits(
-                  this.state.selectedToken.price.toString(),
-                  6
-                )
-              );
-
-              amount = ethers.utils.parseUnits(
-                this.state.selectedToken.price.toString(),
-                6
-              );
-            }
-
-            tx = await usdcContract.transfer(RecipientAddress, amount, {
-              gasLimit,
-              gasPrice,
-            });
-            //  console.log("test3");
-            receipt = await tx.wait();
-            break;
-          default:
-            throw new Error(`Unsupported token: ${this.state.selectedToken}`);
-        }
-
-        // Log the transaction receipt
-        // console.log(receipt);
-        this.setState({
-          transactionReceipt: receipt.transactionHash,
-        });
-        this.TransactionUpdate();
-      } else {
-        // connect metamask
-        this.connectMetamask(false);
-      }
-    } catch (error) {
-      console.error("error", error.code);
-      this.setState({
-        payLoader: false,
-      });
-
-      if (error.code == "ACTION_REJECTED") {
-        toast.error("Transaction rejected");
-      } else if (
-        error.code == "INSUFFICIENT_FUNDS" ||
-        error.code == "UNPREDICTABLE_GAS_LIMIT" ||
-        error.code == -32000
-      ) {
-        toast.error("Insufficient funds in your wallet");
-      } else if (error.code == "NETWORK_ERROR") {
-        this.connectMetamask(false);
-      }
-    }
-  };
 
   // goto Checkout section after sigin
   gotoCheckout = () => {
@@ -1290,7 +1054,6 @@ class UpgradeModal extends BaseReactComponent {
                                     onClick={() => {
                                       if (this.state.btnloader) {
                                       } else {
-                                        this.connectMetamask();
                                       }
                                     }}
                                   >

@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -1021,26 +1020,7 @@ class NewWelcomeMobile extends BaseReactComponent {
       });
     }
   };
-  connectWalletEthers = async () => {
-    ConnectWalletButtonClickedWelcome({
-      session_id: getCurrentUser ? getCurrentUser()?.id : "",
-      email_address: getCurrentUser ? getCurrentUser()?.email : "",
-    });
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-      try {
-        const tempRes = await provider.send("eth_requestAccounts", []);
-
-        if (tempRes && tempRes.length > 0) {
-          window.sessionStorage.setItem("connectWalletCreditOnce", true);
-          this.addToList(tempRes);
-        }
-      } catch (error) {
-        console.log("ethers error ", error);
-      }
-    }
-  };
   addToList = (addThese) => {
     const curItem = addThese[0];
 

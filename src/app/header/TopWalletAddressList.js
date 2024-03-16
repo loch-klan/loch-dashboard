@@ -1,5 +1,4 @@
 import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
-import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -599,42 +598,7 @@ class TopWalletAddressList extends Component {
 
     this.props.updateUserWalletApi(data, this, yieldData);
   };
-  connectWalletEthers = async () => {
-    ConnectWalletButtonClicked({
-      session_id: getCurrentUser ? getCurrentUser()?.id : "",
-      email_address: getCurrentUser ? getCurrentUser()?.email : "",
-    });
 
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      try {
-        const tempRes = await provider.send("eth_requestAccounts", []);
-        try {
-          const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
-          if (tempRes && tempRes.length > 0 && sdk) {
-            sdk.wallet({
-              account: tempRes[0],
-              chainId: window.ethereum.networkVersion,
-            });
-          }
-        } catch (error) {
-          console.log("ArcxAnalyticsSdk error ", error);
-        }
-        if (tempRes && tempRes.length > 0) {
-          setTimeout(() => {
-            this.props.handleUpdate();
-          }, 1000);
-          const walletCreditScore = new URLSearchParams();
-          walletCreditScore.append("credits", "wallet_connected");
-          this.props.addUserCredits(walletCreditScore);
-          this.addToList(tempRes);
-        }
-      } catch (error) {
-        console.log("ethers error ", error);
-      }
-    }
-  };
   handleSetCoin = (data) => {
     let coinList = {
       chain_detected: data.chain_detected,

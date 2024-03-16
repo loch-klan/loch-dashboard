@@ -8,9 +8,39 @@ import MobileDevice from "./app/common/mobileDevice";
 import ReactGA from "react-ga4";
 import { ARCX_API_KEY, BASE_GA_KEY } from "./utils/Constant";
 import { ArcxAnalyticsProvider } from "@arcxmoney/analytics";
+import {
+  createWeb3Modal,
+  defaultConfig,
+  useWeb3Modal,
+  useWeb3ModalAccount,
+  useDisconnect,
+} from "@web3modal/ethers/react";
 
 function App() {
   const [isMobile, setIsMobile] = useState(false);
+  const mainnet = {
+    chainId: 1,
+    name: "Ethereum",
+    currency: "ETH",
+    explorerUrl: "https://etherscan.io",
+    rpcUrl: "https://cloudflare-eth.com",
+  };
+  const metadata = {
+    name: "Loch",
+    description: "My Website description",
+    url: "https://app.loch.one/", // origin must match your domain & subdomain
+    icons: ["https://avatars.mywebsite.com/"],
+  };
+  createWeb3Modal({
+    ethersConfig: defaultConfig({ metadata }),
+    chains: [mainnet],
+    projectId: "4ba0f16b53f8888a667cbbb8bb366918",
+    enableAnalytics: true, // Optional - defaults to your Cloud configuration
+  });
+  // useEffect(() => {
+  // }, []);
+  const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { open: openConnectWallet } = useWeb3Modal();
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 480px)");
     setIsMobile(mediaQuery.matches);
@@ -44,8 +74,28 @@ function App() {
   // return isMobile ? (
   //   <MobileDevice />
   // ) : (
+  const { disconnect } = useDisconnect();
+
+  console.log("address ", address);
+  console.log("chainId ", chainId);
+  console.log("isConnected ", isConnected);
   return (
     <div>
+      <div
+        style={{
+          zIndex: "10000",
+          backgroundColor: "red",
+          position: "fixed",
+          left: "50rem",
+          top: "50rem",
+        }}
+      >
+        {!isConnected ? (
+          <button onClick={openConnectWallet}>Connect To Wallet</button>
+        ) : (
+          <button onClick={disconnect}>Disconnect</button>
+        )}
+      </div>
       <ArcxAnalyticsProvider apiKey={ARCX_API_KEY}>
         <BrowserRouter>
           <Switch>

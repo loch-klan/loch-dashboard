@@ -1,5 +1,4 @@
 import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
-import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -1023,93 +1022,7 @@ class TopWalletExchangeBar extends Component {
 
     this.props.updateUserWalletApi(data, this, yieldData);
   };
-  connectWalletEthers = async () => {
-    let tempToken = getToken();
-    if (!tempToken || tempToken === "jsk") {
-      return null;
-    }
-    ConnectWalletButtonClicked({
-      session_id: getCurrentUser ? getCurrentUser()?.id : "",
-      email_address: getCurrentUser ? getCurrentUser()?.email : "",
-    });
-    // const MAINNET_RPC_URL =
-    //   "https://mainnet.infura.io/v3/2b8b0f4aa2a94d68946ffcf018d216c6";
-    // const injected = injectedModule({
-    //   displayUnavailable: [
-    //     ProviderLabel.MetaMask,
-    //     ProviderLabel.Coinbase,
-    //     ProviderLabel.Phantom,
-    //   ],
-    // });
-    // const onboard = Onboard({
-    //   wallets: [injected],
-    //   chains: [
-    //     {
-    //       id: "0x1",
-    //       token: "ETH",
-    //       label: "Ethereum Mainnet",
-    //       rpcUrl: MAINNET_RPC_URL,
-    //     },
-    //     {
-    //       id: "0x2105",
-    //       token: "ETH",
-    //       label: "Base",
-    //       rpcUrl: "https://mainnet.base.org",
-    //     },
-    //   ],
-    //   appMetadata: {
-    //     name: "Loch",
-    //     icon: LochLogoNameIcon,
-    //     description: "A loch app",
-    //   },
-    // });
-    // if (onboard && onboard.connectWallet) {
-    //   const wallets = onboard.connectWallet();
-    //   // console.log("wallets ", wallets);
-    // }
 
-    //NEW
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-    // const signer = provider.getSigner();
-
-    // async function connectMetamask() {
-    //     await provider.send("eth_requestAccounts", []);
-    //     signer = await provider.getSigner();
-    // }
-    //NEW
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      try {
-        const tempRes = await provider.send("eth_requestAccounts", []);
-        try {
-          const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
-          if (tempRes && tempRes.length > 0 && sdk) {
-            sdk.wallet({
-              account: tempRes[0],
-              chainId: window.ethereum.networkVersion,
-            });
-          }
-        } catch (error) {
-          console.log("ArcxAnalyticsSdk error ", error);
-        }
-        if (tempRes && tempRes.length > 0) {
-          setTimeout(() => {
-            this.props.handleUpdate();
-          }, 1000);
-          const walletCreditScore = new URLSearchParams();
-          walletCreditScore.append("credits", "wallet_connected");
-          this.props.addUserCredits(walletCreditScore);
-          this.addToList(tempRes);
-        }
-        // Leaver console log: full signer too"
-        // console.log("signer is ", signer);
-        // console.log("signer get address is ", await signer.getAddress());
-      } catch (error) {
-        console.log("ethers error ", error);
-      }
-    }
-  };
   handleSetCoin = (data) => {
     let coinList = {
       chain_detected: data.chain_detected,
@@ -1726,7 +1639,6 @@ class TopWalletExchangeBar extends Component {
                 </div>
               ) : (
                 <div
-                  onClick={this.connectWalletEthers}
                   className="topbar-btn ml-2 maxWidth50"
                   id="topbar-connect-wallet-btn"
                 >
