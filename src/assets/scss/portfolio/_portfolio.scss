@@ -1288,9 +1288,16 @@
             gap: 8px;
             cursor: pointer;
             // transition-duration: 300ms;
+            .homeTabArrowIcon {
+              height: 8.5px;
+              filter: var(--invertColor);
+            }
             &:hover {
               background-color: var(--cardBackgroud);
               color: var(--black191);
+              .homeTabArrowIcon {
+                filter: var(--invertColor) var(--hoverBrightnessValue);
+              }
             }
           }
           .section-table-toggle-element-selected {
@@ -1299,6 +1306,9 @@
             cursor: pointer;
             &:hover {
               background-color: var(--activeToggleBg);
+            }
+            .homeTabArrowIcon {
+              filter: var(--invertColor) var(--hoverBrightnessValue);
             }
           }
           .section-table-toggle-element-selected-no-hover {

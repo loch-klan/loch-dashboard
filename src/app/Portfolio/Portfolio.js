@@ -157,6 +157,7 @@ import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   DefaultNftTableIconIcon,
+  HomeTabArrowIcon,
   InfoIconI,
 } from "../../assets/images/icons/index.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
@@ -4595,6 +4596,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -4631,6 +4636,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                         </div>
                       </div>
@@ -4748,6 +4757,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -4782,6 +4795,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element mr-1 ${
@@ -4816,6 +4833,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                         </div>
                       </div>
@@ -5021,6 +5042,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -5057,6 +5082,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -5259,6 +5288,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -5295,6 +5328,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
 
                           <div
@@ -5330,6 +5367,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                         </div>
                       </div>
