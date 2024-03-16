@@ -1387,7 +1387,7 @@ function Sidebar(props) {
                               onClick={() => {
                                 openSigninModal("lochPointsProfile");
                               }}
-                              id="sidebar-open-sign-in-btn-loch-points-profile"
+                              id="sidebar-closed-sign-in-btn-loch-points-profile"
                               style={{
                                 display: "none",
                               }}
