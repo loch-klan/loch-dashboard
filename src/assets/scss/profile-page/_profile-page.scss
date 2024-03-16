@@ -252,6 +252,10 @@
           border: 0.18rem solid var(--dropdownContentBorderColor);
           padding: 2rem;
           border-radius: 1.2rem;
+          cursor: pointer;
+          &:hover {
+            border-color: var(--primaryTextColor);
+          }
           .profileLochCreditPointsBlockIconContainer {
             min-height: 5rem;
             min-width: 5rem;
@@ -297,9 +301,6 @@
                 display: flex;
                 align-items: center;
                 transition-duration: 300ms;
-                &:hover {
-                  opacity: 0.5;
-                }
                 cursor: pointer;
                 .profileLochCreditPointsBlockInfoBlockDescGo {
                   font-weight: 600;
@@ -313,6 +314,12 @@
             }
           }
           // }
+        }
+        .profileLochCreditPointsBlockCompleted {
+          cursor: default;
+          &:hover {
+            border-color: var(--dropdownContentBorderColor);
+          }
         }
       }
     }

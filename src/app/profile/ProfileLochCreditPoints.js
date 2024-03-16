@@ -11,7 +11,10 @@ import {
   UserCreditWalletIcon,
   XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons/index.js";
-import { UserCreditGoClickedMP } from "../../utils/AnalyticsFunctions.js";
+import {
+  LochPointsLoginModalOpen,
+  UserCreditGoClickedMP,
+} from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
 import { updateWalletListFlag } from "../common/Api.js";
@@ -91,6 +94,30 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     });
     this.props.getUserCredits(this);
   }
+  lochPointsLoginBtnClickedLocal = () => {
+    window.sessionStorage.setItem("lochPointsProfileLoginClicked", true);
+  };
+  openLoginBlock = () => {
+    LochPointsLoginModalOpen({
+      session_id: getCurrentUser ? getCurrentUser()?.id : "",
+      email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    });
+    if (
+      document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")
+    ) {
+      document
+        .getElementById("sidebar-open-sign-in-btn-loch-points-profile")
+        .click();
+      this.lochPointsLoginBtnClickedLocal();
+    } else if (
+      document.getElementById("sidebar-closed-sign-in-btn-loch-points-profile")
+    ) {
+      document
+        .getElementById("sidebar-closed-sign-in-btn-loch-points-profile")
+        .click();
+      this.lochPointsLoginBtnClickedLocal();
+    }
+  };
   returnWhichBlock = (whichBlock, whichBlockIndex) => {
     const openAddressModal = () => {
       if (
@@ -141,6 +168,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           task: "Added one wallet address",
         });
         openAddressModal();
+      } else {
+        this.openLoginBlock();
       }
     };
     const goClickAddEns = () => {
@@ -151,6 +180,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           task: "Added one ENS",
         });
         openAddressModal();
+      } else {
+        this.openLoginBlock();
       }
     };
     const goClickAddTwoOrMoreAddresses = () => {
@@ -161,6 +192,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           task: "Added two or more wallet addresses",
         });
         openAddressModal();
+      } else {
+        this.openLoginBlock();
       }
     };
     const goClickAddEmail = () => {
@@ -169,7 +202,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         email_address: getCurrentUser ? getCurrentUser()?.email : "",
         task: "Verified email",
       });
-      openEmailModal();
+      this.openLoginBlock();
     };
     const goClickConnectWallet = () => {
       if (this.props.lochUser && this.props.lochUser.email) {
@@ -179,6 +212,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           task: "Connected wallet",
         });
         openConnectWalletModal();
+      } else {
+        this.openLoginBlock();
       }
     };
     const goClickOpenFeedback = () => {
@@ -189,6 +224,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           task: "Provided feedback",
         });
         openProvideFeedbackModal();
+      } else {
+        this.openLoginBlock();
       }
     };
     const goClickConnectExchange = () => {
@@ -199,6 +236,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           task: "Connected exchange",
         });
         openConnectExchangeModal();
+      } else {
+        this.openLoginBlock();
       }
     };
     const goClickFollowAnAddress = () => {
@@ -209,6 +248,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           task: "Follow an Address",
         });
         this.props.history.push("/home-leaderboard");
+      } else {
+        this.openLoginBlock();
       }
     };
     const goClickFollowTwitter = () => {
@@ -223,6 +264,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         twitterFollow.append("credits", "x_follower");
         this.props.addUserCredits(twitterFollow, this);
         this.callApi();
+      } else {
+        this.openLoginBlock();
       }
     };
     const goClickJoinTelegram = () => {
@@ -237,6 +280,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         joinTelegram.append("credits", "joined_telegram");
         this.props.addUserCredits(joinTelegram, this);
         this.callApi();
+      } else {
+        this.openLoginBlock();
       }
     };
     const isTheTaskDone = () => {
