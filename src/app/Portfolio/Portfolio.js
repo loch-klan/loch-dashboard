@@ -4945,8 +4945,8 @@ class Portfolio extends BaseReactComponent {
                             >
                               <TransactionTable
                                 message={"No NFT's found"}
-                                xAxisScrollable
-                                xAxisScrollableColumnWidth={3}
+                                // xAxisScrollable
+                                // xAxisScrollableColumnWidth={3}
                                 noSubtitleBottomPadding
                                 disableOnLoading
                                 isMiniversion
