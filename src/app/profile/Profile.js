@@ -34,6 +34,7 @@ import Wallet from "../wallet/Wallet";
 import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
 import { mobileCheck } from "../../utils/ReusableFunctions";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class Profile extends Component {
   constructor(props) {
@@ -271,7 +272,6 @@ class Profile extends Component {
               {/* welcome card */}
               <WelcomeCard
                 updateOnFollow={this.onFollowUpdate}
-                handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 history={this.props.history}
@@ -300,8 +300,21 @@ class Profile extends Component {
                 from="profile"
               />
             )}
-            <PageHeader title="Profile" subTitle="Manage your profile here" />
-            <div style={{ marginBottom: "5rem" }}>
+            <TopWalletAddressList
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              hideShare
+              hideFollow
+            />
+            <PageHeader
+              title="Profile"
+              subTitle="Manage your profile here"
+              // btnText={"Add wallet"}
+              // handleBtn={this.handleAddModal}
+              // // connect exchange btn
+              // SecondaryBtn={true}
+              // handleUpdate={this.handleUpdateWallet}
+            />
+            <div style={{ marginBottom: "3rem" }}>
               <Row>
                 <Col md={12}>
                   <ProfileLochCreditPoints
@@ -313,6 +326,13 @@ class Profile extends Component {
                 </Col>
               </Row>
             </div>
+            {/* wallet page component */}
+            <Wallet
+              hidePageHeader={true}
+              isUpdate={this.state.isUpdate}
+              updateTimer={this.updateTimer}
+            />
+
             <PageHeader
               title="Your details"
               subTitle=""
@@ -322,247 +342,15 @@ class Profile extends Component {
               // SecondaryBtn={true}
               // handleUpdate={this.handleUpdateWallet}
             />
-            {/* <div className="profile-plan-wrapper">
-            <h4 className="inter-display-semi-bold f-s-25 lh-30 secondary">
-              Do more with Loch
-            </h4>
-            <div className="plan-price-wrapper">
-              <div className="plan-name">
-                <div className="plan-top">
-                  <div>
-                    <h4>Your current plan</h4>
-                    <h3>{this.state.selectedPlan?.name}</h3>
-                  </div>
-                  {this.state.selectedPlan?.name !== "Free" && (
-                    <div className="price">
-                      <h4>Next renewal date</h4>
-                      <p>
-                        {moment(this.state.selectedPlan?.plan_valid).format(
-                          "MMM DD, YYYY"
-                        )}
-                      </p>
-                    </div>
-                  )}
-                </div>
-                <Button
-                  className={`primary-btn ${
-                    this.state.selectedPlan?.name !== "Free" &&
-                    this.state.selectedPlan?.name !== "Trial"
-                      ? "grey-bg"
-                      : ""
-                  }`}
-                  onClick={() => {
-                    if (
-                      this.state.manageUrl === "" ||
-                      this.state.manageUrl === undefined ||
-                      this.state.selectedPlan?.name === "Free" ||
-                      this.state.selectedPlan?.name === "Trial"
-                    ) {
-                      this.upgradeModal();
-                    } else {
-                      window.open(this.state.manageUrl);
-                    }
-                  }}
-                >
-                  {this.state.selectedPlan?.name !== "Free" &&
-                  this.state.selectedPlan?.name !== "Trial"
-                    ? "Manage subscription"
-                    : "Upgrade"}
-                </Button>
-              </div>
-              <div className="plan-details">
-                <div className="list">
-                  {this.state.selectedPlan?.features
-                    ?.slice(0, 5)
-                    ?.map((list) => {
-                      return (
-                        <div className={`feature-list`}>
-                          <div className="label">
-                            <Image
-                              src={list?.img}
-                            />
-                            <h3>{list.name}</h3>
-                          </div>
-                          <h4>
-                            {list.name !== "Insights"
-                              ? list.limit === false
-                                ? "No"
-                                : list.limit === true
-                                ? "Yes"
-                                : list.limit === -1
-                                ? "Unlimited"
-                                : list.limit
-                              : list.limit === false
-                              ? "Limited"
-                              : "Unlimited"}
-                          </h4>
-                        </div>
-                      );
-                    })}
-                </div>
-                <div className="list">
-                  {this.state.selectedPlan?.features
-                    ?.slice(5, this.state.selectedPlan?.features?.length)
-                    ?.map((list) => {
-                      return (
-                        <div className={`feature-list`}>
-                          <div className="label">
-                            <Image
-                              src={list?.img}
-                             
-                            />
-                            <h3>{list.name}</h3>
-                          </div>
-                          <h4>
-                            {list.name !== "Insights"
-                              ? list.limit === false
-                                ? "No"
-                                : list.limit === true
-                                ? "Yes"
-                                : list.limit === -1
-                                ? "Unlimited"
-                                : list.limit
-                              : list.limit === false
-                              ? "Limited"
-                              : "Unlimited"}
-                          </h4>
-                        </div>
-                      );
-                    })}
-                </div>
-              </div>
-            </div>
-           
-            </div> */}
+
             <div
               className="profile-form-section"
-              style={{ marginBottom: "1rem" }}
+              style={{ marginBottom: "4rem" }}
             >
               <Row>
                 <Col md={12}>
                   <ProfileForm />
                 </Col>
-                {/* <Col md={5} style={{ paddingLeft: "4rem" }}>
-                <div className="plan-card-wrapper">
-                  <div className={"plan-card active"}>
-                    <div
-                      className={`pricing-section
-                              ${
-                                this.state.selectedPlan?.name === "Baron"
-                                  ? "baron-bg"
-                                  : this.state.selectedPlan?.name ===
-                                    "Sovereign"
-                                  ? "soverign-bg"
-                                  : ""
-                              }
-                              `}
-                    >
-                      <div>
-                        <h4>Your current plan</h4>
-                        <h3>{this.state.selectedPlan?.name}</h3>
-                      </div>
-                      {this.state.selectedPlan?.name !== "Free" && (
-                        <div className="price">
-                          <h4>Next renewal date</h4>
-                          <p>
-                            {moment(this.state.selectedPlan?.plan_valid).format(
-                              "MMM DD, YYYY"
-                            )}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        rowGap: "1.2rem",
-                        margin: "1.7rem 1rem 1rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          backgroundColor: "#E5E5E680",
-                          width: "30%",
-                          height: "1.5px",
-                          marginRight: "1.2rem",
-                        }}
-                      ></div>
-                      <h4
-                        className="inter-display-semi-bold f-s-12 lh-12 grey-CAC"
-                        style={{
-                          whiteSpace: "nowrap",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        Your privileges
-                      </h4>
-                      <div
-                        style={{
-                          backgroundColor: "#E5E5E680",
-                          width: "30%",
-                          height: "1.5px",
-                          marginLeft: "1.2rem",
-                        }}
-                      ></div>
-                    </div>
-                    <div className="feature-list-wrapper">
-                      {this.state.selectedPlan?.features?.map((list) => {
-                        return (
-                          <div className={`feature-list`}>
-                            <div className="label">
-                              <Image
-                                src={list?.img}
-                                // style={list?.id == 9 ? { opacity: "0.6" } : {}}
-                              />
-                              <h3>{list.name}</h3>
-                            </div>
-                            <h4>
-                              {list.name !== "Insights"
-                                ? list.limit === false
-                                  ? "No"
-                                  : list.limit === true
-                                  ? "Yes"
-                                  : list.limit === -1
-                                  ? "Unlimited"
-                                  : list.limit
-                                : list.limit === false
-                                ? "Limited"
-                                : "Unlimited"}
-                            </h4>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <Button
-                    className={`primary-btn ${
-                      this.state.selectedPlan?.name !== "Free" &&
-                      this.state.selectedPlan?.name !== "Trial"
-                        ? "grey-bg"
-                        : ""
-                    }`}
-                    onClick={() => {
-                      if (
-                        this.state.manageUrl === "" ||
-                        this.state.manageUrl === undefined ||
-                        this.state.selectedPlan?.name === "Free" ||
-                        this.state.selectedPlan?.name === "Trial"
-                      ) {
-                        this.upgradeModal();
-                      } else {
-                        window.open(this.state.manageUrl);
-                      }
-                    }}
-                  >
-                    {this.state.selectedPlan?.name !== "Free" &&
-                    this.state.selectedPlan?.name !== "Trial"
-                      ? "Manage subscription"
-                      : "Upgrade"}
-                  </Button>
-                </div>
-              </Col> */}
               </Row>
             </div>
 
@@ -581,12 +369,6 @@ class Profile extends Component {
             {/* <FeedbackForm page={"Profile Page"} /> */}
           </div>
         </div>
-        {/* wallet page component */}
-        <Wallet
-          hidePageHeader={true}
-          isUpdate={this.state.isUpdate}
-          updateTimer={this.updateTimer}
-        />
       </>
     );
   }

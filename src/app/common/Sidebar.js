@@ -109,6 +109,8 @@ function Sidebar(props) {
   const [shareModal, setShareModal] = React.useState(false);
   const [isCopyTraderPopUpModal, setIsCopyTraderPopUpModal] =
     React.useState(false);
+  const [isLochPointsProfilePopUpModal, setIsLochPointsProfilePopUpModal] =
+    React.useState(false);
   const [isAutoPopUpModal, setIsAutoPopUpModal] = React.useState(false);
   const [signinModal, setSigninModal] = React.useState(false);
   const [signupModal, setSignupModal] = React.useState(false);
@@ -399,9 +401,12 @@ function Sidebar(props) {
   const openLochTwitter = () => {
     window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
-  const openSigninModal = (isFromCopyTrader) => {
-    if (isFromCopyTrader === true) {
+  const openSigninModal = (fromWhichPage) => {
+    if (fromWhichPage === "copyTrade") {
       setIsCopyTraderPopUpModal(true);
+    }
+    if (fromWhichPage === "lochPointsProfile") {
+      setIsLochPointsProfilePopUpModal(true);
     }
 
     let tempToken = getToken();
@@ -419,12 +424,19 @@ function Sidebar(props) {
   };
   const onCloseModal = () => {
     setIsCopyTraderPopUpModal(false);
+    setIsLochPointsProfilePopUpModal(false);
     setIsAutoPopUpModal(false);
     setComingDirectly(true);
     setSignUpModalAnimation(true);
     setSignInModalAnimation(true);
     setSigninModal(false);
     setSignupModal(false);
+    const isLochPointsTabOpen = window.sessionStorage.getItem(
+      "lochPointsProfileLoginClicked"
+    );
+    if (isLochPointsTabOpen) {
+      window.sessionStorage.removeItem("lochPointsProfileLoginClicked");
+    }
   };
 
   const openSignUpModal = () => {
@@ -560,7 +572,10 @@ function Sidebar(props) {
     setTimeout(() => {
       const isCopyTradeModalOpen =
         window.sessionStorage.getItem("copyTradeModalOpen");
-      if (!isCopyTradeModalOpen) {
+      const lochPointsProfileModalOpen = window.sessionStorage.getItem(
+        "lochPointsProfileLoginClicked"
+      );
+      if (!isCopyTradeModalOpen && !lochPointsProfileModalOpen) {
         // if isPopupActive = true then do not open this popup bcoz any other popup still open
         let isPopupActive = JSON.parse(
           window.sessionStorage.getItem("isPopupActive")
@@ -1370,9 +1385,18 @@ function Sidebar(props) {
                           <>
                             <div
                               onClick={() => {
-                                openSigninModal(true);
+                                openSigninModal("copyTrade");
                               }}
                               id="sidebar-closed-sign-in-btn-copy-trader"
+                              style={{
+                                display: "none",
+                              }}
+                            />
+                            <div
+                              onClick={() => {
+                                openSigninModal("lochPointsProfile");
+                              }}
+                              id="sidebar-closed-sign-in-btn-loch-points-profile"
                               style={{
                                 display: "none",
                               }}
@@ -1491,9 +1515,18 @@ function Sidebar(props) {
                           <>
                             <div
                               onClick={() => {
-                                openSigninModal(true);
+                                openSigninModal("copyTrade");
                               }}
                               id="sidebar-open-sign-in-btn-copy-trader"
+                              style={{
+                                display: "none",
+                              }}
+                            />
+                            <div
+                              onClick={() => {
+                                openSigninModal("lochPointsProfile");
+                              }}
+                              id="sidebar-open-sign-in-btn-loch-points-profile"
                               style={{
                                 display: "none",
                               }}
@@ -1712,12 +1745,20 @@ function Sidebar(props) {
           description={
             isCopyTraderPopUpModal
               ? "Easily copy trade with other address"
+              : isLochPointsProfilePopUpModal
+              ? "Earn loch points and get rewarded"
               : isAutoPopUpModal
               ? "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
               : "Get right back into your account"
           }
           stopUpdate={true}
-          tracking={isCopyTraderPopUpModal ? "Copy trade" : "Sign in button"}
+          tracking={
+            isCopyTraderPopUpModal
+              ? "Copy trade"
+              : isLochPointsProfilePopUpModal
+              ? "Loch points profile"
+              : "Sign in button"
+          }
           goToSignUp={openSignUpModal}
         />
       ) : (
@@ -1726,9 +1767,19 @@ function Sidebar(props) {
       {signupModal ? (
         <ExitOverlay
           customDesc={
-            isCopyTraderPopUpModal ? "Easily copy trade with other address" : ""
+            isCopyTraderPopUpModal
+              ? "Easily copy trade with other address"
+              : isLochPointsProfilePopUpModal
+              ? "Earn loch points and get rewarded"
+              : ""
           }
-          tracking={isCopyTraderPopUpModal ? "Copy trade" : ""}
+          tracking={
+            isCopyTraderPopUpModal
+              ? "Copy trade"
+              : isLochPointsProfilePopUpModal
+              ? "Loch points profile"
+              : ""
+          }
           comingDirectly={comingDirectly}
           hideOnblur
           showHiddenError
