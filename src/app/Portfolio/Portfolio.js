@@ -4658,7 +4658,7 @@ class Portfolio extends BaseReactComponent {
                               message="No assets found"
                               disableOnLoading
                               isMiniversion
-                              xAxisScrollable
+                              xAxisScrollable={!this.state.AvgCostLoading}
                               xAxisScrollableColumnWidth={4.4}
                               tableData={
                                 tableDataCostBasis
@@ -4672,7 +4672,7 @@ class Portfolio extends BaseReactComponent {
                               isAnalytics="average cost basis"
                               // addWatermark
                               fakeWatermark
-                              yAxisScrollable
+                              yAxisScrollable={!this.state.AvgCostLoading}
                             />
                           </div>
                           {!this.state.AvgCostLoading ? (
@@ -4957,7 +4957,7 @@ class Portfolio extends BaseReactComponent {
                                 isArrow={true}
                                 isLoading={this.state.nftTableLoading}
                                 fakeWatermark
-                                yAxisScrollable
+                                yAxisScrollable={!this.state.nftTableLoading}
                               />
                             </div>
                             {/* Add Loading conditino here and add goto nft page */}
@@ -5189,7 +5189,9 @@ class Portfolio extends BaseReactComponent {
                           >
                             <TransactionTable
                               message={"No yield opportunities found"}
-                              xAxisScrollable
+                              xAxisScrollable={
+                                !this.state.yieldOpportunitiesTableLoading
+                              }
                               xAxisScrollableColumnWidth={4.3}
                               noSubtitleBottomPadding
                               disableOnLoading
@@ -5203,7 +5205,9 @@ class Portfolio extends BaseReactComponent {
                                 this.state.yieldOpportunitiesTableLoading
                               }
                               fakeWatermark
-                              yAxisScrollable
+                              yAxisScrollable={
+                                !this.state.yieldOpportunitiesTableLoading
+                              }
                             />
                           </div>
                           {!this.state.yieldOpportunitiesTableLoading ? (
@@ -5400,7 +5404,7 @@ class Portfolio extends BaseReactComponent {
                             }`}
                           >
                             <TransactionTable
-                              xAxisScrollable
+                              xAxisScrollable={!this.state.tableLoading}
                               xAxisScrollableColumnWidth={5.1}
                               noSubtitleBottomPadding
                               disableOnLoading
@@ -5413,7 +5417,7 @@ class Portfolio extends BaseReactComponent {
                               watermarkOnTop
                               // addWatermark
                               fakeWatermark
-                              yAxisScrollable
+                              yAxisScrollable={!this.state.tableLoading}
                             />
                           </div>
                           {!this.state.tableLoading ? (
