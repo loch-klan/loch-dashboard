@@ -139,13 +139,17 @@
       //     }
     }
     .profileCreditPointsLoadingContainer {
-      box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
-        0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+      box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12),
+        0rem 0.8rem 0.8rem -0.4rem rgba(24, 39, 75, 0.08);
       margin-bottom: 2rem;
       padding: 0;
       background-color: var(--cardBackgroud);
       padding: 2rem;
-      border-radius: 1.2rem;
+      border-radius: 1.6rem;
+      height: 44.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       .animation-wrapper {
         width: 100%;
         // background-image: url("../../images/walletCardLoadingBackground.png");
@@ -171,7 +175,7 @@
       box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12),
         0rem 0.8rem 0.8rem -0.4rem rgba(24, 39, 75, 0.08);
       border-radius: 1.6rem;
-      margin-bottom: 4rem;
+      margin-bottom: 2rem;
       width: 100%;
       .profileCreditPointsHeader {
         padding: 2.5rem;
@@ -219,7 +223,7 @@
         }
       }
       .profileCreditPointsDividerContainer {
-        border-bottom: 0.25rem solid #e5e5e6;
+        border-bottom: 0.25rem solid var(--dropdownContentBorderColor);
         position: relative;
         .profileCreditPointsDivider {
           border-bottom: 0.25rem solid #18c278;
@@ -229,86 +233,92 @@
         }
       }
       .profileCreditPointsBody {
-        padding: 2.5rem 0rem;
-        display: flex;
-        align-items: center;
-        overflow-x: scroll;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        // -webkit-overflow-scrolling: touch;
-        &::-webkit-scrollbar {
-          width: 0rem;
-          height: 0rem;
-        }
-        .profileCreditPointsSection {
+        padding: 2.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        column-gap: 2rem;
+        row-gap: 2rem;
+        // .profileCreditPointsSection {
+        //   display: flex;
+        //   align-items: center;
+        //   min-width: 100%;
+        //   justify-content: space-around;
+        //   scroll-snap-align: start;
+        //   background-color: red;
+        .profileLochCreditPointsBlock {
           display: flex;
           align-items: center;
-          min-width: 100%;
-          justify-content: space-around;
-          scroll-snap-align: start;
-          .profileLochCreditPointsBlock {
+          background-color: var(--cardBackgroud);
+          border: 0.18rem solid var(--dropdownContentBorderColor);
+          padding: 2rem;
+          border-radius: 1.2rem;
+          cursor: pointer;
+          &:hover {
+            border-color: var(--primaryTextColor);
+          }
+          .profileLochCreditPointsBlockIconContainer {
+            min-height: 5rem;
+            min-width: 5rem;
+            max-height: 5rem;
+            max-width: 5rem;
+            border-radius: 1.2rem;
+            background-color: #e5e5e680;
             display: flex;
             align-items: center;
-            .profileLochCreditPointsBlockIconContainer {
-              min-height: 5rem;
-              min-width: 5rem;
-              max-height: 5rem;
-              max-width: 5rem;
-              border-radius: 1.2rem;
-              background-color: #e5e5e680;
+            justify-content: center;
+            .profileLochCreditPointsBlockIcon {
+              min-height: 2rem;
+              min-width: 2rem;
+              max-height: 2rem;
+              max-width: 2rem;
+            }
+          }
+          .profileLochCreditPointsBlockInfoBlock {
+            margin-left: 1.5rem;
+            white-space: nowrap;
+            .profileLochCreditPointsBlockInfoBlockDescContainer {
               display: flex;
-              align-items: center;
-              justify-content: center;
-              .profileLochCreditPointsBlockIcon {
-                min-height: 2rem;
-                min-width: 2rem;
-                max-height: 2rem;
-                max-width: 2rem;
+              margin-top: 0.5rem;
+              min-width: 15rem;
+              justify-content: space-between;
+              .profileLochCreditPointsBlockInfoBlockDesc {
+                color: #96979a;
+                .profileLochCreditPointsBlockInfoBlockDescPoints {
+                  padding: 0.3rem 0.5rem;
+                  border-radius: 0.5rem;
+                  margin-left: 0.3rem;
+                }
+                .profileLochCreditPointsBlockInfoBlockDescPointsToDo {
+                  background-color: var(--lochPointsBadgeWarningBg);
+                  color: #f19938;
+                }
+                .profileLochCreditPointsBlockInfoBlockDescPointsDone {
+                  background-color: var(--lochPointsBadgeSuccessBg);
+                  color: #18c278;
+                }
               }
-            }
-            .profileLochCreditPointsBlockInfoBlock {
-              margin-left: 1.5rem;
-              white-space: nowrap;
-              .profileLochCreditPointsBlockInfoBlockDescContainer {
+              .profileLochCreditPointsBlockInfoBlockDescGoContainer {
                 display: flex;
-                margin-top: 0.5rem;
-                min-width: 15rem;
-                justify-content: space-between;
-                .profileLochCreditPointsBlockInfoBlockDesc {
-                  color: #96979a;
-                  .profileLochCreditPointsBlockInfoBlockDescPoints {
-                    padding: 0.3rem 0.5rem;
-                    border-radius: 0.5rem;
-                    margin-left: 0.3rem;
-                  }
-                  .profileLochCreditPointsBlockInfoBlockDescPointsToDo {
-                    background-color: var(--lochPointsBadgeWarningBg);
-                    color: #f19938;
-                  }
-                  .profileLochCreditPointsBlockInfoBlockDescPointsDone {
-                    background-color: var(--lochPointsBadgeSuccessBg);
-                    color: #18c278;
-                  }
+                align-items: center;
+                transition-duration: 300ms;
+                cursor: pointer;
+                .profileLochCreditPointsBlockInfoBlockDescGo {
+                  font-weight: 600;
                 }
-                .profileLochCreditPointsBlockInfoBlockDescGoContainer {
-                  display: flex;
-                  align-items: center;
-                  transition-duration: 300ms;
-                  &:hover {
-                    opacity: 0.5;
-                  }
-                  cursor: pointer;
-                  .profileLochCreditPointsBlockInfoBlockDescGo {
-                    font-weight: 600;
-                  }
-                  .profileLochCreditPointsBlockInfoBlockDescGoIcon {
-                    height: 12px;
-                    margin-left: 0.5rem;
-                    filter: var(--invertColor);
-                  }
+                .profileLochCreditPointsBlockInfoBlockDescGoIcon {
+                  height: 12px;
+                  margin-left: 0.5rem;
+                  filter: var(--invertColor);
                 }
               }
             }
+          }
+          // }
+        }
+        .profileLochCreditPointsBlockCompleted {
+          cursor: default;
+          &:hover {
+            border-color: var(--dropdownContentBorderColor);
           }
         }
       }
@@ -338,7 +348,13 @@
           }
           .form-group {
             label {
-              @include font(var(--grey313), "Inter-Medium", 1.3rem, 500, 1.6rem);
+              @include font(
+                var(--grey313),
+                "Inter-Medium",
+                1.3rem,
+                500,
+                1.6rem
+              );
               margin-bottom: 1.2rem;
               span {
                 display: none;

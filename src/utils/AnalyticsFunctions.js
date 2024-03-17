@@ -773,6 +773,19 @@ export const TransactionHistoryHashCopied = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CopyTradeTransactionHistoryHashCopied = ({
+  session_id,
+  email_address,
+  hash_copied,
+}) => {
+  const event_name = "Copy Trade: Transactions: transaction Hash copied";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hash_copied: hash_copied,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 //23. Home:transaction history hash copied
 export const TransactionHistoryAddressCopied = ({
@@ -781,6 +794,19 @@ export const TransactionHistoryAddressCopied = ({
   address_copied,
 }) => {
   const event_name = "Transaction :transaction Address Copied";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address_copied: address_copied,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeTransactionHistoryAddressCopied = ({
+  session_id,
+  email_address,
+  address_copied,
+}) => {
+  const event_name = "Copy Trade: Transactions: transaction Address copied";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -2298,6 +2324,18 @@ export const TransactionHistoryPageView = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Transaction History");
 };
+export const CopyTradeTransactionHistoryPageView = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Page View: Copy Trade Transactions";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Transaction History");
+};
 export const YieldOpportunitiesPageView = ({ session_id, email_address }) => {
   const event_name = "Page View: Yield opportunities";
   const eventProperties = {
@@ -3546,6 +3584,20 @@ export const TransactionHistorySearch = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const CopyTradeTransactionHistorySearch = ({
+  session_id,
+  email_address,
+  searched,
+}) => {
+  const event_name = "Copy Trade: Transactions: search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    searched: searched,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const YieldOpportunitiesSearch = ({
   session_id,
   email_address,
@@ -3568,6 +3620,22 @@ export const TransactionHistoryYearFilter = ({
   isSearchUsed,
 }) => {
   const event_name = "Transaction History: years filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "year selected": year_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const CopyTradeTransactionHistoryYearFilter = ({
+  session_id,
+  email_address,
+  year_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Copy Trade: Transactions: years filter";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -3608,6 +3676,22 @@ export const TransactionHistoryAssetFilter = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const CopyTradeTransactionHistoryAssetFilter = ({
+  session_id,
+  email_address,
+  asset_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Copy Trade: Transactions: assets filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset selected": asset_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 
 // Transaction History: methods filter - done
 export const TransactionHistoryNetworkFilter = ({
@@ -3617,6 +3701,22 @@ export const TransactionHistoryNetworkFilter = ({
   isSearchUsed,
 }) => {
   const event_name = "Transaction History: networks filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "networks selected": network_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const CopyTradeTransactionHistoryNetworkFilter = ({
+  session_id,
+  email_address,
+  network_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Copy Trade: Transactions: networks filter";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -3771,6 +3871,17 @@ export const TransactionHistorySortDate = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const CopyTradeTransactionHistorySortDate = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade: Transactions: sort date";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // Transaction History: sort from - done
 export const TransactionHistorySortFrom = ({ session_id, email_address }) => {
@@ -3781,6 +3892,17 @@ export const TransactionHistorySortFrom = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
+};
+export const CopyTradeTransactionHistorySortFrom = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade: Transactions: sort from";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 // Transaction History: sort to - done
@@ -3793,6 +3915,17 @@ export const TransactionHistorySortTo = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const CopyTradeTransactionHistorySortTo = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade: Transactions: sort to";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // Transaction History: sort asset - done
 export const TransactionHistorySortAsset = ({ session_id, email_address }) => {
@@ -3804,6 +3937,17 @@ export const TransactionHistorySortAsset = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const CopyTradeTransactionHistorySortAsset = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade: Transactions: sort asset";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // Transaction History: sort amount - done
 export const TransactionHistorySortAmount = ({ session_id, email_address }) => {
@@ -3813,7 +3957,17 @@ export const TransactionHistorySortAmount = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:intelligence menu");
+};
+export const CopyTradeTransactionHistorySortAmount = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade: Transactions: sort amount";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 // Transaction History: sort usd amount - done
@@ -3823,6 +3977,18 @@ export const TransactionHistorySortUSDAmount = ({
   email_address,
 }) => {
   const event_name = "Transaction History: sort usd amount";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const CopyTradeTransactionHistorySortUSDAmount = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade: Transactions: sort usd amount";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -3853,6 +4019,17 @@ export const TransactionHistorySortMethod = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
+};
+export const CopyTradeTransactionHistorySortMethod = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade: Transactions: sort method";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 
 // Transaction History: hide dust - done
@@ -3929,6 +4106,19 @@ export const TransactionHistoryPageNext = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const CopyTradeTransactionHistoryPageNext = ({
+  session_id,
+  email_address,
+  page_no,
+}) => {
+  const event_name = "Copy Trade: Transactions: page next";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 // Transaction History: page back - done
 
@@ -3946,6 +4136,20 @@ export const TransactionHistoryPageBack = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const CopyTradeTransactionHistoryPageBack = ({
+  session_id,
+  email_address,
+  page_no,
+}) => {
+  const event_name = "Copy Trade: Transactions: page back";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page number": page_no,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 
 // Transaction History: page search
 export const TransactionHistoryPageSearch = ({
@@ -3954,6 +4158,20 @@ export const TransactionHistoryPageSearch = ({
   page_search,
 }) => {
   const event_name = "Transaction History: page search";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "page search": page_search,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const CopyTradeTransactionHistoryPageSearch = ({
+  session_id,
+  email_address,
+  page_search,
+}) => {
+  const event_name = "Copy Trade: Transactions: page search";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -4947,6 +5165,20 @@ export const TimeSpentTransactionHistory = ({
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Transaction History: time spent on transaction history page");
 };
+export const CopyTradeTimeSpentTransactionHistory = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Copy Trade: Transactions: time spent on Copy Trade transaction page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 export const TransactionHistoryWalletClicked = ({
   session_id,
@@ -4954,6 +5186,19 @@ export const TransactionHistoryWalletClicked = ({
   wallet,
 }) => {
   const event_name = "Transaction history: wallet open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeTransactionHistoryWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: Transactions: wallet open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
@@ -5323,6 +5568,7 @@ export const CostShare = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Costs: share");
 };
+
 export const CostAvgCostBasisExport = ({ session_id, email_address }) => {
   const event_name = "Costs: Average Cost Basis: export";
   const eventProperties = {
@@ -5546,6 +5792,24 @@ export const MenuWatchlist = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   ////console.log("Menu: Watchlist");
 };
+export const MenuCopyTradelist = ({ session_id, email_address }) => {
+  const event_name = "Menu: Copy Trade";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Watchlist");
+};
+export const MenuLeaderboard = ({ session_id, email_address }) => {
+  const event_name = "Menu: Leaderboard";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  ////console.log("Menu: Watchlist");
+};
 
 //Menu:export hide dust - done
 export const MenuExportHideDust = ({ session_id, email_address }) => {
@@ -5588,7 +5852,194 @@ export const SmartMoneyPageView = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CopyTradePageView = ({ session_id, email_address }) => {
+  const event_name = "Page View: Copy Trade";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
+export const CopyTradeTimeSpent = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Copy Trade: time spent on copy trade page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const CopyTradeAddCopyTrade = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: add copy trade button clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Costs: share");
+};
+export const CopyTradePopupEmailAdded = ({ session_id, email_added }) => {
+  const event_name = "Copy Trade sign in pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+export const CopyTradeSignInPopupEmailVerified = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade sign in pop up: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
+export const CopyTradeSignUpPopupEmailAdded = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Copy Trade sign up pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const CopyTradeAdded = ({
+  session_id,
+  email_address,
+  copied_wallet,
+  amount,
+  notification_email,
+}) => {
+  const event_name = "Copy Trade: copy trade added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "copied wallet": copied_wallet,
+    amount: amount,
+    "notification email": notification_email,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeCopiedWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: copied wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeAvailableCopiedWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: available copy trade: wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteTradeModalOpen = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name =
+    "Copy Trade: available copy trade: execute trade modal open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteTradeSwapClicked = ({
+  session_id,
+  email_address,
+  swap,
+  address,
+}) => {
+  const event_name = "Copy Trade: available copy trade: swap clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    swap: swap,
+    address: address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteTradeRejected = ({
+  session_id,
+  email_address,
+  swapAddress,
+}) => {
+  const event_name = "Copy Trade: available copy trade: trade rejected";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: swapAddress,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteTradeConfirmed = ({
+  session_id,
+  email_address,
+  swapAddress,
+}) => {
+  const event_name = "Copy Trade: available copy trade: modal done";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: swapAddress,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeExecuteModalBack = ({
+  session_id,
+  email_address,
+  swapAddress,
+}) => {
+  const event_name = "Copy Trade: available copy trade: modal back";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    address: swapAddress,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+  isWelcome = false,
+}) => {
+  const event_name = "Copy Trade: copied wallet open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const SmartMoneyTimeSpent = ({
   session_id,
   email_address,
@@ -6329,4 +6780,46 @@ export const DarkModeDefaltView = ({ mode, isMobile = false }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
+};
+export const LochPointsSignUpPopupEmailAdded = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Loch Credit Points: sign up pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const LochPointsSignInPopupEmailAdded = ({
+  session_id,
+  email_added,
+}) => {
+  const event_name = "Loch Credit Points: sign in pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const LochPointsSignInPopupEmailVerified = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Loch Credit Points: sign in pop up: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const LochPointsLoginModalOpen = ({ session_id, email_address }) => {
+  const event_name = "Loch Credit Points: sign in pop up: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };

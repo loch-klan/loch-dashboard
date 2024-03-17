@@ -17,6 +17,7 @@
   --primaryDropdownSelectedItem: rgba(229, 229, 230, 0.5);
   --primaryBoxShadowColor: rgba(24, 39, 75, 0.12);
   --primaryBoxShadowDarkerColor: rgba(0, 0, 0, 0.04);
+  --swapContainer: #f4edfd;
   --primaryFilter: #f2f2f2;
   --primaryActiveFilter: #fff;
   --black191: #19191a;
@@ -30,6 +31,7 @@
   --invertColor: invert(0);
   --invertColor2: invert(100%);
   --hoverBrightness: brightness(50%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(0);
   --hoverBrightnessValueInvert: brightness(20);
   --infoBrightnessPortfolio: brightness(1);
@@ -196,6 +198,7 @@
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
+  --swapContainer: #303030;
   --primaryFilter: #303030;
   --primaryActiveFilter: #636467;
   --black191: #cacbcc;
@@ -209,6 +212,7 @@
   --invertColor: invert(100%);
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(1);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: invert(1);
@@ -367,6 +371,7 @@
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
+  --swapContainer: #313233;
   --primaryFilter: #313233;
   --primaryActiveFilter: #636467;
   --black191: #e7e9ea;
@@ -378,6 +383,7 @@
   --invertColor: invert(100%);
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: none;

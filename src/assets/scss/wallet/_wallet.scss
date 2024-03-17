@@ -6,6 +6,8 @@
     min-width: 85rem; //solve overflow issue
     // overflow: hidden; //solve overflow issue
     // sortby section begin
+    padding: 0rem;
+
     .sortby-section {
       display: flex;
       align-items: center;
@@ -145,7 +147,7 @@
               }
 
               img:hover {
-                  filter: var(--hoverBrightnessValue);
+                filter: var(--hoverBrightnessValue);
               }
             }
           }
