@@ -174,124 +174,76 @@
     }
   }
 }
-.available-copy-trades-container {
+.available-copy-trades-popular-accounts-container {
   min-width: 85rem;
   background-color: var(--cardBackgroud);
   width: 100%;
   margin-bottom: 2rem;
-  padding: 1.5rem;
   border-radius: 1.2rem;
   box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem rgba(24, 39, 75, 0.12),
     0rem 0.63099rem 0.63099rem -0.31549rem rgba(24, 39, 75, 0.08);
-  .available-copy-trades {
+  .actpacc-header {
+    padding: 1.5rem;
+    width: 100%;
     display: flex;
     align-items: center;
-    width: 100%;
-    .available-copy-trades-content-container {
+    justify-content: space-between;
+    border-bottom: 0.1rem solid var(--sidebarSectionalBOrder);
+    .actpacc-header-title {
       display: flex;
       align-items: center;
-      justify-content: center;
-
-      .available-copy-trades-icon {
+      .actpacc-header-icon {
         height: 19px;
         margin-right: 0.5rem;
         filter: var(--darkerBrightness) var(--invertColor);
       }
+    }
+    .actpacc-arrow-icon {
+      height: 10px;
+      cursor: pointer;
+      filter: var(--invertColor);
+    }
+    .actpacc-arrow-icon-reversed {
+      transform: rotate(180deg);
+    }
+  }
+  .actpacc-scroll-body {
+    display: flex;
+    align-items: center;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    min-height: 6rem;
+
+    .actpacc-scroll-body-no-data {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #adadad;
+    }
+    &::-webkit-scrollbar {
+      width: 0rem;
+      height: 0rem;
+    }
+    .available-copy-trades {
+      min-width: 100%;
+      width: 100%;
+      justify-content: space-between;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      padding: 1.5rem;
       .available-copy-trades-address {
-        margin: 0rem 2rem;
         text-decoration: underline;
         cursor: pointer;
         &:hover {
           font-weight: 600;
         }
       }
-      .available-copy-trades-address-mobile {
-        margin: 0;
-      }
-    }
-    .available-copy-trades-content-container-mobile {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .available-copy-trades-content-child {
-        display: flex;
-        align-items: center;
-      }
-    }
-    .available-copy-trades-transaction-container {
-      background-color: var(--swapContainer);
-      flex: 1;
-      height: 100%;
-      padding: 1rem;
-      border-radius: 0.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-    }
-    .available-copy-trades-transaction-container-mobile {
-      width: 100%;
-    }
-    .available-copy-trades-button-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 2rem;
-      .topbar-btn {
-        background-color: var(--primaryFilter);
-        border: 0.1rem solid var(--primaryFilter);
-        border-radius: 8px;
-        padding: 1.2rem 2rem;
-        color: var(--primaryTextColor);
+      .available-copy-trades-transaction-container {
         font-weight: 600;
-        font-size: 1.3rem;
-        line-height: 1.5rem;
-        cursor: pointer;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: flex;
-        align-items: center;
-
-        &:hover {
-          background-color: $black-191;
-          background-color: var(--backColor);
-          color: var(--sameModeColor);
-
-          img {
-            filter: var(--invertColor2);
-          }
-          .noHoverEffect {
-            filter: invert(0);
-          }
-          .topBarExchangeIcons {
-            filter: none;
-          }
-        }
-      }
-      .topbar-btn-dark {
-        background: $black-191;
-        border: 1px solid var(--topbarAdressAddBorder);
-        color: $secondary;
-        &:hover {
-          color: var(--topbarAdressAddColorHover);
-          background-color: var(--topbarAdressAddBg);
-          border: 1px solid #f2f2f3;
-        }
-      }
-
-      &.available-copy-trades-button-container--mobile {
-        width: 100%;
-        justify-content: space-between;
-        gap: 1rem;
-        margin-left: 0px;
-        #address-button-two {
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
       }
     }
   }
@@ -299,8 +251,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 1.5rem;
-    padding-right: 0.5rem;
+
+    padding: 1.5rem 1.8rem;
     .available-copy-trades-navigator-circles-container {
       display: flex;
       align-items: center;
@@ -324,10 +276,12 @@
       }
     }
   }
+  .available-copy-trades-button-container {
+    display: flex;
+    align-items: center;
+  }
 }
-.available-copy-trades-container-mobile {
-  min-width: unset;
-}
+
 .availableCopyTradeScrollBodyClass {
   display: flex;
   align-items: center;

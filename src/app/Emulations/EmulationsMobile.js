@@ -3,6 +3,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
   EmultionSidebarIcon,
+  NoCopyTradeTableIcon,
   UserCreditScrollLeftArrowIcon,
   UserCreditScrollRightArrowIcon,
 } from "../../assets/images/icons";
@@ -341,7 +342,9 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               noSubtitleBottomPadding
               disableOnLoading
               isMiniversion
-              message="No copy trades found"
+              showHeaderOnEmpty
+              message="Select a wallet above to copy trade to get started."
+              noDataImage={NoCopyTradeTableIcon}
               tableData={this.props.tableData}
               columnList={this.props.columnData}
               headerHeight={60}

@@ -69,7 +69,14 @@ class CustomTable extends BaseReactComponent {
         className={`table-wrapper ${
           this.props.xAxisScrollable ? "table-wrapper-mobile-x-scroll" : ""
         } ${this.props.yAxisScrollable ? "table-wrapper-mobile-y-scroll" : ""}`}
-        style={wrapperStyle}
+        style={
+          this.props.showHeaderOnEmpty &&
+          (!this.props.tableData || this.props.tableData.length === 0)
+            ? {
+                overflowX: "hidden",
+              }
+            : null
+        }
       >
         {isLoading === true ? (
           <div
@@ -250,20 +257,46 @@ class CustomTable extends BaseReactComponent {
                   <AutoSizer disableHeight>
                     {({ width }) => (
                       <Table
-                        width={width}
-                        height={60 * (tableData.length + 1) - 10}
+                        width={
+                          this.props.xAxisScrollable
+                            ? width *
+                              (columnList.length /
+                                (this.props.xAxisScrollableColumnWidth
+                                  ? this.props.xAxisScrollableColumnWidth
+                                  : 3.5))
+                            : width
+                        }
+                        height={
+                          (this.props.showDataAtBottom && this.props.moreData
+                            ? 58
+                            : 60) *
+                            (tableData.length + 1) -
+                          10
+                        }
                         headerHeight={headerHeight ? headerHeight : 80}
-                        rowHeight={60}
+                        rowHeight={
+                          this.props.showDataAtBottom && this.props.moreData
+                            ? 58
+                            : 60
+                        }
                         rowCount={tableData.length}
                         rowGetter={({ index }) => tableData[index]}
                         className={`custom-table ${className}`}
                         gridClassName={`${
-                          this.props.addWatermark ? "tableWatermark" : ""
+                          this.props.addWatermark
+                            ? "tableWatermark"
+                            : this.props.fakeWatermark && tableData.length > 1
+                            ? "tableWatermarkFake"
+                            : ""
+                        } ${
+                          this.props.bottomCombiedValues
+                            ? "topMarginForCombiedValues"
+                            : ""
                         } ${
                           this.props.addWatermarkMoveUp
                             ? "tableWatermarkMoveUp"
                             : ""
-                        } ${watermarkOnTop ? "watermarkOnTop" : ""}`}
+                        }`}
                       >
                         {columnList &&
                           columnList.length > 0 &&
@@ -272,11 +305,20 @@ class CustomTable extends BaseReactComponent {
                               <Column
                                 key={key}
                                 // width={item.coumnWidth}
-                                width={width * item.coumnWidth}
+                                width={
+                                  this.props.xAxisScrollable
+                                    ? width *
+                                      item.coumnWidth *
+                                      (columnList.length /
+                                        (this.props.xAxisScrollableColumnWidth
+                                          ? this.props
+                                              .xAxisScrollableColumnWidth
+                                          : 3.5))
+                                    : width * item.coumnWidth
+                                }
                                 className={item.className}
                                 label={item.labelName}
                                 dataKey={item.dataKey}
-                                style={item.style}
                                 cellRenderer={({ rowData, rowIndex }) => {
                                   return item.cell(
                                     rowData,
@@ -297,11 +339,25 @@ class CustomTable extends BaseReactComponent {
                     isMiniversion ? "not-found-mini-wrapper" : ""
                   }`}
                 >
-                  {/* <Image src={notFoundImage} /> */}
-                  <p className="inter-display-medium f-s-16 lh-19 ">
-                    {" "}
-                    {moduleName ? "No " + moduleName + " Found" : message}
-                  </p>
+                  <div>
+                    {this.props.noDataImage ? (
+                      <Image
+                        className="not-found-wrapper-image"
+                        src={this.props.noDataImage}
+                      />
+                    ) : null}
+                    {/* <Image src={notFoundImage} /> */}
+                    <p
+                      className={`inter-display-medium f-s-16 lh-19 ${
+                        this.props.noDataImage
+                          ? "not-found-wrapper-image-text"
+                          : ""
+                      }`}
+                    >
+                      {" "}
+                      {moduleName ? "No " + moduleName + " Found" : message}
+                    </p>
+                  </div>
                   {isButton && (
                     <Button className="primary-btn" onClick={isButton}>
                       {buttonText}

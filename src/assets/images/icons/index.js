@@ -116,3 +116,5 @@ export { default as KyberSwapLogoIcon } from "./kyberSwapLogo.svg";
 export { default as CowSwapLogoIcon } from "./cowSwapLogo.svg";
 export { default as ParaswapLogoIcon } from "./paraswapLogo.svg";
 export { default as CurveLogoIcon } from "./curveLogo.svg";
+export { default as NoCopyTradeTableIcon } from "./noCopyTradeTable.svg";
+export { default as UserCreditScrollTopArrowIcon } from "./userCreditScrollTopArrow.svg";
