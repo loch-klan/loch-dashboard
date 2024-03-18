@@ -24,6 +24,8 @@ import FixAddModal from "../common/FixAddModal.js";
 // add wallet
 import { Image } from "react-bootstrap";
 import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
   EmultionSidebarIcon,
   ExportIconWhite,
   UserCreditScrollLeftArrowIcon,
@@ -34,6 +36,7 @@ import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   TruncateText,
+  amountFormat,
   convertNtoNumber,
   mobileCheck,
   numToCurrency,
@@ -339,7 +342,11 @@ class Emulations extends Component {
       conRejData.append("status", "REJECT");
     }
     conRejData.append("trade_id", tradeId);
-    this.props.updaetAvailableCopyTraes(conRejData, this.callEmulationsApi);
+    this.props.updaetAvailableCopyTraes(
+      conRejData,
+      this.callEmulationsApi,
+      isConfirm
+    );
   };
   goToNewAddress = (passedAddress) => {
     CopyTradeAvailableCopiedWalletClicked({
@@ -418,27 +425,12 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycopytradedeposit") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.tradeDeposit
-                    ? CurrencyType(false) +
-                      convertNtoNumber(rowData.tradeDeposit)
-                    : CurrencyType(false) + "0.00"
-                }
-              >
-                <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.tradeDeposit
-                    ? CurrencyType(false) +
-                      numToCurrency(
-                        rowData.tradeDeposit.toFixed(2)
-                      ).toLocaleString("en-US")
-                    : CurrencyType(false) + "0.00"}
-                </span>
-              </CustomOverlay>
+              <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                {rowData.tradeDeposit
+                  ? CurrencyType(false) +
+                    amountFormat(rowData.tradeDeposit, "en-US", "USD")
+                  : CurrencyType(false) + "0.00"}
+              </span>
             );
           }
         },
@@ -458,27 +450,12 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycurrentbalance") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.currentBalance
-                    ? CurrencyType(false) +
-                      convertNtoNumber(rowData.currentBalance)
-                    : CurrencyType(false) + "0.00"
-                }
-              >
-                <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.currentBalance
-                    ? CurrencyType(false) +
-                      numToCurrency(
-                        rowData.currentBalance.toFixed(2)
-                      ).toLocaleString("en-US")
-                    : CurrencyType(false) + "0.00"}
-                </span>
-              </CustomOverlay>
+              <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                {rowData.currentBalance
+                  ? CurrencyType(false) +
+                    amountFormat(rowData.currentBalance, "en-US", "USD")
+                  : CurrencyType(false) + "0.00"}
+              </span>
             );
           }
         },
@@ -498,27 +475,32 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "MyunrealizedPnL") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.unrealizedPnL
-                    ? CurrencyType(false) +
-                      convertNtoNumber(rowData.unrealizedPnL)
-                    : CurrencyType(false) + "0.00"
-                }
-              >
+              <div className="dotDotText">
+                {rowData.unrealizedPnL !== 0 ? (
+                  <Image
+                    className="mr-2"
+                    style={{
+                      height: "1.5rem",
+                      width: "1.5rem",
+                    }}
+                    src={
+                      rowData.unrealizedPnL < 0
+                        ? ArrowDownLeftSmallIcon
+                        : ArrowUpRightSmallIcon
+                    }
+                  />
+                ) : null}
                 <span className="inter-display-medium f-s-13 lh-16 grey-313">
                   {rowData.unrealizedPnL
                     ? CurrencyType(false) +
-                      numToCurrency(
-                        rowData.unrealizedPnL.toFixed(2)
-                      ).toLocaleString("en-US")
+                      amountFormat(
+                        Math.abs(rowData.unrealizedPnL),
+                        "en-US",
+                        "USD"
+                      )
                     : CurrencyType(false) + "0.00"}
                 </span>
-              </CustomOverlay>
+              </div>
             );
           }
         },
