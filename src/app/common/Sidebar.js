@@ -1747,7 +1747,7 @@ function Sidebar(props) {
             isCopyTraderPopUpModal
               ? "Copy trade"
               : isLochPointsProfilePopUpModal
-              ? "Loch points"
+              ? "Loch points profile"
               : "Sign in button"
           }
           goToSignUp={openSignUpModal}
@@ -1768,7 +1768,7 @@ function Sidebar(props) {
             isCopyTraderPopUpModal
               ? "Copy trade"
               : isLochPointsProfilePopUpModal
-              ? "Loch points"
+              ? "Loch points profile"
               : ""
           }
           comingDirectly={comingDirectly}
