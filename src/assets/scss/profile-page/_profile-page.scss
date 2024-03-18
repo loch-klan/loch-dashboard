@@ -150,6 +150,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      min-width: 85rem;
       .animation-wrapper {
         width: 100%;
         // background-image: url("../../images/walletCardLoadingBackground.png");
@@ -170,6 +171,7 @@
     }
     .profileCreditPointsContainer {
       min-width: 85rem;
+      overflow: hidden;
       background-color: var(--cardBackgroud);
 
       box-shadow: 0rem 0.4rem 0.6rem -0.4rem rgba(24, 39, 75, 0.12),
