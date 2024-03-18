@@ -132,7 +132,7 @@ export const addCopyTrade = (data, hideModal, resetBtn) => {
       });
   };
 };
-export const updaetAvailableCopyTraes = (data, recallCopyTrader) => {
+export const updaetAvailableCopyTraes = (data, recallCopyTrader, isConfirm) => {
   return async function (dispatch, getState) {
     postLoginInstance
 
@@ -140,6 +140,11 @@ export const updaetAvailableCopyTraes = (data, recallCopyTrader) => {
       .then((res) => {
         if (!res.data.error) {
           if (res.data.data) {
+            if (isConfirm) {
+              toast.success("Congrats! Trade confirmed");
+            } else {
+              toast.success("Trade rejected ");
+            }
             if (recallCopyTrader) {
               recallCopyTrader();
             }

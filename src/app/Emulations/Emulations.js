@@ -24,16 +24,21 @@ import FixAddModal from "../common/FixAddModal.js";
 // add wallet
 import { Image } from "react-bootstrap";
 import {
+  ArrowDownLeftSmallIcon,
+  ArrowUpRightSmallIcon,
   EmultionSidebarIcon,
   ExportIconWhite,
+  NoCopyTradeTableIcon,
   UserCreditScrollLeftArrowIcon,
   UserCreditScrollRightArrowIcon,
+  UserCreditScrollTopArrowIcon,
 } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   TruncateText,
+  amountFormat,
   convertNtoNumber,
   mobileCheck,
   numToCurrency,
@@ -60,6 +65,7 @@ class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isAvailableCopyTradeBlockOpen: true,
       isRejectModal: false,
       executeCopyTradeId: undefined,
       isExecuteCopyTrade: false,
@@ -84,6 +90,12 @@ class Emulations extends Component {
     };
   }
   history = this.props;
+  toggleAvailableCopyTradeBlockOpen = () => {
+    this.setState({
+      isAvailableCopyTradeBlockOpen: !this.state.isAvailableCopyTradeBlockOpen,
+    });
+  };
+
   showAddCopyTradeAddress = () => {
     CopyTradeAddCopyTrade({
       session_id: getCurrentUser().id,
@@ -339,7 +351,11 @@ class Emulations extends Component {
       conRejData.append("status", "REJECT");
     }
     conRejData.append("trade_id", tradeId);
-    this.props.updaetAvailableCopyTraes(conRejData, this.callEmulationsApi);
+    this.props.updaetAvailableCopyTraes(
+      conRejData,
+      this.callEmulationsApi,
+      isConfirm
+    );
   };
   goToNewAddress = (passedAddress) => {
     CopyTradeAvailableCopiedWalletClicked({
@@ -418,27 +434,12 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycopytradedeposit") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.tradeDeposit
-                    ? CurrencyType(false) +
-                      convertNtoNumber(rowData.tradeDeposit)
-                    : CurrencyType(false) + "0.00"
-                }
-              >
-                <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.tradeDeposit
-                    ? CurrencyType(false) +
-                      numToCurrency(
-                        rowData.tradeDeposit.toFixed(2)
-                      ).toLocaleString("en-US")
-                    : CurrencyType(false) + "0.00"}
-                </span>
-              </CustomOverlay>
+              <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                {rowData.tradeDeposit
+                  ? CurrencyType(false) +
+                    amountFormat(rowData.tradeDeposit, "en-US", "USD")
+                  : CurrencyType(false) + "0.00"}
+              </span>
             );
           }
         },
@@ -458,27 +459,12 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycurrentbalance") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.currentBalance
-                    ? CurrencyType(false) +
-                      convertNtoNumber(rowData.currentBalance)
-                    : CurrencyType(false) + "0.00"
-                }
-              >
-                <span className="inter-display-medium f-s-13 lh-16 grey-313">
-                  {rowData.currentBalance
-                    ? CurrencyType(false) +
-                      numToCurrency(
-                        rowData.currentBalance.toFixed(2)
-                      ).toLocaleString("en-US")
-                    : CurrencyType(false) + "0.00"}
-                </span>
-              </CustomOverlay>
+              <span className="inter-display-medium f-s-13 lh-16 grey-313">
+                {rowData.currentBalance
+                  ? CurrencyType(false) +
+                    amountFormat(rowData.currentBalance, "en-US", "USD")
+                  : CurrencyType(false) + "0.00"}
+              </span>
             );
           }
         },
@@ -498,27 +484,32 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "MyunrealizedPnL") {
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  rowData.unrealizedPnL
-                    ? CurrencyType(false) +
-                      convertNtoNumber(rowData.unrealizedPnL)
-                    : CurrencyType(false) + "0.00"
-                }
-              >
+              <div className="dotDotText">
+                {rowData.unrealizedPnL !== 0 ? (
+                  <Image
+                    className="mr-2"
+                    style={{
+                      height: "1.5rem",
+                      width: "1.5rem",
+                    }}
+                    src={
+                      rowData.unrealizedPnL < 0
+                        ? ArrowDownLeftSmallIcon
+                        : ArrowUpRightSmallIcon
+                    }
+                  />
+                ) : null}
                 <span className="inter-display-medium f-s-13 lh-16 grey-313">
                   {rowData.unrealizedPnL
                     ? CurrencyType(false) +
-                      numToCurrency(
-                        rowData.unrealizedPnL.toFixed(2)
-                      ).toLocaleString("en-US")
+                      amountFormat(
+                        Math.abs(rowData.unrealizedPnL),
+                        "en-US",
+                        "USD"
+                      )
                     : CurrencyType(false) + "0.00"}
                 </span>
-              </CustomOverlay>
+              </div>
             );
           }
         },
@@ -799,114 +790,141 @@ class Emulations extends Component {
               updateTimer={this.updateTimer}
               handleBtn={this.showAddCopyTradeAddress}
             />
-            {this.state.userDetailsState &&
-            this.state.userDetailsState.email &&
-            this.state.copyTradesAvailableLocal &&
-            this.state.copyTradesAvailableLocal.length > 0 &&
-            !this.state.emulationsLoading ? (
-              <div className="available-copy-trades-container">
-                <div
-                  id="availableCopyTradeScrollBody"
-                  className="availableCopyTradeScrollBodyClass"
-                  onScroll={handleAvailableTradeScroll}
-                >
-                  {this.state.copyTradesAvailableLocal.map(
-                    (curTradeData, index) => {
-                      return (
-                        <div className="available-copy-trades">
-                          <div className="available-copy-trades-content-container">
-                            <Image
-                              src={EmultionSidebarIcon}
-                              className="available-copy-trades-icon"
-                            />
-                            <div className="inter-display-medium f-s-16">
-                              Available Copy Trade
-                            </div>
-                            <div
-                              onClick={() => {
-                                this.goToNewAddress(curTradeData.copyAddress);
-                              }}
-                              className="inter-display-medium f-s-16 available-copy-trades-address"
-                            >
-                              {TruncateText(curTradeData.copyAddress)}
-                            </div>
-                          </div>
-                          <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container">
-                            Swap {numToCurrency(curTradeData.valueFrom)}{" "}
-                            {curTradeData.assetFrom} for{" "}
-                            {numToCurrency(curTradeData.valueTo)}{" "}
-                            {curTradeData.assetTo}
-                            ? 
-                          </div>
-                          <div className="available-copy-trades-button-container">
-                            <div
-                              className={`topbar-btn`}
-                              id="address-button-two"
-                              onClick={() => {
-                                this.openRejectModal(curTradeData.id);
-                              }}
-                            >
-                              <span className="dotDotText">Reject</span>
-                            </div>
-                            <div
-                              className={`topbar-btn ml-2 topbar-btn-dark`}
-                              onClick={() => {
-                                this.showExecuteCopyTrade(curTradeData.id);
-                              }}
-                              id="address-button-two"
-                            >
-                              <span className="dotDotText">Confirm</span>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    }
-                  )}
-                </div>
-                {this.state.copyTradesAvailableLocal.length > 1 ? (
-                  <div className="available-copy-trades-navigator">
-                    <div className="available-copy-trades-navigator-circles-container">
-                      {this.state.copyTradesAvailableLocal.map(
-                        (resCircle, resCircleIndex) => {
-                          return (
-                            <div
-                              style={{
-                                opacity:
-                                  resCircleIndex ===
-                                  this.state.currentCirclePosition
-                                    ? 1
-                                    : 0.2,
-                                marginLeft: resCircleIndex === 0 ? 0 : "0.5rem",
-                              }}
-                              onClick={() => {
-                                goToScrollPosition(resCircleIndex);
-                              }}
-                              className="available-copy-trades-navigator-circle"
-                            />
-                          );
-                        }
-                      )}
-                    </div>
-                    <div className="available-copy-trades-navigator-arrows">
-                      <Image
-                        style={{
-                          marginRight: "1rem",
-                          opacity: this.state.isLeftArrowDisabled ? 0.5 : 1,
-                        }}
-                        onClick={scrollLeft}
-                        className="availableCopyTradesArrowIcon"
-                        src={UserCreditScrollLeftArrowIcon}
-                      />
-                      <Image
-                        style={{
-                          opacity: this.state.isRightArrowDisabled ? 0.5 : 1,
-                        }}
-                        onClick={scrollRight}
-                        className="availableCopyTradesArrowIcon"
-                        src={UserCreditScrollRightArrowIcon}
-                      />
+            {!this.state.emulationsLoading ? (
+              <div className="available-copy-trades-popular-accounts-container">
+                <div className="actpacc-header">
+                  <div className="actpacc-header-title">
+                    <Image
+                      src={EmultionSidebarIcon}
+                      className="actpacc-header-icon"
+                    />
+                    <div className="inter-display-medium f-s-16">
+                      Available Copy Trade
                     </div>
                   </div>
+                  <Image
+                    onClick={this.toggleAvailableCopyTradeBlockOpen}
+                    src={UserCreditScrollTopArrowIcon}
+                    className={`actpacc-arrow-icon ${
+                      this.state.isAvailableCopyTradeBlockOpen
+                        ? ""
+                        : "actpacc-arrow-icon-reversed"
+                    }`}
+                  />
+                </div>
+                {this.state.isAvailableCopyTradeBlockOpen ? (
+                  <>
+                    <div
+                      id="availableCopyTradeScrollBody"
+                      className="actpacc-scroll-body"
+                      onScroll={handleAvailableTradeScroll}
+                    >
+                      {this.state.copyTradesAvailableLocal &&
+                      this.state.copyTradesAvailableLocal.length > 0 ? (
+                        this.state.copyTradesAvailableLocal.map(
+                          (curTradeData, index) => {
+                            return (
+                              <div className="available-copy-trades">
+                                <div className="available-copy-trades-content-container">
+                                  <div
+                                    onClick={() => {
+                                      this.goToNewAddress(
+                                        curTradeData.copyAddress
+                                      );
+                                    }}
+                                    className="inter-display-medium f-s-16 available-copy-trades-address"
+                                  >
+                                    {TruncateText(curTradeData.copyAddress)}
+                                  </div>
+                                </div>
+                                <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container">
+                                  Swap {numToCurrency(curTradeData.valueFrom)}{" "}
+                                  {curTradeData.assetFrom} for{" "}
+                                  {numToCurrency(curTradeData.valueTo)}{" "}
+                                  {curTradeData.assetTo}
+                                  ? 
+                                </div>
+                                <div className="available-copy-trades-button-container">
+                                  <div
+                                    className={`topbar-btn`}
+                                    id="address-button-two"
+                                    onClick={() => {
+                                      this.openRejectModal(curTradeData.id);
+                                    }}
+                                  >
+                                    <span className="dotDotText">Reject</span>
+                                  </div>
+                                  <div
+                                    className={`topbar-btn ml-2 topbar-btn-dark`}
+                                    onClick={() => {
+                                      this.showExecuteCopyTrade(
+                                        curTradeData.id
+                                      );
+                                    }}
+                                    id="address-button-two"
+                                  >
+                                    <span className="dotDotText">Confirm</span>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          }
+                        )
+                      ) : (
+                        <div className="actpacc-scroll-body-no-data inter-display-medium f-s-14 lh-19 ">
+                          Select a wallet above to copy trade to get started
+                        </div>
+                      )}
+                    </div>
+                    {this.state.copyTradesAvailableLocal.length > 1 ? (
+                      <div className="available-copy-trades-navigator">
+                        <div className="available-copy-trades-navigator-circles-container">
+                          {this.state.copyTradesAvailableLocal.map(
+                            (resCircle, resCircleIndex) => {
+                              return (
+                                <div
+                                  style={{
+                                    opacity:
+                                      resCircleIndex ===
+                                      this.state.currentCirclePosition
+                                        ? 1
+                                        : 0.2,
+                                    marginLeft:
+                                      resCircleIndex === 0 ? 0 : "0.5rem",
+                                  }}
+                                  onClick={() => {
+                                    goToScrollPosition(resCircleIndex);
+                                  }}
+                                  className="available-copy-trades-navigator-circle"
+                                />
+                              );
+                            }
+                          )}
+                        </div>
+                        <div className="available-copy-trades-navigator-arrows">
+                          <Image
+                            style={{
+                              marginRight: "1rem",
+                              opacity: this.state.isLeftArrowDisabled ? 0.5 : 1,
+                            }}
+                            onClick={scrollLeft}
+                            className="availableCopyTradesArrowIcon"
+                            src={UserCreditScrollLeftArrowIcon}
+                          />
+                          <Image
+                            style={{
+                              opacity: this.state.isRightArrowDisabled
+                                ? 0.5
+                                : 1,
+                            }}
+                            onClick={scrollRight}
+                            className="availableCopyTradesArrowIcon"
+                            src={UserCreditScrollRightArrowIcon}
+                          />
+                        </div>
+                      </div>
+                    ) : null}
+                  </>
                 ) : null}
               </div>
             ) : null}
@@ -916,7 +934,9 @@ class Emulations extends Component {
             >
               <div style={{ position: "relative" }}>
                 <TransactionTable
-                  message="No copy trades found"
+                  showHeaderOnEmpty
+                  message="Select a wallet above to copy trade to get started."
+                  noDataImage={NoCopyTradeTableIcon}
                   noSubtitleBottomPadding
                   tableData={this.state.copyTradesLocal}
                   columnList={columnData}
