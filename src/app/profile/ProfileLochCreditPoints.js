@@ -26,6 +26,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      greenLinePercentage: 0,
       loading: false,
       lochScore: "",
       topPercentage: "",
@@ -33,14 +34,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       tasksDone: [],
       tasksList: [
         "email_added",
-        "address_added",
-        "ens_added",
         "wallet_connected",
         "exchange_connected",
+        "ens_added",
         "following",
         "x_follower",
         "joined_telegram",
         "feedbacks_added",
+        "address_added",
         // "twitter_spaces",
         // "provide_feedback",
         // "use_referral_code",
@@ -61,7 +62,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     // if (this.props.isUpdate !== prevProps.isUpdate) {
     //   this.callApi();
     //   this.setState({
@@ -69,6 +70,38 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     //     isRightArrowDisabled: false,
     //   });
     // }
+    if (prevState.tasksDone !== this.state.tasksDone) {
+      if (this.state.tasksDone.length >= this.state.tasksList.length) {
+        this.setState({
+          greenLinePercentage: 100,
+        });
+      } else {
+        let doneTask = 0;
+        let totalTask = 0;
+        if (this.state.tasksDone) {
+          doneTask = this.state.tasksDone.length;
+        }
+        if (this.state.tasksList) {
+          totalTask = this.state.tasksList.length;
+        }
+        let tempGreenLineHolder = (doneTask / totalTask) * 100;
+        if (this.state.isLoggedIn) {
+          this.setState({
+            greenLinePercentage: tempGreenLineHolder,
+          });
+        } else {
+          if (tempGreenLineHolder >= 20) {
+            this.setState({
+              greenLinePercentage: 20,
+            });
+          } else {
+            this.setState({
+              greenLinePercentage: tempGreenLineHolder,
+            });
+          }
+        }
+      }
+    }
     if (!this.props.commonState.creditPointsBlock) {
       this.props.updateWalletListFlag("creditPointsBlock", true);
       this.callApi();
@@ -284,8 +317,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         this.openLoginBlock();
       }
     };
-    const isTheTaskDone = () => {
-      if (!this.state.isLoggedIn) {
+    const isTheTaskDone = (skipLogin = false) => {
+      if (!this.state.isLoggedIn && !skipLogin) {
         return false;
       }
       if (this.state.tasksDone.includes(whichBlock)) {
@@ -296,10 +329,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     if (whichBlock === "address_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title={isTheTaskDone() ? "Added one address" : "Add one address"}
+          title={isTheTaskDone(true) ? "Added one address" : "Add one address"}
           earnPoints={1}
           imageIcon={UserCreditWalletIcon}
-          isDone={isTheTaskDone()}
+          isDone={isTheTaskDone(true)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickAddAddress}
         />
@@ -307,10 +340,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else if (whichBlock === "ens_added") {
       return (
         <ProfileLochCreditPointsBlock
-          title={isTheTaskDone() ? "Added one ENS" : "Add one ENS"}
+          title={isTheTaskDone(true) ? "Added one ENS" : "Add one ENS"}
           earnPoints={2}
           imageIcon={UserCreditDiamondIcon}
-          isDone={isTheTaskDone()}
+          isDone={isTheTaskDone(true)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickAddEns}
         />
@@ -463,15 +496,26 @@ class ProfileLochCreditPoints extends BaseReactComponent {
             </div>
           </div>
           <div className="profileCreditPointsHeaderRight">
-            {this.state.lochScore && this.state.isLoggedIn ? (
+            {this.state.lochScore ? (
               <div className="inter-display-medium f-s-13">
                 <span className="profileCreditPointsHeaderRightGreyText">
                   <span className="profileCreditPointsHeaderRightYellowText">
-                    Your Loch score is {this.state.lochScore}
+                    Your Loch score is{" "}
+                    {this.state.isLoggedIn
+                      ? this.state.lochScore
+                      : this.state.lochScore > 3
+                      ? 3
+                      : this.state.lochScore}
                   </span>
                   {this.state.topPercentage
                     ? `, which puts you in
-                  the top ${this.state.topPercentage}% of users`
+                  the top ${
+                    this.state.isLoggedIn
+                      ? this.state.topPercentage
+                      : this.state.topPercentage < 71
+                      ? 71
+                      : this.state.topPercentage
+                  }% of users`
                     : ""}
                 </span>
                 {/* {" "}
@@ -485,14 +529,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         <div className="profileCreditPointsDividerContainer">
           <div
             style={{
-              width: `${
-                this.state.isLoggedIn
-                  ? (this.state.tasksDone.length > this.state.tasksList.length
-                      ? this.state.tasksList.length
-                      : this.state.tasksDone.length /
-                        this.state.tasksList.length) * 100
-                  : 0
-              }%`,
+              width: `${this.state.greenLinePercentage}%`,
             }}
             className="profileCreditPointsDivider"
           ></div>
