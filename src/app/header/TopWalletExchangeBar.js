@@ -1714,6 +1714,7 @@ class TopWalletExchangeBar extends Component {
                       cursor: "pointer",
                     }}
                     onClick={this.dissconnectFromMetaMask}
+                    className="topBarXCircleIcon"
                   >
                     <Image
                       className="topBarWalletAdd"

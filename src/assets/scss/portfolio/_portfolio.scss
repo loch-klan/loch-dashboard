@@ -370,6 +370,9 @@
             // transition-duration: 300ms;
             filter: var(--invertColor);
           }
+          .topBarExchangeIcons {
+            filter: none;
+          }
           &:hover {
             background-color: $black-191;
             background-color: var(--backColor);
@@ -423,6 +426,7 @@
           border: none;
           // padding-left: 0rem;
           cursor: default;
+
           .topBarWalletArrowContainer {
             transition-duration: 300ms;
             cursor: pointer;
@@ -433,9 +437,16 @@
           &:hover {
             border-color: transparent;
             background-color: transparent;
-            color: $black-191;
+            color: var(--black191);
             img {
-              filter: invert(0);
+              filter: var(--invertColor);
+            }
+          }
+          .topBarXCircleIcon {
+            &:hover {
+              img {
+                filter: none;
+              }
             }
           }
         }
