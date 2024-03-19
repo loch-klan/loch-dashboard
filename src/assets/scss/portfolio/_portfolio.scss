@@ -1296,6 +1296,12 @@
           .section-table-toggle-element-selected {
             background-color: var(--cardBackgroud);
             color: var(--black191);
+            cursor: pointer;
+            &:hover {
+              background-color: var(--activeToggleBg);
+            }
+          }
+          .section-table-toggle-element-selected-no-hover {
             cursor: default;
             &:hover {
               background-color: var(--cardBackgroud);

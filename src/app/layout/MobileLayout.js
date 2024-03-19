@@ -85,12 +85,6 @@ class MobileLayout extends BaseReactComponent {
           path: "/home-leaderboard",
         },
         {
-          activeIcon: NFTIcon,
-          inactiveIcon: MobileNavNFT,
-          text: "NFT",
-          path: "/nft",
-        },
-        {
           activeIcon: MobileNavProfile,
           inactiveIcon: MobileNavProfile,
           text: "Sign Out",
@@ -339,7 +333,6 @@ class MobileLayout extends BaseReactComponent {
     } else {
       this.props.setPageFlagDefault();
     }
-    console.log("hola");
   };
 
   hideTheTopBarHistoryItems = () => {
