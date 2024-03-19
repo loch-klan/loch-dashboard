@@ -156,3 +156,19 @@ export const updaetAvailableCopyTraes = (data, recallCopyTrader, isConfirm) => {
       .catch((err) => {});
   };
 };
+export const copyTradePaid = (data, goToUrl) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/copy-trade-paid", data)
+      .then((res) => {
+        if (!res.data.error && goToUrl) {
+          window.location.replace(goToUrl);
+        } else {
+          toast.error(res.data.message || "Something went wrong");
+        }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong");
+      });
+  };
+};

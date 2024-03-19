@@ -56,11 +56,16 @@ import {
 import ExitOverlay from "../common/ExitOverlay.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal.js";
-import { getCopyTrade, updaetAvailableCopyTraes } from "./EmulationsApi.js";
+import {
+  copyTradePaid,
+  getCopyTrade,
+  updaetAvailableCopyTraes,
+} from "./EmulationsApi.js";
 import EmulationsMobile from "./EmulationsMobile.js";
 import EmulationsTradeModal from "./EmulationsTradeModal.js";
 import "./_emulations.scss";
 import BasicConfirmModal from "../common/BasicConfirmModal.js";
+import { toast } from "react-toastify";
 
 class Emulations extends Component {
   constructor(props) {
@@ -428,16 +433,25 @@ class Emulations extends Component {
     });
     this.fetchChargeData()
       .then((res) => {
-        // this.setState({
-        //   isGetEmailNotificationLoading: false,
-        // });
-        window.location.replace(res);
-        // console.log("res is ", res);
+        if (res) {
+          let tempIdHolderArr = res.split("/");
+          if (tempIdHolderArr && tempIdHolderArr.length > 0) {
+            const tempIdHolder = tempIdHolderArr[tempIdHolderArr.length - 1];
+            console.log("tempIdHolder ", tempIdHolder);
+
+            let passData = new URLSearchParams();
+            passData.append("charge_id", tempIdHolder);
+            this.props.copyTradePaid(passData, res);
+          } else {
+            toast.error("Something went wrong");
+          }
+        }
       })
       .catch((err) => {
         this.setState({
           isGetEmailNotificationLoading: false,
         });
+        toast.error("Something went wrong");
       });
   };
 
@@ -1093,6 +1107,7 @@ const mapDispatchToProps = {
   GetAllPlan,
   getCopyTrade,
   updaetAvailableCopyTraes,
+  copyTradePaid,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Emulations);
