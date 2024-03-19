@@ -1331,13 +1331,14 @@
           position: relative;
           display: flex;
           flex-direction: column;
+          min-height: 30rem;
           &::-webkit-scrollbar {
             background-color: transparent;
             height: 0rem;
             width: 0rem;
           }
           &::-webkit-scrollbar-track {
-            margin-left: 120px;
+            margin-left: 12rem;
             border-radius: 1.2rem;
             background-color: #e5e5e680;
             box-shadow: 0, 0, 0, 10, #000;

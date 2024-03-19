@@ -170,7 +170,9 @@ class CustomTable extends BaseReactComponent {
                       gridClassName={`${
                         this.props.addWatermark
                           ? "tableWatermark"
-                          : this.props.fakeWatermark
+                          : this.props.fakeWatermark &&
+                            tableData &&
+                            tableData.length > 1
                           ? "tableWatermarkFake"
                           : ""
                       } ${
