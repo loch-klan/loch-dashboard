@@ -118,3 +118,5 @@ export { default as ParaswapLogoIcon } from "./paraswapLogo.svg";
 export { default as CurveLogoIcon } from "./curveLogo.svg";
 export { default as NoCopyTradeTableIcon } from "./noCopyTradeTable.svg";
 export { default as UserCreditScrollTopArrowIcon } from "./userCreditScrollTopArrow.svg";
+export { default as AvailableCopyTradeCheckIcon } from "./availableCopyTradeCheck.svg";
+export { default as AvailableCopyTradeCrossIcon } from "./availableCopyTradeCross.svg";

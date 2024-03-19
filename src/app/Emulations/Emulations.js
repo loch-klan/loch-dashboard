@@ -26,6 +26,8 @@ import { Image } from "react-bootstrap";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
+  AvailableCopyTradeCheckIcon,
+  AvailableCopyTradeCrossIcon,
   EmultionSidebarIcon,
   ExportIconWhite,
   NoCopyTradeTableIcon,
@@ -74,20 +76,20 @@ class Emulations extends Component {
       currentCirclePosition: 0,
       userDetailsState: undefined,
       copyTradesAvailableLocal: [
-        // {
-        //   copyAddress: "0x1234567890",
-        //   valueFrom: 100,
-        //   assetFrom: "ETH",
-        //   valueTo: 100,
-        //   assetTo: "USDT",
-        // },
-        // {
-        //   copyAddress: "0x123456789",
-        //   valueFrom: 101230,
-        //   assetFrom: "BTC",
-        //   valueTo: 10123120,
-        //   assetTo: "POL",
-        // },
+        {
+          copyAddress: "0x1234567890",
+          valueFrom: 100,
+          assetFrom: "ETH",
+          valueTo: 100,
+          assetTo: "USDT",
+        },
+        {
+          copyAddress: "0x123456789",
+          valueFrom: 101230,
+          assetFrom: "BTC",
+          valueTo: 10123120,
+          assetTo: "POL",
+        },
       ],
       emulationsUpdated: false,
       isAddCopyTradeAddress: false,
@@ -875,24 +877,31 @@ class Emulations extends Component {
                                 </div>
                                 <div className="available-copy-trades-button-container">
                                   <div
-                                    className={`topbar-btn`}
-                                    id="address-button-two"
-                                    onClick={() => {
-                                      this.openRejectModal(curTradeData.id);
-                                    }}
-                                  >
-                                    <span className="dotDotText">Reject</span>
-                                  </div>
-                                  <div
-                                    className={`topbar-btn ml-2 topbar-btn-dark`}
+                                    className="available-copy-trades-button"
                                     onClick={() => {
                                       this.showExecuteCopyTrade(
                                         curTradeData.id
                                       );
                                     }}
-                                    id="address-button-two"
                                   >
-                                    <span className="dotDotText">Confirm</span>
+                                    <Image
+                                      className="available-copy-trades-button-icons"
+                                      src={AvailableCopyTradeCheckIcon}
+                                    />
+                                  </div>
+                                  <div
+                                    className="available-copy-trades-button"
+                                    onClick={() => {
+                                      this.openRejectModal(curTradeData.id);
+                                    }}
+                                    style={{
+                                      marginLeft: "1rem",
+                                    }}
+                                  >
+                                    <Image
+                                      className="available-copy-trades-button-icons"
+                                      src={AvailableCopyTradeCrossIcon}
+                                    />
                                   </div>
                                 </div>
                               </div>
