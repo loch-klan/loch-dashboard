@@ -4658,7 +4658,10 @@ class Portfolio extends BaseReactComponent {
                               message="No assets found"
                               disableOnLoading
                               isMiniversion
-                              xAxisScrollable={!this.state.AvgCostLoading}
+                              xAxisScrollable={
+                                !this.state.AvgCostLoading &&
+                                tableDataCostBasis?.length > 0
+                              }
                               xAxisScrollableColumnWidth={4.4}
                               tableData={
                                 tableDataCostBasis
@@ -5190,7 +5193,8 @@ class Portfolio extends BaseReactComponent {
                             <TransactionTable
                               message={"No yield opportunities found"}
                               xAxisScrollable={
-                                !this.state.yieldOpportunitiesTableLoading
+                                !this.state.yieldOpportunitiesTableLoading &&
+                                yieldOpportunitiesListTemp?.length > 0
                               }
                               xAxisScrollableColumnWidth={4.3}
                               noSubtitleBottomPadding
@@ -5404,7 +5408,10 @@ class Portfolio extends BaseReactComponent {
                             }`}
                           >
                             <TransactionTable
-                              xAxisScrollable={!this.state.tableLoading}
+                              xAxisScrollable={
+                                !this.state.tableLoading &&
+                                tableData?.length > 0
+                              }
                               xAxisScrollableColumnWidth={5.1}
                               noSubtitleBottomPadding
                               disableOnLoading
