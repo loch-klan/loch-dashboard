@@ -15,7 +15,7 @@ import {
   CopyTradePageView,
   CopyTradeTimeSpent,
 } from "../../utils/AnalyticsFunctions.js";
-import { getCurrentUser } from "../../utils/ManageToken.js";
+import { getCurrentUser, getToken } from "../../utils/ManageToken.js";
 
 import LinkIcon from "../../assets/images/icons/link.svg";
 import ConnectModal from "../common/ConnectModal.js";
@@ -40,6 +40,7 @@ import {
   TruncateText,
   amountFormat,
   convertNtoNumber,
+  loadingAnimation,
   mobileCheck,
   numToCurrency,
   scrollToTop,
@@ -87,6 +88,7 @@ class Emulations extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
+      isGetEmailNotificationLoading: false,
     };
   }
   history = this.props;
@@ -368,6 +370,77 @@ class Emulations extends Component {
 
     window.open(shareLink, "_blank", "noreferrer");
   };
+  async createCharge() {
+    const url = "https://api.commerce.coinbase.com/charges";
+    let tempToken = getToken();
+    let redirectLink =
+      BASE_URL_S3 + "auto-login?token=" + tempToken + "&redirect=copy-trade";
+    console.log("redirectLink is ", redirectLink);
+    const requestBody = {
+      local_price: {
+        amount: "0.50", //price of charge
+        currency: "USD", //currency
+      },
+      pricing_type: "fixed_price",
+
+      name: "Email notifications",
+      description: "Get notified when a trade is ready to be executed",
+      redirect_url: redirectLink, //optional redirect URL
+
+      metadata: {
+        email:
+          this.state.userDetailsState && this.state.userDetailsState.email
+            ? this.state.userDetailsState.email
+            : "",
+      },
+    };
+
+    const payload = {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "X-CC-Api-Key": "03c1c210-ace2-4b5e-bc66-de26a70b283e",
+      },
+      body: JSON.stringify(requestBody),
+    };
+    try {
+      const response = await fetch(url, payload);
+      if (!response.ok) {
+        throw new Error(`HTTP error Status: ${response.status}`);
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error creating charge:", error);
+    }
+  }
+  fetchChargeData = async () => {
+    const chargeData = await this.createCharge();
+    if (chargeData && chargeData.data && chargeData.data.hosted_url) {
+      // setHostedUrl(chargeData.data.hosted_url);
+      return chargeData.data.hosted_url;
+    }
+  };
+  goCopyTrade = () => {
+    this.setState({
+      isGetEmailNotificationLoading: true,
+    });
+    this.fetchChargeData()
+      .then((res) => {
+        // this.setState({
+        //   isGetEmailNotificationLoading: false,
+        // });
+        window.location.replace(res);
+        // console.log("res is ", res);
+      })
+      .catch((err) => {
+        this.setState({
+          isGetEmailNotificationLoading: false,
+        });
+      });
+  };
+
   render() {
     const columnData = [
       {
@@ -950,6 +1023,45 @@ class Emulations extends Component {
                 />
               </div>
             </div>
+            {this.state.userDetailsState &&
+            this.state.userDetailsState.email ? (
+              <div
+                className="available-copy-trades-popular-accounts-container"
+                style={{
+                  cursor: "pointer",
+                  width: "50%",
+                }}
+                onClick={this.goCopyTrade}
+              >
+                <div className="actpacc-header">
+                  <div className="actpacc-header-title">
+                    <Image
+                      src={EmultionSidebarIcon}
+                      className="actpacc-header-icon"
+                    />
+                    <div className="inter-display-medium f-s-16">
+                      Get email notifications
+                    </div>
+                  </div>
+                  {this.state.isGetEmailNotificationLoading ? (
+                    loadingAnimation()
+                  ) : (
+                    <Image
+                      onClick={this.toggleAvailableCopyTradeBlockOpen}
+                      src={UserCreditScrollTopArrowIcon}
+                      style={{
+                        transform: "rotate(90deg)",
+                      }}
+                      className={`actpacc-arrow-icon ${
+                        this.state.isAvailableCopyTradeBlockOpen
+                          ? ""
+                          : "actpacc-arrow-icon-reversed"
+                      }`}
+                    />
+                  )}
+                </div>
+              </div>
+            ) : null}
           </div>
         </div>
       </>
