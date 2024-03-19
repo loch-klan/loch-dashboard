@@ -1346,6 +1346,9 @@
           &::-webkit-scrollbar-thumb {
             border-radius: 1.2rem;
           }
+          &::-webkit-scrollbar-corner {
+            background: transparent;
+          }
           &:hover {
             &::-webkit-scrollbar {
               height: 0.5rem;
@@ -1371,6 +1374,9 @@
           }
           &::-webkit-scrollbar-thumb {
             border-radius: 1.2rem;
+          }
+          &::-webkit-scrollbar-corner {
+            background: transparent;
           }
           &:hover {
             &::-webkit-scrollbar {
