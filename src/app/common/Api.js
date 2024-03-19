@@ -7,6 +7,7 @@ import {
   GeneralPopupEmailVerified,
   Home_CE_OAuthCompleted,
   LP_CE_OAuthCompleted,
+  LochPointsSignInPopupEmailVerified,
   SigninMenuEmailVerified,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
@@ -999,6 +1000,12 @@ export const VerifyEmail = (data, ctx) => {
           });
         } else if (ctx.props.tracking === "Upgrade sign in popup") {
           UpgradeSignInPopupEmailAdded({
+            session_id: getCurrentUser().id,
+            email_address: res.data.data.user?.email,
+            from: ctx.props.tracking,
+          });
+        } else if (ctx.props.tracking === "Loch points profile") {
+          LochPointsSignInPopupEmailVerified({
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
             from: ctx.props.tracking,

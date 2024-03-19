@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   nftPage: false,
   mobileLayout: false,
   profilePage: false,
+  profilePageWalletModal: false,
   creditPointsBlock: false,
   isSidebarOpen: false,
   isPopup: true,
@@ -56,6 +57,7 @@ export const CommonReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         profilePage: false,
+        profilePageWalletModal: false,
         creditPointsBlock: false,
         home: false,
         intelligence: false,
