@@ -70,10 +70,25 @@ class Emulations extends Component {
       executeCopyTradeId: undefined,
       isExecuteCopyTrade: false,
       isLeftArrowDisabled: true,
-      isRightArrowDisabled: false,
+      isRightArrowDisabled: true,
       currentCirclePosition: 0,
       userDetailsState: undefined,
-      copyTradesAvailableLocal: [],
+      copyTradesAvailableLocal: [
+        // {
+        //   copyAddress: "0x1234567890",
+        //   valueFrom: 100,
+        //   assetFrom: "ETH",
+        //   valueTo: 100,
+        //   assetTo: "USDT",
+        // },
+        // {
+        //   copyAddress: "0x123456789",
+        //   valueFrom: 101230,
+        //   assetFrom: "BTC",
+        //   valueTo: 10123120,
+        //   assetTo: "POL",
+        // },
+      ],
       emulationsUpdated: false,
       isAddCopyTradeAddress: false,
       copyTradesLocal: [],
@@ -219,6 +234,14 @@ class Emulations extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.copyTradesAvailableLocal !== this.state.copyTradesAvailableLocal
+    ) {
+      this.setState({
+        isLeftArrowDisabled: true,
+        isRightArrowDisabled: false,
+      });
+    }
     if (prevState.isAddCopyTradeAddress !== this.state.isAddCopyTradeAddress) {
       if (this.state.isAddCopyTradeAddress) {
         window.sessionStorage.setItem("copyTradeModalOpen", true);
@@ -792,14 +815,20 @@ class Emulations extends Component {
             />
             {!this.state.emulationsLoading ? (
               <div className="available-copy-trades-popular-accounts-container">
-                <div className="actpacc-header">
+                <div
+                  className={`actpacc-header ${
+                    this.state.isAvailableCopyTradeBlockOpen
+                      ? "actpacc-header-open"
+                      : ""
+                  }`}
+                >
                   <div className="actpacc-header-title">
                     <Image
                       src={EmultionSidebarIcon}
                       className="actpacc-header-icon"
                     />
                     <div className="inter-display-medium f-s-16">
-                      Available Copy Trade
+                      Available Copy Trades
                     </div>
                   </div>
                   <Image
@@ -876,54 +905,60 @@ class Emulations extends Component {
                         </div>
                       )}
                     </div>
-                    {this.state.copyTradesAvailableLocal.length > 1 ? (
-                      <div className="available-copy-trades-navigator">
-                        <div className="available-copy-trades-navigator-circles-container">
-                          {this.state.copyTradesAvailableLocal.map(
-                            (resCircle, resCircleIndex) => {
-                              return (
-                                <div
-                                  style={{
-                                    opacity:
-                                      resCircleIndex ===
-                                      this.state.currentCirclePosition
-                                        ? 1
-                                        : 0.2,
-                                    marginLeft:
-                                      resCircleIndex === 0 ? 0 : "0.5rem",
-                                  }}
-                                  onClick={() => {
-                                    goToScrollPosition(resCircleIndex);
-                                  }}
-                                  className="available-copy-trades-navigator-circle"
-                                />
-                              );
-                            }
-                          )}
-                        </div>
-                        <div className="available-copy-trades-navigator-arrows">
-                          <Image
-                            style={{
-                              marginRight: "1rem",
-                              opacity: this.state.isLeftArrowDisabled ? 0.5 : 1,
-                            }}
-                            onClick={scrollLeft}
-                            className="availableCopyTradesArrowIcon"
-                            src={UserCreditScrollLeftArrowIcon}
-                          />
-                          <Image
-                            style={{
-                              opacity: this.state.isRightArrowDisabled
-                                ? 0.5
-                                : 1,
-                            }}
-                            onClick={scrollRight}
-                            className="availableCopyTradesArrowIcon"
-                            src={UserCreditScrollRightArrowIcon}
-                          />
-                        </div>
+
+                    <div className="available-copy-trades-navigator">
+                      <div className="available-copy-trades-navigator-circles-container">
+                        {this.state.copyTradesAvailableLocal &&
+                        this.state.copyTradesAvailableLocal.length > 1
+                          ? this.state.copyTradesAvailableLocal.map(
+                              (resCircle, resCircleIndex) => {
+                                return (
+                                  <div
+                                    style={{
+                                      opacity:
+                                        resCircleIndex ===
+                                        this.state.currentCirclePosition
+                                          ? 1
+                                          : 0.2,
+                                      marginLeft:
+                                        resCircleIndex === 0 ? 0 : "0.5rem",
+                                    }}
+                                    onClick={() => {
+                                      goToScrollPosition(resCircleIndex);
+                                    }}
+                                    className="available-copy-trades-navigator-circle"
+                                  />
+                                );
+                              }
+                            )
+                          : null}
                       </div>
-                    ) : null}
+                      <div className="available-copy-trades-navigator-arrows">
+                        <Image
+                          style={{
+                            marginRight: "1rem",
+                            opacity: this.state.isLeftArrowDisabled ? 0.5 : 1,
+                            cursor: this.state.isLeftArrowDisabled
+                              ? "default"
+                              : "pointer",
+                          }}
+                          onClick={scrollLeft}
+                          className="availableCopyTradesArrowIcon"
+                          src={UserCreditScrollLeftArrowIcon}
+                        />
+                        <Image
+                          style={{
+                            opacity: this.state.isRightArrowDisabled ? 0.5 : 1,
+                            cursor: this.state.isRightArrowDisabled
+                              ? "default"
+                              : "pointer",
+                          }}
+                          onClick={scrollRight}
+                          className="availableCopyTradesArrowIcon"
+                          src={UserCreditScrollRightArrowIcon}
+                        />
+                      </div>
+                    </div>
                   </>
                 ) : null}
               </div>

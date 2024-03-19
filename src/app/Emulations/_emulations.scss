@@ -188,7 +188,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 0.1rem solid var(--sidebarSectionalBOrder);
     .actpacc-header-title {
       display: flex;
       align-items: center;
@@ -206,6 +205,9 @@
     .actpacc-arrow-icon-reversed {
       transform: rotate(180deg);
     }
+  }
+  .actpacc-header-open {
+    border-bottom: 0.1rem solid var(--sidebarSectionalBOrder);
   }
   .actpacc-scroll-body {
     display: flex;
@@ -271,7 +273,7 @@
       align-items: center;
       .availableCopyTradesArrowIcon {
         height: 12px;
-        cursor: pointer;
+
         filter: var(--invertColor);
       }
     }
