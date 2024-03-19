@@ -117,6 +117,7 @@ class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      pageName: "Landing Page",
       areNewAddresses: false,
       isPrevAddressNew: true,
       confirmLeave: false,
@@ -1024,7 +1025,14 @@ class NewWelcome extends BaseReactComponent {
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
     // data.append("link", );
-    this.props.createAnonymousUserApi(data, this, finalArr, null);
+    if (this.state.lochUser && this.state.lochUser.email) {
+      const yieldData = new URLSearchParams();
+      yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+      this.props.updateUserWalletApi(data, this, yieldData, false);
+    } else {
+      this.props.createAnonymousUserApi(data, this, finalArr, null);
+    }
   };
   addAdressesGo = () => {
     if (this.state.areNewAddresses) {
@@ -1112,7 +1120,14 @@ class NewWelcome extends BaseReactComponent {
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
     // data.append("link", );
-    this.props.createAnonymousUserApi(data, this, finalArr, null);
+    if (this.state.lochUser && this.state.lochUser.email) {
+      const yieldData = new URLSearchParams();
+      yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+      this.props.updateUserWalletApi(data, this, yieldData, false);
+    } else {
+      this.props.createAnonymousUserApi(data, this, finalArr, null);
+    }
 
     const address = finalArr?.map((e) => e.address);
 
@@ -1893,8 +1908,14 @@ class NewWelcome extends BaseReactComponent {
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    if (this.state.lochUser && this.state.lochUser.email) {
+      const yieldData = new URLSearchParams();
+      yieldData.append("wallet_addresses", JSON.stringify(addressList));
 
-    this.props.createAnonymousUserApi(data, this, addWallet, null);
+      this.props.updateUserWalletApi(data, this, yieldData, false);
+    } else {
+      this.props.createAnonymousUserApi(data, this, addWallet, null);
+    }
     // this.props.updateUserWalletApi(data, this, yieldData);
   };
   onboardingShowConnectModal = (
