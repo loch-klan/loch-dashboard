@@ -180,13 +180,16 @@
   justify-content: center;
   column-gap: 2rem;
   min-width: 85rem;
+
   .available-copy-trades-popular-accounts {
     background-color: var(--cardBackgroud);
-    flex: 1;
+    width: 50%;
     margin-bottom: 2rem;
     border-radius: 1.2rem;
     box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem rgba(24, 39, 75, 0.12),
       0rem 0.63099rem 0.63099rem -0.31549rem rgba(24, 39, 75, 0.08);
+    display: flex;
+    flex-direction: column;
     .actpacc-header {
       padding: 1.5rem;
       width: 100%;
@@ -221,7 +224,7 @@
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
       min-height: 6rem;
-
+      flex: 1;
       .actpacc-scroll-body-no-data {
         height: 100%;
         width: 100%;
@@ -315,6 +318,9 @@
     }
   }
 }
+.available-copy-trades-popular-accounts-container-both-open {
+  align-items: stretch;
+}
 
 .availableCopyTradeScrollBodyClass {
   display: flex;
@@ -328,6 +334,7 @@
   }
   .available-copy-trades {
     min-width: 100%;
+    max-width: 100%;
     justify-content: space-around;
     scroll-snap-align: start;
   }

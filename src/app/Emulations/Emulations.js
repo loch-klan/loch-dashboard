@@ -69,12 +69,42 @@ class Emulations extends Component {
     super(props);
     this.state = {
       isPopularAccountsBlockOpen: true,
+      popularAccountsList: [
+        {
+          address: "0x1234567890",
+          nameTag: "",
+          netWorth: 200,
+        },
+        {
+          address: "0x1234567890",
+          nameTag: "",
+          netWorth: 200,
+        },
+        {
+          address: "0x1234567890",
+          nameTag: "",
+          netWorth: 200,
+        },
+        {
+          address: "0x1234567890",
+          nameTag: "",
+          netWorth: 200,
+        },
+        {
+          address: "0x1234567890",
+          nameTag: "",
+          netWorth: 200,
+        },
+      ],
       isAvailableCopyTradeBlockOpen: true,
       isRejectModal: false,
       executeCopyTradeId: undefined,
       isExecuteCopyTrade: false,
+      isPopularLeftArrowDisabled: true,
+      isPopularRightArrowDisabled: false,
       isLeftArrowDisabled: true,
       isRightArrowDisabled: true,
+      currentPopularCirclePosition: 0,
       currentCirclePosition: 0,
       userDetailsState: undefined,
       copyTradesAvailableLocal: [
@@ -244,7 +274,9 @@ class Emulations extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevState.copyTradesAvailableLocal !== this.state.copyTradesAvailableLocal
+      prevState.copyTradesAvailableLocal !==
+        this.state.copyTradesAvailableLocal &&
+      this.state.copyTradesAvailableLocal.length > 1
     ) {
       this.setState({
         isLeftArrowDisabled: true,
@@ -400,6 +432,258 @@ class Emulations extends Component {
 
     window.open(shareLink, "_blank", "noreferrer");
   };
+  newPosBase = () => {
+    if (this.state.copyTradesAvailableLocal) {
+      return this.state.copyTradesAvailableLocal.length;
+    }
+    return 1;
+    // return this.state.tasksList.length;
+  };
+
+  scrollRight = () => {
+    if (this.state.isRightArrowDisabled) {
+      return;
+    }
+    // UserCreditRightScrollClickedMP({
+    //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
+    //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    // });
+    var myElement = document.getElementById("availableCopyTradeScrollBody");
+    var myElementWidth = document.getElementById(
+      "availableCopyTradeScrollBody"
+    )?.clientWidth;
+    var myElementCurrentScrollPos = document.getElementById(
+      "availableCopyTradeScrollBody"
+    ).scrollLeft;
+
+    const newPos = myElementCurrentScrollPos + myElementWidth;
+    myElement.scroll({
+      left: newPos,
+      behavior: "smooth",
+    });
+    let currentCirPos = newPos / myElementWidth;
+    this.setState({
+      currentCirclePosition: currentCirPos,
+    });
+    if (newPos === (this.newPosBase() - 1) * myElementWidth) {
+      this.setState({
+        isRightArrowDisabled: true,
+        isLeftArrowDisabled: false,
+      });
+    } else {
+      this.setState({
+        isRightArrowDisabled: false,
+        isLeftArrowDisabled: false,
+      });
+    }
+  };
+  scrollLeft = () => {
+    if (this.state.isLeftArrowDisabled) {
+      return;
+    }
+    // UserCreditLeftScrollClickedMP({
+    //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
+    //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    // });
+    var myElement = document.getElementById("availableCopyTradeScrollBody");
+    var myElementWidth = document.getElementById(
+      "availableCopyTradeScrollBody"
+    )?.clientWidth;
+    var myElementCurrentScrollPos = document.getElementById(
+      "availableCopyTradeScrollBody"
+    ).scrollLeft;
+    const newPos = myElementCurrentScrollPos - myElementWidth;
+
+    myElement.scroll({
+      left: newPos,
+      behavior: "smooth",
+    });
+    let currentCirPos = newPos / myElementWidth;
+    this.setState({
+      currentCirclePosition: currentCirPos,
+    });
+    if (newPos <= 0) {
+      this.setState({
+        isLeftArrowDisabled: true,
+        isRightArrowDisabled: false,
+      });
+    } else {
+      this.setState({
+        isLeftArrowDisabled: false,
+        isRightArrowDisabled: false,
+      });
+    }
+  };
+  goToScrollPosition = (blockPos) => {
+    var myElement = document.getElementById("availableCopyTradeScrollBody");
+    var myElementWidth = document.getElementById(
+      "availableCopyTradeScrollBody"
+    )?.clientWidth;
+    myElement.scroll({
+      left: myElementWidth * blockPos,
+      behavior: "smooth",
+    });
+  };
+  handleAvailableTradeScroll = () => {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      var myElementWidth = document.getElementById(
+        "availableCopyTradeScrollBody"
+      )?.clientWidth;
+      var newPos = document.getElementById(
+        "availableCopyTradeScrollBody"
+      ).scrollLeft;
+      let currentCirPos = newPos / myElementWidth;
+      this.setState({
+        currentCirclePosition: currentCirPos,
+      });
+      if (newPos === 0) {
+        this.setState({
+          isLeftArrowDisabled: true,
+          isRightArrowDisabled: false,
+        });
+      } else if (newPos === (this.newPosBase() - 1) * myElementWidth) {
+        this.setState({
+          isLeftArrowDisabled: false,
+          isRightArrowDisabled: true,
+        });
+      } else {
+        this.setState({
+          isLeftArrowDisabled: false,
+          isRightArrowDisabled: false,
+        });
+      }
+    }, 150);
+  };
+
+  // Popular accounts to copy
+  newPosBasePopular = () => {
+    if (this.state.popularAccountsList) {
+      return this.state.popularAccountsList.length;
+    }
+    return 1;
+  };
+
+  scrollRightPopular = () => {
+    if (this.state.isPopularRightArrowDisabled) {
+      return;
+    }
+    // UserCreditRightScrollClickedMP({
+    //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
+    //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    // });
+    var myElement = document.getElementById("popularCopyTradeScrollBody");
+    var myElementWidth = document.getElementById(
+      "popularCopyTradeScrollBody"
+    )?.clientWidth;
+    var myElementCurrentScrollPos = document.getElementById(
+      "popularCopyTradeScrollBody"
+    ).scrollLeft;
+
+    const newPos = myElementCurrentScrollPos + myElementWidth;
+    myElement.scroll({
+      left: newPos,
+      behavior: "smooth",
+    });
+    let currentCirPos = newPos / myElementWidth;
+    this.setState({
+      currentPopularCirclePosition: currentCirPos,
+    });
+    if (newPos === (this.newPosBasePopular() - 1) * myElementWidth) {
+      this.setState({
+        isPopularRightArrowDisabled: true,
+        isPopularLeftArrowDisabled: false,
+      });
+    } else {
+      this.setState({
+        isPopularRightArrowDisabled: false,
+        isPopularLeftArrowDisabled: false,
+      });
+    }
+  };
+  scrollLeftPopular = () => {
+    if (this.state.isPopularLeftArrowDisabled) {
+      return;
+    }
+    // UserCreditLeftScrollClickedMP({
+    //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
+    //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
+    // });
+    var myElement = document.getElementById("popularCopyTradeScrollBody");
+    var myElementWidth = document.getElementById(
+      "popularCopyTradeScrollBody"
+    )?.clientWidth;
+    var myElementCurrentScrollPos = document.getElementById(
+      "popularCopyTradeScrollBody"
+    ).scrollLeft;
+    const newPos = myElementCurrentScrollPos - myElementWidth;
+
+    myElement.scroll({
+      left: newPos,
+      behavior: "smooth",
+    });
+    let currentCirPos = newPos / myElementWidth;
+    this.setState({
+      currentPopularCirclePosition: currentCirPos,
+    });
+    if (newPos <= 0) {
+      this.setState({
+        isPopularLeftArrowDisabled: true,
+        isPopularRightArrowDisabled: false,
+      });
+    } else {
+      this.setState({
+        isPopularLeftArrowDisabled: false,
+        isPopularRightArrowDisabled: false,
+      });
+    }
+  };
+  goToScrollPositionPopular = (blockPos) => {
+    var myElement = document.getElementById("popularCopyTradeScrollBody");
+    var myElementWidth = document.getElementById(
+      "popularCopyTradeScrollBody"
+    )?.clientWidth;
+    myElement.scroll({
+      left: myElementWidth * blockPos,
+      behavior: "smooth",
+    });
+  };
+  handlePopularTradeScroll = () => {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      var myElementWidth = document.getElementById(
+        "popularCopyTradeScrollBody"
+      )?.clientWidth;
+      var newPos = document.getElementById(
+        "popularCopyTradeScrollBody"
+      ).scrollLeft;
+
+      let currentCirPos = newPos / myElementWidth;
+      this.setState({
+        currentPopularCirclePosition: currentCirPos,
+      });
+      if (newPos === 0) {
+        this.setState({
+          isPopularLeftArrowDisabled: true,
+          isPopularRightArrowDisabled: false,
+        });
+      } else if (newPos === (this.newPosBasePopular() - 1) * myElementWidth) {
+        this.setState({
+          isPopularLeftArrowDisabled: false,
+          isPopularRightArrowDisabled: true,
+        });
+      } else {
+        this.setState({
+          isPopularLeftArrowDisabled: false,
+          isPopularRightArrowDisabled: false,
+        });
+      }
+    }, 150);
+  };
   render() {
     const columnData = [
       {
@@ -547,132 +831,6 @@ class Emulations extends Component {
         },
       },
     ];
-    const newPosBase = () => {
-      if (this.state.copyTradesAvailableLocal) {
-        return this.state.copyTradesAvailableLocal.length;
-      }
-      return 1;
-      // return this.state.tasksList.length;
-    };
-
-    const scrollRight = () => {
-      if (this.state.isRightArrowDisabled) {
-        return;
-      }
-      // UserCreditRightScrollClickedMP({
-      //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
-      //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
-      // });
-      var myElement = document.getElementById("availableCopyTradeScrollBody");
-      var myElementWidth = document.getElementById(
-        "availableCopyTradeScrollBody"
-      ).clientWidth;
-      var myElementCurrentScrollPos = document.getElementById(
-        "availableCopyTradeScrollBody"
-      ).scrollLeft;
-
-      const newPos = myElementCurrentScrollPos + myElementWidth;
-      myElement.scroll({
-        left: newPos,
-        behavior: "smooth",
-      });
-      let currentCirPos = newPos / myElementWidth;
-      this.setState({
-        currentCirclePosition: currentCirPos,
-      });
-      if (newPos === (newPosBase() - 1) * myElementWidth) {
-        this.setState({
-          isRightArrowDisabled: true,
-          isLeftArrowDisabled: false,
-        });
-      } else {
-        this.setState({
-          isRightArrowDisabled: false,
-          isLeftArrowDisabled: false,
-        });
-      }
-    };
-    const scrollLeft = () => {
-      if (this.state.isLeftArrowDisabled) {
-        return;
-      }
-      // UserCreditLeftScrollClickedMP({
-      //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
-      //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
-      // });
-      var myElement = document.getElementById("availableCopyTradeScrollBody");
-      var myElementWidth = document.getElementById(
-        "availableCopyTradeScrollBody"
-      ).clientWidth;
-      var myElementCurrentScrollPos = document.getElementById(
-        "availableCopyTradeScrollBody"
-      ).scrollLeft;
-      const newPos = myElementCurrentScrollPos - myElementWidth;
-
-      myElement.scroll({
-        left: newPos,
-        behavior: "smooth",
-      });
-      let currentCirPos = newPos / myElementWidth;
-      this.setState({
-        currentCirclePosition: currentCirPos,
-      });
-      if (newPos <= 0) {
-        this.setState({
-          isLeftArrowDisabled: true,
-          isRightArrowDisabled: false,
-        });
-      } else {
-        this.setState({
-          isLeftArrowDisabled: false,
-          isRightArrowDisabled: false,
-        });
-      }
-    };
-    const goToScrollPosition = (blockPos) => {
-      var myElement = document.getElementById("availableCopyTradeScrollBody");
-      var myElementWidth = document.getElementById(
-        "availableCopyTradeScrollBody"
-      ).clientWidth;
-      myElement.scroll({
-        left: myElementWidth * blockPos,
-        behavior: "smooth",
-      });
-    };
-    const handleAvailableTradeScroll = () => {
-      if (this.timeout) {
-        clearTimeout(this.timeout);
-      }
-      this.timeout = setTimeout(() => {
-        var myElementWidth = document.getElementById(
-          "availableCopyTradeScrollBody"
-        ).clientWidth;
-        var newPos = document.getElementById(
-          "availableCopyTradeScrollBody"
-        ).scrollLeft;
-        let currentCirPos = newPos / myElementWidth;
-        this.setState({
-          currentCirclePosition: currentCirPos,
-        });
-        if (newPos === 0) {
-          this.setState({
-            isLeftArrowDisabled: true,
-            isRightArrowDisabled: false,
-          });
-        } else if (newPos === (newPosBase() - 1) * myElementWidth) {
-          this.setState({
-            isLeftArrowDisabled: false,
-            isRightArrowDisabled: true,
-          });
-        } else {
-          this.setState({
-            isLeftArrowDisabled: false,
-            isRightArrowDisabled: false,
-          });
-        }
-      }, 150);
-    };
-
     if (mobileCheck()) {
       return (
         <MobileLayout
@@ -693,14 +851,14 @@ class Emulations extends Component {
             isAddCopyTradeAddress={this.state.isAddCopyTradeAddress}
             hideAddCopyTradeAddress={this.hideAddCopyTradeAddress}
             showAddCopyTradeAddress={this.showAddCopyTradeAddress}
-            scrollLeft={scrollLeft}
-            scrollRight={scrollRight}
+            scrollLeft={this.scrollLeft}
+            scrollRight={this.scrollRight}
             isRightArrowDisabled={this.state.isRightArrowDisabled}
             isLeftArrowDisabled={this.state.isLeftArrowDisabled}
-            goToScrollPosition={goToScrollPosition}
+            goToScrollPosition={this.goToScrollPosition}
             currentCirclePosition={this.state.currentCirclePosition}
             availableCopyTrades={this.state.copyTradesAvailableLocal}
-            handleAvailableTradeScroll={handleAvailableTradeScroll}
+            handleAvailableTradeScroll={this.handleAvailableTradeScroll}
             history={this.props.history}
             updateTimer={this.updateTimer}
             isExecuteCopyTrade={this.state.isExecuteCopyTrade}
@@ -823,7 +981,14 @@ class Emulations extends Component {
               handleBtn={this.showAddCopyTradeAddress}
             />
             {!this.state.emulationsLoading ? (
-              <div className="available-copy-trades-popular-accounts-container">
+              <div
+                className={`available-copy-trades-popular-accounts-container ${
+                  this.state.isPopularAccountsBlockOpen &&
+                  this.state.isAvailableCopyTradeBlockOpen
+                    ? "available-copy-trades-popular-accounts-container-both-open"
+                    : ""
+                }`}
+              >
                 <div className="available-copy-trades-popular-accounts">
                   <div
                     className={`actpacc-header ${
@@ -854,33 +1019,36 @@ class Emulations extends Component {
                   {this.state.isPopularAccountsBlockOpen ? (
                     <>
                       <div
-                        id="availableCopyTradeScrollBody"
+                        id="popularCopyTradeScrollBody"
                         className="actpacc-scroll-body"
-                        onScroll={handleAvailableTradeScroll}
+                        onScroll={this.handlePopularTradeScroll}
                       >
-                        {this.state.copyTradesAvailableLocal &&
-                        this.state.copyTradesAvailableLocal.length > 0 ? (
-                          this.state.copyTradesAvailableLocal.map(
-                            (curTradeData, index) => {
+                        {this.state.popularAccountsList &&
+                        this.state.popularAccountsList.length > 0 ? (
+                          this.state.popularAccountsList.map(
+                            (curCopyTradeData, index) => {
                               return (
                                 <div className="available-copy-trades">
                                   <div className="available-copy-trades-content-container">
                                     <div
                                       onClick={() => {
                                         this.goToNewAddress(
-                                          curTradeData.copyAddress
+                                          curCopyTradeData.copyAddress
                                         );
                                       }}
                                       className="inter-display-medium f-s-16 available-copy-trades-address"
                                     >
-                                      {TruncateText(curTradeData.copyAddress)}
+                                      {TruncateText(
+                                        curCopyTradeData.copyAddress
+                                      )}
                                     </div>
                                   </div>
                                   <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container">
-                                    Swap {numToCurrency(curTradeData.valueFrom)}{" "}
-                                    {curTradeData.assetFrom} for{" "}
-                                    {numToCurrency(curTradeData.valueTo)}{" "}
-                                    {curTradeData.assetTo}
+                                    Swap{" "}
+                                    {numToCurrency(curCopyTradeData.valueFrom)}{" "}
+                                    {curCopyTradeData.assetFrom} for{" "}
+                                    {numToCurrency(curCopyTradeData.valueTo)}{" "}
+                                    {curCopyTradeData.assetTo}
                                     ? 
                                   </div>
                                   <div className="available-copy-trades-button-container">
@@ -888,7 +1056,7 @@ class Emulations extends Component {
                                       className="available-copy-trades-button"
                                       onClick={() => {
                                         this.showExecuteCopyTrade(
-                                          curTradeData.id
+                                          curCopyTradeData.id
                                         );
                                       }}
                                     >
@@ -900,7 +1068,9 @@ class Emulations extends Component {
                                     <div
                                       className="available-copy-trades-button"
                                       onClick={() => {
-                                        this.openRejectModal(curTradeData.id);
+                                        this.openRejectModal(
+                                          curCopyTradeData.id
+                                        );
                                       }}
                                       style={{
                                         marginLeft: "1rem",
@@ -925,23 +1095,26 @@ class Emulations extends Component {
 
                       <div className="available-copy-trades-navigator">
                         <div className="available-copy-trades-navigator-circles-container">
-                          {this.state.copyTradesAvailableLocal &&
-                          this.state.copyTradesAvailableLocal.length > 1
-                            ? this.state.copyTradesAvailableLocal.map(
+                          {this.state.popularAccountsList &&
+                          this.state.popularAccountsList.length > 1
+                            ? this.state.popularAccountsList.map(
                                 (resCircle, resCircleIndex) => {
                                   return (
                                     <div
                                       style={{
                                         opacity:
                                           resCircleIndex ===
-                                          this.state.currentCirclePosition
+                                          this.state
+                                            .currentPopularCirclePosition
                                             ? 1
                                             : 0.2,
                                         marginLeft:
                                           resCircleIndex === 0 ? 0 : "0.5rem",
                                       }}
                                       onClick={() => {
-                                        goToScrollPosition(resCircleIndex);
+                                        this.goToScrollPositionPopular(
+                                          resCircleIndex
+                                        );
                                       }}
                                       className="available-copy-trades-navigator-circle"
                                     />
@@ -953,25 +1126,27 @@ class Emulations extends Component {
                         <div className="available-copy-trades-navigator-arrows">
                           <Image
                             style={{
-                              opacity: this.state.isLeftArrowDisabled ? 0.5 : 1,
-                              cursor: this.state.isLeftArrowDisabled
+                              opacity: this.state.isPopularLeftArrowDisabled
+                                ? 0.5
+                                : 1,
+                              cursor: this.state.isPopularLeftArrowDisabled
                                 ? "default"
                                 : "pointer",
                             }}
-                            onClick={scrollLeft}
+                            onClick={this.scrollLeftPopular}
                             className="availableCopyTradesArrowIcon availableCopyTradesArrowIconLeft"
                             src={UserCreditScrollLeftArrowIcon}
                           />
                           <Image
                             style={{
-                              opacity: this.state.isRightArrowDisabled
+                              opacity: this.state.isPopularRightArrowDisabled
                                 ? 0.5
                                 : 1,
-                              cursor: this.state.isRightArrowDisabled
+                              cursor: this.state.isPopularRightArrowDisabled
                                 ? "default"
                                 : "pointer",
                             }}
-                            onClick={scrollRight}
+                            onClick={this.scrollRightPopular}
                             className="availableCopyTradesArrowIcon"
                             src={UserCreditScrollRightArrowIcon}
                           />
@@ -1012,7 +1187,7 @@ class Emulations extends Component {
                       <div
                         id="availableCopyTradeScrollBody"
                         className="actpacc-scroll-body"
-                        onScroll={handleAvailableTradeScroll}
+                        onScroll={this.handleAvailableTradeScroll}
                       >
                         {this.state.copyTradesAvailableLocal &&
                         this.state.copyTradesAvailableLocal.length > 0 ? (
@@ -1097,7 +1272,7 @@ class Emulations extends Component {
                                           resCircleIndex === 0 ? 0 : "0.5rem",
                                       }}
                                       onClick={() => {
-                                        goToScrollPosition(resCircleIndex);
+                                        this.goToScrollPosition(resCircleIndex);
                                       }}
                                       className="available-copy-trades-navigator-circle"
                                     />
@@ -1114,7 +1289,7 @@ class Emulations extends Component {
                                 ? "default"
                                 : "pointer",
                             }}
-                            onClick={scrollLeft}
+                            onClick={this.scrollLeft}
                             className="availableCopyTradesArrowIcon availableCopyTradesArrowIconLeft"
                             src={UserCreditScrollLeftArrowIcon}
                           />
@@ -1127,7 +1302,7 @@ class Emulations extends Component {
                                 ? "default"
                                 : "pointer",
                             }}
-                            onClick={scrollRight}
+                            onClick={this.scrollRight}
                             className="availableCopyTradesArrowIcon"
                             src={UserCreditScrollRightArrowIcon}
                           />
