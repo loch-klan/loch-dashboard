@@ -111,7 +111,13 @@ export const getUserCredits = (ctx) => {
               ctx.setState({ lochScore: tempHolder.total });
             }
             if (tempHolder.credits) {
-              ctx.setState({ tasksDone: tempHolder.credits });
+              let tempAnswerHolder = [];
+              tempHolder.credits.forEach((minData) => {
+                if (minData !== "multiple_address_added") {
+                  tempAnswerHolder.push(minData);
+                }
+              });
+              ctx.setState({ tasksDone: tempAnswerHolder });
             }
           }
         } else {
