@@ -31,6 +31,7 @@ import {
   EmultionSidebarIcon,
   ExportIconWhite,
   NoCopyTradeTableIcon,
+  PersonRoundedSigninIcon,
   TrendingFireIcon,
   UserCreditScrollLeftArrowIcon,
   UserCreditScrollRightArrowIcon,
@@ -71,31 +72,32 @@ class Emulations extends Component {
       isPopularAccountsBlockOpen: true,
       popularAccountsList: [
         {
-          address: "0x1234567890",
-          nameTag: "",
-          netWorth: 200,
+          address: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+          nameTag: "DefiWhaleX",
+          netWorth: 24847285.518809594,
         },
         {
-          address: "0x1234567890",
-          nameTag: "",
-          netWorth: 200,
+          address: "0x47441bD9fb3441370Cb5b6C4684A0104353AEC66",
+          nameTag: "powerstake_eth",
+          netWorth: 5439484.6517844545,
         },
         {
-          address: "0x1234567890",
-          nameTag: "",
-          netWorth: 200,
+          address: "0xbDfA4f4492dD7b7Cf211209C4791AF8d52BF5c50",
+          nameTag: "bizyugo",
+          netWorth: 3038905.48807547,
         },
         {
-          address: "0x1234567890",
-          nameTag: "",
-          netWorth: 200,
+          address: "0x0172e05392aba65366C4dbBb70D958BbF43304E4",
+          nameTag: "2011mmmavrodi",
+          netWorth: 2429691.923018726,
         },
         {
-          address: "0x1234567890",
-          nameTag: "",
-          netWorth: 200,
+          address: "0x854F1269b659A727a2268AB86FF77CFB30BfB358",
+          nameTag: "sergey69420",
+          netWorth: 547866.785956473,
         },
       ],
+      prefillCopyAddress: null,
       isAvailableCopyTradeBlockOpen: true,
       isRejectModal: false,
       executeCopyTradeId: undefined,
@@ -150,16 +152,23 @@ class Emulations extends Component {
     });
   };
 
-  showAddCopyTradeAddress = () => {
+  showAddCopyTradeAddress = (passedAddress) => {
     CopyTradeAddCopyTrade({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     if (this.state.userDetailsState && this.state.userDetailsState.email) {
       this.removeCopyTradeBtnClickedLocal();
-      this.setState({
-        isAddCopyTradeAddress: true,
-      });
+      this.setState(
+        {
+          prefillCopyAddress: passedAddress,
+        },
+        () => {
+          this.setState({
+            isAddCopyTradeAddress: true,
+          });
+        }
+      );
     } else {
       if (document.getElementById("sidebar-open-sign-in-btn-copy-trader")) {
         document.getElementById("sidebar-open-sign-in-btn-copy-trader").click();
@@ -178,6 +187,7 @@ class Emulations extends Component {
     this.removeCopyTradeBtnClickedLocal();
     this.setState({
       isAddCopyTradeAddress: false,
+      prefillCopyAddress: null,
     });
     if (isRecall === true) {
       this.callEmulationsApi();
@@ -581,6 +591,9 @@ class Emulations extends Component {
     var myElementCurrentScrollPos = document.getElementById(
       "popularCopyTradeScrollBody"
     ).scrollLeft;
+    var totalScrollPossible = document.getElementById(
+      "popularCopyTradeScrollBody"
+    ).scrollWidth;
 
     const newPos = myElementCurrentScrollPos + myElementWidth;
     myElement.scroll({
@@ -591,7 +604,7 @@ class Emulations extends Component {
     this.setState({
       currentPopularCirclePosition: currentCirPos,
     });
-    if (newPos === (this.newPosBasePopular() - 1) * myElementWidth) {
+    if (newPos + myElementWidth >= totalScrollPossible) {
       this.setState({
         isPopularRightArrowDisabled: true,
         isPopularLeftArrowDisabled: false,
@@ -661,6 +674,9 @@ class Emulations extends Component {
       var newPos = document.getElementById(
         "popularCopyTradeScrollBody"
       ).scrollLeft;
+      var totalScrollPossible = document.getElementById(
+        "popularCopyTradeScrollBody"
+      ).scrollWidth;
 
       let currentCirPos = newPos / myElementWidth;
       this.setState({
@@ -671,7 +687,7 @@ class Emulations extends Component {
           isPopularLeftArrowDisabled: true,
           isPopularRightArrowDisabled: false,
         });
-      } else if (newPos === (this.newPosBasePopular() - 1) * myElementWidth) {
+      } else if (newPos + myElementWidth >= totalScrollPossible) {
         this.setState({
           isPopularLeftArrowDisabled: false,
           isPopularRightArrowDisabled: true,
@@ -937,6 +953,7 @@ class Emulations extends Component {
             {this.state.isAddCopyTradeAddress ? (
               <AddEmulationsAddressModal
                 show={this.state.isAddCopyTradeAddress}
+                prefillCopyAddress={this.state.prefillCopyAddress}
                 onHide={this.hideAddCopyTradeAddress}
                 history={this.props.history}
                 location={this.props.location}
@@ -996,6 +1013,7 @@ class Emulations extends Component {
                         ? "actpacc-header-open"
                         : ""
                     }`}
+                    onClick={this.togglePopularAccountsBlockOpen}
                   >
                     <div className="actpacc-header-title">
                       <Image
@@ -1007,7 +1025,6 @@ class Emulations extends Component {
                       </div>
                     </div>
                     <Image
-                      onClick={this.togglePopularAccountsBlockOpen}
                       src={UserCreditScrollTopArrowIcon}
                       className={`actpacc-arrow-icon ${
                         this.state.isPopularAccountsBlockOpen
@@ -1028,59 +1045,43 @@ class Emulations extends Component {
                           this.state.popularAccountsList.map(
                             (curCopyTradeData, index) => {
                               return (
-                                <div className="available-copy-trades">
-                                  <div className="available-copy-trades-content-container">
-                                    <div
-                                      onClick={() => {
-                                        this.goToNewAddress(
-                                          curCopyTradeData.copyAddress
-                                        );
-                                      }}
-                                      className="inter-display-medium f-s-16 available-copy-trades-address"
-                                    >
-                                      {TruncateText(
-                                        curCopyTradeData.copyAddress
-                                      )}
-                                    </div>
-                                  </div>
-                                  <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container">
-                                    Swap{" "}
-                                    {numToCurrency(curCopyTradeData.valueFrom)}{" "}
-                                    {curCopyTradeData.assetFrom} for{" "}
-                                    {numToCurrency(curCopyTradeData.valueTo)}{" "}
-                                    {curCopyTradeData.assetTo}
-                                    ? 
-                                  </div>
-                                  <div className="available-copy-trades-button-container">
-                                    <div
-                                      className="available-copy-trades-button"
-                                      onClick={() => {
-                                        this.showExecuteCopyTrade(
-                                          curCopyTradeData.id
-                                        );
-                                      }}
-                                    >
+                                <div className="popular-copy-trades">
+                                  <div className="popular-copy-trades-data">
+                                    <div className="popular-copy-trades-data-person-container">
                                       <Image
-                                        className="available-copy-trades-button-icons"
-                                        src={AvailableCopyTradeCheckIcon}
+                                        className="popular-copy-trades-data-person"
+                                        src={PersonRoundedSigninIcon}
                                       />
                                     </div>
                                     <div
-                                      className="available-copy-trades-button"
-                                      onClick={() => {
-                                        this.openRejectModal(
-                                          curCopyTradeData.id
-                                        );
+                                      style={{
+                                        margin: "0rem 1rem",
                                       }}
+                                      className="inter-display-medium f-s-14 popular-copy-trades-data-address"
+                                    >
+                                      {TruncateText(curCopyTradeData.address)}
+                                    </div>
+                                    <div className="inter-display-medium f-s-14 popular-copy-trades-data-nametag">
+                                      {curCopyTradeData.nameTag}
+                                    </div>
+                                    <div
                                       style={{
                                         marginLeft: "1rem",
                                       }}
+                                      className="inter-display-medium f-s-14 "
                                     >
-                                      <Image
-                                        className="available-copy-trades-button-icons"
-                                        src={AvailableCopyTradeCrossIcon}
-                                      />
+                                      {numToCurrency(curCopyTradeData.netWorth)}
                                     </div>
+                                  </div>
+                                  <div
+                                    onClick={() => {
+                                      this.showAddCopyTradeAddress(
+                                        curCopyTradeData.address
+                                      );
+                                    }}
+                                    className="inter-display-medium f-s-14 popular-copy-trades-button"
+                                  >
+                                    Copy
                                   </div>
                                 </div>
                               );
@@ -1095,7 +1096,7 @@ class Emulations extends Component {
 
                       <div className="available-copy-trades-navigator">
                         <div className="available-copy-trades-navigator-circles-container">
-                          {this.state.popularAccountsList &&
+                          {/* {this.state.popularAccountsList &&
                           this.state.popularAccountsList.length > 1
                             ? this.state.popularAccountsList.map(
                                 (resCircle, resCircleIndex) => {
@@ -1121,7 +1122,7 @@ class Emulations extends Component {
                                   );
                                 }
                               )
-                            : null}
+                            : null} */}
                         </div>
                         <div className="available-copy-trades-navigator-arrows">
                           <Image
@@ -1162,6 +1163,7 @@ class Emulations extends Component {
                         ? "actpacc-header-open"
                         : ""
                     }`}
+                    onClick={this.toggleAvailableCopyTradeBlockOpen}
                   >
                     <div className="actpacc-header-title">
                       <Image
@@ -1173,7 +1175,6 @@ class Emulations extends Component {
                       </div>
                     </div>
                     <Image
-                      onClick={this.toggleAvailableCopyTradeBlockOpen}
                       src={UserCreditScrollTopArrowIcon}
                       className={`actpacc-arrow-icon ${
                         this.state.isAvailableCopyTradeBlockOpen
@@ -1207,7 +1208,7 @@ class Emulations extends Component {
                                       {TruncateText(curTradeData.copyAddress)}
                                     </div>
                                   </div>
-                                  <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container">
+                                  <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container ">
                                     Swap {numToCurrency(curTradeData.valueFrom)}{" "}
                                     {curTradeData.assetFrom} for{" "}
                                     {numToCurrency(curTradeData.valueTo)}{" "}

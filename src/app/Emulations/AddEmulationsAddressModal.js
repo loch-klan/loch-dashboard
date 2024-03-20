@@ -76,6 +76,15 @@ class AddEmulationsAddressModal extends BaseReactComponent {
         notificationEmailAddress: userDetails.email,
       });
     }
+    if (this.props.prefillCopyAddress) {
+      const tempCollector = {
+        target: {
+          value: this.props.prefillCopyAddress,
+          name: "wallet2",
+        },
+      };
+      this.handleOnchange(tempCollector);
+    }
   }
   FocusInInput = (e) => {
     let { name } = e.target;

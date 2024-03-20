@@ -177,14 +177,15 @@
 .available-copy-trades-popular-accounts-container {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
-  column-gap: 2rem;
+  justify-content: space-between;
   min-width: 85rem;
+  margin-bottom: 2rem;
 
   .available-copy-trades-popular-accounts {
     background-color: var(--cardBackgroud);
-    width: 50%;
-    margin-bottom: 2rem;
+    width: calc(50% - 1rem);
+    min-width: calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
     border-radius: 1.2rem;
     box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem rgba(24, 39, 75, 0.12),
       0rem 0.63099rem 0.63099rem -0.31549rem rgba(24, 39, 75, 0.08);
@@ -196,6 +197,18 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      background-color: var(--cardBackgroud);
+      border-radius: 1.2rem;
+      cursor: pointer;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      &:hover {
+        filter: var(--popularAccountsHeaderBrightness);
+      }
       .actpacc-header-title {
         display: flex;
         align-items: center;
@@ -207,7 +220,6 @@
       }
       .actpacc-arrow-icon {
         height: 10px;
-        cursor: pointer;
         filter: var(--invertColor);
       }
       .actpacc-arrow-icon-reversed {
@@ -216,6 +228,8 @@
     }
     .actpacc-header-open {
       border-bottom: 0.1rem solid var(--sidebarSectionalBOrder);
+      border-bottom-left-radius: 0rem;
+      border-bottom-right-radius: 0rem;
     }
     .actpacc-scroll-body {
       display: flex;
@@ -254,6 +268,8 @@
         }
         .available-copy-trades-transaction-container {
           font-weight: 600;
+          margin: 0rem 1rem;
+          text-align: center;
         }
         .available-copy-trades-button-container {
           display: flex;
@@ -280,6 +296,73 @@
                 filter: var(--invertColor2);
               }
             }
+          }
+        }
+      }
+
+      .popular-copy-trades {
+        // min-width: 80%;
+        // width: 80%;
+        justify-content: center;
+        // scroll-snap-align: start;
+        display: flex;
+        align-items: center;
+        padding: 1.5rem;
+        column-gap: 2rem;
+        .popular-copy-trades-data {
+          background-color: var(--popularAccountsDataBlock);
+          padding: 1.4rem;
+          flex: 1;
+          border-radius: 1.2rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .popular-copy-trades-data-person-container {
+            border: 0.1rem solid var(--signinIconContainerBOrder);
+            min-width: 2.5rem;
+            min-height: 2.5rem;
+            max-width: 2.5rem;
+            max-height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.8rem;
+            background-color: var(--signinIconContainerBg);
+            .popular-copy-trades-data-person {
+              height: 12px;
+              width: 12px;
+            }
+          }
+          .popular-copy-trades-data-address {
+            text-decoration: underline;
+            cursor: pointer;
+            &:hover {
+              font-weight: 600;
+            }
+          }
+          .popular-copy-trades-data-nametag {
+            color: var(--topbarInput);
+          }
+        }
+        .popular-copy-trades-button {
+          padding: 1.4rem 2rem;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 0.2rem solid var(--sidebarSectionalBOrder);
+          font-weight: 600;
+          cursor: pointer;
+          box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem rgba(24, 39, 75, 0.05),
+            0rem 0.63099rem 0.63099rem -0.31549rem rgba(24, 39, 75, 0.05);
+          .available-copy-trades-button-icons {
+            filter: var(--invertColor);
+            height: 13px;
+          }
+          &:hover {
+            background-color: var(--backColor);
+            border-color: var(--backColor);
+            color: var(--sameModeColor);
           }
         }
       }
@@ -320,22 +403,4 @@
 }
 .available-copy-trades-popular-accounts-container-both-open {
   align-items: stretch;
-}
-
-.availableCopyTradeScrollBodyClass {
-  display: flex;
-  align-items: center;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  &::-webkit-scrollbar {
-    width: 0rem;
-    height: 0rem;
-  }
-  .available-copy-trades {
-    min-width: 100%;
-    max-width: 100%;
-    justify-content: space-around;
-    scroll-snap-align: start;
-  }
 }
