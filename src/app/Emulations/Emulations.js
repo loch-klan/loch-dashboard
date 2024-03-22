@@ -352,7 +352,51 @@ class Emulations extends Component {
       this.setState({
         emulationsLoading: false,
         copyTradesLocal: tempEmulationsLocal,
-        copyTradesAvailableLocal: tempEmulationsAvailableLocal,
+        // copyTradesAvailableLocal: tempEmulationsAvailableLocal,
+        copyTradesAvailableLocal: [
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+        ],
       });
     }
   };
@@ -793,17 +837,36 @@ class Emulations extends Component {
         passedCTCopyTradeAmount: amountHolder,
       },
       () => {
-        this.hideAddCopyTradeAddress();
         this.setState({
           isPayModalOpen: true,
         });
       }
     );
   };
-  closePayModal = () => {
+  goBackToAddCopyTradeModal = () => {
     this.setState({
       isPayModalOpen: false,
     });
+  };
+  closePayModal = () => {
+    this.hideAddCopyTradeAddress();
+    this.setState({
+      isPayModalOpen: false,
+    });
+  };
+  addPrefillCopyAddress = (passedAddress, isLoggedIn) => {
+    this.setState(
+      {
+        prefillCopyAddress: passedAddress,
+      },
+      () => {
+        if (isLoggedIn) {
+          this.showAddCopyTradeAddress();
+        } else {
+          this.addCopyTradeBtnClickedLocal();
+        }
+      }
+    );
   };
   render() {
     const columnData = [
@@ -974,12 +1037,42 @@ class Emulations extends Component {
             showAddCopyTradeAddress={this.showAddCopyTradeAddress}
             scrollLeft={this.scrollLeft}
             scrollRight={this.scrollRight}
+            scrollRightPopular={this.scrollRightPopular}
+            addPrefillCopyAddress={this.addPrefillCopyAddress}
+            handleAvailableTradeScroll={this.handleAvailableTradeScroll}
+            handlePopularTradeScroll={this.handlePopularTradeScroll}
+            scrollLeftPopular={this.scrollLeftPopular}
+            goBackToAddCopyTradeModal={this.goBackToAddCopyTradeModal}
+            toggleAvailableCopyTradeBlockOpen={
+              this.toggleAvailableCopyTradeBlockOpen
+            }
+            togglePopularAccountsBlockOpen={this.togglePopularAccountsBlockOpen}
+            closePayModal={this.closePayModal}
+            goToScrollPositionPopular={this.goToScrollPositionPopular}
+            userDetailsprops={this.state.userDetailsprops}
+            isPayModalOpen={this.state.isPayModalOpen}
+            passedCTAddress={this.state.passedCTAddress}
+            passedCTCopyTradeAmount={this.state.passedCTCopyTradeAmount}
+            passedCTNotificationEmailAddress={
+              this.state.passedCTNotificationEmailAddress
+            }
+            prefillCopyAddress={this.state.prefillCopyAddress}
+            isPopularAccountsBlockOpen={this.state.isPopularAccountsBlockOpen}
+            currentPopularCirclePosition={
+              this.state.currentPopularCirclePosition
+            }
+            popularAccountsList={this.state.popularAccountsList}
+            isPopularLeftArrowDisabled={this.state.isPopularLeftArrowDisabled}
+            isPopularRightArrowDisabled={this.state.isPopularRightArrowDisabled}
+            copyTradesAvailableLocal={this.state.copyTradesAvailableLocal}
+            isAvailableCopyTradeBlockOpen={
+              this.state.isAvailableCopyTradeBlockOpen
+            }
             isRightArrowDisabled={this.state.isRightArrowDisabled}
             isLeftArrowDisabled={this.state.isLeftArrowDisabled}
             goToScrollPosition={this.goToScrollPosition}
             currentCirclePosition={this.state.currentCirclePosition}
             availableCopyTrades={this.state.copyTradesAvailableLocal}
-            handleAvailableTradeScroll={this.handleAvailableTradeScroll}
             history={this.props.history}
             updateTimer={this.updateTimer}
             isExecuteCopyTrade={this.state.isExecuteCopyTrade}
@@ -1067,6 +1160,7 @@ class Emulations extends Component {
                 }
                 passedCTAddress={this.state.passedCTAddress}
                 passedCTCopyTradeAmount={this.state.passedCTCopyTradeAmount}
+                goBackToAddCopyTradeModal={this.goBackToAddCopyTradeModal}
               />
             ) : null}
             {this.state.isAddCopyTradeAddress ? (

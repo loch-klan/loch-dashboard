@@ -162,16 +162,13 @@ export const copyTradePaid = (data, goToUrl, hideModal) => {
       .post("wallet/user-wallet/copy-trade-paid", data)
       .then((res) => {
         if (!res.data.error && goToUrl) {
-          if (hideModal) {
-            // hideModal();
-          }
           // window.open(goToUrl, "_self");
         } else {
-          toast.error(res.data.message || "Something went wrong");
+          // toast.error(res.data.message || "Something went wrong");
         }
       })
       .catch((err) => {
-        toast.error("Something went wrong");
+        // toast.error("Something went wrong");
       });
   };
 };

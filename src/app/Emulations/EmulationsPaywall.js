@@ -3,28 +3,27 @@ import { Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
 
+import { toast } from "react-toastify";
 import {
   ChartDonutPaywallIcon,
   ChartLinePaywallIcon,
   CloseIcon,
   CopyTradePayWallIllustrationIcon,
   CopyTradeReviewStarIcon,
-  EmultionSidebarIcon,
   LightBulbPaywallIcon,
   LochLogoWhiteIcon,
-  PurpleEyeIcon,
+  NewModalBackArrowIcon,
 } from "../../assets/images/icons";
-import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import { detectNameTag } from "../common/Api";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import { addCopyTrade, copyTradePaid } from "./EmulationsApi";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
-import { toast } from "react-toastify";
-import { BASE_URL_S3 } from "../../utils/Constant";
-import { loadingAnimation } from "../../utils/ReusableFunctions";
 import { CopyTradePayCryptoPayment } from "../../utils/AnalyticsFunctions";
+import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { loadingAnimation } from "../../utils/ReusableFunctions";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import { detectNameTag } from "../common/Api";
+import { addCopyTrade, copyTradePaid } from "./EmulationsApi";
 
 class EmulationsPaywall extends BaseReactComponent {
   constructor(props) {
@@ -152,6 +151,9 @@ class EmulationsPaywall extends BaseReactComponent {
       return await response.json();
     } catch (error) {
       console.error("Error creating charge:", error);
+      this.setState({
+        isBtnLoading: false,
+      });
     }
   }
   fetchChargeData = async () => {
@@ -204,7 +206,7 @@ class EmulationsPaywall extends BaseReactComponent {
       <Modal
         show={this.state.show}
         className={`exit-overlay-form copy-trade-pay-wall-modal ${
-          this.props.isMobile ? "mobile-add-copy-trade-modal" : ""
+          this.props.isMobile ? "copy-trade-pay-wall-modal-mobile" : ""
         }`}
         onHide={this.state.onHide}
         size="lg"
@@ -217,13 +219,17 @@ class EmulationsPaywall extends BaseReactComponent {
         <Modal.Header>
           {this.props.isMobile ? (
             <div className="mobile-copy-trader-popup-header">
-              <div className="mobile-copy-trader-popup-header-title-container">
-                <Image
-                  className="mobile-copy-trader-popup-header-title-icon"
-                  src={EmultionSidebarIcon}
-                />
-                <h6 className="inter-display-medium f-s-20">Copy Trade</h6>
+              <div
+                onClick={this.props.goBackToAddCopyTradeModal}
+                className="mobile-copy-trader-popup-header-close-icon"
+              >
+                <Image src={NewModalBackArrowIcon} />
               </div>
+              <h6 className="inter-display-medium f-s-20 mobile-copy-trader-popup-header-title">
+                Copy Trade with
+                <br />
+                Loch
+              </h6>
               <div
                 onClick={this.hideModal}
                 className="mobile-copy-trader-popup-header-close-icon"
@@ -233,6 +239,15 @@ class EmulationsPaywall extends BaseReactComponent {
             </div>
           ) : (
             <>
+              <div
+                className="closebtn"
+                style={{
+                  left: "2.8rem",
+                }}
+                onClick={this.props.goBackToAddCopyTradeModal}
+              >
+                <Image src={NewModalBackArrowIcon} />
+              </div>
               <div className="api-modal-header popup-main-icon-with-border">
                 <Image src={LochLogoWhiteIcon} className="imageDarker" />
               </div>
@@ -268,17 +283,13 @@ class EmulationsPaywall extends BaseReactComponent {
                   src={CopyTradePayWallIllustrationIcon}
                   className="ctpb-banner-image"
                 />
-                <div className="ctpb-banner-text">
-                  <div className="inter-display-medium f-s-20">
-                    The equivalent of a beer to{" "}
-                    <span className="ctpb-banner-text-highlited">track</span>,
-                  </div>
-                  <div className="inter-display-medium f-s-20 mt-1">
-                    <span className="ctpb-banner-text-highlited">protect</span>,
-                    and{" "}
-                    <span className="ctpb-banner-text-highlited">create</span>{" "}
-                    your future?
-                  </div>
+                <div className="ctpb-banner-text inter-display-medium f-s-20">
+                  The equivalent of a beer to{" "}
+                  <span className="ctpb-banner-text-highlited">track</span>,
+                  {this.props.isMobile ? null : <br />}
+                  <span className="ctpb-banner-text-highlited"> protect</span>,
+                  and <span className="ctpb-banner-text-highlited">create</span>{" "}
+                  your future?
                 </div>
               </div>
               <div className="ctpb-plans-container">
