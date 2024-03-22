@@ -197,6 +197,8 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             show={this.props.isAddCopyTradeAddress}
             onHide={this.props.hideAddCopyTradeAddress}
             emulationsUpdated={this.props.emulationsUpdated}
+            paymentStatusLocal={this.props.paymentStatusLocal}
+            openPayModal={this.props.openPayModal}
             isMobile
           />
         ) : null}

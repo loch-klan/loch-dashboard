@@ -11,37 +11,39 @@ export const getCopyTrade = (ctx) => {
           if (res.data.data) {
             const tempResHolder = res?.data?.data?.result;
             const tempCopyTradeResHolder = tempResHolder.copy_trades;
+            const tempCopyTradePaymentStatus = tempResHolder.payment_status;
             const tempAvailableCopyTradeResHolder =
               tempResHolder.available_trades;
+
+            let tempConvertedArr = [];
+            let tempAvailableCopyTradesArr = [];
             if (tempCopyTradeResHolder && tempCopyTradeResHolder.length > 0) {
-              const tempConvertedArr = tempCopyTradeResHolder.map(
-                (individualRes) => {
-                  let tempCurrentBalance = 0;
-                  let tempTradeDeposit = 0;
-                  let tempUnrealizedPnL = 0;
+              tempConvertedArr = tempCopyTradeResHolder.map((individualRes) => {
+                let tempCurrentBalance = 0;
+                let tempTradeDeposit = 0;
+                let tempUnrealizedPnL = 0;
 
-                  if (individualRes.current_amount) {
-                    tempCurrentBalance = individualRes.current_amount;
-                  }
-                  if (individualRes.deposit) {
-                    tempTradeDeposit = individualRes.deposit;
-                  }
-                  if (
-                    (tempCurrentBalance || tempCurrentBalance === 0) &&
-                    (tempTradeDeposit || tempTradeDeposit === 0)
-                  ) {
-                    tempUnrealizedPnL = tempCurrentBalance - tempTradeDeposit;
-                  }
-
-                  return {
-                    currentBalance: tempCurrentBalance,
-                    tradeDeposit: tempTradeDeposit,
-                    wallet: individualRes.copy_wallet,
-                    unrealizedPnL: tempUnrealizedPnL,
-                  };
+                if (individualRes.current_amount) {
+                  tempCurrentBalance = individualRes.current_amount;
                 }
-              );
-              let tempAvailableCopyTradesArr = [];
+                if (individualRes.deposit) {
+                  tempTradeDeposit = individualRes.deposit;
+                }
+                if (
+                  (tempCurrentBalance || tempCurrentBalance === 0) &&
+                  (tempTradeDeposit || tempTradeDeposit === 0)
+                ) {
+                  tempUnrealizedPnL = tempCurrentBalance - tempTradeDeposit;
+                }
+
+                return {
+                  currentBalance: tempCurrentBalance,
+                  tradeDeposit: tempTradeDeposit,
+                  wallet: individualRes.copy_wallet,
+                  unrealizedPnL: tempUnrealizedPnL,
+                };
+              });
+              tempAvailableCopyTradesArr = [];
               if (
                 tempAvailableCopyTradeResHolder &&
                 tempAvailableCopyTradeResHolder.length > 0
@@ -84,18 +86,19 @@ export const getCopyTrade = (ctx) => {
                     };
                   });
               }
-              dispatch({
-                type: GET_EMULATION_DATA,
-                payload: {
-                  copyTrades: tempConvertedArr,
-                  availableCopyTrades: tempAvailableCopyTradesArr,
-                },
-              });
             } else {
               ctx.setState({
                 emulationsLoading: false,
               });
             }
+            dispatch({
+              type: GET_EMULATION_DATA,
+              payload: {
+                copyTrades: tempConvertedArr,
+                availableCopyTrades: tempAvailableCopyTradesArr,
+                paymentStatus: tempCopyTradePaymentStatus,
+              },
+            });
           }
         }
       })
@@ -106,7 +109,7 @@ export const getCopyTrade = (ctx) => {
       });
   };
 };
-export const addCopyTrade = (data, hideModal, resetBtn) => {
+export const addCopyTrade = (data, resetBtn) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/add-copy-trade", data)
@@ -117,9 +120,6 @@ export const addCopyTrade = (data, hideModal, resetBtn) => {
         if (!res.data.error) {
           if (res.data.data) {
             toast.success("Congrats! You’ll receive email notifications");
-            if (hideModal) {
-              hideModal(true);
-            }
           }
         } else {
           toast.error(res.data.message || "Something went wrong");
@@ -154,5 +154,24 @@ export const updaetAvailableCopyTraes = (data, recallCopyTrader, isConfirm) => {
         }
       })
       .catch((err) => {});
+  };
+};
+export const copyTradePaid = (data, goToUrl, hideModal) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/copy-trade-paid", data)
+      .then((res) => {
+        if (!res.data.error && goToUrl) {
+          if (hideModal) {
+            // hideModal();
+          }
+          // window.open(goToUrl, "_self");
+        } else {
+          toast.error(res.data.message || "Something went wrong");
+        }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong");
+      });
   };
 };

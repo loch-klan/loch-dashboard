@@ -8,11 +8,15 @@ import { getAllWalletListApi } from "../wallet/Api.js";
 
 import {
   CopyTradeAddCopyTrade,
+  CopyTradeAdded,
   CopyTradeAvailableCopiedWalletClicked,
   CopyTradeCopiedWalletClicked,
   CopyTradeExecuteTradeModalOpen,
   CopyTradeExecuteTradeRejected,
   CopyTradePageView,
+  CopyTradePayWallOpen,
+  CopyTradePopularAccountCopyClicked,
+  CopyTradePopularAccountWalletClicked,
   CopyTradeTimeSpent,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
@@ -43,12 +47,10 @@ import {
   CurrencyType,
   TruncateText,
   amountFormat,
-  convertNtoNumber,
   mobileCheck,
   numToCurrency,
   scrollToTop,
 } from "../../utils/ReusableFunctions.js";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -56,20 +58,29 @@ import {
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api.js";
+import BasicConfirmModal from "../common/BasicConfirmModal.js";
 import ExitOverlay from "../common/ExitOverlay.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal.js";
-import { getCopyTrade, updaetAvailableCopyTraes } from "./EmulationsApi.js";
+import {
+  addCopyTrade,
+  getCopyTrade,
+  updaetAvailableCopyTraes,
+} from "./EmulationsApi.js";
 import EmulationsMobile from "./EmulationsMobile.js";
 import EmulationsTradeModal from "./EmulationsTradeModal.js";
 import "./_emulations.scss";
-import BasicConfirmModal from "../common/BasicConfirmModal.js";
+import EmulationsPaywall from "./EmulationsPaywall.js";
 
 class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isPopularAccountsBlockOpen: true,
+      isPayModalOpen: false,
+      passedCTNotificationEmailAddress: "",
+      passedCTAddress: "",
+      passedCTCopyTradeAmount: "",
       popularAccountsList: [
         {
           address: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
@@ -97,7 +108,7 @@ class Emulations extends Component {
           netWorth: 547866.785956473,
         },
       ],
-      prefillCopyAddress: null,
+      prefillCopyAddress: undefined,
       isAvailableCopyTradeBlockOpen: true,
       isRejectModal: false,
       executeCopyTradeId: undefined,
@@ -109,22 +120,8 @@ class Emulations extends Component {
       currentPopularCirclePosition: 0,
       currentCirclePosition: 0,
       userDetailsState: undefined,
-      copyTradesAvailableLocal: [
-        {
-          copyAddress: "0x1234567890",
-          valueFrom: 100,
-          assetFrom: "ETH",
-          valueTo: 100,
-          assetTo: "USDT",
-        },
-        {
-          copyAddress: "0x123456789",
-          valueFrom: 101230,
-          assetFrom: "BTC",
-          valueTo: 10123120,
-          assetTo: "POL",
-        },
-      ],
+      copyTradesAvailableLocal: [],
+      paymentStatusLocal: "UNPAID",
       emulationsUpdated: false,
       isAddCopyTradeAddress: false,
       copyTradesLocal: [],
@@ -152,23 +149,16 @@ class Emulations extends Component {
     });
   };
 
-  showAddCopyTradeAddress = (passedAddress) => {
+  showAddCopyTradeAddress = () => {
     CopyTradeAddCopyTrade({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
     if (this.state.userDetailsState && this.state.userDetailsState.email) {
       this.removeCopyTradeBtnClickedLocal();
-      this.setState(
-        {
-          prefillCopyAddress: passedAddress,
-        },
-        () => {
-          this.setState({
-            isAddCopyTradeAddress: true,
-          });
-        }
-      );
+      this.setState({
+        isAddCopyTradeAddress: true,
+      });
     } else {
       if (document.getElementById("sidebar-open-sign-in-btn-copy-trader")) {
         document.getElementById("sidebar-open-sign-in-btn-copy-trader").click();
@@ -187,7 +177,7 @@ class Emulations extends Component {
     this.removeCopyTradeBtnClickedLocal();
     this.setState({
       isAddCopyTradeAddress: false,
-      prefillCopyAddress: null,
+      prefillCopyAddress: undefined,
     });
     if (isRecall === true) {
       this.callEmulationsApi();
@@ -211,7 +201,16 @@ class Emulations extends Component {
     this.props.getUser();
     this.callEmulationsApi();
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    this.getAllWalletList();
 
+    let tempHaveUserPaid = window.sessionStorage.getItem(
+      "haveUserPaidForCopyTrade"
+    );
+    if (tempHaveUserPaid) {
+      this.setState({
+        paymentStatusLocal: "PAID",
+      });
+    }
     if (userDetails) {
       this.setState(
         {
@@ -221,14 +220,47 @@ class Emulations extends Component {
           const isLoginAttmepted = window.sessionStorage.getItem(
             "copyTradeLoginClicked"
           );
+          const isLoginAttmeptedValue = window.sessionStorage.getItem(
+            "copyTradeLoginClickedValue"
+          );
 
           if (isLoginAttmepted && isLoginAttmepted === "true") {
             setTimeout(() => {
-              this.showAddCopyTradeAddress();
+              if (isLoginAttmeptedValue) {
+                this.setState(
+                  {
+                    prefillCopyAddress: isLoginAttmeptedValue,
+                  },
+                  () => {
+                    this.showAddCopyTradeAddress();
+                  }
+                );
+              } else {
+                this.showAddCopyTradeAddress();
+              }
             }, 1500);
           }
         }
       );
+    }
+    const search = this.props.location.search;
+    const params = new URLSearchParams(search);
+    const isAddTrade = params.get("addTrade");
+    if (isAddTrade) {
+      window.sessionStorage.setItem("haveUserPaidForCopyTrade", true);
+      let emailHolder = "";
+      let walletHolder = "";
+      let amountHolder = 0;
+      if (params.get("ctrEmail")) {
+        emailHolder = params.get("ctrEmail");
+      }
+      if (params.get("ctrWallet")) {
+        walletHolder = params.get("ctrWallet");
+      }
+      if (params.get("ctrAmount")) {
+        amountHolder = params.get("ctrAmount");
+      }
+      this.addTradeFromURL(walletHolder, emailHolder, amountHolder);
     }
 
     this.startPageView();
@@ -238,8 +270,34 @@ class Emulations extends Component {
       clearInterval(window.checkEmulationsTimer);
     };
   }
+  addTradeFromURL = (passedWallet, passedEmail, passedAmount) => {
+    let data = new URLSearchParams();
+    data.append("deposit", passedAmount);
+    data.append("email", passedEmail);
+    data.append("copy_address", passedWallet);
+
+    CopyTradeAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      copied_wallet: passedWallet,
+      amount: passedAmount,
+      notification_email: passedEmail,
+    });
+
+    this.props.addCopyTrade(data, this.resetPage);
+  };
+  resetPage = () => {
+    this.props.history.replace("/copy-trade");
+    this.callEmulationsApi();
+  };
   addCopyTradeBtnClickedLocal = () => {
     window.sessionStorage.setItem("copyTradeLoginClicked", true);
+    if (this.state.prefillCopyAddress) {
+      window.sessionStorage.setItem(
+        "copyTradeLoginClickedValue",
+        this.state.prefillCopyAddress
+      );
+    }
   };
   removeCopyTradeBtnClickedLocal = () => {
     let isLoginClickedStored = window.sessionStorage.getItem(
@@ -247,6 +305,7 @@ class Emulations extends Component {
     );
     if (isLoginClickedStored) {
       window.sessionStorage.removeItem("copyTradeLoginClicked");
+      window.sessionStorage.removeItem("copyTradeLoginClickedValue");
     }
   };
   callEmulationsApi = (updatedAddress) => {
@@ -272,6 +331,22 @@ class Emulations extends Component {
       if (this.props.emulationsState.availableCopyTrades) {
         tempEmulationsAvailableLocal =
           this.props.emulationsState.availableCopyTrades;
+      }
+
+      if (this.props.emulationsState.paymentStatus) {
+        let tempHaveUserPaid = window.sessionStorage.getItem(
+          "haveUserPaidForCopyTrade"
+        );
+
+        if (tempHaveUserPaid) {
+          this.setState({
+            paymentStatusLocal: "PAID",
+          });
+        } else {
+          this.setState({
+            paymentStatusLocal: this.props.emulationsState.paymentStatus,
+          });
+        }
       }
 
       this.setState({
@@ -302,6 +377,7 @@ class Emulations extends Component {
         }
       }
     }
+
     if (prevProps.emulationsState !== this.props.emulationsState) {
       this.setLocalEmulationList();
     }
@@ -312,23 +388,28 @@ class Emulations extends Component {
       this.setState({
         apiResponse: false,
       });
+      this.getAllWalletList();
     }
+
     if (!this.props.commonState.emulationsPage) {
-      const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-      if (userDetails) {
-        this.setState({
-          userDetailsState: userDetails,
-        });
-      }
-      this.callEmulationsApi(true);
-      let tempData = new URLSearchParams();
-      tempData.append("start", 0);
-      tempData.append("conditions", JSON.stringify([]));
-      tempData.append("limit", 50);
-      tempData.append("sorts", JSON.stringify([]));
-      this.props.getAllWalletListApi(tempData, this);
+      this.getAllWalletList();
     }
   }
+  getAllWalletList = () => {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails) {
+      this.setState({
+        userDetailsState: userDetails,
+      });
+    }
+    this.callEmulationsApi(true);
+    let tempData = new URLSearchParams();
+    tempData.append("start", 0);
+    tempData.append("conditions", JSON.stringify([]));
+    tempData.append("limit", 50);
+    tempData.append("sorts", JSON.stringify([]));
+    this.props.getAllWalletListApi(tempData, this);
+  };
 
   CheckApiResponse = (value) => {
     this.setState({
@@ -700,6 +781,30 @@ class Emulations extends Component {
       }
     }, 150);
   };
+  openPayModal = (emailHolder, walletHolder, amountHolder) => {
+    CopyTradePayWallOpen({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.setState(
+      {
+        passedCTNotificationEmailAddress: emailHolder,
+        passedCTAddress: walletHolder,
+        passedCTCopyTradeAmount: amountHolder,
+      },
+      () => {
+        this.hideAddCopyTradeAddress();
+        this.setState({
+          isPayModalOpen: true,
+        });
+      }
+    );
+  };
+  closePayModal = () => {
+    this.setState({
+      isPayModalOpen: false,
+    });
+  };
   render() {
     const columnData = [
       {
@@ -883,7 +988,9 @@ class Emulations extends Component {
             confirmOrRejectCopyTrade={this.confirmOrRejectCopyTrade}
             goToNewAddress={this.goToNewAddress}
             executeCopyTradeId={this.state.executeCopyTradeId}
+            paymentStatusLocal={this.state.paymentStatusLocal}
             isRejectModal={this.state.isRejectModal}
+            openPayModal={this.openPayModal}
             closeRejectModal={this.closeRejectModal}
             openRejectModal={this.openRejectModal}
             executeRejectModal={this.executeRejectModal}
@@ -942,12 +1049,24 @@ class Emulations extends Component {
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}
-                history={this.history}
+                history={this.props.history}
                 headerTitle={this.state.exportHeaderTitle}
                 headerSubTitle={this.state.exportHeaderSubTitle}
                 modalType={"exportModal"}
                 iconImage={ExportIconWhite}
                 selectExportOption={this.state.exportSelectExportOption}
+              />
+            ) : null}
+            {this.state.isPayModalOpen ? (
+              <EmulationsPaywall
+                userDetailsState={this.state.userDetailsState}
+                show={this.state.isPayModalOpen}
+                onHide={this.closePayModal}
+                passedCTNotificationEmailAddress={
+                  this.state.passedCTNotificationEmailAddress
+                }
+                passedCTAddress={this.state.passedCTAddress}
+                passedCTCopyTradeAmount={this.state.passedCTCopyTradeAmount}
               />
             ) : null}
             {this.state.isAddCopyTradeAddress ? (
@@ -958,6 +1077,8 @@ class Emulations extends Component {
                 history={this.props.history}
                 location={this.props.location}
                 emulationsUpdated={this.state.emulationsUpdated}
+                paymentStatusLocal={this.state.paymentStatusLocal}
+                openPayModal={this.openPayModal}
               />
             ) : null}
             {this.state.isRejectModal ? (
@@ -1055,9 +1176,31 @@ class Emulations extends Component {
                                     </div>
                                     <div
                                       style={{
-                                        margin: "0rem 1rem",
+                                        margin: "0rem 1.3rem",
                                       }}
                                       className="inter-display-medium f-s-14 popular-copy-trades-data-address"
+                                      onClick={() => {
+                                        if (curCopyTradeData.address) {
+                                          let slink = curCopyTradeData.address;
+                                          let shareLink =
+                                            BASE_URL_S3 +
+                                            "home/" +
+                                            slink +
+                                            "?noPopup=true";
+
+                                          CopyTradePopularAccountWalletClicked({
+                                            session_id: getCurrentUser().id,
+                                            email_address:
+                                              getCurrentUser().email,
+                                            wallet: slink,
+                                          });
+                                          window.open(
+                                            shareLink,
+                                            "_blank",
+                                            "noreferrer"
+                                          );
+                                        }
+                                      }}
                                     >
                                       {TruncateText(curCopyTradeData.address)}
                                     </div>
@@ -1066,18 +1209,36 @@ class Emulations extends Component {
                                     </div>
                                     <div
                                       style={{
-                                        marginLeft: "1rem",
+                                        marginLeft: "1.3rem",
+                                        whiteSpace: "nowrap",
                                       }}
                                       className="inter-display-medium f-s-14 "
                                     >
-                                      {numToCurrency(curCopyTradeData.netWorth)}
+                                      {CurrencyType(false) +
+                                        numToCurrency(
+                                          curCopyTradeData.netWorth
+                                        )}
                                     </div>
                                   </div>
                                   <div
                                     onClick={() => {
-                                      this.showAddCopyTradeAddress(
-                                        curCopyTradeData.address
-                                      );
+                                      if (curCopyTradeData.address) {
+                                        this.setState(
+                                          {
+                                            prefillCopyAddress:
+                                              curCopyTradeData.address,
+                                          },
+                                          () => {
+                                            this.showAddCopyTradeAddress();
+                                          }
+                                        );
+
+                                        CopyTradePopularAccountCopyClicked({
+                                          session_id: getCurrentUser().id,
+                                          email_address: getCurrentUser().email,
+                                          wallet: curCopyTradeData.address,
+                                        });
+                                      }
                                     }}
                                     className="inter-display-medium f-s-14 popular-copy-trades-button"
                                   >
@@ -1367,6 +1528,7 @@ const mapDispatchToProps = {
   GetAllPlan,
   getCopyTrade,
   updaetAvailableCopyTraes,
+  addCopyTrade,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Emulations);
