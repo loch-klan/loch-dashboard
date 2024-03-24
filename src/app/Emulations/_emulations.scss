@@ -180,8 +180,7 @@
   align-items: flex-start;
   justify-content: space-between;
   min-width: 85rem;
-  margin-bottom: 2rem;
-  margin-top: 2rem !important;
+  margin-top: 2.5rem;
 
   .available-copy-trades-popular-accounts {
     background-color: var(--cardBackgroud);
@@ -219,6 +218,9 @@
           margin-right: 0.5rem;
           filter: var(--darkerBrightness) var(--invertColor);
         }
+        .actpacc-header-icon-more-margin {
+          margin-right: 0.65rem;
+        }
       }
       .actpacc-arrow-icon {
         height: 10px;
@@ -249,6 +251,8 @@
         align-items: center;
         justify-content: center;
         color: #adadad;
+        padding: 0rem 3rem;
+        text-align: center;
       }
       &::-webkit-scrollbar {
         width: 0rem;
@@ -271,7 +275,8 @@
           }
         }
         .available-copy-trades-transaction-container {
-          font-weight: 600;
+          font-weight: 500;
+          text-shadow: 0.4px 0 var(--primaryTextColor);
           margin: 0rem 1rem;
           text-align: center;
         }
@@ -308,7 +313,7 @@
         // min-width: 80%;
         // width: 80%;
         justify-content: center;
-        // scroll-snap-align: start;
+        scroll-snap-align: start;
         display: flex;
         align-items: stretch;
         padding: 1.5rem;
@@ -412,6 +417,8 @@
   min-width: unset;
   flex-direction: column;
   // background-color: red;
+  margin-top: 0rem;
+  margin-bottom: 2.5rem;
   .available-copy-trades-popular-accounts {
     width: 100%;
     min-width: 100%;

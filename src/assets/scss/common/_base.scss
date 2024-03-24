@@ -3540,7 +3540,8 @@ input {
       .leave-modal-btn-section {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        column-gap: 1rem;
         .secondary-btn {
           margin-right: 0rem !important;
         }

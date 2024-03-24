@@ -316,7 +316,7 @@ class EmulationsPaywall extends BaseReactComponent {
                       />
                     </div>
                     <div className="inter-display-medium ctpb-plan-desc-text f-s-16">
-                      Access to all the essential Loch features
+                      Access to all the limited Loch features
                     </div>
                   </div>
                   <div className="ctpb-plan-disable-button inter-display-medium f-s-16">
@@ -351,7 +351,7 @@ class EmulationsPaywall extends BaseReactComponent {
                       />
                     </div>
                     <div className="inter-display-medium ctpb-plan-desc-text f-s-16">
-                      Access to all the essential Loch features
+                      Access to all the limited Loch features
                     </div>
                   </div>
                   <div className="ctpb-plan-plus-seperator">

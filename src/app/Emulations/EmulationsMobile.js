@@ -34,6 +34,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import EmulationsPaywall from "./EmulationsPaywall";
+import Loading from "../common/Loading";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -244,400 +245,433 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             isMobile
           />
         ) : null}
-        {!this.props.emulationsLoading ? (
+        {this.props.emulationsLoading ? (
           <div
-            className={`available-copy-trades-popular-accounts-container available-copy-trades-popular-accounts-container-mobile ${
-              this.props.isPopularAccountsBlockOpen &&
-              this.props.isAvailableCopyTradeBlockOpen
-                ? "available-copy-trades-popular-accounts-container-both-open"
-                : ""
-            }`}
+            style={{
+              background: "var(--cardBackgroud)",
+              height: "65vh",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: "100px 0",
+              borderRadius: "10px",
+            }}
           >
-            <div className="available-copy-trades-popular-accounts">
-              <div
-                className={`actpacc-header ${
-                  this.props.isPopularAccountsBlockOpen
-                    ? "actpacc-header-open"
-                    : ""
-                }`}
-                onClick={this.props.togglePopularAccountsBlockOpen}
-              >
-                <div className="actpacc-header-title">
-                  <Image
-                    src={TrendingFireIcon}
-                    className="actpacc-header-icon"
-                  />
-                  <div className="inter-display-medium f-s-16">
-                    Popular Accounts to Copy
-                  </div>
-                </div>
-                <Image
-                  src={UserCreditScrollTopArrowIcon}
-                  className={`actpacc-arrow-icon ${
+            <Loading />
+          </div>
+        ) : (
+          <>
+            <div
+              className={`available-copy-trades-popular-accounts-container available-copy-trades-popular-accounts-container-mobile ${
+                this.props.isPopularAccountsBlockOpen &&
+                this.props.isAvailableCopyTradeBlockOpen
+                  ? "available-copy-trades-popular-accounts-container-both-open"
+                  : ""
+              }`}
+            >
+              <div className="available-copy-trades-popular-accounts">
+                <div
+                  className={`actpacc-header ${
                     this.props.isPopularAccountsBlockOpen
-                      ? ""
-                      : "actpacc-arrow-icon-reversed"
+                      ? "actpacc-header-open"
+                      : ""
                   }`}
-                />
+                  onClick={this.props.togglePopularAccountsBlockOpen}
+                >
+                  <div className="actpacc-header-title">
+                    <Image
+                      src={TrendingFireIcon}
+                      className="actpacc-header-icon actpacc-header-icon-more-margin"
+                    />
+                    <div className="inter-display-medium f-s-16">
+                      Popular Accounts to Copy
+                    </div>
+                  </div>
+                  <Image
+                    src={UserCreditScrollTopArrowIcon}
+                    className={`actpacc-arrow-icon ${
+                      this.props.isPopularAccountsBlockOpen
+                        ? ""
+                        : "actpacc-arrow-icon-reversed"
+                    }`}
+                  />
+                </div>
+                {this.props.isPopularAccountsBlockOpen ? (
+                  <>
+                    <div
+                      id="popularCopyTradeScrollBody"
+                      className="actpacc-scroll-body"
+                      onScroll={this.props.handlePopularTradeScroll}
+                    >
+                      {this.props.popularAccountsList &&
+                      this.props.popularAccountsList.length > 0
+                        ? this.props.popularAccountsList.map(
+                            (curCopyTradeData, index) => {
+                              return (
+                                <div className="popular-copy-trades">
+                                  <div className="popular-copy-trades-data">
+                                    <div className="popular-copy-trades-data-person-container">
+                                      <Image
+                                        className="popular-copy-trades-data-person"
+                                        src={PersonRoundedSigninIcon}
+                                      />
+                                    </div>
+                                    <div
+                                      style={{
+                                        margin: "0rem 1rem",
+                                      }}
+                                      className="inter-display-medium f-s-13 popular-copy-trades-data-address"
+                                      onClick={() => {
+                                        if (curCopyTradeData.address) {
+                                          let slink = curCopyTradeData.address;
+                                          let shareLink =
+                                            BASE_URL_S3 +
+                                            "home/" +
+                                            slink +
+                                            "?noPopup=true";
+
+                                          CopyTradePopularAccountWalletClicked({
+                                            session_id: getCurrentUser().id,
+                                            email_address:
+                                              getCurrentUser().email,
+                                            wallet: slink,
+                                          });
+                                          window.open(
+                                            shareLink,
+                                            "_blank",
+                                            "noreferrer"
+                                          );
+                                        }
+                                      }}
+                                    >
+                                      {TruncateText(curCopyTradeData.address)}
+                                    </div>
+                                    <div className="inter-display-medium f-s-13 popular-copy-trades-data-nametag dotDotText">
+                                      {curCopyTradeData.nameTag}
+                                    </div>
+                                    <div
+                                      style={{
+                                        marginLeft: "1rem",
+                                        whiteSpace: "nowrap",
+                                      }}
+                                      className="inter-display-medium f-s-13 "
+                                    >
+                                      {CurrencyType(false) +
+                                        numToCurrency(
+                                          curCopyTradeData.netWorth
+                                        )}
+                                    </div>
+                                  </div>
+                                  <div
+                                    onClick={() => {
+                                      if (curCopyTradeData.address) {
+                                        // this.setState(
+                                        //   {
+                                        //     prefillCopyAddress:
+                                        //       curCopyTradeData.address,
+                                        //   },
+                                        //   () => {
+                                        //     this.props.showAddCopyTradeAddress();
+                                        //   }
+                                        // );
+                                        this.addPrefillCopyAddressLocal(
+                                          curCopyTradeData.address
+                                        );
+
+                                        CopyTradePopularAccountCopyClicked({
+                                          session_id: getCurrentUser().id,
+                                          email_address: getCurrentUser().email,
+                                          wallet: curCopyTradeData.address,
+                                        });
+                                      }
+                                    }}
+                                    className="inter-display-medium f-s-13 popular-copy-trades-button"
+                                  >
+                                    Copy
+                                  </div>
+                                </div>
+                              );
+                            }
+                          )
+                        : null}
+                    </div>
+
+                    <div className="available-copy-trades-navigator">
+                      <div className="available-copy-trades-navigator-circles-container">
+                        {this.props.popularAccountsList &&
+                        this.props.popularAccountsList.length > 1
+                          ? this.props.popularAccountsList.map(
+                              (resCircle, resCircleIndex) => {
+                                return (
+                                  <div
+                                    style={{
+                                      opacity:
+                                        resCircleIndex ===
+                                        this.props.currentPopularCirclePosition
+                                          ? 1
+                                          : 0.2,
+                                      marginLeft:
+                                        resCircleIndex === 0 ? 0 : "0.5rem",
+                                    }}
+                                    onClick={() => {
+                                      this.props.goToScrollPositionPopular(
+                                        resCircleIndex
+                                      );
+                                    }}
+                                    className="available-copy-trades-navigator-circle"
+                                  />
+                                );
+                              }
+                            )
+                          : null}
+                      </div>
+                      <div className="available-copy-trades-navigator-arrows">
+                        <Image
+                          style={{
+                            opacity: this.props.isPopularLeftArrowDisabled
+                              ? 0.5
+                              : 1,
+                            cursor: this.props.isPopularLeftArrowDisabled
+                              ? "default"
+                              : "pointer",
+                          }}
+                          onClick={this.props.scrollLeftPopular}
+                          className="availableCopyTradesArrowIcon availableCopyTradesArrowIconLeft"
+                          src={UserCreditScrollLeftArrowIcon}
+                        />
+                        <Image
+                          style={{
+                            opacity: this.props.isPopularRightArrowDisabled
+                              ? 0.5
+                              : 1,
+                            cursor: this.props.isPopularRightArrowDisabled
+                              ? "default"
+                              : "pointer",
+                          }}
+                          onClick={this.props.scrollRightPopular}
+                          className="availableCopyTradesArrowIcon"
+                          src={UserCreditScrollRightArrowIcon}
+                        />
+                      </div>
+                    </div>
+                  </>
+                ) : null}
               </div>
-              {this.props.isPopularAccountsBlockOpen ? (
-                <>
-                  <div
-                    id="popularCopyTradeScrollBody"
-                    className="actpacc-scroll-body"
-                    onScroll={this.props.handlePopularTradeScroll}
-                  >
-                    {this.props.popularAccountsList &&
-                    this.props.popularAccountsList.length > 0
-                      ? this.props.popularAccountsList.map(
-                          (curCopyTradeData, index) => {
+              <div className="available-copy-trades-popular-accounts available-copy-trades-popular-accounts-second">
+                <div
+                  className={`actpacc-header ${
+                    this.props.isAvailableCopyTradeBlockOpen
+                      ? "actpacc-header-open"
+                      : ""
+                  }`}
+                  onClick={this.props.toggleAvailableCopyTradeBlockOpen}
+                >
+                  <div className="actpacc-header-title">
+                    <Image
+                      src={EmultionSidebarIcon}
+                      className="actpacc-header-icon"
+                    />
+                    <div className="inter-display-medium f-s-16">
+                      Available Copy Trades
+                    </div>
+                  </div>
+                  <Image
+                    src={UserCreditScrollTopArrowIcon}
+                    className={`actpacc-arrow-icon ${
+                      this.props.isAvailableCopyTradeBlockOpen
+                        ? ""
+                        : "actpacc-arrow-icon-reversed"
+                    }`}
+                  />
+                </div>
+                {this.props.isAvailableCopyTradeBlockOpen ? (
+                  <>
+                    <div
+                      id="availableCopyTradeScrollBody"
+                      className="actpacc-scroll-body"
+                      onScroll={this.props.handleAvailableTradeScroll}
+                    >
+                      {this.props.copyTradesAvailableLocal &&
+                      this.props.copyTradesAvailableLocal.length > 0 ? (
+                        this.props.copyTradesAvailableLocal.map(
+                          (curTradeData, index) => {
                             return (
-                              <div className="popular-copy-trades">
-                                <div className="popular-copy-trades-data">
-                                  <div className="popular-copy-trades-data-person-container">
+                              <div className="available-copy-trades">
+                                <div className="available-copy-trades-mobile-data-container">
+                                  <div className="available-copy-trades-content-container">
+                                    <div
+                                      onClick={() => {
+                                        this.props.goToNewAddress(
+                                          curTradeData.copyAddress
+                                        );
+                                      }}
+                                      className="inter-display-medium f-s-16 available-copy-trades-address"
+                                    >
+                                      {TruncateText(curTradeData.copyAddress)}
+                                    </div>
+                                  </div>
+                                  <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container ">
+                                    Swap {numToCurrency(curTradeData.valueFrom)}{" "}
+                                    {curTradeData.assetFrom} for{" "}
+                                    {numToCurrency(curTradeData.valueTo)}{" "}
+                                    {curTradeData.assetTo}
+                                    ? 
+                                  </div>
+                                </div>
+                                <div className="available-copy-trades-button-container">
+                                  <div
+                                    className="available-copy-trades-button"
+                                    onClick={() => {
+                                      this.props.showExecuteCopyTrade(
+                                        curTradeData.id
+                                      );
+                                    }}
+                                  >
                                     <Image
-                                      className="popular-copy-trades-data-person"
-                                      src={PersonRoundedSigninIcon}
+                                      className="available-copy-trades-button-icons"
+                                      src={AvailableCopyTradeCheckIcon}
                                     />
                                   </div>
                                   <div
-                                    style={{
-                                      margin: "0rem 1rem",
-                                    }}
-                                    className="inter-display-medium f-s-13 popular-copy-trades-data-address"
+                                    className="available-copy-trades-button"
                                     onClick={() => {
-                                      if (curCopyTradeData.address) {
-                                        let slink = curCopyTradeData.address;
-                                        let shareLink =
-                                          BASE_URL_S3 +
-                                          "home/" +
-                                          slink +
-                                          "?noPopup=true";
-
-                                        CopyTradePopularAccountWalletClicked({
-                                          session_id: getCurrentUser().id,
-                                          email_address: getCurrentUser().email,
-                                          wallet: slink,
-                                        });
-                                        window.open(
-                                          shareLink,
-                                          "_blank",
-                                          "noreferrer"
-                                        );
-                                      }
+                                      this.props.openRejectModal(
+                                        curTradeData.id
+                                      );
                                     }}
-                                  >
-                                    {TruncateText(curCopyTradeData.address)}
-                                  </div>
-                                  <div className="inter-display-medium f-s-13 popular-copy-trades-data-nametag dotDotText">
-                                    {curCopyTradeData.nameTag}
-                                  </div>
-                                  <div
                                     style={{
                                       marginLeft: "1rem",
-                                      whiteSpace: "nowrap",
                                     }}
-                                    className="inter-display-medium f-s-13 "
                                   >
-                                    {CurrencyType(false) +
-                                      numToCurrency(curCopyTradeData.netWorth)}
+                                    <Image
+                                      className="available-copy-trades-button-icons"
+                                      src={AvailableCopyTradeCrossIcon}
+                                    />
                                   </div>
-                                </div>
-                                <div
-                                  onClick={() => {
-                                    if (curCopyTradeData.address) {
-                                      // this.setState(
-                                      //   {
-                                      //     prefillCopyAddress:
-                                      //       curCopyTradeData.address,
-                                      //   },
-                                      //   () => {
-                                      //     this.props.showAddCopyTradeAddress();
-                                      //   }
-                                      // );
-                                      this.addPrefillCopyAddressLocal(
-                                        curCopyTradeData.address
-                                      );
-
-                                      CopyTradePopularAccountCopyClicked({
-                                        session_id: getCurrentUser().id,
-                                        email_address: getCurrentUser().email,
-                                        wallet: curCopyTradeData.address,
-                                      });
-                                    }
-                                  }}
-                                  className="inter-display-medium f-s-13 popular-copy-trades-button"
-                                >
-                                  Copy
                                 </div>
                               </div>
                             );
                           }
                         )
-                      : null}
-                  </div>
+                      ) : (
+                        <div className="actpacc-scroll-body-no-data inter-display-medium f-s-14 lh-19 ">
+                          Select a wallet above to copy trade to get started
+                        </div>
+                      )}
+                    </div>
 
-                  <div className="available-copy-trades-navigator">
-                    <div className="available-copy-trades-navigator-circles-container">
-                      {this.props.popularAccountsList &&
-                      this.props.popularAccountsList.length > 1
-                        ? this.props.popularAccountsList.map(
-                            (resCircle, resCircleIndex) => {
-                              return (
-                                <div
-                                  style={{
-                                    opacity:
-                                      resCircleIndex ===
-                                      this.props.currentPopularCirclePosition
-                                        ? 1
-                                        : 0.2,
-                                    marginLeft:
-                                      resCircleIndex === 0 ? 0 : "0.5rem",
-                                  }}
-                                  onClick={() => {
-                                    this.props.goToScrollPositionPopular(
-                                      resCircleIndex
-                                    );
-                                  }}
-                                  className="available-copy-trades-navigator-circle"
-                                />
-                              );
-                            }
-                          )
-                        : null}
-                    </div>
-                    <div className="available-copy-trades-navigator-arrows">
-                      <Image
-                        style={{
-                          opacity: this.props.isPopularLeftArrowDisabled
-                            ? 0.5
-                            : 1,
-                          cursor: this.props.isPopularLeftArrowDisabled
-                            ? "default"
-                            : "pointer",
-                        }}
-                        onClick={this.props.scrollLeftPopular}
-                        className="availableCopyTradesArrowIcon availableCopyTradesArrowIconLeft"
-                        src={UserCreditScrollLeftArrowIcon}
-                      />
-                      <Image
-                        style={{
-                          opacity: this.props.isPopularRightArrowDisabled
-                            ? 0.5
-                            : 1,
-                          cursor: this.props.isPopularRightArrowDisabled
-                            ? "default"
-                            : "pointer",
-                        }}
-                        onClick={this.props.scrollRightPopular}
-                        className="availableCopyTradesArrowIcon"
-                        src={UserCreditScrollRightArrowIcon}
-                      />
-                    </div>
-                  </div>
-                </>
-              ) : null}
-            </div>
-            <div className="available-copy-trades-popular-accounts available-copy-trades-popular-accounts-second">
-              <div
-                className={`actpacc-header ${
-                  this.props.isAvailableCopyTradeBlockOpen
-                    ? "actpacc-header-open"
-                    : ""
-                }`}
-                onClick={this.props.toggleAvailableCopyTradeBlockOpen}
-              >
-                <div className="actpacc-header-title">
-                  <Image
-                    src={EmultionSidebarIcon}
-                    className="actpacc-header-icon"
-                  />
-                  <div className="inter-display-medium f-s-16">
-                    Available Copy Trades
-                  </div>
-                </div>
-                <Image
-                  src={UserCreditScrollTopArrowIcon}
-                  className={`actpacc-arrow-icon ${
-                    this.props.isAvailableCopyTradeBlockOpen
-                      ? ""
-                      : "actpacc-arrow-icon-reversed"
-                  }`}
-                />
-              </div>
-              {this.props.isAvailableCopyTradeBlockOpen ? (
-                <>
-                  <div
-                    id="availableCopyTradeScrollBody"
-                    className="actpacc-scroll-body"
-                    onScroll={this.props.handleAvailableTradeScroll}
-                  >
-                    {this.props.copyTradesAvailableLocal &&
-                    this.props.copyTradesAvailableLocal.length > 0 ? (
-                      this.props.copyTradesAvailableLocal.map(
-                        (curTradeData, index) => {
-                          return (
-                            <div className="available-copy-trades">
-                              <div className="available-copy-trades-mobile-data-container">
-                                <div className="available-copy-trades-content-container">
+                    <div className="available-copy-trades-navigator">
+                      <div className="available-copy-trades-navigator-circles-container">
+                        {this.props.copyTradesAvailableLocal &&
+                        this.props.copyTradesAvailableLocal.length > 1
+                          ? this.props.copyTradesAvailableLocal.map(
+                              (resCircle, resCircleIndex) => {
+                                return (
                                   <div
+                                    style={{
+                                      opacity:
+                                        resCircleIndex ===
+                                        this.props.currentCirclePosition
+                                          ? 1
+                                          : 0.2,
+                                      marginLeft:
+                                        resCircleIndex === 0 ? 0 : "0.5rem",
+                                    }}
                                     onClick={() => {
-                                      this.props.goToNewAddress(
-                                        curTradeData.copyAddress
+                                      this.props.goToScrollPosition(
+                                        resCircleIndex
                                       );
                                     }}
-                                    className="inter-display-medium f-s-16 available-copy-trades-address"
-                                  >
-                                    {TruncateText(curTradeData.copyAddress)}
-                                  </div>
-                                </div>
-                                <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container ">
-                                  Swap {numToCurrency(curTradeData.valueFrom)}{" "}
-                                  {curTradeData.assetFrom} for{" "}
-                                  {numToCurrency(curTradeData.valueTo)}{" "}
-                                  {curTradeData.assetTo}
-                                  ? 
-                                </div>
-                              </div>
-                              <div className="available-copy-trades-button-container">
-                                <div
-                                  className="available-copy-trades-button"
-                                  onClick={() => {
-                                    this.props.showExecuteCopyTrade(
-                                      curTradeData.id
-                                    );
-                                  }}
-                                >
-                                  <Image
-                                    className="available-copy-trades-button-icons"
-                                    src={AvailableCopyTradeCheckIcon}
+                                    className="available-copy-trades-navigator-circle"
                                   />
-                                </div>
-                                <div
-                                  className="available-copy-trades-button"
-                                  onClick={() => {
-                                    this.props.openRejectModal(curTradeData.id);
-                                  }}
-                                  style={{
-                                    marginLeft: "1rem",
-                                  }}
-                                >
-                                  <Image
-                                    className="available-copy-trades-button-icons"
-                                    src={AvailableCopyTradeCrossIcon}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        }
-                      )
-                    ) : (
-                      <div className="actpacc-scroll-body-no-data inter-display-medium f-s-14 lh-19 ">
-                        Select a wallet above to copy trade to get started
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="available-copy-trades-navigator">
-                    <div className="available-copy-trades-navigator-circles-container">
-                      {this.props.copyTradesAvailableLocal &&
-                      this.props.copyTradesAvailableLocal.length > 1
-                        ? this.props.copyTradesAvailableLocal.map(
-                            (resCircle, resCircleIndex) => {
+                                );
+                              }
+                            )
+                          : [...Array(5)].map((resCircle, resCircleIndex) => {
                               return (
                                 <div
                                   style={{
-                                    opacity:
-                                      resCircleIndex ===
-                                      this.props.currentCirclePosition
-                                        ? 1
-                                        : 0.2,
+                                    opacity: 0.2,
                                     marginLeft:
                                       resCircleIndex === 0 ? 0 : "0.5rem",
-                                  }}
-                                  onClick={() => {
-                                    this.props.goToScrollPosition(
-                                      resCircleIndex
-                                    );
                                   }}
                                   className="available-copy-trades-navigator-circle"
                                 />
                               );
-                            }
-                          )
-                        : null}
+                            })}
+                      </div>
+                      <div className="available-copy-trades-navigator-arrows">
+                        <Image
+                          style={{
+                            opacity: this.props.isLeftArrowDisabled ? 0.5 : 1,
+                            cursor: this.props.isLeftArrowDisabled
+                              ? "default"
+                              : "pointer",
+                          }}
+                          onClick={this.props.scrollLeft}
+                          className="availableCopyTradesArrowIcon availableCopyTradesArrowIconLeft"
+                          src={UserCreditScrollLeftArrowIcon}
+                        />
+                        <Image
+                          style={{
+                            opacity: this.props.isRightArrowDisabled ? 0.5 : 1,
+                            cursor: this.props.isRightArrowDisabled
+                              ? "default"
+                              : "pointer",
+                          }}
+                          onClick={this.props.scrollRight}
+                          className="availableCopyTradesArrowIcon"
+                          src={UserCreditScrollRightArrowIcon}
+                        />
+                      </div>
                     </div>
-                    <div className="available-copy-trades-navigator-arrows">
-                      <Image
-                        style={{
-                          opacity: this.props.isLeftArrowDisabled ? 0.5 : 1,
-                          cursor: this.props.isLeftArrowDisabled
-                            ? "default"
-                            : "pointer",
-                        }}
-                        onClick={this.scrollLeft}
-                        className="availableCopyTradesArrowIcon availableCopyTradesArrowIconLeft"
-                        src={UserCreditScrollLeftArrowIcon}
-                      />
-                      <Image
-                        style={{
-                          opacity: this.props.isRightArrowDisabled ? 0.5 : 1,
-                          cursor: this.props.isRightArrowDisabled
-                            ? "default"
-                            : "pointer",
-                        }}
-                        onClick={this.props.scrollRight}
-                        className="availableCopyTradesArrowIcon"
-                        src={UserCreditScrollRightArrowIcon}
-                      />
-                    </div>
-                  </div>
-                </>
-              ) : null}
+                  </>
+                ) : null}
+              </div>
             </div>
-          </div>
-        ) : null}
-        <div
-          style={{
-            backgroundColor: "var(--cardBackgroud)",
-            borderRadius: "1.2rem",
-            padding: "0rem",
-            paddingBottom: "0.5rem",
-          }}
-        >
-          <div
-            style={{
-              overflowX: "scroll",
-              padding: "0rem 0.5rem",
-              paddingTop: "0.5rem",
-            }}
-            className={`freezeTheFirstColumn newHomeTableContainer  ${
-              this.props.emulationsLoading || this.props.tableData < 1
-                ? ""
-                : "tableWatermarkOverlay"
-            }`}
-          >
-            <TransactionTable
-              noSubtitleBottomPadding
-              disableOnLoading
-              isMiniversion
-              showHeaderOnEmpty
-              message="Select a wallet above to copy trade to get started."
-              noDataImage={NoCopyTradeTableIcon}
-              tableData={this.props.tableData}
-              columnList={this.props.columnData}
-              headerHeight={60}
-              isArrow={true}
-              isLoading={this.props.emulationsLoading}
-              isAnalytics="average cost basis"
-              fakeWatermark
-              xAxisScrollable
-              yAxisScrollable
-              xAxisScrollableColumnWidth={3}
-            />
-          </div>
-        </div>
+            <div
+              style={{
+                backgroundColor: "var(--cardBackgroud)",
+                borderRadius: "1.2rem",
+                padding: "0rem",
+                paddingBottom: "0.5rem",
+              }}
+            >
+              <div
+                style={{
+                  overflowX: "scroll",
+                  padding: "0rem 0.5rem",
+                  paddingTop: "0.5rem",
+                }}
+                className={`freezeTheFirstColumn newHomeTableContainer  ${
+                  this.props.emulationsLoading || this.props.tableData < 1
+                    ? ""
+                    : "tableWatermarkOverlay"
+                }`}
+              >
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  disableOnLoading
+                  isMiniversion
+                  showHeaderOnEmpty
+                  message="Select a wallet above to copy trade to get started."
+                  noDataImage={NoCopyTradeTableIcon}
+                  tableData={this.props.tableData}
+                  columnList={this.props.columnData}
+                  headerHeight={60}
+                  isArrow={true}
+                  isLoading={this.props.emulationsLoading}
+                  isAnalytics="average cost basis"
+                  fakeWatermark
+                  xAxisScrollable
+                  yAxisScrollable
+                  xAxisScrollableColumnWidth={3}
+                />
+              </div>
+            </div>
+          </>
+        )}
       </div>
     );
   }

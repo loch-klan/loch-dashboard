@@ -83,29 +83,29 @@ class Emulations extends Component {
       passedCTCopyTradeAmount: "",
       popularAccountsList: [
         {
-          address: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-          nameTag: "DefiWhaleX",
-          netWorth: 24847285.518809594,
+          address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
+          nameTag: "@smartestmoney_",
+          netWorth: 36567693.050387464,
         },
         {
-          address: "0x47441bD9fb3441370Cb5b6C4684A0104353AEC66",
-          nameTag: "powerstake_eth",
-          netWorth: 5439484.6517844545,
+          address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
+          nameTag: "@Titanium_32",
+          netWorth: 30361002.434807304,
         },
         {
-          address: "0xbDfA4f4492dD7b7Cf211209C4791AF8d52BF5c50",
-          nameTag: "bizyugo",
-          netWorth: 3038905.48807547,
+          address: "0x6555e1CC97d3cbA6eAddebBCD7Ca51d75771e0B8",
+          nameTag: "@winharper",
+          netWorth: 19306221.746918082,
         },
         {
-          address: "0x0172e05392aba65366C4dbBb70D958BbF43304E4",
-          nameTag: "2011mmmavrodi",
-          netWorth: 2429691.923018726,
+          address: "0x4EE79E19c9c398e364d135F01B25DcCC0473047c",
+          nameTag: "@0xvladilena",
+          netWorth: 18728616.905514523,
         },
         {
-          address: "0x854F1269b659A727a2268AB86FF77CFB30BfB358",
-          nameTag: "sergey69420",
-          netWorth: 547866.785956473,
+          address: "0xB7FA2214c79cAbC24CB270F57D52B83A2a7fEdd8",
+          nameTag: "@PseudonCrypto",
+          netWorth: 8781693.634935401,
         },
       ],
       prefillCopyAddress: undefined,
@@ -352,51 +352,51 @@ class Emulations extends Component {
       this.setState({
         emulationsLoading: false,
         copyTradesLocal: tempEmulationsLocal,
-        copyTradesAvailableLocal: tempEmulationsAvailableLocal,
-        // copyTradesAvailableLocal: [
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        // ],
+        // copyTradesAvailableLocal: tempEmulationsAvailableLocal,
+        copyTradesAvailableLocal: [
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+        ],
       });
     }
   };
@@ -719,8 +719,18 @@ class Emulations extends Component {
     var totalScrollPossible = document.getElementById(
       "popularCopyTradeScrollBody"
     ).scrollWidth;
+    let newPos = 0;
+    if (mobileCheck()) {
+      newPos = myElementCurrentScrollPos + myElementWidth;
+    } else {
+      let tempPositionHolder = this.state.currentPopularCirclePosition;
 
-    const newPos = myElementCurrentScrollPos + myElementWidth;
+      const nextBlock = document.getElementById(
+        `copyTradePopularAccountNumber${tempPositionHolder}`
+      )?.clientWidth;
+
+      newPos = myElementCurrentScrollPos + nextBlock;
+    }
     myElement.scroll({
       left: newPos,
       behavior: "smooth",
@@ -756,8 +766,20 @@ class Emulations extends Component {
     var myElementCurrentScrollPos = document.getElementById(
       "popularCopyTradeScrollBody"
     ).scrollLeft;
-    const newPos = myElementCurrentScrollPos - myElementWidth;
+    let newPos = 0;
+    if (mobileCheck()) {
+      newPos = myElementCurrentScrollPos - myElementWidth;
+    } else {
+      let tempPositionHolder = this.state.currentPopularCirclePosition;
+      if (tempPositionHolder === this.state.popularAccountsList.length - 1) {
+        tempPositionHolder = tempPositionHolder - 1;
+      }
 
+      const nextBlock = document.getElementById(
+        `copyTradePopularAccountNumber${tempPositionHolder}`
+      )?.clientWidth;
+      newPos = myElementCurrentScrollPos - nextBlock;
+    }
     myElement.scroll({
       left: newPos,
       behavior: "smooth",
@@ -780,13 +802,28 @@ class Emulations extends Component {
   };
   goToScrollPositionPopular = (blockPos) => {
     var myElement = document.getElementById("popularCopyTradeScrollBody");
-    var myElementWidth = document.getElementById(
-      "popularCopyTradeScrollBody"
-    )?.clientWidth;
-    myElement.scroll({
-      left: myElementWidth * blockPos,
-      behavior: "smooth",
-    });
+    if (mobileCheck()) {
+      var myElementWidth = document.getElementById(
+        "popularCopyTradeScrollBody"
+      )?.clientWidth;
+      myElement.scroll({
+        left: myElementWidth * blockPos,
+        behavior: "smooth",
+      });
+    } else {
+      let totalWidthYet = 0;
+      for (let index = 0; index < blockPos; index++) {
+        const currElementWidth = document.getElementById(
+          `copyTradePopularAccountNumber${index}`
+        )?.clientWidth;
+
+        totalWidthYet = totalWidthYet + currElementWidth;
+      }
+      myElement.scroll({
+        left: totalWidthYet,
+        behavior: "smooth",
+      });
+    }
   };
   handlePopularTradeScroll = () => {
     if (this.timeout) {
@@ -802,8 +839,27 @@ class Emulations extends Component {
       var totalScrollPossible = document.getElementById(
         "popularCopyTradeScrollBody"
       ).scrollWidth;
+      let currentCirPos = 0;
+      if (mobileCheck()) {
+        currentCirPos = newPos / myElementWidth;
+      } else {
+        let totalWidthYet = 0;
+        for (
+          let index = 0;
+          index < this.state.popularAccountsList.length;
+          index++
+        ) {
+          const currElementWidth = document.getElementById(
+            `copyTradePopularAccountNumber${index}`
+          )?.clientWidth;
+          if (totalWidthYet - 10 <= newPos && totalWidthYet + 10 >= newPos) {
+            currentCirPos = index;
+            break;
+          }
+          totalWidthYet = totalWidthYet + currElementWidth;
+        }
+      }
 
-      let currentCirPos = newPos / myElementWidth;
       this.setState({
         currentPopularCirclePosition: currentCirPos,
       });
@@ -1233,7 +1289,7 @@ class Emulations extends Component {
                     <div className="actpacc-header-title">
                       <Image
                         src={TrendingFireIcon}
-                        className="actpacc-header-icon"
+                        className="actpacc-header-icon actpacc-header-icon-more-margin"
                       />
                       <div className="inter-display-medium f-s-16">
                         Popular Accounts to Copy
@@ -1260,83 +1316,101 @@ class Emulations extends Component {
                           this.state.popularAccountsList.map(
                             (curCopyTradeData, index) => {
                               return (
-                                <div className="popular-copy-trades">
-                                  <div className="popular-copy-trades-data">
-                                    <div className="popular-copy-trades-data-person-container">
-                                      <Image
-                                        className="popular-copy-trades-data-person"
-                                        src={PersonRoundedSigninIcon}
-                                      />
+                                <div
+                                  style={{
+                                    minWidth:
+                                      index ===
+                                      this.state.popularAccountsList.length - 1
+                                        ? "100%"
+                                        : "",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "flex-start",
+                                  }}
+                                  id={`copyTradePopularAccountNumber${index}`}
+                                >
+                                  <div className="popular-copy-trades">
+                                    <div className="popular-copy-trades-data">
+                                      <div className="popular-copy-trades-data-person-container">
+                                        <Image
+                                          className="popular-copy-trades-data-person"
+                                          src={PersonRoundedSigninIcon}
+                                        />
+                                      </div>
+                                      <div
+                                        style={{
+                                          margin: "0rem 1.3rem",
+                                        }}
+                                        className="inter-display-medium f-s-14 popular-copy-trades-data-address"
+                                        onClick={() => {
+                                          if (curCopyTradeData.address) {
+                                            let slink =
+                                              curCopyTradeData.address;
+                                            let shareLink =
+                                              BASE_URL_S3 +
+                                              "home/" +
+                                              slink +
+                                              "?noPopup=true";
+
+                                            CopyTradePopularAccountWalletClicked(
+                                              {
+                                                session_id: getCurrentUser().id,
+                                                email_address:
+                                                  getCurrentUser().email,
+                                                wallet: slink,
+                                              }
+                                            );
+                                            window.open(
+                                              shareLink,
+                                              "_blank",
+                                              "noreferrer"
+                                            );
+                                          }
+                                        }}
+                                      >
+                                        {TruncateText(curCopyTradeData.address)}
+                                      </div>
+                                      <div className="inter-display-medium f-s-14 popular-copy-trades-data-nametag">
+                                        {curCopyTradeData.nameTag}
+                                      </div>
+                                      <div
+                                        style={{
+                                          marginLeft: "1.3rem",
+                                          whiteSpace: "nowrap",
+                                        }}
+                                        className="inter-display-medium f-s-14 "
+                                      >
+                                        {CurrencyType(false) +
+                                          numToCurrency(
+                                            curCopyTradeData.netWorth
+                                          )}
+                                      </div>
                                     </div>
                                     <div
-                                      style={{
-                                        margin: "0rem 1.3rem",
-                                      }}
-                                      className="inter-display-medium f-s-14 popular-copy-trades-data-address"
                                       onClick={() => {
                                         if (curCopyTradeData.address) {
-                                          let slink = curCopyTradeData.address;
-                                          let shareLink =
-                                            BASE_URL_S3 +
-                                            "home/" +
-                                            slink +
-                                            "?noPopup=true";
+                                          this.setState(
+                                            {
+                                              prefillCopyAddress:
+                                                curCopyTradeData.address,
+                                            },
+                                            () => {
+                                              this.showAddCopyTradeAddress();
+                                            }
+                                          );
 
-                                          CopyTradePopularAccountWalletClicked({
+                                          CopyTradePopularAccountCopyClicked({
                                             session_id: getCurrentUser().id,
                                             email_address:
                                               getCurrentUser().email,
-                                            wallet: slink,
+                                            wallet: curCopyTradeData.address,
                                           });
-                                          window.open(
-                                            shareLink,
-                                            "_blank",
-                                            "noreferrer"
-                                          );
                                         }
                                       }}
+                                      className="inter-display-medium f-s-14 popular-copy-trades-button"
                                     >
-                                      {TruncateText(curCopyTradeData.address)}
+                                      Copy
                                     </div>
-                                    <div className="inter-display-medium f-s-14 popular-copy-trades-data-nametag">
-                                      {curCopyTradeData.nameTag}
-                                    </div>
-                                    <div
-                                      style={{
-                                        marginLeft: "1.3rem",
-                                        whiteSpace: "nowrap",
-                                      }}
-                                      className="inter-display-medium f-s-14 "
-                                    >
-                                      {CurrencyType(false) +
-                                        numToCurrency(
-                                          curCopyTradeData.netWorth
-                                        )}
-                                    </div>
-                                  </div>
-                                  <div
-                                    onClick={() => {
-                                      if (curCopyTradeData.address) {
-                                        this.setState(
-                                          {
-                                            prefillCopyAddress:
-                                              curCopyTradeData.address,
-                                          },
-                                          () => {
-                                            this.showAddCopyTradeAddress();
-                                          }
-                                        );
-
-                                        CopyTradePopularAccountCopyClicked({
-                                          session_id: getCurrentUser().id,
-                                          email_address: getCurrentUser().email,
-                                          wallet: curCopyTradeData.address,
-                                        });
-                                      }
-                                    }}
-                                    className="inter-display-medium f-s-14 popular-copy-trades-button"
-                                  >
-                                    Copy
                                   </div>
                                 </div>
                               );
@@ -1351,7 +1425,7 @@ class Emulations extends Component {
 
                       <div className="available-copy-trades-navigator">
                         <div className="available-copy-trades-navigator-circles-container">
-                          {/* {this.state.popularAccountsList &&
+                          {this.state.popularAccountsList &&
                           this.state.popularAccountsList.length > 1
                             ? this.state.popularAccountsList.map(
                                 (resCircle, resCircleIndex) => {
@@ -1377,7 +1451,7 @@ class Emulations extends Component {
                                   );
                                 }
                               )
-                            : null} */}
+                            : null}
                         </div>
                         <div className="available-copy-trades-navigator-arrows">
                           <Image
@@ -1570,7 +1644,7 @@ class Emulations extends Component {
               </div>
             ) : null}
             <div
-              style={{ marginBottom: "2.8rem" }}
+              style={{ marginBottom: "2.8rem", marginTop: "2.5rem" }}
               className="cost-table-section"
             >
               <div style={{ position: "relative" }}>
