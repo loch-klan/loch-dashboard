@@ -352,51 +352,51 @@ class Emulations extends Component {
       this.setState({
         emulationsLoading: false,
         copyTradesLocal: tempEmulationsLocal,
-        // copyTradesAvailableLocal: tempEmulationsAvailableLocal,
-        copyTradesAvailableLocal: [
-          {
-            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-            valueFrom: 500,
-            valueTo: 1000,
-            assetFrom: "ETH",
-            assetTo: "USDT",
-          },
-          {
-            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-            valueFrom: 500,
-            valueTo: 1000,
-            assetFrom: "ETH",
-            assetTo: "USDT",
-          },
-          {
-            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-            valueFrom: 500,
-            valueTo: 1000,
-            assetFrom: "ETH",
-            assetTo: "USDT",
-          },
-          {
-            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-            valueFrom: 500,
-            valueTo: 1000,
-            assetFrom: "ETH",
-            assetTo: "USDT",
-          },
-          {
-            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-            valueFrom: 500,
-            valueTo: 1000,
-            assetFrom: "ETH",
-            assetTo: "USDT",
-          },
-          {
-            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-            valueFrom: 500,
-            valueTo: 1000,
-            assetFrom: "ETH",
-            assetTo: "USDT",
-          },
-        ],
+        copyTradesAvailableLocal: tempEmulationsAvailableLocal,
+        // copyTradesAvailableLocal: [
+        //   {
+        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+        //     valueFrom: 500,
+        //     valueTo: 1000,
+        //     assetFrom: "ETH",
+        //     assetTo: "USDT",
+        //   },
+        //   {
+        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+        //     valueFrom: 500,
+        //     valueTo: 1000,
+        //     assetFrom: "ETH",
+        //     assetTo: "USDT",
+        //   },
+        //   {
+        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+        //     valueFrom: 500,
+        //     valueTo: 1000,
+        //     assetFrom: "ETH",
+        //     assetTo: "USDT",
+        //   },
+        //   {
+        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+        //     valueFrom: 500,
+        //     valueTo: 1000,
+        //     assetFrom: "ETH",
+        //     assetTo: "USDT",
+        //   },
+        //   {
+        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+        //     valueFrom: 500,
+        //     valueTo: 1000,
+        //     assetFrom: "ETH",
+        //     assetTo: "USDT",
+        //   },
+        //   {
+        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+        //     valueFrom: 500,
+        //     valueTo: 1000,
+        //     assetFrom: "ETH",
+        //     assetTo: "USDT",
+        //   },
+        // ],
       });
     }
   };
