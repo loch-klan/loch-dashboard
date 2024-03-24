@@ -2807,10 +2807,13 @@ input {
   img {
     filter: var(--invertColor) !important;
   }
+  transition-duration: 0ms !important;
   &:hover {
     background-color: var(--mainButtonBg) !important;
     color: var(--primaryTextColor) !important;
-
+    border-color: var(--mainButtonBg) !important;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
     div {
       color: var(--primaryTextColor) !important;
     }
@@ -3397,12 +3400,12 @@ input {
   input {
     border: 1px solid var(--inputBorder) !important;
     &::placeholder {
-      color: var(--inputBorder) !important;
+      color: var(--inputPlaceHolder) !important;
     }
     &:hover {
       border: 1px solid var(--inputBorderHover) !important;
       &::placeholder {
-        color: var(--inputBorder) !important;
+        color: var(--inputPlaceHolder) !important;
       }
     }
   }
@@ -3599,11 +3602,17 @@ input {
       .leave-modal-btn-section {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
+        column-gap: 1rem;
         .secondary-btn {
           margin-right: 0rem !important;
         }
       }
     }
+  }
+}
+.addCopyTradeInput {
+  &::placeholder {
+    color: var(--inputPlaceHolder) !important;
   }
 }

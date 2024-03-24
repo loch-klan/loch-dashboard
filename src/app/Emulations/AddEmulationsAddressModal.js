@@ -10,9 +10,9 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { detectNameTag } from "../common/Api";
 // import { addAddressToWatchList } from "./redux/WatchListApi";
 import validator from "validator";
-import { addCopyTrade } from "./EmulationsApi";
 import { CopyTradeAdded } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { addCopyTrade } from "./EmulationsApi";
 
 class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {
@@ -75,6 +75,15 @@ class AddEmulationsAddressModal extends BaseReactComponent {
       this.setState({
         notificationEmailAddress: userDetails.email,
       });
+    }
+    if (this.props.prefillCopyAddress) {
+      const tempCollector = {
+        target: {
+          value: this.props.prefillCopyAddress,
+          name: "wallet2",
+        },
+      };
+      this.handleOnchange(tempCollector);
     }
   }
   FocusInInput = (e) => {
@@ -326,35 +335,59 @@ class AddEmulationsAddressModal extends BaseReactComponent {
   };
 
   btnClickFunctionPass = () => {
-    let data = new URLSearchParams();
-    let tempAdd = "";
-    if (this.state.walletInput[1].address) {
-      tempAdd = this.state.walletInput[1].address;
-    } else if (this.state.walletInput[1].apiAddress) {
-      tempAdd = this.state.walletInput[1].apiAddress;
-    }
-    data.append("deposit", this.state.copyTradeAmount);
-    data.append(
-      "email",
-      this.state.notificationEmailAddress
-        ? this.state.notificationEmailAddress.toLowerCase()
-        : ""
-    );
-    data.append("copy_address", tempAdd);
+    if (
+      this.props.paymentStatusLocal === "UNPAID" ||
+      this.props.paymentStatusLocal === "EXPIRED"
+    ) {
+      let emailHolder = "";
+      if (this.state.notificationEmailAddress) {
+        emailHolder = this.state.notificationEmailAddress.toLowerCase();
+      }
+      let walletHolder = "";
+      if (
+        this.state.walletInput[1].address ||
+        this.state.walletInput[1].apiAddress
+      ) {
+        walletHolder =
+          this.state.walletInput[1].address ||
+          this.state.walletInput[1].apiAddress;
+      }
+      let amountHolder = 0;
+      if (this.state.copyTradeAmount) {
+        amountHolder = this.state.copyTradeAmount;
+      }
+      this.props.openPayModal(emailHolder, walletHolder, amountHolder);
+    } else {
+      let data = new URLSearchParams();
+      let tempAdd = "";
+      if (this.state.walletInput[1].address) {
+        tempAdd = this.state.walletInput[1].address;
+      } else if (this.state.walletInput[1].apiAddress) {
+        tempAdd = this.state.walletInput[1].apiAddress;
+      }
+      data.append("deposit", this.state.copyTradeAmount);
+      data.append(
+        "email",
+        this.state.notificationEmailAddress
+          ? this.state.notificationEmailAddress.toLowerCase()
+          : ""
+      );
+      data.append("copy_address", tempAdd);
+      this.setState({
+        loadAddBtn: true,
+      });
+      CopyTradeAdded({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        copied_wallet: tempAdd,
+        amount: this.state.copyTradeAmount,
+        notification_email: this.state.notificationEmailAddress
+          ? this.state.notificationEmailAddress.toLowerCase()
+          : "",
+      });
 
-    this.setState({
-      loadAddBtn: true,
-    });
-    CopyTradeAdded({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      copied_wallet: tempAdd,
-      amount: this.state.copyTradeAmount,
-      notification_email: this.state.notificationEmailAddress
-        ? this.state.notificationEmailAddress.toLowerCase()
-        : "",
-    });
-    this.props.addCopyTrade(data, this.hideModal, this.resetBtn);
+      this.props.addCopyTrade(data, this.hideModal, this.resetBtn);
+    }
   };
   resetBtn = () => {
     this.setState({
@@ -457,7 +490,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                                   }
                                   placeholder="Paste any wallet address or ENS here"
                                   // className='inter-display-regular f-s-16 lh-20'
-                                  className={`inter-display-regular f-s-16 lh-20 awInput`}
+                                  className={`inter-display-regular f-s-16 lh-20 awInput addCopyTradeInput`}
                                   onChange={(e) => this.handleOnchange(e)}
                                   id={elem.id}
                                   style={{
@@ -605,7 +638,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                           <input
                             value={this.state.notificationEmailAddress}
                             placeholder="Your email address"
-                            className={`inter-display-regular f-s-16 lh-20 awInput`}
+                            className={`inter-display-regular f-s-16 lh-20 awInput addCopyTradeInput`}
                             onChange={this.handleOnEmailChange}
                             autoComplete="off"
                             onKeyDown={this.handleKeyDown}
@@ -643,7 +676,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                                 : ""
                             }
                             placeholder="$0"
-                            className={`inter-display-regular f-s-16 lh-20 awInput`}
+                            className={`inter-display-regular f-s-16 lh-20 awInput addCopyTradeInput`}
                             onChange={this.handleOnAmountChange}
                             autoComplete="off"
                             onKeyDown={this.handleKeyDown}

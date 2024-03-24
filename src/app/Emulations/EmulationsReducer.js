@@ -1,6 +1,6 @@
 import { GET_EMULATION_DATA } from "./EmulationsActionTypes";
 
-const INITIAL_STATE = [];
+const INITIAL_STATE = {};
 
 export const EmulationsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
