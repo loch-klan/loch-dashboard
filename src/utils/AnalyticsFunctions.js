@@ -6822,3 +6822,45 @@ export const DarkModeDefaltView = ({ mode, isMobile = false }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Top accounts: Intellignece: Netflows: click to show breakdown");
 };
+export const LochPointsSignUpPopupEmailAdded = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Loch Credit Points: sign up pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const LochPointsSignInPopupEmailAdded = ({
+  session_id,
+  email_added,
+}) => {
+  const event_name = "Loch Credit Points: sign in pop up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_added,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const LochPointsSignInPopupEmailVerified = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Loch Credit Points: sign in pop up: email verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const LochPointsLoginModalOpen = ({ session_id, email_address }) => {
+  const event_name = "Loch Credit Points: sign in pop up: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};

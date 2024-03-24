@@ -47,6 +47,7 @@ import {
   CurrencyType,
   TruncateText,
   amountFormat,
+  loadingAnimation,
   mobileCheck,
   numToCurrency,
   scrollToTop,
@@ -68,9 +69,9 @@ import {
   updaetAvailableCopyTraes,
 } from "./EmulationsApi.js";
 import EmulationsMobile from "./EmulationsMobile.js";
+import EmulationsPaywall from "./EmulationsPaywall.js";
 import EmulationsTradeModal from "./EmulationsTradeModal.js";
 import "./_emulations.scss";
-import EmulationsPaywall from "./EmulationsPaywall.js";
 
 class Emulations extends Component {
   constructor(props) {
@@ -135,6 +136,7 @@ class Emulations extends Component {
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
+      isGetEmailNotificationLoading: false,
     };
   }
   history = this.props;
@@ -1665,6 +1667,45 @@ class Emulations extends Component {
                 />
               </div>
             </div>
+            {/* {this.state.userDetailsState &&
+            this.state.userDetailsState.email ? (
+              <div
+                className="available-copy-trades-popular-accounts-container"
+                style={{
+                  cursor: "pointer",
+                  width: "50%",
+                }}
+                onClick={this.goCopyTrade}
+              >
+                <div className="actpacc-header">
+                  <div className="actpacc-header-title">
+                    <Image
+                      src={EmultionSidebarIcon}
+                      className="actpacc-header-icon"
+                    />
+                    <div className="inter-display-medium f-s-16">
+                      Get email notifications
+                    </div>
+                  </div>
+                  {this.state.isGetEmailNotificationLoading ? (
+                    loadingAnimation()
+                  ) : (
+                    <Image
+                      onClick={this.toggleAvailableCopyTradeBlockOpen}
+                      src={UserCreditScrollTopArrowIcon}
+                      style={{
+                        transform: "rotate(90deg)",
+                      }}
+                      className={`actpacc-arrow-icon ${
+                        this.state.isAvailableCopyTradeBlockOpen
+                          ? ""
+                          : "actpacc-arrow-icon-reversed"
+                      }`}
+                    />
+                  )}
+                </div>
+              </div>
+            ) : null} */}
           </div>
         </div>
       </>

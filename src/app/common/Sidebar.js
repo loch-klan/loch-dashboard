@@ -431,6 +431,12 @@ function Sidebar(props) {
     setSignInModalAnimation(true);
     setSigninModal(false);
     setSignupModal(false);
+    const isLochPointsTabOpen = window.sessionStorage.getItem(
+      "lochPointsProfileLoginClicked"
+    );
+    if (isLochPointsTabOpen) {
+      window.sessionStorage.removeItem("lochPointsProfileLoginClicked");
+    }
   };
 
   const openSignUpModal = () => {
@@ -566,7 +572,10 @@ function Sidebar(props) {
     setTimeout(() => {
       const isCopyTradeModalOpen =
         window.sessionStorage.getItem("copyTradeModalOpen");
-      if (!isCopyTradeModalOpen) {
+      const lochPointsProfileModalOpen = window.sessionStorage.getItem(
+        "lochPointsProfileLoginClicked"
+      );
+      if (!isCopyTradeModalOpen && !lochPointsProfileModalOpen) {
         // if isPopupActive = true then do not open this popup bcoz any other popup still open
         let isPopupActive = JSON.parse(
           window.sessionStorage.getItem("isPopupActive")
