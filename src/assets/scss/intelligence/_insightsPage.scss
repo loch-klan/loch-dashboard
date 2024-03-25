@@ -19,18 +19,18 @@
     }
   }
   .insights-filter {
-    background-color: $secondary;
+    background-color: var(--primaryFilterBackground);
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-radius: 1.2rem;
-    padding: 1.2rem;
+    padding: 0.5rem;
     margin-bottom: 0.8rem;
+    column-gap: 1rem;
     .filter {
       background-color: rgba(229, 229, 230, 0.5);
       padding: 1.2rem;
       text-align: center;
-      margin: 0 1rem;
       width: 100%;
       border-radius: 8px;
       @include font($black-191, "Inter-Medium", 1.3rem, 500, 16px);
@@ -61,9 +61,15 @@
 
       .dropdown-item {
         padding: 0.8rem;
-        @include font(var(--primaryTextColor), "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(
+          var(--primaryTextColor),
+          "Inter-Medium",
+          1.3rem,
+          500,
+          1.6rem
+        );
 
-        &:active{
+        &:active {
           color: var(--primaryTextColor) !important;
         }
       }
@@ -144,11 +150,15 @@
   h2 {
     margin-bottom: 2rem;
   }
-  .insight-blank-card{
+  .insight-blank-card {
     position: absolute;
     width: 16rem;
     height: 16rem;
-    background: radial-gradient(50% 50% at 50% 50%, var(--insightBlurColorOne) 0%, var(--insightBlurColorTwo) 100%);
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      var(--insightBlurColorOne) 0%,
+      var(--insightBlurColorTwo) 100%
+    );
     filter: blur(50px);
     border-radius: 10rem;
     z-index: 0;
@@ -163,23 +173,31 @@
     display: flex;
     align-items: flex-start;
     margin-bottom: 2rem;
-    border: 1px solid var(--borderwhiteDarkLight) !important;
+    border: 1px solid var(--insightCardBorder) !important;
     .insights-cards-home-left {
       .risk-chip {
         width: max-content;
         padding: 4px 8px;
         border-radius: 8px;
         background-color: var(--primaryTextColor);
-    color: var(--cardBackgroud);
+        color: var(--insightCardRiskChipBackground);
         text-transform: uppercase;
       }
     }
-    .insight-icon {
-      width: 4.4rem;
-      height: 4.4rem;
+    .insight-icon-container {
+      border-radius: 0.8rem;
+      border: 0.1rem solid var(--insightCardIconBorder);
       margin-right: 1.6rem;
+      .insight-icon {
+        width: 4.4rem;
+        height: 4.4rem;
+        filter: var(--invertColor);
+      }
     }
     .insights-content {
+      .insights-content-desc {
+        color: var(--grey969);
+      }
       .chips-wrapper {
         display: flex;
         align-items: center;
@@ -196,7 +214,7 @@
           padding: 4px 8px;
           border-radius: 8px;
           background-color: var(--primaryTextColor);
-    color: var(--cardBackgroud);
+          color: var(--cardBackgroud);
           margin-left: 0.8rem;
           text-transform: uppercase;
         }
@@ -227,7 +245,7 @@
 
     .chain-list-amt {
       background: var(--tableCostCommonBg);
-          color: var(--tableDataColor) !important;
+      color: var(--tableDataColor) !important;
       border-radius: 4px;
       padding: 6px;
     }
@@ -318,23 +336,21 @@
     left: 50%;
     z-index: 1;
   }
-
 }
-.insights-expanded-mobile{
-
+.insights-expanded-mobile {
   .chain-list-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 0rem;
     border-top: 1px solid var(--borderwhiteDarkLight);
-    
+
     span img {
       position: relative;
       margin-right: 1rem;
       z-index: 1;
     }
-    
+
     .chain-list-amt {
       background: var(--tableCostCommonBg);
       color: var(--tableDataColor) !important;
@@ -363,7 +379,7 @@
           padding: 4px 8px;
           border-radius: 8px;
           background-color: var(--primaryTextColor);
-    color: var(--cardBackgroud);
+          color: var(--cardBackgroud);
           text-transform: uppercase;
         }
       }
@@ -376,20 +392,20 @@
         .chips-wrapper {
           display: flex;
           align-items: center;
-  
+
           .title-chip {
             width: max-content;
             padding: 4px 8px;
             border-radius: 8px;
             background-color: var(--greyCardBackgroud);
-          color: var(--primaryTextColor);
+            color: var(--primaryTextColor);
           }
           .risk-chip {
             width: max-content;
             padding: 4px 8px;
             border-radius: 8px;
             background-color: var(--primaryTextColor);
-    color: var(--cardBackgroud);
+            color: var(--cardBackgroud);
             margin-left: 0.8rem;
             text-transform: uppercase;
           }
@@ -419,11 +435,17 @@
 
       .dropdown-item {
         padding: 0.8rem;
-        @include font(var(--primaryTextColor), "Inter-Medium", 1.3rem, 500, 1.6rem);
+        @include font(
+          var(--primaryTextColor),
+          "Inter-Medium",
+          1.3rem,
+          500,
+          1.6rem
+        );
       }
     }
 
-    .btn-primary{
+    .btn-primary {
       border: 1px solid transparent;
     }
     .btn-primary:not(:disabled):not(.disabled):active {
@@ -442,7 +464,7 @@
       border-radius: 0.8rem;
 
       &:hover {
-        border: 0.1rem solid var(--borderwhiteDarkLight)!important;
+        border: 0.1rem solid var(--borderwhiteDarkLight) !important;
       }
     }
 
@@ -474,9 +496,9 @@
     }
   }
 
-  .dropdown-menu{
+  .dropdown-menu {
     z-index: 900;
-    &.show{
+    &.show {
       inset: 0px auto auto 0px !important;
       transform: translate3d(0px, 43.3333px, 0px) !important;
     }

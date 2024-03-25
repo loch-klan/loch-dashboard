@@ -623,18 +623,20 @@ class InsightsPage extends Component {
                           className="insights-card"
                           key={key}
                         >
-                          <Image
-                            src={
-                              insight.insight_type ===
-                              InsightType.COST_REDUCTION
-                                ? reduceCost
-                                : insight.insight_type ===
-                                  InsightType.RISK_REDUCTION
-                                ? reduceRisk
-                                : increaseYield
-                            }
-                            className="insight-icon"
-                          />
+                          <div className="insight-icon-container">
+                            <Image
+                              src={
+                                insight.insight_type ===
+                                InsightType.COST_REDUCTION
+                                  ? reduceCost
+                                  : insight.insight_type ===
+                                    InsightType.RISK_REDUCTION
+                                  ? reduceRisk
+                                  : increaseYield
+                              }
+                              className="insight-icon"
+                            />
+                          </div>
                           <div className="insights-content">
                             <div className="chips-wrapper">
                               <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
@@ -647,7 +649,7 @@ class InsightsPage extends Component {
                               )}
                             </div>
                             <p
-                              className="inter-display-medium f-s-13 lh-16 grey-969"
+                              className="inter-display-medium f-s-13 lh-16 insights-content-desc"
                               dangerouslySetInnerHTML={{
                                 __html: insight.sub_title,
                               }}

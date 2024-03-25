@@ -3,6 +3,10 @@
   --sidebarBackgroud: white;
   --primaryBackgroud: #f2f2f2;
   --cardBackgroud: white;
+  --insightCardBackground: white;
+  --insightCardBorder: #e5e5e6;
+  --insightCardIconBorder: white;
+  --insightCardRiskChipBackground: #0d0d0d;
   --cardBackgroudWithOpacity: rgba(255, 255, 255, 0);
   --cardBorder: #cacbcc;
   --greyCardBackgroud: #e5e5e680;
@@ -17,7 +21,9 @@
   --primaryDropdownSelectedItem: rgba(229, 229, 230, 0.5);
   --primaryBoxShadowColor: rgba(24, 39, 75, 0.12);
   --primaryBoxShadowDarkerColor: rgba(0, 0, 0, 0.04);
+  --primaryFilterBackground: white;
   --primaryFilter: #f2f2f2;
+  --primaryFilterColor: #0d0d0d;
   --primaryActiveFilter: #fff;
   --black191: #19191a;
   --invertMode: black;
@@ -182,6 +188,10 @@
   --sidebarBackgroud: #1a1a1a;
   --primaryBackgroud: #141414;
   --cardBackgroud: #1a1a1a;
+  --insightCardBackground: #202020;
+  --insightCardBorder: #303030;
+  --insightCardIconBorder: #303030;
+  --insightCardRiskChipBackground: #1a1a1a;
   --cardBackgroudWithOpacity: rgba(26, 26, 26, 0.9);
   --cardBorder: #313233;
   --greyCardBackgroud: #313233;
@@ -196,8 +206,10 @@
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
-  --primaryFilter: #303030;
-  --primaryActiveFilter: #636467;
+  --primaryFilterBackground: #101010;
+  --primaryFilter: transparent;
+  --primaryFilterColor: #cacbcc;
+  --primaryActiveFilter: #202020;
   --black191: #cacbcc;
   --invertMode: rgba(255, 255, 255, 0.85);
   --glassCardBg: rgba(24, 24, 24, 0.8);
@@ -236,6 +248,7 @@
   --greyb0b: #4a4b4d;
   --backColor: rgba(255, 255, 255, 0.95);
   --sameModeColor: #282829;
+  --grey969: #7c7d81;
   --diffModeColorWithOpacity: #rgba(0, 0, 0, 0.05);
 
   //Insight Page
