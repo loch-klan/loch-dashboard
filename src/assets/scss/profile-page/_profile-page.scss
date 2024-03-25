@@ -291,12 +291,12 @@
                   margin-left: 0.3rem;
                 }
                 .profileLochCreditPointsBlockInfoBlockDescPointsToDo {
-                  background-color: var(--greyCardBackgroud);
-                  color: var(--grey969);
-                }
-                .profileLochCreditPointsBlockInfoBlockDescPointsDone {
                   background-color: var(--lochPointsBadgeWarningBg);
                   color: #f19938;
+                }
+                .profileLochCreditPointsBlockInfoBlockDescPointsDone {
+                  background-color: var(--greyCardBackgroud);
+                  color: var(--grey969);
                 }
               }
               .profileLochCreditPointsBlockInfoBlockDescGoContainer {
