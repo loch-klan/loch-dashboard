@@ -1216,6 +1216,13 @@ form {
     text-align: center;
     padding: 10rem;
   }
+  .not-found-wrapper-image {
+    height: 10rem;
+    margin-bottom: 2rem;
+  }
+  .not-found-wrapper-image-text {
+    color: #adadad;
+  }
 }
 .section-table-mobile-scroll {
   padding: 0.5rem 0rem;
@@ -2758,6 +2765,9 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
+.imageDarker {
+  filter: var(--hoverBrightnessValue) !important;
+}
 .overlay-tool-tip-container {
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
@@ -2797,10 +2807,13 @@ input {
   img {
     filter: var(--invertColor) !important;
   }
+  transition-duration: 0ms !important;
   &:hover {
     background-color: var(--mainButtonBg) !important;
     color: var(--primaryTextColor) !important;
-
+    border-color: var(--mainButtonBg) !important;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
     div {
       color: var(--primaryTextColor) !important;
     }
@@ -3387,12 +3400,12 @@ input {
   input {
     border: 1px solid var(--inputBorder) !important;
     &::placeholder {
-      color: var(--inputBorder) !important;
+      color: var(--inputPlaceHolder) !important;
     }
     &:hover {
       border: 1px solid var(--inputBorderHover) !important;
       &::placeholder {
-        color: var(--inputBorder) !important;
+        color: var(--inputPlaceHolder) !important;
       }
     }
   }
@@ -3404,7 +3417,10 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
-
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
+}
 .overflow-table-header-visible {
   .ReactVirtualized__Table__headerRow {
     overflow: visible !important;
@@ -3418,6 +3434,12 @@ input {
   color: var(--black191);
   background-color: var(--primaryFilter);
   cursor: pointer;
+  .custom-control {
+    transform: scale(1.45) translateX(0);
+  }
+  .custom-control-label {
+    color: var(--black191);
+  }
   .pageHeaderShareBtn {
     display: flex;
     gap: 8px;
@@ -3461,6 +3483,62 @@ input {
 .transaction-searchbar-full {
   .form-group {
     flex-grow: 1;
+  }
+  input {
+  }
+}
+
+.breadcrumsBlock {
+  min-width: 85rem;
+  nav {
+    ol {
+      align-items: center;
+      background-color: transparent;
+      border: none;
+      padding: 0rem;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
+      filter: var(--invertColor);
+      // .breadcrumb{
+      // }
+      .breadcrumb-item + .breadcrumb-item::before {
+        content: url("../../images/icons/ChevronArrowRight.svg");
+        position: relative;
+        top: 0.1rem;
+        padding-right: 1.4rem;
+      }
+      .breadcrumb-item {
+        padding-left: 1.4rem;
+        cursor: pointer;
+        &:first-letter {
+          text-transform: capitalize;
+        }
+        a {
+          color: $grey-ADA;
+
+          &:hover {
+            color: $primary;
+
+            img {
+              filter: brightness(0.5);
+            }
+          }
+        }
+      }
+      .active {
+        color: $grey-636;
+      }
+      .breadcrumb-item:nth-child(1) {
+        padding: 0rem;
+      }
+    }
+  }
+}
+.breadcrumsBlockMobile {
+  nav {
+    ol {
+      margin-top: 0rem;
+    }
   }
 }
 
@@ -3513,5 +3591,28 @@ input {
   /* Show the checkmark when checked */
   .container input:checked ~ .checkmark:after {
     display: block;
+  }
+}
+.basicConfirmModalMobile {
+  .modal-content {
+    width: 90vw !important;
+    min-width: 90vw !important;
+    .modal-body {
+      padding: 3rem !important;
+      .leave-modal-btn-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1rem;
+        .secondary-btn {
+          margin-right: 0rem !important;
+        }
+      }
+    }
+  }
+}
+.addCopyTradeInput {
+  &::placeholder {
+    color: var(--inputPlaceHolder) !important;
   }
 }

@@ -4,15 +4,17 @@
   min-width: 85rem;
   justify-content: space-between;
   align-items: center;
+  flex-direction: column;
   // align-items: baseline;
   // flex-direction: column;
   nav {
     ol {
       align-items: center;
-      background-color: $grey-F2F;
+      background-color: transparent;
       border: none;
       padding: 0rem;
       margin-bottom: 2.4rem;
+      filter: var(--invertColor);
       // .breadcrumb{
       // }
       .breadcrumb-item + .breadcrumb-item::before {
@@ -110,7 +112,7 @@
           }
         }
 
-        &:hover{
+        &:hover {
           .custom-control {
             .custom-control-label {
               &::before {

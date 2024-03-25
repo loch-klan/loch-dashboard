@@ -66,9 +66,14 @@ const MobileDarkModeIconWrapper = (props) => {
       >
         {props.children}
       </div>
-      <div className="mobile-dark-mode-toggle-button" onClick={handleDarkMode}>
-        <Image src={isDarkMode ? mobileLightIcon : mobileDarkIcon} />
-      </div>
+      {props.hideBtn ? null : (
+        <div
+          className="mobile-dark-mode-toggle-button"
+          onClick={handleDarkMode}
+        >
+          <Image src={isDarkMode ? mobileLightIcon : mobileDarkIcon} />
+        </div>
+      )}
     </div>
   );
 };
