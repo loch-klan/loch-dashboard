@@ -2776,7 +2776,7 @@ class NewWelcome extends BaseReactComponent {
                   className="new-homepage__body-search "
                   onClick={this.showInitialInput}
                 >
-                  <div className="new-homepage__body-search_preview">
+                  <div className="inter-display-medium new-homepage__body-search_preview">
                     <Image
                       src={NewWelcomeCopyIcon}
                       className="new-homepage__body-search-copy-icon"
