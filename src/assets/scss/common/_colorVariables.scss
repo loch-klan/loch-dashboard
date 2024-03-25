@@ -22,6 +22,8 @@
   --primaryBoxShadowColor: rgba(24, 39, 75, 0.12);
   --primaryBoxShadowDarkerColor: rgba(0, 0, 0, 0.04);
   --primaryFilterBackground: white;
+  --swapContainer: #f4edfd;
+  --purpleHighlight: #5f33ff;
   --primaryFilter: #f2f2f2;
   --primaryFilterColor: #0d0d0d;
   --primaryActiveFilter: #fff;
@@ -30,12 +32,16 @@
   --glassCardBg: rgba(255, 255, 255, 0.8);
   --white191darke5ee6: #19191a;
   --dropdownActiveSelected: #19191a;
+  --popularAccountsDataBlock: #e5e5e64d;
+  --popularAccountsHeaderBrightness: brightness(0.96);
+  --brightenDarkModeColors: brightness(1);
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0);
   --invertColor2: invert(100%);
   --hoverBrightness: brightness(50%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(0);
   --hoverBrightnessValueInvert: brightness(20);
   --infoBrightnessPortfolio: brightness(1);
@@ -55,6 +61,7 @@
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
+  --grey5b5b: #5b5b5d;
   --grey313: #313233;
   --greyb0b: #b0b1b3;
   --grey969: #96979a;
@@ -177,6 +184,7 @@
   --tableHeading: #4f4f4f;
   --tableData: #313233;
 
+  --inputPlaceHolder: #d4d4d4;
   --inputBorder: #d4d4d4;
   --inputBorderHover: #0d0d0d;
 
@@ -210,6 +218,10 @@
   --primaryFilter: transparent;
   --primaryFilterColor: #cacbcc;
   --primaryActiveFilter: #202020;
+  --swapContainer: #56486b;
+  --purpleHighlight: #be66ff;
+  --primaryFilter: #303030;
+  --primaryActiveFilter: #636467;
   --black191: #cacbcc;
   --invertMode: rgba(255, 255, 255, 0.85);
   --glassCardBg: rgba(24, 24, 24, 0.8);
@@ -221,6 +233,7 @@
   --invertColor: invert(100%);
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(1);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: invert(1);
@@ -244,6 +257,7 @@
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
+  --grey5b5b: #cacbcc;
   --grey313: #cacbcc;
   --greyb0b: #4a4b4d;
   --backColor: rgba(255, 255, 255, 0.95);
@@ -258,6 +272,9 @@
   //Table
   --tableNumberCover: #313233;
   --tablePersonalTint: rgba(16, 16, 16, 0.6);
+  --popularAccountsDataBlock: #303030;
+  --popularAccountsHeaderBrightness: brightness(1.3);
+  --brightenDarkModeColors: brightness(2);
   --tableHeadingLightBorder: #313233;
   --tableSectionToggleBg: #101010;
   --tableCostCommonColor: #141414;
@@ -355,7 +372,7 @@
 
   --tableHeading: #cacbcc;
   --tableData: #cacbcc;
-
+  --inputPlaceHolder: #5a5a5b;
   --inputBorder: #313233;
   --inputBorderHover: #cacbcc;
 
@@ -380,6 +397,7 @@
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
+  --swapContainer: #313233;
   --primaryFilter: #313233;
   --primaryActiveFilter: #636467;
   --black191: #e7e9ea;
@@ -391,6 +409,7 @@
   --invertColor: invert(100%);
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: none;

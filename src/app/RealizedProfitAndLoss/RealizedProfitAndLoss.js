@@ -665,6 +665,8 @@ class RealizedProfitAndLoss extends Component {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          showpath
+          currentPage={"realized-profit-and-loss"}
         >
           <RealizedProfitAndLossMobile
             showToCalendar={this.showToCalendar}
@@ -727,6 +729,8 @@ class RealizedProfitAndLoss extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"realized-profit-and-loss"}
             />
             {this.state.upgradeModal && (
               <UpgradeModal

@@ -17,6 +17,7 @@ const CustomButton = (props) => {
     buttonText,
     buttonImage,
     className = "",
+    buttonAttachedImage,
   } = props;
   return (
     <Button
@@ -31,7 +32,17 @@ const CustomButton = (props) => {
     >
       {isLoading
         ? loadingAnimation()
-        : buttonText || <Image src={buttonImage} />}
+        : (
+            <>
+              {buttonText}
+              {buttonAttachedImage ? (
+                <Image
+                  className="buttonAttachedImageCutomBtn"
+                  src={buttonAttachedImage}
+                />
+              ) : null}
+            </>
+          ) || <Image src={buttonImage} />}
     </Button>
   );
 };
