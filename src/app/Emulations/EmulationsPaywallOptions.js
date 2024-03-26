@@ -20,7 +20,7 @@ import {
   CopyTradePayCreditCardPayment,
   CopyTradePayCryptoPayment,
 } from "../../utils/AnalyticsFunctions";
-import { BASE_URL_S3 } from "../../utils/Constant";
+import { BASE_URL_S3, STRIPE_SECRET_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { loadingAnimation } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -28,9 +28,7 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { detectNameTag } from "../common/Api";
 import { addCopyTrade, copyTradePaid } from "./EmulationsApi";
 
-const stripe = require("stripe")(
-  "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"
-);
+const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
 class EmulationsPaywallOptions extends BaseReactComponent {
   constructor(props) {
