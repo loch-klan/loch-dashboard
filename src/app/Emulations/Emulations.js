@@ -115,6 +115,7 @@ class Emulations extends Component {
       isExecuteCopyTrade: false,
       isPopularLeftArrowDisabled: true,
       isPopularRightArrowDisabled: false,
+      shadowDisablePopularArrows: false,
       isLeftArrowDisabled: true,
       isRightArrowDisabled: true,
       currentPopularCirclePosition: 0,
@@ -352,51 +353,51 @@ class Emulations extends Component {
       this.setState({
         emulationsLoading: false,
         copyTradesLocal: tempEmulationsLocal,
-        copyTradesAvailableLocal: tempEmulationsAvailableLocal,
-        // copyTradesAvailableLocal: [
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        //   {
-        //     copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
-        //     valueFrom: 500,
-        //     valueTo: 1000,
-        //     assetFrom: "ETH",
-        //     assetTo: "USDT",
-        //   },
-        // ],
+        // copyTradesAvailableLocal: tempEmulationsAvailableLocal,
+        copyTradesAvailableLocal: [
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+          {
+            copyAddress: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+            valueFrom: 500,
+            valueTo: 1000,
+            assetFrom: "ETH",
+            assetTo: "USDT",
+          },
+        ],
       });
     }
   };
@@ -702,13 +703,15 @@ class Emulations extends Component {
   };
 
   scrollRightPopular = () => {
-    if (this.state.isPopularRightArrowDisabled) {
+    if (
+      this.state.isPopularRightArrowDisabled ||
+      this.state.shadowDisablePopularArrows
+    ) {
       return;
     }
-    // UserCreditRightScrollClickedMP({
-    //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
-    //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
-    // });
+    this.setState({
+      shadowDisablePopularArrows: true,
+    });
     var myElement = document.getElementById("popularCopyTradeScrollBody");
     var myElementWidth = document.getElementById(
       "popularCopyTradeScrollBody"
@@ -716,9 +719,7 @@ class Emulations extends Component {
     var myElementCurrentScrollPos = document.getElementById(
       "popularCopyTradeScrollBody"
     ).scrollLeft;
-    var totalScrollPossible = document.getElementById(
-      "popularCopyTradeScrollBody"
-    ).scrollWidth;
+
     let newPos = 0;
     if (mobileCheck()) {
       newPos = myElementCurrentScrollPos + myElementWidth;
@@ -735,30 +736,37 @@ class Emulations extends Component {
       left: newPos,
       behavior: "smooth",
     });
-    let currentCirPos = newPos / myElementWidth;
-    this.setState({
-      currentPopularCirclePosition: currentCirPos,
-    });
-    if (newPos + myElementWidth >= totalScrollPossible) {
+    let currentCirPos = this.state.currentPopularCirclePosition;
+    if (currentCirPos + 1 === this.state.popularAccountsList.length - 1) {
       this.setState({
-        isPopularRightArrowDisabled: true,
         isPopularLeftArrowDisabled: false,
+        isPopularRightArrowDisabled: true,
       });
     } else {
       this.setState({
-        isPopularRightArrowDisabled: false,
         isPopularLeftArrowDisabled: false,
+        isPopularRightArrowDisabled: false,
+      });
+    }
+    if (
+      currentCirPos >= 0 &&
+      currentCirPos <= this.state.popularAccountsList.length - 1
+    ) {
+      this.setState({
+        currentPopularCirclePosition: currentCirPos + 1,
       });
     }
   };
   scrollLeftPopular = () => {
-    if (this.state.isPopularLeftArrowDisabled) {
+    if (
+      this.state.isPopularLeftArrowDisabled ||
+      this.state.shadowDisablePopularArrows
+    ) {
       return;
     }
-    // UserCreditLeftScrollClickedMP({
-    //   session_id: getCurrentUser ? getCurrentUser()?.id : "",
-    //   email_address: getCurrentUser ? getCurrentUser()?.email : "",
-    // });
+    this.setState({
+      shadowDisablePopularArrows: true,
+    });
     var myElement = document.getElementById("popularCopyTradeScrollBody");
     var myElementWidth = document.getElementById(
       "popularCopyTradeScrollBody"
@@ -784,11 +792,8 @@ class Emulations extends Component {
       left: newPos,
       behavior: "smooth",
     });
-    let currentCirPos = newPos / myElementWidth;
-    this.setState({
-      currentPopularCirclePosition: currentCirPos,
-    });
-    if (newPos <= 0) {
+    let currentCirPos = this.state.currentPopularCirclePosition;
+    if (currentCirPos - 1 === 0) {
       this.setState({
         isPopularLeftArrowDisabled: true,
         isPopularRightArrowDisabled: false,
@@ -799,8 +804,19 @@ class Emulations extends Component {
         isPopularRightArrowDisabled: false,
       });
     }
+    if (
+      currentCirPos >= 0 &&
+      currentCirPos <= this.state.popularAccountsList.length - 1
+    ) {
+      this.setState({
+        currentPopularCirclePosition: currentCirPos - 1,
+      });
+    }
   };
   goToScrollPositionPopular = (blockPos) => {
+    this.setState({
+      currentPopularCirclePosition: blockPos,
+    });
     var myElement = document.getElementById("popularCopyTradeScrollBody");
     if (mobileCheck()) {
       var myElementWidth = document.getElementById(
@@ -836,9 +852,6 @@ class Emulations extends Component {
       var newPos = document.getElementById(
         "popularCopyTradeScrollBody"
       ).scrollLeft;
-      var totalScrollPossible = document.getElementById(
-        "popularCopyTradeScrollBody"
-      ).scrollWidth;
       let currentCirPos = 0;
       if (mobileCheck()) {
         currentCirPos = newPos / myElementWidth;
@@ -862,13 +875,14 @@ class Emulations extends Component {
 
       this.setState({
         currentPopularCirclePosition: currentCirPos,
+        shadowDisablePopularArrows: false,
       });
-      if (newPos === 0) {
+      if (currentCirPos === 0) {
         this.setState({
           isPopularLeftArrowDisabled: true,
           isPopularRightArrowDisabled: false,
         });
-      } else if (newPos + myElementWidth >= totalScrollPossible) {
+      } else if (currentCirPos === this.state.popularAccountsList.length - 1) {
         this.setState({
           isPopularLeftArrowDisabled: false,
           isPopularRightArrowDisabled: true,
