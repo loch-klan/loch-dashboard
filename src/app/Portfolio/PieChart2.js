@@ -329,6 +329,11 @@ class PieChart2 extends BaseReactComponent {
     // console.log("data", this.props.chainPortfolio);
   };
   componentDidUpdate(prevProps) {
+    if (this.props.defiState !== prevProps.defiState) {
+      this.setState({
+        defiLoader: false,
+      });
+    }
     if (
       prevProps.isAddressFollowedCount !== this.props.isAddressFollowedCount
     ) {
