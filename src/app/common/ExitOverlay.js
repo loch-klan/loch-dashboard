@@ -44,6 +44,7 @@ import {
   LeaveLinkCopied,
   LeaveLinkShared,
   LeavePrivacyMessage,
+  LochPointsSignUpPopupEmailAdded,
   MenuLetMeLeave,
   PodName,
   SignupEmail,
@@ -537,6 +538,12 @@ class ExitOverlay extends BaseReactComponent {
         last_name: "",
         track: "leaving",
       });
+      if (this.props.tracking === "Loch points profile") {
+        LochPointsSignUpPopupEmailAdded({
+          session_id: getCurrentUser().id,
+          email_address: this.state?.email,
+        });
+      }
       if (this.props.updateTimer) {
         this.props.updateTimer();
       }

@@ -18,7 +18,12 @@ import {
 } from "../../utils/Constant.js";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
-import { GetAllPlan, getUser, setPageFlagDefault } from "../common/Api";
+import {
+  GetAllPlan,
+  getUser,
+  setPageFlagDefault,
+  updateWalletListFlag,
+} from "../common/Api";
 import FixAddModal from "../common/FixAddModal";
 import Loading from "../common/Loading";
 import PageHeader from "../common/PageHeader";
@@ -224,6 +229,10 @@ class Wallet extends Component {
       this.makeApiCall();
     }
 
+    if (!this.props.commonState.profilePageWalletModal) {
+      this.props.updateWalletListFlag("profilePageWalletModal", true);
+      this.handleUpdateWallet();
+    }
     if (this.props.isUpdate !== prevProps.isUpdate) {
       this.handleUpdateWallet();
     }
@@ -238,7 +247,6 @@ class Wallet extends Component {
     // console.log("YES API")
     this.setState({ isLoading: true });
     this.makeApiCall();
-    this.props.setPageFlagDefault();
   };
 
   render() {
@@ -267,7 +275,7 @@ class Wallet extends Component {
           className="wallet-section page"
           style={
             this.props.hidePageHeader
-              ? { marginTop: "4rem", marginBottom: "4rem" }
+              ? { marginTop: "0rem", marginBottom: "3rem" }
               : {}
           }
         >
@@ -319,7 +327,7 @@ class Wallet extends Component {
               })}
             </div>
           </div>
-          {walletList.length > 0 && (
+          {walletList.length > 0 && !isLoading ? (
             <div className="net-worth-wrapper">
               <div className="left">
                 <Image src={netWorthIcon} className="net-worth-icon" />
@@ -337,7 +345,7 @@ class Wallet extends Component {
                 </h3>
               </div>
             </div>
-          )}
+          ) : null}
 
           <div className="cards">
             {isLoading === true ? (
@@ -387,6 +395,7 @@ class Wallet extends Component {
 const mapStateToProps = (state) => ({
   walletState: state.WalletState,
   OnboardingState: state.OnboardingState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   getAllCoins,
@@ -395,6 +404,7 @@ const mapDispatchToProps = {
   setPageFlagDefault,
   GetAllPlan,
   getUser,
+  updateWalletListFlag,
   // getCoinRate,
 };
 Wallet.propTypes = {
