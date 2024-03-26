@@ -228,7 +228,7 @@
         border-bottom: 0.25rem solid var(--dropdownContentBorderColor);
         position: relative;
         .profileCreditPointsDivider {
-          border-bottom: 0.25rem solid #18c278;
+          border-bottom: 0.25rem solid #f19938;
           position: absolute;
           top: 0;
           left: 0;
@@ -295,8 +295,8 @@
                   color: #f19938;
                 }
                 .profileLochCreditPointsBlockInfoBlockDescPointsDone {
-                  background-color: var(--lochPointsBadgeSuccessBg);
-                  color: #18c278;
+                  background-color: var(--greyCardBackgroud);
+                  color: var(--grey969);
                 }
               }
               .profileLochCreditPointsBlockInfoBlockDescGoContainer {
