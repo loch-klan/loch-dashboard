@@ -1328,6 +1328,16 @@ class Emulations extends Component {
               updateTimer={this.updateTimer}
               handleBtn={this.showAddCopyTradeAddress}
             />
+            <div
+              onClick={() => {
+                this.setState({
+                  isPayModalOptionsOpen: true,
+                });
+              }}
+              className="inter-display-medium f-s-16 cp"
+            >
+              Open paywall
+            </div>
             {!this.state.emulationsLoading ? (
               <div
                 className={`available-copy-trades-popular-accounts-container ${

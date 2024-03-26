@@ -16,7 +16,10 @@ import {
 } from "../../assets/images/icons";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import { CopyTradePayCryptoPayment } from "../../utils/AnalyticsFunctions";
+import {
+  CopyTradePayCreditCardPayment,
+  CopyTradePayCryptoPayment,
+} from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { loadingAnimation } from "../../utils/ReusableFunctions";
@@ -24,6 +27,10 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { detectNameTag } from "../common/Api";
 import { addCopyTrade, copyTradePaid } from "./EmulationsApi";
+
+const stripe = require("stripe")(
+  "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"
+);
 
 class EmulationsPaywallOptions extends BaseReactComponent {
   constructor(props) {
@@ -111,6 +118,9 @@ class EmulationsPaywallOptions extends BaseReactComponent {
     }
   };
   goCopyTrade = () => {
+    if (this.state.isCreditBtnLoading) {
+      return;
+    }
     CopyTradePayCryptoPayment({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -148,6 +158,60 @@ class EmulationsPaywallOptions extends BaseReactComponent {
   hideModal = () => {
     this.state.onHide();
   };
+
+  getCurrentUrl = async (passedId) => {
+    await stripe.paymentLinks
+      .create({
+        line_items: [
+          {
+            price: passedId,
+            quantity: 1,
+          },
+        ],
+      })
+      .then((res) => {
+        window.open(res.url, "_self");
+      })
+      .catch(() => {
+        this.setState({
+          isCreditBtnLoading: false,
+        });
+        toast.error("Something went wrong");
+      });
+  };
+  payWithStripe = async () => {
+    if (this.state.isCryptoBtnLoading) {
+      return;
+    }
+    CopyTradePayCreditCardPayment({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.setState({
+      isCreditBtnLoading: true,
+    });
+    await stripe.prices
+      .create({
+        currency: "usd",
+        unit_amount: 50,
+        recurring: {
+          interval: "month",
+        },
+        product_data: {
+          name: "Copy Trader Plan",
+        },
+      })
+      .then((res) => {
+        this.getCurrentUrl(res.id);
+      })
+      .catch(() => {
+        this.setState({
+          isCreditBtnLoading: false,
+        });
+        toast.error("Something went wrong");
+      });
+  };
+
   render() {
     return (
       <Modal
@@ -312,6 +376,7 @@ class EmulationsPaywallOptions extends BaseReactComponent {
                     Choose your payment method
                   </div>
                   <div
+                    onClick={this.payWithStripe}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ${
                       this.state.isCryptoBtnLoading
                         ? "ctpb-plan-payment-button-disabled"
@@ -335,7 +400,9 @@ class EmulationsPaywallOptions extends BaseReactComponent {
                   <div
                     onClick={this.goCopyTrade}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ${
-                      this.state.isCryptoBtnLoading
+                      this.state.isCreditBtnLoading
+                        ? "ctpb-plan-payment-button-disabled"
+                        : this.state.isCryptoBtnLoading
                         ? "ctpb-plan-payment-button-loading"
                         : ""
                     }`}
