@@ -157,6 +157,7 @@ import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   DefaultNftTableIconIcon,
+  HomeTabArrowIcon,
   InfoIconI,
 } from "../../assets/images/icons/index.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
@@ -4596,6 +4597,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -4632,6 +4637,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                         </div>
                       </div>
@@ -4650,7 +4659,10 @@ class Portfolio extends BaseReactComponent {
                               message="No assets found"
                               disableOnLoading
                               isMiniversion
-                              xAxisScrollable
+                              xAxisScrollable={
+                                !this.state.AvgCostLoading &&
+                                tableDataCostBasis?.length > 0
+                              }
                               xAxisScrollableColumnWidth={4.4}
                               tableData={
                                 tableDataCostBasis
@@ -4664,7 +4676,7 @@ class Portfolio extends BaseReactComponent {
                               isAnalytics="average cost basis"
                               // addWatermark
                               fakeWatermark
-                              yAxisScrollable
+                              yAxisScrollable={!this.state.AvgCostLoading}
                             />
                           </div>
                           {!this.state.AvgCostLoading ? (
@@ -4749,6 +4761,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -4783,6 +4799,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element mr-1 ${
@@ -4817,6 +4837,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                         </div>
                       </div>
@@ -4925,8 +4949,8 @@ class Portfolio extends BaseReactComponent {
                             >
                               <TransactionTable
                                 message={"No NFT's found"}
-                                xAxisScrollable
-                                xAxisScrollableColumnWidth={3}
+                                // xAxisScrollable
+                                // xAxisScrollableColumnWidth={3}
                                 noSubtitleBottomPadding
                                 disableOnLoading
                                 isMiniversion
@@ -4937,7 +4961,7 @@ class Portfolio extends BaseReactComponent {
                                 isArrow={true}
                                 isLoading={this.state.nftTableLoading}
                                 fakeWatermark
-                                yAxisScrollable
+                                yAxisScrollable={!this.state.nftTableLoading}
                               />
                             </div>
                             {/* Add Loading conditino here and add goto nft page */}
@@ -5022,6 +5046,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -5058,6 +5086,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
@@ -5161,7 +5193,10 @@ class Portfolio extends BaseReactComponent {
                           >
                             <TransactionTable
                               message={"No yield opportunities found"}
-                              xAxisScrollable
+                              xAxisScrollable={
+                                !this.state.yieldOpportunitiesTableLoading &&
+                                yieldOpportunitiesListTemp?.length > 0
+                              }
                               xAxisScrollableColumnWidth={4.3}
                               noSubtitleBottomPadding
                               disableOnLoading
@@ -5175,7 +5210,9 @@ class Portfolio extends BaseReactComponent {
                                 this.state.yieldOpportunitiesTableLoading
                               }
                               fakeWatermark
-                              yAxisScrollable
+                              yAxisScrollable={
+                                !this.state.yieldOpportunitiesTableLoading
+                              }
                             />
                           </div>
                           {!this.state.yieldOpportunitiesTableLoading ? (
@@ -5260,6 +5297,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
@@ -5296,6 +5337,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
 
                           <div
@@ -5331,6 +5376,10 @@ class Portfolio extends BaseReactComponent {
                                 }}
                               />
                             </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
                           </div>
                         </div>
                       </div>
@@ -5360,7 +5409,10 @@ class Portfolio extends BaseReactComponent {
                             }`}
                           >
                             <TransactionTable
-                              xAxisScrollable
+                              xAxisScrollable={
+                                !this.state.tableLoading &&
+                                tableData?.length > 0
+                              }
                               xAxisScrollableColumnWidth={5.1}
                               noSubtitleBottomPadding
                               disableOnLoading
@@ -5373,7 +5425,7 @@ class Portfolio extends BaseReactComponent {
                               watermarkOnTop
                               // addWatermark
                               fakeWatermark
-                              yAxisScrollable
+                              yAxisScrollable={!this.state.tableLoading}
                             />
                           </div>
                           {!this.state.tableLoading ? (

@@ -33,6 +33,7 @@ import {
   ConnectExPopupEmailAdded,
   CopyTradePopupEmailAdded,
   GeneralPopupEmailAdded,
+  LochPointsSignInPopupEmailAdded,
   SigninMenuEmailAdded,
   UpgradeSignInEmailVerified,
   WhaleCreateAccountPrivacyHover,
@@ -118,6 +119,11 @@ class AuthModal extends BaseReactComponent {
       });
     } else if (this.props.tracking === "Whale watching") {
       WhalePopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+      });
+    } else if (this.props.tracking === "Loch points profile") {
+      LochPointsSignInPopupEmailAdded({
         session_id: getCurrentUser().id,
         email_address: this.state.email,
       });

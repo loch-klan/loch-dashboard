@@ -353,7 +353,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
                 >
                   <h6 className="inter-display-medium f-s-25">Following</h6>
                   <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
-                    Your are now following this address
+                    You are now following this address
                   </p>
                 </div>
                 <Button
