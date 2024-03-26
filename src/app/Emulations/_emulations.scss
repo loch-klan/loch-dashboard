@@ -506,6 +506,11 @@
     width: 100rem !important;
   }
 }
+.copy-trade-pay-wall-options-modal {
+  .modal-content {
+    width: 90rem !important;
+  }
+}
 .copy-trade-pay-wall-modal {
   user-select: none;
   .copy-trade-paywall-body {
@@ -605,6 +610,14 @@
               0px 1rem 1rem var(--primaryBoxShadowDarkerColor);
           }
         }
+        .ctpb-plan-button-dummy {
+          cursor: default;
+          &:hover {
+            background-color: var(--primaryTextColor);
+            color: var(--cardBackgroud);
+            box-shadow: none;
+          }
+        }
         .ctpb-plan-button-loading {
           cursor: default;
           opacity: 0.5;
@@ -652,6 +665,62 @@
       }
       .ctpb-plan-selected {
         border-color: var(--black191);
+      }
+    }
+    .ctpb-plans-payment-container {
+      align-items: center;
+      column-gap: 3rem;
+      .ctpb-payment {
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0rem;
+        .ctpb-payment-title-text {
+          text-align: center;
+          color: var(--black191);
+        }
+        .ctpb-plan-payment-button {
+          margin-top: 2rem;
+          background-color: transparent;
+          color: var(--primaryTextColor);
+          border: 0.1rem solid var(--primaryTextColor);
+          text-shadow: 0.2px 0 var(--primaryTextColor);
+          font-weight: 500;
+          cursor: pointer;
+          .ctpb-plan-payment-button-icons {
+            height: 16px;
+            margin-right: 1rem;
+            filter: var(--invertColor);
+          }
+          &:hover {
+            background-color: var(--primaryTextColor);
+            color: var(--cardBackgroud);
+            .ctpb-plan-payment-button-icons {
+              filter: var(--invertColor2);
+            }
+          }
+        }
+        .ctpb-plan-payment-button-loading {
+          cursor: default;
+          background-color: var(--primaryTextColor);
+          .spinner-chip-container {
+            filter: var(--invertColor);
+          }
+          &:hover {
+            background-color: var(--primaryTextColor);
+            box-shadow: unset;
+          }
+        }
+        .ctpb-plan-payment-button-disabled {
+          cursor: default;
+          &:hover {
+            background-color: transparent;
+            color: var(--primaryTextColor);
+            .ctpb-plan-payment-button-icons {
+              filter: var(--invertColor);
+            }
+          }
+        }
       }
     }
     .ctpb-user-reviews {
@@ -769,7 +838,7 @@
       }
       .ctpb-plans-container {
         flex-direction: column-reverse;
-
+        row-gap: 3rem;
         .ctpb-plan {
           width: 100%;
           .ctpb-plan-header {
@@ -809,8 +878,25 @@
             }
           }
         }
-        .ctpb-plan-selected {
-          margin-bottom: 4rem;
+      }
+      .ctpb-plans-payment-container {
+        flex-direction: column;
+        .ctpb-payment {
+          .ctpb-plan-payment-button {
+            &:hover {
+              background-color: var(--cardBackgroud);
+              color: var(--primaryTextColor);
+              .ctpb-plan-payment-button-icons {
+                filter: var(--invertColor);
+              }
+            }
+          }
+          .ctpb-plan-payment-button-loading {
+            &:hover {
+              background-color: var(--primaryTextColor);
+              box-shadow: unset;
+            }
+          }
         }
       }
       .ctpb-user-discalmier {

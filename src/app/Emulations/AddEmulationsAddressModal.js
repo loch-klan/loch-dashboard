@@ -407,8 +407,8 @@ class AddEmulationsAddressModal extends BaseReactComponent {
       <Modal
         show={this.state.show}
         className={`exit-overlay-form ${
-          this.props.isMobile ? "mobile-add-copy-trade-modal" : ""
-        }`}
+          this.props.hiddenModal ? "zeroOpacity" : ""
+        } ${this.props.isMobile ? "mobile-add-copy-trade-modal" : ""}`}
         onHide={this.state.onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal"}

@@ -8,8 +8,8 @@ import {
   ChartDonutPaywallIcon,
   ChartLinePaywallIcon,
   CloseIcon,
-  CopyTradePayWallIllustrationIcon,
-  CopyTradeReviewStarIcon,
+  CreditCardPaywallIcon,
+  CryptoWalletPaywallIcon,
   LightBulbPaywallIcon,
   LochLogoWhiteIcon,
   NewModalBackArrowIcon,
@@ -25,64 +25,14 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { detectNameTag } from "../common/Api";
 import { addCopyTrade, copyTradePaid } from "./EmulationsApi";
 
-class EmulationsPaywall extends BaseReactComponent {
+class EmulationsPaywallOptions extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isBtnLoading: false,
+      isCryptoBtnLoading: false,
+      isCreditBtnLoading: false,
       show: props.show,
       onHide: this.props.onHide,
-      customerData: [
-        {
-          name: "0xKyle",
-          twitterHandle: "",
-          review: "Damn. Great product. I like it a lot. Very clean UI",
-          rating: 5,
-        },
-        {
-          name: "Shual",
-          twitterHandle: "@0xShual",
-          review: "It's a great tool. and I use dozens of diff on chain tools.",
-          rating: 5,
-        },
-        {
-          name: "@zKVect",
-          twitterHandle: "",
-          review: "Wow, I’m surprised at how clean the UI is. Good job.",
-          rating: 5,
-        },
-        {
-          name: "Waleed",
-          twitterHandle: "Elixir Capital",
-          review: "it’s what I've been trying to search for, for months.",
-          rating: 5,
-        },
-        {
-          name: "Matt A",
-          twitterHandle: "",
-          review: "UI and latency is unmatched. Loch is something special",
-          rating: 5,
-        },
-        {
-          name: "Toshi",
-          twitterHandle: "Family office fund manager",
-          review: "Found 2k so far I forgot about, 4k now",
-          rating: 4,
-        },
-        {
-          name: "RJ G",
-          twitterHandle: "",
-          review: "I really liked how many diverse features there are.",
-          rating: 5,
-        },
-
-        {
-          name: "Erik H",
-          twitterHandle: "",
-          review: "Thoughtfully designed features and UI",
-          rating: 5,
-        },
-      ],
     };
   }
   async createCharge() {
@@ -109,9 +59,6 @@ class EmulationsPaywall extends BaseReactComponent {
       "&ctrAmount=" +
       amountHolder;
 
-    // let tempToken = getToken();
-    // let redirectLink =
-    //   BASE_URL_S3 + "auto-login?token=" + tempToken + "&redirect=copy-trade";
     let minAmount = 20;
 
     const requestBody = {
@@ -152,7 +99,7 @@ class EmulationsPaywall extends BaseReactComponent {
     } catch (error) {
       console.error("Error creating charge:", error);
       this.setState({
-        isBtnLoading: false,
+        isCryptoBtnLoading: false,
       });
     }
   }
@@ -168,11 +115,11 @@ class EmulationsPaywall extends BaseReactComponent {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    if (this.state.isBtnLoading) {
+    if (this.state.isCryptoBtnLoading) {
       return;
     }
     this.setState({
-      isBtnLoading: true,
+      isCryptoBtnLoading: true,
     });
     this.fetchChargeData()
       .then((res) => {
@@ -193,7 +140,7 @@ class EmulationsPaywall extends BaseReactComponent {
       })
       .catch((err) => {
         this.setState({
-          isBtnLoading: false,
+          isCryptoBtnLoading: false,
         });
         toast.error("Something went wrong");
       });
@@ -205,7 +152,7 @@ class EmulationsPaywall extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className={`exit-overlay-form copy-trade-pay-wall-modal ${
+        className={`exit-overlay-form copy-trade-pay-wall-modal copy-trade-pay-wall-options-modal ${
           this.props.isMobile ? "copy-trade-pay-wall-modal-mobile" : ""
         }`}
         onHide={this.state.onHide}
@@ -220,13 +167,13 @@ class EmulationsPaywall extends BaseReactComponent {
           {this.props.isMobile ? (
             <div className="mobile-copy-trader-popup-header">
               <div
-                onClick={this.props.goBackToAddCopyTradeModal}
+                onClick={this.props.goBackToPayWall}
                 className="mobile-copy-trader-popup-header-close-icon"
               >
                 <Image src={NewModalBackArrowIcon} />
               </div>
               <h6 className="inter-display-medium f-s-20 mobile-copy-trader-popup-header-title">
-                Copy Trade with
+                Do more with
                 <br />
                 Loch
               </h6>
@@ -244,7 +191,7 @@ class EmulationsPaywall extends BaseReactComponent {
                 style={{
                   left: "2.8rem",
                 }}
-                onClick={this.props.goBackToAddCopyTradeModal}
+                onClick={this.props.goBackToPayWall}
               >
                 <Image src={NewModalBackArrowIcon} />
               </div>
@@ -269,7 +216,7 @@ class EmulationsPaywall extends BaseReactComponent {
                 {this.props.isMobile ? null : (
                   <>
                     <h6 className="inter-display-medium f-s-25">
-                      Copy Trade with Loch
+                      Do more with Loch
                     </h6>
                     <p className="inter-display-medium f-s-16 ctpb-sub-text text-center">
                       Upgrade your plan
@@ -278,51 +225,7 @@ class EmulationsPaywall extends BaseReactComponent {
                 )}
               </div>
 
-              <div className="ctpb-banner">
-                <Image
-                  src={CopyTradePayWallIllustrationIcon}
-                  className="ctpb-banner-image"
-                />
-                <div className="ctpb-banner-text inter-display-medium f-s-20">
-                  The equivalent of a beer to{" "}
-                  <span className="ctpb-banner-text-highlited">track</span>,
-                  {this.props.isMobile ? null : <br />}
-                  <span className="ctpb-banner-text-highlited"> protect</span>,
-                  and <span className="ctpb-banner-text-highlited">create</span>{" "}
-                  your future?
-                </div>
-              </div>
-              <div className="ctpb-plans-container">
-                <div className="ctpb-plan">
-                  <div className="ctpb-plan-header">
-                    <div className="inter-display-medium f-s-20">Loch</div>
-                    <div className="inter-display-medium grey-ADA f-s-20">
-                      Free
-                    </div>
-                  </div>
-                  <div className="ctpb-plan-body">
-                    <div className="ctpb-plan-body-icons-container">
-                      <Image
-                        className="ctpb-plan-body-icon"
-                        src={ChartDonutPaywallIcon}
-                      />
-                      <Image
-                        className="ctpb-plan-body-icon"
-                        src={ChartLinePaywallIcon}
-                      />
-                      <Image
-                        className="ctpb-plan-body-icon"
-                        src={LightBulbPaywallIcon}
-                      />
-                    </div>
-                    <div className="inter-display-medium ctpb-plan-desc-text f-s-16">
-                      Access to all the limited Loch features
-                    </div>
-                  </div>
-                  <div className="ctpb-plan-disable-button inter-display-medium f-s-16">
-                    Current tier
-                  </div>
-                </div>
+              <div className="ctpb-plans-container ctpb-plans-payment-container">
                 <div className="ctpb-plan ctpb-plan-selected">
                   <div className="ctpb-plan-header">
                     <div className="ctpb-plan-header-title-container">
@@ -360,10 +263,6 @@ class EmulationsPaywall extends BaseReactComponent {
                     <div className="ctpb-plan-plus-seperator-stick" />
                   </div>
                   <div className="ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-purple-button">
-                    {/* <Image
-                      className="ctpb-plan-purple-button-icon"
-                      src={PurpleEyeIcon}
-                    /> */}
                     <div className="ctpb-plan-purple-button-icon">
                       <svg
                         width="24"
@@ -403,56 +302,66 @@ class EmulationsPaywall extends BaseReactComponent {
                     Unlimited wallets to copy trade
                   </div>
                   <div
-                    onClick={this.props.goToPayWallOptions}
-                    className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-button ${
-                      this.state.isBtnLoading ? "ctpb-plan-button-loading" : ""
+                    className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-button ctpb-plan-button-dummy`}
+                  >
+                    Upgrade
+                  </div>
+                </div>
+                <div className="ctpb-plan ctpb-payment">
+                  <div className="inter-display-medium ctpb-payment-title-text f-s-16">
+                    Choose your payment method
+                  </div>
+                  <div
+                    className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ${
+                      this.state.isCryptoBtnLoading
+                        ? "ctpb-plan-payment-button-disabled"
+                        : this.state.isCreditBtnLoading
+                        ? "ctpb-plan-payment-button-loading"
+                        : ""
                     }`}
                   >
-                    {this.state.isBtnLoading ? loadingAnimation() : "Upgrade"}
+                    {this.state.isCreditBtnLoading ? (
+                      loadingAnimation()
+                    ) : (
+                      <>
+                        <Image
+                          className="ctpb-plan-payment-button-icons"
+                          src={CreditCardPaywallIcon}
+                        />
+                        <span>Credit Card</span>
+                      </>
+                    )}
+                  </div>
+                  <div
+                    onClick={this.goCopyTrade}
+                    className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ${
+                      this.state.isCryptoBtnLoading
+                        ? "ctpb-plan-payment-button-loading"
+                        : ""
+                    }`}
+                  >
+                    {this.state.isCryptoBtnLoading ? (
+                      loadingAnimation()
+                    ) : (
+                      <>
+                        <Image
+                          className="ctpb-plan-payment-button-icons"
+                          src={CryptoWalletPaywallIcon}
+                        />
+                        <span>Crypto</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="ctpb-user-reviews">
-              <div className="ctpb-user-reviews-title">
-                What our users have to say
-              </div>
-              <div className="ctpb-user-reviews-scroll-container">
-                {this.state.customerData.map((data, index) => (
-                  <div
-                    style={{
-                      marginRight:
-                        index === this.state.customerData.length - 1
-                          ? "0"
-                          : "1.5rem",
-                    }}
-                    className="ctpb-user-reviews-scroll-block"
-                  >
-                    <div className="ctpb-uscb-name inter-display-medium f-s-10">
-                      {data.name}
-                    </div>
-                    <div className="ctpb-uscb-twitter inter-display-medium f-s-10">
-                      {data.twitterHandle}
-                    </div>
-                    <div className="ctpb-uscb-rating">
-                      {[...Array(data.rating)].map((e, i) => (
-                        <Image
-                          key={i}
-                          src={CopyTradeReviewStarIcon}
-                          className="ctpb-uscb-rating-star"
-                        />
-                      ))}
-                    </div>
-                    <div className="ctpb-uscb-review inter-display-medium f-s-16">
-                      {data.review}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="ctpb-user-discalmier">
+            <div
+              style={{
+                marginTop: "3rem",
+              }}
+              className="ctpb-user-discalmier"
+            >
               <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
                 Don't worry. All your information remains private and anonymous.
                 <CustomOverlay
@@ -491,6 +400,9 @@ const mapDispatchToProps = {
   addCopyTrade,
 };
 
-EmulationsPaywall.propTypes = {};
+EmulationsPaywallOptions.propTypes = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(EmulationsPaywall);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EmulationsPaywallOptions);

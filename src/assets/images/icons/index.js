@@ -127,3 +127,5 @@ export { default as ChartLinePaywallIcon } from "./chartLinePaywall.svg";
 export { default as PurpleEyeIcon } from "./purpleEye.svg";
 export { default as CopyTradeReviewStarIcon } from "./copyTradeReviewStar.svg";
 export { default as NewModalBackArrowIcon } from "./newModalBackArrow.svg";
+export { default as CreditCardPaywallIcon } from "./creditCardPaywall.svg";
+export { default as CryptoWalletPaywallIcon } from "./cryptoWalletPaywall.svg";

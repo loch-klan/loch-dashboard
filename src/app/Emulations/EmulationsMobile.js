@@ -35,6 +35,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import EmulationsPaywall from "./EmulationsPaywall";
 import Loading from "../common/Loading";
+import EmulationsPaywallOptions from "./EmulationsPaywallOptions";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -222,6 +223,9 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
 
         {this.props.isAddCopyTradeAddress ? (
           <AddEmulationsAddressModal
+            hiddenModal={
+              this.props.isPayModalOpen || this.props.isPayModalOptionsOpen
+            }
             show={this.props.isAddCopyTradeAddress}
             onHide={this.props.hideAddCopyTradeAddress}
             emulationsUpdated={this.props.emulationsUpdated}
@@ -242,6 +246,21 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             }
             passedCTAddress={this.props.passedCTAddress}
             passedCTCopyTradeAmount={this.props.passedCTCopyTradeAmount}
+            goToPayWallOptions={this.props.goToPayWallOptions}
+            isMobile
+          />
+        ) : null}
+        {this.props.isPayModalOptionsOpen ? (
+          <EmulationsPaywallOptions
+            userDetailsState={this.props.userDetailsState}
+            show={this.props.isPayModalOptionsOpen}
+            onHide={this.props.closePayModal}
+            passedCTNotificationEmailAddress={
+              this.props.passedCTNotificationEmailAddress
+            }
+            passedCTAddress={this.props.passedCTAddress}
+            passedCTCopyTradeAmount={this.props.passedCTCopyTradeAmount}
+            goBackToPayWall={this.props.goBackToPayWall}
             isMobile
           />
         ) : null}

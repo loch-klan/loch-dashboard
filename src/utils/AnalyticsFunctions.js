@@ -5980,6 +5980,14 @@ export const CopyTradePayWallOpen = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CopyTradePayWallOptionsOpen = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: Pay options: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const CopyTradePayCryptoPayment = ({ session_id, email_address }) => {
   const event_name = "Copy Trade: Paywall: cyptro payment clicked";
   const eventProperties = {

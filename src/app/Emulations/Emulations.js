@@ -15,6 +15,7 @@ import {
   CopyTradeExecuteTradeRejected,
   CopyTradePageView,
   CopyTradePayWallOpen,
+  CopyTradePayWallOptionsOpen,
   CopyTradePopularAccountCopyClicked,
   CopyTradePopularAccountWalletClicked,
   CopyTradeTimeSpent,
@@ -71,6 +72,7 @@ import EmulationsMobile from "./EmulationsMobile.js";
 import EmulationsTradeModal from "./EmulationsTradeModal.js";
 import "./_emulations.scss";
 import EmulationsPaywall from "./EmulationsPaywall.js";
+import EmulationsPaywallOptions from "./EmulationsPaywallOptions.js";
 
 class Emulations extends Component {
   constructor(props) {
@@ -78,6 +80,7 @@ class Emulations extends Component {
     this.state = {
       isPopularAccountsBlockOpen: true,
       isPayModalOpen: false,
+      isPayModalOptionsOpen: false,
       passedCTNotificationEmailAddress: "",
       passedCTAddress: "",
       passedCTCopyTradeAmount: "",
@@ -895,6 +898,22 @@ class Emulations extends Component {
       }
     }, 150);
   };
+  openPayOptionsModal = () => {
+    CopyTradePayWallOptionsOpen({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.setState(
+      {
+        isPayModalOpen: false,
+      },
+      () => {
+        this.setState({
+          isPayModalOptionsOpen: true,
+        });
+      }
+    );
+  };
   openPayModal = (emailHolder, walletHolder, amountHolder) => {
     CopyTradePayWallOpen({
       session_id: getCurrentUser().id,
@@ -913,6 +932,12 @@ class Emulations extends Component {
       }
     );
   };
+  goBackToPayWall = () => {
+    this.setState({
+      isPayModalOptionsOpen: false,
+      isPayModalOpen: true,
+    });
+  };
   goBackToAddCopyTradeModal = () => {
     this.setState({
       isPayModalOpen: false,
@@ -922,6 +947,7 @@ class Emulations extends Component {
     this.hideAddCopyTradeAddress();
     this.setState({
       isPayModalOpen: false,
+      isPayModalOptionsOpen: false,
     });
   };
   addPrefillCopyAddress = (passedAddress, isLoggedIn) => {
@@ -1138,9 +1164,12 @@ class Emulations extends Component {
             isAvailableCopyTradeBlockOpen={
               this.state.isAvailableCopyTradeBlockOpen
             }
+            isPayModalOptionsOpen={this.state.isPayModalOptionsOpen}
             isRightArrowDisabled={this.state.isRightArrowDisabled}
             isLeftArrowDisabled={this.state.isLeftArrowDisabled}
+            goBackToPayWall={this.goBackToPayWall}
             goToScrollPosition={this.goToScrollPosition}
+            goToPayWallOptions={this.openPayOptionsModal}
             currentCirclePosition={this.state.currentCirclePosition}
             availableCopyTrades={this.state.copyTradesAvailableLocal}
             history={this.props.history}
@@ -1231,10 +1260,27 @@ class Emulations extends Component {
                 passedCTAddress={this.state.passedCTAddress}
                 passedCTCopyTradeAmount={this.state.passedCTCopyTradeAmount}
                 goBackToAddCopyTradeModal={this.goBackToAddCopyTradeModal}
+                goToPayWallOptions={this.openPayOptionsModal}
+              />
+            ) : null}
+            {this.state.isPayModalOptionsOpen ? (
+              <EmulationsPaywallOptions
+                userDetailsState={this.state.userDetailsState}
+                show={this.state.isPayModalOptionsOpen}
+                onHide={this.closePayModal}
+                passedCTNotificationEmailAddress={
+                  this.state.passedCTNotificationEmailAddress
+                }
+                passedCTAddress={this.state.passedCTAddress}
+                passedCTCopyTradeAmount={this.state.passedCTCopyTradeAmount}
+                goBackToPayWall={this.goBackToPayWall}
               />
             ) : null}
             {this.state.isAddCopyTradeAddress ? (
               <AddEmulationsAddressModal
+                hiddenModal={
+                  this.state.isPayModalOpen || this.state.isPayModalOptionsOpen
+                }
                 show={this.state.isAddCopyTradeAddress}
                 prefillCopyAddress={this.state.prefillCopyAddress}
                 onHide={this.hideAddCopyTradeAddress}
