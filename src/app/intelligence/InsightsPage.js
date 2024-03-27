@@ -466,6 +466,8 @@ class InsightsPage extends Component {
         <MobileLayout
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
+          showpath
+          currentPage={"insights"}
         >
           <InsightsPageMobile
             updatedInsightList={this.state.updatedInsightList}
@@ -504,6 +506,8 @@ class InsightsPage extends Component {
               <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
+                showpath
+                currentPage={"insights"}
               />
               {this.state.addModal && (
                 <FixAddModal
