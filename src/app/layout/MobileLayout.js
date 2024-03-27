@@ -611,6 +611,7 @@ class MobileLayout extends BaseReactComponent {
                     <Breadcrums
                       showpath={this.props.showpath}
                       currentPage={this.props.currentPage}
+                      noHomeInPath={this.props.noHomeInPath}
                       isMobile
                     />
                     <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>

@@ -130,3 +130,4 @@ export { default as NewModalBackArrowIcon } from "./newModalBackArrow.svg";
 export { default as CreditCardPaywallIcon } from "./creditCardPaywall.svg";
 export { default as CryptoWalletPaywallIcon } from "./cryptoWalletPaywall.svg";
 export { default as HomeTabArrowIcon } from "./homeTabArrow.svg";
+export { default as PasswordIcon } from "./password.svg";

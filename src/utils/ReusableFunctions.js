@@ -4,6 +4,7 @@ import { API_LIMIT } from "./Constant";
 import moment from "moment";
 import { DARK_MODE } from "../app/intelligence/ActionTypes";
 import { SwitchDarkMode } from "../app/common/Api";
+import { toast } from "react-toastify";
 
 export const scrollToBottomAfterPageChange = () => {
   if (mobileCheck()) {
@@ -15,6 +16,16 @@ export const scrollToBottomAfterPageChange = () => {
   } else {
     window.scroll(0, document.body.scrollHeight);
   }
+};
+export const copyText = (text) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      toast.success("Copied");
+    })
+    .catch(() => {
+      console.log("something went wrong");
+    });
 };
 export const scrollToTop = () => {
   window.scrollTo(0, 0);

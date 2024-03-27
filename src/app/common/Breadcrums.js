@@ -25,6 +25,8 @@ export default function Breadcrums(props) {
       linkName = "Loch’s Leaderboard";
     } else if (linkName === "nft") {
       linkName = "NFT";
+    } else if (linkName === "referral-codes") {
+      linkName = "Referrals";
     }
     return (
       e && (
@@ -49,9 +51,11 @@ export default function Breadcrums(props) {
   });
   const breadCrumb = (
     <Breadcrumb>
-      <Breadcrumb.Item linkAs={Link} linkProps={{ to: `/home` }}>
-        <Image src={InActiveHomeSmallIcon} />
-      </Breadcrumb.Item>
+      {props.noHomeInPath ? null : (
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: `/home` }}>
+          <Image src={InActiveHomeSmallIcon} />
+        </Breadcrumb.Item>
+      )}
       {breads}
     </Breadcrumb>
   );

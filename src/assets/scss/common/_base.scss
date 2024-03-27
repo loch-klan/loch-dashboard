@@ -2731,7 +2731,7 @@ textarea {
 .page-header {
   margin-bottom: 1.5rem;
   h4 {
-    font-size: 2rem;
+    font-size: 25px;
     // line-height: 2.4;
   }
   .pageHeaderSubtitles {
@@ -3597,6 +3597,36 @@ input {
   /* Show the checkmark when checked */
   .container input:checked ~ .checkmark:after {
     display: block;
+  }
+}
+.profile-section-referall-code-btn {
+  background-color: red;
+  width: 50%;
+  padding: 1rem;
+  background-color: var(--cardBackgroud);
+  border-radius: 0.5rem;
+  margin-bottom: 3rem;
+  margin-top: -3rem;
+  box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
+    0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+
+  .psrcb-left {
+    display: flex;
+    align-items: center;
+    column-gap: 6rem;
+  }
+  .psrcb-icon {
+    height: 2.5rem;
+  }
+  .psrcb-text {
+    font-size: 1.5rem;
+  }
+  &:hover {
+    filter: brightness(0.95);
   }
 }
 .basicConfirmModalMobile {
