@@ -1243,17 +1243,17 @@ form {
     display: flex;
     flex-direction: column;
 
-    &::-webkit-scrollbar {
-      border-radius: 0.9rem;
-      width: 0rem;
-      height: 0rem;
-      background-color: rgba(229, 229, 230, 0.5);
-      margin-bottom: 0.2rem;
-    }
-    &::-webkit-scrollbar-thumb {
-      border-radius: 0.8rem;
-      background-color: #cacbcc;
-    }
+    // &::-webkit-scrollbar {
+    //   border-radius: 0.9rem;
+    //   width: 0rem;
+    //   height: 0rem;
+    //   background-color: rgba(229, 229, 230, 0.5);
+    //   margin-bottom: 0.2rem;
+    // }
+    // &::-webkit-scrollbar-thumb {
+    //   border-radius: 0.8rem;
+    //   background-color: #cacbcc;
+    // }
   }
   .table-wrapper-mobile-y-scroll {
     overflow-x: scroll;
@@ -3519,6 +3519,12 @@ input {
   }
 }
 .breadcrumsBlockMobile {
+  min-width: 100%;
+  max-width: 100%;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   nav {
     ol {
       margin-top: 0rem;

@@ -13,10 +13,10 @@ class ProfileLochCreditPointsBlock extends BaseReactComponent {
   render() {
     return (
       <div
-        style={{
-          marginRight: !this.props.lastEle ? "3rem" : "",
-        }}
-        className="profileLochCreditPointsBlock"
+        onClick={!this.props.isDone ? this.props.onClick : null}
+        className={`profileLochCreditPointsBlock ${
+          this.props.isDone ? "profileLochCreditPointsBlockCompleted" : ""
+        }`}
       >
         <div className="profileLochCreditPointsBlockIconContainer">
           <Image
@@ -41,10 +41,7 @@ class ProfileLochCreditPointsBlock extends BaseReactComponent {
               </span>
             </div>
             {!this.props.isDone ? (
-              <div
-                onClick={this.props.onClick}
-                className="profileLochCreditPointsBlockInfoBlockDescGoContainer"
-              >
+              <div className="profileLochCreditPointsBlockInfoBlockDescGoContainer">
                 <div className="profileLochCreditPointsBlockInfoBlockDescGo inter-display-medium f-s-13">
                   Go
                 </div>

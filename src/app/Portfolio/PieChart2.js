@@ -31,7 +31,7 @@ import {
   DEFAULT_PRICE,
 } from "../../utils/Constant";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   amountFormat,
   CurrencyType,
@@ -303,7 +303,10 @@ class PieChart2 extends BaseReactComponent {
       });
       let data = new URLSearchParams();
       data.append("wallet_address", JSON.stringify(allAddresses));
-      this.props.getProtocolBalanceApi(this, data);
+      let tempToken = getToken();
+      if (tempToken && tempToken !== "jsk") {
+        this.props.getProtocolBalanceApi(this, data);
+      }
     } else {
       this.handleReset();
       this.setState({
@@ -326,6 +329,11 @@ class PieChart2 extends BaseReactComponent {
     // console.log("data", this.props.chainPortfolio);
   };
   componentDidUpdate(prevProps) {
+    if (this.props.defiState !== prevProps.defiState) {
+      this.setState({
+        defiLoader: false,
+      });
+    }
     if (
       prevProps.isAddressFollowedCount !== this.props.isAddressFollowedCount
     ) {

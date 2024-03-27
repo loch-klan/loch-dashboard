@@ -73,7 +73,7 @@
         // transition-duration: 300ms;
         filter: var(--invertColor);
       }
-      
+
       &:hover {
         border-color: var(--greyE5e);
         background-color: var(--backColor);
@@ -88,8 +88,8 @@
         .topBarExchangeIcons {
           filter: none;
         }
-        .topBarWalletChainEyeAmountContainer{
-          img{
+        .topBarWalletChainEyeAmountContainer {
+          img {
             filter: var(--invertColor);
           }
         }
@@ -127,8 +127,8 @@
         img {
           filter: invert(0);
         }
-        .topBarWalletChainEyeAmountContainer{
-          img{
+        .topBarWalletChainEyeAmountContainer {
+          img {
             filter: var(--invertColor);
           }
         }
@@ -138,8 +138,8 @@
       text-align: left !important;
       margin-top: 0rem;
 
-      .copy-icon-top-bar-new{
-        &:hover{
+      .copy-icon-top-bar-new {
+        &:hover {
           filter: var(--hoverBrightnessValue);
         }
       }
@@ -190,7 +190,7 @@
             border-radius: 10px;
             text-overflow: ellipsis;
             overflow-x: hidden;
-            &:hover{
+            &:hover {
               background-color: var(--primaryFilter);
             }
           }
@@ -240,7 +240,7 @@
         margin-right: 0.6rem;
         width: 1.3rem;
         height: 1.3rem;
-        filter:var(--updatedAgoFilter);
+        filter: var(--updatedAgoFilter);
       }
 
       &:hover {
@@ -274,7 +274,7 @@
 
       // transition-duration: 300ms;
       cursor: pointer;
-      
+
       .topWalletAddressListFollowShareBtnIcon {
         filter: var(--invertColor);
       }

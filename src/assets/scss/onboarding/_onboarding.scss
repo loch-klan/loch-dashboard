@@ -1494,9 +1494,9 @@
         border-radius: 12px;
         border: 1px solid var(--borderwhiteDarkLight);
         box-shadow: var(--trendingAddressShadow);
-          .new-homepage__body-trending-address-icon{
-            filter: var(--invertColor);
-          }
+        .new-homepage__body-trending-address-icon {
+          filter: var(--invertColor);
+        }
 
         .new-homepage__body-trending-address__address-wrapper {
           margin-top: 30px;
@@ -1704,7 +1704,8 @@
         padding: 2rem 1.5rem;
         border-radius: 12px;
         background-color: var(--cardBackgroud);
-        box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
+        // box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
+        box-shadow: 0px 8px 28px -6px rgba(0, 0, 0, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1714,32 +1715,37 @@
         &:hover {
           &:hover {
             .new-homepage__body-search-paste-text {
-              filter: var(--hoverBrightnessValue);
+              // filter: var(--hoverBrightnessValue);
+              opacity: 0.5;
             }
             .new-homepage__body-search-copy-icon {
-              filter: var(--hoverBrightnessValue);
+              // filter: var(--hoverBrightnessValue);
+              opacity: 0.5;
             }
           }
         }
 
         .new-homepage__body-search_preview {
           cursor: pointer;
-          color: #7c7d81;
+          color: var(--black191);
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-
+          font-size: 16px;
           .new-homepage__body-search-copy-icon {
             height: 16px;
             margin-right: 1rem;
+            filter: var(--invertColor);
           }
           &:hover {
             .new-homepage__body-search-paste-text {
-              filter: var(--hoverBrightnessValue);
+              // filter: var(--hoverBrightnessValue);
+              opacity: 0.5;
             }
             .new-homepage__body-search-copy-icon {
-              filter: var(--hoverBrightnessValue);
+              // filter: var(--hoverBrightnessValue);
+              opacity: 0.5;
             }
           }
         }
@@ -1762,9 +1768,9 @@
         background: var(--cardBackgroud);
         box-shadow: 0px 6.31px 6.31px -3.155px rgba(24, 39, 75, 0.08),
           0px 3.155px 4.732px -3.155px rgba(24, 39, 75, 0.12);
-          .dropdown-menu{
-            background: var(--cardBackgroud);
-          }
+        .dropdown-menu {
+          background: var(--cardBackgroud);
+        }
         .smartMoneyTable {
           .table-wrapper {
             .custom-table {
@@ -1831,9 +1837,8 @@
         line-height: 120%;
         gap: 8px;
         color: var(--black191);
-        img{
+        img {
           filter: var(--invertColor);
-        
         }
       }
       .new-homepage__body-content-table-header_explainer {
@@ -2049,8 +2054,8 @@
     font-weight: 600;
     line-height: 120%;
   }
-  .new-homepage-btn--mode{
-    img{
+  .new-homepage-btn--mode {
+    img {
       filter: brightness(3);
     }
   }
@@ -2103,13 +2108,13 @@
         filter: brightness(0);
       }
     }
-    &.new-homepage-btn--blur--nover{
+    &.new-homepage-btn--blur--nover {
       &:hover {
         backdrop-filter: blur(10px);
         background: rgba(255, 255, 255, 0.15);
         color: white;
         border: 1px solid rgba(229, 229, 230, 0.2);
-        img{
+        img {
           filter: brightness(4);
         }
       }
