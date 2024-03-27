@@ -3418,6 +3418,12 @@ input {
   color: var(--black191);
   background-color: var(--primaryFilter);
   cursor: pointer;
+  .custom-control {
+    transform: scale(1.45) translateX(0);
+  }
+  .custom-control-label {
+    color: var(--black191);
+  }
   .pageHeaderShareBtn {
     display: flex;
     gap: 8px;
@@ -3461,6 +3467,68 @@ input {
 .transaction-searchbar-full {
   .form-group {
     flex-grow: 1;
+  }
+  input {
+  }
+}
+
+.breadcrumsBlock {
+  min-width: 85rem;
+  nav {
+    ol {
+      align-items: center;
+      background-color: transparent;
+      border: none;
+      padding: 0rem;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
+      filter: var(--invertColor);
+      // .breadcrumb{
+      // }
+      .breadcrumb-item + .breadcrumb-item::before {
+        content: url("../../images/icons/ChevronArrowRight.svg");
+        position: relative;
+        top: 0.1rem;
+        padding-right: 1.4rem;
+      }
+      .breadcrumb-item {
+        padding-left: 1.4rem;
+        cursor: pointer;
+        &:first-letter {
+          text-transform: capitalize;
+        }
+        a {
+          color: $grey-ADA;
+
+          &:hover {
+            color: $primary;
+
+            img {
+              filter: brightness(0.5);
+            }
+          }
+        }
+      }
+      .active {
+        color: $grey-636;
+      }
+      .breadcrumb-item:nth-child(1) {
+        padding: 0rem;
+      }
+    }
+  }
+}
+.breadcrumsBlockMobile {
+  min-width: 100%;
+  max-width: 100%;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  nav {
+    ol {
+      margin-top: 0rem;
+    }
   }
 }
 

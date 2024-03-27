@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-bootstrap";
+import { Breadcrumb, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 
 import { BlackManIcon, GreyManIcon } from "../../assets/images/icons";
