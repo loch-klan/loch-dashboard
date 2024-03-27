@@ -182,7 +182,10 @@ class ProfileForm extends BaseReactComponent {
     const data = new URLSearchParams();
     data.append("first_name", this.state.firstName);
     data.append("last_name", this.state.lastName);
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     data.append("mobile", this.state.mobileNumber);
     data.append("signed_up_from", "Profile page");
     this.props.updateUser(data, this);

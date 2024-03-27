@@ -2,6 +2,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  EmultionSidebarIcon,
   MobileNavFollow,
   MobileNavFollowActive,
   MobileNavHome,
@@ -15,13 +16,17 @@ import {
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import {
+  HomeMenu,
+  MenuCopyTradelist,
+  MenuLeaderboard,
+  MenuWatchlist,
   Mobile_Home_Share,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
   resetUser,
 } from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { BaseReactComponent } from "../../utils/form";
 import { isNewAddress } from "../Portfolio/Api.js";
 import WelcomeCard from "../Portfolio/WelcomeCard";
@@ -80,16 +85,16 @@ class MobileLayout extends BaseReactComponent {
           path: "/watchlist",
         },
         {
+          activeIcon: EmultionSidebarIcon,
+          inactiveIcon: EmultionSidebarIcon,
+          text: "Copy Trade",
+          path: "/copy-trade",
+        },
+        {
           activeIcon: MobileNavLeaderboardActive,
           inactiveIcon: MobileNavLeaderboard,
           text: "Leaderboard",
           path: "/home-leaderboard",
-        },
-        {
-          activeIcon: MobileNavProfile,
-          inactiveIcon: MobileNavProfile,
-          text: "Sign Out",
-          path: "/",
         },
       ],
       userWalletList: [],
@@ -524,6 +529,7 @@ class MobileLayout extends BaseReactComponent {
     this.props.history.push("/welcome");
   };
   render() {
+    let activeTab = window.location.pathname;
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
         const tempWallet = this.props.portfolioState.walletTotal
@@ -607,7 +613,7 @@ class MobileLayout extends BaseReactComponent {
                       currentPage={this.props.currentPage}
                       isMobile
                     />
-                    <MobileDarkModeWrapper>
+                    <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
                       {this.props.hideAddresses ? (
                         <></>
                       ) : (
@@ -671,7 +677,34 @@ class MobileLayout extends BaseReactComponent {
                       if (item.text === "Sign Out") {
                         this.openConfirmLeaveModal();
                       } else {
-                        this.props.history.push(item.path);
+                        let tempToken = getToken();
+                        if (!tempToken || tempToken === "jsk") {
+                          return null;
+                        } else {
+                          if (index === 0) {
+                            HomeMenu({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 1) {
+                            MenuWatchlist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 2) {
+                            MenuCopyTradelist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 3) {
+                            MenuLeaderboard({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          }
+
+                          this.props.history.push(item.path);
+                        }
                       }
                     }}
                     className={`portfolio-mobile-layout-nav-footer-inner-item ${
@@ -690,6 +723,16 @@ class MobileLayout extends BaseReactComponent {
                         item.path === this.props.history.location.pathname
                           ? item.activeIcon
                           : item.inactiveIcon
+                      }
+                      style={
+                        item.path === "/copy-trade"
+                          ? {
+                              filter:
+                                activeTab === item.path
+                                  ? "brightness(0) var(--invertColor)"
+                                  : "brightness(1.5) var(--invertColor)",
+                            }
+                          : {}
                       }
                     />
                     <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
