@@ -2376,6 +2376,29 @@ export const WatchlistPage = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Pageview Insights");
 };
+export const ProfileReferralPage = ({ session_id, email_address }) => {
+  const event_name = "Page View: Referral Codes";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Pageview Insights");
+};
+export const TimeSpentReferralCodes = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Prfile: Referral Codes: time spent on referral codes page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const NFTPage = ({ session_id, email_address }) => {
   const event_name = "Page View: NFT";
   const eventProperties = {
