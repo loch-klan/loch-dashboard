@@ -8,7 +8,7 @@ import PageHeader from "./../common/PageHeader";
 import ProfileForm from "./ProfileForm";
 
 // add wallet
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Image } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
   GetAllPlan,
@@ -35,6 +35,12 @@ import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 import TopWalletAddressList from "../header/TopWalletAddressList";
+import {
+  ArrowUpRightSmallIcon,
+  PasswordIcon,
+  UserCreditRightArrowIcon,
+  UserCreditScrollRightArrowIcon,
+} from "../../assets/images/icons";
 
 class Profile extends Component {
   constructor(props) {
@@ -325,6 +331,25 @@ class Profile extends Component {
                   />
                 </Col>
               </Row>
+            </div>
+            <div
+              onClick={() => {
+                this.props.history.push("/profile/referral-codes");
+              }}
+              className="profile-section-referall-code-btn"
+            >
+              <div className="psrcb-left">
+                <Image className="psrcb-icon" src={PasswordIcon} />
+                <div className="inter-display-medium psrcb-text">
+                  Referral Codes
+                </div>
+              </div>
+              <Image
+                style={{
+                  height: "1.2rem",
+                }}
+                src={UserCreditScrollRightArrowIcon}
+              />
             </div>
             {/* wallet page component */}
             <Wallet

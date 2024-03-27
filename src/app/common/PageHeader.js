@@ -66,7 +66,11 @@ export default function PageHeader(props) {
           : { padding: 0 }
       }
     >
-      <Breadcrums showpath={props.showpath} currentPage={props.currentPage} />
+      <Breadcrums
+        noHomeInPath={props.noHomeInPath}
+        showpath={props.showpath}
+        currentPage={props.currentPage}
+      />
 
       <div className="header">
         <div className="header-left">

@@ -24,7 +24,7 @@ class ReferralCodesPage extends BaseReactComponent {
 
     this.state = {
       startTime: "",
-      referralsLoading: false,
+      referralsLoading: true,
       referralCodes: [
         {
           code: "546697",
@@ -97,6 +97,11 @@ class ReferralCodesPage extends BaseReactComponent {
   componentDidMount() {
     scrollToTop();
     this.getOtherData();
+    setTimeout(() => {
+      this.setState({
+        referralsLoading: false,
+      });
+    }, 1500);
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
@@ -190,6 +195,8 @@ class ReferralCodesPage extends BaseReactComponent {
               subTitle={"Manage your referral codes here"}
               history={this.props.history}
               ShareBtn={false}
+              showpath
+              noHomeInPath
             />
 
             <div className="rp-body-container">
