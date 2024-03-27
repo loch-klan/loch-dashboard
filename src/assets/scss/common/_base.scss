@@ -1216,6 +1216,13 @@ form {
     text-align: center;
     padding: 10rem;
   }
+  .not-found-wrapper-image {
+    height: 10rem;
+    margin-bottom: 2rem;
+  }
+  .not-found-wrapper-image-text {
+    color: #adadad;
+  }
 }
 .section-table-mobile-scroll {
   padding: 0.5rem 0rem;
@@ -2758,6 +2765,9 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
+.imageDarker {
+  filter: var(--hoverBrightnessValue) !important;
+}
 .overlay-tool-tip-container {
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
@@ -2797,10 +2807,13 @@ input {
   img {
     filter: var(--invertColor) !important;
   }
+  transition-duration: 0ms !important;
   &:hover {
     background-color: var(--mainButtonBg) !important;
     color: var(--primaryTextColor) !important;
-
+    border-color: var(--mainButtonBg) !important;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
     div {
       color: var(--primaryTextColor) !important;
     }
@@ -3387,12 +3400,12 @@ input {
   input {
     border: 1px solid var(--inputBorder) !important;
     &::placeholder {
-      color: var(--inputBorder) !important;
+      color: var(--inputPlaceHolder) !important;
     }
     &:hover {
       border: 1px solid var(--inputBorderHover) !important;
       &::placeholder {
-        color: var(--inputBorder) !important;
+        color: var(--inputPlaceHolder) !important;
       }
     }
   }
@@ -3404,7 +3417,10 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
-
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
+}
 .overflow-table-header-visible {
   .ReactVirtualized__Table__headerRow {
     overflow: visible !important;
@@ -3612,4 +3628,30 @@ input {
   &:hover {
     filter: brightness(0.95);
   }
+}
+.basicConfirmModalMobile {
+  .modal-content {
+    width: 90vw !important;
+    min-width: 90vw !important;
+    .modal-body {
+      padding: 3rem !important;
+      .leave-modal-btn-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1rem;
+        .secondary-btn {
+          margin-right: 0rem !important;
+        }
+      }
+    }
+  }
+}
+.addCopyTradeInput {
+  &::placeholder {
+    color: var(--inputPlaceHolder) !important;
+  }
+}
+.zeroOpacity {
+  opacity: 0;
 }
