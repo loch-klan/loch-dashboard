@@ -2,6 +2,43 @@
   display: flex;
   .profile-section {
     margin-top: 3rem;
+    .profile-section-referall-code-btn {
+      width: 50%;
+      padding: 1.5rem;
+      background-color: var(--cardBackgroud);
+      border-radius: 1rem;
+      margin-bottom: 3rem;
+      margin-top: -3rem;
+      box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
+        0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      border: 0.1rem solid transparent;
+
+      .psrcb-left {
+        display: flex;
+        align-items: center;
+        column-gap: 6rem;
+      }
+      .psrcb-icon {
+        height: 2.5rem;
+        filter: var(--invertColor);
+        opacity: var(--lighterDarkIcons);
+      }
+      .psrcb-arrow-icon {
+        height: 1.5rem;
+        filter: var(--invertColor);
+        opacity: var(--lighterDarkIcons);
+      }
+      .psrcb-text {
+        font-size: 1.5rem;
+      }
+      &:hover {
+        border-color: var(--primaryTextColor);
+      }
+    }
 
     .profile-plan-wrapper {
       background-image: url("../../../image/profile-update.png");

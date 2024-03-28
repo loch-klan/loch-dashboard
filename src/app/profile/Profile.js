@@ -264,7 +264,22 @@ class Profile extends Component {
 
     this.props.setPageFlagDefault();
   };
-
+  goToMyReferralCodes = () => {
+    if (this.state.lochUser && this.state.lochUser.email) {
+      this.props.history.push("/profile/referral-codes");
+    } else {
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        this.dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        this.dontOpenLoginPopup();
+      }
+    }
+  };
+  dontOpenLoginPopup = () => {
+    window.sessionStorage.setItem("dontOpenLoginPopup", true);
+  };
   render() {
     return (
       <>
@@ -333,21 +348,17 @@ class Profile extends Component {
               </Row>
             </div>
             <div
-              onClick={() => {
-                this.props.history.push("/profile/referral-codes");
-              }}
+              onClick={this.goToMyReferralCodes}
               className="profile-section-referall-code-btn"
             >
               <div className="psrcb-left">
                 <Image className="psrcb-icon" src={PasswordIcon} />
                 <div className="inter-display-medium psrcb-text">
-                  Referral Codes
+                  My Referral Codes
                 </div>
               </div>
               <Image
-                style={{
-                  height: "1.2rem",
-                }}
+                className="psrcb-arrow-icon"
                 src={UserCreditScrollRightArrowIcon}
               />
             </div>
