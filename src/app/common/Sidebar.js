@@ -574,7 +574,13 @@ function Sidebar(props) {
       const lochPointsProfileModalOpen = window.sessionStorage.getItem(
         "lochPointsProfileLoginClicked"
       );
-      if (!isCopyTradeModalOpen && !lochPointsProfileModalOpen) {
+      const dontOpenLoginPopup =
+        window.sessionStorage.getItem("dontOpenLoginPopup");
+      if (
+        !isCopyTradeModalOpen &&
+        !lochPointsProfileModalOpen &&
+        !dontOpenLoginPopup
+      ) {
         // if isPopupActive = true then do not open this popup bcoz any other popup still open
         let isPopupActive = JSON.parse(
           window.sessionStorage.getItem("isPopupActive")

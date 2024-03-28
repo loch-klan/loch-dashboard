@@ -1,22 +1,29 @@
 import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
+import { CopyClipboardIcon } from "../../assets/images";
 import { PasswordIcon } from "../../assets/images/icons";
 import {
   ProfileReferralPage,
   TimeSpentReferralCodes,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { copyText, scrollToTop } from "../../utils/ReusableFunctions";
+import {
+  copyText,
+  emailPrithvir,
+  goToTelegram,
+  goToTwitter,
+  scrollToTop,
+} from "../../utils/ReusableFunctions";
 import { BaseReactComponent } from "../../utils/form";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import Loading from "../common/Loading";
 import PageHeader from "../common/PageHeader";
-import "./_referralCodesPage.scss";
 import { getAllCoins } from "../onboarding/Api";
 import { getAllWalletListApi } from "../wallet/Api";
-import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
-import { CopyClipboardIcon } from "../../assets/images";
+import "./_referralCodesPage.scss";
+import { getReferallCodes } from "./ReferralCodesApi";
 
 class ReferralCodesPage extends BaseReactComponent {
   constructor(props) {
@@ -25,48 +32,8 @@ class ReferralCodesPage extends BaseReactComponent {
     this.state = {
       startTime: "",
       referralsLoading: true,
-      referralCodes: [
-        {
-          code: "546697",
-          isUsed: false,
-        },
-        {
-          code: "026485",
-          isUsed: false,
-        },
-        {
-          code: "273657",
-          isUsed: false,
-        },
-        {
-          code: "098765",
-          isUsed: false,
-        },
-        {
-          code: "209384",
-          isUsed: false,
-        },
-        {
-          code: "675849",
-          isUsed: false,
-        },
-        {
-          code: "129845",
-          isUsed: false,
-        },
-        {
-          code: "002266",
-          isUsed: false,
-        },
-        {
-          code: "457645",
-          isUsed: true,
-        },
-        {
-          code: "566556",
-          isUsed: true,
-        },
-      ],
+      referralCodes: [],
+      codesLeftToUse: undefined,
     };
   }
   getOtherData = () => {
@@ -96,12 +63,10 @@ class ReferralCodesPage extends BaseReactComponent {
   };
   componentDidMount() {
     scrollToTop();
+    if (this.props.commonState.profileReferralPage) {
+      this.callApi();
+    }
     this.getOtherData();
-    setTimeout(() => {
-      this.setState({
-        referralsLoading: false,
-      });
-    }, 1500);
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime = window.sessionStorage.getItem(
@@ -145,15 +110,35 @@ class ReferralCodesPage extends BaseReactComponent {
       this.endPageView();
     }
   }
-
-  componentDidUpdate() {
+  callApi = () => {
+    this.props.getReferallCodes(this.stopLoader);
+  };
+  componentDidUpdate(prevProps, prevState) {
     if (!this.props.commonState.profileReferralPage) {
       this.getOtherData();
-      // this.callApi();
-
+      this.callApi();
       this.props.updateWalletListFlag("profileReferralPage", true);
     }
+
+    if (prevProps.referralCodesState !== this.props.referralCodesState) {
+      let tempCodesLeft = 0;
+      this.props.referralCodesState.forEach((curReferralCode) => {
+        if (!curReferralCode.used) {
+          tempCodesLeft++;
+        }
+      });
+      this.setState({
+        referralCodes: this.props.referralCodesState,
+        codesLeftToUse: tempCodesLeft,
+      });
+      this.stopLoader();
+    }
   }
+  stopLoader = () => {
+    this.setState({
+      referralsLoading: false,
+    });
+  };
   CheckApiResponse = () => {
     this.props.setPageFlagDefault();
   };
@@ -207,60 +192,106 @@ class ReferralCodesPage extends BaseReactComponent {
                     <div className="inter-display-medium rpbdh-title">
                       Referral Codes
                     </div>
-                    <div className="inter-display-medium rpbdh-title-subtext">
-                      8 left
-                    </div>
+                    {this.state.codesLeftToUse !== undefined &&
+                    this.state.codesLeftToUse !== null ? (
+                      <div className="inter-display-medium rpbdh-title-subtext">
+                        {this.state.codesLeftToUse} left
+                      </div>
+                    ) : null}
                   </div>
                   <div
                     onClick={this.copyAllTheCodes}
                     className="inter-display-medium rpbdh-copy-button"
                   >
-                    Copy all code
+                    Copy all codes
                   </div>
                 </div>
+
                 {this.state.referralsLoading ? (
                   <div className="rpbd-loader">
                     <Loading />
                   </div>
                 ) : (
-                  <div className="rpbd-body-container">
-                    <div className="rpbd-body">
-                      {this.state.referralCodes.map(
-                        (curReferralCode, curReferralCodeIndex) => (
-                          <div
-                            style={{
-                              paddingTop:
-                                curReferralCodeIndex === 0 ? "0px" : "",
-                            }}
-                            className="rpbdd-referral-block"
+                  <>
+                    <div
+                      onClick={() => {
+                        this.props.history.push("/profile/referral-codes");
+                      }}
+                      className="rpbd-referall"
+                    >
+                      <div className="psrcb-left">
+                        <div className="inter-display-medium psrcb-text">
+                          Want more referral codes? Reach out to us on{" "}
+                          <span
+                            onClick={goToTwitter}
+                            className="psrcb-text-btn"
                           >
-                            <div
-                              className={`inter-display-medium rpbddrb-code ${
-                                curReferralCode.isUsed
-                                  ? "rpbddrb-code-used"
-                                  : ""
-                              }`}
-                            >
-                              {curReferralCode.code}
-                            </div>
-                            <div className="inter-display-medium rpbddrb-status">
-                              {curReferralCode.isUsed ? (
-                                <span>Used</span>
-                              ) : (
-                                <Image
-                                  onClick={() => {
-                                    copyText(curReferralCode.code);
-                                  }}
-                                  className="rpbddrbs-icon"
-                                  src={CopyClipboardIcon}
-                                />
-                              )}
-                            </div>
-                          </div>
-                        )
-                      )}
+                            Twitter
+                          </span>
+                          ,{" "}
+                          <span
+                            onClick={goToTelegram}
+                            className="psrcb-text-btn"
+                          >
+                            Telegram
+                          </span>
+                          , or email at{" "}
+                          <span
+                            onClick={emailPrithvir}
+                            className="psrcb-text-btn"
+                          >
+                            prithvir@loch.one
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+
+                    <div className="rpbd-body-container">
+                      <div className="rpbd-body">
+                        {this.state.referralCodes &&
+                        this.state.referralCodes.length > 0 ? (
+                          this.state.referralCodes.map(
+                            (curReferralCode, curReferralCodeIndex) => (
+                              <div
+                                style={{
+                                  paddingTop:
+                                    curReferralCodeIndex === 0 ? "0px" : "",
+                                }}
+                                className="rpbdd-referral-block"
+                              >
+                                <div
+                                  className={`inter-display-medium rpbddrb-code ${
+                                    curReferralCode.isUsed
+                                      ? "rpbddrb-code-used"
+                                      : ""
+                                  }`}
+                                >
+                                  {curReferralCode.code}
+                                </div>
+                                <div className="inter-display-medium rpbddrb-status">
+                                  {curReferralCode.isUsed ? (
+                                    <span>Used</span>
+                                  ) : (
+                                    <Image
+                                      onClick={() => {
+                                        copyText(curReferralCode.code);
+                                      }}
+                                      className="rpbddrbs-icon"
+                                      src={CopyClipboardIcon}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            )
+                          )
+                        ) : (
+                          <div className="inter-display-medium rpbd-no-data">
+                            No referral codes
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
@@ -271,12 +302,16 @@ class ReferralCodesPage extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = (state) => ({ commonState: state.CommonState });
+const mapStateToProps = (state) => ({
+  commonState: state.CommonState,
+  referralCodesState: state.ReferralCodesState,
+});
 const mapDispatchToProps = {
   getAllWalletListApi,
   getAllCoins,
   setPageFlagDefault,
   updateWalletListFlag,
+  getReferallCodes,
 };
 
 ReferralCodesPage.propTypes = {};

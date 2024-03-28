@@ -17,6 +17,16 @@ export const scrollToBottomAfterPageChange = () => {
     window.scroll(0, document.body.scrollHeight);
   }
 };
+
+export const goToTelegram = () => {
+  window.open("https://t.me/loch_chain", "_blank");
+};
+export const goToTwitter = () => {
+  window.open("https://twitter.com/loch_chain", "_blank");
+};
+export const emailPrithvir = () => {
+  window.open("mailto:prithvir@loch.one", "_blank");
+};
 export const copyText = (text) => {
   navigator.clipboard
     .writeText(text)

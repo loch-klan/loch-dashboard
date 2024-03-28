@@ -96,6 +96,11 @@ class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      //Sign up referral
+      isReferralCodeStep: false,
+      referralCode: "",
+      isReferralCodeLoading: false,
+      //Sign up referral
       pageName: "Landing Page",
       areNewAddresses: false,
       isPrevAddressNew: true,
@@ -1406,6 +1411,24 @@ class NewWelcomeMobile extends BaseReactComponent {
       window.open(shareLink, "_blank", "noreferrer");
     }
   };
+  checkReferralCode = () => {
+    if (this.state.referralCode) {
+      this.setState({
+        isReferralCodeLoading: true,
+      });
+    }
+  };
+  handleGoToReferral = () => {
+    this.setState({
+      isReferralCodeStep: true,
+      isReferralCodeLoading: false,
+    });
+  };
+  handleGoBackToSignUp = () => {
+    this.setState({
+      isReferralCodeStep: false,
+    });
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -1461,13 +1484,24 @@ class NewWelcomeMobile extends BaseReactComponent {
             smartMoneyLogin={this.state.smartMoneyLogin}
             isMobile
             email={this.state.emailSignup}
+            handleSubmitEmail={this.handleSubmitEmailSignup}
+            show={this.state.authmodal == "signup"}
             handleChangeEmail={(val) => {
               this.setState({
                 emailSignup: val,
               });
             }}
-            handleSubmitEmail={this.handleSubmitEmailSignup}
-            show={this.state.authmodal == "signup"}
+            handleChangeReferralCode={(val) => {
+              this.setState({
+                referralCode: val,
+              });
+            }}
+            isReferralCodeStep={this.state.isReferralCodeStep}
+            referralCode={this.state.referralCode}
+            isReferralCodeLoading={this.state.isReferralCodeLoading}
+            checkReferralCode={this.checkReferralCode}
+            handleGoToReferral={this.handleGoToReferral}
+            handleGoBackToSignUp={this.handleGoBackToSignUp}
           />
         ) : this.state.authmodal == "redirect" ? (
           <RedirectMobile

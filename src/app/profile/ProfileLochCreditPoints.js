@@ -21,6 +21,7 @@ import { updateWalletListFlag } from "../common/Api.js";
 import Loading from "../common/Loading.js";
 import { addUserCredits, getUserCredits } from "./Api.js";
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
+import { goToTelegram } from "../../utils/ReusableFunctions.js";
 
 class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {
@@ -308,7 +309,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           email_address: getCurrentUser ? getCurrentUser()?.email : "",
           task: "Joined Telegram chat",
         });
-        window.open("https://t.me/loch_chain", "_blank");
+        goToTelegram();
         const joinTelegram = new URLSearchParams();
         joinTelegram.append("credits", "joined_telegram");
         this.props.addUserCredits(joinTelegram, this);
