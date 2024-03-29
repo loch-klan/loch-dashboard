@@ -5,7 +5,6 @@ import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIc
 
 export default function Breadcrums(props) {
   const nav_list = window.location.pathname.split("/");
-
   const breads = nav_list.map((e, key) => {
     // console.log(e, props?.topaccount, key);
     let linkName = e;

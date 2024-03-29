@@ -84,10 +84,13 @@ export const SwitchDarkMode = (passedData) => {
     });
   };
 };
-export const fixWalletApi = (ctx, info) => {
+export const fixWalletApi = (ctx, info, stopBtnLoading) => {
   postLoginInstance
     .post("organisation/user/update-user", info)
     .then((res) => {
+      if (stopBtnLoading) {
+        stopBtnLoading();
+      }
       if (!res.data.error) {
         ctx.handleRedirection();
         // ctx.props.history.push('/welcome');
@@ -96,6 +99,9 @@ export const fixWalletApi = (ctx, info) => {
       }
     })
     .catch((err) => {
+      if (stopBtnLoading) {
+        stopBtnLoading();
+      }
       // console.log("fixwallet",err)
     });
 };

@@ -180,11 +180,14 @@ export const detectNameTag = (
   };
 };
 
-export const signUpWelcome = (ctx, data, toggleAuthModal) => {
+export const signUpWelcome = (ctx, data, toggleAuthModal, stopBtnLoading) => {
   return async function (dispatch, getState) {
     preLoginInstance
       .post("organisation/user/signup", data)
       .then((res) => {
+        if (stopBtnLoading) {
+          stopBtnLoading(true);
+        }
         if (res.data.error) {
           toast.error(res.data.message || "Something Went Wrong");
         } else if (res.data.error === false) {
@@ -200,6 +203,9 @@ export const signUpWelcome = (ctx, data, toggleAuthModal) => {
         }
       })
       .catch((err) => {
+        if (stopBtnLoading) {
+          stopBtnLoading(false);
+        }
         toast.error("Something Went Wrong");
       });
   };

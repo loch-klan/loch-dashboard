@@ -21,12 +21,13 @@ import { updateWalletListFlag } from "../common/Api.js";
 import Loading from "../common/Loading.js";
 import { addUserCredits, getUserCredits } from "./Api.js";
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
-import { goToTelegram } from "../../utils/ReusableFunctions.js";
+import { goToTelegram, mobileCheck } from "../../utils/ReusableFunctions.js";
 
 class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: false,
       greenLinePercentage: 0,
       loading: false,
       lochScore: "",
@@ -55,6 +56,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   };
 
   componentDidMount() {
+    if (mobileCheck()) {
+      this.setState({
+        isMobile: true,
+      });
+    }
     this.callApi();
     if (this.props.lochUser && this.props.lochUser.email) {
       this.setState({
@@ -509,7 +515,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
                       : this.state.lochScore}
                   </span>
                   {this.state.topPercentage
-                    ? `, which puts you in
+                    ? `${this.state.isMobile ? "" : ", "}which puts you in
                   the top ${
                     this.state.isLoggedIn
                       ? this.state.topPercentage

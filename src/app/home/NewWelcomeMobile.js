@@ -49,6 +49,7 @@ import {
   LPC_Go,
   LPConnectExchange,
   SignInOnClickWelcomeLeaderboard,
+  WelcomeSignedUpReferralCode,
 } from "../../utils/AnalyticsFunctions.js";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 import { isNewAddress } from "../Portfolio/Api.js";
@@ -91,6 +92,7 @@ import RedirectMobile from "./NewAuth/RedirectMobile.js";
 import SignUpMobile from "./NewAuth/SignUpMobile.js";
 import VerifyMobile from "./NewAuth/VerifyMobile.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 
 class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
@@ -163,6 +165,11 @@ class NewWelcomeMobile extends BaseReactComponent {
   }
 
   toggleAuthModal = (val = "") => {
+    if (val !== "signup") {
+      this.setState({
+        isReferralCodeStep: false,
+      });
+    }
     this.setState({
       authmodal: val,
     });
@@ -1002,13 +1009,19 @@ class NewWelcomeMobile extends BaseReactComponent {
         "email",
         this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
       );
+      data.append("referral_code", this.state.referralCode);
       data.append("signed_up_from", "welcome");
       EmailAddressAddedSignUp({
         email_address: this.state.emailSignup,
         session_id: "",
         isMobile: true,
       });
-      this.props.signUpWelcome(this, data, this.toggleAuthModal);
+      this.props.signUpWelcome(
+        this,
+        data,
+        this.toggleAuthModal,
+        this.stopReferallButtonLoading
+      );
     }
   };
 
@@ -1422,7 +1435,27 @@ class NewWelcomeMobile extends BaseReactComponent {
       this.setState({
         isReferralCodeLoading: true,
       });
+      const referalValHolderData = new URLSearchParams();
+      referalValHolderData.append("code", this.state.referralCode);
+
+      this.props.checkReferallCodeValid(
+        referalValHolderData,
+        this.handleSubmitEmailSignup,
+        this.stopReferallButtonLoading
+      );
     }
+  };
+  stopReferallButtonLoading = (isSignedUp) => {
+    if (isSignedUp === true) {
+      WelcomeSignedUpReferralCode({
+        session_id: getCurrentUser().id,
+        email_address: this.state.emailSignup,
+        referral_code: this.state.referralCode,
+      });
+    }
+    this.setState({
+      isReferralCodeLoading: false,
+    });
   };
   handleGoToReferral = () => {
     this.setState({
@@ -1992,6 +2025,7 @@ const mapDispatchToProps = {
   removeFromWatchList,
   signUpWelcome,
   isNewAddress,
+  checkReferallCodeValid,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcomeMobile);

@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import ApiModalFrame from "../../assets/images/apiModalFrame.svg";
 import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
+import { UserCreditTelegramLightIcon } from "../../assets/images/icons/index.js";
 import nextIcon from "../../assets/images/icons/next.svg";
 import next2Icon from "../../assets/images/icons/next2.svg";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
@@ -41,6 +42,8 @@ import {
   CopyTradeSignUpPopupEmailAdded,
   ExportDataDownlaod,
   ExportDateSelected,
+  HomeSignUpReferralModalClosed,
+  HomeSignedUpReferralCode,
   LeaveEmailAdded,
   LeaveLinkCopied,
   LeaveLinkShared,
@@ -65,14 +68,12 @@ import {
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { DatePickerControl } from "../../utils/form";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 import { notificationSend } from "../cohort/Api";
 import { updateUser } from "../profile/Api";
 import { exportDataApi, fixWalletApi } from "./Api.js";
 import UpgradeModal from "./upgradeModal";
-import {
-  UserCreditTelegramIcon,
-  UserCreditTelegramLightIcon,
-} from "../../assets/images/icons/index.js";
+import validator from "validator";
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -227,7 +228,7 @@ class ExitOverlay extends BaseReactComponent {
 
   handleDone = () => {
     this.props.apiResponse(true);
-    this.state.onHide();
+    this.onHidePassThrough();
     this.state.changeList && this.state.changeList();
   };
   upgradeModal = () => {
@@ -549,6 +550,14 @@ class ExitOverlay extends BaseReactComponent {
         this.setState({
           isReferralCodeLoading: true,
         });
+        const referalValHolderData = new URLSearchParams();
+        referalValHolderData.append("code", this.state.referralCode);
+
+        this.props.checkReferallCodeValid(
+          referalValHolderData,
+          this.handelSignUpApi,
+          this.stopReferallButtonLoading
+        );
       }
     } else {
       this.setState({
@@ -594,8 +603,9 @@ class ExitOverlay extends BaseReactComponent {
       const url = new URLSearchParams();
       url.append("email", this.state.email);
       url.append("signed_up_from", "leaving");
+      url.append("referral_code", this.state.referralCode);
       // url.append("wallet_addresses", JSON.stringify(email_arr));
-      fixWalletApi(this, url);
+      fixWalletApi(this, url, this.stopReferallButtonLoading);
       LeaveEmailAdded({
         session_id: getCurrentUser().id,
         email_address: this.state.email,
@@ -607,7 +617,11 @@ class ExitOverlay extends BaseReactComponent {
   };
   handleRedirection = () => {
     // console.log("this", this.props);
-
+    HomeSignedUpReferralCode({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      referall_code: this.state.referralCode,
+    });
     this.setState({ show: false, showRedirection: true });
     this.props.handleRedirection();
   };
@@ -855,9 +869,22 @@ class ExitOverlay extends BaseReactComponent {
     }
   };
   goToSignUp = () => {
+    HomeSignUpReferralModalClosed({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.setState({
       isReferralCodeStep: false,
     });
+  };
+  onHidePassThrough = () => {
+    if (this.state.isReferralCodeStep) {
+      HomeSignUpReferralModalClosed({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+    this.state.onHide();
   };
 
   render() {
@@ -868,7 +895,7 @@ class ExitOverlay extends BaseReactComponent {
             show={this.state.show}
             className="exit-overlay-form"
             // backdrop="static"
-            onHide={this.state.onHide}
+            onHide={this.onHidePassThrough}
             size="lg"
             dialogClassName={"exit-overlay-modal"}
             centered
@@ -996,7 +1023,7 @@ class ExitOverlay extends BaseReactComponent {
                       // emailAdded: true,
                     },
                     () => {
-                      this.state.onHide();
+                      this.onHidePassThrough();
                     }
                   );
                 }}
@@ -1791,7 +1818,7 @@ class ExitOverlay extends BaseReactComponent {
                             },
                             {
                               validate: FormValidator.isEmail,
-                              message: "Please enter valid email id",
+                              message: "",
                             },
                           ]}
                           control={{
@@ -1822,7 +1849,9 @@ class ExitOverlay extends BaseReactComponent {
                         ) : (
                           <Button
                             className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                              this.state.email ? "active" : ""
+                              validator.isEmail(this.state.email)
+                                ? "active"
+                                : ""
                             }`}
                             type="submit"
                           >
@@ -1907,27 +1936,29 @@ class ExitOverlay extends BaseReactComponent {
                     </>
                   )}
 
-                  <div className="m-b-36 footer">
-                    <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                      At Loch, we care intensely about your privacy and
-                      anonymity.
-                    </p>
-                    <CustomOverlay
-                      text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
-                      position="top"
-                      isIcon={true}
-                      IconImage={LockIcon}
-                      isInfo={true}
-                      className={"fix-width"}
-                    >
-                      <Image
-                        src={InfoIcon}
-                        className="info-icon"
-                        onMouseEnter={this.leavePrivacy}
-                        style={{ cursor: "pointer" }}
-                      />
-                    </CustomOverlay>
-                  </div>
+                  {this.state.isReferralCodeStep ? null : (
+                    <div className="m-b-36 footer">
+                      <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                        At Loch, we care intensely about your privacy and
+                        anonymity.
+                      </p>
+                      <CustomOverlay
+                        text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                        position="top"
+                        isIcon={true}
+                        IconImage={LockIcon}
+                        isInfo={true}
+                        className={"fix-width"}
+                      >
+                        <Image
+                          src={InfoIcon}
+                          className="info-icon"
+                          onMouseEnter={this.leavePrivacy}
+                          style={{ cursor: "pointer" }}
+                        />
+                      </CustomOverlay>
+                    </div>
+                  )}
                 </div>
               )}
             </Modal.Body>
@@ -1960,6 +1991,7 @@ const mapDispatchToProps = {
   detectCoin,
   getAllParentChains,
   updateUser,
+  checkReferallCodeValid,
 };
 
 ExitOverlay.propTypes = {};

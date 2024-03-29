@@ -13,14 +13,38 @@ export const getReferallCodes = (stopLoader) => {
             payload: [...res.data.data],
           });
         } else {
-          toast.error(res.data.message || "Something went wrong");
+          toast.error("Something went wrong");
           if (stopLoader) {
             stopLoader();
           }
         }
       })
       .catch((err) => {
-        console.log("fixwallet", err);
+        toast.error("Something went wrong");
+        if (stopLoader) {
+          stopLoader();
+        }
+      });
+  };
+};
+export const checkReferallCodeValid = (data, goToSignUp, stopLoader) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("organisation/user/valid-ref-code", data)
+      .then((res) => {
+        if (res.data && !res.data.error) {
+          if (goToSignUp) {
+            goToSignUp();
+          }
+        } else {
+          toast.error("Invalid Referral Code");
+          if (stopLoader) {
+            stopLoader();
+          }
+        }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong");
         if (stopLoader) {
           stopLoader();
         }

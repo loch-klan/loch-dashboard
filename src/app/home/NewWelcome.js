@@ -70,6 +70,7 @@ import {
   TimeSpentOnboarding,
   TimeSpentOnboardingMobile,
   ToggleDarkModeAnalytics,
+  WelcomeSignedUpReferralCode,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
@@ -113,6 +114,7 @@ import NewHomeInputBlock from "./NewHomeInputBlock.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
 import ConfirmLeaveModal from "../common/ConformLeaveModal.js";
 import { isNewAddress } from "../Portfolio/Api.js";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -701,6 +703,11 @@ class NewWelcome extends BaseReactComponent {
   }
 
   toggleAuthModal = (val = "") => {
+    if (val !== "signup") {
+      this.setState({
+        isReferralCodeStep: false,
+      });
+    }
     this.setState({
       authmodal: val,
     });
@@ -1677,12 +1684,18 @@ class NewWelcome extends BaseReactComponent {
         this.state.email ? this.state.email.toLowerCase() : ""
       );
       data.append("signed_up_from", "welcome");
+      data.append("referral_code", this.state.referralCode);
       EmailAddressAddedSignUp({
         email_address: this.state.emailSignup,
         session_id: "",
       });
 
-      this.props.signUpWelcome(this, data, this.toggleAuthModal);
+      this.props.signUpWelcome(
+        this,
+        data,
+        this.toggleAuthModal,
+        this.stopReferallButtonLoading
+      );
     }
   };
 
@@ -2082,7 +2095,27 @@ class NewWelcome extends BaseReactComponent {
       this.setState({
         isReferralCodeLoading: true,
       });
+      const referalValHolderData = new URLSearchParams();
+      referalValHolderData.append("code", this.state.referralCode);
+
+      this.props.checkReferallCodeValid(
+        referalValHolderData,
+        this.handleSubmitEmailSignup,
+        this.stopReferallButtonLoading
+      );
     }
+  };
+  stopReferallButtonLoading = (isSignedUp) => {
+    if (isSignedUp === true) {
+      WelcomeSignedUpReferralCode({
+        session_id: getCurrentUser().id,
+        email_address: this.state.emailSignup,
+        referral_code: this.state.referralCode,
+      });
+    }
+    this.setState({
+      isReferralCodeLoading: false,
+    });
   };
   handleGoToReferral = () => {
     this.setState({
@@ -3093,6 +3126,7 @@ const mapDispatchToProps = {
   SwitchDarkMode,
   signUpWelcome,
   isNewAddress,
+  checkReferallCodeValid,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);
