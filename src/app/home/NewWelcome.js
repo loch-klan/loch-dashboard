@@ -1678,6 +1678,7 @@ class NewWelcome extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("email", this.state.emailSignup.toLowerCase());
       data.append("signed_up_from", "welcome");
+      data.append("referral_code", this.state.referralCode);
       EmailAddressAddedSignUp({
         email_address: this.state.emailSignup,
         session_id: "",
@@ -2089,8 +2090,7 @@ class NewWelcome extends BaseReactComponent {
         isReferralCodeLoading: true,
       });
       const referalValHolderData = new URLSearchParams();
-      // referalValHolderData.append("code", this.state.referralCode);
-      referalValHolderData.append("code", "2a6ycvnt83lmv04a7gfe");
+      referalValHolderData.append("code", this.state.referralCode);
 
       this.props.checkReferallCodeValid(
         referalValHolderData,

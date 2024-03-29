@@ -547,8 +547,7 @@ class ExitOverlay extends BaseReactComponent {
           isReferralCodeLoading: true,
         });
         const referalValHolderData = new URLSearchParams();
-        // referalValHolderData.append("code", this.state.referralCode);
-        referalValHolderData.append("code", "2a6ycvnt83lmv04a7gfe");
+        referalValHolderData.append("code", this.state.referralCode);
 
         this.props.checkReferallCodeValid(
           referalValHolderData,
@@ -594,6 +593,7 @@ class ExitOverlay extends BaseReactComponent {
       const url = new URLSearchParams();
       url.append("email", this.state.email);
       url.append("signed_up_from", "leaving");
+      url.append("referral_code", this.state.referralCode);
       // url.append("wallet_addresses", JSON.stringify(email_arr));
       fixWalletApi(this, url, this.stopReferallButtonLoading);
       LeaveEmailAdded({

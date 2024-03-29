@@ -1003,6 +1003,7 @@ class NewWelcomeMobile extends BaseReactComponent {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
       data.append("email", this.state.emailSignup.toLowerCase());
+      data.append("referral_code", this.state.referralCode);
       data.append("signed_up_from", "welcome");
       EmailAddressAddedSignUp({
         email_address: this.state.emailSignup,
@@ -1429,8 +1430,7 @@ class NewWelcomeMobile extends BaseReactComponent {
         isReferralCodeLoading: true,
       });
       const referalValHolderData = new URLSearchParams();
-      // referalValHolderData.append("code", this.state.referralCode);
-      referalValHolderData.append("code", "2a6ycvnt83lmv04a7gfe");
+      referalValHolderData.append("code", this.state.referralCode);
 
       this.props.checkReferallCodeValid(
         referalValHolderData,
