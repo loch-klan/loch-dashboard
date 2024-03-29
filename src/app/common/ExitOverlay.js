@@ -39,6 +39,7 @@ import prev2Icon from "../../assets/images/icons/prev2.svg";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import {
+  CopyTradeSignUpPopupEmailAdded,
   ExportDataDownlaod,
   ExportDateSelected,
   HomeSignUpReferralModalClosed,
@@ -528,7 +529,10 @@ class ExitOverlay extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("first_name", this.state.firstName);
       data.append("last_name", this.state.lastName);
-      data.append("email", this.state.email);
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       data.append("mobile", this.state.mobileNumber);
       this.props.updateUser(data, this);
       SignupEmail({
@@ -568,6 +572,12 @@ class ExitOverlay extends BaseReactComponent {
     });
   };
   handelSignUpApi = () => {
+    if (this.props.tracking === "Copy trade") {
+      CopyTradeSignUpPopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state?.email,
+      });
+    }
     signInUser({
       email_address: this.state?.email,
       userId: getCurrentUser().id,
@@ -1770,6 +1780,8 @@ class ExitOverlay extends BaseReactComponent {
                     >
                       {this.state.isReferralCodeStep
                         ? "Add your referral code here to create an account"
+                        : this.props.customDesc
+                        ? this.props.customDesc
                         : "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"}
                     </p>
                   )}
