@@ -113,6 +113,7 @@ import NewHomeInputBlock from "./NewHomeInputBlock.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
 import ConfirmLeaveModal from "../common/ConformLeaveModal.js";
 import { isNewAddress } from "../Portfolio/Api.js";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -701,6 +702,11 @@ class NewWelcome extends BaseReactComponent {
   }
 
   toggleAuthModal = (val = "") => {
+    if (val !== "signup") {
+      this.setState({
+        isReferralCodeStep: false,
+      });
+    }
     this.setState({
       authmodal: val,
     });
@@ -1676,7 +1682,12 @@ class NewWelcome extends BaseReactComponent {
         session_id: "",
       });
 
-      this.props.signUpWelcome(this, data, this.toggleAuthModal);
+      this.props.signUpWelcome(
+        this,
+        data,
+        this.toggleAuthModal,
+        this.stopReferallButtonLoading
+      );
     }
   };
 
@@ -2076,7 +2087,21 @@ class NewWelcome extends BaseReactComponent {
       this.setState({
         isReferralCodeLoading: true,
       });
+      const referalValHolderData = new URLSearchParams();
+      // referalValHolderData.append("code", this.state.referralCode);
+      referalValHolderData.append("code", "2a6ycvnt83lmv04a7gfe");
+
+      this.props.checkReferallCodeValid(
+        referalValHolderData,
+        this.handleSubmitEmailSignup,
+        this.stopReferallButtonLoading
+      );
     }
+  };
+  stopReferallButtonLoading = () => {
+    this.setState({
+      isReferralCodeLoading: false,
+    });
   };
   handleGoToReferral = () => {
     this.setState({
@@ -3087,6 +3112,7 @@ const mapDispatchToProps = {
   SwitchDarkMode,
   signUpWelcome,
   isNewAddress,
+  checkReferallCodeValid,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);

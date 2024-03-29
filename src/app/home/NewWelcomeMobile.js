@@ -91,6 +91,7 @@ import RedirectMobile from "./NewAuth/RedirectMobile.js";
 import SignUpMobile from "./NewAuth/SignUpMobile.js";
 import VerifyMobile from "./NewAuth/VerifyMobile.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 
 class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
@@ -163,6 +164,11 @@ class NewWelcomeMobile extends BaseReactComponent {
   }
 
   toggleAuthModal = (val = "") => {
+    if (val !== "signup") {
+      this.setState({
+        isReferralCodeStep: false,
+      });
+    }
     this.setState({
       authmodal: val,
     });
@@ -1002,7 +1008,12 @@ class NewWelcomeMobile extends BaseReactComponent {
         session_id: "",
         isMobile: true,
       });
-      this.props.signUpWelcome(this, data, this.toggleAuthModal);
+      this.props.signUpWelcome(
+        this,
+        data,
+        this.toggleAuthModal,
+        this.stopReferallButtonLoading
+      );
     }
   };
 
@@ -1416,7 +1427,21 @@ class NewWelcomeMobile extends BaseReactComponent {
       this.setState({
         isReferralCodeLoading: true,
       });
+      const referalValHolderData = new URLSearchParams();
+      // referalValHolderData.append("code", this.state.referralCode);
+      referalValHolderData.append("code", "2a6ycvnt83lmv04a7gfe");
+
+      this.props.checkReferallCodeValid(
+        referalValHolderData,
+        this.handleSubmitEmailSignup,
+        this.stopReferallButtonLoading
+      );
     }
+  };
+  stopReferallButtonLoading = () => {
+    this.setState({
+      isReferralCodeLoading: false,
+    });
   };
   handleGoToReferral = () => {
     this.setState({
@@ -1986,6 +2011,7 @@ const mapDispatchToProps = {
   removeFromWatchList,
   signUpWelcome,
   isNewAddress,
+  checkReferallCodeValid,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcomeMobile);
