@@ -112,3 +112,4 @@ export { default as FilterIcon } from "./filter.svg";
 export { default as HomeTabArrowIcon } from "./homeTabArrow.svg";
 export { default as PasswordIcon } from "./password.svg";
 export { default as BackBlackIcon } from "./backIcon.svg";
+export { default as UserProfileMobileIcon } from "./userProfileMobile.svg";

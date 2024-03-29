@@ -359,6 +359,7 @@ class Wallet extends Component {
                 // console.log("walletlist", walletList)
                 return (
                   <WalletCard
+                    isMobileDevice={this.props.isMobileDevice}
                     key={index}
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}

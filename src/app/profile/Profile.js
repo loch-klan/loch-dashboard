@@ -41,6 +41,8 @@ import {
   UserCreditRightArrowIcon,
   UserCreditScrollRightArrowIcon,
 } from "../../assets/images/icons";
+import MobileLayout from "../layout/MobileLayout";
+import ProfileMobile from "./ProfileMobile";
 
 class Profile extends Component {
   constructor(props) {
@@ -125,6 +127,7 @@ class Profile extends Component {
 
     this.state = {
       // add new wallet
+      isMobileDevice: false,
       userWalletList: window.sessionStorage.getItem("addWallet")
         ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
@@ -161,6 +164,9 @@ class Profile extends Component {
   componentDidMount() {
     if (mobileCheck()) {
       this.props.history.push("/home");
+      // this.setState({
+      //   isMobileDevice: true,
+      // });
     }
     const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (isLochUser) {
@@ -281,6 +287,21 @@ class Profile extends Component {
     window.sessionStorage.setItem("dontOpenLoginPopup", true);
   };
   render() {
+    if (this.state.isMobileDevice) {
+      return (
+        <MobileLayout
+          showpath
+          currentPage={"profile"}
+          hideFooter
+          history={this.props.history}
+          lochUser={this.state.lochUser}
+          isUpdate={this.state.isUpdate}
+          updateTimer={this.updateTimer}
+        >
+          <ProfileMobile />
+        </MobileLayout>
+      );
+    }
     return (
       <>
         {/* topbar */}
