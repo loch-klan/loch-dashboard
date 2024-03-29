@@ -15,6 +15,11 @@ import {
   loadingAnimation,
   mobileCheck,
 } from "../../../utils/ReusableFunctions";
+import {
+  WelcomeSignUpGetReferralCode,
+  WelcomeSignUpReferralModalClosed,
+} from "../../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../../utils/ManageToken";
 
 const SignUpMobile = ({
   show,
@@ -50,7 +55,29 @@ const SignUpMobile = ({
       document.removeEventListener("keydown", listener);
     };
   }, []);
-
+  const handleGoBackToSignUpPassThrough = () => {
+    WelcomeSignUpReferralModalClosed({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    handleGoBackToSignUp();
+  };
+  const handleClosePassThrough = () => {
+    toggleModal();
+    if (isReferralCodeStep) {
+      WelcomeSignUpReferralModalClosed({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+  };
+  const goToTelegramPassThrough = () => {
+    WelcomeSignUpGetReferralCode({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    goToTelegram();
+  };
   return (
     <Modal
       size="md"
@@ -59,7 +86,7 @@ const SignUpMobile = ({
         "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top modal-new-welcome-v-top-mobile welcome-modal-mobile-dialogue"
       }
       show={show}
-      onHide={toggleModal}
+      onHide={handleClosePassThrough}
       centered
       aria-labelledby="contained-modal-title-vcenter"
       backdropClassName="exitoverlaymodalNewWelcome"
@@ -72,7 +99,7 @@ const SignUpMobile = ({
           <div className="new-homepage-auth-content-close-container new-homepage-auth-content-back--mobile">
             <div
               className="new-homepage-auth-content-close "
-              onClick={handleGoBackToSignUp}
+              onClick={handleGoBackToSignUpPassThrough}
             >
               <Image
                 src={BackBlackIcon}
@@ -87,7 +114,7 @@ const SignUpMobile = ({
         <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
           <div
             className="new-homepage-auth-content-close "
-            onClick={toggleModal}
+            onClick={handleClosePassThrough}
           >
             <Image
               src={CloseIconBlack}
@@ -154,7 +181,7 @@ const SignUpMobile = ({
                 </div>
                 <div className="new-auth-content-bottom-cta-holder new-auth-content-bottom-cta-holder-mobile">
                   <p
-                    onClick={goToTelegram}
+                    onClick={goToTelegramPassThrough}
                     className="new-auth-content-bottom-cta new-auth-content-bottom-cta--mobile text-center ml-2 mr-2"
                   >
                     Don’t have a referral code? Request for one on Telegram

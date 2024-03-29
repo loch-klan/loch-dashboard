@@ -49,6 +49,7 @@ import {
   LPC_Go,
   LPConnectExchange,
   SignInOnClickWelcomeLeaderboard,
+  WelcomeSignedUpReferralCode,
 } from "../../utils/AnalyticsFunctions.js";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 import { isNewAddress } from "../Portfolio/Api.js";
@@ -1438,7 +1439,14 @@ class NewWelcomeMobile extends BaseReactComponent {
       );
     }
   };
-  stopReferallButtonLoading = () => {
+  stopReferallButtonLoading = (isSignedUp) => {
+    if (isSignedUp === true) {
+      WelcomeSignedUpReferralCode({
+        session_id: getCurrentUser().id,
+        email_address: this.state.emailSignup,
+        referral_code: this.state.referralCode,
+      });
+    }
     this.setState({
       isReferralCodeLoading: false,
     });

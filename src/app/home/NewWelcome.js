@@ -70,6 +70,7 @@ import {
   TimeSpentOnboarding,
   TimeSpentOnboardingMobile,
   ToggleDarkModeAnalytics,
+  WelcomeSignedUpReferralCode,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
@@ -2098,7 +2099,14 @@ class NewWelcome extends BaseReactComponent {
       );
     }
   };
-  stopReferallButtonLoading = () => {
+  stopReferallButtonLoading = (isSignedUp) => {
+    if (isSignedUp === true) {
+      WelcomeSignedUpReferralCode({
+        session_id: getCurrentUser().id,
+        email_address: this.state.emailSignup,
+        referral_code: this.state.referralCode,
+      });
+    }
     this.setState({
       isReferralCodeLoading: false,
     });

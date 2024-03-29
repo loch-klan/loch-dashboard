@@ -41,6 +41,8 @@ import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import {
   ExportDataDownlaod,
   ExportDateSelected,
+  HomeSignUpReferralModalClosed,
+  HomeSignedUpReferralCode,
   LeaveEmailAdded,
   LeaveLinkCopied,
   LeaveLinkShared,
@@ -225,7 +227,7 @@ class ExitOverlay extends BaseReactComponent {
 
   handleDone = () => {
     this.props.apiResponse(true);
-    this.state.onHide();
+    this.onHidePassThrough();
     this.state.changeList && this.state.changeList();
   };
   upgradeModal = () => {
@@ -605,7 +607,11 @@ class ExitOverlay extends BaseReactComponent {
   };
   handleRedirection = () => {
     // console.log("this", this.props);
-
+    HomeSignedUpReferralCode({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      referall_code: this.state.referralCode,
+    });
     this.setState({ show: false, showRedirection: true });
     this.props.handleRedirection();
   };
@@ -853,9 +859,22 @@ class ExitOverlay extends BaseReactComponent {
     }
   };
   goToSignUp = () => {
+    HomeSignUpReferralModalClosed({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     this.setState({
       isReferralCodeStep: false,
     });
+  };
+  onHidePassThrough = () => {
+    if (this.state.isReferralCodeStep) {
+      HomeSignUpReferralModalClosed({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+    this.state.onHide();
   };
 
   render() {
@@ -866,7 +885,7 @@ class ExitOverlay extends BaseReactComponent {
             show={this.state.show}
             className="exit-overlay-form"
             // backdrop="static"
-            onHide={this.state.onHide}
+            onHide={this.onHidePassThrough}
             size="lg"
             dialogClassName={"exit-overlay-modal"}
             centered
@@ -994,7 +1013,7 @@ class ExitOverlay extends BaseReactComponent {
                       // emailAdded: true,
                     },
                     () => {
-                      this.state.onHide();
+                      this.onHidePassThrough();
                     }
                   );
                 }}

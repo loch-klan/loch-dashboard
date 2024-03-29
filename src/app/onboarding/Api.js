@@ -186,7 +186,7 @@ export const signUpWelcome = (ctx, data, toggleAuthModal, stopBtnLoading) => {
       .post("organisation/user/signup", data)
       .then((res) => {
         if (stopBtnLoading) {
-          stopBtnLoading();
+          stopBtnLoading(true);
         }
         if (res.data.error) {
           toast.error(res.data.message || "Something Went Wrong");
@@ -204,7 +204,7 @@ export const signUpWelcome = (ctx, data, toggleAuthModal, stopBtnLoading) => {
       })
       .catch((err) => {
         if (stopBtnLoading) {
-          stopBtnLoading();
+          stopBtnLoading(false);
         }
         toast.error("Something Went Wrong");
       });

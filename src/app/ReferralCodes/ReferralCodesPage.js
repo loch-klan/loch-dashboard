@@ -4,6 +4,9 @@ import { connect } from "react-redux";
 import { CopyClipboardIcon } from "../../assets/images";
 import { PasswordIcon } from "../../assets/images/icons";
 import {
+  CopyAllCodesProfileReferralPage,
+  CopyCodeProfileGetMoreCodes,
+  CopyCodeProfileReferralPage,
   ProfileReferralPage,
   TimeSpentReferralCodes,
 } from "../../utils/AnalyticsFunctions";
@@ -143,6 +146,10 @@ class ReferralCodesPage extends BaseReactComponent {
     this.props.setPageFlagDefault();
   };
   copyAllTheCodes = () => {
+    CopyAllCodesProfileReferralPage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
     let allCodes = "";
     this.state.referralCodes.forEach(
       (curReferralCode, curReferralCodeIndex) => {
@@ -152,6 +159,29 @@ class ReferralCodesPage extends BaseReactComponent {
       }
     );
     copyText(allCodes);
+  };
+  copyTextPass = (passedCode) => {
+    CopyCodeProfileReferralPage({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      code: passedCode,
+    });
+    copyText(passedCode);
+  };
+  getMoreReferralCodes = (contactPoint) => {
+    CopyCodeProfileGetMoreCodes({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      code: contactPoint,
+    });
+    console.log("contactPoint ", contactPoint);
+    if (contactPoint === "twitter") {
+      goToTwitter();
+    } else if (contactPoint === "telegram") {
+      goToTelegram();
+    } else if (contactPoint === "email") {
+      emailPrithvir();
+    }
   };
   render() {
     return (
@@ -177,6 +207,7 @@ class ReferralCodesPage extends BaseReactComponent {
           <div className="history-table page">
             <PageHeader
               title={"Referral"}
+              currentPage="referral-codes"
               subTitle={"Manage your referral codes here"}
               history={this.props.history}
               ShareBtn={false}
@@ -223,21 +254,27 @@ class ReferralCodesPage extends BaseReactComponent {
                         <div className="inter-display-medium psrcb-text">
                           Want more referral codes? Reach out to us on{" "}
                           <span
-                            onClick={goToTwitter}
+                            onClick={() => {
+                              this.getMoreReferralCodes("twitter");
+                            }}
                             className="psrcb-text-btn"
                           >
                             Twitter
                           </span>
                           ,{" "}
                           <span
-                            onClick={goToTelegram}
+                            onClick={() => {
+                              this.getMoreReferralCodes("telegram");
+                            }}
                             className="psrcb-text-btn"
                           >
                             Telegram
                           </span>
                           , or email at{" "}
                           <span
-                            onClick={emailPrithvir}
+                            onClick={() => {
+                              this.getMoreReferralCodes("email");
+                            }}
                             className="psrcb-text-btn"
                           >
                             prithvir@loch.one
@@ -274,7 +311,7 @@ class ReferralCodesPage extends BaseReactComponent {
                                   ) : (
                                     <Image
                                       onClick={() => {
-                                        copyText(curReferralCode.code);
+                                        this.copyTextPass(curReferralCode.code);
                                       }}
                                       className="rpbddrbs-icon"
                                       src={CopyClipboardIcon}
