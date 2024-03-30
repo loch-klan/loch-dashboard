@@ -37,7 +37,12 @@ const SignUpMobile = ({
 }) => {
   const submitRef = React.useRef(null);
   const [isMobileState, setIsMobileState] = useState(false);
-
+  const [showEmailError, setShowEmailError] = useState(false);
+  useEffect(() => {
+    if (showEmailError) {
+      setShowEmailError(false);
+    }
+  }, [email]);
   useEffect(() => {
     if (mobileCheck()) {
       setIsMobileState(true);
@@ -77,6 +82,13 @@ const SignUpMobile = ({
       email_address: getCurrentUser().email,
     });
     goToTelegram();
+  };
+  const handleGoToReferralPassThrough = () => {
+    if (validateEmail(email)) {
+      handleGoToReferral();
+    } else {
+      setShowEmailError(true);
+    }
   };
   return (
     <Modal
@@ -159,7 +171,7 @@ const SignUpMobile = ({
                   <input
                     className="new-auth-content-input"
                     type="text"
-                    placeholder="9bh9ylqfcn"
+                    placeholder="t1v33sshyg91opyhe2yd"
                     value={referralCode}
                     onChange={(e) => handleChangeReferralCode(e.target.value)}
                   />
@@ -197,6 +209,16 @@ const SignUpMobile = ({
               </>
             ) : (
               <>
+                <div
+                  style={{
+                    opacity: showEmailError ? 1 : 0,
+                  }}
+                  className="has-error-container has-error-container-mobile"
+                >
+                  <div class="has-error custom-form-error form-text">
+                    Please enter valid email id
+                  </div>
+                </div>
                 <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile">
                   <input
                     className="new-auth-content-input"
@@ -207,9 +229,7 @@ const SignUpMobile = ({
                   />
                   <button
                     style={{ opacity: validateEmail(email) ? 1 : 0.5 }}
-                    onClick={() => {
-                      if (validateEmail(email)) handleGoToReferral();
-                    }}
+                    onClick={handleGoToReferralPassThrough}
                     ref={submitRef}
                     className={`new-auth-content-button ${
                       validateEmail(email) && !isMobileState

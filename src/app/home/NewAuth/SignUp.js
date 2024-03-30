@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Modal } from "react-bootstrap";
 import {
   BackBlackIcon,
@@ -33,6 +33,12 @@ const SignUp = ({
   isReferralCodeLoading,
 }) => {
   const submitRef = React.useRef(null);
+  const [showEmailError, setShowEmailError] = useState(false);
+  useEffect(() => {
+    if (showEmailError) {
+      setShowEmailError(false);
+    }
+  }, [email]);
 
   useEffect(() => {
     const listener = (event) => {
@@ -68,6 +74,13 @@ const SignUp = ({
       email_address: getCurrentUser().email,
     });
     goToTelegram();
+  };
+  const handleGoToReferralPassThrough = () => {
+    if (validateEmail(email)) {
+      handleGoToReferral();
+    } else {
+      setShowEmailError(true);
+    }
   };
   return (
     <Modal
@@ -146,7 +159,7 @@ const SignUp = ({
                   <input
                     className="new-auth-content-input"
                     type="text"
-                    placeholder="9bh9ylqfcn"
+                    placeholder="t1v33sshyg91opyhe2yd"
                     value={referralCode}
                     onChange={(e) => handleChangeReferralCode(e.target.value)}
                     disabled={isReferralCodeLoading}
@@ -191,9 +204,10 @@ const SignUp = ({
                     value={email}
                     onChange={(e) => handleChangeEmail(e.target.value)}
                   />
+
                   <button
                     style={{ opacity: validateEmail(email) ? 1 : 0.5 }}
-                    onClick={validateEmail(email) ? handleGoToReferral : null}
+                    onClick={handleGoToReferralPassThrough}
                     ref={submitRef}
                     className={`new-auth-content-button ${
                       validateEmail(email)
@@ -203,6 +217,16 @@ const SignUp = ({
                   >
                     Sign Up
                   </button>
+                </div>
+                <div
+                  style={{
+                    opacity: showEmailError ? 1 : 0,
+                  }}
+                  className="has-error-container"
+                >
+                  <div class="has-error custom-form-error form-text">
+                    Please enter valid email id
+                  </div>
                 </div>
                 <div className="new-auth-content-bottom-cta-holder">
                   <p
