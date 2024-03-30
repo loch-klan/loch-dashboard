@@ -33,8 +33,15 @@ export const checkReferallCodeValid = (data, goToSignUp, stopLoader) => {
       .post("organisation/user/valid-ref-code", data)
       .then((res) => {
         if (res.data && !res.data.error) {
-          if (goToSignUp) {
-            goToSignUp();
+          if (res.data.message === "Invalid code") {
+            toast.error("Invalid Referral Code");
+            if (stopLoader) {
+              stopLoader();
+            }
+          } else {
+            if (goToSignUp) {
+              goToSignUp();
+            }
           }
         } else {
           toast.error("Invalid Referral Code");
