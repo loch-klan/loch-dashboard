@@ -1787,7 +1787,7 @@ class ExitOverlay extends BaseReactComponent {
                             control={{
                               type: CustomTextControl,
                               settings: {
-                                placeholder: "9bh9ylqfcn",
+                                placeholder: "t1v33sshyg91opyhe2yd",
                               },
                             }}
                           />
@@ -1806,7 +1806,7 @@ class ExitOverlay extends BaseReactComponent {
                             },
                             {
                               validate: FormValidator.isEmail,
-                              message: "",
+                              message: "Please enter valid email id",
                             },
                           ]}
                           control={{
