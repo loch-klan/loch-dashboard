@@ -1681,7 +1681,7 @@ class NewWelcome extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append(
         "email",
-        this.state.email ? this.state.email.toLowerCase() : ""
+        this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
       );
       data.append("signed_up_from", "welcome");
       data.append("referral_code", this.state.referralCode);
