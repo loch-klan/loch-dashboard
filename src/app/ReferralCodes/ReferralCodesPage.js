@@ -298,7 +298,7 @@ class ReferralCodesPage extends BaseReactComponent {
                               >
                                 <div
                                   className={`inter-display-medium rpbddrb-code ${
-                                    curReferralCode.isUsed
+                                    curReferralCode.used
                                       ? "rpbddrb-code-used"
                                       : ""
                                   }`}
@@ -306,7 +306,7 @@ class ReferralCodesPage extends BaseReactComponent {
                                   {curReferralCode.code}
                                 </div>
                                 <div className="inter-display-medium rpbddrb-status">
-                                  {curReferralCode.isUsed ? (
+                                  {curReferralCode.used ? (
                                     <span>Used</span>
                                   ) : (
                                     <Image
