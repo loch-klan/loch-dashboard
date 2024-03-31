@@ -321,6 +321,7 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
           email: res.data.data.user?.email,
           mobile: res.data.data.user?.mobile,
           link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
         };
 
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -590,6 +591,7 @@ export const sendWhopCode = (ctx, data) => {
           email: res.data.data.user?.email,
           mobile: res.data.data.user?.mobile,
           link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
         };
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
         // window.sessionStorage.setItem("defi_access", true);
@@ -1057,6 +1059,7 @@ export const VerifyEmail = (data, ctx) => {
                 email: res.data.data.user?.email,
                 mobile: res.data.data.user?.mobile,
                 link: res.data.data.user?.link,
+                referred_by: res.data.data.user?.referred_by,
               };
 
               window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1164,6 +1167,7 @@ export const VerifyEmail = (data, ctx) => {
                   email: res.data.data.user?.email,
                   mobile: "",
                   link: res.data.data.user?.link,
+                  referred_by: res.data.data.user?.referred_by,
                 };
                 window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
 
@@ -1317,6 +1321,7 @@ export const UpdateUserDetails = (data, ctx) => {
             : ctx.state.email,
           mobile: ctx.state.mobileNumber,
           link: res.data.data.user.link,
+          referred_by: res.data.data.user.referred_by,
         };
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
         // toast.success(" Your wallets and pods has been saved");
@@ -1495,6 +1500,7 @@ export const getUser = (ctx = null, showToast = false) => {
             email: res.data.data.user?.email,
             mobile: res.data.data.user?.mobile,
             link: res.data.data.user?.link,
+            referred_by: res.data.data.user?.referred_by,
           };
 
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1809,6 +1815,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
             email: res.data.data.user?.email,
             mobile: res.data.data.user?.mobile,
             link: res.data.data.user?.link,
+            referred_by: res.data.data.user?.referred_by,
           };
 
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1902,6 +1909,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
               email: res.data.data.user?.email,
               mobile: "",
               link: res.data.data.user?.link,
+              referred_by: res.data.data.user?.referred_by,
             };
             window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
 
