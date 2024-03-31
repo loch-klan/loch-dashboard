@@ -17,6 +17,7 @@ export const updateUser = (data, ctx) => {
             email: ctx.state.email,
             mobile: ctx.state.mobileNumber,
             link: ctx.state.link,
+            referred_by: ctx.state.referred_by,
           };
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
           dispatch({
