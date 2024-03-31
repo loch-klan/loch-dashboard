@@ -1666,7 +1666,10 @@ class NewWelcome extends BaseReactComponent {
   handleSubmitEmail = (val = false) => {
     if (this.state.email) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email.toLowerCase());
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       EmailAddressAdded({ email_address: this.state.email, session_id: "" });
       signIn(this, data, true, val);
       // this.toggleAuthModal('verify');
@@ -1676,7 +1679,10 @@ class NewWelcome extends BaseReactComponent {
   handleSubmitEmailSignup = () => {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
-      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append(
+        "email",
+        this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
+      );
       data.append("signed_up_from", "welcome");
       data.append("referral_code", this.state.referralCode);
       EmailAddressAddedSignUp({
