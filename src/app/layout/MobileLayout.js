@@ -4,17 +4,12 @@ import { toast } from "react-toastify";
 import {
   EmultionSidebarIcon,
   MobileNavFollow,
-  MobileNavFollowActive,
   MobileNavHome,
-  MobileNavHomeActive,
   MobileNavLeaderboard,
-  MobileNavLeaderboardActive,
-  MobileNavNFT,
   MobileNavProfile,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import {
   HomeMenu,
   MenuCopyTradelist,
@@ -29,12 +24,14 @@ import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { BaseReactComponent } from "../../utils/form";
 import { isNewAddress } from "../Portfolio/Api.js";
+import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   setPageFlagDefault,
   updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
+import Breadcrums from "../common/Breadcrums.js";
 import Footer from "../common/footer";
 import { setHeaderReducer } from "../header/HeaderAction";
 import NewHomeInputBlock from "../home/NewHomeInputBlock";
@@ -43,8 +40,6 @@ import { addUserCredits } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
-import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
-import Breadcrums from "../common/Breadcrums.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -73,28 +68,30 @@ class MobileLayout extends BaseReactComponent {
       disableAddBtn: false,
       navItems: [
         {
-          activeIcon: MobileNavHomeActive,
-          inactiveIcon: MobileNavHome,
+          pageIcon: MobileNavHome,
           text: "Home",
           path: "/home",
         },
         {
-          activeIcon: MobileNavFollowActive,
-          inactiveIcon: MobileNavFollow,
+          pageIcon: MobileNavFollow,
           text: "Following",
           path: "/watchlist",
         },
         {
-          activeIcon: EmultionSidebarIcon,
-          inactiveIcon: EmultionSidebarIcon,
+          pageIcon: MobileNavLeaderboard,
+          text: "Leaderboard",
+          path: "/home-leaderboard",
+        },
+        {
+          pageIcon: EmultionSidebarIcon,
+
           text: "Copy Trade",
           path: "/copy-trade",
         },
         {
-          activeIcon: MobileNavLeaderboardActive,
-          inactiveIcon: MobileNavLeaderboard,
-          text: "Leaderboard",
-          path: "/home-leaderboard",
+          pageIcon: MobileNavProfile,
+          text: "Profile",
+          path: "/profile",
         },
       ],
       userWalletList: [],
@@ -720,21 +717,13 @@ class MobileLayout extends BaseReactComponent {
                           ? "portfolio-mobile-layout-nav-footer-inner-item-image-active"
                           : ""
                       }`}
-                      src={
-                        item.path === this.props.history.location.pathname
-                          ? item.activeIcon
-                          : item.inactiveIcon
-                      }
-                      style={
-                        item.path === "/copy-trade"
-                          ? {
-                              filter:
-                                activeTab === item.path
-                                  ? "brightness(0) var(--invertColor)"
-                                  : "brightness(1.5) var(--invertColor)",
-                            }
-                          : {}
-                      }
+                      style={{
+                        filter:
+                          activeTab === item.path
+                            ? "brightness(0) var(--invertColor)"
+                            : "brightness(1) var(--invertColor)",
+                      }}
+                      src={item.pageIcon}
                     />
                     <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
                       {item.text}

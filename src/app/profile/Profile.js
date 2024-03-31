@@ -163,10 +163,10 @@ class Profile extends Component {
   };
   componentDidMount() {
     if (mobileCheck()) {
-      this.props.history.push("/home");
-      // this.setState({
-      //   isMobileDevice: true,
-      // });
+      // this.props.history.push("/home");
+      this.setState({
+        isMobileDevice: true,
+      });
     }
     const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (isLochUser) {
@@ -290,15 +290,18 @@ class Profile extends Component {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
-          showpath
           currentPage={"profile"}
           hideFooter
           history={this.props.history}
-          lochUser={this.state.lochUser}
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
         >
-          <ProfileMobile />
+          <ProfileMobile
+            goToMyReferralCodes={this.goToMyReferralCodes}
+            followFlag={this.state.followFlag}
+            isUpdate={this.state.isUpdate}
+            lochUser={this.state.lochUser}
+          />
         </MobileLayout>
       );
     }
