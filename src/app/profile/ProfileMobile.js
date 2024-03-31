@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
 import { Image } from "react-bootstrap";
+import { connect } from "react-redux";
 import {
   PasswordIcon,
   UserCreditScrollRightArrowIcon,
@@ -9,6 +8,7 @@ import {
 } from "../../assets/images/icons";
 import Wallet from "../wallet/Wallet";
 import ProfileForm from "./ProfileForm";
+import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
 
 class ProfileMobile extends Component {
   constructor(props) {
@@ -31,14 +31,14 @@ class ProfileMobile extends Component {
             <p>Manage your profile here</p>
           </div>
           <ProfileLochCreditPoints
-            followFlag={this.state.followFlag}
-            isUpdate={this.state.isUpdate}
+            followFlag={this.props.followFlag}
+            isUpdate={this.props.isUpdate}
             history={this.props.history}
-            lochUser={this.state.lochUser}
+            lochUser={this.props.lochUser}
           />
-          {!(this.props.lochUser && this.props.lochUser.email) ? (
+          {this.props.lochUser && this.props.lochUser.email ? (
             <div
-              onClick={this.goToMyReferralCodes}
+              onClick={this.props.goToMyReferralCodes}
               className="profile-section-referall-code-btn"
             >
               <div className="psrcb-left">
@@ -77,10 +77,8 @@ class ProfileMobile extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = () => ({});
 const mapDispatchToProps = {};
-ProfileMobile.propTypes = {
-  // getPosts: PropTypes.func
-};
+ProfileMobile.propTypes = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileMobile);
