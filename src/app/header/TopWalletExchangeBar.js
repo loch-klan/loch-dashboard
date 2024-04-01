@@ -1078,38 +1078,38 @@ class TopWalletExchangeBar extends Component {
     // }
     //NEW
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      try {
-        const tempRes = await provider.send("eth_requestAccounts", []);
-        try {
-          const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
-          if (tempRes && tempRes.length > 0 && sdk) {
-            sdk.wallet({
-              account: tempRes[0],
-              chainId: window.ethereum.networkVersion,
-            });
-          }
-        } catch (error) {
-          console.log("ArcxAnalyticsSdk error ", error);
-        }
-        if (tempRes && tempRes.length > 0) {
-          if (this.props.handleUpdate) {
-            setTimeout(() => {
-              this.props.handleUpdate();
-            }, 1000);
-          }
-          const walletCreditScore = new URLSearchParams();
-          walletCreditScore.append("credits", "wallet_connected");
-          this.props.addUserCredits(walletCreditScore);
-          this.addToList(tempRes);
-        }
-        // Leaver console log: full signer too"
-        // console.log("signer is ", signer);
-        // console.log("signer get address is ", await signer.getAddress());
-      } catch (error) {
-        console.log("ethers error ", error);
+      if (this.props.openConnectWallet) {
+        this.props.openConnectWallet();
       }
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // try {
+      //   const tempRes = await provider.send("eth_requestAccounts", []);
+      //   try {
+      //     const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
+      //     if (tempRes && tempRes.length > 0 && sdk) {
+      //       sdk.wallet({
+      //         account: tempRes[0],
+      //         chainId: window.ethereum.networkVersion,
+      //       });
+      //     }
+      //   } catch (error) {
+      //     console.log("ArcxAnalyticsSdk error ", error);
+      //   }
+      //   if (tempRes && tempRes.length > 0) {
+      //     setTimeout(() => {
+      //       this.props.handleUpdate();
+      //     }, 1000);
+      //     const walletCreditScore = new URLSearchParams();
+      //     walletCreditScore.append("credits", "wallet_connected");
+      //     this.props.addUserCredits(walletCreditScore);
+      //     this.addToList(tempRes);
+      //   }
+      //   // Leaver console log: full signer too"
+      //   // console.log("signer is ", signer);
+      //   // console.log("signer get address is ", await signer.getAddress());
+      // } catch (error) {
+      //   console.log("ethers error ", error);
+      // }
     }
   };
   handleSetCoin = (data) => {

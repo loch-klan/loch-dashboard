@@ -14,7 +14,6 @@ export const getProfitLossAsset = (arr, parentCtx) => {
   // Find total fees by calculating fees.totalfees
   // Net would be total outflows+ totalfees-totalinflows
 
-  console.log("m here", parentCtx?.props?.darkModeState);
   let currency = JSON.parse(window.sessionStorage.getItem("currency"));
   let fees = arr?.fees;
 

@@ -27,7 +27,6 @@ import {
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 import { WhaleCreateAccountPrivacyHover } from "../../utils/AnalyticsFunctions.js";
-import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { VerifySmartMoneyEmailOtp } from "./Api.js";
@@ -141,36 +140,6 @@ class AuthSmartMoneyModal extends BaseReactComponent {
   };
 
   //
-
-  connectMetamask = async (isSignin = true) => {
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        const balance = ethers.utils.formatEther(
-          await provider.getBalance(address)
-        );
-
-        this.setState({
-          MetaAddress: address,
-          balance: balance,
-          signer: signer,
-          provider: provider,
-          btnloader: true,
-        });
-
-        // call sigin Api after signin call checkoutModal
-        this.SigninWallet();
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      console.error("Please install MetaMask!");
-      toast.error("Please install Metamask extension");
-    }
-  };
 
   // Signin wit wallet
   SigninWallet = () => {
