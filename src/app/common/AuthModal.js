@@ -25,12 +25,12 @@ import {
   setPageFlagDefault,
 } from "./Api.js";
 
-import { ethers } from "ethers";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import {
   ConnectExPopupEmailAdded,
+  CopyTradePopupEmailAdded,
   GeneralPopupEmailAdded,
   LochPointsSignInPopupEmailAdded,
   SigninMenuEmailAdded,
@@ -105,7 +105,10 @@ class AuthModal extends BaseReactComponent {
   handleAccountCreate = () => {
     //   console.log("create email", this.state.email);
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     SendOtp(data, this);
 
     if (this.props.tracking === "Sign in button") {
@@ -140,6 +143,11 @@ class AuthModal extends BaseReactComponent {
         session_id: getCurrentUser().id,
         email_address: this.state.email,
         from: this.props.tracking,
+      });
+    } else if (this.props.tracking === "Copy trade") {
+      CopyTradePopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
       });
     }
 
@@ -194,36 +202,6 @@ class AuthModal extends BaseReactComponent {
   };
 
   //
-
-  connectMetamask = async (isSignin = true) => {
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        const balance = ethers.utils.formatEther(
-          await provider.getBalance(address)
-        );
-
-        this.setState({
-          MetaAddress: address,
-          balance: balance,
-          signer: signer,
-          provider: provider,
-          btnloader: true,
-        });
-
-        // call sigin Api after signin call checkoutModal
-        this.SigninWallet();
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      console.error("Please install MetaMask!");
-      toast.error("Please install Metamask extension");
-    }
-  };
 
   // Signin wit wallet
   SigninWallet = () => {

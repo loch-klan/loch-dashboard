@@ -1190,7 +1190,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
     if (mobileCheck()) {
       return (
-        <MobileLayout hideFooter history={this.props.history}>
+        <MobileLayout hideFooter history={this.props.history} hideAddresses>
           <HomeSmartMoneyMobile
             accountList={this.state.accountList}
             currency={this.state.currency}
@@ -1231,6 +1231,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             >
               <div className="portfolio-section">
                 <WelcomeCard
+                  openConnectWallet={this.props.openConnectWallet}
+                  disconnectWallet={this.props.disconnectWallet}
                   handleShare={this.handleShare}
                   isSidebarClosed={this.props.isSidebarClosed}
                   apiResponse={(e) => this.CheckApiResponse(e)}

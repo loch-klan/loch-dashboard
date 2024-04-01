@@ -3,6 +3,13 @@ import { Redirect, Route } from "react-router-dom";
 import Sidebar from "../app/common/Sidebar";
 import { getToken } from "./ManageToken";
 import { mobileCheck } from "./ReusableFunctions";
+import {
+  createWeb3Modal,
+  defaultConfig,
+  useDisconnect,
+  useWeb3Modal,
+  useWeb3ModalAccount,
+} from "@web3modal/ethers/react";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
@@ -37,6 +44,31 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+  const mainnet = {
+    chainId: 1,
+    name: "Ethereum",
+    currency: "ETH",
+    explorerUrl: "https://etherscan.io",
+    rpcUrl: "https://cloudflare-eth.com",
+  };
+  const metadata = {
+    name: "Loch",
+    description: "My Website description",
+    url: "https://app.loch.one/", // origin must match your domain & subdomain
+    icons: ["https://avatars.mywebsite.com/"],
+  };
+  createWeb3Modal({
+    ethersConfig: defaultConfig({ metadata }),
+    chains: [mainnet],
+    projectId: "4ba0f16b53f8888a667cbbb8bb366918",
+    enableAnalytics: true, // Optional - defaults to your Cloud configuration
+  });
+  const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { open: openConnectWallet } = useWeb3Modal();
+  const { disconnect } = useDisconnect();
+  console.log("address ", address);
+  console.log("chainId ", chainId);
+  console.log("isConnected ", isConnected);
 
   return (
     <Route
@@ -154,7 +186,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             <div className="main-section">
               <div className={`main-section-right`}>
                 <div className="main-content-wrapper">
-                  <Component key={props.location.pathname} {...props} />
+                  <Component
+                    openConnectWallet={openConnectWallet}
+                    disconnectWallet={disconnect}
+                    key={props.location.pathname}
+                    {...props}
+                  />
                 </div>
               </div>
             </div>
@@ -189,6 +226,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             >
               <div className="main-content-wrapper">
                 <Component
+                  openConnectWallet={openConnectWallet}
+                  disconnectWallet={disconnect}
                   isSidebarClosed={isSidebarClosed}
                   key={props.location.pathname}
                   {...props}

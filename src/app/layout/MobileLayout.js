@@ -2,6 +2,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  EmultionSidebarIcon,
   MobileNavFollow,
   MobileNavHome,
   MobileNavLeaderboard,
@@ -10,9 +11,13 @@ import {
 } from "../../assets/images/icons";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import {
+  HomeMenu,
   HomeSignedUpReferralCode,
   LeaveEmailAdded,
   LochPointsSignUpPopupEmailAdded,
+  MenuCopyTradelist,
+  MenuLeaderboard,
+  MenuWatchlist,
   Mobile_Home_Share,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
@@ -25,6 +30,7 @@ import { BaseReactComponent } from "../../utils/form";
 import { isNewAddress } from "../Portfolio/Api.js";
 import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 import {
   SendOtp,
   VerifyEmail,
@@ -36,17 +42,16 @@ import {
 import Breadcrums from "../common/Breadcrums.js";
 import Footer from "../common/footer";
 import { setHeaderReducer } from "../header/HeaderAction";
+import LoginMobile from "../home/NewAuth/LoginMobile.js";
+import RedirectMobile from "../home/NewAuth/RedirectMobile.js";
+import SignUpMobile from "../home/NewAuth/SignUpMobile.js";
+import VerifyMobile from "../home/NewAuth/VerifyMobile.js";
 import NewHomeInputBlock from "../home/NewHomeInputBlock";
 import { detectCoin } from "../onboarding/Api";
 import { addUserCredits, updateUser } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
-import LoginMobile from "../home/NewAuth/LoginMobile.js";
-import VerifyMobile from "../home/NewAuth/VerifyMobile.js";
-import SignUpMobile from "../home/NewAuth/SignUpMobile.js";
-import RedirectMobile from "../home/NewAuth/RedirectMobile.js";
 import "./_mobileLayout.scss";
-import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -95,6 +100,12 @@ class MobileLayout extends BaseReactComponent {
           pageIcon: MobileNavLeaderboard,
           text: "Leaderboard",
           path: "/home-leaderboard",
+        },
+        {
+          pageIcon: EmultionSidebarIcon,
+
+          text: "Copy Trade",
+          path: "/copy-trade",
         },
         {
           pageIcon: MobileNavProfile,
@@ -824,11 +835,13 @@ class MobileLayout extends BaseReactComponent {
                       noHomeInPath={this.props.noHomeInPath}
                       isMobile
                     />
-                    <MobileDarkModeWrapper>
+                    <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
                       {this.props.hideAddresses ? (
                         <></>
                       ) : (
                         <WelcomeCard
+                          openConnectWallet={this.props.openConnectWallet}
+                          disconnectWallet={this.props.disconnectWallet}
                           handleShare={this.handleShare} //Done
                           isSidebarClosed={this.props.isSidebarClosed} // done
                           changeWalletList={this.props.handleChangeList} // done
@@ -893,7 +906,34 @@ class MobileLayout extends BaseReactComponent {
                       if (item.text === "Sign Out") {
                         this.openConfirmLeaveModal();
                       } else {
-                        this.props.history.push(item.path);
+                        let tempToken = getToken();
+                        if (!tempToken || tempToken === "jsk") {
+                          return null;
+                        } else {
+                          if (index === 0) {
+                            HomeMenu({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 1) {
+                            MenuWatchlist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 2) {
+                            MenuCopyTradelist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 3) {
+                            MenuLeaderboard({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          }
+
+                          this.props.history.push(item.path);
+                        }
                       }
                     }}
                     className={`portfolio-mobile-layout-nav-footer-inner-item ${

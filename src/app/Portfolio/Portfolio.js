@@ -851,6 +851,7 @@ class Portfolio extends BaseReactComponent {
       passedAddress &&
       passedAddress !== "alreadyAdded" &&
       passedAddress !== "/home" &&
+      passedAddress !== "/copy-trade" &&
       getCurrentUser().id &&
       tempPathName === "/home"
     ) {
@@ -4482,6 +4483,8 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  openConnectWallet={this.props.openConnectWallet}
+                  disconnectWallet={this.props.disconnectWallet}
                   afterAddressFollowed={this.afterAddressFollowed}
                   isAddressFollowedCount={this.state.isAddressFollowedCount}
                   handleShare={this.handleShare}
