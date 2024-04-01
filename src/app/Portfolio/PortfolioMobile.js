@@ -2,18 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
-  ArrowDownLeftSmallIcon,
-  ArrowUpRightSmallIcon,
-  MacIcon,
-  SharePortfolioIconWhite,
-  darkModeIcon,
-  lightModeIcon,
-} from "../../assets/images/icons";
-import SearchIcon from "../../assets/images/icons/search-icon.svg";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import { CopyClipboardIcon } from "../../assets/images/index.js";
-import {
-  CostHideDustMobile,
   MobileHomePageView,
   Mobile_Home_Share,
   QuickAddWalletAddress,
@@ -26,27 +14,15 @@ import {
   SORT_BY_TIMESTAMP,
   START_INDEX,
 } from "../../utils/Constant";
-import { getCurrentUser, getToken } from "../../utils/ManageToken";
+import { getCurrentUser } from "../../utils/ManageToken";
 import {
-  CurrencyType,
-  TruncateText,
-  amountFormat,
-  convertNtoNumber,
-  noExponents,
   numToCurrency,
   switchToDarkMode,
   switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
-import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import {
-  GetAllPlan,
   SwitchDarkMode,
-  getAllCurrencyRatesApi,
-  getDetectedChainsApi,
-  getUser,
-  setPageFlagDefault,
   updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
@@ -56,7 +32,6 @@ import { setHeaderReducer } from "../header/HeaderAction.js";
 
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getNFT } from "../nft/NftApi.js";
-import MobileDarkModeIconWrapper from "./MobileDarkModeWrapper.js";
 import {
   detectCoin,
   getAllCoins,
@@ -64,10 +39,12 @@ import {
 } from "../onboarding/Api.js";
 import { addUserCredits } from "../profile/Api.js";
 
+import {
+  getAllInsightsApi,
+  getProfitAndLossApi,
+  searchTransactionApi,
+} from "../intelligence/Api.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
-import PieChart2 from "./PieChart2";
-import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
-import "./_mobilePortfolio.scss";
 import {
   getAssetGraphDataApi,
   getCoinRate,
@@ -78,11 +55,9 @@ import {
   getYesterdaysBalanceApi,
   settingDefaultValues,
 } from "./Api.js";
-import {
-  getAllInsightsApi,
-  getProfitAndLossApi,
-  searchTransactionApi,
-} from "../intelligence/Api.js";
+import PieChart2 from "./PieChart2";
+import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
+import "./_mobilePortfolio.scss";
 
 class PortfolioMobile extends BaseReactComponent {
   constructor(props) {

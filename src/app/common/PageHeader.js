@@ -98,7 +98,7 @@ export default function PageHeader(props) {
           <div>
             <div style={{ display: "flex" }}>
               <h4
-                className={`inter-display-medium f-s-24 lh-30 ${
+                className={`inter-display-medium f-s-24 ${
                   props.showImg || props.multipleImg ? "" : "m-b-8"
                 }`}
               >

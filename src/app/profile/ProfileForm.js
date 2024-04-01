@@ -73,6 +73,26 @@ class ProfileForm extends BaseReactComponent {
     SigninWallet(data, this);
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.userDetails !== this.props.userDetails) {
+      const userDetails = this.props.userDetails;
+      this.setState({
+        firstName: userDetails?.first_name || "",
+        lastName: userDetails?.last_name || "",
+        email: userDetails?.email || "",
+        mobileNumber: userDetails?.mobile || "",
+        referred_by: userDetails?.referred_by || "",
+        link:
+          userDetails?.link ||
+          window.sessionStorage.getItem("lochDummyUser") ||
+          "",
+        prevfirstName: userDetails?.first_name || "",
+        prevlastName: userDetails?.last_name || "",
+        prevemail: userDetails?.email || "",
+        prevmobileNumber: userDetails?.mobile || "",
+      });
+    }
+  }
   componentDidMount() {
     ManageLink(this);
 

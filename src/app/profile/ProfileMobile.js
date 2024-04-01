@@ -3,6 +3,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
   PasswordIcon,
+  PasswordPurpleIcon,
   UserCreditScrollRightArrowIcon,
   UserProfileMobileIcon,
 } from "../../assets/images/icons";
@@ -36,23 +37,29 @@ class ProfileMobile extends Component {
             history={this.props.history}
             lochUser={this.props.lochUser}
           />
-          {this.props.lochUser && this.props.lochUser.email ? (
-            <div
-              onClick={this.props.goToMyReferralCodes}
-              className="profile-section-referall-code-btn"
-            >
-              <div className="psrcb-left">
-                <Image className="psrcb-icon" src={PasswordIcon} />
-                <div className="inter-display-medium psrcb-text">
-                  My Referral Codes
-                </div>
+
+          <div
+            onClick={this.props.goToMyReferralCodes}
+            className="profile-section-referall-code-btn"
+          >
+            <div className="psrcb-left">
+              <Image className="psrcb-icon" src={PasswordPurpleIcon} />
+              <div className="inter-display-medium psrcb-text">
+                Referral codes
               </div>
+            </div>
+            <div className="psrcb-right">
+              {this.props.codesLeftToUse ? (
+                <div className="inter-display-medium psrcb-small-text">
+                  {this.props.codesLeftToUse} left
+                </div>
+              ) : null}
               <Image
                 className="psrcb-arrow-icon"
                 src={UserCreditScrollRightArrowIcon}
               />
             </div>
-          ) : null}
+          </div>
           <Wallet
             isMobileDevice
             hidePageHeader={true}
@@ -69,7 +76,7 @@ class ProfileMobile extends Component {
                 <h4>Your details</h4>
               </div>
             </div>
-            <ProfileForm />
+            <ProfileForm userDetails={this.props.lochUser} />
           </div>
         </div>
       </div>
