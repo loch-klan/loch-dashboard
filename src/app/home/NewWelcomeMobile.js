@@ -48,6 +48,7 @@ import {
   LPC_Go,
   LPConnectExchange,
   SignInOnClickWelcomeLeaderboard,
+  WelcomeSignedUpReferralCode,
 } from "../../utils/AnalyticsFunctions.js";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 import { isNewAddress } from "../Portfolio/Api.js";
@@ -90,11 +91,17 @@ import RedirectMobile from "./NewAuth/RedirectMobile.js";
 import SignUpMobile from "./NewAuth/SignUpMobile.js";
 import VerifyMobile from "./NewAuth/VerifyMobile.js";
 import NewHomeInputBlock from "./NewHomeInputBlock.js";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 
 class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      //Sign up referral
+      isReferralCodeStep: false,
+      referralCode: "",
+      isReferralCodeLoading: false,
+      //Sign up referral
       pageName: "Landing Page",
       areNewAddresses: false,
       isPrevAddressNew: true,
@@ -157,6 +164,11 @@ class NewWelcomeMobile extends BaseReactComponent {
   }
 
   toggleAuthModal = (val = "") => {
+    if (val !== "signup") {
+      this.setState({
+        isReferralCodeStep: false,
+      });
+    }
     this.setState({
       authmodal: val,
     });
@@ -979,7 +991,10 @@ class NewWelcomeMobile extends BaseReactComponent {
   handleSubmitEmail = (val = false) => {
     if (this.state.email) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email.toLowerCase());
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       EmailAddressAdded({ email_address: this.state.email, session_id: "" });
       signIn(this, data, true, val);
       // this.toggleAuthModal('verify');
@@ -989,14 +1004,23 @@ class NewWelcomeMobile extends BaseReactComponent {
   handleSubmitEmailSignup = (val = false) => {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
-      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append(
+        "email",
+        this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
+      );
+      data.append("referral_code", this.state.referralCode);
       data.append("signed_up_from", "welcome");
       EmailAddressAddedSignUp({
         email_address: this.state.emailSignup,
         session_id: "",
         isMobile: true,
       });
-      this.props.signUpWelcome(this, data, this.toggleAuthModal);
+      this.props.signUpWelcome(
+        this,
+        data,
+        this.toggleAuthModal,
+        this.stopReferallButtonLoading
+      );
     }
   };
 
@@ -1385,6 +1409,44 @@ class NewWelcomeMobile extends BaseReactComponent {
       window.open(shareLink, "_blank", "noreferrer");
     }
   };
+  checkReferralCode = () => {
+    if (this.state.referralCode) {
+      this.setState({
+        isReferralCodeLoading: true,
+      });
+      const referalValHolderData = new URLSearchParams();
+      referalValHolderData.append("code", this.state.referralCode);
+
+      this.props.checkReferallCodeValid(
+        referalValHolderData,
+        this.handleSubmitEmailSignup,
+        this.stopReferallButtonLoading
+      );
+    }
+  };
+  stopReferallButtonLoading = (isSignedUp) => {
+    if (isSignedUp === true) {
+      WelcomeSignedUpReferralCode({
+        session_id: getCurrentUser().id,
+        email_address: this.state.emailSignup,
+        referral_code: this.state.referralCode,
+      });
+    }
+    this.setState({
+      isReferralCodeLoading: false,
+    });
+  };
+  handleGoToReferral = () => {
+    this.setState({
+      isReferralCodeStep: true,
+      isReferralCodeLoading: false,
+    });
+  };
+  handleGoBackToSignUp = () => {
+    this.setState({
+      isReferralCodeStep: false,
+    });
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -1440,13 +1502,24 @@ class NewWelcomeMobile extends BaseReactComponent {
             smartMoneyLogin={this.state.smartMoneyLogin}
             isMobile
             email={this.state.emailSignup}
+            handleSubmitEmail={this.handleSubmitEmailSignup}
+            show={this.state.authmodal == "signup"}
             handleChangeEmail={(val) => {
               this.setState({
                 emailSignup: val,
               });
             }}
-            handleSubmitEmail={this.handleSubmitEmailSignup}
-            show={this.state.authmodal == "signup"}
+            handleChangeReferralCode={(val) => {
+              this.setState({
+                referralCode: val,
+              });
+            }}
+            isReferralCodeStep={this.state.isReferralCodeStep}
+            referralCode={this.state.referralCode}
+            isReferralCodeLoading={this.state.isReferralCodeLoading}
+            checkReferralCode={this.checkReferralCode}
+            handleGoToReferral={this.handleGoToReferral}
+            handleGoBackToSignUp={this.handleGoBackToSignUp}
           />
         ) : this.state.authmodal == "redirect" ? (
           <RedirectMobile
@@ -1931,6 +2004,7 @@ const mapDispatchToProps = {
   removeFromWatchList,
   signUpWelcome,
   isNewAddress,
+  checkReferallCodeValid,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcomeMobile);

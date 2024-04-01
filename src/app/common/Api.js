@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import {
   ConnectExEmailVerified,
+  CopyTradeSignInPopupEmailVerified,
   FollowSignInPopupEmailVerified,
   GeneralPopupEmailVerified,
   Home_CE_OAuthCompleted,
@@ -83,10 +84,13 @@ export const SwitchDarkMode = (passedData) => {
     });
   };
 };
-export const fixWalletApi = (ctx, info) => {
+export const fixWalletApi = (ctx, info, stopBtnLoading) => {
   postLoginInstance
     .post("organisation/user/update-user", info)
     .then((res) => {
+      if (stopBtnLoading) {
+        stopBtnLoading();
+      }
       if (!res.data.error) {
         ctx.handleRedirection();
         // ctx.props.history.push('/welcome');
@@ -95,6 +99,9 @@ export const fixWalletApi = (ctx, info) => {
       }
     })
     .catch((err) => {
+      if (stopBtnLoading) {
+        stopBtnLoading();
+      }
       // console.log("fixwallet",err)
     });
 };
@@ -315,6 +322,7 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
           email: res.data.data.user?.email,
           mobile: res.data.data.user?.mobile,
           link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
         };
 
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -584,6 +592,7 @@ export const sendWhopCode = (ctx, data) => {
           email: res.data.data.user?.email,
           mobile: res.data.data.user?.mobile,
           link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
         };
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
         // window.sessionStorage.setItem("defi_access", true);
@@ -849,13 +858,16 @@ export const getAllCurrencyRatesApi = () => {
 
 // Send Email OTP from whale pod
 
-export const SendOtp = (data, ctx, isForMobile) => {
+export const SendOtp = (data, ctx, isForMobile, isCopyTrader) => {
   postLoginInstance
     .post("organisation/user/send-email-otp", data)
     .then((res) => {
       if (!res.data.error) {
         if (isForMobile && ctx.showSignInOtpPage) {
           ctx.showSignInOtpPage();
+        }
+        if (isCopyTrader && ctx.toggleAuthModal) {
+          ctx.toggleAuthModal("verify");
         }
         // console.log("res", res.data);
         else {
@@ -886,7 +898,7 @@ export const SendOtp = (data, ctx, isForMobile) => {
 
 // Verify email
 
-export const VerifyEmail = (data, ctx) => {
+export const VerifyEmail = (data, ctx, isCopyTrade) => {
   postLoginInstance
     .post("organisation/user/verify-otp-code", data)
     .then((res) => {
@@ -1015,6 +1027,11 @@ export const VerifyEmail = (data, ctx) => {
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
           });
+        } else if (ctx.props.tracking === "Copy trade") {
+          CopyTradeSignInPopupEmailVerified({
+            session_id: getCurrentUser().id,
+            email_address: res.data.data.user?.email,
+          });
         }
         if (ctx.props?.popupType === "general_popup") {
           //
@@ -1051,6 +1068,7 @@ export const VerifyEmail = (data, ctx) => {
                 email: res.data.data.user?.email,
                 mobile: res.data.data.user?.mobile,
                 link: res.data.data.user?.link,
+                referred_by: res.data.data.user?.referred_by,
               };
 
               window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1136,7 +1154,11 @@ export const VerifyEmail = (data, ctx) => {
               addLocalWalletList(JSON.stringify(addWallet));
               //  console.log("only sign");
               setTimeout(() => {
-                ctx.state.onHide();
+                if (isCopyTrade) {
+                  ctx.onHide();
+                } else {
+                  ctx.state.onHide();
+                }
                 // console.log("reload")
                 window.location.reload();
               }, 3000);
@@ -1147,7 +1169,7 @@ export const VerifyEmail = (data, ctx) => {
                 //  console.log("only whale watch for both new and old");
                 let userdata = new URLSearchParams();
                 userdata.append("old_user_id", userId);
-                UpdateUserDetails(userdata, ctx);
+                UpdateUserDetails(userdata, ctx, isCopyTrade);
               } else {
                 // console.log("welcome upgrade signin")
                 let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -1158,6 +1180,7 @@ export const VerifyEmail = (data, ctx) => {
                   email: res.data.data.user?.email,
                   mobile: "",
                   link: res.data.data.user?.link,
+                  referred_by: res.data.data.user?.referred_by,
                 };
                 window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
 
@@ -1287,7 +1310,7 @@ export const VerifyEmail = (data, ctx) => {
 
 // Update user details
 
-export const UpdateUserDetails = (data, ctx) => {
+export const UpdateUserDetails = (data, ctx, isCopyTrade) => {
   postLoginInstance
     .post("organisation/user/update-user-details", data)
     .then((res) => {
@@ -1311,12 +1334,16 @@ export const UpdateUserDetails = (data, ctx) => {
             : ctx.state.email,
           mobile: ctx.state.mobileNumber,
           link: res.data.data.user.link,
+          referred_by: res.data.data.user.referred_by,
         };
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
         // toast.success(" Your wallets and pods has been saved");
         if (ctx.AddEmailModal) {
           // for upgrade
           ctx.AddEmailModal();
+        } else if (isCopyTrade) {
+          ctx.onHide();
+          window.location.reload();
         } else {
           // for whale watch
           ctx.state.onHide();
@@ -1489,6 +1516,7 @@ export const getUser = (ctx = null, showToast = false) => {
             email: res.data.data.user?.email,
             mobile: res.data.data.user?.mobile,
             link: res.data.data.user?.link,
+            referred_by: res.data.data.user?.referred_by,
           };
 
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1803,6 +1831,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
             email: res.data.data.user?.email,
             mobile: res.data.data.user?.mobile,
             link: res.data.data.user?.link,
+            referred_by: res.data.data.user?.referred_by,
           };
 
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1896,6 +1925,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
               email: res.data.data.user?.email,
               mobile: "",
               link: res.data.data.user?.link,
+              referred_by: res.data.data.user?.referred_by,
             };
             window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
 

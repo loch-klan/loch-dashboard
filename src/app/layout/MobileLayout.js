@@ -2,34 +2,36 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  EmultionSidebarIcon,
   MobileNavFollow,
-  MobileNavFollowActive,
   MobileNavHome,
-  MobileNavHomeActive,
   MobileNavLeaderboard,
-  MobileNavLeaderboardActive,
-  MobileNavNFT,
   MobileNavProfile,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import {
+  HomeMenu,
+  MenuCopyTradelist,
+  MenuLeaderboard,
+  MenuWatchlist,
   Mobile_Home_Share,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
   resetUser,
 } from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
-import { getCurrentUser } from "../../utils/ManageToken";
+import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { BaseReactComponent } from "../../utils/form";
 import { isNewAddress } from "../Portfolio/Api.js";
+import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import {
   setPageFlagDefault,
   updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
+import Breadcrums from "../common/Breadcrums.js";
 import Footer from "../common/footer";
 import { setHeaderReducer } from "../header/HeaderAction";
 import NewHomeInputBlock from "../home/NewHomeInputBlock";
@@ -38,8 +40,6 @@ import { addUserCredits } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
-import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
-import Breadcrums from "../common/Breadcrums.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -68,28 +68,30 @@ class MobileLayout extends BaseReactComponent {
       disableAddBtn: false,
       navItems: [
         {
-          activeIcon: MobileNavHomeActive,
-          inactiveIcon: MobileNavHome,
+          pageIcon: MobileNavHome,
           text: "Home",
           path: "/home",
         },
         {
-          activeIcon: MobileNavFollowActive,
-          inactiveIcon: MobileNavFollow,
+          pageIcon: MobileNavFollow,
           text: "Following",
           path: "/watchlist",
         },
         {
-          activeIcon: MobileNavLeaderboardActive,
-          inactiveIcon: MobileNavLeaderboard,
+          pageIcon: MobileNavLeaderboard,
           text: "Leaderboard",
           path: "/home-leaderboard",
         },
         {
-          activeIcon: MobileNavProfile,
-          inactiveIcon: MobileNavProfile,
-          text: "Sign Out",
-          path: "/",
+          pageIcon: EmultionSidebarIcon,
+
+          text: "Copy Trade",
+          path: "/copy-trade",
+        },
+        {
+          pageIcon: MobileNavProfile,
+          text: "Profile",
+          path: "/profile",
         },
       ],
       userWalletList: [],
@@ -524,6 +526,7 @@ class MobileLayout extends BaseReactComponent {
     this.props.history.push("/welcome");
   };
   render() {
+    let activeTab = window.location.pathname;
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
         const tempWallet = this.props.portfolioState.walletTotal
@@ -605,9 +608,10 @@ class MobileLayout extends BaseReactComponent {
                     <Breadcrums
                       showpath={this.props.showpath}
                       currentPage={this.props.currentPage}
+                      noHomeInPath={this.props.noHomeInPath}
                       isMobile
                     />
-                    <MobileDarkModeWrapper>
+                    <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
                       {this.props.hideAddresses ? (
                         <></>
                       ) : (
@@ -673,7 +677,34 @@ class MobileLayout extends BaseReactComponent {
                       if (item.text === "Sign Out") {
                         this.openConfirmLeaveModal();
                       } else {
-                        this.props.history.push(item.path);
+                        let tempToken = getToken();
+                        if (!tempToken || tempToken === "jsk") {
+                          return null;
+                        } else {
+                          if (index === 0) {
+                            HomeMenu({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 1) {
+                            MenuWatchlist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 2) {
+                            MenuCopyTradelist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 3) {
+                            MenuLeaderboard({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          }
+
+                          this.props.history.push(item.path);
+                        }
                       }
                     }}
                     className={`portfolio-mobile-layout-nav-footer-inner-item ${
@@ -688,11 +719,13 @@ class MobileLayout extends BaseReactComponent {
                           ? "portfolio-mobile-layout-nav-footer-inner-item-image-active"
                           : ""
                       }`}
-                      src={
-                        item.path === this.props.history.location.pathname
-                          ? item.activeIcon
-                          : item.inactiveIcon
-                      }
+                      style={{
+                        filter:
+                          activeTab === item.path
+                            ? "brightness(0) var(--invertColor)"
+                            : "brightness(1) var(--invertColor)",
+                      }}
+                      src={item.pageIcon}
                     />
                     <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
                       {item.text}

@@ -289,44 +289,48 @@ class Wallet extends Component {
             // showData={totalWalletAmt}
             // isLoading={isLoading}
           />
-          <div
-            style={{
-              minWidth: "85rem",
-            }}
-          >
-            <CoinBadges
-              activeBadge={this.state.activeBadge}
-              chainList={this.props.OnboardingState.coinsList}
-              handleFunction={this.handleFunction}
-              hideDropdown
-            />
-          </div>
-          <div className="m-b-16 sortby-section">
-            <div className="dropdown-section">
-              <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
-                Sort by
-              </span>
-              {this.state.sortBy.map((e, index) => {
-                return (
-                  <span
-                    className="sort-by-title"
-                    key={index}
-                    onClick={() => this.handleSort(e)}
-                  >
-                    <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
-                      {e.title}
-                    </span>{" "}
-                    {/* <Image src={sort} style={{ width: "1rem" }} /> */}
-                    <Image
-                      src={sortByIcon}
-                      // style={{ width: "1.6rem" }}
-                      className={e.down ? "rotateDown" : "rotateUp"}
-                    />
-                  </span>
-                );
-              })}
+          {this.props.isMobileDevice ? null : (
+            <div
+              style={{
+                minWidth: "85rem",
+              }}
+            >
+              <CoinBadges
+                activeBadge={this.state.activeBadge}
+                chainList={this.props.OnboardingState.coinsList}
+                handleFunction={this.handleFunction}
+                hideDropdown
+              />
             </div>
-          </div>
+          )}
+          {this.props.isMobileDevice ? null : (
+            <div className="m-b-16 sortby-section">
+              <div className="dropdown-section">
+                <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+                  Sort by
+                </span>
+                {this.state.sortBy.map((e, index) => {
+                  return (
+                    <span
+                      className="sort-by-title"
+                      key={index}
+                      onClick={() => this.handleSort(e)}
+                    >
+                      <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
+                        {e.title}
+                      </span>{" "}
+                      {/* <Image src={sort} style={{ width: "1rem" }} /> */}
+                      <Image
+                        src={sortByIcon}
+                        // style={{ width: "1.6rem" }}
+                        className={e.down ? "rotateDown" : "rotateUp"}
+                      />
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           {walletList.length > 0 && !isLoading ? (
             <div className="net-worth-wrapper">
               <div className="left">
@@ -359,6 +363,7 @@ class Wallet extends Component {
                 // console.log("walletlist", walletList)
                 return (
                   <WalletCard
+                    isMobileDevice={this.props.isMobileDevice}
                     key={index}
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}
