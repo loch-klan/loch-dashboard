@@ -3,15 +3,15 @@
   .profile-section {
     margin-top: 3rem;
     .profile-section-referall-code-btn {
-      width: 50%;
-      min-width: 42.5rem;
-      padding: 1.5rem;
+      width: 100%;
+      min-width: 85rem;
+      padding: 2.5rem;
       background-color: var(--cardBackgroud);
       border-radius: 1rem;
       margin-bottom: 3rem;
       margin-top: -3rem;
-      box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
-        0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+      // box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      //   0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -21,23 +21,33 @@
       .psrcb-left {
         display: flex;
         align-items: center;
-        column-gap: 6rem;
+        column-gap: 0.8rem;
+        .psrcb-icon {
+          height: 25px;
+          filter: var(--brightInDarkMode);
+        }
+        .psrcb-text {
+          font-size: 20px;
+        }
       }
-      .psrcb-icon {
-        height: 2.5rem;
-        filter: var(--invertColor);
-        opacity: var(--lighterDarkIcons);
-      }
-      .psrcb-arrow-icon {
-        height: 1.5rem;
-        filter: var(--invertColor);
-        opacity: var(--lighterDarkIcons);
-      }
-      .psrcb-text {
-        font-size: 1.5rem;
+      .psrcb-right {
+        display: flex;
+        align-items: center;
+        column-gap: 1rem;
+        .psrcb-small-text {
+          font-size: 13px;
+          color: #5f33ff;
+          filter: var(--brightInDarkMode);
+        }
+        .psrcb-arrow-icon {
+          height: 15px;
+          filter: var(--invertColor);
+          opacity: var(--lighterDarkIcons);
+        }
       }
       &:hover {
-        border-color: var(--primaryTextColor);
+        box-shadow: var(--profileReferralHoverShadow);
+        background-color: var(--sidebarHoverLink);
       }
     }
 
@@ -302,7 +312,7 @@
             max-height: 5rem;
             max-width: 5rem;
             border-radius: 1.2rem;
-            background-color: #e5e5e680;
+            background-color: var(--referallCopyBtn);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -311,6 +321,7 @@
               min-width: 2rem;
               max-height: 2rem;
               max-width: 2rem;
+              filter: var(--invertColor);
             }
           }
           .profileLochCreditPointsBlockInfoBlock {
@@ -739,11 +750,13 @@
       }
     }
     .profile-section-referall-code-btn {
+      margin-top: 0rem;
       width: 100%;
       min-width: 100%;
-      margin-top: 0rem;
+      padding: 2rem;
       &:hover {
-        border-color: transparent;
+        box-shadow: none;
+        background-color: var(--cardBackgroud);
       }
     }
     .wallet-page-section {

@@ -38,11 +38,13 @@ import TopWalletAddressList from "../header/TopWalletAddressList";
 import {
   ArrowUpRightSmallIcon,
   PasswordIcon,
+  PasswordPurpleIcon,
   UserCreditRightArrowIcon,
   UserCreditScrollRightArrowIcon,
 } from "../../assets/images/icons";
 import MobileLayout from "../layout/MobileLayout";
 import ProfileMobile from "./ProfileMobile";
+import { getReferallCodes } from "../ReferralCodes/ReferralCodesApi";
 
 class Profile extends Component {
   constructor(props) {
@@ -128,6 +130,7 @@ class Profile extends Component {
     this.state = {
       // add new wallet
       isMobileDevice: false,
+      codesLeftToUse: false,
       userWalletList: window.sessionStorage.getItem("addWallet")
         ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
@@ -176,6 +179,7 @@ class Profile extends Component {
     }
     this.props.GetAllPlan();
     this.props.getUser();
+    this.props.getReferallCodes();
     ManageLink(this);
 
     this.startPageView();
@@ -188,17 +192,29 @@ class Profile extends Component {
   CheckApiResponse = () => {
     this.props.setPageFlagDefault();
   };
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (!this.props.commonState.profilePage) {
       this.props.updateWalletListFlag("profilePage", true);
       this.props.GetAllPlan();
       this.props.getUser();
+      this.props.getReferallCodes();
       const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
       if (isLochUser) {
         this.setState({
           lochUser: isLochUser,
         });
       }
+    }
+    if (prevProps.referralCodesState !== this.props.referralCodesState) {
+      let tempCodesLeft = 0;
+      this.props.referralCodesState.forEach((curReferralCode) => {
+        if (!curReferralCode.used) {
+          tempCodesLeft++;
+        }
+      });
+      this.setState({
+        codesLeftToUse: tempCodesLeft,
+      });
     }
   }
   updateTimer = (first) => {
@@ -301,6 +317,7 @@ class Profile extends Component {
             followFlag={this.state.followFlag}
             isUpdate={this.state.isUpdate}
             lochUser={this.state.lochUser}
+            codesLeftToUse={this.state.codesLeftToUse}
           />
         </MobileLayout>
       );
@@ -376,15 +393,22 @@ class Profile extends Component {
               className="profile-section-referall-code-btn"
             >
               <div className="psrcb-left">
-                <Image className="psrcb-icon" src={PasswordIcon} />
+                <Image className="psrcb-icon" src={PasswordPurpleIcon} />
                 <div className="inter-display-medium psrcb-text">
-                  My Referral Codes
+                  Referral codes
                 </div>
               </div>
-              <Image
-                className="psrcb-arrow-icon"
-                src={UserCreditScrollRightArrowIcon}
-              />
+              <div className="psrcb-right">
+                {this.state.codesLeftToUse ? (
+                  <div className="inter-display-medium psrcb-small-text">
+                    {this.state.codesLeftToUse} left
+                  </div>
+                ) : null}
+                <Image
+                  className="psrcb-arrow-icon"
+                  src={UserCreditScrollRightArrowIcon}
+                />
+              </div>
             </div>
             {/* wallet page component */}
             <Wallet
@@ -437,6 +461,7 @@ class Profile extends Component {
 const mapStateToProps = (state) => ({
   profileState: state.ProfileState,
   commonState: state.CommonState,
+  referralCodesState: state.ReferralCodesState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
@@ -444,6 +469,7 @@ const mapDispatchToProps = {
   GetAllPlan,
   getUser,
   updateWalletListFlag,
+  getReferallCodes,
 };
 Profile.propTypes = {
   // getPosts: PropTypes.func
