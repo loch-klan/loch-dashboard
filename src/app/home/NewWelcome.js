@@ -71,6 +71,7 @@ import {
   TimeSpentOnboardingMobile,
   ToggleDarkModeAnalytics,
   WelcomeSignedUpReferralCode,
+  resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
@@ -2073,6 +2074,7 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   handleSignOutWelcome = () => {
+    resetUser(true);
     this.setState({
       confirmLeave: false,
       lochUser: undefined,

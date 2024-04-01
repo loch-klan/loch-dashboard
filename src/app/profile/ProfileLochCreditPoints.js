@@ -138,6 +138,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     window.sessionStorage.setItem("lochPointsProfileLoginClicked", true);
   };
   openLoginBlock = () => {
+    console.log("OO");
     LochPointsLoginModalOpen({
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",

@@ -76,7 +76,7 @@ class ProfileMobile extends Component {
                 <h4>Your details</h4>
               </div>
             </div>
-            <ProfileForm />
+            <ProfileForm userDetails={this.props.lochUser} />
           </div>
         </div>
       </div>

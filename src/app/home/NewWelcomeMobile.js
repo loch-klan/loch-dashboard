@@ -50,6 +50,7 @@ import {
   LPConnectExchange,
   SignInOnClickWelcomeLeaderboard,
   WelcomeSignedUpReferralCode,
+  resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import SmartMoneyPagination from "../../utils/commonComponent/SmartMoneyPagination.js";
 import { isNewAddress } from "../Portfolio/Api.js";
@@ -1394,6 +1395,7 @@ class NewWelcomeMobile extends BaseReactComponent {
     });
   };
   handleSignOutWelcome = () => {
+    resetUser(true);
     this.setState({
       confirmLeave: false,
       lochUser: undefined,

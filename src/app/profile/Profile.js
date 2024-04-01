@@ -33,7 +33,7 @@ import UpgradeModal from "../common/upgradeModal";
 import Wallet from "../wallet/Wallet";
 import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
-import { mobileCheck } from "../../utils/ReusableFunctions";
+import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
 import TopWalletAddressList from "../header/TopWalletAddressList";
 import {
   ArrowUpRightSmallIcon,
@@ -165,6 +165,7 @@ class Profile extends Component {
     }, 900000);
   };
   componentDidMount() {
+    scrollToTop();
     if (mobileCheck()) {
       // this.props.history.push("/home");
       this.setState({
@@ -198,12 +199,16 @@ class Profile extends Component {
       this.props.GetAllPlan();
       this.props.getUser();
       this.props.getReferallCodes();
-      const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
-      if (isLochUser) {
-        this.setState({
-          lochUser: isLochUser,
-        });
-      }
+      setTimeout(() => {
+        const isLochUser = JSON.parse(
+          window.sessionStorage.getItem("lochUser")
+        );
+        if (isLochUser) {
+          this.setState({
+            lochUser: isLochUser,
+          });
+        }
+      }, 3000);
     }
     if (prevProps.referralCodesState !== this.props.referralCodesState) {
       let tempCodesLeft = 0;
@@ -433,7 +438,7 @@ class Profile extends Component {
             >
               <Row>
                 <Col md={12}>
-                  <ProfileForm />
+                  <ProfileForm userDetails={this.state.lochUser} />
                 </Col>
               </Row>
             </div>
