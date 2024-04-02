@@ -323,6 +323,7 @@ class Profile extends Component {
             isUpdate={this.state.isUpdate}
             lochUser={this.state.lochUser}
             codesLeftToUse={this.state.codesLeftToUse}
+            history={this.props.history}
           />
         </MobileLayout>
       );

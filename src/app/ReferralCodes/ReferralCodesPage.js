@@ -16,6 +16,7 @@ import {
   emailPrithvir,
   goToTelegram,
   goToTwitter,
+  mobileCheck,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
 import { BaseReactComponent } from "../../utils/form";
@@ -27,6 +28,8 @@ import { getAllCoins } from "../onboarding/Api";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_referralCodesPage.scss";
 import { getReferallCodes } from "./ReferralCodesApi";
+import MobileLayout from "../layout/MobileLayout";
+import ReferralCodesMobilePage from "./ReferralCodesMobilePage";
 
 class ReferralCodesPage extends BaseReactComponent {
   constructor(props) {
@@ -37,6 +40,7 @@ class ReferralCodesPage extends BaseReactComponent {
       referralsLoading: true,
       referralCodes: [],
       codesLeftToUse: undefined,
+      isMobileDevice: false,
     };
   }
   getOtherData = () => {
@@ -66,6 +70,11 @@ class ReferralCodesPage extends BaseReactComponent {
   };
   componentDidMount() {
     scrollToTop();
+    if (mobileCheck()) {
+      this.setState({
+        isMobileDevice: true,
+      });
+    }
     if (this.props.commonState.profileReferralPage) {
       this.callApi();
     }
@@ -184,6 +193,32 @@ class ReferralCodesPage extends BaseReactComponent {
     }
   };
   render() {
+    if (this.state.isMobileDevice) {
+      return (
+        <MobileLayout
+          showpath
+          currentPage={"referral-codes"}
+          hideFooter
+          history={this.props.history}
+          updateTimer={this.updateTimer}
+        >
+          <ReferralCodesMobilePage
+            copyAllTheCodes={this.copyAllTheCodes}
+            copyTextPass={this.copyTextPass}
+            getMoreReferralCodes={this.getMoreReferralCodes}
+            referralCodes={this.state.referralCodes}
+            codesLeftToUse={this.state.codesLeftToUse}
+            referralsLoading={this.state.referralsLoading}
+            history={this.props.history}
+            // goToMyReferralCodes={this.goToMyReferralCodes}
+            // followFlag={this.state.followFlag}
+            // isUpdate={this.state.isUpdate}
+            // lochUser={this.state.lochUser}
+            // codesLeftToUse={this.state.codesLeftToUse}
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <div className="referral-page">
         {/* topbar */}
