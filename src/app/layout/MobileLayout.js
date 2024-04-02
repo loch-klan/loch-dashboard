@@ -134,6 +134,22 @@ class MobileLayout extends BaseReactComponent {
   }
   componentDidMount() {
     // for chain detect
+    setTimeout(() => {
+      const dontOpenLoginPopup =
+        window.sessionStorage.getItem("dontOpenLoginPopup");
+      const lochUserLocalAgain = JSON.parse(
+        window.sessionStorage.getItem("lochUser")
+      );
+      if (
+        !dontOpenLoginPopup &&
+        !(lochUserLocalAgain && lochUserLocalAgain.email)
+      ) {
+        window.sessionStorage.setItem("dontOpenLoginPopup", true);
+        this.setState({
+          authmodal: "login",
+        });
+      }
+    }, 15000);
   }
   handleShare = () => {
     Mobile_Home_Share({

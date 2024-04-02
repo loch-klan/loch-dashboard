@@ -165,6 +165,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       ) {
         document.getElementById("topBarContainerInputBlockInputId").focus();
       }
+      if (this.state.isMobile) {
+        if (
+          document.getElementById("newWelcomeWallet-1") &&
+          document.getElementById("newWelcomeWallet-1").focus
+        ) {
+          document.getElementById("newWelcomeWallet-1").focus();
+        }
+      }
     };
 
     const openEmailModal = () => {

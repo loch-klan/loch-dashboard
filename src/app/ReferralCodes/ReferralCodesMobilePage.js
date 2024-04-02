@@ -4,8 +4,9 @@ import { BaseReactComponent } from "../../utils/form";
 import "./_referralCodesPage.scss";
 import { PasswordIcon } from "../../assets/images/icons";
 import { Image } from "react-bootstrap";
-import { Loading } from "react-loading-dot";
+
 import { CopyClipboardIcon } from "../../assets/images";
+import Loading from "../common/Loading";
 
 class ReferralCodesPage extends BaseReactComponent {
   constructor(props) {
