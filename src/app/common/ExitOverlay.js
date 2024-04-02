@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import ApiModalFrame from "../../assets/images/apiModalFrame.svg";
 import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
+import { UserCreditTelegramLightIcon } from "../../assets/images/icons/index.js";
 import nextIcon from "../../assets/images/icons/next.svg";
 import next2Icon from "../../assets/images/icons/next2.svg";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
@@ -41,6 +42,8 @@ import {
   CopyTradeSignUpPopupEmailAdded,
   ExportDataDownlaod,
   ExportDateSelected,
+  HomeSignUpReferralModalClosed,
+  HomeSignedUpReferralCode,
   LeaveEmailAdded,
   LeaveLinkCopied,
   LeaveLinkShared,
@@ -57,14 +60,20 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { CurrencyType, loadingAnimation } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  goToTelegram,
+  loadingAnimation,
+} from "../../utils/ReusableFunctions";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { DatePickerControl } from "../../utils/form";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 import { notificationSend } from "../cohort/Api";
 import { updateUser } from "../profile/Api";
 import { exportDataApi, fixWalletApi } from "./Api.js";
 import UpgradeModal from "./upgradeModal";
+import validator from "validator";
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -82,6 +91,9 @@ class ExitOverlay extends BaseReactComponent {
         : getCurrentUser().id;
 
     this.state = {
+      isReferralCodeStep: false,
+      referralCode: "",
+      isReferralCodeLoading: false,
       // create account for cohort
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
@@ -216,7 +228,7 @@ class ExitOverlay extends BaseReactComponent {
 
   handleDone = () => {
     this.props.apiResponse(true);
-    this.state.onHide();
+    this.onHidePassThrough();
     this.state.changeList && this.state.changeList();
   };
   upgradeModal = () => {
@@ -528,60 +540,88 @@ class ExitOverlay extends BaseReactComponent {
         email_address: this.state.email,
       });
     } else {
-      console.log("This is it right?");
-      if (this.props.tracking === "Copy trade") {
-        CopyTradeSignUpPopupEmailAdded({
-          session_id: getCurrentUser().id,
-          email_address: this.state?.email,
+      // Sign up flow
+      this.checkReferralCode();
+    }
+  };
+  checkReferralCode = () => {
+    if (this.state.isReferralCodeStep) {
+      if (this.state.referralCode) {
+        this.setState({
+          isReferralCodeLoading: true,
         });
+        const referalValHolderData = new URLSearchParams();
+        referalValHolderData.append("code", this.state.referralCode);
+
+        this.props.checkReferallCodeValid(
+          referalValHolderData,
+          this.handelSignUpApi,
+          this.stopReferallButtonLoading
+        );
       }
-      // signUpProperties({
-      //   userId: getCurrentUser().id,
-      //   email_address: this.state.email,
-      //   first_name: "",
-      //   last_name: "",
-      // });
-      // when leave
-      signInUser({
-        email_address: this.state?.email,
-        userId: getCurrentUser().id,
-        first_name: "",
-        last_name: "",
-        track: "leaving",
+    } else {
+      this.setState({
+        isReferralCodeStep: true,
+        isReferralCodeLoading: false,
       });
-      if (this.props.tracking === "Loch points profile") {
-        LochPointsSignUpPopupEmailAdded({
-          session_id: getCurrentUser().id,
-          email_address: this.state?.email,
-        });
-      }
+    }
+  };
+  stopReferallButtonLoading = () => {
+    this.setState({
+      isReferralCodeLoading: false,
+    });
+  };
+  handelSignUpApi = () => {
+    if (this.props.tracking === "Copy trade") {
+      CopyTradeSignUpPopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state?.email,
+      });
+    }
+    signInUser({
+      email_address: this.state?.email,
+      userId: getCurrentUser().id,
+      first_name: "",
+      last_name: "",
+      track: "leaving",
+    });
+    if (this.props.tracking === "Loch points profile") {
+      LochPointsSignUpPopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state?.email,
+      });
+    }
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
+    let email_arr = [];
+    let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (data) {
+      data.forEach((info) => {
+        email_arr.push(info.address);
+      });
+      const url = new URLSearchParams();
+      url.append("email", this.state.email);
+      url.append("signed_up_from", "leaving");
+      url.append("referral_code", this.state.referralCode);
+      // url.append("wallet_addresses", JSON.stringify(email_arr));
+      fixWalletApi(this, url, this.stopReferallButtonLoading);
+      LeaveEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+      });
       if (this.props.updateTimer) {
         this.props.updateTimer();
-      }
-      let email_arr = [];
-      let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
-      if (data) {
-        data.map((info) => {
-          email_arr.push(info.address);
-        });
-        const url = new URLSearchParams();
-        url.append("email", this.state.email);
-        url.append("signed_up_from", "leaving");
-        // url.append("wallet_addresses", JSON.stringify(email_arr));
-        fixWalletApi(this, url);
-        LeaveEmailAdded({
-          session_id: getCurrentUser().id,
-          email_address: this.state.email,
-        });
-        if (this.props.updateTimer) {
-          this.props.updateTimer();
-        }
       }
     }
   };
   handleRedirection = () => {
     // console.log("this", this.props);
-
+    HomeSignedUpReferralCode({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      referall_code: this.state.referralCode,
+    });
     this.setState({ show: false, showRedirection: true });
     this.props.handleRedirection();
   };
@@ -828,6 +868,24 @@ class ExitOverlay extends BaseReactComponent {
       console.error("Failed to paste from clipboard: ", error);
     }
   };
+  goToSignUp = () => {
+    HomeSignUpReferralModalClosed({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.setState({
+      isReferralCodeStep: false,
+    });
+  };
+  onHidePassThrough = () => {
+    if (this.state.isReferralCodeStep) {
+      HomeSignUpReferralModalClosed({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+    this.state.onHide();
+  };
 
   render() {
     return (
@@ -837,7 +895,7 @@ class ExitOverlay extends BaseReactComponent {
             show={this.state.show}
             className="exit-overlay-form"
             // backdrop="static"
-            onHide={this.state.onHide}
+            onHide={this.onHidePassThrough}
             size="lg"
             dialogClassName={"exit-overlay-modal"}
             centered
@@ -946,7 +1004,11 @@ class ExitOverlay extends BaseReactComponent {
                 <Image
                   className="back-icon cp"
                   src={BackIcon}
-                  onClick={this.props.goToSignIn}
+                  onClick={
+                    this.state.isReferralCodeStep
+                      ? this.goToSignUp
+                      : this.props.goToSignIn
+                  }
                 />
               ) : null}
               <div
@@ -961,7 +1023,7 @@ class ExitOverlay extends BaseReactComponent {
                       // emailAdded: true,
                     },
                     () => {
-                      this.state.onHide();
+                      this.onHidePassThrough();
                     }
                   );
                 }}
@@ -1696,7 +1758,11 @@ class ExitOverlay extends BaseReactComponent {
               ) : (
                 <div className="exit-overlay-body">
                   <h6 className="inter-display-medium f-s-20 lh-24 ">
-                    {this.props.signup ? "Sign up" : " Don’t lose your data"}
+                    {this.props.signup
+                      ? this.state.isReferralCodeStep
+                        ? "Referral code"
+                        : "Sign up"
+                      : " Don’t lose your data"}
                   </h6>
                   {!this.props?.signup ? (
                     <>
@@ -1712,47 +1778,103 @@ class ExitOverlay extends BaseReactComponent {
                       className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24"
                       style={{ textAlign: "center" }}
                     >
-                      {this.props.customDesc
+                      {this.state.isReferralCodeStep
+                        ? "Add your referral code here to create an account"
+                        : this.props.customDesc
                         ? this.props.customDesc
                         : "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"}
                     </p>
                   )}
                   <div className="email-section input-noshadow-dark input-hover-states">
                     <Form onValidSubmit={this.handleSave}>
-                      <FormElement
-                        hideOnblur={this.props.hideOnblur}
-                        showHiddenError={this.props.showHiddenError}
-                        valueLink={this.linkState(this, "email")}
-                        // label="Email Info"
-                        required
-                        validations={[
-                          {
-                            validate: FormValidator.isRequired,
-                            message: "",
-                          },
-                          {
-                            validate: FormValidator.isEmail,
-                            message: "Please enter valid email id",
-                          },
-                        ]}
-                        control={{
-                          type: CustomTextControl,
-                          settings: {
-                            placeholder: "Email",
-                          },
-                        }}
-                      />
+                      {this.state.isReferralCodeStep ? (
+                        <div>
+                          <FormElement
+                            disabled={this.state.isReferralCodeLoading}
+                            hideOnblur={this.props.hideOnblur}
+                            showHiddenError={this.props.showHiddenError}
+                            valueLink={this.linkState(this, "referralCode")}
+                            // label="Email Info"
+                            required
+                            control={{
+                              type: CustomTextControl,
+                              settings: {
+                                placeholder: "t1v33sshyg91opyhe2yd",
+                              },
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <FormElement
+                          hideOnblur={this.props.hideOnblur}
+                          showHiddenError={this.props.showHiddenError}
+                          valueLink={this.linkState(this, "email")}
+                          // label="Email Info"
+                          required
+                          validations={[
+                            {
+                              validate: FormValidator.isRequired,
+                              message: "",
+                            },
+                            {
+                              validate: FormValidator.isEmail,
+                              message: "Please enter valid email id",
+                            },
+                          ]}
+                          control={{
+                            type: CustomTextControl,
+                            settings: {
+                              placeholder: "Email",
+                            },
+                          }}
+                        />
+                      )}
+
                       <div className="save-btn-section">
-                        <Button
-                          className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                            this.state.email ? "active" : ""
-                          }`}
-                          type="submit"
-                        >
-                          Save
-                        </Button>
+                        {this.state.isReferralCodeStep ? (
+                          <Button
+                            className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                              this.state.referralCode ? "active" : ""
+                            } ${
+                              this.state.isReferralCodeLoading
+                                ? "save-btn-section-loading"
+                                : ""
+                            }`}
+                            type="submit"
+                          >
+                            {this.state.isReferralCodeLoading
+                              ? loadingAnimation()
+                              : "Save"}
+                          </Button>
+                        ) : (
+                          <Button
+                            className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                              validator.isEmail(this.state.email)
+                                ? "active"
+                                : ""
+                            }`}
+                            type="submit"
+                          >
+                            Sign Up
+                          </Button>
+                        )}
                       </div>
                     </Form>
+                    {this.state.isReferralCodeStep ? (
+                      <div className="goToSingUpContainer">
+                        <p
+                          onClick={goToTelegram}
+                          className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA text-center"
+                        >
+                          Don’t have a referral code? Request for one on
+                          Telegram{" "}
+                          <Image
+                            className="goToSingUpIcon"
+                            src={UserCreditTelegramLightIcon}
+                          />
+                        </p>
+                      </div>
+                    ) : null}
                   </div>
                   {!this.props?.signup && (
                     <>
@@ -1814,27 +1936,29 @@ class ExitOverlay extends BaseReactComponent {
                     </>
                   )}
 
-                  <div className="m-b-36 footer">
-                    <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                      At Loch, we care intensely about your privacy and
-                      anonymity.
-                    </p>
-                    <CustomOverlay
-                      text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
-                      position="top"
-                      isIcon={true}
-                      IconImage={LockIcon}
-                      isInfo={true}
-                      className={"fix-width"}
-                    >
-                      <Image
-                        src={InfoIcon}
-                        className="info-icon"
-                        onMouseEnter={this.leavePrivacy}
-                        style={{ cursor: "pointer" }}
-                      />
-                    </CustomOverlay>
-                  </div>
+                  {this.state.isReferralCodeStep ? null : (
+                    <div className="m-b-36 footer">
+                      <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                        At Loch, we care intensely about your privacy and
+                        anonymity.
+                      </p>
+                      <CustomOverlay
+                        text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                        position="top"
+                        isIcon={true}
+                        IconImage={LockIcon}
+                        isInfo={true}
+                        className={"fix-width"}
+                      >
+                        <Image
+                          src={InfoIcon}
+                          className="info-icon"
+                          onMouseEnter={this.leavePrivacy}
+                          style={{ cursor: "pointer" }}
+                        />
+                      </CustomOverlay>
+                    </div>
+                  )}
                 </div>
               )}
             </Modal.Body>
@@ -1867,6 +1991,7 @@ const mapDispatchToProps = {
   detectCoin,
   getAllParentChains,
   updateUser,
+  checkReferallCodeValid,
 };
 
 ExitOverlay.propTypes = {};

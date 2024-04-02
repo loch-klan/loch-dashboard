@@ -8,7 +8,7 @@ import PageHeader from "./../common/PageHeader";
 import ProfileForm from "./ProfileForm";
 
 // add wallet
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Image } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
   GetAllPlan,
@@ -33,8 +33,18 @@ import UpgradeModal from "../common/upgradeModal";
 import Wallet from "../wallet/Wallet";
 import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
-import { mobileCheck } from "../../utils/ReusableFunctions";
+import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
 import TopWalletAddressList from "../header/TopWalletAddressList";
+import {
+  ArrowUpRightSmallIcon,
+  PasswordIcon,
+  PasswordPurpleIcon,
+  UserCreditRightArrowIcon,
+  UserCreditScrollRightArrowIcon,
+} from "../../assets/images/icons";
+import MobileLayout from "../layout/MobileLayout";
+import ProfileMobile from "./ProfileMobile";
+import { getReferallCodes } from "../ReferralCodes/ReferralCodesApi";
 
 class Profile extends Component {
   constructor(props) {
@@ -119,6 +129,8 @@ class Profile extends Component {
 
     this.state = {
       // add new wallet
+      isMobileDevice: false,
+      codesLeftToUse: false,
       userWalletList: window.sessionStorage.getItem("addWallet")
         ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
@@ -153,8 +165,12 @@ class Profile extends Component {
     }, 900000);
   };
   componentDidMount() {
+    scrollToTop();
     if (mobileCheck()) {
-      this.props.history.push("/home");
+      // this.props.history.push("/home");
+      this.setState({
+        isMobileDevice: true,
+      });
     }
     const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (isLochUser) {
@@ -164,6 +180,7 @@ class Profile extends Component {
     }
     this.props.GetAllPlan();
     this.props.getUser();
+    this.props.getReferallCodes();
     ManageLink(this);
 
     this.startPageView();
@@ -176,17 +193,33 @@ class Profile extends Component {
   CheckApiResponse = () => {
     this.props.setPageFlagDefault();
   };
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     if (!this.props.commonState.profilePage) {
       this.props.updateWalletListFlag("profilePage", true);
       this.props.GetAllPlan();
       this.props.getUser();
-      const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
-      if (isLochUser) {
-        this.setState({
-          lochUser: isLochUser,
-        });
-      }
+      this.props.getReferallCodes();
+      setTimeout(() => {
+        const isLochUser = JSON.parse(
+          window.sessionStorage.getItem("lochUser")
+        );
+        if (isLochUser) {
+          this.setState({
+            lochUser: isLochUser,
+          });
+        }
+      }, 3000);
+    }
+    if (prevProps.referralCodesState !== this.props.referralCodesState) {
+      let tempCodesLeft = 0;
+      this.props.referralCodesState.forEach((curReferralCode) => {
+        if (!curReferralCode.used) {
+          tempCodesLeft++;
+        }
+      });
+      this.setState({
+        codesLeftToUse: tempCodesLeft,
+      });
     }
   }
   updateTimer = (first) => {
@@ -258,8 +291,43 @@ class Profile extends Component {
 
     this.props.setPageFlagDefault();
   };
-
+  goToMyReferralCodes = () => {
+    if (this.state.lochUser && this.state.lochUser.email) {
+      this.props.history.push("/profile/referral-codes");
+    } else {
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        this.dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        this.dontOpenLoginPopup();
+      }
+    }
+  };
+  dontOpenLoginPopup = () => {
+    window.sessionStorage.setItem("dontOpenLoginPopup", true);
+  };
   render() {
+    if (this.state.isMobileDevice) {
+      return (
+        <MobileLayout
+          currentPage={"profile"}
+          hideFooter
+          history={this.props.history}
+          isUpdate={this.state.isUpdate}
+          updateTimer={this.updateTimer}
+        >
+          <ProfileMobile
+            goToMyReferralCodes={this.goToMyReferralCodes}
+            followFlag={this.state.followFlag}
+            isUpdate={this.state.isUpdate}
+            lochUser={this.state.lochUser}
+            codesLeftToUse={this.state.codesLeftToUse}
+            history={this.props.history}
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <>
         {/* topbar */}
@@ -271,6 +339,8 @@ class Profile extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                disconnectWallet={this.props.disconnectWallet}
                 updateOnFollow={this.onFollowUpdate}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -326,6 +396,28 @@ class Profile extends Component {
                 </Col>
               </Row>
             </div>
+            <div
+              onClick={this.goToMyReferralCodes}
+              className="profile-section-referall-code-btn"
+            >
+              <div className="psrcb-left">
+                <Image className="psrcb-icon" src={PasswordPurpleIcon} />
+                <div className="inter-display-medium psrcb-text">
+                  Referral codes
+                </div>
+              </div>
+              <div className="psrcb-right">
+                {this.state.codesLeftToUse ? (
+                  <div className="inter-display-medium psrcb-small-text">
+                    {this.state.codesLeftToUse} left
+                  </div>
+                ) : null}
+                <Image
+                  className="psrcb-arrow-icon"
+                  src={UserCreditScrollRightArrowIcon}
+                />
+              </div>
+            </div>
             {/* wallet page component */}
             <Wallet
               hidePageHeader={true}
@@ -349,7 +441,7 @@ class Profile extends Component {
             >
               <Row>
                 <Col md={12}>
-                  <ProfileForm />
+                  <ProfileForm userDetails={this.state.lochUser} />
                 </Col>
               </Row>
             </div>
@@ -377,6 +469,7 @@ class Profile extends Component {
 const mapStateToProps = (state) => ({
   profileState: state.ProfileState,
   commonState: state.CommonState,
+  referralCodesState: state.ReferralCodesState,
 });
 const mapDispatchToProps = {
   // getPosts: fetchPosts
@@ -384,6 +477,7 @@ const mapDispatchToProps = {
   GetAllPlan,
   getUser,
   updateWalletListFlag,
+  getReferallCodes,
 };
 Profile.propTypes = {
   // getPosts: PropTypes.func

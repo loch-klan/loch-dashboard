@@ -71,6 +71,8 @@ export { default as UserCreditScrollLeftArrowIcon } from "./userCreditScrollLeft
 export { default as UserCreditScrollRightArrowIcon } from "./userCreditScrollRightArrow.svg";
 export { default as UserCreditStarIcon } from "./userCreditStar.svg";
 export { default as UserCreditTelegramIcon } from "./userCreditTelegram.svg";
+export { default as UserCreditTelegramLightIcon } from "./userCreditTelegramLight.svg";
+export { default as UserCreditTelegramThickWelcomeIcon } from "./userCreditTelegramThickWelcome.svg";
 export { default as UserCreditTwitterIcon } from "./userCreditTwitter.svg";
 export { default as UserCreditWalletIcon } from "./userCreditWallet.svg";
 export { default as WalletDropdownTrashIcon } from "./walletDropdownTrash.svg";
@@ -131,3 +133,7 @@ export { default as NewModalBackArrowIcon } from "./newModalBackArrow.svg";
 export { default as CreditCardPaywallIcon } from "./creditCardPaywall.svg";
 export { default as CryptoWalletPaywallIcon } from "./cryptoWalletPaywall.svg";
 export { default as HomeTabArrowIcon } from "./homeTabArrow.svg";
+export { default as PasswordIcon } from "./password.svg";
+export { default as PasswordPurpleIcon } from "./passwordPurple.svg";
+export { default as BackBlackIcon } from "./backIcon.svg";
+export { default as UserProfileMobileIcon } from "./userProfileMobile.svg";

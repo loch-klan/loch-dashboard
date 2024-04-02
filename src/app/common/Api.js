@@ -84,10 +84,13 @@ export const SwitchDarkMode = (passedData) => {
     });
   };
 };
-export const fixWalletApi = (ctx, info) => {
+export const fixWalletApi = (ctx, info, stopBtnLoading) => {
   postLoginInstance
     .post("organisation/user/update-user", info)
     .then((res) => {
+      if (stopBtnLoading) {
+        stopBtnLoading();
+      }
       if (!res.data.error) {
         ctx.handleRedirection();
         // ctx.props.history.push('/welcome');
@@ -96,6 +99,9 @@ export const fixWalletApi = (ctx, info) => {
       }
     })
     .catch((err) => {
+      if (stopBtnLoading) {
+        stopBtnLoading();
+      }
       // console.log("fixwallet",err)
     });
 };
@@ -316,6 +322,7 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
           email: res.data.data.user?.email,
           mobile: res.data.data.user?.mobile,
           link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
         };
 
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -585,6 +592,7 @@ export const sendWhopCode = (ctx, data) => {
           email: res.data.data.user?.email,
           mobile: res.data.data.user?.mobile,
           link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
         };
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
         // window.sessionStorage.setItem("defi_access", true);
@@ -952,7 +960,6 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
         const userId = window.sessionStorage.getItem("lochDummyUser");
 
         // reset redux
-        ctx.props.setPageFlagDefault && ctx.props.setPageFlagDefault();
         // if (res.data.data.is_new_user) {
         //   signUpProperties({
         //     email_address: res.data.data.user?.email,
@@ -1045,6 +1052,19 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
           last_name: res.data.data.user?.last_name,
           track: track,
         });
+        let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        obj = {
+          ...obj,
+          first_name: res.data.data.user?.first_name,
+          last_name: res.data.data.user?.last_name,
+          email: res.data.data.user?.email,
+          mobile: res.data.data.user?.mobile,
+          link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
+        };
+
+        window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+
         ctx.setState(
           {
             isOptInValid: false,
@@ -1052,17 +1072,6 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
           () => {
             if (ctx.props.stopUpdate) {
               window.sessionStorage.removeItem("lochDummyUser");
-              let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
-              obj = {
-                ...obj,
-                first_name: res.data.data.user?.first_name,
-                last_name: res.data.data.user?.last_name,
-                email: res.data.data.user?.email,
-                mobile: res.data.data.user?.mobile,
-                link: res.data.data.user?.link,
-              };
-
-              window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
 
               const allChains = ctx.props.OnboardingState.coinsList;
               let addWallet = [];
@@ -1162,18 +1171,6 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
                 userdata.append("old_user_id", userId);
                 UpdateUserDetails(userdata, ctx, isCopyTrade);
               } else {
-                // console.log("welcome upgrade signin")
-                let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
-                obj = {
-                  ...obj,
-                  first_name: "",
-                  last_name: "",
-                  email: res.data.data.user?.email,
-                  mobile: "",
-                  link: res.data.data.user?.link,
-                };
-                window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
-
                 // update wallet
                 const apiResponse = res.data.data;
                 if (apiResponse?.user) {
@@ -1270,10 +1267,16 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
                   ctx.AddEmailModal();
                 } else {
                   setTimeout(() => {
-                    ctx.state.onHide();
+                    if (ctx.state && ctx.state.onHide) {
+                      ctx.state.onHide();
+                    }
                   }, 3000);
                 }
               }
+            }
+            ctx.props.setPageFlagDefault && ctx.props.setPageFlagDefault();
+            if (ctx.onVerifiedOtp) {
+              ctx.onVerifiedOtp();
             }
           }
         );
@@ -1324,6 +1327,7 @@ export const UpdateUserDetails = (data, ctx, isCopyTrade) => {
             : ctx.state.email,
           mobile: ctx.state.mobileNumber,
           link: res.data.data.user.link,
+          referred_by: res.data.data.user.referred_by,
         };
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
         // toast.success(" Your wallets and pods has been saved");
@@ -1505,6 +1509,7 @@ export const getUser = (ctx = null, showToast = false) => {
             email: res.data.data.user?.email,
             mobile: res.data.data.user?.mobile,
             link: res.data.data.user?.link,
+            referred_by: res.data.data.user?.referred_by,
           };
 
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1819,6 +1824,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
             email: res.data.data.user?.email,
             mobile: res.data.data.user?.mobile,
             link: res.data.data.user?.link,
+            referred_by: res.data.data.user?.referred_by,
           };
 
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1912,6 +1918,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
               email: res.data.data.user?.email,
               mobile: "",
               link: res.data.data.user?.link,
+              referred_by: res.data.data.user?.referred_by,
             };
             window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
 

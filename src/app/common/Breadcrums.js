@@ -5,7 +5,6 @@ import InActiveHomeSmallIcon from "../../assets/images/icons/InactiveHomeSmallIc
 
 export default function Breadcrums(props) {
   const nav_list = window.location.pathname.split("/");
-
   const breads = nav_list.map((e, key) => {
     // console.log(e, props?.topaccount, key);
     let linkName = e;
@@ -25,6 +24,8 @@ export default function Breadcrums(props) {
       linkName = "Loch’s Leaderboard";
     } else if (linkName === "nft") {
       linkName = "NFT";
+    } else if (linkName === "referral-codes") {
+      linkName = "referrals";
     }
     return (
       e && (
@@ -49,9 +50,11 @@ export default function Breadcrums(props) {
   });
   const breadCrumb = (
     <Breadcrumb>
-      <Breadcrumb.Item linkAs={Link} linkProps={{ to: `/home` }}>
-        <Image src={InActiveHomeSmallIcon} />
-      </Breadcrumb.Item>
+      {props.noHomeInPath ? null : (
+        <Breadcrumb.Item linkAs={Link} linkProps={{ to: `/home` }}>
+          <Image src={InActiveHomeSmallIcon} />
+        </Breadcrumb.Item>
+      )}
       {breads}
     </Breadcrumb>
   );

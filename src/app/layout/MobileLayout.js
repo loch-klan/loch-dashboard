@@ -5,19 +5,17 @@ import {
   EmultionSidebarIcon,
   MobileNavCopyTraderIcon,
   MobileNavFollow,
-  MobileNavFollowActive,
   MobileNavHome,
-  MobileNavHomeActive,
   MobileNavLeaderboard,
-  MobileNavLeaderboardActive,
-  MobileNavNFT,
   MobileNavProfile,
   SharePortfolioIconWhite,
 } from "../../assets/images/icons";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
-import NFTIcon from "../../assets/images/icons/sidebar-nft.svg";
 import {
   HomeMenu,
+  HomeSignedUpReferralCode,
+  LeaveEmailAdded,
+  LochPointsSignUpPopupEmailAdded,
   MenuCopyTradelist,
   MenuLeaderboard,
   MenuWatchlist,
@@ -25,32 +23,48 @@ import {
   QuickAddWalletAddress,
   SearchBarAddressAdded,
   resetUser,
+  signInUser,
 } from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { BaseReactComponent } from "../../utils/form";
 import { isNewAddress } from "../Portfolio/Api.js";
+import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 import {
+  SendOtp,
+  VerifyEmail,
+  fixWalletApi,
   setPageFlagDefault,
   updateUserWalletApi,
   updateWalletListFlag,
 } from "../common/Api";
+import Breadcrums from "../common/Breadcrums.js";
 import Footer from "../common/footer";
 import { setHeaderReducer } from "../header/HeaderAction";
+import LoginMobile from "../home/NewAuth/LoginMobile.js";
+import RedirectMobile from "../home/NewAuth/RedirectMobile.js";
+import SignUpMobile from "../home/NewAuth/SignUpMobile.js";
+import VerifyMobile from "../home/NewAuth/VerifyMobile.js";
 import NewHomeInputBlock from "../home/NewHomeInputBlock";
 import { detectCoin } from "../onboarding/Api";
-import { addUserCredits } from "../profile/Api";
+import { addUserCredits, updateUser } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
-import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
-import Breadcrums from "../common/Breadcrums.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      authmodal: "",
+      email: "",
+      otp: "",
+      emailSignup: "",
+      isReferralCodeStep: false,
+      isReferralCodeLoading: false,
+      isOptInValid: false,
       lochUserLocal: JSON.parse(window.sessionStorage.getItem("lochUser")),
       confirmLeave: false,
 
@@ -74,28 +88,31 @@ class MobileLayout extends BaseReactComponent {
       disableAddBtn: false,
       navItems: [
         {
-          activeIcon: MobileNavHomeActive,
-          inactiveIcon: MobileNavHome,
+          pageIcon: MobileNavHome,
           text: "Home",
           path: "/home",
         },
         {
-          activeIcon: MobileNavFollowActive,
-          inactiveIcon: MobileNavFollow,
-          text: "Following",
+          pageIcon: MobileNavFollow,
+          text: "Follow",
           path: "/watchlist",
         },
         {
-          activeIcon: EmultionSidebarIcon,
-          inactiveIcon: MobileNavCopyTraderIcon,
+          pageIcon: MobileNavLeaderboard,
+          text: "Leaderboard",
+          path: "/home-leaderboard",
+        },
+
+        {
+          pageIcon: MobileNavCopyTraderIcon,
+
           text: "Copy",
           path: "/copy-trade",
         },
         {
-          activeIcon: MobileNavLeaderboardActive,
-          inactiveIcon: MobileNavLeaderboard,
-          text: "Leaderboard",
-          path: "/home-leaderboard",
+          pageIcon: MobileNavProfile,
+          text: "Profile",
+          path: "/profile",
         },
       ],
       userWalletList: [],
@@ -115,16 +132,37 @@ class MobileLayout extends BaseReactComponent {
     this.setState({ showSearchIcon: true });
   };
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     if (!this.props.commonState?.mobileLayout) {
       this.props.updateWalletListFlag("mobileLayout", true);
       this.setState({
         lochUserLocal: JSON.parse(window.sessionStorage.getItem("lochUser")),
       });
     }
+    if (prevState.otp !== this.state.otp) {
+      this.setState({
+        isOptInValid: false,
+      });
+    }
   }
   componentDidMount() {
     // for chain detect
+    setTimeout(() => {
+      const dontOpenLoginPopup =
+        window.sessionStorage.getItem("dontOpenLoginPopup");
+      const lochUserLocalAgain = JSON.parse(
+        window.sessionStorage.getItem("lochUser")
+      );
+      if (
+        !dontOpenLoginPopup &&
+        !(lochUserLocalAgain && lochUserLocalAgain.email)
+      ) {
+        window.sessionStorage.setItem("dontOpenLoginPopup", true);
+        this.setState({
+          authmodal: "login",
+        });
+      }
+    }, 15000);
   }
   handleShare = () => {
     Mobile_Home_Share({
@@ -529,6 +567,141 @@ class MobileLayout extends BaseReactComponent {
     this.closeConfirmLeaveModal();
     this.props.history.push("/welcome");
   };
+  handleGoToReferral = () => {
+    this.setState({
+      isReferralCodeStep: true,
+      isReferralCodeLoading: false,
+    });
+  };
+  handleGoBackToSignUp = () => {
+    this.setState({
+      isReferralCodeStep: false,
+    });
+  };
+  toggleAuthModal = (val = "") => {
+    if (val !== "signup") {
+      this.setState({
+        isReferralCodeStep: false,
+      });
+    }
+    this.setState({
+      authmodal: val,
+    });
+  };
+  checkReferralCode = () => {
+    if (this.state.referralCode) {
+      this.setState({
+        isReferralCodeLoading: true,
+      });
+      const referalValHolderData = new URLSearchParams();
+      referalValHolderData.append("code", this.state.referralCode);
+
+      this.props.checkReferallCodeValid(
+        referalValHolderData,
+        this.handelSignUpApi,
+        this.stopReferallButtonLoading
+      );
+    }
+  };
+  handelSignUpApi = () => {
+    signInUser({
+      email_address: this.state?.emailSignup,
+      userId: getCurrentUser().id,
+      first_name: "",
+      last_name: "",
+      track: "leaving",
+    });
+    if (this.props.tracking === "Loch points profile") {
+      LochPointsSignUpPopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state?.emailSignup,
+      });
+    }
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
+    let email_arr = [];
+    let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (data) {
+      data.forEach((info) => {
+        email_arr.push(info.address);
+      });
+      const url = new URLSearchParams();
+      url.append("email", this.state.emailSignup);
+      url.append("signed_up_from", "leaving");
+      url.append("referral_code", this.state.referralCode);
+      // url.append("wallet_addresses", JSON.stringify(email_arr));
+      fixWalletApi(this, url, this.stopReferallButtonLoading);
+      LeaveEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.emailSignup,
+      });
+      if (this.props.updateTimer) {
+        this.props.updateTimer();
+      }
+    }
+  };
+  stopReferallButtonLoading = (isSignedUp) => {
+    this.setState({
+      isReferralCodeLoading: false,
+    });
+  };
+  handleRedirection = () => {
+    // console.log("this", this.props);
+    HomeSignedUpReferralCode({
+      session_id: getCurrentUser().id,
+      email_address: this.state.emailSignup,
+      referall_code: this.state.referralCode,
+    });
+    this.setState({ authmodal: "" });
+    toast.success(
+      <div className="custom-toast-msg">
+        <div>Successful</div>
+        <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+          Please check your mailbox for the verification link
+        </div>
+      </div>
+    );
+
+    resetUser();
+    const parentThis = this;
+    setTimeout(function () {
+      parentThis.props.history.push("/welcome");
+    }, 3000);
+  };
+  handleSubmitEmail = () => {
+    let data = new URLSearchParams();
+    data.append("email", this.state.email);
+    SendOtp(data, this, true);
+  };
+  showSignInOtpPage = () => {
+    this.toggleAuthModal("verify");
+  };
+  handleSubmitOTP = () => {
+    let data = new URLSearchParams();
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
+    data.append("otp_token", this.state.otp);
+    data.append(
+      "signed_up_from",
+      this.props?.popupType === "general_popup"
+        ? "generic pop up"
+        : this.props.tracking
+    );
+    VerifyEmail(data, this);
+  };
+  openSignInModal = () => {
+    this.setState({
+      authmodal: "login",
+    });
+  };
+  onVerifiedOtp = () => {
+    this.setState({
+      authmodal: "",
+    });
+  };
   render() {
     let activeTab = window.location.pathname;
     const getTotalAssetValue = () => {
@@ -549,10 +722,75 @@ class MobileLayout extends BaseReactComponent {
     };
     return (
       <div className="portfolio-mobile-layout mobileSmartMoneyPage">
+        <div
+          onClick={this.openSignInModal}
+          id="sidebar-closed-sign-in-btn-loch-points-profile"
+        />
+        <div onClick={this.openSignInModal} id="sidebar-closed-sign-in-btn" />
+
         {this.state.confirmLeave ? (
           <SmartMoneyMobileSignOutModal
             onSignOut={this.signOutFun}
             onHide={this.closeConfirmLeaveModal}
+          />
+        ) : null}
+
+        {this.state.authmodal === "login" ? (
+          <LoginMobile
+            toggleModal={this.toggleAuthModal}
+            isMobile
+            email={this.state.email}
+            handleChangeEmail={(val) => {
+              this.setState({
+                email: val,
+              });
+            }}
+            handleSubmitEmail={this.handleSubmitEmail}
+            show={this.state.authmodal === "login"}
+          />
+        ) : // </SmartMoneyMobileModalContainer>
+        this.state.authmodal === "verify" ? (
+          <VerifyMobile
+            isMobile
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal === "verify"}
+            handleSubmitEmail={this.handleSubmitEmail}
+            otp={this.state.otp}
+            handleChangeOTP={(val) => {
+              this.setState({
+                otp: val,
+              });
+            }}
+            handleSubmitOTP={this.handleSubmitOTP}
+            showOtpError={this.state.isOptInValid}
+          />
+        ) : this.state.authmodal === "signup" ? (
+          <SignUpMobile
+            toggleModal={this.toggleAuthModal}
+            isMobile
+            email={this.state.emailSignup}
+            show={this.state.authmodal === "signup"}
+            handleChangeEmail={(val) => {
+              this.setState({
+                emailSignup: val,
+              });
+            }}
+            handleChangeReferralCode={(val) => {
+              this.setState({
+                referralCode: val,
+              });
+            }}
+            isReferralCodeStep={this.state.isReferralCodeStep}
+            referralCode={this.state.referralCode}
+            isReferralCodeLoading={this.state.isReferralCodeLoading}
+            checkReferralCode={this.checkReferralCode}
+            handleGoToReferral={this.handleGoToReferral}
+            handleGoBackToSignUp={this.handleGoBackToSignUp}
+          />
+        ) : this.state.authmodal === "redirect" ? (
+          <RedirectMobile
+            toggleModal={this.toggleAuthModal}
+            show={this.state.authmodal === "redirect"}
           />
         ) : null}
         <div className="portfolio-mobile-layout-wrapper">
@@ -612,6 +850,7 @@ class MobileLayout extends BaseReactComponent {
                     <Breadcrums
                       showpath={this.props.showpath}
                       currentPage={this.props.currentPage}
+                      noHomeInPath={this.props.noHomeInPath}
                       isMobile
                     />
                     <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
@@ -619,6 +858,8 @@ class MobileLayout extends BaseReactComponent {
                         <></>
                       ) : (
                         <WelcomeCard
+                          openConnectWallet={this.props.openConnectWallet}
+                          disconnectWallet={this.props.disconnectWallet}
                           handleShare={this.handleShare} //Done
                           isSidebarClosed={this.props.isSidebarClosed} // done
                           changeWalletList={this.props.handleChangeList} // done
@@ -674,7 +915,12 @@ class MobileLayout extends BaseReactComponent {
                 return (
                   <div
                     key={index}
-                    onClick={() => {
+                    onClick={(e) => {
+                      let tempToken = getToken();
+                      if (!tempToken || tempToken === "jsk") {
+                        e.preventDefault();
+                        return null;
+                      }
                       if (item.text === "Sign Out") {
                         this.openConfirmLeaveModal();
                       } else {
@@ -720,21 +966,13 @@ class MobileLayout extends BaseReactComponent {
                           ? "portfolio-mobile-layout-nav-footer-inner-item-image-active"
                           : ""
                       }`}
-                      src={
-                        item.path === this.props.history.location.pathname
-                          ? item.activeIcon
-                          : item.inactiveIcon
-                      }
-                      style={
-                        item.path === "/copy-trade"
-                          ? {
-                              filter:
-                                activeTab === item.path
-                                  ? "brightness(0) var(--invertColor)"
-                                  : "brightness(1.5) var(--invertColor)",
-                            }
-                          : {}
-                      }
+                      style={{
+                        filter:
+                          activeTab === item.path
+                            ? "brightness(0) var(--invertColor)"
+                            : "brightness(1) var(--invertColor)",
+                      }}
+                      src={item.pageIcon}
                     />
                     <span className="portfolio-mobile-layout-nav-footer-inner-item-text">
                       {item.text}
@@ -765,6 +1003,8 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   updateWalletListFlag,
   isNewAddress,
+  checkReferallCodeValid,
+  updateUser,
 };
 
 MobileLayout.propTypes = {};
