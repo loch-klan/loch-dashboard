@@ -549,6 +549,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
             if (!this.state.tasksDone.includes(singleTask)) {
               return this.returnWhichBlock(singleTask, singleTaskIndex);
             }
+            return null;
           })}
           {this.state.tasksDone.map((singleTask, singleTaskIndex) => {
             return this.returnWhichBlock(singleTask, singleTaskIndex);
