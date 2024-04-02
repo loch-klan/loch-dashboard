@@ -61,7 +61,9 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         isMobile: true,
       });
     }
-    this.callApi();
+    if (this.props.commonState.creditPointsBlock) {
+      this.callApi();
+    }
     if (this.props.lochUser && this.props.lochUser.email) {
       this.setState({
         isLoggedIn: true,
@@ -113,9 +115,6 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       this.props.updateWalletListFlag("creditPointsBlock", true);
       this.callApi();
     }
-    if (this.props.followFlag !== prevProps.followFlag) {
-      this.callApi();
-    }
     if (prevProps.lochUser !== this.props.lochUser) {
       if (this.props.lochUser && this.props.lochUser.email) {
         this.setState({
@@ -138,7 +137,6 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     window.sessionStorage.setItem("lochPointsProfileLoginClicked", true);
   };
   openLoginBlock = () => {
-    console.log("OO");
     LochPointsLoginModalOpen({
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
@@ -548,6 +546,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           className="profileCreditPointsBody"
         >
           {this.state.tasksList.map((singleTask, singleTaskIndex) => {
+            if (!this.state.tasksDone.includes(singleTask)) {
+              return this.returnWhichBlock(singleTask, singleTaskIndex);
+            }
+          })}
+          {this.state.tasksDone.map((singleTask, singleTaskIndex) => {
             return this.returnWhichBlock(singleTask, singleTaskIndex);
           })}
 

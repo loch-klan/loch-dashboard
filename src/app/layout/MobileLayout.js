@@ -88,7 +88,7 @@ class MobileLayout extends BaseReactComponent {
         },
         {
           pageIcon: MobileNavFollow,
-          text: "Following",
+          text: "Follow",
           path: "/watchlist",
         },
         {
