@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
   EmultionSidebarIcon,
+  MobileNavCopyTraderIcon,
   MobileNavFollow,
   MobileNavHome,
   MobileNavLeaderboard,
@@ -101,10 +102,11 @@ class MobileLayout extends BaseReactComponent {
           text: "Leaderboard",
           path: "/home-leaderboard",
         },
-        {
-          pageIcon: EmultionSidebarIcon,
 
-          text: "Copy Trade",
+        {
+          pageIcon: MobileNavCopyTraderIcon,
+
+          text: "Copy",
           path: "/copy-trade",
         },
         {
