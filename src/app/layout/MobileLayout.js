@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
   EmultionSidebarIcon,
+  MobileNavCopyTraderIcon,
   MobileNavFollow,
   MobileNavFollowActive,
   MobileNavHome,
@@ -86,8 +87,8 @@ class MobileLayout extends BaseReactComponent {
         },
         {
           activeIcon: EmultionSidebarIcon,
-          inactiveIcon: EmultionSidebarIcon,
-          text: "Copy Trade",
+          inactiveIcon: MobileNavCopyTraderIcon,
+          text: "Copy",
           path: "/copy-trade",
         },
         {
