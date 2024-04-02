@@ -197,6 +197,7 @@ class ReferralCodesPage extends BaseReactComponent {
       return (
         <MobileLayout
           showpath
+          noHomeInPath
           currentPage={"referral-codes"}
           hideFooter
           history={this.props.history}
