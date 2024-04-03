@@ -20,6 +20,7 @@ import {
   MenuLeaderboard,
   MenuWatchlist,
   Mobile_Home_Share,
+  ProfileMenu,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
   resetUser,
@@ -67,7 +68,7 @@ class MobileLayout extends BaseReactComponent {
       isOptInValid: false,
       lochUserLocal: JSON.parse(window.sessionStorage.getItem("lochUser")),
       confirmLeave: false,
-
+      activeTab: "/home",
       walletInput: [
         {
           id: `wallet1`,
@@ -147,6 +148,20 @@ class MobileLayout extends BaseReactComponent {
   }
   componentDidMount() {
     // for chain detect
+    let activeTab = window.location.pathname;
+    if (
+      activeTab === "/watchlist" ||
+      activeTab === "/copy-trade" ||
+      activeTab === "/home-leaderboard"
+    ) {
+      this.setState({ activeTab: activeTab });
+    } else if (
+      activeTab === "/profile" ||
+      activeTab === "/profile/referral-codes"
+    ) {
+      this.setState({ activeTab: "/profile" });
+    }
+
     setTimeout(() => {
       const dontOpenLoginPopup =
         window.sessionStorage.getItem("dontOpenLoginPopup");
@@ -653,21 +668,9 @@ class MobileLayout extends BaseReactComponent {
       email_address: this.state.emailSignup,
       referall_code: this.state.referralCode,
     });
-    this.setState({ authmodal: "" });
-    toast.success(
-      <div className="custom-toast-msg">
-        <div>Successful</div>
-        <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-          Please check your mailbox for the verification link
-        </div>
-      </div>
-    );
-
-    resetUser();
-    const parentThis = this;
-    setTimeout(function () {
-      parentThis.props.history.push("/welcome");
-    }, 3000);
+    this.setState({
+      authmodal: "redirect",
+    });
   };
   handleSubmitEmail = () => {
     let data = new URLSearchParams();
@@ -702,8 +705,8 @@ class MobileLayout extends BaseReactComponent {
       authmodal: "",
     });
   };
+
   render() {
-    let activeTab = window.location.pathname;
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
         const tempWallet = this.props.portfolioState.walletTotal
@@ -824,7 +827,8 @@ class MobileLayout extends BaseReactComponent {
                 </div>
               ))}
             </div>
-            {!(this.state.walletInput && this.state.walletInput[0].address) ? (
+            {!(this.state.walletInput && this.state.walletInput[0].address) &&
+            !this.props.hideAddresses ? (
               <div className="mpcMobileShare" onClick={this.handleShare}>
                 <Image
                   style={{
@@ -939,12 +943,17 @@ class MobileLayout extends BaseReactComponent {
                               email_address: getCurrentUser().email,
                             });
                           } else if (index === 2) {
-                            MenuCopyTradelist({
+                            MenuLeaderboard({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
                           } else if (index === 3) {
-                            MenuLeaderboard({
+                            MenuCopyTradelist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 4) {
+                            ProfileMenu({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
@@ -955,20 +964,20 @@ class MobileLayout extends BaseReactComponent {
                       }
                     }}
                     className={`portfolio-mobile-layout-nav-footer-inner-item ${
-                      item.path === this.props.history.location.pathname
+                      item.path === this.state.activeTab
                         ? "portfolio-mobile-layout-nav-footer-inner-item-active"
                         : ""
                     }`}
                   >
                     <Image
                       className={`portfolio-mobile-layout-nav-footer-inner-item-image ${
-                        item.path === this.props.history.location.pathname
+                        item.path === this.state.activeTab
                           ? "portfolio-mobile-layout-nav-footer-inner-item-image-active"
                           : ""
                       }`}
                       style={{
                         filter:
-                          activeTab === item.path
+                          item.path === this.state.activeTab
                             ? "brightness(0) var(--invertColor)"
                             : "brightness(1) var(--invertColor)",
                       }}
