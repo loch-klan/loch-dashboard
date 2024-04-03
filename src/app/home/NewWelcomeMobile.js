@@ -1,4 +1,3 @@
-import { ethers } from "ethers";
 import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -993,7 +992,10 @@ class NewWelcomeMobile extends BaseReactComponent {
   handleSubmitEmail = (val = false) => {
     if (this.state.email) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email.toLowerCase());
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       EmailAddressAdded({ email_address: this.state.email, session_id: "" });
       signIn(this, data, true, val);
       // this.toggleAuthModal('verify');
@@ -1003,7 +1005,10 @@ class NewWelcomeMobile extends BaseReactComponent {
   handleSubmitEmailSignup = (val = false) => {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
-      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append(
+        "email",
+        this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
+      );
       data.append("referral_code", this.state.referralCode);
       data.append("signed_up_from", "welcome");
       EmailAddressAddedSignUp({
@@ -1055,26 +1060,6 @@ class NewWelcomeMobile extends BaseReactComponent {
       this.setState({
         pageLimit: tempHolder[1],
       });
-    }
-  };
-  connectWalletEthers = async () => {
-    ConnectWalletButtonClickedWelcome({
-      session_id: getCurrentUser ? getCurrentUser()?.id : "",
-      email_address: getCurrentUser ? getCurrentUser()?.email : "",
-    });
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      try {
-        const tempRes = await provider.send("eth_requestAccounts", []);
-
-        if (tempRes && tempRes.length > 0) {
-          window.sessionStorage.setItem("connectWalletCreditOnce", true);
-          this.addToList(tempRes);
-        }
-      } catch (error) {
-        console.log("ethers error ", error);
-      }
     }
   };
   addToList = (addThese) => {

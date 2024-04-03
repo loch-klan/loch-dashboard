@@ -567,9 +567,11 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                 style={{
                   display: "flex",
                   justifyContent: "center",
+                  alignItems: "center",
                 }}
+                className="dotDotText"
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -580,16 +582,26 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     rowData?.chain?.name +
                     "]"
                   }
-                >
-                  <div>
-                    <CoinChip
-                      coin_img_src={rowData.Asset}
-                      coin_code={rowData.AssetCode}
-                      chain={rowData?.chain}
-                      hideText={true}
-                    />
+                > */}
+                <div>
+                  <CoinChip
+                    coin_img_src={rowData.Asset}
+                    coin_code={rowData.AssetCode}
+                    chain={rowData?.chain}
+                    hideText={true}
+                  />
+                </div>
+                {rowData.Asset ? (
+                  <div
+                    className="dotDotText"
+                    style={{
+                      marginLeft: "1rem",
+                    }}
+                  >
+                    {rowData.AssetCode ? rowData.AssetCode : ""}
                   </div>
-                </CustomOverlay>
+                ) : null}
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -1123,6 +1135,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}

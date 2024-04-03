@@ -339,6 +339,8 @@ class Profile extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                disconnectWallet={this.props.disconnectWallet}
                 updateOnFollow={this.onFollowUpdate}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}

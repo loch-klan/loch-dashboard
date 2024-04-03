@@ -765,6 +765,7 @@ class WatchListPage extends BaseReactComponent {
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           hideFooter
+          hideAddresses
         >
           <WalletListPageMobile
             tableLoading={this.state.tableLoading}
@@ -797,6 +798,8 @@ class WatchListPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
