@@ -200,6 +200,7 @@ class ReferralCodesPage extends BaseReactComponent {
           noHomeInPath
           currentPage={"referral-codes"}
           hideFooter
+          hideAddresses
           history={this.props.history}
           updateTimer={this.updateTimer}
         >
