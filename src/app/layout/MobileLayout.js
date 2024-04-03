@@ -863,6 +863,9 @@ class MobileLayout extends BaseReactComponent {
                       ) : (
                         <WelcomeCard
                           openConnectWallet={this.props.openConnectWallet}
+                          connectedWalletAddress={
+                            this.props.connectedWalletAddress
+                          }
                           disconnectWallet={this.props.disconnectWallet}
                           handleShare={this.handleShare} //Done
                           isSidebarClosed={this.props.isSidebarClosed} // done

@@ -5,7 +5,7 @@ import {
   useWeb3Modal,
   useWeb3ModalAccount,
 } from "@web3modal/ethers/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { Route } from "react-router-dom";
 
 const PublicRoute = ({ component: Component, ...rest }) => {
@@ -31,9 +31,17 @@ const PublicRoute = ({ component: Component, ...rest }) => {
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { open: openConnectWallet } = useWeb3Modal();
   const { disconnect } = useDisconnect();
-  console.log("address ", address);
-  console.log("chainId ", chainId);
-  console.log("isConnected ", isConnected);
+
+  const openDisconnectConnectWallet = () => {
+    if (isConnected) {
+      disconnect();
+      setTimeout(() => {
+        openConnectWallet();
+      }, 1000);
+    } else {
+      openConnectWallet();
+    }
+  };
 
   return (
     <Route
@@ -47,7 +55,8 @@ const PublicRoute = ({ component: Component, ...rest }) => {
             <div className={`main-section-right`}>
               <div className="main-content-wrapper">
                 <Component
-                  openConnectWallet={openConnectWallet}
+                  connectedWalletAddress={address}
+                  openConnectWallet={openDisconnectConnectWallet}
                   disconnectWallet={disconnect}
                   key={props.location.pathname}
                   {...props}

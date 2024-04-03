@@ -340,6 +340,7 @@ class Profile extends Component {
               {/* welcome card */}
               <WelcomeCard
                 openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
                 disconnectWallet={this.props.disconnectWallet}
                 updateOnFollow={this.onFollowUpdate}
                 isSidebarClosed={this.props.isSidebarClosed}

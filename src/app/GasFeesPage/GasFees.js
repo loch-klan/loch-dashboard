@@ -556,6 +556,7 @@ class GasFeesPage extends Component {
               {/* welcome card */}
               <WelcomeCard
                 openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
                 disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}

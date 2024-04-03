@@ -120,6 +120,7 @@ class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      canCallConnectWalletFun: false,
       //Sign up referral
       isReferralCodeStep: false,
       referralCode: "",
@@ -1473,6 +1474,11 @@ class NewWelcome extends BaseReactComponent {
   };
   componentDidMount() {
     deleteAddWallet();
+    setTimeout(() => {
+      this.setState({
+        canCallConnectWalletFun: true,
+      });
+    }, 1500);
     if (mobileCheck(true)) {
       this.setState({
         isMobileDevice: true,
@@ -1972,6 +1978,14 @@ class NewWelcome extends BaseReactComponent {
   };
   componentDidUpdate(prevProps, prevState) {
     let sMode = document.querySelector("body").getAttribute("data-theme");
+    if (
+      prevProps.connectedWalletAddress !== this.props.connectedWalletAddress &&
+      this.state.canCallConnectWalletFun
+    ) {
+      if (this.props.connectedWalletAddress) {
+        this.addToList([this.props.connectedWalletAddress]);
+      }
+    }
     if (this.state.isDarkMode !== (sMode === "dark")) {
       this.setState({
         isDarkMode: sMode === "dark",

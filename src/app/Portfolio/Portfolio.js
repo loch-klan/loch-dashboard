@@ -4484,6 +4484,7 @@ class Portfolio extends BaseReactComponent {
                 {/* welcome card */}
                 <WelcomeCard
                   openConnectWallet={this.props.openConnectWallet}
+                  connectedWalletAddress={this.props.connectedWalletAddress}
                   disconnectWallet={this.props.disconnectWallet}
                   afterAddressFollowed={this.afterAddressFollowed}
                   isAddressFollowedCount={this.state.isAddressFollowedCount}

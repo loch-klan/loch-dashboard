@@ -52,6 +52,7 @@ class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      canCallConnectWalletFun: false,
       showAmountsAtTop: false,
       topBarHistoryItems: [],
       showTopBarHistoryItems: false,
@@ -262,6 +263,11 @@ class TopWalletExchangeBar extends Component {
     });
   };
   componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        canCallConnectWalletFun: true,
+      });
+    }, 1500);
     if (window.location.pathname === "/home") {
       this.setState({
         showAmountsAtTop: true,
@@ -326,6 +332,14 @@ class TopWalletExchangeBar extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.connectedWalletAddress !== this.props.connectedWalletAddress &&
+      this.state.canCallConnectWalletFun
+    ) {
+      if (this.props.connectedWalletAddress) {
+        this.addToList([this.props.connectedWalletAddress]);
+      }
+    }
     if (
       prevState.isAddressFollowedCount !== this.state.isAddressFollowedCount
     ) {
@@ -967,6 +981,9 @@ class TopWalletExchangeBar extends Component {
     this.props.handleConnectModal();
   };
   dissconnectFromMetaMask = async () => {
+    if (this.props.disconnectWallet) {
+      this.props.disconnectWallet();
+    }
     DisconnectWalletButtonClicked({
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
@@ -1112,6 +1129,7 @@ class TopWalletExchangeBar extends Component {
       // }
     }
   };
+
   handleSetCoin = (data) => {
     let coinList = {
       chain_detected: data.chain_detected,
@@ -1524,71 +1542,73 @@ class TopWalletExchangeBar extends Component {
               goToSignIn={this.openSigninModal}
             />
           ) : null}
-          {this.state.walletList.length > 0 ? (
-            <div
-              style={{
-                maxWidth: this.state.walletInput[0].address ? "" : "40%",
-              }}
-              className="topBarContainerInputBlockContainer"
-            >
-              <div className="topBarContainerInputBlockContainerLeftOfInput">
-                {this.state.walletInput[0].address ? (
-                  this.state.walletInput[0].coinFound &&
-                  this.state.walletInput[0].coins.length > 0 ? (
-                    <div
-                      style={{
-                        marginRight: "1rem",
-                      }}
-                    >
-                      <CustomCoin
-                        // noNameJustIcon
-                        isStatic
-                        coins={this.state.walletInput[0].coins.filter(
-                          (c) => c.chain_detected
-                        )}
-                        key="RandomKey"
-                        isLoaded={true}
-                        overlayOnBottom
-                      />
-                    </div>
-                  ) : this.state.walletInput[0].coins.length ===
-                    this.props.OnboardingState.coinsList.length ? (
-                    <Image
-                      src={TopBarSearchIcon}
-                      className="topBarContainerInputBlockIcon"
+
+          <div
+            style={
+              {
+                // maxWidth: this.state.walletInput[0].address ? "" : "40%",
+              }
+            }
+            className="topBarContainerInputBlockContainer"
+          >
+            <div className="topBarContainerInputBlockContainerLeftOfInput">
+              {this.state.walletInput[0].address ? (
+                this.state.walletInput[0].coinFound &&
+                this.state.walletInput[0].coins.length > 0 ? (
+                  <div
+                    style={{
+                      marginRight: "1rem",
+                    }}
+                  >
+                    <CustomCoin
+                      // noNameJustIcon
+                      isStatic
+                      coins={this.state.walletInput[0].coins.filter(
+                        (c) => c.chain_detected
+                      )}
+                      key="RandomKey"
+                      isLoaded={true}
+                      overlayOnBottom
                     />
-                  ) : (
-                    <div>
-                      <CustomCoin
-                        // noNameJustIcon
-                        isStatic
-                        coins={null}
-                        key="RandomThirdKey"
-                        isLoaded={false}
-                      />
-                    </div>
-                  )
-                ) : (
+                  </div>
+                ) : this.state.walletInput[0].coins.length ===
+                  this.props.OnboardingState.coinsList.length ? (
                   <Image
                     src={TopBarSearchIcon}
                     className="topBarContainerInputBlockIcon"
                   />
-                )}
-              </div>
-              <input
-                autoComplete="off"
-                name={`wallet${1}`}
-                placeholder="Paste any wallet address or ENS here"
-                className="topBarContainerInputBlockInput"
-                id="topBarContainerInputBlockInputId"
-                value={this.state.walletInput[0].address || ""}
-                title={this.state.walletInput[0].address || ""}
-                onChange={(e) => this.handleOnLocalChange(e)}
-                onFocus={this.seeTheTopBarHistoryItems}
-                onKeyDown={this.handleTopBarInputKeyDown}
-              />
+                ) : (
+                  <div>
+                    <CustomCoin
+                      // noNameJustIcon
+                      isStatic
+                      coins={null}
+                      key="RandomThirdKey"
+                      isLoaded={false}
+                    />
+                  </div>
+                )
+              ) : (
+                <Image
+                  src={TopBarSearchIcon}
+                  className="topBarContainerInputBlockIcon"
+                />
+              )}
             </div>
-          ) : null}
+            <input
+              autoComplete="off"
+              name={`wallet${1}`}
+              placeholder="Paste any wallet address or ENS here"
+              className="topBarContainerInputBlockInput"
+              id="topBarContainerInputBlockInputId"
+              value={this.state.walletInput[0].address || ""}
+              title={this.state.walletInput[0].address || ""}
+              onChange={(e) => this.handleOnLocalChange(e)}
+              onFocus={this.seeTheTopBarHistoryItems}
+              onKeyDown={this.handleTopBarInputKeyDown}
+            />
+          </div>
+
           {this.state.walletInput[0].address ? (
             <div
               className={`topBarContainerRightBlock ${
@@ -1599,7 +1619,7 @@ class TopWalletExchangeBar extends Component {
             >
               <div
                 ref={this.props.buttonRef}
-                className={`topbar-btn maxWidth50 ml-2 ${
+                className={`topbar-btn  ml-2 ${
                   !(
                     this.state.walletInput[0].coinFound &&
                     this.state.walletInput[0].coins.length > 0
@@ -1623,7 +1643,7 @@ class TopWalletExchangeBar extends Component {
               </div>
               <div
                 ref={this.props.buttonRef}
-                className={`topbar-btn maxWidth50 ml-2 topbar-btn-dark ${
+                className={`topbar-btn  ml-2 topbar-btn-dark ${
                   !(
                     this.state.walletInput[0].coinFound &&
                     this.state.walletInput[0].coins.length > 0
