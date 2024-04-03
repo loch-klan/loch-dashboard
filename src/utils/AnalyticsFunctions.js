@@ -1,4 +1,3 @@
-import amplitude from "amplitude-js";
 import Mixpanel from "mixpanel-browser";
 import { deleteToken } from "./ManageToken";
 import { mobileCheck } from "./ReusableFunctions";
@@ -2364,7 +2363,6 @@ export const InsightPage = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Pageview Insights");
 };
 // Page View: Watch List
 export const WatchlistPage = ({ session_id, email_address }) => {
@@ -2374,7 +2372,129 @@ export const WatchlistPage = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Pageview Insights");
+};
+export const ProfileReferralPage = ({ session_id, email_address }) => {
+  const event_name = "Page View: Referral Codes";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyAllCodesProfileReferralPage = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Profile: Referral Codes: copied all codes";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyCodeProfileReferralPage = ({
+  session_id,
+  email_address,
+  code,
+}) => {
+  const event_name = "Profile: Referral Codes: copied code";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    code: code,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyCodeProfileGetMoreCodes = ({
+  session_id,
+  email_address,
+  contact_point,
+}) => {
+  const event_name = "Profile: Referral Codes: request more codes";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "contact by": contact_point,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const HomeSignUpGetReferralCode = ({ session_id, email_address }) => {
+  const event_name = "Home: Sign Up: Referral: request code on telegram";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const HomeSignUpReferralModalClosed = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Home: Sign Up: Referral: modal closed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const HomeSignedUpReferralCode = ({
+  session_id,
+  email_address,
+  referall_code,
+}) => {
+  const event_name = "Home: Sign Up: signed up with referral code";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "referall code": referall_code,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WelcomeSignUpGetReferralCode = ({ session_id, email_address }) => {
+  const event_name = "Welcome: Sign Up: Referral: request code on telegram";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WelcomeSignUpReferralModalClosed = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Welcome: Sign Up: Referral: modal closed";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WelcomeSignedUpReferralCode = ({
+  session_id,
+  email_address,
+  referall_code,
+}) => {
+  const event_name = "Welcome: Sign Up: signed up with referral code";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "referall code": referall_code,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TimeSpentReferralCodes = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Profile: Referral Codes: time spent on referral codes page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 export const NFTPage = ({ session_id, email_address }) => {
   const event_name = "Page View: NFT";
@@ -2383,7 +2503,6 @@ export const NFTPage = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Pageview Insights");
 };
 
 // Page View: Onboarding
@@ -5944,6 +6063,68 @@ export const CopyTradeCopiedWalletClicked = ({
     "session id": session_id,
     "email address": email_address,
     wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePopularAccountWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: Popular accounts to copy: wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePopularAccountCopyClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: Popular accounts to copy: copy clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayWallOpen = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayWallOptionsOpen = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: Pay options: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayCryptoPayment = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: Pay options: crypto payment clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayCreditCardPayment = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name =
+    "Copy Trade: Paywall: Pay options: credit card payment clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
