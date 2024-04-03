@@ -1232,6 +1232,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               <div className="portfolio-section">
                 <WelcomeCard
                   openConnectWallet={this.props.openConnectWallet}
+                  connectedWalletAddress={this.props.connectedWalletAddress}
                   disconnectWallet={this.props.disconnectWallet}
                   handleShare={this.handleShare}
                   isSidebarClosed={this.props.isSidebarClosed}
