@@ -18,8 +18,6 @@ import {
   TRANSACTION_FILTER,
 } from "./ActionTypes";
 
-import { ethers } from "ethers";
-
 export const getInflowsAndOutflowsGraphDataApi = (data, ctx) => {
   return async function (dispatch, getState) {
     let currency = JSON.parse(window.sessionStorage.getItem("currency"));
@@ -110,10 +108,10 @@ export const setSelectedInflowOutflowsAssetBlank = () => {
 };
 const testerFun = async (transactionData) => {
   if (window.ethereum) {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    let signer = provider.getSigner();
-    const txResponse = await signer.sendTransaction(transactionData);
-    console.log("signer.sendTransaction response ", txResponse);
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // let signer = provider.getSigner();
+    // const txResponse = await signer.sendTransaction(transactionData);
+    // console.log("signer.sendTransaction response ", txResponse);
   }
 };
 export const sendAmount = (data, ctx) => {

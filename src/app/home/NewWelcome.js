@@ -1,4 +1,4 @@
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -58,6 +58,7 @@ import {
   ClickedPageChangeWelcomeLeaderboard,
   ClickedPageLimitWelcomeLeaderboard,
   ConnectWalletButtonClickedWelcome,
+  ConnectedWalletWelcome,
   DeleteWalletAddress,
   EmailAddressAdded,
   EmailAddressAddedSignUp,
@@ -117,6 +118,7 @@ class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      canCallConnectWalletFun: false,
       pageName: "Landing Page",
       areNewAddresses: false,
       isPrevAddressNew: true,
@@ -1460,6 +1462,11 @@ class NewWelcome extends BaseReactComponent {
   };
   componentDidMount() {
     deleteAddWallet();
+    setTimeout(() => {
+      this.setState({
+        canCallConnectWalletFun: true,
+      });
+    }, 1500);
     if (mobileCheck(true)) {
       this.setState({
         isMobileDevice: true,
@@ -1717,18 +1724,19 @@ class NewWelcome extends BaseReactComponent {
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      try {
-        const tempRes = await provider.send("eth_requestAccounts", []);
-
-        if (tempRes && tempRes.length > 0) {
-          window.sessionStorage.setItem("connectWalletCreditOnce", true);
-          this.addToList(tempRes);
-        }
-      } catch (error) {
-        console.log("ethers error ", error);
+      if (this.props.openConnectWallet) {
+        this.props.openConnectWallet();
       }
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // try {
+      //   const tempRes = await provider.send("eth_requestAccounts", []);
+      //   if (tempRes && tempRes.length > 0) {
+      //     window.sessionStorage.setItem("connectWalletCreditOnce", true);
+      //     this.addToList(tempRes);
+      //   }
+      // } catch (error) {
+      //   console.log("ethers error ", error);
+      // }
     }
   };
   addToList = (addThese) => {
@@ -1946,6 +1954,32 @@ class NewWelcome extends BaseReactComponent {
   };
   componentDidUpdate(prevProps, prevState) {
     let sMode = document.querySelector("body").getAttribute("data-theme");
+    if (
+      prevProps.connectedWalletAddress !== this.props.connectedWalletAddress &&
+      this.state.canCallConnectWalletFun
+    ) {
+      if (this.props.connectedWalletAddress) {
+        let connectedWalletEvent = "";
+        if (this.props.connectedWalletevents) {
+          if (this.props.connectedWalletevents.data) {
+            if (this.props.connectedWalletevents.data.properties) {
+              if (this.props.connectedWalletevents.data.properties.name) {
+                connectedWalletEvent =
+                  this.props.connectedWalletevents.data.properties.name;
+              }
+            }
+          }
+        }
+        ConnectedWalletWelcome({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          wallet_address: this.props.connectedWalletAddress,
+          wallet_name: connectedWalletEvent,
+        });
+
+        this.addToList([this.props.connectedWalletAddress]);
+      }
+    }
     if (this.state.isDarkMode !== (sMode === "dark")) {
       this.setState({
         isDarkMode: sMode === "dark",

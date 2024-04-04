@@ -30,6 +30,7 @@ import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import Nft from "./app/nft/Nft";
 import NewWelcome from "./app/home/NewWelcome";
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
+import PublicRoute from "./utils/PublicRoute";
 const routes = [
   {
     path: "/",
@@ -41,7 +42,7 @@ const routes = [
   {
     path: "/welcome",
     name: "Home",
-    type: Route,
+    type: PublicRoute,
     component: NewWelcome,
   },
   {
