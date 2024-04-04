@@ -9,6 +9,7 @@ import {
   useDisconnect,
   useWeb3Modal,
   useWeb3ModalAccount,
+  useWeb3ModalEvents,
 } from "@web3modal/ethers/react";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -63,6 +64,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     projectId: "4ba0f16b53f8888a667cbbb8bb366918",
     enableAnalytics: true, // Optional - defaults to your Cloud configuration
   });
+  const walletevents = useWeb3ModalEvents();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { open: openConnectWallet } = useWeb3Modal();
   const { disconnect } = useDisconnect();
@@ -233,6 +235,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               <div className="main-content-wrapper">
                 <Component
                   connectedWalletAddress={address}
+                  connectedWalletevents={walletevents}
                   openConnectWallet={openDisconnectConnectWallet}
                   disconnectWallet={disconnect}
                   isSidebarClosed={isSidebarClosed}
