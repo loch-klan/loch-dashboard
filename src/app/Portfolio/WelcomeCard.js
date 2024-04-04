@@ -124,6 +124,7 @@ export default function WelcomeCard(props) {
     return (
       <TopWalletExchangeBar
         connectedWalletAddress={props.connectedWalletAddress}
+        connectedWalletevents={props.connectedWalletevents}
         changeWalletList={props.changeWalletList}
         apiResponse={props.apiResponse}
         history={history}
@@ -325,6 +326,7 @@ export default function WelcomeCard(props) {
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
               connectedWalletAddress={props.connectedWalletAddress}
+              connectedWalletevents={props.connectedWalletevents}
               updateOnFollow={props.updateOnFollow}
               afterAddressFollowed={props.afterAddressFollowed}
               isAddressFollowedCount={props.isAddressFollowedCount}

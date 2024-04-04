@@ -19,6 +19,7 @@ import {
   AddConnectExchangeModalOpen,
   AddWalletAddressModalOpen,
   ConnectWalletButtonClicked,
+  ConnectedWalletTopBar,
   DisconnectWalletButtonClicked,
   HomeFollow,
   HomeUnFollow,
@@ -337,6 +338,23 @@ class TopWalletExchangeBar extends Component {
       this.state.canCallConnectWalletFun
     ) {
       if (this.props.connectedWalletAddress) {
+        let connectedWalletEvent = "";
+        if (this.props.connectedWalletevents) {
+          if (this.props.connectedWalletevents.data) {
+            if (this.props.connectedWalletevents.data.properties) {
+              if (this.props.connectedWalletevents.data.properties.name) {
+                connectedWalletEvent =
+                  this.props.connectedWalletevents.data.properties.name;
+              }
+            }
+          }
+        }
+        ConnectedWalletTopBar({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          wallet_address: this.props.connectedWalletAddress,
+          wallet_name: connectedWalletEvent,
+        });
         this.addToList([this.props.connectedWalletAddress]);
       }
     }

@@ -18,6 +18,14 @@
   --primaryDropdownSelectedItem: rgba(229, 229, 230, 0.5);
   --primaryBoxShadowColor: rgba(24, 39, 75, 0.12);
   --primaryBoxShadowDarkerColor: rgba(0, 0, 0, 0.04);
+  --modalInput: white;
+  --modalInputPlaceholder: #d4d4d4;
+  --modalHeaderIcon: transparent;
+  --modalPrimaryCTA: #0d0d0d;
+  --modalPrimaryCTAHover: white;
+  --modalPrimaryCTAHoverText: #0d0d0d;
+  --modalPrimaryCTAColor: white;
+  --modalPrimaryCTABorder: #0d0d0d;
   --swapContainer: #f4edfd;
   --purpleHighlight: #5f33ff;
   --purpleHighlightBorder: rgba(95, 51, 255, 0.5);
@@ -194,6 +202,34 @@
 
   --activeToggleBg: rgba(255, 255, 255, 0.7);
   --whiteOnlyInvert: invert(1);
+
+  // Insights page
+  --insightsBlock: white;
+  --insightsFilter: #e5e5e6;
+  --insightsFilterSelected: white;
+  --insightsIconBorder: transparent;
+
+  // Connect Exchange Modal
+  --connectExchangeModal: white;
+  --connectExchangeModalBlock: #e5e5e6;
+  --connectExchangeModalBlockBorder: #e5e5e6;
+  --connectExchangeModalBlockStep: #e5e5e680;
+  --connectExchangeModalBlockStepCircle: #e5e5e6;
+  --connectExchangeModalBlockStepCircleActive: #636467;
+
+  // Toastify
+  --toastify: white;
+  --toastifyBorder: #e5e5e6;
+  --toastifyText: #0d0d0d;
+  --toastifySuccessIcon: url(../../images/icons/toastSuccessLight.svg);
+  --toastifyErrorIcon: url(../../images/icons/toastErrorLight.svg);
+
+  // Leaderboard
+  --leaderboardFaq: white;
+  --leaderboardFaqBlocks: #f8f8f8;
+  --leaderboardFaqBlocksBorder: #e5e5e6;
+  --leaderboardFaqAnswerBlock: white;
+  --leaderboardFaqAnswerBlockBorder: #e5e5e6;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -216,6 +252,14 @@
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
+  --modalInput: #202020;
+  --modalInputPlaceholder: #cacbcc;
+  --modalHeaderIcon: #303030;
+  --modalPrimaryCTA: #303030;
+  --modalPrimaryCTAHover: white;
+  --modalPrimaryCTAHoverText: #0d0d0d;
+  --modalPrimaryCTAColor: white;
+  --modalPrimaryCTABorder: #404040;
   --swapContainer: rgba(86, 72, 107, 0.3);
   --purpleHighlight: #be66ff;
   --purpleHighlightBorder: rgba(190, 102, 255, 0.5);
@@ -321,7 +365,7 @@
   --dropdownContentBorderColor: #313233;
   --whiteTransparentBlackE5e5e6: #e5e5e6;
   --borderwhiteDarkLight: #313233;
-  --popupCenterIconsBorder: #2a2a2a;
+  --popupCenterIconsBorder: #404040;
 
   //badges
   --lochPointsBadgeSuccessBg: #bdfade30;
@@ -380,6 +424,34 @@
 
   --activeToggleBg: rgba(26, 26, 26, 0.5);
   --whiteOnlyInvert: invert(0);
+
+  // Insights page
+  --insightsBlock: #202020;
+  --insightsFilter: #101010;
+  --insightsFilterSelected: #202020;
+  --insightsIconBorder: #cfcfcf;
+
+  // Connect Exchange Modal
+  --connectExchangeModal: #1a1a1a;
+  --connectExchangeModalBlock: #202020;
+  --connectExchangeModalBlockBorder: #303030;
+  --connectExchangeModalBlockStep: #313233;
+  --connectExchangeModalBlockStepCircle: #313233;
+  --connectExchangeModalBlockStepCircleActive: #cacbcc;
+
+  // Toastify
+  --toastify: #313233;
+  --toastifyBorder: #4a4b4d;
+  --toastifyText: #e5e5e6;
+  --toastifySuccessIcon: url(../../images/icons/toastSuccessDark.svg);
+  --toastifyErrorIcon: url(../../images/icons/toastErrorDark.svg);
+
+  // Leaderboard
+  --leaderboardFaqModal: #1a1a1a;
+  --leaderboardFaqBlocks: #202020;
+  --leaderboardFaqBlocksBorder: #303030;
+  --leaderboardFaqAnswerBlock: #202020;
+  --leaderboardFaqAnswerBlockBorder: #303030;
 }
 [data-theme="dark2"] {
   // UPDATED

@@ -286,6 +286,36 @@ export const ConnectWalletButtonClicked = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const ConnectedWalletWelcome = ({
+  session_id,
+  email_address,
+  wallet_address,
+  wallet_name,
+}) => {
+  const event_name = "Welcome: Wallet connected";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    wallet: wallet_address,
+    "wallet provider": wallet_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const ConnectedWalletTopBar = ({
+  session_id,
+  email_address,
+  wallet_address,
+  wallet_name,
+}) => {
+  const event_name = "Top Bar: Wallet connected";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    wallet: wallet_address,
+    "wallet provider": wallet_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const DisconnectWalletButtonClicked = ({
   session_id,
   email_address,
