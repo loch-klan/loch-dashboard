@@ -994,6 +994,7 @@ class TopWalletAddressList extends Component {
         <Breadcrums
           showpath={this.props.showpath}
           currentPage={this.props.currentPage}
+          noHomeInPath={this.props.noHomeInPath}
         />
         {/* {this.props.showpath ? breadCrumb : ""} */}
         <div className="topWalletAddressList">

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Modal } from "react-bootstrap";
 import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
@@ -16,6 +16,7 @@ const VerifyMobile = ({
   otp,
   handleSubmitOTP,
   handleSubmitEmail,
+  showOtpError,
 }) => {
   const submitRef = React.useRef(null);
 
@@ -76,6 +77,16 @@ const VerifyMobile = ({
               <p className="new-auth-content-subtitle">
                 The verification code is sent to your email
               </p>
+            </div>
+            <div
+              style={{
+                opacity: showOtpError ? 1 : 0,
+              }}
+              className="has-error-container has-error-container-mobile"
+            >
+              <div class="has-error custom-form-error form-text">
+                Invalid verification code
+              </div>
             </div>
             <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile new-auth-content-input-holder--otp">
               {/* <input

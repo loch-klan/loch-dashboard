@@ -203,11 +203,22 @@
         flex-direction: column;
         align-items: center;
         padding: 0rem 15.5rem;
+        .goToSingUpContainer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
         .goToSingUp {
-          transition-duration: 300ms;
           cursor: pointer;
+          .goToSingUpIcon {
+            height: 12px;
+            margin-top: -2px;
+          }
           &:hover {
             color: var(--primaryTextColor);
+            .goToSingUpIcon {
+              filter: var(--hoverBrightnessValue);
+            }
           }
         }
         .skip-link {
@@ -252,6 +263,7 @@
 
             .save-btn-section {
               .save-btn {
+                white-space: nowrap;
                 padding: 1.7rem 5.1rem;
                 border-radius: 0.8rem;
                 opacity: 0.5;
@@ -280,6 +292,15 @@
 
               .save-btn:focus {
                 box-shadow: none;
+              }
+            }
+            .save-btn-section-loading {
+              &:hover {
+                background-color: var(--primaryTextColor) !important;
+                border: 1px solid var(--black191) !important;
+                color: var(--sameModeColor) !important;
+                box-shadow: none !important;
+                cursor: default !important;
               }
             }
           }

@@ -66,7 +66,11 @@ export default function PageHeader(props) {
           : { padding: 0 }
       }
     >
-      <Breadcrums showpath={props.showpath} currentPage={props.currentPage} />
+      <Breadcrums
+        noHomeInPath={props.noHomeInPath}
+        showpath={props.showpath}
+        currentPage={props.currentPage}
+      />
 
       <div className="header">
         <div className="header-left">
@@ -94,7 +98,7 @@ export default function PageHeader(props) {
           <div>
             <div style={{ display: "flex" }}>
               <h4
-                className={`inter-display-medium f-s-24 lh-30 ${
+                className={`inter-display-medium f-s-24 ${
                   props.showImg || props.multipleImg ? "" : "m-b-8"
                 }`}
               >

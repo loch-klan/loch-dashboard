@@ -266,6 +266,7 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
             email: res.data.data.user?.email,
             mobile: res.data.data.user?.mobile,
             link: res.data.data.user?.link,
+            referred_by: res.data.data.user?.referred_by,
           };
 
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -411,6 +412,7 @@ export const verifyEmailLinkApi = (ctx, data) => {
           email: res.data.data.user?.email,
           mobile: res.data.data.user?.mobile,
           link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
         };
 
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));

@@ -8,6 +8,7 @@ import {
 } from "./ActionTypes";
 
 const INITIAL_STATE = {
+  profileReferralPage: false,
   nftPage: false,
   mobileLayout: false,
   profilePage: false,
@@ -30,6 +31,7 @@ const INITIAL_STATE = {
   profile_credit: false,
   gasFeesPage: false,
   counterpartyVolumePage: false,
+  emulationsPage: false,
   assetsPage: false,
   realizedGainsPage: false,
   mobilePortfolioPage: false,
@@ -74,11 +76,13 @@ export const CommonReducer = (state = INITIAL_STATE, action) => {
         profile_credit: false,
         gasFeesPage: false,
         counterpartyVolumePage: false,
+        emulationsPage: false,
         assetsPage: false,
         realizedGainsPage: false,
         mobilePortfolioPage: false,
         mobileLayout: false,
         nftPage: false,
+        profileReferralPage: false,
       };
     case TOP_SET_DEFAULT_VALUE:
       return {
