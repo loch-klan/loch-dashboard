@@ -152,6 +152,7 @@ class InsightsPage extends Component {
   };
   componentDidMount() {
     scrollToTop();
+    toast.error("Welcome to Insights ", { autoClose: 100000000 });
     if (
       !this.props.commonState.insight ||
       !this.props.intelligenceState.updatedInsightList
