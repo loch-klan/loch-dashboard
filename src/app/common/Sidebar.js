@@ -574,7 +574,13 @@ function Sidebar(props) {
       const lochPointsProfileModalOpen = window.sessionStorage.getItem(
         "lochPointsProfileLoginClicked"
       );
-      if (!isCopyTradeModalOpen && !lochPointsProfileModalOpen) {
+      const dontOpenLoginPopup =
+        window.sessionStorage.getItem("dontOpenLoginPopup");
+      if (
+        !isCopyTradeModalOpen &&
+        !lochPointsProfileModalOpen &&
+        !dontOpenLoginPopup
+      ) {
         // if isPopupActive = true then do not open this popup bcoz any other popup still open
         let isPopupActive = JSON.parse(
           window.sessionStorage.getItem("isPopupActive")
@@ -992,7 +998,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  MenuWatchlist({
+                                  ProfileMenu({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });
@@ -1002,13 +1008,6 @@ function Sidebar(props) {
                             >
                               <Image
                                 src={ProfileSidebarIcon}
-                                style={
-                                  activeTab === "/profile"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
                                 className="followingImg"
                               />
                             </NavLink>
@@ -1193,7 +1192,6 @@ function Sidebar(props) {
 
                           <li>
                             <NavLink
-                              exact={true}
                               onClick={(e) => {
                                 if (!isWallet) {
                                   e.preventDefault();
@@ -1715,10 +1713,10 @@ function Sidebar(props) {
           history={history}
           modalType={"exitOverlay"}
           handleRedirection={() => {
-            resetUser();
-            setTimeout(function () {
-              props.history.push("/welcome");
-            }, 3000);
+            // resetUser();
+            // setTimeout(function () {
+            //   props.history.push("/welcome");
+            // }, 3000);
           }}
           signup={true}
           goToSignIn={openSigninModal}

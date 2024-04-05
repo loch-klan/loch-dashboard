@@ -1,0 +1,1 @@
+export const GET_REFERRAL_CODES = "GET_REFERRAL_CODES";
