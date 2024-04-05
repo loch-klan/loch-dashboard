@@ -2215,6 +2215,8 @@ class TransactionHistoryPage extends BaseReactComponent {
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           CheckApiResponse={this.CheckApiResponse}
+          showpath
+          currentPage={"transaction-history"}
         >
           <TransactionHistoryPageMobile
             showHideDustFun={this.showDust}
@@ -2260,6 +2262,10 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -2277,6 +2283,8 @@ class TransactionHistoryPage extends BaseReactComponent {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"transaction-history"}
             />
             {this.state.exportModal ? (
               <ExitOverlay

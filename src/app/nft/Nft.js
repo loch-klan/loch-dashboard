@@ -497,7 +497,12 @@ class NFT extends BaseReactComponent {
     ];
     if (this.state.isMobileDevice) {
       return (
-        <MobileLayout hideFooter history={this.props.history}>
+        <MobileLayout
+          showpath
+          currentPage={"nft"}
+          hideFooter
+          history={this.props.history}
+        >
           <NftMobile
             isLoading={this.state.isLoading}
             tableData={this.state.tableData}
@@ -519,6 +524,10 @@ class NFT extends BaseReactComponent {
           >
             <div className="portfolio-section">
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
@@ -532,6 +541,8 @@ class NFT extends BaseReactComponent {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"nft"}
             />
             <PageHeader
               title={"NFT Collection"}

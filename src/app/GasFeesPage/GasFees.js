@@ -526,6 +526,8 @@ class GasFeesPage extends Component {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          showpath
+          currentPage={"gas-fees"}
         >
           <GasFeesMobile
             counterGraphDigit={this.state.GraphDigit}
@@ -553,6 +555,10 @@ class GasFeesPage extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -583,6 +589,8 @@ class GasFeesPage extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"gas-fees"}
             />
             {this.state.exportModal ? (
               <ExitOverlay

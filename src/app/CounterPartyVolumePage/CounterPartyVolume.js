@@ -518,6 +518,8 @@ class CounterPartyVolume extends Component {
         <MobileLayout
           history={this.props.history}
           CheckApiResponse={(e) => this.CheckApiResponse(e)}
+          showpath
+          currentPage={"counterparty-volume"}
         >
           <CounterPartyVolumeMobile
             counterGraphDigit={this.state.counterGraphDigit}
@@ -539,6 +541,10 @@ class CounterPartyVolume extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -569,6 +575,8 @@ class CounterPartyVolume extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"counterparty-volume"}
             />
             {this.state.exportModal ? (
               <ExitOverlay

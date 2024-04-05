@@ -797,6 +797,10 @@ class WatchListPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -852,8 +856,6 @@ class WatchListPage extends BaseReactComponent {
             <PageHeader
               title={"Following"}
               subTitle={"Addresses you follow"}
-              //
-              // currentPage={"transaction-history"}
               history={this.props.history}
               topaccount={true}
               ShareBtn={false}

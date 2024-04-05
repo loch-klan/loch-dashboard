@@ -39,6 +39,7 @@ import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/s
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
 import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
+import Breadcrums from "../common/Breadcrums.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -601,11 +602,21 @@ class MobileLayout extends BaseReactComponent {
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
                   <div id="mobileLayoutScrollContainer" className="mpcHomePage">
+                    <Breadcrums
+                      showpath={this.props.showpath}
+                      currentPage={this.props.currentPage}
+                      isMobile
+                    />
                     <MobileDarkModeWrapper>
                       {this.props.hideAddresses ? (
                         <></>
                       ) : (
                         <WelcomeCard
+                          openConnectWallet={this.props.openConnectWallet}
+                          connectedWalletAddress={
+                            this.props.connectedWalletAddress
+                          }
+                          disconnectWallet={this.props.disconnectWallet}
                           handleShare={this.handleShare} //Done
                           isSidebarClosed={this.props.isSidebarClosed} // done
                           changeWalletList={this.props.handleChangeList} // done

@@ -581,6 +581,8 @@ class PriceGauge extends Component {
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           CheckApiResponse={(e) => this.CheckApiResponse(e)}
+          showpath
+          currentPage={"price-gauge"}
         >
           <PriceGuageMobile
             userWalletList={this.state.userWalletList}
@@ -601,6 +603,10 @@ class PriceGauge extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -618,6 +624,8 @@ class PriceGauge extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              showpath
+              currentPage={"price-gauge"}
             />
             {this.state.upgradeModal && (
               <UpgradeModal

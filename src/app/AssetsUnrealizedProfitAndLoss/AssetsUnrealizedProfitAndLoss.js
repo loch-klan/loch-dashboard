@@ -1097,6 +1097,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         <MobileLayout
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
+          showpath
+          currentPage={"assets"}
         >
           <AssetUnrealizedProfitAndLossMobile
             columnData={columnData}
@@ -1121,6 +1123,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -1151,6 +1157,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
               handleShare={this.handleShare}
+              currentPage={"assets"}
+              showpath
             />
             {this.state.exportModal ? (
               <ExitOverlay
@@ -1186,7 +1194,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               subTitle="Understand your unrealized profit and loss per token"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
-              currentPage={"costs"}
+              currentPage={"assets"}
               ShareBtn={true}
               ExportBtn
               exportBtnTxt="Click to export costs"

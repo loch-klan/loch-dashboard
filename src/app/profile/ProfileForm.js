@@ -4,7 +4,6 @@ import { CustomTextControl, Form, FormElement } from "../../utils/form";
 // import CustomButton from "../../utils/form/CustomButton";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import ReactDOM from 'react-dom';
-import { ethers } from "ethers";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -48,37 +47,6 @@ class ProfileForm extends BaseReactComponent {
     };
     // this.onClose = this.onClose.bind(this);
   }
-
-  connectMetamask = async (isSignin = true) => {
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        const balance = ethers.utils.formatEther(
-          await provider.getBalance(address)
-        );
-
-        this.setState({
-          MetaAddress: address,
-          balance: balance,
-          signer: signer,
-          provider: provider,
-          btnloader: true,
-        });
-
-        if (!window.sessionStorage.getItem("lochUser")) {
-          this.SigninWallet();
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      console.error("Please install MetaMask!");
-      toast.error("Please install Metamask extension");
-    }
-  };
 
   // Signin wit wallet
   SigninWallet = () => {

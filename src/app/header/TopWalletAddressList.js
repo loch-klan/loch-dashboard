@@ -1,5 +1,5 @@
 import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -38,6 +38,7 @@ import "./_topWalletAddressList.scss";
 
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
+import Breadcrums from "../common/Breadcrums";
 
 class TopWalletAddressList extends Component {
   constructor(props) {
@@ -606,33 +607,32 @@ class TopWalletAddressList extends Component {
     });
 
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      try {
-        const tempRes = await provider.send("eth_requestAccounts", []);
-        try {
-          const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
-          if (tempRes && tempRes.length > 0 && sdk) {
-            sdk.wallet({
-              account: tempRes[0],
-              chainId: window.ethereum.networkVersion,
-            });
-          }
-        } catch (error) {
-          console.log("ArcxAnalyticsSdk error ", error);
-        }
-        if (tempRes && tempRes.length > 0) {
-          setTimeout(() => {
-            this.props.handleUpdate();
-          }, 1000);
-          const walletCreditScore = new URLSearchParams();
-          walletCreditScore.append("credits", "wallet_connected");
-          this.props.addUserCredits(walletCreditScore);
-          this.addToList(tempRes);
-        }
-      } catch (error) {
-        console.log("ethers error ", error);
-      }
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // try {
+      //   const tempRes = await provider.send("eth_requestAccounts", []);
+      //   try {
+      //     const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
+      //     if (tempRes && tempRes.length > 0 && sdk) {
+      //       sdk.wallet({
+      //         account: tempRes[0],
+      //         chainId: window.ethereum.networkVersion,
+      //       });
+      //     }
+      //   } catch (error) {
+      //     console.log("ArcxAnalyticsSdk error ", error);
+      //   }
+      //   if (tempRes && tempRes.length > 0) {
+      //     setTimeout(() => {
+      //       this.props.handleUpdate();
+      //     }, 1000);
+      //     const walletCreditScore = new URLSearchParams();
+      //     walletCreditScore.append("credits", "wallet_connected");
+      //     this.props.addUserCredits(walletCreditScore);
+      //     this.addToList(tempRes);
+      //   }
+      // } catch (error) {
+      //   console.log("ethers error ", error);
+      // }
     }
   };
   handleSetCoin = (data) => {
@@ -990,112 +990,119 @@ class TopWalletAddressList extends Component {
   };
   render() {
     return (
-      <div className="topWalletAddressList">
-        {this.state.followSignupModal ? (
-          <FollowExitOverlay
-            followedAddress={this.state.followedAddress}
-            hideOnblur
-            showHiddenError
-            modalAnimation={false}
-            show={this.state.followSignupModal}
-            onHide={this.onCloseModal}
-            history={this.props.history}
-            modalType={"exitOverlay"}
-            handleRedirection={() => {
-              // resetUser();
-              // setTimeout(function () {
-              //   if (this.props.history) {
-              //     this.props.history.push("/welcome");
-              //   }
-              // }, 3000);
-            }}
-            signup={true}
-            goToSignIn={this.openSigninModal}
-          />
-        ) : null}
-        {this.state.walletList.length > 0 ? (
-          <div className="topWalletAddressListDropdownContainer maxWidth50">
-            <TopBarDropDown
-              deleteTheAddress={this.deleteTheAddress}
-              class="topWalletAddressListDropdown"
-              list={this.state.walletList}
-              showChecked={true}
-              relative={true}
-              buttonRef={this.props.buttonRef}
-              totalWallets={this.state.totalWallets}
-              firstWallet={this.state.firstWallet}
-              firstFullWallet={this.state.firstFullWallet}
-              fullWalletList={this.state.fullWalletList}
-              hideDeleteButton={this.state.hideDeleteButton}
+      <>
+        <Breadcrums
+          showpath={this.props.showpath}
+          currentPage={this.props.currentPage}
+        />
+        {/* {this.props.showpath ? breadCrumb : ""} */}
+        <div className="topWalletAddressList">
+          {this.state.followSignupModal ? (
+            <FollowExitOverlay
+              followedAddress={this.state.followedAddress}
+              hideOnblur
+              showHiddenError
+              modalAnimation={false}
+              show={this.state.followSignupModal}
+              onHide={this.onCloseModal}
+              history={this.props.history}
+              modalType={"exitOverlay"}
+              handleRedirection={() => {
+                // resetUser();
+                // setTimeout(function () {
+                //   if (this.props.history) {
+                //     this.props.history.push("/welcome");
+                //   }
+                // }, 3000);
+              }}
+              signup={true}
+              goToSignIn={this.openSigninModal}
             />
-          </div>
-        ) : (
-          <div />
-        )}
-        {this.props.isMobile ? null : (
-          <div className="topWalletAddressListFollowShareContainer inter-display-medium">
-            {this.props.showUpdatesJustNowBtn ? (
-              <h2
-                className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
-                onClick={this.RefreshButton}
-                style={{
-                  whiteSpace: "nowrap",
-                }}
-              >
-                <Image src={refreshIcon} />
-                Updated{" "}
-                <span
-                  style={{ marginLeft: "3px" }}
-                  className="inter-display-bold f-s-13 lh-15 grey-B0B"
+          ) : null}
+          {this.state.walletList.length > 0 ? (
+            <div className="topWalletAddressListDropdownContainer maxWidth50">
+              <TopBarDropDown
+                deleteTheAddress={this.deleteTheAddress}
+                class="topWalletAddressListDropdown"
+                list={this.state.walletList}
+                showChecked={true}
+                relative={true}
+                buttonRef={this.props.buttonRef}
+                totalWallets={this.state.totalWallets}
+                firstWallet={this.state.firstWallet}
+                firstFullWallet={this.state.firstFullWallet}
+                fullWalletList={this.state.fullWalletList}
+                hideDeleteButton={this.state.hideDeleteButton}
+              />
+            </div>
+          ) : (
+            <div />
+          )}
+          {this.props.isMobile ? null : (
+            <div className="topWalletAddressListFollowShareContainer inter-display-medium">
+              {this.props.showUpdatesJustNowBtn ? (
+                <h2
+                  className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
+                  onClick={this.RefreshButton}
+                  style={{
+                    whiteSpace: "nowrap",
+                  }}
                 >
-                  {this.state.timeNumber === null
-                    ? "3"
-                    : this.state.timeNumber === 0
-                    ? " just now"
-                    : this.state.timeNumber}
-                </span>
-                <span>
-                  {this.state.timeUnit !== "" && this.state.timeNumber !== 0
-                    ? this.state.timeUnit
-                    : this.state.timeNumber === 0
-                    ? ""
-                    : "h ago"}
-                </span>
-              </h2>
-            ) : null}
-            {this.state.showFollowingAddress && !this.props.hideFollow ? (
-              <div
-                ref={this.props.buttonRef}
-                className="ml-3 topWalletAddressListFollowShareBtn"
-                id="address-button"
-                onClick={this.addAddressToWatchListFun}
-              >
-                <Image
-                  className="topWalletAddressListFollowShareBtnIcon"
-                  src={FollowTopBarIcon}
-                />
-                <span className="dotDotText">
-                  {this.state.isFollowingAddress ? "Following" : "Follow"}
-                </span>
-              </div>
-            ) : null}
-            {!this.props.hideShare ? (
-              <div
-                ref={this.props.buttonRef}
-                className="topWalletAddressListFollowShareBtn ml-2"
-                id="address-button"
-                onClick={this.handleSharePassFun}
-              >
-                <Image
-                  className="topWalletAddressListFollowShareBtnIcon"
-                  src={ShareTopBarIcon}
-                />
-                <span className="dotDotText">Share</span>
-              </div>
-            ) : null}
-          </div>
-        )}
-      </div>
+                  <Image src={refreshIcon} />
+                  Updated{" "}
+                  <span
+                    style={{ marginLeft: "3px" }}
+                    className="inter-display-bold f-s-13 lh-15 grey-B0B"
+                  >
+                    {this.state.timeNumber === null
+                      ? "3"
+                      : this.state.timeNumber === 0
+                      ? " just now"
+                      : this.state.timeNumber}
+                  </span>
+                  <span>
+                    {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                      ? this.state.timeUnit
+                      : this.state.timeNumber === 0
+                      ? ""
+                      : "h ago"}
+                  </span>
+                </h2>
+              ) : null}
+              {this.state.showFollowingAddress && !this.props.hideFollow ? (
+                <div
+                  ref={this.props.buttonRef}
+                  className="ml-3 topWalletAddressListFollowShareBtn"
+                  id="address-button"
+                  onClick={this.addAddressToWatchListFun}
+                >
+                  <Image
+                    className="topWalletAddressListFollowShareBtnIcon"
+                    src={FollowTopBarIcon}
+                  />
+                  <span className="dotDotText">
+                    {this.state.isFollowingAddress ? "Following" : "Follow"}
+                  </span>
+                </div>
+              ) : null}
+              {!this.props.hideShare ? (
+                <div
+                  ref={this.props.buttonRef}
+                  className="topWalletAddressListFollowShareBtn ml-2"
+                  id="address-button"
+                  onClick={this.handleSharePassFun}
+                >
+                  <Image
+                    className="topWalletAddressListFollowShareBtnIcon"
+                    src={ShareTopBarIcon}
+                  />
+                  <span className="dotDotText">Share</span>
+                </div>
+              ) : null}
+            </div>
+          )}
+        </div>
+      </>
     );
   }
 }
