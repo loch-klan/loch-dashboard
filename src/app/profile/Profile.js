@@ -180,7 +180,13 @@ class Profile extends Component {
     }
     this.props.GetAllPlan();
     this.props.getUser();
-    this.props.getReferallCodes();
+    if (isLochUser && isLochUser.email) {
+      this.props.getReferallCodes();
+    } else {
+      this.setState({
+        codesLeftToUse: 20,
+      });
+    }
     ManageLink(this);
 
     this.startPageView();
@@ -198,7 +204,10 @@ class Profile extends Component {
       this.props.updateWalletListFlag("profilePage", true);
       this.props.GetAllPlan();
       this.props.getUser();
-      this.props.getReferallCodes();
+      const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      if (isLochUser && isLochUser.email) {
+        this.props.getReferallCodes();
+      }
       setTimeout(() => {
         const isLochUser = JSON.parse(
           window.sessionStorage.getItem("lochUser")

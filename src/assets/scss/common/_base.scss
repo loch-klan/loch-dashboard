@@ -3610,7 +3610,63 @@ input {
     display: block;
   }
 }
-
+.sliderModalBody {
+  .smbButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3rem 5rem;
+    padding-top: 4.5rem;
+  }
+  .smbSliderContainer {
+    padding: 3rem 5rem;
+    padding-bottom: 0rem;
+    .smbSlidervalueContainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2rem;
+      .smbSlidervalues {
+        padding: 0.8rem 1.2rem;
+        border: 0.1rem solid var(--referallCopyBtn);
+        border-radius: 1rem;
+      }
+    }
+    .rc-slider-handle {
+      background-color: var(--primaryTextColor);
+      border: none;
+      height: 1.5rem;
+      width: 1.5rem;
+      border-radius: 1.5rem;
+      margin-top: -1rem;
+      opacity: 1;
+    }
+    .rc-slider-handle-dragging {
+      box-shadow: none;
+    }
+    .rc-slider-rail {
+      background-color: var(--greyCardBackgroud);
+      height: 0.5rem;
+      opacity: 1;
+      z-index: 1;
+    }
+    .rc-slider-track {
+      z-index: 2;
+      position: relative;
+      background-color: var(--primaryTextColor);
+      height: 0.5rem;
+      border-top-left-radius: 1rem;
+      border-bottom-left-radius: 1rem;
+      opacity: 1 !important;
+    }
+  }
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
 .basicConfirmModalMobile {
   .modal-content {
     width: 90vw !important;

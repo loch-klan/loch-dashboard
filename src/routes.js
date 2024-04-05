@@ -29,10 +29,10 @@ import EmulationTransactionsPage from "./app/Emulations/EmulationTransactions/Em
 import Emulations from "./app/Emulations/Emulations";
 import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
-import PublicRoute from "./utils/PublicRoute";
 import NewWelcome from "./app/home/NewWelcome";
 import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
+import PublicRoute from "./utils/PublicRoute";
 const routes = [
   {
     path: "/",

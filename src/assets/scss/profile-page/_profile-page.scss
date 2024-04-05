@@ -370,7 +370,8 @@
         .profileLochCreditPointsBlockCompleted {
           cursor: default;
           &:hover {
-            border-color: var(--dropdownContentBorderColor);
+            background-color: var(--cardBackgroud);
+            box-shadow: none;
           }
         }
       }
