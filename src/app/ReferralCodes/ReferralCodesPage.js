@@ -166,12 +166,14 @@ class ReferralCodesPage extends BaseReactComponent {
     let allCodes = "";
     this.state.referralCodes.forEach(
       (curReferralCode, curReferralCodeIndex) => {
-        if (curReferralCode.isUsed === false) {
+        if (curReferralCode.used === false) {
           allCodes += curReferralCode.code + "\n";
         }
       }
     );
-    copyText(allCodes);
+    if (allCodes) {
+      copyText(allCodes);
+    }
   };
   copyTextPass = (passedCode) => {
     CopyCodeProfileReferralPage({
