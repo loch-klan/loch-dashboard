@@ -1,0 +1,1 @@
+export const GET_EMULATION_DATA = "GET_EMULATION_DATA";

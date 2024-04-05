@@ -18,6 +18,14 @@
   --primaryDropdownSelectedItem: rgba(229, 229, 230, 0.5);
   --primaryBoxShadowColor: rgba(24, 39, 75, 0.12);
   --primaryBoxShadowDarkerColor: rgba(0, 0, 0, 0.04);
+  --modalInput: white;
+  --modalInputPlaceholder: #d4d4d4;
+  --modalHeaderIcon: transparent;
+  --modalPrimaryCTA: #0d0d0d;
+  --modalPrimaryCTAHover: white;
+  --modalPrimaryCTAHoverText: #0d0d0d;
+  --modalPrimaryCTAColor: white;
+  --modalPrimaryCTABorder: #0d0d0d;
   --swapContainer: #f4edfd;
   --purpleHighlight: #5f33ff;
   --purpleHighlightBorder: rgba(95, 51, 255, 0.5);
@@ -32,6 +40,13 @@
   --referallUsedBtn: #e5e5e680;
   --referallUsedBtnText: #7c7d81;
   --w3m-z-index: 1000 !important;
+  --w3m-z-index: 1000 !important;
+  --referallCopyBtn: #e5e5e6;
+  --referallUsedBtn: #e5e5e680;
+  --referallUsedBtnText: #7c7d81;
+  --popularAccountsDataBlock: #e5e5e64d;
+  --popularAccountsHeaderBrightness: brightness(0.96);
+  --brightenDarkModeColors: brightness(1);
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
@@ -39,6 +54,7 @@
   --invertColor2: invert(100%);
   --brightInDarkMode: brightness(1);
   --hoverBrightness: brightness(50%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(0);
   --hoverBrightnessValueInvert: brightness(20);
   --infoBrightnessPortfolio: brightness(1);
@@ -58,6 +74,7 @@
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
+  --grey5b5b: #5b5b5d;
   --grey313: #313233;
   --greyb0b: #b0b1b3;
   --grey969: #96979a;
@@ -183,11 +200,40 @@
   --tableHeading: #4f4f4f;
   --tableData: #313233;
 
+  --inputPlaceHolder: #d4d4d4;
   --inputBorder: #d4d4d4;
   --inputBorderHover: #0d0d0d;
 
   --activeToggleBg: rgba(255, 255, 255, 0.7);
   --whiteOnlyInvert: invert(1);
+
+  // Insights page
+  --insightsBlock: white;
+  --insightsFilter: #e5e5e6;
+  --insightsFilterSelected: white;
+  --insightsIconBorder: transparent;
+
+  // Connect Exchange Modal
+  --connectExchangeModal: white;
+  --connectExchangeModalBlock: #e5e5e6;
+  --connectExchangeModalBlockBorder: #e5e5e6;
+  --connectExchangeModalBlockStep: #e5e5e680;
+  --connectExchangeModalBlockStepCircle: #e5e5e6;
+  --connectExchangeModalBlockStepCircleActive: #636467;
+
+  // Toastify
+  --toastify: white;
+  --toastifyBorder: #e5e5e6;
+  --toastifyText: #0d0d0d;
+  --toastifySuccessIcon: url(../../images/icons/toastSuccessLight.svg);
+  --toastifyErrorIcon: url(../../images/icons/toastErrorLight.svg);
+
+  // Leaderboard
+  --leaderboardFaq: white;
+  --leaderboardFaqBlocks: #f8f8f8;
+  --leaderboardFaqBlocksBorder: #e5e5e6;
+  --leaderboardFaqAnswerBlock: white;
+  --leaderboardFaqAnswerBlockBorder: #e5e5e6;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -210,6 +256,14 @@
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
+  --modalInput: #202020;
+  --modalInputPlaceholder: #cacbcc;
+  --modalHeaderIcon: #303030;
+  --modalPrimaryCTA: #303030;
+  --modalPrimaryCTAHover: white;
+  --modalPrimaryCTAHoverText: #0d0d0d;
+  --modalPrimaryCTAColor: white;
+  --modalPrimaryCTABorder: #404040;
   --swapContainer: rgba(86, 72, 107, 0.3);
   --purpleHighlight: #be66ff;
   --purpleHighlightBorder: rgba(190, 102, 255, 0.5);
@@ -230,6 +284,7 @@
   --invertColor2: invert(0%);
   --brightInDarkMode: brightness(2);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(1);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: invert(1);
@@ -253,6 +308,7 @@
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
+  --grey5b5b: #cacbcc;
   --grey313: #cacbcc;
   --greyb0b: #4a4b4d;
   --backColor: rgba(255, 255, 255, 0.95);
@@ -266,6 +322,9 @@
   //Table
   --tableNumberCover: #313233;
   --tablePersonalTint: rgba(16, 16, 16, 0.6);
+  --popularAccountsDataBlock: #303030;
+  --popularAccountsHeaderBrightness: brightness(1.3);
+  --brightenDarkModeColors: brightness(2);
   --tableHeadingLightBorder: #313233;
   --tableSectionToggleBg: #101010;
   --tableCostCommonColor: #141414;
@@ -310,7 +369,7 @@
   --dropdownContentBorderColor: #313233;
   --whiteTransparentBlackE5e5e6: #e5e5e6;
   --borderwhiteDarkLight: #313233;
-  --popupCenterIconsBorder: #2a2a2a;
+  --popupCenterIconsBorder: #404040;
 
   //badges
   --lochPointsBadgeSuccessBg: #bdfade30;
@@ -363,12 +422,40 @@
 
   --tableHeading: #cacbcc;
   --tableData: #cacbcc;
-
+  --inputPlaceHolder: #5a5a5b;
   --inputBorder: #313233;
   --inputBorderHover: #cacbcc;
 
   --activeToggleBg: rgba(26, 26, 26, 0.5);
   --whiteOnlyInvert: invert(0);
+
+  // Insights page
+  --insightsBlock: #202020;
+  --insightsFilter: #101010;
+  --insightsFilterSelected: #202020;
+  --insightsIconBorder: #cfcfcf;
+
+  // Connect Exchange Modal
+  --connectExchangeModal: #1a1a1a;
+  --connectExchangeModalBlock: #202020;
+  --connectExchangeModalBlockBorder: #303030;
+  --connectExchangeModalBlockStep: #313233;
+  --connectExchangeModalBlockStepCircle: #313233;
+  --connectExchangeModalBlockStepCircleActive: #cacbcc;
+
+  // Toastify
+  --toastify: #313233;
+  --toastifyBorder: #4a4b4d;
+  --toastifyText: #e5e5e6;
+  --toastifySuccessIcon: url(../../images/icons/toastSuccessDark.svg);
+  --toastifyErrorIcon: url(../../images/icons/toastErrorDark.svg);
+
+  // Leaderboard
+  --leaderboardFaqModal: #1a1a1a;
+  --leaderboardFaqBlocks: #202020;
+  --leaderboardFaqBlocksBorder: #303030;
+  --leaderboardFaqAnswerBlock: #202020;
+  --leaderboardFaqAnswerBlockBorder: #303030;
 }
 [data-theme="dark2"] {
   // UPDATED
@@ -388,6 +475,7 @@
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
+  --swapContainer: rgba(86, 72, 107, 0.3);
   --primaryFilter: #313233;
   --primaryActiveFilter: #636467;
   --black191: #e7e9ea;
@@ -399,6 +487,7 @@
   --invertColor: invert(100%);
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: none;

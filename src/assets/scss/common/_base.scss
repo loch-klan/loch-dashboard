@@ -663,10 +663,11 @@ body {
 }
 
 .Toastify__toast {
-  background-color: var(--cardBackgroud);
-  border: 1px solid var(--borderwhiteDarkLight);
-  color: var(--black191);
+  background-color: var(--toastify);
+  border: 1px solid var(--toastifyBorder);
+  color: var(--toastifyText);
   padding: 0.5rem 2rem;
+  border-radius: 0.8rem;
 
   .Toastify__toast-body {
     flex-direction: row-reverse;
@@ -677,7 +678,8 @@ body {
 
     .Toastify__toast-icon {
       margin-right: 0;
-      background-image: url(../../images/icons/success.svg);
+      margin-left: 8rem;
+      background-image: var(--toastifySuccessIcon);
       background-size: 100% 100%;
       width: 4rem;
       height: 4rem;
@@ -691,7 +693,7 @@ body {
   &.Toastify__toast--error {
     .Toastify__toast-body {
       .Toastify__toast-icon {
-        background-image: url(../../images/icons/alert-icon.svg);
+        background-image: var(--toastifyErrorIcon);
 
         svg {
           display: none;
@@ -1215,6 +1217,13 @@ form {
   .not-found-wrapper {
     text-align: center;
     padding: 10rem;
+  }
+  .not-found-wrapper-image {
+    height: 10rem;
+    margin-bottom: 2rem;
+  }
+  .not-found-wrapper-image-text {
+    color: #adadad;
   }
 }
 .section-table-mobile-scroll {
@@ -1762,6 +1771,13 @@ form {
   }
 }
 @media all and (max-width: 800px) {
+  .Toastify__toast {
+    .Toastify__toast-body {
+      .Toastify__toast-icon {
+        margin-left: 0.5rem;
+      }
+    }
+  }
   .tool-tip-container {
     .arrow::before {
       top: -1px;
@@ -2758,6 +2774,9 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
+.imageDarker {
+  filter: var(--hoverBrightnessValue) !important;
+}
 .overlay-tool-tip-container {
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
@@ -2797,10 +2816,13 @@ input {
   img {
     filter: var(--invertColor) !important;
   }
+  transition-duration: 0ms !important;
   &:hover {
     background-color: var(--mainButtonBg) !important;
     color: var(--primaryTextColor) !important;
-
+    border-color: var(--mainButtonBg) !important;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
     div {
       color: var(--primaryTextColor) !important;
     }
@@ -3385,14 +3407,16 @@ input {
 
 .input-hover-states {
   input {
+    background-color: var(--modalInput);
     border: 1px solid var(--inputBorder) !important;
     &::placeholder {
-      color: var(--inputBorder) !important;
+      color: var(--modalInputPlaceholder) !important;
+      opacity: 0.5;
     }
     &:hover {
       border: 1px solid var(--inputBorderHover) !important;
       &::placeholder {
-        color: var(--inputBorder) !important;
+        color: var(--modalInputPlaceholder) !important;
       }
     }
   }
@@ -3404,7 +3428,10 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
-
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
+}
 .overflow-table-header-visible {
   .ReactVirtualized__Table__headerRow {
     overflow: visible !important;
@@ -3639,4 +3666,30 @@ input[type="range"] {
   appearance: none;
   background: transparent;
   cursor: pointer;
+}
+.basicConfirmModalMobile {
+  .modal-content {
+    width: 90vw !important;
+    min-width: 90vw !important;
+    .modal-body {
+      padding: 3rem !important;
+      .leave-modal-btn-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1rem;
+        .secondary-btn {
+          margin-right: 0rem !important;
+        }
+      }
+    }
+  }
+}
+.addCopyTradeInput {
+  &::placeholder {
+    color: var(--inputPlaceHolder) !important;
+  }
+}
+.zeroOpacity {
+  opacity: 0;
 }
