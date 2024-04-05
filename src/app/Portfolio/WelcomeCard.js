@@ -123,6 +123,8 @@ export default function WelcomeCard(props) {
   if (props.isMobileRender) {
     return (
       <TopWalletExchangeBar
+        connectedWalletAddress={props.connectedWalletAddress}
+        connectedWalletevents={props.connectedWalletevents}
         changeWalletList={props.changeWalletList}
         apiResponse={props.apiResponse}
         history={history}
@@ -323,6 +325,8 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              connectedWalletAddress={props.connectedWalletAddress}
+              connectedWalletevents={props.connectedWalletevents}
               updateOnFollow={props.updateOnFollow}
               afterAddressFollowed={props.afterAddressFollowed}
               isAddressFollowedCount={props.isAddressFollowedCount}
@@ -335,6 +339,8 @@ export default function WelcomeCard(props) {
               handleConnectModal={handleConnectModal}
               handleUpdate={props.handleUpdate}
               hideShare={props.hideShare}
+              openConnectWallet={props.openConnectWallet}
+              disconnectWallet={props.disconnectWallet}
             />
           ) : // <div className="topBarContainer">
           //   <div

@@ -31,6 +31,8 @@
   --referallCopyBtn: #e5e5e6;
   --referallUsedBtn: #e5e5e680;
   --referallUsedBtnText: #7c7d81;
+  --w3m-z-index: 1000 !important;
+
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0);
@@ -188,6 +190,7 @@
   --whiteOnlyInvert: invert(1);
 }
 [data-theme="dark"] {
+  --w3m-z-index: 1000 !important;
   // UPDATED
   --sidebarBackgroud: #1a1a1a;
   --primaryBackgroud: #141414;

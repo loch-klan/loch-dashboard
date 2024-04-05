@@ -1,6 +1,6 @@
 import React from "react";
 // import PropTypes from 'prop-types';
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 import { Button, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import Banner from "../../assets/images/bg-img-welcome.png";
@@ -623,18 +623,16 @@ class Home extends BaseReactComponent {
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      try {
-        const tempRes = await provider.send("eth_requestAccounts", []);
-
-        if (tempRes && tempRes.length > 0) {
-          window.sessionStorage.setItem("connectWalletCreditOnce", true);
-          this.addToList(tempRes);
-        }
-      } catch (error) {
-        console.log("ethers error ", error);
-      }
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // try {
+      //   const tempRes = await provider.send("eth_requestAccounts", []);
+      //   if (tempRes && tempRes.length > 0) {
+      //     window.sessionStorage.setItem("connectWalletCreditOnce", true);
+      //     this.addToList(tempRes);
+      //   }
+      // } catch (error) {
+      //   console.log("ethers error ", error);
+      // }
     }
   };
   addToList = (addThese) => {

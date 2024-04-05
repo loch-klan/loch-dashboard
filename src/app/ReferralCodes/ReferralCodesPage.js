@@ -69,6 +69,10 @@ class ReferralCodesPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
+    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (!(isLochUser && isLochUser.email)) {
+      this.props.history.push("/profile");
+    }
     scrollToTop();
     if (mobileCheck()) {
       this.setState({
@@ -231,6 +235,10 @@ class ReferralCodesPage extends BaseReactComponent {
           >
             <div className="portfolio-section">
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 history={this.props.history}

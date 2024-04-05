@@ -524,6 +524,10 @@ class NFT extends BaseReactComponent {
           >
             <div className="portfolio-section">
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history
