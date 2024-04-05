@@ -12,6 +12,7 @@ import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   ActiveSmartMoneySidebarIcon,
+  EmultionSidebarIcon,
   FollowingSidebarIcon,
   HomeSidebarIcon,
   InactiveSmartMoneySidebarIcon,
@@ -574,7 +575,13 @@ function Sidebar(props) {
       const lochPointsProfileModalOpen = window.sessionStorage.getItem(
         "lochPointsProfileLoginClicked"
       );
-      if (!isCopyTradeModalOpen && !lochPointsProfileModalOpen) {
+      const dontOpenLoginPopup =
+        window.sessionStorage.getItem("dontOpenLoginPopup");
+      if (
+        !isCopyTradeModalOpen &&
+        !lochPointsProfileModalOpen &&
+        !dontOpenLoginPopup
+      ) {
         // if isPopupActive = true then do not open this popup bcoz any other popup still open
         let isPopupActive = JSON.parse(
           window.sessionStorage.getItem("isPopupActive")
@@ -992,7 +999,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  MenuWatchlist({
+                                  ProfileMenu({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });
@@ -1002,10 +1009,45 @@ function Sidebar(props) {
                             >
                               <Image
                                 src={ProfileSidebarIcon}
+                                className="followingImg"
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Copy Trade"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/copy-trade"
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuCopyTradelist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
                                 style={
-                                  activeTab === "/profile"
+                                  activeTab === "/copy-trade"
                                     ? {
-                                        filter: "var(--sidebarActiveIcon)",
+                                        filter: "brightness(0)",
                                       }
                                     : {}
                                 }
@@ -1193,7 +1235,6 @@ function Sidebar(props) {
 
                           <li>
                             <NavLink
-                              exact={true}
                               onClick={(e) => {
                                 if (!isWallet) {
                                   e.preventDefault();
@@ -1220,6 +1261,37 @@ function Sidebar(props) {
                                 className="followingImg"
                               />
                               Profile
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuCopyTradelist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/copy-trade"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                              Copy Trade
                             </NavLink>
                           </li>
                         </>
@@ -1715,10 +1787,10 @@ function Sidebar(props) {
           history={history}
           modalType={"exitOverlay"}
           handleRedirection={() => {
-            resetUser();
-            setTimeout(function () {
-              props.history.push("/welcome");
-            }, 3000);
+            // resetUser();
+            // setTimeout(function () {
+            //   props.history.push("/welcome");
+            // }, 3000);
           }}
           signup={true}
           goToSignIn={openSigninModal}

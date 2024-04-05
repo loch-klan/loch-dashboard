@@ -1,0 +1,178 @@
+.referral-page {
+  padding-bottom: 4rem;
+  .rp-body-container {
+    min-width: 85rem;
+    .rpb-data {
+      .rpbd-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        .rpbdh-title-container {
+          display: flex;
+          align-items: center;
+          .rpbdh-title-icon {
+            height: 22px;
+            filter: var(--invertColor);
+            opacity: var(--lighterDarkIcons);
+          }
+          .rpbdh-title {
+            font-size: 20px;
+            margin: 0rem 1rem;
+            line-height: 0 !important;
+          }
+          .rpbdh-title-subtext {
+            font-size: 13px;
+            color: var(--topbarInput);
+            line-height: 0 !important;
+          }
+        }
+        .rpbdh-copy-button {
+          background-color: var(--referallCopyBtn);
+          color: var(--black191);
+          font-size: 13px;
+          padding: 1.5rem 2rem;
+          border-radius: 1rem;
+          cursor: pointer;
+          &:hover {
+            filter: invert(1);
+          }
+        }
+      }
+      .rpbd-body-container {
+        height: 58rem;
+        background-color: var(--cardBackgroud);
+        border-radius: 1.5rem;
+        padding: 2rem 1.5rem;
+        .rpbd-body {
+          width: 100%;
+          height: 100%;
+          overflow-x: auto;
+          padding: 0rem 1rem;
+          &::-webkit-scrollbar {
+            width: 0.4rem;
+            height: 0rem;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            border-radius: 0.8rem;
+            background: #cacbcc;
+          }
+
+          &::-webkit-scrollbar-track {
+            background-color: rgba(229, 229, 230, 0.5);
+            border-radius: 0.8rem;
+          }
+          &:hover {
+            &::-webkit-scrollbar {
+              width: 0.4rem;
+            }
+          }
+          .rpbdd-referral-block {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem 0rem;
+
+            border-bottom: 0.25rem solid var(--boxShadowColorMd);
+
+            .rpbddrb-code {
+              background-color: var(--swapContainer);
+              color: var(--purpleHighlight);
+              border: 0.1rem solid var(--purpleHighlightBorder);
+              padding: 0.8rem 1.6rem;
+              border-radius: 1rem;
+              font-size: 13px;
+            }
+            .rpbddrb-code-used {
+              background-color: var(--referallUsedBtn);
+              color: var(--referallUsedBtnText);
+              border-color: var(--referallUsedBtnText);
+              text-decoration: line-through;
+            }
+            .rpbddrb-status {
+              color: var(--topbarInput);
+              font-size: 13px;
+              .rpbddrbs-icon {
+                filter: var(--invertColor);
+                height: 15px;
+                cursor: pointer;
+                &:hover {
+                  filter: var(--hoverBrightness);
+                }
+              }
+            }
+          }
+          .rpbd-no-data {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+          }
+        }
+      }
+      .rpbd-referall {
+        width: 100%;
+        padding: 1.5rem;
+        background-color: var(--cardBackgroud);
+        border-radius: 1rem;
+        margin-bottom: 2rem;
+        box-shadow: 0rem 0.4rem 1rem rgba(0, 0, 0, 0.04),
+          0rem 0.1rem 0.1rem rgba(0, 0, 0, 0.04);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 0.1rem solid transparent;
+
+        .psrcb-left {
+          display: flex;
+          align-items: center;
+        }
+        .psrcb-icon {
+          height: 2.5rem;
+          filter: var(--invertColor);
+          opacity: var(--lighterDarkIcons);
+        }
+        .psrcb-arrow-icon {
+          height: 1.5rem;
+          filter: var(--invertColor);
+          opacity: var(--lighterDarkIcons);
+        }
+        .psrcb-text {
+          font-size: 1.5rem;
+          .psrcb-text-btn {
+            color: var(--purpleHighlight);
+            // margin: 0rem 0.5rem;
+            cursor: pointer;
+            &:hover {
+              filter: var(--hoverBrightness);
+            }
+            // background-color: var(--backColor);
+            // color: var(--sameModeColor);
+            // padding: 0.6rem 1.2rem;
+            // border-radius: 0.5rem;
+            // border: 0.1rem solid var(--backColor);
+            // &:hover {
+            //   color: var(--backColor);
+            //   background-color: var(--sameModeColor);
+            // }
+          }
+        }
+      }
+      .rpbd-loader {
+        height: 58rem;
+        background-color: var(--cardBackgroud);
+        border-radius: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+  .rp-body-container-mobile {
+    min-width: 100%;
+  }
+}
