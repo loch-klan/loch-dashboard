@@ -213,6 +213,12 @@
   --leaderboardFaqBlocksBorder: #e5e5e6;
   --leaderboardFaqAnswerBlock: white;
   --leaderboardFaqAnswerBlockBorder: #e5e5e6;
+
+  //Sidebar
+  --closedSideBarPersonBackgroundColor: #ffffff;
+  --closedSideBarPersonBackgroundBorderColor: #e5e5e6;
+  --closeTwitterBackgroundColor: #e5e5e680;
+  --closeTwitterBackgroundBorderColor: #e5e5e680;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -422,6 +428,12 @@
   --leaderboardFaqBlocksBorder: #303030;
   --leaderboardFaqAnswerBlock: #202020;
   --leaderboardFaqAnswerBlockBorder: #303030;
+
+  //Sidebar
+  --closedSideBarPersonBackgroundColor: #303030;
+  --closedSideBarPersonBackgroundBorderColor: #404040;
+  --closeTwitterBackgroundColor: #202020;
+  --closeTwitterBackgroundBorderColor: #202020;
 }
 [data-theme="dark2"] {
   // UPDATED
