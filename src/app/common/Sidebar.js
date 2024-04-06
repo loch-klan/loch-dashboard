@@ -170,6 +170,12 @@ function Sidebar(props) {
         ? true
         : false
     );
+    let isDarkTheme = localStorage.getItem("isDarkTheme");
+    if (isDarkTheme && isDarkTheme === "true") {
+      document.documentElement.style.backgroundColor = "#141414";
+    } else {
+      document.documentElement.style.backgroundColor = "#f2f2f2";
+    }
   }, [document.querySelector("body").getAttribute("data-theme") == "dark"]);
   React.useEffect(() => {
     // console.log("in use effect");
