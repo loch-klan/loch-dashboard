@@ -14,8 +14,11 @@ import {
   goToTelegram,
   loadingAnimation,
   mobileCheck,
+  whichSignUpMethod,
 } from "../../../utils/ReusableFunctions";
 import {
+  HomeSignUpGetReferralCode,
+  SignUpModalReferralCodeTabClosed,
   WelcomeSignUpGetReferralCode,
   WelcomeSignUpReferralModalClosed,
 } from "../../../utils/AnalyticsFunctions";
@@ -34,6 +37,7 @@ const SignUpMobile = ({
   referralCode,
   checkReferralCode,
   isReferralCodeLoading,
+  isHome,
 }) => {
   const submitRef = React.useRef(null);
   const [isMobileState, setIsMobileState] = useState(false);
@@ -61,26 +65,51 @@ const SignUpMobile = ({
     };
   }, []);
   const handleGoBackToSignUpPassThrough = () => {
-    WelcomeSignUpReferralModalClosed({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    if (isHome) {
+      const signUpMethod = whichSignUpMethod();
+      SignUpModalReferralCodeTabClosed({
+        session_id: getCurrentUser().id,
+        email_address: email,
+        signUpMethod: signUpMethod,
+      });
+    } else {
+      WelcomeSignUpReferralModalClosed({
+        session_id: getCurrentUser().id,
+        email_address: email,
+      });
+    }
     handleGoBackToSignUp();
   };
   const handleClosePassThrough = () => {
     toggleModal();
     if (isReferralCodeStep) {
-      WelcomeSignUpReferralModalClosed({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      if (isHome) {
+        const signUpMethod = whichSignUpMethod();
+        SignUpModalReferralCodeTabClosed({
+          session_id: getCurrentUser().id,
+          email_address: email,
+          signUpMethod: signUpMethod,
+        });
+      } else {
+        WelcomeSignUpReferralModalClosed({
+          session_id: getCurrentUser().id,
+          email_address: email,
+        });
+      }
     }
   };
   const goToTelegramPassThrough = () => {
-    WelcomeSignUpGetReferralCode({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
+    if (isHome) {
+      HomeSignUpGetReferralCode({
+        session_id: getCurrentUser().id,
+        email_address: email,
+      });
+    } else {
+      WelcomeSignUpGetReferralCode({
+        session_id: getCurrentUser().id,
+        email_address: email,
+      });
+    }
     goToTelegram();
   };
   const handleGoToReferralPassThrough = () => {

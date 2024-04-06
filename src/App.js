@@ -52,6 +52,7 @@ function App(props) {
   useEffect(() => {
     let isDarkTheme = localStorage.getItem("isDarkTheme");
     if (isDarkTheme && isDarkTheme === "true") {
+      document.documentElement.style.backgroundColor = "#141414";
       switchToDarkMode();
       props.SwitchDarkMode(true);
       DarkModeDefaltView({
@@ -59,6 +60,7 @@ function App(props) {
         isMobile: mobileCheck(),
       });
     } else {
+      document.documentElement.style.backgroundColor = "#f2f2f2";
       switchToLightMode();
       props.SwitchDarkMode(false);
       DarkModeDefaltView({

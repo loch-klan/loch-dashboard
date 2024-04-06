@@ -48,6 +48,7 @@ import {
   LPC_Go,
   LPConnectExchange,
   SignInOnClickWelcomeLeaderboard,
+  WelcomeSignUpModalEmailAdded,
   WelcomeSignedUpReferralCode,
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
@@ -1276,6 +1277,14 @@ class NewWelcomeMobile extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.isReferralCodeStep !== this.state.isReferralCodeStep) {
+      if (this.state.isReferralCodeStep) {
+        WelcomeSignUpModalEmailAdded({
+          session_id: getCurrentUser().id,
+          email_address: this.state?.emailSignup,
+        });
+      }
+    }
     if (prevState.signInModal !== this.state.signInModal) {
       if (!this.state.signInModal) {
         this.setState({
