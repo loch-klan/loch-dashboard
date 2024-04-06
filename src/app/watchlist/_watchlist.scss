@@ -8,7 +8,7 @@
   }
 }
 
-.watchListSearchInput{
+.watchListSearchInput {
   box-shadow: var(--inputShadow) !important;
   -webkit-box-shadow: var(--inputShadow) inset !important;
 }
@@ -74,12 +74,12 @@
         cursor: default;
       }
       .awInputWrapper {
-        border: 0.1rem solid #d4d4d4;
+        border: 0.1rem solid var(--inputBorder);
         border-radius: 0.8rem;
         padding: 1rem;
         width: 100%;
         &:hover {
-          border-color: var(--black191);
+          border-color: var(--inputBorderHover);
         }
         .awLable {
           color: #b0b1b3;
@@ -158,11 +158,11 @@
     align-items: center;
     justify-content: space-between;
     padding: 3rem 5rem;
-    .go-btn{
-      &:disabled{
+    .go-btn {
+      &:disabled {
         background-color: var(--backColor) !important;
-    color: var(--sameModeColor) !important;
-    border: 1px solid var(--black191) !important;
+        color: var(--sameModeColor) !important;
+        border: 1px solid var(--black191) !important;
       }
     }
   }

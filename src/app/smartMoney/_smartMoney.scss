@@ -927,8 +927,9 @@
     border-radius: 2rem;
     padding: 2rem;
     padding-right: 1rem;
-    border: 0.1rem solid #e5e5e6;
+    border: 0.1rem solid var(--abountSmartMoneyTextBlockBorder);
     overflow: auto;
+    background-color: var(--abountSmartMoneyTextBlock);
     .smartMoneyHowItWorksModalBodyContainer {
       max-height: 35vh;
       overflow: scroll;
@@ -1031,7 +1032,7 @@
         cursor: default;
       }
       .awInputWrapper {
-        border: 0.1rem solid #d4d4d4;
+        border: 0.1rem solid var(--inputBorder);
         border-radius: 0.8rem;
         padding: 1rem;
         width: 100%;

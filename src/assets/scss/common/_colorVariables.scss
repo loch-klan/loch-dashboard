@@ -219,6 +219,12 @@
   --closedSideBarPersonBackgroundBorderColor: #e5e5e6;
   --closeTwitterBackgroundColor: #e5e5e680;
   --closeTwitterBackgroundBorderColor: #e5e5e680;
+
+  // Smart Money
+  --abountSmartMoneyIamge: url(../../images/SmartMoneyAbout.png);
+
+  --abountSmartMoneyTextBlock: white;
+  --abountSmartMoneyTextBlockBorder: #e5e5e6;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -434,6 +440,11 @@
   --closedSideBarPersonBackgroundBorderColor: #404040;
   --closeTwitterBackgroundColor: #202020;
   --closeTwitterBackgroundBorderColor: #202020;
+
+  // Smart Money
+  --abountSmartMoneyIamge: url(../../images/SmartMoneyAboutDark.png);
+  --abountSmartMoneyTextBlock: #101010;
+  --abountSmartMoneyTextBlockBorder: #202020;
 }
 [data-theme="dark2"] {
   // UPDATED
