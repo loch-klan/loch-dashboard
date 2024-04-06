@@ -833,7 +833,7 @@
           cursor: pointer;
           transform: translateY(-50%);
           border: 0.1rem solid var(--sidebarSectionalBOrder);
-          background-color: var(--sidebarBackgroud);
+          background-color: var(--closeTwitterBackgroundColor);
           height: 3rem;
           width: 3rem;
           display: flex;
@@ -916,7 +916,7 @@
           cursor: pointer;
           background-color: var(--closeTwitterBackgroundColor);
           border: 1.3px solid;
-          border-color: black;
+          border-color: var(--closeTwitterBackgroundColor);
           .sideBarFooterSignInIconForTwitter {
             filter: var(--invertColor);
           }

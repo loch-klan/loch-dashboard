@@ -927,8 +927,9 @@
     border-radius: 2rem;
     padding: 2rem;
     padding-right: 1rem;
-    border: 0.1rem solid #e5e5e6;
+    border: 0.1rem solid var(--abountSmartMoneyTextBlockBorder);
     overflow: auto;
+    background-color: var(--abountSmartMoneyTextBlock);
     .smartMoneyHowItWorksModalBodyContainer {
       max-height: 35vh;
       overflow: scroll;
