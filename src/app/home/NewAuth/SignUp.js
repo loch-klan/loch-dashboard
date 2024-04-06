@@ -55,7 +55,7 @@ const SignUp = ({
   const handleGoBackToSignUpPassThrough = () => {
     WelcomeSignUpReferralModalClosed({
       session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
+      email_address: email,
     });
     handleGoBackToSignUp();
   };
@@ -64,14 +64,14 @@ const SignUp = ({
     if (isReferralCodeStep) {
       WelcomeSignUpReferralModalClosed({
         session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
+        email_address: email,
       });
     }
   };
   const goToTelegramPassThrough = () => {
     WelcomeSignUpGetReferralCode({
       session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
+      email_address: email,
     });
     goToTelegram();
   };
