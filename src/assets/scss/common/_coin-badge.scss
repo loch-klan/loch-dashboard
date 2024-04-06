@@ -33,7 +33,12 @@
       color: var(--primaryTextColor);
       border: 0.1rem solid var(--black191);
     }
+    &::-webkit-scrollbar {
+      height: 0rem;
+    }
+    margin-bottom: 0.4rem;
     &:hover {
+      margin-bottom: 0rem;
       &::-webkit-scrollbar {
         height: 0.4rem;
       }

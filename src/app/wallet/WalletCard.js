@@ -17,6 +17,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import EditWalletExchange from "./EditWalletExchange";
+import { UnrecodgnizedProfileWalletIcon } from "../../assets/images/icons";
 export default function WalletCard(props) {
   const [show, setShow] = React.useState(false);
   const [EditModal, setEditModal] = React.useState(false);
@@ -123,7 +124,7 @@ export default function WalletCard(props) {
                       src={
                         props.wallet_metadata
                           ? props.wallet_metadata.symbol
-                          : unrecognizedIcon
+                          : UnrecodgnizedProfileWalletIcon
                       }
                     />
                   </div>
@@ -205,7 +206,7 @@ export default function WalletCard(props) {
                   {props.wallet_account_number && (
                     <>
                       <span
-                        className="inter-display-regular f-s-13 lh-16"
+                        className="inter-display-regular f-s-13 lh-16 account-details-address"
                         id="account_number"
                       >
                         {props.wallet_account_number}

@@ -120,3 +120,5 @@ export { default as PasswordIcon } from "./password.svg";
 export { default as PasswordPurpleIcon } from "./passwordPurple.svg";
 export { default as BackBlackIcon } from "./backIcon.svg";
 export { default as UserProfileMobileIcon } from "./userProfileMobile.svg";
+export { default as UnrecodgnizedProfileWalletIcon } from "./unrecodgnizedProfileWallet.svg";
+export { default as PieChartPorifleIcon } from "./pieChartPorifle.svg";
