@@ -71,6 +71,8 @@ import {
   TimeSpentOnboarding,
   TimeSpentOnboardingMobile,
   ToggleDarkModeAnalytics,
+  WelcomeSignedUpReferralCode,
+  resetUser,
 } from "../../utils/AnalyticsFunctions.js";
 import {
   GetAllPlan,
@@ -114,10 +116,16 @@ import NewHomeInputBlock from "./NewHomeInputBlock.js";
 import NewWelcomeMobile from "./NewWelcomeMobile.js";
 import ConfirmLeaveModal from "../common/ConformLeaveModal.js";
 import { isNewAddress } from "../Portfolio/Api.js";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      //Sign up referral
+      isReferralCodeStep: false,
+      referralCode: "",
+      isReferralCodeLoading: false,
+      //Sign up referral
       canCallConnectWalletFun: false,
       pageName: "Landing Page",
       areNewAddresses: false,
@@ -698,6 +706,11 @@ class NewWelcome extends BaseReactComponent {
   }
 
   toggleAuthModal = (val = "") => {
+    if (val !== "signup") {
+      this.setState({
+        isReferralCodeStep: false,
+      });
+    }
     this.setState({
       authmodal: val,
     });
@@ -1673,12 +1686,18 @@ class NewWelcome extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("email", this.state.emailSignup.toLowerCase());
       data.append("signed_up_from", "welcome");
+      data.append("referral_code", this.state.referralCode);
       EmailAddressAddedSignUp({
         email_address: this.state.emailSignup,
         session_id: "",
       });
 
-      this.props.signUpWelcome(this, data, this.toggleAuthModal);
+      this.props.signUpWelcome(
+        this,
+        data,
+        this.toggleAuthModal,
+        this.stopReferallButtonLoading
+      );
     }
   };
 
@@ -1723,21 +1742,20 @@ class NewWelcome extends BaseReactComponent {
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
-    if (window.ethereum) {
-      if (this.props.openConnectWallet) {
-        this.props.openConnectWallet();
-      }
-      // const provider = new ethers.providers.Web3Provider(window.ethereum);
-      // try {
-      //   const tempRes = await provider.send("eth_requestAccounts", []);
-      //   if (tempRes && tempRes.length > 0) {
-      //     window.sessionStorage.setItem("connectWalletCreditOnce", true);
-      //     this.addToList(tempRes);
-      //   }
-      // } catch (error) {
-      //   console.log("ethers error ", error);
-      // }
+
+    if (this.props.openConnectWallet) {
+      this.props.openConnectWallet();
     }
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // try {
+    //   const tempRes = await provider.send("eth_requestAccounts", []);
+    //   if (tempRes && tempRes.length > 0) {
+    //     window.sessionStorage.setItem("connectWalletCreditOnce", true);
+    //     this.addToList(tempRes);
+    //   }
+    // } catch (error) {
+    //   console.log("ethers error ", error);
+    // }
   };
   addToList = (addThese) => {
     const curItem = addThese[0];
@@ -2089,6 +2107,7 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   handleSignOutWelcome = () => {
+    resetUser(true);
     this.setState({
       confirmLeave: false,
       lochUser: undefined,
@@ -2100,6 +2119,45 @@ class NewWelcome extends BaseReactComponent {
       blurTable: true,
     });
   };
+  checkReferralCode = () => {
+    if (this.state.referralCode) {
+      this.setState({
+        isReferralCodeLoading: true,
+      });
+      const referalValHolderData = new URLSearchParams();
+      referalValHolderData.append("code", this.state.referralCode);
+
+      this.props.checkReferallCodeValid(
+        referalValHolderData,
+        this.handleSubmitEmailSignup,
+        this.stopReferallButtonLoading
+      );
+    }
+  };
+  stopReferallButtonLoading = (isSignedUp) => {
+    if (isSignedUp === true) {
+      WelcomeSignedUpReferralCode({
+        session_id: getCurrentUser().id,
+        email_address: this.state.emailSignup,
+        referral_code: this.state.referralCode,
+      });
+    }
+    this.setState({
+      isReferralCodeLoading: false,
+    });
+  };
+  handleGoToReferral = () => {
+    this.setState({
+      isReferralCodeStep: true,
+      isReferralCodeLoading: false,
+    });
+  };
+  handleGoBackToSignUp = () => {
+    this.setState({
+      isReferralCodeStep: false,
+    });
+  };
+
   render() {
     if (this.state.isMobileDevice) {
       return (
@@ -2596,6 +2654,17 @@ class NewWelcome extends BaseReactComponent {
                 emailSignup: val,
               });
             }}
+            handleChangeReferralCode={(val) => {
+              this.setState({
+                referralCode: val,
+              });
+            }}
+            isReferralCodeStep={this.state.isReferralCodeStep}
+            referralCode={this.state.referralCode}
+            isReferralCodeLoading={this.state.isReferralCodeLoading}
+            checkReferralCode={this.checkReferralCode}
+            handleGoToReferral={this.handleGoToReferral}
+            handleGoBackToSignUp={this.handleGoBackToSignUp}
           />
         ) : this.state.authmodal == "redirect" ? (
           <Redirect
@@ -3086,6 +3155,7 @@ const mapDispatchToProps = {
   SwitchDarkMode,
   signUpWelcome,
   isNewAddress,
+  checkReferallCodeValid,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewWelcome);

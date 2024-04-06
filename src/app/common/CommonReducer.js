@@ -8,6 +8,7 @@ import {
 } from "./ActionTypes";
 
 const INITIAL_STATE = {
+  profileReferralPage: false,
   nftPage: false,
   mobileLayout: false,
   profilePage: false,
@@ -79,6 +80,7 @@ export const CommonReducer = (state = INITIAL_STATE, action) => {
         mobilePortfolioPage: false,
         mobileLayout: false,
         nftPage: false,
+        profileReferralPage: false,
       };
     case TOP_SET_DEFAULT_VALUE:
       return {

@@ -21,7 +21,7 @@ import CustomTextControl from "./../../utils/form/CustomTextControl";
 // import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
 // import Dropdown from '../common/DropDown.js';
 import CopyLink from "../../assets/images/icons/CopyLink.svg";
-import CheckIcon from "../../assets/images/icons/check-upgrade.svg";
+import { CheckIcon } from "../../assets/images/icons";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 
 import moment from "moment";
@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import ApiModalFrame from "../../assets/images/apiModalFrame.svg";
 import EmailNotFoundCross from "../../assets/images/icons/EmailNotFoundCross.svg";
 import FileIcon from "../../assets/images/icons/file-text.svg";
+import { UserCreditTelegramLightIcon } from "../../assets/images/icons/index.js";
 import nextIcon from "../../assets/images/icons/next.svg";
 import next2Icon from "../../assets/images/icons/next2.svg";
 import PlusIcon from "../../assets/images/icons/plus-icon-grey.svg";
@@ -38,8 +39,11 @@ import prev2Icon from "../../assets/images/icons/prev2.svg";
 import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import {
+  CopyTradeSignUpPopupEmailAdded,
   ExportDataDownlaod,
   ExportDateSelected,
+  HomeSignUpReferralModalClosed,
+  HomeSignedUpReferralCode,
   LeaveEmailAdded,
   LeaveLinkCopied,
   LeaveLinkShared,
@@ -56,14 +60,20 @@ import {
 } from "../../utils/AnalyticsFunctions.js";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { CurrencyType, loadingAnimation } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  goToTelegram,
+  loadingAnimation,
+} from "../../utils/ReusableFunctions";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import { DatePickerControl } from "../../utils/form";
+import { checkReferallCodeValid } from "../ReferralCodes/ReferralCodesApi.js";
 import { notificationSend } from "../cohort/Api";
 import { updateUser } from "../profile/Api";
 import { exportDataApi, fixWalletApi } from "./Api.js";
 import UpgradeModal from "./upgradeModal";
+import validator from "validator";
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -81,6 +91,9 @@ class ExitOverlay extends BaseReactComponent {
         : getCurrentUser().id;
 
     this.state = {
+      isReferralCodeStep: false,
+      referralCode: "",
+      isReferralCodeLoading: false,
       // create account for cohort
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
@@ -215,7 +228,7 @@ class ExitOverlay extends BaseReactComponent {
 
   handleDone = () => {
     this.props.apiResponse(true);
-    this.state.onHide();
+    this.onHidePassThrough();
     this.state.changeList && this.state.changeList();
   };
   upgradeModal = () => {
@@ -516,7 +529,10 @@ class ExitOverlay extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("first_name", this.state.firstName);
       data.append("last_name", this.state.lastName);
-      data.append("email", this.state.email);
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       data.append("mobile", this.state.mobileNumber);
       this.props.updateUser(data, this);
       SignupEmail({
@@ -524,54 +540,89 @@ class ExitOverlay extends BaseReactComponent {
         email_address: this.state.email,
       });
     } else {
-      // signUpProperties({
-      //   userId: getCurrentUser().id,
-      //   email_address: this.state.email,
-      //   first_name: "",
-      //   last_name: "",
-      // });
-      // when leave
-      signInUser({
-        email_address: this.state?.email,
-        userId: getCurrentUser().id,
-        first_name: "",
-        last_name: "",
-        track: "leaving",
-      });
-      if (this.props.tracking === "Loch points profile") {
-        LochPointsSignUpPopupEmailAdded({
-          session_id: getCurrentUser().id,
-          email_address: this.state?.email,
+      // Sign up flow
+      this.checkReferralCode();
+    }
+  };
+  checkReferralCode = () => {
+    if (this.state.isReferralCodeStep) {
+      if (this.state.referralCode) {
+        this.setState({
+          isReferralCodeLoading: true,
         });
+        const referalValHolderData = new URLSearchParams();
+        referalValHolderData.append("code", this.state.referralCode);
+
+        this.props.checkReferallCodeValid(
+          referalValHolderData,
+          this.handelSignUpApi,
+          this.stopReferallButtonLoading
+        );
       }
+    } else {
+      this.setState({
+        isReferralCodeStep: true,
+        isReferralCodeLoading: false,
+      });
+    }
+  };
+  stopReferallButtonLoading = () => {
+    this.setState({
+      isReferralCodeLoading: false,
+    });
+  };
+  handelSignUpApi = () => {
+    if (this.props.tracking === "Copy trade") {
+      CopyTradeSignUpPopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state?.email,
+      });
+    }
+    signInUser({
+      email_address: this.state?.email,
+      userId: getCurrentUser().id,
+      first_name: "",
+      last_name: "",
+      track: "leaving",
+    });
+    if (this.props.tracking === "Loch points profile") {
+      LochPointsSignUpPopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state?.email,
+      });
+    }
+    if (this.props.updateTimer) {
+      this.props.updateTimer();
+    }
+    let email_arr = [];
+    let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    if (data) {
+      data.forEach((info) => {
+        email_arr.push(info.address);
+      });
+      const url = new URLSearchParams();
+      url.append("email", this.state.email);
+      url.append("signed_up_from", "leaving");
+      url.append("referral_code", this.state.referralCode);
+      // url.append("wallet_addresses", JSON.stringify(email_arr));
+      fixWalletApi(this, url, this.stopReferallButtonLoading);
+      LeaveEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+      });
       if (this.props.updateTimer) {
         this.props.updateTimer();
-      }
-      let email_arr = [];
-      let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
-      if (data) {
-        data.map((info) => {
-          email_arr.push(info.address);
-        });
-        const url = new URLSearchParams();
-        url.append("email", this.state.email);
-        url.append("signed_up_from", "leaving");
-        // url.append("wallet_addresses", JSON.stringify(email_arr));
-        fixWalletApi(this, url);
-        LeaveEmailAdded({
-          session_id: getCurrentUser().id,
-          email_address: this.state.email,
-        });
-        if (this.props.updateTimer) {
-          this.props.updateTimer();
-        }
       }
     }
   };
   handleRedirection = () => {
     // console.log("this", this.props);
-
-    this.setState({ show: false, showRedirection: true });
+    HomeSignedUpReferralCode({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      referall_code: this.state.referralCode,
+    });
+    this.setState({ showRedirection: true });
     this.props.handleRedirection();
   };
   handleSelect = (e) => {
@@ -817,6 +868,24 @@ class ExitOverlay extends BaseReactComponent {
       console.error("Failed to paste from clipboard: ", error);
     }
   };
+  goToSignUp = () => {
+    HomeSignUpReferralModalClosed({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.setState({
+      isReferralCodeStep: false,
+    });
+  };
+  onHidePassThrough = () => {
+    if (this.state.isReferralCodeStep) {
+      HomeSignUpReferralModalClosed({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+    this.state.onHide();
+  };
 
   render() {
     return (
@@ -826,7 +895,7 @@ class ExitOverlay extends BaseReactComponent {
             show={this.state.show}
             className="exit-overlay-form"
             // backdrop="static"
-            onHide={this.state.onHide}
+            onHide={this.onHidePassThrough}
             size="lg"
             dialogClassName={"exit-overlay-modal"}
             centered
@@ -839,7 +908,7 @@ class ExitOverlay extends BaseReactComponent {
                 : true
             }
           >
-            {this.state.showRedirection &&
+            {/* {this.state.showRedirection &&
               toast.success(
                 <div className="custom-toast-msg">
                   <div>Successful</div>
@@ -847,7 +916,7 @@ class ExitOverlay extends BaseReactComponent {
                     Please check your mailbox for the verification link
                   </div>
                 </div>
-              )}
+              )} */}
             <Modal.Header>
               {this.props.modalType === "apiModal" ||
               this.props.modalType === "exportModal" ||
@@ -923,7 +992,7 @@ class ExitOverlay extends BaseReactComponent {
                     </div>
                   )}
                 </div>
-              ) : (
+              ) : this.state.showRedirection ? null : (
                 <div className="exitOverlayIcon popup-main-icon-with-border">
                   <Image
                     src={ExitOverlayIcon}
@@ -931,11 +1000,17 @@ class ExitOverlay extends BaseReactComponent {
                   />
                 </div>
               )}
-              {this.props.goToSignIn && !this.props.comingDirectly ? (
+              {this.props.goToSignIn &&
+              !this.props.comingDirectly &&
+              !this.state.showRedirection ? (
                 <Image
                   className="back-icon cp"
                   src={BackIcon}
-                  onClick={this.props.goToSignIn}
+                  onClick={
+                    this.state.isReferralCodeStep
+                      ? this.goToSignUp
+                      : this.props.goToSignIn
+                  }
                 />
               ) : null}
               <div
@@ -950,7 +1025,7 @@ class ExitOverlay extends BaseReactComponent {
                       // emailAdded: true,
                     },
                     () => {
-                      this.state.onHide();
+                      this.onHidePassThrough();
                     }
                   );
                 }}
@@ -959,159 +1034,171 @@ class ExitOverlay extends BaseReactComponent {
               </div>
             </Modal.Header>
             <Modal.Body>
-              {this.props.modalType === "apiModal" ||
-              this.props.modalType === "exportModal" ||
-              this.props.modalType === "cohort" ? (
-                <div
-                  className={
-                    this.props.modalType === "exportModal"
-                      ? "export-modal-body"
-                      : this.props.modalType === "cohort"
-                      ? "cohort-modal-body"
-                      : "api-modal-body"
-                  }
-                >
-                  <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">
-                    {this.props.headerTitle}
-                  </h6>
-                  <p className="inter-display-regular f-s-13 lh-16 grey-B0B">
-                    {this.props.modalType === "apiModal"
-                      ? "Personalized digital asset intelligence via API"
-                      : this.props.modalType === "cohort"
-                      ? this.props.isEdit
-                        ? `added ${this.props.addedon}`
-                        : "Track a pod of whales here"
-                      : this.props.headerSubTitle}
-                  </p>
-                  {this.props.modalType === "apiModal" ? (
-                    <div className="api-modal-frame">
-                      <Image src={ApiModalFrame} />
-                      <p className="inter-display-regular f-s-13 lh-16 black-191">
-                        This feature is coming soon
-                      </p>
-                    </div>
-                  ) : this.props.modalType === "exportModal" ? (
-                    <div className="export-body">
-                      <div className="export-timeline">
-                        <Form onValidSubmit={this.submit}>
-                          <div className="timeline-wrapper">
-                            <div
-                              style={{
-                                marginRight: "1rem",
-                              }}
-                              className="inter-display-medium f-s-16 lh-19 black-191"
-                            >
-                              Export data from{" "}
-                            </div>
-                            <FormElement
-                              classes={"BorderNew"}
-                              hideOnblur={this.props.hideOnblur}
-                              showHiddenError={this.props.showHiddenError}
-                              valueLink={this.linkState(
-                                this,
-                                "fromDate",
-                                this.handleFromDate
-                              )}
-                              required
-                              validations={[
-                                {
-                                  validate: FormValidator.isRequired,
-                                  message: "From date cannot be empty",
-                                },
-                              ]}
-                              control={{
-                                type: DatePickerControl,
-                                settings: {
-                                  placeholder: "From Date",
-                                  showDateIcon: false,
-                                  nextLabel: (
-                                    <Image
-                                      className="date-navigator-icons-next"
-                                      src={nextIcon}
-                                    />
-                                  ),
-                                  next2Label: (
-                                    <Image
-                                      className="date-navigator-icons"
-                                      src={next2Icon}
-                                    />
-                                  ),
-                                  prevLabel: (
-                                    <Image
-                                      className="date-navigator-icons-next"
-                                      src={prevIcon}
-                                    />
-                                  ),
-                                  prev2Label: (
-                                    <Image
-                                      className="date-navigator-icons"
-                                      src={prev2Icon}
-                                    />
-                                  ),
-                                },
-                              }}
-                            />
-                            <div
-                              style={{
-                                marginLeft: "1rem",
-                                marginRight: "1rem",
-                              }}
-                              className="inter-display-medium f-s-16 lh-19 black-191"
-                            >
-                              to
-                            </div>
-                            <FormElement
-                              hideOnblur={this.props.hideOnblur}
-                              showHiddenError={this.props.showHiddenError}
-                              valueLink={this.linkState(
-                                this,
-                                "toDate",
-                                this.onDataSelected
-                              )}
-                              required
-                              validations={[
-                                {
-                                  validate: FormValidator.isRequired,
-                                  message: "To date cannot be empty",
-                                },
-                              ]}
-                              control={{
-                                type: DatePickerControl,
-                                settings: {
-                                  placeholder: "To Date",
-                                  minDate: this.state.fromDate || new Date(),
-                                  showDateIcon: false,
-                                  nextLabel: (
-                                    <Image
-                                      className="date-navigator-icons-next"
-                                      src={nextIcon}
-                                    />
-                                  ),
-                                  next2Label: (
-                                    <Image
-                                      className="date-navigator-icons"
-                                      src={next2Icon}
-                                    />
-                                  ),
-                                  prevLabel: (
-                                    <Image
-                                      className="date-navigator-icons-next"
-                                      src={prevIcon}
-                                    />
-                                  ),
-                                  prev2Label: (
-                                    <Image
-                                      className="date-navigator-icons"
-                                      src={prev2Icon}
-                                    />
-                                  ),
-                                },
-                              }}
-                            />
-                          </div>
-                        </Form>
+              <div
+                style={
+                  this.state.showRedirection
+                    ? {
+                        height: "35rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }
+                    : {}
+                }
+              >
+                {this.props.modalType === "apiModal" ||
+                this.props.modalType === "exportModal" ||
+                this.props.modalType === "cohort" ? (
+                  <div
+                    className={
+                      this.props.modalType === "exportModal"
+                        ? "export-modal-body"
+                        : this.props.modalType === "cohort"
+                        ? "cohort-modal-body"
+                        : "api-modal-body"
+                    }
+                  >
+                    <h6 className="inter-display-medium f-s-20 lh-24 m-b-8 black-000">
+                      {this.props.headerTitle}
+                    </h6>
+                    <p className="inter-display-regular f-s-13 lh-16 grey-B0B">
+                      {this.props.modalType === "apiModal"
+                        ? "Personalized digital asset intelligence via API"
+                        : this.props.modalType === "cohort"
+                        ? this.props.isEdit
+                          ? `added ${this.props.addedon}`
+                          : "Track a pod of whales here"
+                        : this.props.headerSubTitle}
+                    </p>
+                    {this.props.modalType === "apiModal" ? (
+                      <div className="api-modal-frame">
+                        <Image src={ApiModalFrame} />
+                        <p className="inter-display-regular f-s-13 lh-16 black-191">
+                          This feature is coming soon
+                        </p>
                       </div>
-                      {/* <div className="export-item-wrapper">
+                    ) : this.props.modalType === "exportModal" ? (
+                      <div className="export-body">
+                        <div className="export-timeline">
+                          <Form onValidSubmit={this.submit}>
+                            <div className="timeline-wrapper">
+                              <div
+                                style={{
+                                  marginRight: "1rem",
+                                }}
+                                className="inter-display-medium f-s-16 lh-19 black-191"
+                              >
+                                Export data from{" "}
+                              </div>
+                              <FormElement
+                                classes={"BorderNew"}
+                                hideOnblur={this.props.hideOnblur}
+                                showHiddenError={this.props.showHiddenError}
+                                valueLink={this.linkState(
+                                  this,
+                                  "fromDate",
+                                  this.handleFromDate
+                                )}
+                                required
+                                validations={[
+                                  {
+                                    validate: FormValidator.isRequired,
+                                    message: "From date cannot be empty",
+                                  },
+                                ]}
+                                control={{
+                                  type: DatePickerControl,
+                                  settings: {
+                                    placeholder: "From Date",
+                                    showDateIcon: false,
+                                    nextLabel: (
+                                      <Image
+                                        className="date-navigator-icons-next"
+                                        src={nextIcon}
+                                      />
+                                    ),
+                                    next2Label: (
+                                      <Image
+                                        className="date-navigator-icons"
+                                        src={next2Icon}
+                                      />
+                                    ),
+                                    prevLabel: (
+                                      <Image
+                                        className="date-navigator-icons-next"
+                                        src={prevIcon}
+                                      />
+                                    ),
+                                    prev2Label: (
+                                      <Image
+                                        className="date-navigator-icons"
+                                        src={prev2Icon}
+                                      />
+                                    ),
+                                  },
+                                }}
+                              />
+                              <div
+                                style={{
+                                  marginLeft: "1rem",
+                                  marginRight: "1rem",
+                                }}
+                                className="inter-display-medium f-s-16 lh-19 black-191"
+                              >
+                                to
+                              </div>
+                              <FormElement
+                                hideOnblur={this.props.hideOnblur}
+                                showHiddenError={this.props.showHiddenError}
+                                valueLink={this.linkState(
+                                  this,
+                                  "toDate",
+                                  this.onDataSelected
+                                )}
+                                required
+                                validations={[
+                                  {
+                                    validate: FormValidator.isRequired,
+                                    message: "To date cannot be empty",
+                                  },
+                                ]}
+                                control={{
+                                  type: DatePickerControl,
+                                  settings: {
+                                    placeholder: "To Date",
+                                    minDate: this.state.fromDate || new Date(),
+                                    showDateIcon: false,
+                                    nextLabel: (
+                                      <Image
+                                        className="date-navigator-icons-next"
+                                        src={nextIcon}
+                                      />
+                                    ),
+                                    next2Label: (
+                                      <Image
+                                        className="date-navigator-icons"
+                                        src={next2Icon}
+                                      />
+                                    ),
+                                    prevLabel: (
+                                      <Image
+                                        className="date-navigator-icons-next"
+                                        src={prevIcon}
+                                      />
+                                    ),
+                                    prev2Label: (
+                                      <Image
+                                        className="date-navigator-icons"
+                                        src={prev2Icon}
+                                      />
+                                    ),
+                                  },
+                                }}
+                              />
+                            </div>
+                          </Form>
+                        </div>
+                        {/* <div className="export-item-wrapper">
                         {this.state.exportItem?.map((item) => {
                           return (
                             <span
@@ -1130,7 +1217,7 @@ class ExitOverlay extends BaseReactComponent {
                           );
                         })}
                       </div> */}
-                      {/* <div
+                        {/* <div
                         style={{
                           display: "flex",
                           alignItems: "center",
@@ -1155,596 +1242,701 @@ class ExitOverlay extends BaseReactComponent {
                           }}
                         />
                       </div> */}
-                      {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
-                      {/* <div onClick={()=>this.handleExportNow()} > */}
-                      {this.state.loadingExportFile === true ? (
-                        // <Image src={lochClean} className='loading-export'/>
-                        <Button className="primary-btn">
-                          {loadingAnimation()}
-                        </Button>
-                      ) : (
-                        <Button
-                          className="primary-btn main-button-invert btn btn-primary"
-                          onClick={() => this.handleExportNow()}
+                        {/* <Button className='primary-btn' onClick={()=>this.handleExportNow()} >Export now</Button> */}
+                        {/* <div onClick={()=>this.handleExportNow()} > */}
+                        {this.state.loadingExportFile === true ? (
+                          // <Image src={lochClean} className='loading-export'/>
+                          <Button className="primary-btn">
+                            {loadingAnimation()}
+                          </Button>
+                        ) : (
+                          <Button
+                            className="primary-btn main-button-invert btn btn-primary"
+                            onClick={() => this.handleExportNow()}
+                          >
+                            Export Now
+                          </Button>
+                        )}
+                        {/* </div> */}
+                      </div>
+                    ) : this.props.modalType === "cohort" ? (
+                      <div className="cohort-body">
+                        <div
+                          className="cohort-item-wrapper input-error-wrapper input-noshadow-dark input-hover-states"
+                          style={{ marginBottom: "0rem" }}
                         >
-                          Export Now
-                        </Button>
-                      )}
-                      {/* </div> */}
-                    </div>
-                  ) : this.props.modalType === "cohort" ? (
-                    <div className="cohort-body">
-                      <div
-                        className="cohort-item-wrapper input-error-wrapper input-noshadow-dark input-hover-states"
-                        style={{ marginBottom: "0rem" }}
-                      >
-                        {!this.state.showWarningMsg ? (
-                          <Form onValidSubmit={this.handleCohortSave}>
-                            <div style={{ position: "relative" }}>
-                              <FormElement
-                                hideOnblur={this.props.hideOnblur}
-                                showHiddenError={this.props.showHiddenError}
-                                valueLink={this.linkState(this, "cohort_name")}
-                                label="Pod Name"
-                                required
-                                validations={
-                                  [
-                                    // {
-                                    //   validate: FormValidator.isRequired,
-                                    //   message: "Enter your pod name",
-                                    // },
-                                  ]
-                                }
-                                control={{
-                                  type: CustomTextControl,
-                                  settings: {
-                                    placeholder: "Give your pod a name",
-                                    onBlur: (onBlur) => {
-                                      // console.log("pod", this.state.cohort_name)
-                                      PodName({
-                                        session_id: getCurrentUser().id,
-                                        email_address: getCurrentUser().email,
-                                        pod_name: this.state.cohort_name,
-                                      });
-                                      if (this.props.updateTimer) {
-                                        this.props.updateTimer();
-                                      }
+                          {!this.state.showWarningMsg ? (
+                            <Form onValidSubmit={this.handleCohortSave}>
+                              <div style={{ position: "relative" }}>
+                                <FormElement
+                                  hideOnblur={this.props.hideOnblur}
+                                  showHiddenError={this.props.showHiddenError}
+                                  valueLink={this.linkState(
+                                    this,
+                                    "cohort_name"
+                                  )}
+                                  label="Pod Name"
+                                  required
+                                  validations={
+                                    [
+                                      // {
+                                      //   validate: FormValidator.isRequired,
+                                      //   message: "Enter your pod name",
+                                      // },
+                                    ]
+                                  }
+                                  control={{
+                                    type: CustomTextControl,
+                                    settings: {
+                                      placeholder: "Give your pod a name",
+                                      onBlur: (onBlur) => {
+                                        // console.log("pod", this.state.cohort_name)
+                                        PodName({
+                                          session_id: getCurrentUser().id,
+                                          email_address: getCurrentUser().email,
+                                          pod_name: this.state.cohort_name,
+                                        });
+                                        if (this.props.updateTimer) {
+                                          this.props.updateTimer();
+                                        }
+                                      },
                                     },
-                                  },
-                                }}
-                                classes={{
-                                  inputField: `${
-                                    this.state.podnameError && `email-error`
+                                  }}
+                                  classes={{
+                                    inputField: `${
+                                      this.state.podnameError && `email-error`
+                                    }`,
+                                  }}
+                                />
+                                {this.state.podnameError && (
+                                  <span className="error-message">
+                                    <Image
+                                      src={EmailNotFoundCross}
+                                      onClick={() => {
+                                        this.setState({ podnameError: false });
+                                      }}
+                                      style={{ cursor: "pointer" }}
+                                    />
+                                    <p className="inter-display-medium f-s-16 lh-19">
+                                      Pod name required
+                                    </p>
+                                  </span>
+                                )}
+                              </div>
+
+                              <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
+                                Wallets
+                              </h4>
+
+                              {/* Multiple address box */}
+
+                              <div
+                                className="add-modal-inputs"
+                                style={{
+                                  paddingLeft: `${
+                                    this.state.addWalletList?.length === 1
+                                      ? "0rem"
+                                      : "6rem"
+                                  }`,
+                                  paddingRight: `${
+                                    this.state.addWalletList?.length < 5
+                                      ? "0rem"
+                                      : "2rem"
                                   }`,
                                 }}
-                              />
-                              {this.state.podnameError && (
-                                <span className="error-message">
-                                  <Image
-                                    src={EmailNotFoundCross}
-                                    onClick={() => {
-                                      this.setState({ podnameError: false });
-                                    }}
-                                    style={{ cursor: "pointer" }}
-                                  />
-                                  <p className="inter-display-medium f-s-16 lh-19">
-                                    Pod name required
-                                  </p>
-                                </span>
-                              )}
-                            </div>
-
-                            <h4 className="inter-display-medium f-s-13 lh-15 grey-313 m-b-12">
-                              Wallets
-                            </h4>
-
-                            {/* Multiple address box */}
-
-                            <div
-                              className="add-modal-inputs"
-                              style={{
-                                paddingLeft: `${
-                                  this.state.addWalletList?.length === 1
-                                    ? "0rem"
-                                    : "6rem"
-                                }`,
-                                paddingRight: `${
-                                  this.state.addWalletList?.length < 5
-                                    ? "0rem"
-                                    : "2rem"
-                                }`,
-                              }}
-                            >
-                              {this.state.addWalletList?.map((elem, index) => {
-                                // console.log(elem.coinFound)
-                                return (
-                                  <div
-                                    className="add-wallet-input-section"
-                                    key={index}
-                                    id={`add-wallet-${index}`}
-                                    style={{
-                                      marginBottom: `${
-                                        this.state.addWalletList?.length - 1 ===
-                                        index
-                                          ? "0rem"
-                                          : "1.2rem"
-                                      }`,
-                                    }}
-                                  >
-                                    {this.state.addWalletList.length > 1 ? (
-                                      <div
-                                        className="delete-icon"
-                                        onClick={() =>
-                                          this.deleteAddress(index)
-                                        }
-                                      >
-                                        <Image src={DeleteIcon} />
-                                      </div>
-                                    ) : (
-                                      ""
-                                    )}
-
-                                    {(elem.address == "" ||
-                                      elem.displayAddress == "") &&
-                                    index == 0 &&
-                                    !this.props?.isEdit ? (
-                                      <span
-                                        className="paste-text cp"
-                                        onClick={this.handlePaste}
-                                      >
-                                        <Image
-                                          src={CopyLink}
-                                          // onClick={() => this.setState({ emailError: false })}
-                                        />
-                                        <p className="inter-display-medium f-s-16 lh-19">
-                                          Paste
-                                        </p>
-                                      </span>
-                                    ) : (
-                                      ""
-                                    )}
-
-                                    <input
-                                      autoFocus
-                                      name={`wallet${index + 1}`}
-                                      value={
-                                        elem.displayAddress ||
-                                        elem.address ||
-                                        ""
-                                      }
-                                      ref={index == 0 ? this.pasteInput : ""}
-                                      placeholder="Paste any wallet address or ENS here"
-                                      // className='inter-display-regular f-s-16 lh-20'
-                                      className={`inter-display-regular f-s-16 lh-20 ${
-                                        elem.address ? "is-valid" : null
-                                      }`}
-                                      onChange={(e) => this.handleOnchange(e)}
-                                      id={elem?.id}
-                                      onKeyDown={this.handleTabPress}
-                                      // style={getPadding(
-                                      //   `add-wallet-${index}`,
-                                      //   elem,
-                                      //   this.props.OnboardingState
-                                      // )}
-                                    />
-                                    {elem.address ? (
-                                      elem.coinFound &&
-                                      elem.coins.length > 0 ? (
-                                        // COIN FOUND STATE
-                                        <CustomChip
-                                          coins={elem.coins.filter(
-                                            (c) => c.chain_detected
-                                          )}
-                                          key={index}
-                                          isLoaded={true}
-                                        ></CustomChip>
-                                      ) : elem.coins.length ===
-                                        this.props.OnboardingState.coinsList
-                                          .length ? (
-                                        // elem.coins.length === 1
-                                        // UNRECOGNIZED WALLET
-                                        <CustomChip
-                                          coins={null}
-                                          key={index}
-                                          isLoaded={true}
-                                        ></CustomChip>
-                                      ) : (
-                                        // LOADING STATE
-                                        <CustomChip
-                                          coins={null}
-                                          key={index}
-                                          isLoaded={false}
-                                        ></CustomChip>
-                                      )
-                                    ) : (
-                                      ""
-                                    )}
-                                  </div>
-                                );
-                              })}
-                            </div>
-
-                            {this.state.addWalletList[0]?.address !== "" &&
-                              this.state.addWalletList?.length <
-                                10(
-                                  <div className="m-b-32 add-wallet-btn">
-                                    <Button
-                                      className="grey-btn"
-                                      onClick={this.addAddress}
-                                    >
-                                      <Image src={PlusIcon} /> Add another
-                                    </Button>
-                                  </div>
-                                )}
-
-                            <div className="save-btn-section">
-                              <input
-                                type="file"
-                                ref={this.fileInputRef}
-                                onChange={this.handleFileSelect}
-                                style={{ display: "none" }}
-                              />
-                              <Button
-                                className={`secondary-btn upload-btn ${
-                                  this.state.email ? "active" : ""
-                                }`}
-                                type="button"
-                                onClick={this.handleUpload}
                               >
-                                <Image src={UploadIcon} />
-                                Upload CSV / Text file
-                              </Button>
-                              <div>
-                                {this.props.isEdit && (
-                                  <Button
-                                    className={`secondary-btn m-r-12`}
-                                    type="button"
-                                    style={
-                                      this.props.isEdit
-                                        ? { border: "none" }
-                                        : {}
-                                    }
-                                    onClick={this.handleDeleteCohort}
-                                  >
-                                    Delete
-                                  </Button>
+                                {this.state.addWalletList?.map(
+                                  (elem, index) => {
+                                    // console.log(elem.coinFound)
+                                    return (
+                                      <div
+                                        className="add-wallet-input-section"
+                                        key={index}
+                                        id={`add-wallet-${index}`}
+                                        style={{
+                                          marginBottom: `${
+                                            this.state.addWalletList?.length -
+                                              1 ===
+                                            index
+                                              ? "0rem"
+                                              : "1.2rem"
+                                          }`,
+                                        }}
+                                      >
+                                        {this.state.addWalletList.length > 1 ? (
+                                          <div
+                                            className="delete-icon"
+                                            onClick={() =>
+                                              this.deleteAddress(index)
+                                            }
+                                          >
+                                            <Image src={DeleteIcon} />
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+
+                                        {(elem.address == "" ||
+                                          elem.displayAddress == "") &&
+                                        index == 0 &&
+                                        !this.props?.isEdit ? (
+                                          <span
+                                            className="paste-text cp"
+                                            onClick={this.handlePaste}
+                                          >
+                                            <Image
+                                              src={CopyLink}
+                                              // onClick={() => this.setState({ emailError: false })}
+                                            />
+                                            <p className="inter-display-medium f-s-16 lh-19">
+                                              Paste
+                                            </p>
+                                          </span>
+                                        ) : (
+                                          ""
+                                        )}
+
+                                        <input
+                                          autoFocus
+                                          name={`wallet${index + 1}`}
+                                          value={
+                                            elem.displayAddress ||
+                                            elem.address ||
+                                            ""
+                                          }
+                                          ref={
+                                            index == 0 ? this.pasteInput : ""
+                                          }
+                                          placeholder="Paste any wallet address or ENS here"
+                                          // className='inter-display-regular f-s-16 lh-20'
+                                          className={`inter-display-regular f-s-16 lh-20 ${
+                                            elem.address ? "is-valid" : null
+                                          }`}
+                                          onChange={(e) =>
+                                            this.handleOnchange(e)
+                                          }
+                                          id={elem?.id}
+                                          onKeyDown={this.handleTabPress}
+                                          // style={getPadding(
+                                          //   `add-wallet-${index}`,
+                                          //   elem,
+                                          //   this.props.OnboardingState
+                                          // )}
+                                        />
+                                        {elem.address ? (
+                                          elem.coinFound &&
+                                          elem.coins.length > 0 ? (
+                                            // COIN FOUND STATE
+                                            <CustomChip
+                                              coins={elem.coins.filter(
+                                                (c) => c.chain_detected
+                                              )}
+                                              key={index}
+                                              isLoaded={true}
+                                            ></CustomChip>
+                                          ) : elem.coins.length ===
+                                            this.props.OnboardingState.coinsList
+                                              .length ? (
+                                            // elem.coins.length === 1
+                                            // UNRECOGNIZED WALLET
+                                            <CustomChip
+                                              coins={null}
+                                              key={index}
+                                              isLoaded={true}
+                                            ></CustomChip>
+                                          ) : (
+                                            // LOADING STATE
+                                            <CustomChip
+                                              coins={null}
+                                              key={index}
+                                              isLoaded={false}
+                                            ></CustomChip>
+                                          )
+                                        ) : (
+                                          ""
+                                        )}
+                                      </div>
+                                    );
+                                  }
                                 )}
+                              </div>
+
+                              {this.state.addWalletList[0]?.address !== "" &&
+                                this.state.addWalletList?.length <
+                                  10(
+                                    <div className="m-b-32 add-wallet-btn">
+                                      <Button
+                                        className="grey-btn"
+                                        onClick={this.addAddress}
+                                      >
+                                        <Image src={PlusIcon} /> Add another
+                                      </Button>
+                                    </div>
+                                  )}
+
+                              <div className="save-btn-section">
+                                <input
+                                  type="file"
+                                  ref={this.fileInputRef}
+                                  onChange={this.handleFileSelect}
+                                  style={{ display: "none" }}
+                                />
                                 <Button
-                                  className={`primary-btn ${
+                                  className={`secondary-btn upload-btn ${
                                     this.state.email ? "active" : ""
                                   }`}
-                                  type="submit"
+                                  type="button"
+                                  onClick={this.handleUpload}
                                 >
-                                  Save
+                                  <Image src={UploadIcon} />
+                                  Upload CSV / Text file
                                 </Button>
+                                <div>
+                                  {this.props.isEdit && (
+                                    <Button
+                                      className={`secondary-btn m-r-12`}
+                                      type="button"
+                                      style={
+                                        this.props.isEdit
+                                          ? { border: "none" }
+                                          : {}
+                                      }
+                                      onClick={this.handleDeleteCohort}
+                                    >
+                                      Delete
+                                    </Button>
+                                  )}
+                                  <Button
+                                    className={`primary-btn ${
+                                      this.state.email ? "active" : ""
+                                    }`}
+                                    type="submit"
+                                  >
+                                    Save
+                                  </Button>
+                                </div>
                               </div>
-                            </div>
-                          </Form>
-                        ) : (
-                          <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              flexDirection: "column",
-                            }}
-                          >
+                            </Form>
+                          ) : (
                             <div
                               style={{
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
+                                flexDirection: "column",
                               }}
                             >
                               <div
                                 style={{
                                   display: "flex",
                                   alignItems: "center",
-                                  background: "#E5E5E680",
-                                  marginRight: "2rem",
-                                  borderRadius: "1.2rem",
-                                  padding: "1.1rem 1.6rem",
+                                  justifyContent: "center",
                                 }}
                               >
-                                <Image
-                                  src={FileIcon}
-                                  style={{ marginRight: "1rem" }}
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    background: "#E5E5E680",
+                                    marginRight: "2rem",
+                                    borderRadius: "1.2rem",
+                                    padding: "1.1rem 1.6rem",
+                                  }}
+                                >
+                                  <Image
+                                    src={FileIcon}
+                                    style={{ marginRight: "1rem" }}
+                                  />
+                                  <h4 className="inter-display-medium f-s-13 lh-15 grey-7C7">
+                                    {this.state.fileName}
+                                  </h4>
+                                </div>
+                                <input
+                                  type="file"
+                                  ref={this.fileInputRef}
+                                  onChange={this.handleFileSelect}
+                                  style={{ display: "none" }}
                                 />
-                                <h4 className="inter-display-medium f-s-13 lh-15 grey-7C7">
-                                  {this.state.fileName}
-                                </h4>
+                                <Button
+                                  className={`secondary-btn`}
+                                  type="button"
+                                  style={{
+                                    paddingLeft: "1.8rem",
+                                    paddingRight: "1.8rem",
+                                  }}
+                                  onClick={() => {
+                                    this.handleUpload();
+                                  }}
+                                >
+                                  Change file
+                                </Button>
                               </div>
-                              <input
-                                type="file"
-                                ref={this.fileInputRef}
-                                onChange={this.handleFileSelect}
-                                style={{ display: "none" }}
-                              />
-                              <Button
-                                className={`secondary-btn`}
-                                type="button"
-                                style={{
-                                  paddingLeft: "1.8rem",
-                                  paddingRight: "1.8rem",
-                                }}
-                                onClick={() => {
-                                  this.handleUpload();
-                                }}
-                              >
-                                Change file
-                              </Button>
-                            </div>
-                            {/* Loader */}
-                            {!this.state.isIndexed && (
-                              <>
-                                <div className="upload-loader"></div>
-                                <h4 className="inter-display-medium f-s-16 lh-19 grey-B0B m-t-20">
-                                  {this.state.uploadStatus}{" "}
-                                  {this.state.total_unique_address}{" "}
-                                  {this.state.total_unique_address > 0
-                                    ? "unique addresses"
-                                    : "unique address"}
-                                </h4>
-                              </>
-                            )}
-                            {/* Form */}
-                            {this.state.podId && (
-                              <>
-                                <div className="form-wrapper m-t-20">
-                                  {/* <Image src={FileIcon} /> */}
-                                  {!this.state.emailAdded &&
-                                    !this.state.isIndexed && (
-                                      <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
-                                        Enter your email address and we will
-                                        notify <br />
-                                        you once the addresses have been updated
-                                      </h4>
-                                    )}
-                                  {!this.state.emailAdded &&
-                                    !this.state.isIndexed && (
-                                      <div className="email-section input-noshadow-dark input-hover-states">
-                                        <Form
-                                          onValidSubmit={this.EmailNotification}
-                                        >
-                                          <FormElement
-                                            hideOnblur={this.props.hideOnblur}
-                                            showHiddenError={
-                                              this.props.showHiddenError
+                              {/* Loader */}
+                              {!this.state.isIndexed && (
+                                <>
+                                  <div className="upload-loader"></div>
+                                  <h4 className="inter-display-medium f-s-16 lh-19 grey-B0B m-t-20">
+                                    {this.state.uploadStatus}{" "}
+                                    {this.state.total_unique_address}{" "}
+                                    {this.state.total_unique_address > 0
+                                      ? "unique addresses"
+                                      : "unique address"}
+                                  </h4>
+                                </>
+                              )}
+                              {/* Form */}
+                              {this.state.podId && (
+                                <>
+                                  <div className="form-wrapper m-t-20">
+                                    {/* <Image src={FileIcon} /> */}
+                                    {!this.state.emailAdded &&
+                                      !this.state.isIndexed && (
+                                        <h4 className="inter-display-medium f-s-16 lh-19 grey-969 m-b-20">
+                                          Enter your email address and we will
+                                          notify <br />
+                                          you once the addresses have been
+                                          updated
+                                        </h4>
+                                      )}
+                                    {!this.state.emailAdded &&
+                                      !this.state.isIndexed && (
+                                        <div className="email-section input-noshadow-dark input-hover-states">
+                                          <Form
+                                            onValidSubmit={
+                                              this.EmailNotification
                                             }
-                                            valueLink={this.linkState(
-                                              this,
-                                              "email_notification"
-                                            )}
-                                            // label="Email Info"
-                                            required
-                                            validations={[
-                                              {
-                                                validate:
-                                                  FormValidator.isRequired,
-                                                message: "",
-                                              },
-                                              {
-                                                validate: FormValidator.isEmail,
-                                                message:
-                                                  "Please enter valid email id",
-                                              },
-                                            ]}
-                                            control={{
-                                              type: CustomTextControl,
-                                              settings: {
-                                                placeholder:
-                                                  "Enter your email address",
-                                              },
-                                            }}
-                                          />
-                                          <div className="save-btn-section">
-                                            <Button
-                                              className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                                                this.state.email_notification
-                                                  ? "active"
-                                                  : ""
-                                              }`}
-                                              type="submit"
-                                            >
-                                              Confirm
-                                            </Button>
-                                          </div>
-                                        </Form>
+                                          >
+                                            <FormElement
+                                              hideOnblur={this.props.hideOnblur}
+                                              showHiddenError={
+                                                this.props.showHiddenError
+                                              }
+                                              valueLink={this.linkState(
+                                                this,
+                                                "email_notification"
+                                              )}
+                                              // label="Email Info"
+                                              required
+                                              validations={[
+                                                {
+                                                  validate:
+                                                    FormValidator.isRequired,
+                                                  message: "",
+                                                },
+                                                {
+                                                  validate:
+                                                    FormValidator.isEmail,
+                                                  message:
+                                                    "Please enter valid email id",
+                                                },
+                                              ]}
+                                              control={{
+                                                type: CustomTextControl,
+                                                settings: {
+                                                  placeholder:
+                                                    "Enter your email address",
+                                                },
+                                              }}
+                                            />
+                                            <div className="save-btn-section">
+                                              <Button
+                                                className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                                  this.state.email_notification
+                                                    ? "active"
+                                                    : ""
+                                                }`}
+                                                type="submit"
+                                              >
+                                                Confirm
+                                              </Button>
+                                            </div>
+                                          </Form>
+                                        </div>
+                                      )}
+                                    {/* After email messgae */}
+                                    {(this.state.emailAdded ||
+                                      this.state.isIndexed) && (
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          textAlign: "start",
+                                        }}
+                                      >
+                                        <Image
+                                          src={CheckIcon}
+                                          style={{
+                                            marginRight: "1rem",
+                                            position: "static",
+                                            width: "3rem",
+                                          }}
+                                        />
+                                        <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
+                                          {this.state.isIndexed
+                                            ? "Great! Indexing is completed and your pod has been created."
+                                            : "Great! We will let you know once the indexing is complete."}
+                                        </h4>
                                       </div>
                                     )}
-                                  {/* After email messgae */}
+                                  </div>
                                   {(this.state.emailAdded ||
                                     this.state.isIndexed) && (
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        textAlign: "start",
-                                      }}
+                                    <Button
+                                      className="btn primary-btn m-t-20"
+                                      onClick={this.handleDone}
                                     >
-                                      <Image
-                                        src={CheckIcon}
-                                        style={{
-                                          marginRight: "1rem",
-                                          position: "static",
-                                          width: "3rem",
-                                        }}
-                                      />
-                                      <h4 className="inter-display-medium f-s-16 lh-19 grey-969">
-                                        {this.state.isIndexed
-                                          ? "Great! Indexing is completed and your pod has been created."
-                                          : "Great! We will let you know once the indexing is complete."}
-                                      </h4>
-                                    </div>
+                                      Done
+                                    </Button>
                                   )}
-                                </div>
-                                {(this.state.emailAdded ||
-                                  this.state.isIndexed) && (
-                                  <Button
-                                    className="btn primary-btn m-t-20"
-                                    onClick={this.handleDone}
-                                  >
-                                    Done
-                                  </Button>
-                                )}
-                              </>
-                            )}
-                          </div>
-                        )}
-                        {!this.state.showWarningMsg && (
-                          <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-t-16">
-                            Each row of the file should contain an address or an
-                            ENS. No title or header.
-                          </p>
-                        )}
+                                </>
+                              )}
+                            </div>
+                          )}
+                          {!this.state.showWarningMsg && (
+                            <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-t-16">
+                              Each row of the file should contain an address or
+                              an ENS. No title or header.
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              ) : this.props.modalType === "create_account" ? (
-                <div className="exit-overlay-body">
-                  <h6 className="inter-display-medium f-s-20 lh-24 ">
-                    Don’t lose your data
-                  </h6>
-                  {/* <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center">
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                ) : this.props.modalType === "create_account" ? (
+                  <div className="exit-overlay-body">
+                    <h6 className="inter-display-medium f-s-20 lh-24 ">
+                      Don’t lose your data
+                    </h6>
+                    {/* <p className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center">
                 Don’t let your hard work go to waste
               </p> */}
-                  <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
-                    Don’t let your hard work go to waste. Add your email so you
-                    can watch your whales with binoculars
-                  </p>
-                  {/* this.props.isSkip(); */}
-                  <div className="email-section input-noshadow-dark input-hover-states">
-                    <Form onValidSubmit={this.handleSave}>
-                      <FormElement
-                        hideOnblur={this.props.hideOnblur}
-                        showHiddenError={this.props.showHiddenError}
-                        valueLink={this.linkState(this, "email")}
-                        // label="Email Info"
-                        required
-                        validations={[
-                          {
-                            validate: FormValidator.isRequired,
-                            message: "",
-                          },
-                          {
-                            validate: FormValidator.isEmail,
-                            message: "Please enter valid email id",
-                          },
-                        ]}
-                        control={{
-                          type: CustomTextControl,
-                          settings: {
-                            placeholder: "Email",
-                          },
+                    <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24 text-center">
+                      Don’t let your hard work go to waste. Add your email so
+                      you can watch your whales with binoculars
+                    </p>
+                    {/* this.props.isSkip(); */}
+                    <div className="email-section input-noshadow-dark input-hover-states">
+                      <Form onValidSubmit={this.handleSave}>
+                        <FormElement
+                          hideOnblur={this.props.hideOnblur}
+                          showHiddenError={this.props.showHiddenError}
+                          valueLink={this.linkState(this, "email")}
+                          // label="Email Info"
+                          required
+                          validations={[
+                            {
+                              validate: FormValidator.isRequired,
+                              message: "",
+                            },
+                            {
+                              validate: FormValidator.isEmail,
+                              message: "Please enter valid email id",
+                            },
+                          ]}
+                          control={{
+                            type: CustomTextControl,
+                            settings: {
+                              placeholder: "Email",
+                            },
+                          }}
+                        />
+                        <div className="save-btn-section">
+                          <Button
+                            className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                              this.state.email ? "active" : ""
+                            }`}
+                            type="submit"
+                          >
+                            Save
+                          </Button>
+                        </div>
+                      </Form>
+                      <p
+                        className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-t-16 skip-link"
+                        onClick={() => {
+                          this.props.isSkip();
                         }}
+                      >
+                        Skip for now
+                      </p>
+                    </div>
+                    <div className="m-b-36 footer">
+                      <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                        At Loch, we care intensely about your privacy and
+                        pseudonymity.
+                      </p>
+                      <CustomOverlay
+                        text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                        position="top"
+                        isIcon={true}
+                        IconImage={LockIcon}
+                        isInfo={true}
+                        className={"fix-width"}
+                      >
+                        <Image
+                          src={InfoIcon}
+                          className="info-icon"
+                          onMouseEnter={this.leavePrivacy}
+                        />
+                      </CustomOverlay>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="exit-overlay-body">
+                    {this.state.showRedirection ? (
+                      <img
+                        style={{
+                          width: "40px",
+                          marginBottom: "30px",
+                          filter: `var(--invertColor)`,
+                        }}
+                        src={CheckIcon}
+                        alt=""
                       />
-                      <div className="save-btn-section">
-                        <Button
-                          className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                            this.state.email ? "active" : ""
-                          }`}
-                          type="submit"
-                        >
-                          Save
-                        </Button>
-                      </div>
-                    </Form>
-                    <p
-                      className="inter-display-medium f-s-16 lh-19 grey-7C7 text-center cp m-t-16 skip-link"
-                      onClick={() => {
-                        this.props.isSkip();
+                    ) : null}
+                    <h6
+                      className={`inter-display-medium ${
+                        this.state.showRedirection ? "f-s-28" : "f-s-20"
+                      }`}
+                      style={{
+                        marginBottom: this.state.showRedirection ? "1rem" : "",
                       }}
                     >
-                      Skip for now
-                    </p>
-                  </div>
-                  <div className="m-b-36 footer">
-                    <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                      At Loch, we care intensely about your privacy and
-                      pseudonymity.
-                    </p>
-                    <CustomOverlay
-                      text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
-                      position="top"
-                      isIcon={true}
-                      IconImage={LockIcon}
-                      isInfo={true}
-                      className={"fix-width"}
-                    >
-                      <Image
-                        src={InfoIcon}
-                        className="info-icon"
-                        onMouseEnter={this.leavePrivacy}
-                      />
-                    </CustomOverlay>
-                  </div>
-                </div>
-              ) : (
-                <div className="exit-overlay-body">
-                  <h6 className="inter-display-medium f-s-20 lh-24 ">
-                    {this.props.signup ? "Sign up" : " Don’t lose your data"}
-                  </h6>
-                  {!this.props?.signup ? (
-                    <>
-                      <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
-                        Access your data again through the unique reusable link,
+                      {this.props.signup
+                        ? this.state.showRedirection
+                          ? "Success!"
+                          : this.state.isReferralCodeStep
+                          ? "Referral code"
+                          : "Sign up"
+                        : " Don’t lose your data"}
+                    </h6>
+                    {!this.props?.signup ? (
+                      <>
+                        <p className="inter-display-medium f-s-16 lh-19 grey-7C7">
+                          Access your data again through the unique reusable
+                          link,
+                        </p>
+                        <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24">
+                          or link your email
+                        </p>
+                      </>
+                    ) : (
+                      <p
+                        className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24"
+                        style={{ textAlign: "center" }}
+                      >
+                        {this.state.showRedirection
+                          ? "You’ll receive a verification link in your mailbox."
+                          : this.state.isReferralCodeStep
+                          ? "Add your referral code here to create an account"
+                          : this.props.customDesc
+                          ? this.props.customDesc
+                          : "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"}
+                        <p>
+                          {this.state.showRedirection
+                            ? "You can now close this tab."
+                            : ""}
+                        </p>
                       </p>
-                      <p className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24">
-                        or link your email
-                      </p>
-                    </>
-                  ) : (
-                    <p
-                      className="inter-display-medium f-s-16 lh-19 grey-7C7 m-b-24"
-                      style={{ textAlign: "center" }}
-                    >
-                      Don’t let your hard work go to waste. Add your email so
-                      you can analyze your portfolio with superpowers
-                    </p>
-                  )}
-                  <div className="email-section input-noshadow-dark input-hover-states">
-                    <Form onValidSubmit={this.handleSave}>
-                      <FormElement
-                        hideOnblur={this.props.hideOnblur}
-                        showHiddenError={this.props.showHiddenError}
-                        valueLink={this.linkState(this, "email")}
-                        // label="Email Info"
-                        required
-                        validations={[
-                          {
-                            validate: FormValidator.isRequired,
-                            message: "",
-                          },
-                          {
-                            validate: FormValidator.isEmail,
-                            message: "Please enter valid email id",
-                          },
-                        ]}
-                        control={{
-                          type: CustomTextControl,
-                          settings: {
-                            placeholder: "Email",
-                          },
-                        }}
-                      />
-                      <div className="save-btn-section">
-                        <Button
-                          className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
-                            this.state.email ? "active" : ""
-                          }`}
-                          type="submit"
-                        >
-                          Save
-                        </Button>
+                    )}
+                    {this.state.showRedirection ? null : (
+                      <div className="email-section input-noshadow-dark input-hover-states">
+                        <Form onValidSubmit={this.handleSave}>
+                          {this.state.isReferralCodeStep ? (
+                            <div>
+                              <FormElement
+                                disabled={this.state.isReferralCodeLoading}
+                                hideOnblur={this.props.hideOnblur}
+                                showHiddenError={this.props.showHiddenError}
+                                valueLink={this.linkState(this, "referralCode")}
+                                // label="Email Info"
+                                required
+                                control={{
+                                  type: CustomTextControl,
+                                  settings: {
+                                    placeholder: "t1v33sshyg91opyhe2yd",
+                                  },
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <FormElement
+                              hideOnblur={this.props.hideOnblur}
+                              showHiddenError={this.props.showHiddenError}
+                              valueLink={this.linkState(this, "email")}
+                              // label="Email Info"
+                              required
+                              validations={[
+                                {
+                                  validate: FormValidator.isRequired,
+                                  message: "",
+                                },
+                                {
+                                  validate: FormValidator.isEmail,
+                                  message: "Please enter valid email id",
+                                },
+                              ]}
+                              control={{
+                                type: CustomTextControl,
+                                settings: {
+                                  placeholder: "Email",
+                                },
+                              }}
+                            />
+                          )}
+
+                          <div className="save-btn-section">
+                            {this.state.isReferralCodeStep ? (
+                              <Button
+                                className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                  this.state.referralCode ? "active" : ""
+                                } ${
+                                  this.state.isReferralCodeLoading
+                                    ? "save-btn-section-loading"
+                                    : ""
+                                }`}
+                                type="submit"
+                              >
+                                {this.state.isReferralCodeLoading
+                                  ? loadingAnimation()
+                                  : "Save"}
+                              </Button>
+                            ) : (
+                              <Button
+                                className={`inter-display-semi-bold f-s-16 lh-19 white save-btn ${
+                                  validator.isEmail(this.state.email)
+                                    ? "active"
+                                    : ""
+                                }`}
+                                type="submit"
+                              >
+                                Sign Up
+                              </Button>
+                            )}
+                          </div>
+                        </Form>
+                        {this.state.isReferralCodeStep ? (
+                          <div className="goToSingUpContainer">
+                            <p
+                              onClick={goToTelegram}
+                              className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA text-center"
+                            >
+                              Don’t have a referral code? Request for one on
+                              Telegram{" "}
+                              <Image
+                                className="goToSingUpIcon"
+                                src={UserCreditTelegramLightIcon}
+                              />
+                            </p>
+                          </div>
+                        ) : null}
                       </div>
-                    </Form>
-                  </div>
-                  {!this.props?.signup && (
-                    <>
-                      {/* <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
+                    )}
+                    {!this.props?.signup && (
+                      <>
+                        {/* <p className="inter-display-medium f-s-16 lh-19 grey-ADA m-b-20">
                         or
                       </p>
                       <div className="m-b-24 links">
@@ -1762,69 +1954,73 @@ class ExitOverlay extends BaseReactComponent {
                                 // />
                             // </div>
                       </div> */}
-                      <div className="copy-link-section mt-4">
-                        <div className="link" onClick={this.copyLink}>
-                          <Image src={CopyLink} className="m-r-8" />
-                          <h3 className="inter-display-medium f-s-16 lh-19 black-191">
-                            Copy link
-                          </h3>
-                        </div>
-                        <div
-                          className="link"
-                          onClick={() => {
-                            MenuLetMeLeave({
-                              email_address: getCurrentUser().email,
-                              session_id: getCurrentUser().id,
-                            });
-                            if (this.props.updateTimer) {
-                              this.props.updateTimer();
-                            }
-                            resetUser();
-                            if (this.props.updateTimer) {
-                              this.props.updateTimer();
-                            }
-                            window.sessionStorage.setItem("refresh", false);
-                            this.props.history.push("/welcome");
-                          }}
-                          style={{ marginLeft: "4rem" }}
-                        >
-                          <h3 className="inter-display-medium f-s-16 lh-19 grey-969">
-                            No thanks, let me leave
-                          </h3>
-                        </div>
-                        {/* <div className="link" onClick={this.shareLink}>
+                        <div className="copy-link-section mt-4">
+                          <div className="link" onClick={this.copyLink}>
+                            <Image src={CopyLink} className="m-r-8" />
+                            <h3 className="inter-display-medium f-s-16 lh-19 black-191">
+                              Copy link
+                            </h3>
+                          </div>
+                          <div
+                            className="link"
+                            onClick={() => {
+                              MenuLetMeLeave({
+                                email_address: getCurrentUser().email,
+                                session_id: getCurrentUser().id,
+                              });
+                              if (this.props.updateTimer) {
+                                this.props.updateTimer();
+                              }
+                              resetUser();
+                              if (this.props.updateTimer) {
+                                this.props.updateTimer();
+                              }
+                              window.sessionStorage.setItem("refresh", false);
+                              this.props.history.push("/welcome");
+                            }}
+                            style={{ marginLeft: "4rem" }}
+                          >
+                            <h3 className="inter-display-medium f-s-16 lh-19 grey-969">
+                              No thanks, let me leave
+                            </h3>
+                          </div>
+                          {/* <div className="link" onClick={this.shareLink}>
                   <Image src={ShareLink} className="m-r-8" />
                   <h3 className="inter-display-medium f-s-16 lh-19 black-191">
                     Share
                   </h3>
                 </div> */}
-                      </div>
-                    </>
-                  )}
+                        </div>
+                      </>
+                    )}
 
-                  <div className="m-b-36 footer">
-                    <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
-                      At Loch, we care intensely about your privacy and
-                      anonymity.
-                    </p>
-                    <CustomOverlay
-                      text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
-                      position="top"
-                      isIcon={true}
-                      IconImage={LockIcon}
-                      isInfo={true}
-                      className={"fix-width"}
-                    >
-                      <Image
-                        src={InfoIcon}
-                        className="info-icon"
-                        onMouseEnter={this.leavePrivacy}
-                        style={{ cursor: "pointer" }}
-                      />
-                    </CustomOverlay>
+                    {this.state.isReferralCodeStep ||
+                    this.state.showRedirection ? null : (
+                      <div className="m-b-36 footer">
+                        <p className="inter-display-medium f-s-13 lh-16 grey-ADA m-r-5">
+                          At Loch, we care intensely about your privacy and
+                          anonymity.
+                        </p>
+                        <CustomOverlay
+                          text="We do not link wallet addresses back to you unless you explicitly give us your email or phone number."
+                          position="top"
+                          isIcon={true}
+                          IconImage={LockIcon}
+                          isInfo={true}
+                          className={"fix-width"}
+                        >
+                          <Image
+                            src={InfoIcon}
+                            className="info-icon"
+                            onMouseEnter={this.leavePrivacy}
+                            style={{ cursor: "pointer" }}
+                          />
+                        </CustomOverlay>
+                      </div>
+                    )}
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </Modal.Body>
           </Modal>
         )}
@@ -1855,6 +2051,7 @@ const mapDispatchToProps = {
   detectCoin,
   getAllParentChains,
   updateUser,
+  checkReferallCodeValid,
 };
 
 ExitOverlay.propTypes = {};

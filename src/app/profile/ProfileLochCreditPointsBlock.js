@@ -25,7 +25,9 @@ class ProfileLochCreditPointsBlock extends BaseReactComponent {
           />
         </div>
         <div className="profileLochCreditPointsBlockInfoBlock">
-          <div className="inter-display-medium f-s-16">{this.props.title}</div>
+          <div className="inter-display-medium f-s-16 profileLochCreditPointsBlockInfoBlockTitle">
+            {this.props.title}
+          </div>
           <div className="profileLochCreditPointsBlockInfoBlockDescContainer">
             <div className="inter-display-medium f-s-13 profileLochCreditPointsBlockInfoBlockDesc">
               {`Earn${this.props.isDone ? "ed" : ""}`}

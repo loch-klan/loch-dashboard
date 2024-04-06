@@ -96,6 +96,14 @@
             align-items: center;
             // margin-right: 4.9rem;
             width: 85%;
+            .wallet-account-details-name-container {
+              display: flex;
+              align-items: center;
+              .wallet-account-details-name {
+                display: flex;
+                align-items: center;
+              }
+            }
             .wallet-img {
               box-shadow: 0rem 0.4rem 0.8rem var(--greyF2f),
                 0rem 0.1rem 0.3rem var(--diffModeColorWithOpacity);
