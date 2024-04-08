@@ -2448,23 +2448,6 @@ export const CopyCodeProfileGetMoreCodes = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
-export const HomeSignUpGetReferralCode = ({ session_id, email_address }) => {
-  const event_name = "Home: Sign Up: Referral: request code on telegram";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-};
-
-export const WelcomeSignUpGetReferralCode = ({ session_id, email_address }) => {
-  const event_name = "Welcome: Sign Up: Referral: request code on telegram";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-};
 
 export const TimeSpentReferralCodes = ({
   session_id,
@@ -7045,6 +7028,19 @@ export const HomeSignedUpReferralCode = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const HomeSignUpGetReferralCode = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign Up: request code on telegram";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    signUpMethod: signUpMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 
 export const WelcomeSignUpModalEmailAdded = ({ session_id, email_address }) => {
   const event_name = "Welcome: Sign up: email added";
@@ -7069,13 +7065,21 @@ export const WelcomeSignUpReferralModalClosed = ({
 export const WelcomeSignedUpReferralCode = ({
   session_id,
   email_address,
-  referall_code,
+  referral_code,
 }) => {
   const event_name = "Welcome: Sign Up: signed up with referral code";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "referall code": referall_code,
+    "referall code": referral_code,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WelcomeSignUpGetReferralCode = ({ session_id, email_address }) => {
+  const event_name = "Welcome: Sign Up: request code on telegram";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

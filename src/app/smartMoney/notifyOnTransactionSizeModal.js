@@ -1,19 +1,23 @@
 import React from "react";
 
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
+import { Button, Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
   BackArrowSmartMoneyIcon,
   CrossSmartMoneyIcon,
   RingingBellIcon,
-  SmartMoneyFaqModalIcon,
 } from "../../assets/images/icons";
+import {
+  TruncateText,
+  goToAddress,
+  isSameDateAs,
+} from "../../utils/ReusableFunctions";
 import { BaseReactComponent, CustomButton } from "../../utils/form";
-import { Modal, Image, Button } from "react-bootstrap";
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
-import Tooltip from "rc-tooltip";
-import HandleTooltip from "../common/HandleSliderTooltop";
-import { TruncateText } from "../../utils/ReusableFunctions";
+import CustomDropdown from "../../utils/form/CustomDropdownPrice";
+import moment from "moment";
+import { getTransactionAsset } from "../intelligence/Api";
 
 class NotifyOnTransactionSizeModal extends BaseReactComponent {
   constructor(props) {
@@ -21,9 +25,146 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     this.state = {
       show: props.show,
       onHide: props.onHide,
-      sliderVal: 1,
+      minSliderVal: null,
+      maxSliderVal: null,
+      curMinSliderVal: "0.01",
+      curMaxSliderVal: "1000000000",
+      isDisabled: false,
+      AssetList: [],
+      selectedActiveBadge: [],
+      isAssetSearchUsed: false,
     };
   }
+  componentDidMount() {
+    this.assetList();
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.curMinSliderVal !== this.state.curMinSliderVal ||
+      prevState.curMaxSliderVal !== this.state.curMaxSliderVal
+    ) {
+      if (
+        Number(this.state.curMinSliderVal) > Number(this.state.curMaxSliderVal)
+      ) {
+        this.setState({
+          isDisabled: true,
+        });
+      } else {
+        this.setState({
+          isDisabled: false,
+        });
+      }
+    }
+  }
+  minAmountChange = (e) => {
+    let curVal = e.target.value;
+    curVal = curVal.replace("$", "");
+    if (!isNaN(curVal)) {
+      this.setState({
+        curMinSliderVal: curVal,
+      });
+    }
+  };
+  maxAmountChange = (e) => {
+    let curVal = e.target.value;
+    curVal = curVal.replace("$", "");
+    if (!isNaN(curVal)) {
+      this.setState({
+        curMaxSliderVal: curVal,
+      });
+    }
+  };
+  changeMaxMinSlider = (value) => {
+    const newMinVal = value[0];
+    const newMaxVal = value[1];
+
+    if (newMinVal <= newMaxVal) {
+      this.setState({
+        curMinSliderVal: `${value[0] === 0 ? 0.01 : value[0]}`,
+      });
+    }
+    if (newMaxVal >= newMinVal) {
+      this.setState({
+        curMaxSliderVal: `${value[1]}`,
+      });
+    }
+  };
+  goToWalletAddress = () => {
+    goToAddress(this.props.selectedAddress);
+  };
+  assetList = () => {
+    let data = new URLSearchParams();
+
+    getTransactionAsset(data, this, true);
+  };
+  handleAssetSelected = (arr) => {
+    this.setState(
+      {
+        selectedAssets: arr[0].name === "All" ? [] : arr.map((e) => e?.id),
+      },
+      () => {
+        const tempIsSearchUsed = this.state.isAssetSearchUsed;
+        // netflowAssetFilter({
+        //   session_id: getCurrentUser().id,
+        //   email_address: getCurrentUser().email,
+        //   selected: arr[0] === "All" ? "All assets" : arr.map((e) => e?.name),
+        //   isSearchUsed: tempIsSearchUsed,
+        // });
+        this.setState({ isAssetSearchUsed: false });
+        this.handleBadge(this.state.selectedActiveBadge, this.state.title);
+      }
+    );
+  };
+  handleBadge = (activeBadgeList, activeFooter = this.state.title) => {
+    this.setState({
+      selectedActiveBadge: activeBadgeList,
+      netFlowLoading: true,
+      isGraphLoading: true,
+    });
+
+    let startDate = moment.utc(this.state.fromDate).add(1, "days").unix();
+    let endDate = moment.utc(this.state.toDate).add(1, "days").unix();
+
+    let selectedChains = [];
+    this.props.OnboardingState.coinsList?.map((item) => {
+      if (activeBadgeList?.includes(item.id)) {
+        selectedChains.push(item.code);
+      }
+    });
+
+    let isDefault = true;
+    if (
+      (startDate.constructor === Date &&
+        this.state.fromDateInitial === Date &&
+        !isSameDateAs(startDate, this.state.fromDateInitial)) ||
+      (endDate.constructor === Date &&
+        this.state.toDateInitial === Date &&
+        !isSameDateAs(endDate, this.state.toDateInitial)) ||
+      this.state.selectedAssets.length > 0 ||
+      selectedChains.length > 0
+    ) {
+      isDefault = false;
+    }
+
+    // this.props.getAssetProfitLoss(
+    //   this,
+    //   startDate,
+    //   endDate,
+    //   selectedChains,
+    //   this.state.selectedAssets,
+    //   isDefault
+    // );
+
+    const tempIsSearchUsed = this.state.isChainSearchUsed;
+    // netflowChainFilter({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    //   selected: selectedChains,
+    //   isSearchUsed: tempIsSearchUsed,
+    // });
+
+    this.setState({ isChainSearchUsed: false });
+  };
 
   render() {
     return (
@@ -63,9 +204,8 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
                 Notify me when{" "}
                 <span
-                  style={{
-                    textDecoration: "underline",
-                  }}
+                  className="sliderModalBodyAddressBtn"
+                  onClick={this.goToWalletAddress}
                 >
                   {TruncateText(this.props.selectedAddress)}
                 </span>{" "}
@@ -74,23 +214,61 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
               </p>
             </div>
             <div className="smbSliderContainer">
+              <div className="smbsAssetDropdownContainer">
+                <CustomDropdown
+                  filtername="All assets"
+                  options={this.state.AssetList}
+                  selectedTokens={this.props.selectedAssets}
+                  action={null}
+                  handleClick={this.handleAssetSelected}
+                  // isChain={true}
+                  LightTheme={true}
+                  placeholderName={"asset"}
+                  getObj
+                  searchIsUsed={this.props.assetSearchIsUsed}
+
+                  // selectedTokens={this.state.activeBadge}
+                />
+              </div>
+              <div className="smbsInputContainer">
+                <input
+                  placeholder="min"
+                  className="inter-display-medium smbsInput"
+                  value={
+                    this.state.curMinSliderVal &&
+                    this.state.curMinSliderVal.length > 0
+                      ? `$${this.state.curMinSliderVal}`
+                      : ""
+                  }
+                  onChange={this.minAmountChange}
+                />
+                <input
+                  placeholder="max"
+                  className="inter-display-medium smbsInput"
+                  value={
+                    this.state.curMaxSliderVal &&
+                    this.state.curMaxSliderVal.length > 0
+                      ? `$${this.state.curMaxSliderVal}`
+                      : ""
+                  }
+                  onChange={this.maxAmountChange}
+                  style={{
+                    textAlign: "right",
+                  }}
+                />
+              </div>
               <Slider
+                range
                 min={0}
-                max={1000000000}
-                step={1000}
-                handleRender={(node, props) => {
-                  return (
-                    <HandleTooltip value={props.value} visible={props.dragging}>
-                      {node}
-                    </HandleTooltip>
-                  );
-                }}
+                max={10000000000}
+                step={10000}
+                value={[this.state.curMinSliderVal, this.state.curMaxSliderVal]}
+                onChange={this.changeMaxMinSlider}
               />
 
               <div className="smbSlidervalueContainer inter-display-medium">
-                <div className="smbSlidervalues">$0K</div>
-                <div className="smbSlidervalues">$100K</div>
-                <div className="smbSlidervalues">$1b</div>
+                <div className="smbSlidervalues">$0.01</div>
+                <div className="smbSlidervalues">$10b</div>
               </div>
             </div>
             <div className="smbButtonContainer">
@@ -105,6 +283,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                 type="submit"
                 buttonText="Confirm"
                 handleClick={this.addAddressToWatchListFun}
+                isDisabled={this.state.isDisabled}
               />
             </div>
           </div>
@@ -114,7 +293,10 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  InflowOutflowAssetListState: state.InflowOutflowAssetListState,
+  OnboardingState: state.OnboardingState,
+});
 const mapDispatchToProps = {};
 
 NotifyOnTransactionSizeModal.propTypes = {};

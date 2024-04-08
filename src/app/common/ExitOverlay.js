@@ -42,6 +42,7 @@ import {
   CopyTradeSignUpPopupEmailAdded,
   ExportDataDownlaod,
   ExportDateSelected,
+  HomeSignUpGetReferralCode,
   HomeSignedUpReferralCode,
   LeaveEmailAdded,
   LeaveLinkCopied,
@@ -896,7 +897,7 @@ class ExitOverlay extends BaseReactComponent {
     });
   };
   onHidePassThrough = () => {
-    if (this.state.isReferralCodeStep) {
+    if (this.state.isReferralCodeStep && !this.state.showRedirection) {
       const signUpMethod = whichSignUpMethod();
       SignUpModalReferralCodeTabClosed({
         session_id: getCurrentUser().id,
@@ -906,7 +907,15 @@ class ExitOverlay extends BaseReactComponent {
     }
     this.state.onHide();
   };
-
+  goToTelegramPass = () => {
+    const signUpMethod = whichSignUpMethod();
+    HomeSignUpGetReferralCode({
+      session_id: getCurrentUser().id,
+      email_address: this.state?.email,
+      signUpMethod: signUpMethod,
+    });
+    goToTelegram();
+  };
   render() {
     return (
       <>
@@ -1940,7 +1949,7 @@ class ExitOverlay extends BaseReactComponent {
                         {this.state.isReferralCodeStep ? (
                           <div className="goToSingUpContainer">
                             <p
-                              onClick={goToTelegram}
+                              onClick={this.goToTelegramPass}
                               className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA text-center"
                             >
                               Don’t have a referral code? Request for one on
