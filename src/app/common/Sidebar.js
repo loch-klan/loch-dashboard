@@ -170,6 +170,12 @@ function Sidebar(props) {
         ? true
         : false
     );
+    let isDarkTheme = localStorage.getItem("isDarkTheme");
+    if (isDarkTheme && isDarkTheme === "true") {
+      document.documentElement.style.backgroundColor = "#141414";
+    } else {
+      document.documentElement.style.backgroundColor = "#f2f2f2";
+    }
   }, [document.querySelector("body").getAttribute("data-theme") == "dark"]);
   React.useEffect(() => {
     // console.log("in use effect");
@@ -400,6 +406,13 @@ function Sidebar(props) {
   const openLochTwitter = () => {
     window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
+  useEffect(() => {
+    if (!signupModal && !signinModal) {
+      window.sessionStorage.removeItem("fifteenSecSignInModal");
+      window.sessionStorage.removeItem("referralCodesSignInModal");
+      window.sessionStorage.removeItem("lochPointsSignInModal");
+    }
+  }, [signupModal, signinModal]);
   const openSigninModal = (fromWhichPage) => {
     if (fromWhichPage === "copyTrade") {
       setIsCopyTraderPopUpModal(true);
@@ -581,6 +594,7 @@ function Sidebar(props) {
         !lochPointsProfileModalOpen &&
         !dontOpenLoginPopup
       ) {
+        window.sessionStorage.setItem("fifteenSecSignInModal", true);
         // if isPopupActive = true then do not open this popup bcoz any other popup still open
         let isPopupActive = JSON.parse(
           window.sessionStorage.getItem("isPopupActive")

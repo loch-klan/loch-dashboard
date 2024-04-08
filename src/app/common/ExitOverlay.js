@@ -42,7 +42,7 @@ import {
   CopyTradeSignUpPopupEmailAdded,
   ExportDataDownlaod,
   ExportDateSelected,
-  HomeSignUpReferralModalClosed,
+  HomeSignUpGetReferralCode,
   HomeSignedUpReferralCode,
   LeaveEmailAdded,
   LeaveLinkCopied,
@@ -51,6 +51,8 @@ import {
   LochPointsSignUpPopupEmailAdded,
   MenuLetMeLeave,
   PodName,
+  SignUpModalEmailAdded,
+  SignUpModalReferralCodeTabClosed,
   SignupEmail,
   WhalePodAddTextbox,
   WhalePodAddressDelete,
@@ -64,6 +66,7 @@ import {
   CurrencyType,
   goToTelegram,
   loadingAnimation,
+  whichSignUpMethod,
 } from "../../utils/ReusableFunctions";
 import CustomChip from "../../utils/commonComponent/CustomChip";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -254,6 +257,18 @@ class ExitOverlay extends BaseReactComponent {
   fileInputRef = React.createRef();
   pasteInput = React.createRef();
 
+  componentDidUpdate(prevPorps, prevState) {
+    if (prevState.isReferralCodeStep !== this.state.isReferralCodeStep) {
+      const signUpMethod = whichSignUpMethod();
+      if (this.state.isReferralCodeStep) {
+        SignUpModalEmailAdded({
+          session_id: getCurrentUser().id,
+          email_address: this.state?.email,
+          signUpMethod: signUpMethod,
+        });
+      }
+    }
+  }
   componentDidMount() {
     // set popup active
     window.sessionStorage.setItem("isPopupActive", true);
@@ -617,10 +632,12 @@ class ExitOverlay extends BaseReactComponent {
   };
   handleRedirection = () => {
     // console.log("this", this.props);
+    const signUpMethod = whichSignUpMethod();
     HomeSignedUpReferralCode({
       session_id: getCurrentUser().id,
       email_address: this.state.email,
       referall_code: this.state.referralCode,
+      signUpMethod: signUpMethod,
     });
     this.setState({ showRedirection: true });
     this.props.handleRedirection();
@@ -869,24 +886,36 @@ class ExitOverlay extends BaseReactComponent {
     }
   };
   goToSignUp = () => {
-    HomeSignUpReferralModalClosed({
+    const signUpMethod = whichSignUpMethod();
+    SignUpModalReferralCodeTabClosed({
       session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
+      email_address: this.state?.email,
+      signUpMethod: signUpMethod,
     });
     this.setState({
       isReferralCodeStep: false,
     });
   };
   onHidePassThrough = () => {
-    if (this.state.isReferralCodeStep) {
-      HomeSignUpReferralModalClosed({
+    if (this.state.isReferralCodeStep && !this.state.showRedirection) {
+      const signUpMethod = whichSignUpMethod();
+      SignUpModalReferralCodeTabClosed({
         session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
+        email_address: this.state?.email,
+        signUpMethod: signUpMethod,
       });
     }
     this.state.onHide();
   };
-
+  goToTelegramPass = () => {
+    const signUpMethod = whichSignUpMethod();
+    HomeSignUpGetReferralCode({
+      session_id: getCurrentUser().id,
+      email_address: this.state?.email,
+      signUpMethod: signUpMethod,
+    });
+    goToTelegram();
+  };
   render() {
     return (
       <>
@@ -1912,7 +1941,7 @@ class ExitOverlay extends BaseReactComponent {
                                 }`}
                                 type="submit"
                               >
-                                Sign Up
+                                Sign up
                               </Button>
                             )}
                           </div>
@@ -1920,7 +1949,7 @@ class ExitOverlay extends BaseReactComponent {
                         {this.state.isReferralCodeStep ? (
                           <div className="goToSingUpContainer">
                             <p
-                              onClick={goToTelegram}
+                              onClick={this.goToTelegramPass}
                               className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA text-center"
                             >
                               Don’t have a referral code? Request for one on

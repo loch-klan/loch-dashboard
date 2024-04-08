@@ -116,7 +116,7 @@
 
         h6 {
           margin-right: 0.6rem;
-          color: $black-191;
+          color: var(--primaryTextColor);
         }
 
         span {
@@ -236,7 +236,7 @@
     h3 {
       display: flex;
       align-items: center;
-      color:var(--primaryTextColor);
+      color: var(--primaryTextColor);
 
       span {
         margin-left: 0.4rem;

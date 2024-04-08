@@ -8,7 +8,7 @@
   }
 }
 
-.watchListSearchInput{
+.watchListSearchInput {
   box-shadow: var(--inputShadow) !important;
   -webkit-box-shadow: var(--inputShadow) inset !important;
 }
@@ -74,12 +74,13 @@
         cursor: default;
       }
       .awInputWrapper {
-        border: 0.1rem solid #d4d4d4;
+        border: 0.1rem solid var(--inputBorder);
         border-radius: 0.8rem;
         padding: 1rem;
         width: 100%;
+        background-color: var(--modalInput);
         &:hover {
-          border-color: var(--black191);
+          border-color: var(--inputBorderHover);
         }
         .awLable {
           color: #b0b1b3;
@@ -158,11 +159,34 @@
     align-items: center;
     justify-content: space-between;
     padding: 3rem 5rem;
-    .go-btn{
-      &:disabled{
-        background-color: var(--backColor) !important;
-    color: var(--sameModeColor) !important;
-    border: 1px solid var(--black191) !important;
+    .go-btn {
+      background-color: var(--modalPrimaryCTA) !important;
+      border-color: var(--modalPrimaryCTABorder) !important;
+      color: var(--modalPrimaryCTAColor) !important;
+      &:hover {
+        border-color: var(--modalPrimaryCTAHover) !important;
+        box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+          0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
+        color: var(--modalPrimaryCTAHoverText) !important;
+        background-color: var(--modalPrimaryCTAHover) !important;
+      }
+      &:disabled {
+        background-color: var(--modalPrimaryCTA) !important;
+        border-color: var(--modalPrimaryCTABorder) !important;
+        color: var(--modalPrimaryCTAColor) !important;
+        opacity: 0.5;
+      }
+    }
+    .secondary-btn {
+      background-color: var(--modalSecondaryCTA) !important;
+      border-color: var(--modalPrimaryCTABorder) !important;
+      color: var(--primaryTextColor) !important;
+      &:hover {
+        border-color: var(--modalPrimaryCTAHover) !important;
+        box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+          0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
+        color: var(--modalSecondaryCTATextHoverColor) !important;
+        background-color: var(--modalSecondaryCTAHover) !important;
       }
     }
   }
