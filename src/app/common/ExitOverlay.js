@@ -897,7 +897,7 @@ class ExitOverlay extends BaseReactComponent {
     });
   };
   onHidePassThrough = () => {
-    if (this.state.isReferralCodeStep) {
+    if (this.state.isReferralCodeStep && !this.state.showRedirection) {
       const signUpMethod = whichSignUpMethod();
       SignUpModalReferralCodeTabClosed({
         session_id: getCurrentUser().id,
