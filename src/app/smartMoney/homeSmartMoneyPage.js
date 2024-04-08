@@ -93,6 +93,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      addressToNotify: "",
+      showNotifyOnTransactionModal: false,
       mobilePopupModal: false,
       signInModalAnimation: true,
       signInModal: false,

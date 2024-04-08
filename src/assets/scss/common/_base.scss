@@ -3595,6 +3595,14 @@ input {
   }
 }
 .sliderModalBody {
+  .sliderModalBodyAddressBtn {
+    text-decoration: underline;
+    color: var(--addressText);
+    cursor: pointer;
+    &:hover {
+      font-weight: 600;
+    }
+  }
   .smbButtonContainer {
     display: flex;
     align-items: center;
@@ -3605,6 +3613,30 @@ input {
   .smbSliderContainer {
     padding: 3rem 5rem;
     padding-bottom: 0rem;
+    .smbsAssetDropdownContainer {
+      position: relative;
+      margin-bottom: 2.2rem;
+      z-index: 3;
+    }
+    .smbsInputContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      .smbsInput {
+        width: 100%;
+        border: 0.1rem solid var(--referallCopyBtn);
+        border-radius: 0.8rem;
+        padding: 1rem 1.5rem;
+        text-align: left;
+        outline: none;
+        font-size: 14px;
+        &:hover {
+          border: 0.1rem solid var(--primaryTextColor);
+        }
+      }
+    }
     .smbSlidervalueContainer {
       display: flex;
       align-items: center;

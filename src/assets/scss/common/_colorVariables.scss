@@ -244,6 +244,9 @@
   --profileUnrecognizedWallet: #f2f2f2;
   --profileWalletDivider: rgba(229, 229, 230, 0.5);
   --profileWalletAddress: #b0b1b3;
+
+  //Slider
+  --addressText: #1a1a1a;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -481,6 +484,9 @@
   --profileUnrecognizedWallet: #313233;
   --profileWalletDivider: #313233;
   --profileWalletAddress: #636467;
+
+  //Slider
+  --addressText: #cacbcc;
 }
 [data-theme="dark2"] {
   // UPDATED
