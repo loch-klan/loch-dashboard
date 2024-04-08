@@ -6992,13 +6992,13 @@ export const WelcomeSignUpReferralModalClosed = ({
 export const WelcomeSignedUpReferralCode = ({
   session_id,
   email_address,
-  referall_code,
+  referral_code,
 }) => {
   const event_name = "Welcome: Sign Up: signed up with referral code";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
-    "referall code": referall_code,
+    "referall code": referral_code,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
