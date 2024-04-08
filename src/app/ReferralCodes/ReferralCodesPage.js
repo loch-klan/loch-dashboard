@@ -187,7 +187,7 @@ class ReferralCodesPage extends BaseReactComponent {
     CopyCodeProfileGetMoreCodes({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
-      code: contactPoint,
+      contact_point: contactPoint,
     });
     console.log("contactPoint ", contactPoint);
     if (contactPoint === "twitter") {

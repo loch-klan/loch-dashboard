@@ -304,6 +304,7 @@ class Profile extends Component {
     if (this.state.lochUser && this.state.lochUser.email) {
       this.props.history.push("/profile/referral-codes");
     } else {
+      window.sessionStorage.setItem("referralCodesSignInModal", true);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
         this.dontOpenLoginPopup();

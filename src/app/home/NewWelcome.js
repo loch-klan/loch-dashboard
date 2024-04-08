@@ -71,6 +71,7 @@ import {
   TimeSpentOnboarding,
   TimeSpentOnboardingMobile,
   ToggleDarkModeAnalytics,
+  WelcomeSignUpModalEmailAdded,
   WelcomeSignedUpReferralCode,
   resetUser,
 } from "../../utils/AnalyticsFunctions.js";
@@ -1971,6 +1972,14 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.isReferralCodeStep !== this.state.isReferralCodeStep) {
+      if (this.state.isReferralCodeStep) {
+        WelcomeSignUpModalEmailAdded({
+          session_id: getCurrentUser().id,
+          email_address: this.state?.emailSignup,
+        });
+      }
+    }
     let sMode = document.querySelector("body").getAttribute("data-theme");
     if (
       prevProps.connectedWalletAddress !== this.props.connectedWalletAddress &&

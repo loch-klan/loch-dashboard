@@ -141,6 +141,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
+
+    window.sessionStorage.setItem("lochPointsSignInModal", true);
     if (
       document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")
     ) {

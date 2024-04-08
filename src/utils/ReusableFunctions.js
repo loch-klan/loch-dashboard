@@ -18,6 +18,18 @@ export const scrollToBottomAfterPageChange = () => {
   }
 };
 
+export const whichSignUpMethod = () => {
+  if (window.sessionStorage.getItem("lochPointsSignInModal")) {
+    return "Loch points";
+  } else if (window.sessionStorage.getItem("referralCodesSignInModal")) {
+    return "Referral code";
+  } else if (window.sessionStorage.getItem("fifteenSecSignInModal")) {
+    return "15 sec";
+  } else {
+    return "Sidebar";
+  }
+};
+
 export const goToTelegram = () => {
   window.open("https://t.me/loch_chain", "_blank");
 };

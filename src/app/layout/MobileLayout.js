@@ -21,6 +21,7 @@ import {
   ProfileMenu,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
+  SignUpModalEmailAdded,
   resetUser,
   signInUser,
 } from "../../utils/AnalyticsFunctions";
@@ -52,6 +53,7 @@ import { addUserCredits, updateUser } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
+import { whichSignUpMethod } from "../../utils/ReusableFunctions.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -126,6 +128,27 @@ class MobileLayout extends BaseReactComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.isReferralCodeStep !== this.state.isReferralCodeStep) {
+      if (this.state.isReferralCodeStep) {
+        const signUpMethod = whichSignUpMethod();
+        SignUpModalEmailAdded({
+          session_id: getCurrentUser().id,
+          email_address: this.state?.emailSignup,
+          signUpMethod: signUpMethod,
+        });
+      }
+    }
+    if (prevState.authmodal !== this.state.authmodal) {
+      if (
+        this.state.authmodal !== "signup" &&
+        this.state.authmodal !== "login" &&
+        this.state.authmodal !== "verify"
+      ) {
+        window.sessionStorage.removeItem("fifteenSecSignInModal");
+        window.sessionStorage.removeItem("referralCodesSignInModal");
+        window.sessionStorage.removeItem("lochPointsSignInModal");
+      }
+    }
     if (!this.props.commonState?.mobileLayout) {
       this.props.updateWalletListFlag("mobileLayout", true);
       this.setState({
@@ -155,6 +178,7 @@ class MobileLayout extends BaseReactComponent {
     }
 
     setTimeout(() => {
+      window.sessionStorage.setItem("fifteenSecSignInModal", true);
       const dontOpenLoginPopup =
         window.sessionStorage.getItem("dontOpenLoginPopup");
       const lochUserLocalAgain = JSON.parse(
@@ -655,10 +679,12 @@ class MobileLayout extends BaseReactComponent {
   };
   handleRedirection = () => {
     // console.log("this", this.props);
+    const signUpMethod = whichSignUpMethod();
     HomeSignedUpReferralCode({
       session_id: getCurrentUser().id,
       email_address: this.state.emailSignup,
       referall_code: this.state.referralCode,
+      signUpMethod: signUpMethod,
     });
     this.setState({
       authmodal: "redirect",
@@ -761,6 +787,7 @@ class MobileLayout extends BaseReactComponent {
           />
         ) : this.state.authmodal === "signup" ? (
           <SignUpMobile
+            isHome
             toggleModal={this.toggleAuthModal}
             isMobile
             email={this.state.emailSignup}
