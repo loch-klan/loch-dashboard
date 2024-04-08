@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
@@ -18,6 +18,8 @@ import { BaseReactComponent, CustomButton } from "../../utils/form";
 import CustomDropdown from "../../utils/form/CustomDropdownPrice";
 import moment from "moment";
 import { getTransactionAsset } from "../intelligence/Api";
+import EmulationsPaywall from "../Emulations/EmulationsPaywall.js";
+import EmulationsPaywallOptions from "../Emulations/EmulationsPaywallOptions.js";
 
 class NotifyOnTransactionSizeModal extends BaseReactComponent {
   constructor(props) {
@@ -33,10 +35,20 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       AssetList: [],
       selectedActiveBadge: [],
       isAssetSearchUsed: false,
+      userDetailsState: undefined,
+      isPayModalOpen: false,
+      isPayModalOptionsOpen: false,
+      passedCTNotificationEmailAddress: "",
+      passedCTAddress: "",
+      passedCTCopyTradeAmount: "",
     };
   }
   componentDidMount() {
     this.assetList();
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    this.setState({
+      userDetailsState: userDetails,
+    });
   }
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -165,7 +177,58 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
 
     this.setState({ isChainSearchUsed: false });
   };
-
+  openPayOptionsModal = () => {
+    // CopyTradePayWallOptionsOpen({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
+    this.setState(
+      {
+        isPayModalOpen: false,
+      },
+      () => {
+        this.setState({
+          isPayModalOptionsOpen: true,
+        });
+      }
+    );
+  };
+  openPayModal = (emailHolder, walletHolder, amountHolder) => {
+    // CopyTradePayWallOpen({
+    //   session_id: getCurrentUser().id,
+    //   email_address: getCurrentUser().email,
+    // });
+    this.setState(
+      {
+        passedCTNotificationEmailAddress: emailHolder,
+        passedCTAddress: walletHolder,
+        passedCTCopyTradeAmount: amountHolder,
+      },
+      () => {
+        this.setState({
+          isPayModalOpen: true,
+        });
+      }
+    );
+  };
+  goBackToPayWall = () => {
+    this.setState({
+      isPayModalOptionsOpen: false,
+      isPayModalOpen: true,
+    });
+  };
+  goBackToAddCopyTradeModal = () => {
+    this.setState({
+      isPayModalOpen: false,
+    });
+  };
+  closePayModal = () => {
+    this.hideAddCopyTradeAddress();
+    this.setState({
+      isPayModalOpen: false,
+      isPayModalOptionsOpen: false,
+    });
+  };
   render() {
     return (
       <Modal
@@ -178,6 +241,33 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
       >
+        {this.state.isPayModalOpen ? (
+          <EmulationsPaywall
+            userDetailsState={this.state.userDetailsState}
+            show={this.state.isPayModalOpen}
+            onHide={this.closePayModal}
+            passedCTNotificationEmailAddress={
+              this.state.passedCTNotificationEmailAddress
+            }
+            passedCTAddress={this.state.passedCTAddress}
+            passedCTCopyTradeAmount={this.state.passedCTCopyTradeAmount}
+            goBackToAddCopyTradeModal={this.goBackToAddCopyTradeModal}
+            goToPayWallOptions={this.openPayOptionsModal}
+          />
+        ) : null}
+        {this.state.isPayModalOptionsOpen ? (
+          <EmulationsPaywallOptions
+            userDetailsState={this.state.userDetailsState}
+            show={this.state.isPayModalOptionsOpen}
+            onHide={this.closePayModal}
+            passedCTNotificationEmailAddress={
+              this.state.passedCTNotificationEmailAddress
+            }
+            passedCTAddress={this.state.passedCTAddress}
+            passedCTCopyTradeAmount={this.state.passedCTCopyTradeAmount}
+            goBackToPayWall={this.goBackToPayWall}
+          />
+        ) : null}
         <Modal.Header>
           {this.state.selectedQuestion > -1 &&
           this.state.selectedQuestion < this.state.questionAnswers.length ? (
