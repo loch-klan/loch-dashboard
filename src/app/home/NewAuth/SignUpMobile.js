@@ -100,9 +100,11 @@ const SignUpMobile = ({
   };
   const goToTelegramPassThrough = () => {
     if (isHome) {
+      const signUpMethod = whichSignUpMethod();
       HomeSignUpGetReferralCode({
         session_id: getCurrentUser().id,
         email_address: email,
+        signUpMethod: signUpMethod,
       });
     } else {
       WelcomeSignUpGetReferralCode({
