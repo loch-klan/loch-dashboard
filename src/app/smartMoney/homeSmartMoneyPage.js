@@ -16,6 +16,7 @@ import {
   CurrencyType,
   TruncateText,
   amountFormat,
+  dontOpenLoginPopup,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -771,17 +772,28 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     this.copyTextToClipboard(shareLink);
   };
   openNotifyOnTransactionModal = (passedAddress) => {
-    this.setState(
-      {
-        addressToNotify: passedAddress,
-      },
-      () => {
-        window.sessionStorage.setItem("dontOpenLoginPopup", "true");
-        this.setState({
-          showNotifyOnTransactionModal: true,
-        });
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      this.setState(
+        {
+          addressToNotify: passedAddress,
+        },
+        () => {
+          window.sessionStorage.setItem("dontOpenLoginPopup", "true");
+          this.setState({
+            showNotifyOnTransactionModal: true,
+          });
+        }
+      );
+    } else {
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
       }
-    );
+    }
   };
   hideNotifyOnTransactionModal = () => {
     window.sessionStorage.removeItem("dontOpenLoginPopup");

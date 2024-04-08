@@ -17,7 +17,9 @@ export const scrollToBottomAfterPageChange = () => {
     window.scroll(0, document.body.scrollHeight);
   }
 };
-
+export const dontOpenLoginPopup = () => {
+  window.sessionStorage.setItem("dontOpenLoginPopup", true);
+};
 export const whichSignUpMethod = () => {
   if (window.sessionStorage.getItem("lochPointsSignInModal")) {
     return "Loch points";
