@@ -1,6 +1,6 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import { API_LIMIT } from "./Constant";
+import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
 import { DARK_MODE } from "../app/intelligence/ActionTypes";
 import { SwitchDarkMode } from "../app/common/Api";
@@ -32,6 +32,12 @@ export const whichSignUpMethod = () => {
   }
 };
 
+export const goToAddress = (passedAddress) => {
+  let slink = passedAddress;
+  let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
+
+  window.open(shareLink, "_blank", "noreferrer");
+};
 export const goToTelegram = () => {
   window.open("https://t.me/loch_chain", "_blank");
 };
@@ -300,11 +306,17 @@ export const lightenDarkenColor = (hex, lum) => {
   return rgb;
 };
 
-export const amountFormat = (number, locals, currency_type) => {
+export const amountFormat = (
+  number,
+  locals,
+  currency_type,
+  minimumFractionDigits = 2,
+  maximumFractionDigits = 2
+) => {
   return new Intl.NumberFormat(locals, {
     currency: currency_type,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: minimumFractionDigits,
+    maximumFractionDigits: maximumFractionDigits,
   }).format(number);
 };
 export const getPadding = (val, e, OnboardingState) => {
