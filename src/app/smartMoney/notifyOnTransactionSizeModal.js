@@ -372,7 +372,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                 className="primary-btn go-btn main-button-invert"
                 type="submit"
                 buttonText="Confirm"
-                handleClick={this.addAddressToWatchListFun}
+                handleClick={this.openPayModal}
                 isDisabled={this.state.isDisabled}
               />
             </div>
