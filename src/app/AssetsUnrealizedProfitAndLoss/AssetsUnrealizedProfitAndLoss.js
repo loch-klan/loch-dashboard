@@ -59,6 +59,7 @@ import {
   CurrencyType,
   amountFormat,
   convertNtoNumber,
+  dontOpenLoginPopup,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -77,11 +78,14 @@ import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AssetUnrealizedProfitAndLossMobile from "./AssetUnrealizedProfitAndLossMobile.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       Average_cost_basis_local: [],
       firstTimeUnrealizedPNL: true,
       combinedCostBasis: 0,
@@ -175,6 +179,20 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     }, 900000);
   };
   componentDidMount() {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openAssetPaymentModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          window.sessionStorage.removeItem("openAssetPaymentModal");
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     scrollToTop();
     if (
       !this.props.commonState.assetsPage ||
@@ -532,7 +550,32 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     });
     this.updateTimer();
   };
-
+  showBlurredItem = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      window.sessionStorage.setItem("openAssetPaymentModal", true);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   render() {
     const columnData = [
       {
@@ -637,19 +680,32 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     email_address: getCurrentUser().email,
                   });
                 }}
+                onClick={this.showBlurredItem}
+                className={this.state.isPremiumUser ? "" : "blurred-elements"}
               >
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.AverageCostPrice
-                      ? CurrencyType(false) +
-                        convertNtoNumber(rowData.AverageCostPrice)
-                      : CurrencyType(false) + "0.00"
-                  }
-                >
+                {this.state.isPremiumUser ? (
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      rowData.AverageCostPrice
+                        ? CurrencyType(false) +
+                          convertNtoNumber(rowData.AverageCostPrice)
+                        : CurrencyType(false) + "0.00"
+                    }
+                  >
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {rowData.AverageCostPrice
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.AverageCostPrice.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </span>
+                  </CustomOverlay>
+                ) : (
                   <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                     {rowData.AverageCostPrice
                       ? CurrencyType(false) +
@@ -658,7 +714,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         ).toLocaleString("en-US")
                       : CurrencyType(false) + "0.00"}
                   </span>
-                </CustomOverlay>
+                )}
               </div>
             );
           }
@@ -781,11 +837,15 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             <span className="inter-display-medium f-s-13 lh-16 ">
               Cost basis
             </span>
-            <Image
-              onClick={() => this.handleSort(this.state.sortBy[4])}
-              src={sortByIcon}
-              className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
-            />
+            {this.state.isPremiumUser ? (
+              <Image
+                onClick={() => this.handleSort(this.state.sortBy[4])}
+                src={sortByIcon}
+                className={
+                  !this.state.sortBy[4].down ? "rotateDown" : "rotateUp"
+                }
+              />
+            ) : null}
           </div>
         ),
         dataKey: "CostBasis",
@@ -795,19 +855,45 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
             return (
-              <div className="cost-common-container">
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.CostBasis
-                      ? CurrencyType(false) +
-                        amountFormat(rowData.CostBasis, "en-US", "USD")
-                      : CurrencyType(false) + "0.00"
-                  }
-                >
+              <div
+                onClick={this.showBlurredItem}
+                className={`cost-common-container ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
+              >
+                {this.state.isPremiumUser ? (
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      rowData.CostBasis
+                        ? CurrencyType(false) +
+                          amountFormat(rowData.CostBasis, "en-US", "USD")
+                        : CurrencyType(false) + "0.00"
+                    }
+                  >
+                    <div className="cost-common">
+                      <span
+                        className="table-data-font"
+                        onMouseEnter={() => {
+                          CostCostBasisHover({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        }}
+                      >
+                        {rowData.CostBasis
+                          ? CurrencyType(false) +
+                            numToCurrency(
+                              rowData.CostBasis.toFixed(2)
+                            ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"}
+                      </span>
+                    </div>
+                  </CustomOverlay>
+                ) : (
                   <div className="cost-common">
                     <span
                       className="table-data-font"
@@ -826,7 +912,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
-                </CustomOverlay>
+                )}
               </div>
             );
           }
@@ -901,6 +987,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             <span className="inter-display-medium f-s-13 lh-16 ">
               Unrealized gain
             </span>
+
             <Image
               onClick={() => this.handleSort(this.state.sortBy[6])}
               src={sortByIcon}
@@ -923,25 +1010,53 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     email_address: getCurrentUser().email,
                   });
                 }}
-                className="gainLossContainer"
+                onClick={this.showBlurredItem}
+                className={`gainLossContainer ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
               >
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.GainAmount
-                      ? CurrencyType(false) +
-                        amountFormat(
-                          Math.abs(rowData.GainAmount),
-                          "en-US",
-                          "USD"
-                        )
-                      : CurrencyType(false) + "0.00"
-                  }
-                  colorCode="#000"
-                >
+                {this.state.isPremiumUser ? (
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      rowData.GainAmount
+                        ? CurrencyType(false) +
+                          amountFormat(
+                            Math.abs(rowData.GainAmount),
+                            "en-US",
+                            "USD"
+                          )
+                        : CurrencyType(false) + "0.00"
+                    }
+                    colorCode="#000"
+                  >
+                    <div className={`gainLoss`}>
+                      {rowData.GainAmount !== 0 ? (
+                        <Image
+                          className="mr-2"
+                          style={{
+                            height: "1.5rem",
+                            width: "1.5rem",
+                          }}
+                          src={
+                            rowData.GainAmount < 0
+                              ? ArrowDownLeftSmallIcon
+                              : ArrowUpRightSmallIcon
+                          }
+                        />
+                      ) : null}
+                      <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                        {rowData.GainAmount
+                          ? CurrencyType(false) +
+                            tempDataHolder.toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"}
+                      </span>
+                    </div>
+                  </CustomOverlay>
+                ) : (
                   <div className={`gainLoss`}>
                     {rowData.GainAmount !== 0 ? (
                       <Image
@@ -964,7 +1079,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         : CurrencyType(false) + "0.00"}
                     </span>
                   </div>
-                </CustomOverlay>
+                )}
               </div>
             );
           }
@@ -1001,20 +1116,48 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     email_address: getCurrentUser().email,
                   });
                 }}
-                className="gainLossContainer"
+                onClick={this.showBlurredItem}
+                className={`gainLossContainer ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
               >
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    tempDataHolder
-                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0.00%"
-                  }
-                  colorCode="#000"
-                >
+                {this.state.isPremiumUser ? (
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"
+                    }
+                    colorCode="#000"
+                  >
+                    <div className={`gainLoss`}>
+                      {rowData.GainLoss !== 0 ? (
+                        <Image
+                          className="mr-2"
+                          style={{
+                            height: "1.5rem",
+                            width: "1.5rem",
+                          }}
+                          src={
+                            rowData.GainLoss < 0
+                              ? ArrowDownLeftSmallIcon
+                              : ArrowUpRightSmallIcon
+                          }
+                        />
+                      ) : null}
+                      <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                        {tempDataHolder
+                          ? Math.abs(tempDataHolder).toLocaleString("en-US") +
+                            "%"
+                          : "0.00%"}
+                      </span>
+                    </div>
+                  </CustomOverlay>
+                ) : (
                   <div className={`gainLoss`}>
                     {rowData.GainLoss !== 0 ? (
                       <Image
@@ -1036,7 +1179,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                         : "0.00%"}
                     </span>
                   </div>
-                </CustomOverlay>
+                )}
               </div>
             );
           }
@@ -1172,6 +1315,16 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               currentPage={"assets"}
               showpath
             />
+            {this.state.isLochPaymentModal ? (
+              <PaywallModal
+                show={this.state.isLochPaymentModal}
+                onHide={this.hidePaymentModal}
+                redirectLink={BASE_URL_S3 + "/assets"}
+                title="Gain valuable insights regarding your assets"
+                description="All asset details"
+                hideBackBtn
+              />
+            ) : null}
             {this.state.exportModal ? (
               <ExitOverlay
                 show={this.state.exportModal}
@@ -1224,6 +1377,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             >
               <div style={{ position: "relative" }}>
                 <TransactionTable
+                  shouldBlurElements={!this.state.isPremiumUser}
+                  showBlurredItem={this.showBlurredItem}
                   message="No assets found"
                   bottomCombiedValues={
                     this.state.Average_cost_basis_local.length > 0

@@ -3610,6 +3610,10 @@ input {
     display: block;
   }
 }
+.blurred-elements {
+  cursor: pointer;
+  filter: blur(4px);
+}
 .sliderModalBody {
   .sliderModalBodyAddressBtn {
     text-decoration: underline;

@@ -124,6 +124,7 @@ import {
   UpgradeTriggered,
   amountFormat,
   convertNtoNumber,
+  dontOpenLoginPopup,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -170,6 +171,7 @@ import { getCounterGraphData, getGraphData } from "../cost/getGraphData.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import { getNFT } from "../nft/NftApi.js";
 import HandleBrokenImages from "../common/HandleBrokenImages.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -193,6 +195,10 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
+      payModalTitle: "",
+      payModalDescription: "",
       localNftData: [],
       nftTableLoading: false,
       shouldAvgCostLoading: false,
@@ -809,6 +815,23 @@ class Portfolio extends BaseReactComponent {
     }, 5000);
   };
   componentDidMount() {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openHomePaymentModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          window.sessionStorage.removeItem("openHomePaymentModal");
+          const titleAndDesc = shouldOpenNoficationModal.split(",");
+          this.setState({
+            isLochPaymentModal: true,
+            payModalTitle: titleAndDesc[0],
+            payModalDescription: titleAndDesc[1],
+          });
+        }, 1000);
+      }
+    }
     this.callAllApisTwice();
     scrollToTop();
     if (
@@ -2252,6 +2275,45 @@ class Portfolio extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
     }
+  };
+
+  showBlurredAssetItem = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState(
+        {
+          payModalTitle: "Gain valuable insights regarding your assets",
+          payModalDescription: "All asset details",
+        },
+        () => {
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }
+      );
+    } else {
+      const tempArr = [
+        "Gain valuable insights regarding your assets",
+        "All asset details",
+      ];
+      window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
   };
   render() {
     const { table, assetPriceList_home, totalCount } =
@@ -3827,7 +3889,10 @@ class Portfolio extends BaseReactComponent {
                     email_address: getCurrentUser().email,
                   });
                 }}
-                className="gainLossContainer"
+                onClick={this.showBlurredAssetItem}
+                className={`gainLossContainer ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
               >
                 {/* <CustomOverlay
                   position="top"
@@ -3970,6 +4035,10 @@ class Portfolio extends BaseReactComponent {
                     email_address: getCurrentUser().email,
                   });
                 }}
+                className={`${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
+                onClick={this.showBlurredAssetItem}
               >
                 {/* <CustomOverlay
                   position="top"
@@ -4137,7 +4206,12 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "CostBasis") {
             return (
-              <div className="cost-common-container">
+              <div
+                className={`cost-common-container ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
+                onClick={this.showBlurredAssetItem}
+              >
                 {/* <CustomOverlay
                   position="top"
                   isIcon={false}
@@ -4209,7 +4283,10 @@ class Portfolio extends BaseReactComponent {
                     email_address: getCurrentUser().email,
                   });
                 }}
-                className="gainLossContainer"
+                className={`gainLossContainer ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
+                onClick={this.showBlurredAssetItem}
               >
                 {/* <CustomOverlay
                   position="top"
@@ -5502,6 +5579,16 @@ class Portfolio extends BaseReactComponent {
             updateTimer={this.updateTimer}
           />
         )}
+        {this.state.isLochPaymentModal ? (
+          <PaywallModal
+            show={this.state.isLochPaymentModal}
+            onHide={this.hidePaymentModal}
+            redirectLink={BASE_URL_S3 + "/"}
+            title={this.state.payModalTitle}
+            description={this.state.payModalDescription}
+            hideBackBtn
+          />
+        ) : null}
 
         {this.state.upgradeModal && (
           <UpgradeModal
