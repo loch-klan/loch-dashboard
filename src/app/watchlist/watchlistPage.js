@@ -855,6 +855,7 @@ class WatchListPage extends BaseReactComponent {
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           hideFooter
+          hideAddresses
         >
           <WalletListPageMobile
             tableLoading={this.state.tableLoading}

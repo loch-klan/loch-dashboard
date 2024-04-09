@@ -35,6 +35,7 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        noDataImage={props.noDataImage}
         isSmartMoney={props.isSmartMoney}
         openSignInOnclickModal={props.openSignInOnclickModal}
         wrapperStyle={props.wrapperStyle}

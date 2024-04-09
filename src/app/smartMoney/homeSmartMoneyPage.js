@@ -1282,7 +1282,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
     if (mobileCheck()) {
       return (
-        <MobileLayout hideFooter history={this.props.history}>
+        <MobileLayout hideFooter history={this.props.history} hideAddresses>
           <HomeSmartMoneyMobile
             accountList={this.state.accountList}
             currency={this.state.currency}
