@@ -11,6 +11,7 @@ import {
 } from "../../assets/images/icons";
 import {
   TruncateText,
+  amountFormat,
   goToAddress,
   isSameDateAs,
 } from "../../utils/ReusableFunctions";
@@ -18,8 +19,8 @@ import { BaseReactComponent, CustomButton } from "../../utils/form";
 import CustomDropdown from "../../utils/form/CustomDropdownPrice";
 import moment from "moment";
 import { getTransactionAsset } from "../intelligence/Api";
-import EmulationsPaywall from "../Emulations/EmulationsPaywall.js";
-import EmulationsPaywallOptions from "../Emulations/EmulationsPaywallOptions.js";
+import { PaywallModal } from "../common";
+import { BASE_URL_S3 } from "../../utils/Constant";
 
 class NotifyOnTransactionSizeModal extends BaseReactComponent {
   constructor(props) {
@@ -29,7 +30,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       onHide: props.onHide,
       minSliderVal: null,
       maxSliderVal: null,
-      curMinSliderVal: "0.01",
+      curMinSliderVal: "100",
       curMaxSliderVal: "1000000000",
       isDisabled: false,
       AssetList: [],
@@ -56,14 +57,17 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       prevState.curMaxSliderVal !== this.state.curMaxSliderVal
     ) {
       if (
-        Number(this.state.curMinSliderVal) > Number(this.state.curMaxSliderVal)
+        Number(this.state.curMaxSliderVal) >
+          Number(this.state.curMinSliderVal) &&
+        Number(this.state.curMinSliderVal) >= 100 &&
+        Number(this.state.curMaxSliderVal) <= 10000000000
       ) {
         this.setState({
-          isDisabled: true,
+          isDisabled: false,
         });
       } else {
         this.setState({
-          isDisabled: false,
+          isDisabled: true,
         });
       }
     }
@@ -71,6 +75,8 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
   minAmountChange = (e) => {
     let curVal = e.target.value;
     curVal = curVal.replace("$", "");
+    curVal = curVal.replaceAll(",", "");
+
     if (!isNaN(curVal)) {
       this.setState({
         curMinSliderVal: curVal,
@@ -80,6 +86,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
   maxAmountChange = (e) => {
     let curVal = e.target.value;
     curVal = curVal.replace("$", "");
+    curVal = curVal.replaceAll(",", "");
     if (!isNaN(curVal)) {
       this.setState({
         curMaxSliderVal: curVal,
@@ -92,7 +99,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
 
     if (newMinVal <= newMaxVal) {
       this.setState({
-        curMinSliderVal: `${value[0] === 0 ? 0.01 : value[0]}`,
+        curMinSliderVal: `${value[0]}`,
       });
     }
     if (newMaxVal >= newMinVal) {
@@ -177,56 +184,15 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
 
     this.setState({ isChainSearchUsed: false });
   };
-  openPayOptionsModal = () => {
-    // CopyTradePayWallOptionsOpen({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    this.setState(
-      {
-        isPayModalOpen: false,
-      },
-      () => {
-        this.setState({
-          isPayModalOptionsOpen: true,
-        });
-      }
-    );
-  };
-  openPayModal = (emailHolder, walletHolder, amountHolder) => {
-    // CopyTradePayWallOpen({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    this.setState(
-      {
-        passedCTNotificationEmailAddress: emailHolder,
-        passedCTAddress: walletHolder,
-        passedCTCopyTradeAmount: amountHolder,
-      },
-      () => {
-        this.setState({
-          isPayModalOpen: true,
-        });
-      }
-    );
-  };
-  goBackToPayWall = () => {
+  openPayModal = () => {
     this.setState({
-      isPayModalOptionsOpen: false,
       isPayModalOpen: true,
     });
   };
-  goBackToAddCopyTradeModal = () => {
+
+  onGoBackPayModal = () => {
     this.setState({
       isPayModalOpen: false,
-    });
-  };
-  closePayModal = () => {
-    this.hideAddCopyTradeAddress();
-    this.setState({
-      isPayModalOpen: false,
-      isPayModalOptionsOpen: false,
     });
   };
   render() {
@@ -234,38 +200,25 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       <Modal
         show={this.state.show}
         className="exit-overlay-form"
-        onHide={this.state.onHide}
+        // onHide={this.state.onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal"}
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
+        style={{
+          opacity: this.state.isPayModalOpen ? 0 : 1,
+        }}
+        animation={false}
       >
         {this.state.isPayModalOpen ? (
-          <EmulationsPaywall
-            userDetailsState={this.state.userDetailsState}
+          <PaywallModal
             show={this.state.isPayModalOpen}
-            onHide={this.closePayModal}
-            passedCTNotificationEmailAddress={
-              this.state.passedCTNotificationEmailAddress
-            }
-            passedCTAddress={this.state.passedCTAddress}
-            passedCTCopyTradeAmount={this.state.passedCTCopyTradeAmount}
-            goBackToAddCopyTradeModal={this.goBackToAddCopyTradeModal}
-            goToPayWallOptions={this.openPayOptionsModal}
-          />
-        ) : null}
-        {this.state.isPayModalOptionsOpen ? (
-          <EmulationsPaywallOptions
-            userDetailsState={this.state.userDetailsState}
-            show={this.state.isPayModalOptionsOpen}
-            onHide={this.closePayModal}
-            passedCTNotificationEmailAddress={
-              this.state.passedCTNotificationEmailAddress
-            }
-            passedCTAddress={this.state.passedCTAddress}
-            passedCTCopyTradeAmount={this.state.passedCTCopyTradeAmount}
-            goBackToPayWall={this.goBackToPayWall}
+            onHide={this.state.onHide}
+            redirectLink={BASE_URL_S3 + "/home-leaderboard"}
+            title="Get transaction alerts with Loch"
+            description="Unlimited transaction alerts"
+            onGoBackPayModal={this.onGoBackPayModal}
           />
         ) : null}
         <Modal.Header>
@@ -327,7 +280,13 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                   value={
                     this.state.curMinSliderVal &&
                     this.state.curMinSliderVal.length > 0
-                      ? `$${this.state.curMinSliderVal}`
+                      ? `$${amountFormat(
+                          this.state.curMinSliderVal,
+                          "en-US",
+                          "USD",
+                          0,
+                          0
+                        )}`
                       : ""
                   }
                   onChange={this.minAmountChange}
@@ -338,7 +297,13 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                   value={
                     this.state.curMaxSliderVal &&
                     this.state.curMaxSliderVal.length > 0
-                      ? `$${this.state.curMaxSliderVal}`
+                      ? `$${amountFormat(
+                          this.state.curMaxSliderVal,
+                          "en-US",
+                          "USD",
+                          0,
+                          0
+                        )}`
                       : ""
                   }
                   onChange={this.maxAmountChange}
@@ -349,15 +314,15 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
               </div>
               <Slider
                 range
-                min={0}
+                min={100}
                 max={10000000000}
-                step={10000}
+                step={1000}
                 value={[this.state.curMinSliderVal, this.state.curMaxSliderVal]}
                 onChange={this.changeMaxMinSlider}
               />
 
               <div className="smbSlidervalueContainer inter-display-medium">
-                <div className="smbSlidervalues">$0.01</div>
+                <div className="smbSlidervalues">$100</div>
                 <div className="smbSlidervalues">$10b</div>
               </div>
             </div>

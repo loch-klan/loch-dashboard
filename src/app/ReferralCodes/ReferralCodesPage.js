@@ -79,6 +79,8 @@ class ReferralCodesPage extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
+    this.startPageView();
+    this.updateTimer(true);
     if (this.props.commonState.profileReferralPage) {
       this.callApi();
     }
