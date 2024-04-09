@@ -189,12 +189,14 @@ class PaywallModal extends BaseReactComponent {
         <Modal.Header>
           {this.props.isMobile ? (
             <div className="mobile-copy-trader-popup-header">
-              <div
-                onClick={this.props.goBack}
-                className="mobile-copy-trader-popup-header-close-icon"
-              >
-                <Image src={NewModalBackArrowIcon} />
-              </div>
+              {this.props.hideBackBtn ? null : (
+                <div
+                  onClick={this.props.onGoBackPayModal}
+                  className="mobile-copy-trader-popup-header-close-icon"
+                >
+                  <Image src={NewModalBackArrowIcon} />
+                </div>
+              )}
               <h6 className="inter-display-medium f-s-20 mobile-copy-trader-popup-header-title">
                 Copy Trade with
                 <br />
@@ -209,15 +211,17 @@ class PaywallModal extends BaseReactComponent {
             </div>
           ) : (
             <>
-              <div
-                className="closebtn"
-                style={{
-                  left: "2.8rem",
-                }}
-                onClick={this.props.goBackToAddCopyTradeModal}
-              >
-                <Image src={NewModalBackArrowIcon} />
-              </div>
+              {this.props.hideBackBtn ? null : (
+                <div
+                  className="closebtn"
+                  style={{
+                    left: "2.8rem",
+                  }}
+                  onClick={this.props.onGoBackPayModal}
+                >
+                  <Image src={NewModalBackArrowIcon} />
+                </div>
+              )}
               <div className="api-modal-header popup-main-icon-with-border">
                 <Image src={LochLogoWhiteIcon} className="imageDarker" />
               </div>

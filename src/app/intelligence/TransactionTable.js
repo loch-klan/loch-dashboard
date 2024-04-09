@@ -35,6 +35,8 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        shouldBlurElements={props.shouldBlurElements}
+        showBlurredItem={props.showBlurredItem}
         isSmartMoney={props.isSmartMoney}
         openSignInOnclickModal={props.openSignInOnclickModal}
         wrapperStyle={props.wrapperStyle}
