@@ -306,11 +306,17 @@ export const lightenDarkenColor = (hex, lum) => {
   return rgb;
 };
 
-export const amountFormat = (number, locals, currency_type) => {
+export const amountFormat = (
+  number,
+  locals,
+  currency_type,
+  minimumFractionDigits = 2,
+  maximumFractionDigits = 2
+) => {
   return new Intl.NumberFormat(locals, {
     currency: currency_type,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: minimumFractionDigits,
+    maximumFractionDigits: maximumFractionDigits,
   }).format(number);
 };
 export const getPadding = (val, e, OnboardingState) => {

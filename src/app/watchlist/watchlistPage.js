@@ -162,6 +162,22 @@ class WatchListPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openFollowingNoficationModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          window.sessionStorage.removeItem("openFollowingNoficationModal");
+          window.sessionStorage.removeItem("openSmartMoneyNoficationModal");
+          this.setState({
+            showNotifyOnTransactionModal: true,
+            addressToNotify: shouldOpenNoficationModal,
+          });
+        }, 1000);
+      }
+    }
     scrollToTop();
     resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
@@ -542,6 +558,10 @@ class WatchListPage extends BaseReactComponent {
         }
       );
     } else {
+      window.sessionStorage.setItem(
+        "openFollowingNoficationModal",
+        passedAddress
+      );
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
         dontOpenLoginPopup();
@@ -796,7 +816,10 @@ class WatchListPage extends BaseReactComponent {
       },
       {
         labelName: (
-          <div className=" history-table-header-col no-hover" id="netflows">
+          <div
+            className="cp history-table-header-col goToCenter no-hover"
+            id="netflows"
+          >
             <span className="inter-display-medium f-s-13 lh-16 table-header-font">
               Notify
             </span>

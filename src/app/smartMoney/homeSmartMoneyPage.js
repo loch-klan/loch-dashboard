@@ -262,6 +262,22 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     // if (mobileCheck()) {
     //   this.props.history.push("/home");
     // }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openSmartMoneyNoficationModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          window.sessionStorage.removeItem("openSmartMoneyNoficationModal");
+          window.sessionStorage.removeItem("openFollowingNoficationModal");
+          this.setState({
+            showNotifyOnTransactionModal: true,
+            addressToNotify: shouldOpenNoficationModal,
+          });
+        }, 1000);
+      }
+    }
     getAllCurrencyRatesApi();
     let token = window.sessionStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
@@ -786,6 +802,10 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         }
       );
     } else {
+      window.sessionStorage.setItem(
+        "openSmartMoneyNoficationModal",
+        passedAddress
+      );
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
         dontOpenLoginPopup();
