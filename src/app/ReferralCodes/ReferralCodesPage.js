@@ -124,7 +124,6 @@ class ReferralCodesPage extends BaseReactComponent {
     const tempExpiryTime = window.sessionStorage.getItem(
       "referralCodesPageExpiryTime"
     );
-    console.log("tempExpiryTime ", tempExpiryTime);
     if (tempExpiryTime) {
       this.endPageView();
     }
