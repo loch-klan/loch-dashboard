@@ -223,7 +223,8 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     });
   };
   closePayModal = () => {
-    this.hideAddCopyTradeAddress();
+    // this.hideAddCopyTradeAddress();
+    this.state.onHide();
     this.setState({
       isPayModalOpen: false,
       isPayModalOptionsOpen: false,
@@ -240,6 +241,12 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
+        style={{
+          opacity:
+            this.state.isPayModalOpen || this.state.isPayModalOptionsOpen
+              ? 0
+              : 1,
+        }}
       >
         {this.state.isPayModalOpen ? (
           <EmulationsPaywall
