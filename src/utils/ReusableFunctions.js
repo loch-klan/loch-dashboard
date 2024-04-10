@@ -31,7 +31,13 @@ export const whichSignUpMethod = () => {
     return "Sidebar";
   }
 };
-
+export const removeOpenModalAfterLogin = () => {
+  window.sessionStorage.removeItem("openHomePaymentModal");
+  window.sessionStorage.removeItem("openAssetPaymentModal");
+  window.sessionStorage.removeItem("openFlowsPaymentModal");
+  window.sessionStorage.removeItem("openYieldOppPaymentModal");
+  window.sessionStorage.removeItem("openInsightsPaymentModal");
+};
 export const goToTelegram = () => {
   window.open("https://t.me/loch_chain", "_blank");
 };

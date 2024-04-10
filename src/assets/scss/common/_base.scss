@@ -3600,4 +3600,9 @@ input {
 .blurred-elements {
   cursor: pointer;
   filter: blur(4px);
+  opacity: 0.7;
+  padding: 0.2rem 0rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
 }

@@ -63,6 +63,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  removeOpenModalAfterLogin,
   scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
@@ -186,7 +187,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       );
       if (shouldOpenNoficationModal) {
         setTimeout(() => {
-          window.sessionStorage.removeItem("openAssetPaymentModal");
+          removeOpenModalAfterLogin();
           this.setState({
             isLochPaymentModal: true,
           });
@@ -561,7 +562,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         isLochPaymentModal: true,
       });
     } else {
-      window.sessionStorage.setItem("openAssetPaymentModal", true);
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openAssetPaymentModal", true);
+      }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
         dontOpenLoginPopup();
@@ -1320,8 +1324,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                 show={this.state.isLochPaymentModal}
                 onHide={this.hidePaymentModal}
                 redirectLink={BASE_URL_S3 + "/assets"}
-                title="Gain valuable insights regarding your assets"
-                description="All asset details"
+                title="Profit and Loss with Loch"
+                description="Unlimited wallets PnL"
                 hideBackBtn
               />
             ) : null}
