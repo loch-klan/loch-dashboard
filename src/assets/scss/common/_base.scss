@@ -1218,6 +1218,13 @@ form {
     text-align: center;
     padding: 10rem;
   }
+  .not-found-wrapper-image {
+    height: 10rem;
+    margin-bottom: 2rem;
+  }
+  .not-found-wrapper-image-text {
+    color: #adadad;
+  }
 }
 .section-table-mobile-scroll {
   padding: 0.5rem 0rem;
@@ -2809,10 +2816,13 @@ input {
   img {
     filter: var(--invertColor) !important;
   }
+  transition-duration: 0ms !important;
   &:hover {
     background-color: var(--mainButtonBg) !important;
     color: var(--primaryTextColor) !important;
-
+    border-color: var(--mainButtonBg) !important;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
     div {
       color: var(--primaryTextColor) !important;
     }
@@ -3418,7 +3428,10 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
-
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
+}
 .overflow-table-header-visible {
   .ReactVirtualized__Table__headerRow {
     overflow: visible !important;
@@ -3605,4 +3618,119 @@ input {
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+}
+.sliderModalBody {
+  .sliderModalBodyAddressBtn {
+    text-decoration: underline;
+    color: var(--addressText);
+    cursor: pointer;
+    &:hover {
+      font-weight: 600;
+    }
+  }
+  .smbButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3rem 5rem;
+    padding-top: 4.5rem;
+  }
+  .smbSliderContainer {
+    padding: 3rem 5rem;
+    padding-bottom: 0rem;
+    .smbsAssetDropdownContainer {
+      position: relative;
+      margin-bottom: 2.2rem;
+      z-index: 3;
+    }
+    .smbsInputContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      .smbsInput {
+        width: 100%;
+        border: 0.1rem solid var(--referallCopyBtn);
+        border-radius: 0.8rem;
+        padding: 1rem 1.5rem;
+        text-align: left;
+        outline: none;
+        font-size: 14px;
+        &:hover {
+          border: 0.1rem solid var(--primaryTextColor);
+        }
+      }
+    }
+    .smbSlidervalueContainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2rem;
+      .smbSlidervalues {
+        padding: 0.8rem 1.2rem;
+        border: 0.1rem solid var(--referallCopyBtn);
+        border-radius: 1rem;
+      }
+    }
+    .rc-slider-handle {
+      background-color: var(--primaryTextColor);
+      border: none;
+      height: 1.5rem;
+      width: 1.5rem;
+      border-radius: 1.5rem;
+      margin-top: -1rem;
+      opacity: 1;
+    }
+    .rc-slider-handle-dragging {
+      box-shadow: none;
+    }
+    .rc-slider-rail {
+      background-color: var(--greyCardBackgroud);
+      height: 0.5rem;
+      opacity: 1;
+      z-index: 1;
+    }
+    .rc-slider-track {
+      z-index: 2;
+      position: relative;
+      background-color: var(--primaryTextColor);
+      height: 0.5rem;
+      border-top-left-radius: 1rem;
+      border-bottom-left-radius: 1rem;
+      opacity: 1 !important;
+    }
+  }
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+.basicConfirmModalMobile {
+  .modal-content {
+    width: 90vw !important;
+    min-width: 90vw !important;
+    .modal-body {
+      padding: 3rem !important;
+      .leave-modal-btn-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1rem;
+        .secondary-btn {
+          margin-right: 0rem !important;
+        }
+      }
+    }
+  }
+}
+.addCopyTradeInput {
+  &::placeholder {
+    color: var(--inputPlaceHolder) !important;
+  }
+}
+.zeroOpacity {
+  opacity: 0;
 }
