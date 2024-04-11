@@ -985,11 +985,14 @@ class BarGraphSection extends Component {
                               ? {
                                   maxHeight: "35.55rem",
                                   overflow: "hidden",
+                                  cursor: "pointer",
                                 }
                               : {
                                   overflow: "hidden",
+                                  cursor: "pointer",
                                 }
                           }
+                          onClick={this.props.goToPayModal}
                         >
                           <div
                             style={{

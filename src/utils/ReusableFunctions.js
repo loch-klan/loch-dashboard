@@ -31,7 +31,13 @@ export const whichSignUpMethod = () => {
     return "Sidebar";
   }
 };
-
+export const removeOpenModalAfterLogin = () => {
+  window.sessionStorage.removeItem("openHomePaymentModal");
+  window.sessionStorage.removeItem("openAssetPaymentModal");
+  window.sessionStorage.removeItem("openFlowsPaymentModal");
+  window.sessionStorage.removeItem("openYieldOppPaymentModal");
+  window.sessionStorage.removeItem("openInsightsPaymentModal");
+};
 export const goToAddress = (passedAddress) => {
   let slink = passedAddress;
   let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";

@@ -38,8 +38,10 @@ import {
 
 import { toast } from "react-toastify";
 import {
+  dontOpenLoginPopup,
   isSameDateAs,
   mobileCheck,
+  removeOpenModalAfterLogin,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions.js";
 import { GetAllPlan, getUser } from "../common/Api.js";
@@ -50,11 +52,14 @@ import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import RealizedProfitAndLossMobile from "./RealizedProfitAndLossMobile.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class RealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       fromDateInitial: new Date(
         new Date().setFullYear(new Date().getFullYear() - 1)
       ),
@@ -189,6 +194,20 @@ class RealizedProfitAndLoss extends Component {
     // if (mobileCheck()) {
     //   this.props.history.push("/home");
     // }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openFlowsPaymentModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     this.startPageView();
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
@@ -306,7 +325,8 @@ class RealizedProfitAndLoss extends Component {
       moment.utc(this.state.toDate).add(1, "days").unix(),
       [],
       this.state.selectedAssets,
-      isDefault
+      isDefault,
+      this.state.isPremiumUser
     );
     // this.props.getProfitAndLossApi(
     //   this,
@@ -323,7 +343,8 @@ class RealizedProfitAndLoss extends Component {
       if (this.props.intelligenceState?.ProfitLossAssetData) {
         this.props.updateAssetProfitLoss(
           this.props.intelligenceState?.ProfitLossAssetData,
-          this
+          this,
+          this.state.isPremiumUser
         );
       }
       // Set all filters to initial
@@ -557,7 +578,8 @@ class RealizedProfitAndLoss extends Component {
       endDate,
       selectedChains,
       this.state.selectedAssets,
-      isDefault
+      isDefault,
+      this.state.isPremiumUser
     );
 
     const tempIsSearchUsed = this.state.isChainSearchUsed;
@@ -659,6 +681,35 @@ class RealizedProfitAndLoss extends Component {
     });
     this.updateTimer();
   };
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openFlowsPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   render() {
     if (mobileCheck()) {
       return (
@@ -736,6 +787,16 @@ class RealizedProfitAndLoss extends Component {
               showpath
               currentPage={"realized-profit-and-loss"}
             />
+            {this.state.isLochPaymentModal ? (
+              <PaywallModal
+                show={this.state.isLochPaymentModal}
+                onHide={this.hidePaymentModal}
+                redirectLink={BASE_URL_S3 + "/realized-profit-and-loss"}
+                title="Net Flows with Loch"
+                description="Unlimited wallets net flows"
+                hideBackBtn
+              />
+            ) : null}
             {this.state.upgradeModal && (
               <UpgradeModal
                 show={this.state.upgradeModal}
@@ -770,6 +831,7 @@ class RealizedProfitAndLoss extends Component {
               >
                 {!this.state.netFlowLoading ? (
                   <BarGraphSection
+                    goToPayModal={this.goToPayModal}
                     dontShowAssets
                     showToCalendar={this.showToCalendar}
                     hideToCalendar={this.hideToCalendar}
