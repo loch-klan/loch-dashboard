@@ -50,6 +50,7 @@
     "redux": "^4.1.1",
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
+    "stripe": "^14.24.0",
     "uuid": "^9.0.0",
     "validator": "^13.11.0",
     "web-vitals": "^1.1.2"

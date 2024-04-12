@@ -31,6 +31,7 @@ import { getAllCoins } from "../onboarding/Api.js";
 import CoinBadges from "./../common/CoinBadges";
 import { getAllWalletApi, getAllWalletListApi } from "./Api";
 import WalletCard from "./WalletCard";
+import { PieChartPorifleIcon } from "../../assets/images/icons/index.js";
 
 class Wallet extends Component {
   constructor(props) {
@@ -275,7 +276,7 @@ class Wallet extends Component {
           className="wallet-section page"
           style={
             this.props.hidePageHeader
-              ? { marginTop: "0rem", marginBottom: "3rem" }
+              ? { marginTop: "0rem", marginBottom: "1rem" }
               : {}
           }
         >
@@ -289,48 +290,54 @@ class Wallet extends Component {
             // showData={totalWalletAmt}
             // isLoading={isLoading}
           />
-          <div
-            style={{
-              minWidth: "85rem",
-            }}
-          >
-            <CoinBadges
-              activeBadge={this.state.activeBadge}
-              chainList={this.props.OnboardingState.coinsList}
-              handleFunction={this.handleFunction}
-              hideDropdown
-            />
-          </div>
-          <div className="m-b-16 sortby-section">
-            <div className="dropdown-section">
-              <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
-                Sort by
-              </span>
-              {this.state.sortBy.map((e, index) => {
-                return (
-                  <span
-                    className="sort-by-title"
-                    key={index}
-                    onClick={() => this.handleSort(e)}
-                  >
-                    <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
-                      {e.title}
-                    </span>{" "}
-                    {/* <Image src={sort} style={{ width: "1rem" }} /> */}
-                    <Image
-                      src={sortByIcon}
-                      // style={{ width: "1.6rem" }}
-                      className={e.down ? "rotateDown" : "rotateUp"}
-                    />
-                  </span>
-                );
-              })}
+          {this.props.isMobileDevice ? null : (
+            <div
+              style={{
+                minWidth: "85rem",
+              }}
+            >
+              <CoinBadges
+                activeBadge={this.state.activeBadge}
+                chainList={this.props.OnboardingState.coinsList}
+                handleFunction={this.handleFunction}
+                hideDropdown
+              />
             </div>
-          </div>
+          )}
+          {this.props.isMobileDevice ? null : (
+            <div className="m-b-16 sortby-section">
+              <div className="dropdown-section">
+                <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+                  Sort by
+                </span>
+                {this.state.sortBy.map((e, index) => {
+                  return (
+                    <span
+                      className="sort-by-title"
+                      key={index}
+                      onClick={() => this.handleSort(e)}
+                    >
+                      <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
+                        {e.title}
+                      </span>{" "}
+                      {/* <Image src={sort} style={{ width: "1rem" }} /> */}
+                      <Image
+                        src={sortByIcon}
+                        // style={{ width: "1.6rem" }}
+                        className={e.down ? "rotateDown" : "rotateUp"}
+                      />
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           {walletList.length > 0 && !isLoading ? (
             <div className="net-worth-wrapper">
               <div className="left">
-                <Image src={netWorthIcon} className="net-worth-icon" />
+                <div className="net-worth-icon-container">
+                  <Image src={PieChartPorifleIcon} className="net-worth-icon" />
+                </div>
                 <h3 className="inter-display-medium f-s-20 lh-24 ">
                   Total net worth
                 </h3>
@@ -359,6 +366,7 @@ class Wallet extends Component {
                 // console.log("walletlist", walletList)
                 return (
                   <WalletCard
+                    isMobileDevice={this.props.isMobileDevice}
                     key={index}
                     createdOn={wallet.created_on}
                     wallet_metadata={wallet.wallet_metadata}

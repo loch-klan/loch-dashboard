@@ -46,10 +46,7 @@ class SmartMoneyHowItWorksModal extends BaseReactComponent {
           >
             <Image src={CrossSmartMoneyIcon} />
           </div>
-          <Image
-            src={SmartMoneyAboutImage}
-            className="howItWorksModalImageOverlay"
-          />
+          <Image className="howItWorksModalImageOverlay" />
         </Modal.Header>
         <Modal.Body>
           <div
@@ -61,7 +58,7 @@ class SmartMoneyHowItWorksModal extends BaseReactComponent {
             className="addCommunitySmartMoneyWrapperParent"
           >
             <div className="exit-overlay-body" style={{ padding: "0rem" }}>
-              <h6 className="inter-display-medium f-s-25 w-100 text-left text-same-mode-color">
+              <h6 className="inter-display-medium f-s-25 w-100 text-left">
                 About Loch Leaderboard
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 w-100 text-left">

@@ -4,6 +4,7 @@ import { API_LIMIT } from "./Constant";
 import moment from "moment";
 import { DARK_MODE } from "../app/intelligence/ActionTypes";
 import { SwitchDarkMode } from "../app/common/Api";
+import { toast } from "react-toastify";
 
 export const scrollToBottomAfterPageChange = () => {
   if (mobileCheck()) {
@@ -15,6 +16,38 @@ export const scrollToBottomAfterPageChange = () => {
   } else {
     window.scroll(0, document.body.scrollHeight);
   }
+};
+
+export const whichSignUpMethod = () => {
+  if (window.sessionStorage.getItem("lochPointsSignInModal")) {
+    return "Loch points";
+  } else if (window.sessionStorage.getItem("referralCodesSignInModal")) {
+    return "Referral code";
+  } else if (window.sessionStorage.getItem("fifteenSecSignInModal")) {
+    return "15 sec";
+  } else {
+    return "Sidebar";
+  }
+};
+
+export const goToTelegram = () => {
+  window.open("https://t.me/loch_chain", "_blank");
+};
+export const goToTwitter = () => {
+  window.open("https://twitter.com/loch_chain", "_blank");
+};
+export const emailPrithvir = () => {
+  window.open("mailto:prithvir@loch.one", "_blank");
+};
+export const copyText = (text) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      toast.success("Copied");
+    })
+    .catch(() => {
+      console.log("something went wrong");
+    });
 };
 export const scrollToTop = () => {
   window.scrollTo(0, 0);

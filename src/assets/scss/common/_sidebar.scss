@@ -833,7 +833,7 @@
           cursor: pointer;
           transform: translateY(-50%);
           border: 0.1rem solid var(--sidebarSectionalBOrder);
-          background-color: var(--sidebarBackgroud);
+          background-color: var(--sidebarSectional);
           height: 3rem;
           width: 3rem;
           display: flex;
@@ -876,8 +876,10 @@
           cursor: pointer;
           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
             0px 1px 1px rgba(0, 0, 0, 0.04);
-          background-color: #e5e5e680;
+          background-color: var(--closedSideBarPersonBackgroundColor);
           border-color: transparent;
+          background-color: var(--closedSideBarPersonBackgroundColor);
+          border: 0.05rem solid var(--closedSideBarPersonBackgroundBorderColor);
           &:hover {
             box-shadow: none;
             background-color: #181818;
@@ -912,8 +914,9 @@
         padding-top: 1rem;
         .sideBarFooterSignInIconContainerClosedForTwitter {
           cursor: pointer;
-          background-color: var(--cardBackgroud);
-          border: 1.3px $white-E5E solid;
+          background-color: var(--closeTwitterBackgroundColor);
+          border: 1.3px solid;
+          border-color: var(--closeTwitterBackgroundColor);
           .sideBarFooterSignInIconForTwitter {
             filter: var(--invertColor);
           }

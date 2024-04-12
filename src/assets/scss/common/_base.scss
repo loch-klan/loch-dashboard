@@ -663,10 +663,11 @@ body {
 }
 
 .Toastify__toast {
-  background-color: var(--cardBackgroud);
-  border: 1px solid var(--borderwhiteDarkLight);
-  color: var(--black191);
+  background-color: var(--toastify);
+  border: 1px solid var(--toastifyBorder);
+  color: var(--toastifyText);
   padding: 0.5rem 2rem;
+  border-radius: 0.8rem;
 
   .Toastify__toast-body {
     flex-direction: row-reverse;
@@ -677,7 +678,8 @@ body {
 
     .Toastify__toast-icon {
       margin-right: 0;
-      background-image: url(../../images/icons/success.svg);
+      margin-left: 8rem;
+      background-image: var(--toastifySuccessIcon);
       background-size: 100% 100%;
       width: 4rem;
       height: 4rem;
@@ -691,7 +693,7 @@ body {
   &.Toastify__toast--error {
     .Toastify__toast-body {
       .Toastify__toast-icon {
-        background-image: url(../../images/icons/alert-icon.svg);
+        background-image: var(--toastifyErrorIcon);
 
         svg {
           display: none;
@@ -1762,6 +1764,13 @@ form {
   }
 }
 @media all and (max-width: 800px) {
+  .Toastify__toast {
+    .Toastify__toast-body {
+      .Toastify__toast-icon {
+        margin-left: 0.5rem;
+      }
+    }
+  }
   .tool-tip-container {
     .arrow::before {
       top: -1px;
@@ -2724,7 +2733,7 @@ textarea {
 .page-header {
   margin-bottom: 1.5rem;
   h4 {
-    font-size: 2rem;
+    font-size: 25px;
     // line-height: 2.4;
   }
   .pageHeaderSubtitles {
@@ -2757,6 +2766,9 @@ input {
   &:hover {
     filter: var(--hoverBrightnessValue);
   }
+}
+.imageDarker {
+  filter: var(--hoverBrightnessValue) !important;
 }
 .overlay-tool-tip-container {
   background-color: var(--cardBackground);
@@ -3385,14 +3397,16 @@ input {
 
 .input-hover-states {
   input {
+    background-color: var(--modalInput);
     border: 1px solid var(--inputBorder) !important;
     &::placeholder {
-      color: var(--inputBorder) !important;
+      color: var(--modalInputPlaceholder) !important;
+      opacity: 0.5;
     }
     &:hover {
       border: 1px solid var(--inputBorderHover) !important;
       &::placeholder {
-        color: var(--inputBorder) !important;
+        color: var(--modalInputPlaceholder) !important;
       }
     }
   }
