@@ -3619,6 +3619,18 @@ input {
   -webkit-user-select: none;
   -ms-user-select: none;
 }
+.bar-graph-section-y-axis {
+  filter: blur(5px);
+  cursor: pointer;
+}
+.bar-graph-section-blurred {
+  .chartArea {
+    canvas {
+      filter: blur(5px) !important;
+      cursor: pointer !important;
+    }
+  }
+}
 .sliderModalBody {
   .sliderModalBodyAddressBtn {
     text-decoration: underline;

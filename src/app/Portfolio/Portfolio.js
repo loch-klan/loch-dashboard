@@ -2416,6 +2416,42 @@ class Portfolio extends BaseReactComponent {
       }
     }
   };
+  showBlurredGasFees = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState(
+        {
+          payModalTitle: "Understand Gas Fees with Loch",
+          payModalDescription: "Unlimited wallets gas costs",
+        },
+        () => {
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }
+      );
+    } else {
+      const tempArr = [
+        "Understand Gas Fees with Loch",
+        "Unlimited wallets gas costs",
+      ];
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
   hidePaymentModal = () => {
     this.setState({
       isLochPaymentModal: false,
@@ -5143,6 +5179,8 @@ class Portfolio extends BaseReactComponent {
                               Loch
                             </div>
                             <BarGraphSection
+                              goToPayModal={this.showBlurredGasFees}
+                              isBlurred
                               digit={this.state.GraphDigit}
                               isFromHome
                               openChartPage={this.goToGasFeesSpentPage}
