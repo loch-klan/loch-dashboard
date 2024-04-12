@@ -122,6 +122,7 @@ class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
       //Sign up referral
       isReferralCodeStep: false,
       referralCode: "",
@@ -3103,7 +3104,8 @@ class NewWelcome extends BaseReactComponent {
                   </div>
                 ) : null}
                 <div className="newHomeAddAnotherGoContainer inter-display-regular">
-                  {this.state.walletInput.length < 10 ? (
+                  {this.state.walletInput.length < 10 &&
+                  this.state.isPremiumUser ? (
                     <button
                       onClick={() => {
                         this.addInputField();

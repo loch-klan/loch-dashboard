@@ -37,6 +37,9 @@ export const removeOpenModalAfterLogin = () => {
   window.sessionStorage.removeItem("openFlowsPaymentModal");
   window.sessionStorage.removeItem("openYieldOppPaymentModal");
   window.sessionStorage.removeItem("openInsightsPaymentModal");
+  window.sessionStorage.removeItem("openSearchbarPaymentModal");
+  window.sessionStorage.removeItem("openExportPaymentModal");
+  window.sessionStorage.removeItem("openGasFeesModal");
 };
 export const goToTelegram = () => {
   window.open("https://t.me/loch_chain", "_blank");

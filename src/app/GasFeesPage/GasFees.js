@@ -30,7 +30,12 @@ import { toast } from "react-toastify";
 import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions.js";
+import {
+  dontOpenLoginPopup,
+  mobileCheck,
+  removeOpenModalAfterLogin,
+  scrollToTop,
+} from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -43,11 +48,14 @@ import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import GasFeesMobile from "./GasFeesMobile.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class GasFeesPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       selectedActiveBadgeLocal: [],
       graphfeeValueLocal: [],
       graphfeeDataLocal: {},
@@ -178,8 +186,50 @@ class GasFeesPage extends Component {
       this.checkForInactivity();
     }, 900000);
   };
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openGasFeesModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   componentDidMount() {
     scrollToTop();
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal =
+        window.sessionStorage.getItem("openGasFeesModal");
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     if (this.props.intelligenceState.graphfeeValue) {
       this.setState({
         graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,
@@ -572,6 +622,16 @@ class GasFeesPage extends Component {
           </div>
         </div>
         <div className="cost-page-section">
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/gas-fees"}
+              title="Understand Gas Fees with Loch"
+              description="Unlimited wallets gas costs"
+              hideBackBtn
+            />
+          ) : null}
           {this.state.connectModal ? (
             <ConnectModal
               show={this.state.connectModal}
@@ -644,6 +704,8 @@ class GasFeesPage extends Component {
               id="gasfeesspent"
             >
               <BarGraphSection
+                goToPayModal={this.goToPayModal}
+                isBlurred={!this.state.isPremiumUser}
                 data={
                   this.state.graphfeeValueLocal &&
                   this.state.graphfeeValueLocal[0]
