@@ -275,6 +275,12 @@ class AddWatchListAddressModal extends BaseReactComponent {
               isDisableFlag = false;
             }
           });
+        } else if (e.coins.length > 0 && !isLoading) {
+          e.coins.forEach((a) => {
+            if (a.chain_detected === true) {
+              isDisableFlag = false;
+            }
+          });
         } else {
           isDisableFlag = false;
         }

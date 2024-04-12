@@ -81,6 +81,7 @@ class FormElementComponent extends BaseReactComponent {
       isInvalid,
       isCancel = false,
       hideOnblur = this.props.hideOnblur ? true : false,
+      onBlurPassed,
       control: { type, settings },
     } = this.props;
     // console.log('this.props', this.props);
@@ -113,7 +114,13 @@ class FormElementComponent extends BaseReactComponent {
           ))}
         <FormElementControl
           valueLink={valueLink}
-          onBlur={hideOnblur ? this.hideOnblur : this.validate}
+          onBlur={
+            hideOnblur
+              ? this.hideOnblur
+              : onBlurPassed
+              ? onBlurPassed
+              : this.validate
+          }
           failedValidation={this.state.failedValidation}
           classes={classes}
           disabled={disabled}
