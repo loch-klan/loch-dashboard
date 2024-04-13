@@ -1997,6 +1997,9 @@ class NewWelcome extends BaseReactComponent {
             }
           }
         }
+        const walletCreditScore = new URLSearchParams();
+        walletCreditScore.append("credits", "wallet_connected");
+        this.props.addUserCredits(walletCreditScore);
         ConnectedWalletWelcome({
           session_id: getCurrentUser ? getCurrentUser()?.id : "",
           email_address: getCurrentUser ? getCurrentUser()?.email : "",
