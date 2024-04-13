@@ -34,7 +34,7 @@ export const checkReferallCodeValid = (data, goToSignUp, stopLoader) => {
       .then((res) => {
         if (res.data && !res.data.error) {
           if (res.data.message === "Invalid code") {
-            toast.error("Invalid Referral Code");
+            toast.error("Referral Code Already Claimed");
             if (stopLoader) {
               stopLoader();
             }
