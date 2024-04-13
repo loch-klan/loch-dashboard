@@ -8,9 +8,10 @@ export const getReferallCodes = (stopLoader) => {
       .post("organisation/user/get-referral-codes")
       .then((res) => {
         if (res.data && !res.data.error && res.data.data) {
+          const curData = res.data.data.slice(10, 20);
           dispatch({
             type: GET_REFERRAL_CODES,
-            payload: [...res.data.data],
+            payload: [...curData],
           });
         } else {
           toast.error("Something went wrong");
