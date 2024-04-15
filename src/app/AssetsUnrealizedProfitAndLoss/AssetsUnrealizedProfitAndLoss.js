@@ -185,7 +185,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       const shouldOpenNoficationModal = window.sessionStorage.getItem(
         "openAssetPaymentModal"
       );
-      if (shouldOpenNoficationModal) {
+      const isOpenForSearch = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal && !isOpenForSearch) {
         setTimeout(() => {
           removeOpenModalAfterLogin();
           this.setState({

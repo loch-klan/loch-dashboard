@@ -187,8 +187,15 @@ class PortfolioHomeInsightsBlock extends Component {
                           alignItems: "flex-start",
                           background: "var(--cardBackgroud)",
                         }}
-                        className="insights-card"
+                        className={`insights-card ${
+                          key > 0 ? "blurred-elements" : ""
+                        }`}
                         key={key}
+                        onClick={() => {
+                          if (key > 0 && this.props.showBlurredInsights) {
+                            this.props.showBlurredInsights();
+                          }
+                        }}
                       >
                         <div>
                           <div

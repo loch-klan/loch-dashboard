@@ -164,7 +164,10 @@ class InsightsPage extends Component {
       const shouldOpenNoficationModal = window.sessionStorage.getItem(
         "openInsightsPaymentModal"
       );
-      if (shouldOpenNoficationModal) {
+      const isOpenForSearch = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal && !isOpenForSearch) {
         setTimeout(() => {
           removeOpenModalAfterLogin();
           this.setState({
@@ -523,6 +526,7 @@ class InsightsPage extends Component {
           <InsightsPageMobile
             updatedInsightList={this.state.updatedInsightList}
             handleMobileInsightSelect={this.handleMobileInsightSelect}
+            goToPayModal={this.goToPayModal}
             selectedFilter={this.state.selectedFilter}
             isLoading={this.state.isLoading}
           />

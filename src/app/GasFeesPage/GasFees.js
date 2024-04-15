@@ -221,7 +221,10 @@ class GasFeesPage extends Component {
     if (userDetails && userDetails.email) {
       const shouldOpenNoficationModal =
         window.sessionStorage.getItem("openGasFeesModal");
-      if (shouldOpenNoficationModal) {
+      const isOpenForSearch = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal && !isOpenForSearch) {
         setTimeout(() => {
           removeOpenModalAfterLogin();
           this.setState({
@@ -580,6 +583,8 @@ class GasFeesPage extends Component {
           currentPage={"gas-fees"}
         >
           <GasFeesMobile
+            goToPayModal={this.goToPayModal}
+            isPremiumUser={this.state.isPremiumUser}
             counterGraphDigit={this.state.GraphDigit}
             counterPartyValueLocal={this.state.graphfeeValueLocal}
             counterGraphLoading={this.state.gasFeesGraphLoading}

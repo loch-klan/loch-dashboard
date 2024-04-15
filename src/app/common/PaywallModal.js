@@ -198,9 +198,7 @@ class PaywallModal extends BaseReactComponent {
                 </div>
               )}
               <h6 className="inter-display-medium f-s-20 mobile-copy-trader-popup-header-title">
-                Copy Trade with
-                <br />
-                Loch
+                {this.props.title}
               </h6>
               <div
                 onClick={this.hideModal}
