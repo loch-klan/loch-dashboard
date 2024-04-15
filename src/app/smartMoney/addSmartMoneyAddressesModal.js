@@ -312,7 +312,10 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     });
 
     let data = new URLSearchParams();
-    data.append("email", this.state.signInEmailId);
+    data.append(
+      "email",
+      this.state.signInEmailId ? this.state.signInEmailId.toLowerCase() : ""
+    );
     this.props.smartMoneySignInApi(data, this);
   };
   handleSuccesfulSignIn = () => {

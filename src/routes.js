@@ -24,11 +24,14 @@ import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
+import AutoLogin from "./app/AutoLogin/AutoLogin";
+import EmulationTransactionsPage from "./app/Emulations/EmulationTransactions/EmulationTransactionsPage";
+import Emulations from "./app/Emulations/Emulations";
+import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
 import NewWelcome from "./app/home/NewWelcome";
 import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
-import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import PublicRoute from "./utils/PublicRoute";
 const routes = [
   {
@@ -36,6 +39,12 @@ const routes = [
     name: "Login",
     type: Route,
     component: Login,
+  },
+  {
+    path: "/auto-login",
+    name: "Auto Login",
+    type: Route,
+    component: AutoLogin,
   },
 
   {
@@ -92,6 +101,18 @@ const routes = [
     name: "Assets",
     type: PrivateRoute,
     component: AssetsUnrealizedProfitAndLoss,
+  },
+  {
+    path: "/copy-trade",
+    name: "Emulations",
+    type: PrivateRoute,
+    component: Emulations,
+  },
+  {
+    path: "/copy-trade/transactions",
+    name: "Emulations",
+    type: PrivateRoute,
+    component: EmulationTransactionsPage,
   },
   {
     path: "/nft",
