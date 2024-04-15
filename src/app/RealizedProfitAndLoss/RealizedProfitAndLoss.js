@@ -199,7 +199,10 @@ class RealizedProfitAndLoss extends Component {
       const shouldOpenNoficationModal = window.sessionStorage.getItem(
         "openFlowsPaymentModal"
       );
-      if (shouldOpenNoficationModal) {
+      const isOpenForSearch = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal && !isOpenForSearch) {
         setTimeout(() => {
           removeOpenModalAfterLogin();
           this.setState({
@@ -718,6 +721,7 @@ class RealizedProfitAndLoss extends Component {
           history={this.props.history}
           showpath
           currentPage={"realized-profit-and-loss"}
+          goToPayModal={this.props.goToPayModal}
         >
           <RealizedProfitAndLossMobile
             showToCalendar={this.showToCalendar}

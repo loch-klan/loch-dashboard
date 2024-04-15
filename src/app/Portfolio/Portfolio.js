@@ -821,7 +821,10 @@ class Portfolio extends BaseReactComponent {
       const shouldOpenNoficationModal = window.sessionStorage.getItem(
         "openHomePaymentModal"
       );
-      if (shouldOpenNoficationModal) {
+      const isOpenForSearch = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal && !isOpenForSearch) {
         setTimeout(() => {
           removeOpenModalAfterLogin();
           const titleAndDesc = shouldOpenNoficationModal.split(",");
@@ -4660,7 +4663,26 @@ class Portfolio extends BaseReactComponent {
           history={this.props.history}
           yesterdayBalance={this.props.portfolioState.yesterdayBalance}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              isMobile
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/"}
+              title={this.state.payModalTitle}
+              description={this.state.payModalDescription}
+              hideBackBtn
+            />
+          ) : null}
           <PortfolioMobile
+            payModalTitle={this.state.payModalTitle}
+            payModalDescription={this.state.payModalDescription}
+            isLochPaymentModal={this.state.isLochPaymentModal}
+            hidePaymentModal={this.hidePaymentModal}
+            showBlurredFlows={this.showBlurredFlows}
+            showBlurredInsights={this.showBlurredInsights}
+            showBlurredGasFees={this.showBlurredGasFees}
+            isPremiumUser={this.state.isPremiumUser}
             chainLoader={this.state.chainLoader}
             loader={this.state.loader}
             totalChainDetechted={this.state.totalChainDetechted}
@@ -5180,7 +5202,7 @@ class Portfolio extends BaseReactComponent {
                             </div>
                             <BarGraphSection
                               goToPayModal={this.showBlurredGasFees}
-                              isBlurred
+                              isBlurred={!this.state.isPremiumUser}
                               digit={this.state.GraphDigit}
                               isFromHome
                               openChartPage={this.goToGasFeesSpentPage}

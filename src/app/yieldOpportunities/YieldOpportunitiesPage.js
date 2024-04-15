@@ -212,7 +212,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       const shouldOpenNoficationModal = window.sessionStorage.getItem(
         "openYieldOppPaymentModal"
       );
-      if (shouldOpenNoficationModal) {
+      const isOpenForSearch = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal && !isOpenForSearch) {
         setTimeout(() => {
           removeOpenModalAfterLogin();
           this.setState({
