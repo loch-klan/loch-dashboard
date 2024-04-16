@@ -764,7 +764,7 @@ class MobileLayout extends BaseReactComponent {
         ? "generic pop up"
         : this.props.tracking
     );
-    VerifyEmail(data, this);
+    VerifyEmail(data, this, true);
   };
   openSignInModal = () => {
     this.setState({

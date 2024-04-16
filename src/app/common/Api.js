@@ -894,7 +894,7 @@ export const SendOtp = (data, ctx, isForMobile) => {
 
 // Verify email
 
-export const VerifyEmail = (data, ctx) => {
+export const VerifyEmail = (data, ctx, passedStopUpdate) => {
   postLoginInstance
     .post("organisation/user/verify-otp-code", data)
     .then((res) => {
@@ -1061,7 +1061,7 @@ export const VerifyEmail = (data, ctx) => {
             isOptInValid: false,
           },
           () => {
-            if (ctx.props.stopUpdate) {
+            if (ctx.props.stopUpdate || passedStopUpdate) {
               window.sessionStorage.removeItem("lochDummyUser");
 
               const allChains = ctx.props.OnboardingState.coinsList;
@@ -1145,7 +1145,9 @@ export const VerifyEmail = (data, ctx) => {
               addLocalWalletList(JSON.stringify(addWallet));
               //  console.log("only sign");
               setTimeout(() => {
-                ctx.state.onHide();
+                if (ctx.state.onHide) {
+                  ctx.state.onHide();
+                }
                 // console.log("reload")
                 window.location.reload();
               }, 3000);

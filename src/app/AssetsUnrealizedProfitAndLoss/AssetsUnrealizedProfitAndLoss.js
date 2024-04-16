@@ -1270,6 +1270,17 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             showHideDustFun={this.handleDust}
             showHideDustVal={this.state.showDust}
           />
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/assets"}
+              title="Profit and Loss with Loch"
+              description="Unlimited wallets PnL"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
         </MobileLayout>
       );
     }

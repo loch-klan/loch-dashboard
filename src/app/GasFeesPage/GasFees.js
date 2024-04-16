@@ -582,6 +582,17 @@ class GasFeesPage extends Component {
           showpath
           currentPage={"gas-fees"}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/gas-fees"}
+              title="Understand Gas Fees with Loch"
+              description="Unlimited wallets gas costs"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <GasFeesMobile
             goToPayModal={this.goToPayModal}
             isPremiumUser={this.state.isPremiumUser}

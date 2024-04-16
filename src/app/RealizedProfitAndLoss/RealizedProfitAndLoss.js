@@ -723,7 +723,19 @@ class RealizedProfitAndLoss extends Component {
           currentPage={"realized-profit-and-loss"}
           goToPayModal={this.props.goToPayModal}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/realized-profit-and-loss"}
+              title="Net Flows with Loch"
+              description="Unlimited wallets net flows"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <RealizedProfitAndLossMobile
+            goToPayModal={this.goToPayModal}
             showToCalendar={this.showToCalendar}
             hideToCalendar={this.hideToCalendar}
             hideFromCalendar={this.hideFromCalendar}
