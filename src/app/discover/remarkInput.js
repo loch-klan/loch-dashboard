@@ -25,7 +25,7 @@ class RemarkInput extends BaseReactComponent {
     }
   }
   onSubmit = () => {
-    if (this.props.onSubmit) {
+    if (this.props.onSubmit && this.state.remark) {
       this.props.onSubmit(this.state.remark);
     }
   };
@@ -49,6 +49,7 @@ class RemarkInput extends BaseReactComponent {
                 placeholder: "What do you think of this address?",
               },
             }}
+            onBlurPassed={this.onSubmit}
           />
         </Form>
       </div>

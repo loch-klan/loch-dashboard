@@ -21,6 +21,7 @@ const FormElement = (props) => {
 
 FormElement.propTypes = {
   classes: PropTypes.object,
+  onBlurPassed: PropTypes.object,
   valueLink: PropTypes.object.isRequired,
   label: PropTypes.string,
   required: PropTypes.bool,
