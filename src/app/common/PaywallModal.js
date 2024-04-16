@@ -14,11 +14,16 @@ import {
 } from "../../assets/images/icons";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import { loadingAnimation } from "../../utils/ReusableFunctions";
+import {
+  loadingAnimation,
+  whichSignUpMethod,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import PaywallOptionsModal from "./PaywallOptionsModal";
 import "./_paywallModal.scss";
+import { PayModalClosed, PayModalOpened } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class PaywallModal extends BaseReactComponent {
   constructor(props) {
@@ -83,6 +88,12 @@ class PaywallModal extends BaseReactComponent {
     };
   }
   componentDidMount() {
+    const path = whichSignUpMethod();
+    PayModalOpened({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+    });
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.setState({
       userDetailsState: userDetails,
@@ -145,6 +156,12 @@ class PaywallModal extends BaseReactComponent {
   };
 
   hideModal = () => {
+    const path = whichSignUpMethod();
+    PayModalClosed({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+    });
     this.state.onHide();
   };
   goToPayWallOptions = () => {
@@ -164,7 +181,7 @@ class PaywallModal extends BaseReactComponent {
         className={`exit-overlay-form pay-wall-modal ${
           this.props.isMobile ? "pay-wall-modal-mobile" : ""
         }`}
-        onHide={this.state.onHide}
+        onHide={this.hideModal}
         size="lg"
         dialogClassName={"exit-overlay-modal"}
         centered

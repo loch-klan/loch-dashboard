@@ -489,6 +489,7 @@ class InsightsPage extends Component {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredInsightsSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
@@ -523,6 +524,17 @@ class InsightsPage extends Component {
           showpath
           currentPage={"insights"}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+              title="Access Risk and Cost Reduction Insights"
+              description="Unlimited wallets insights"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <InsightsPageMobile
             updatedInsightList={this.state.updatedInsightList}
             handleMobileInsightSelect={this.handleMobileInsightSelect}

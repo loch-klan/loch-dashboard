@@ -729,6 +729,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredYieldOppSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
@@ -1111,6 +1112,17 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           currentPage={"yield-opportunities"}
           history={this.props.history}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/yield-opportunities"}
+              title="Access Loch's Yield Opportunities"
+              description="Unlimited yield opportunities"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <YieldOpportunitiesMobilePage
             tableData={tableData}
             columnList={columnList}

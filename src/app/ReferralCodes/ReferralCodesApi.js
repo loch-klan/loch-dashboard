@@ -8,9 +8,10 @@ export const getReferallCodes = (stopLoader) => {
       .post("organisation/user/get-referral-codes")
       .then((res) => {
         if (res.data && !res.data.error && res.data.data) {
+          const curData = res.data.data.slice(10, 20);
           dispatch({
             type: GET_REFERRAL_CODES,
-            payload: [...res.data.data],
+            payload: [...curData],
           });
         } else {
           toast.error("Something went wrong");
@@ -34,7 +35,7 @@ export const checkReferallCodeValid = (data, goToSignUp, stopLoader) => {
       .then((res) => {
         if (res.data && !res.data.error) {
           if (res.data.message === "Invalid code") {
-            toast.error("Invalid Referral Code");
+            toast.error("Referral Code Already Claimed");
             if (stopLoader) {
               stopLoader();
             }

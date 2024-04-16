@@ -14,6 +14,7 @@ import {
   GAS_FEES,
 } from "../intelligence/ActionTypes";
 import { getGraphData, getCounterGraphData } from "./getGraphData";
+import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 
 export const getAllFeeApi = (ctx, startDate, endDate, isDefault = true) => {
   return async function (dispatch, getState) {
@@ -326,6 +327,26 @@ export const getAvgCostBasis = (ctx) => {
               total_gain: totalGain,
             },
           });
+          if (window.sessionStorage.getItem("lochToken")) {
+            postLoginInstance
+              .post("wallet/user-wallet/add-yield-pools")
+              .then((res) => {
+                dispatch({
+                  type: YIELD_POOLS,
+                  payload: res,
+                });
+              })
+              .catch(() => {
+                console.log("Issue here");
+              });
+
+            postLoginInstance
+              .post("wallet/user-wallet/add-nfts")
+              .then((res) => {})
+              .catch(() => {
+                console.log("Issue here");
+              });
+          }
           const shouldRecallApis =
             window.sessionStorage.getItem("shouldRecallApis");
           if (!shouldRecallApis || shouldRecallApis === "false") {

@@ -2004,6 +2004,7 @@ class NewWelcome extends BaseReactComponent {
             }
           }
         }
+        window.sessionStorage.setItem("connectWalletCreditOnce", true);
         ConnectedWalletWelcome({
           session_id: getCurrentUser ? getCurrentUser()?.id : "",
           email_address: getCurrentUser ? getCurrentUser()?.email : "",
