@@ -32,12 +32,14 @@ import {
   ConnectExPopupEmailAdded,
   GeneralPopupEmailAdded,
   LochPointsSignInPopupEmailAdded,
+  SignInModalEmailAdded,
   SigninMenuEmailAdded,
   UpgradeSignInEmailVerified,
   WhaleCreateAccountPrivacyHover,
   WhalePopupEmailAdded,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { whichSignUpMethod } from "../../utils/ReusableFunctions.js";
 
 class AuthModal extends BaseReactComponent {
   constructor(props) {
@@ -105,6 +107,14 @@ class AuthModal extends BaseReactComponent {
     //   console.log("create email", this.state.email);
     let data = new URLSearchParams();
     data.append("email", this.state.email);
+
+    const signUpMethod = whichSignUpMethod();
+    SignInModalEmailAdded({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      signUpMethod: signUpMethod,
+    });
+
     SendOtp(data, this);
 
     if (this.props.tracking === "Sign in button") {
@@ -173,7 +183,12 @@ class AuthModal extends BaseReactComponent {
         ? "generic pop up"
         : this.props.tracking
     );
-    VerifyEmail(data, this);
+    VerifyEmail(
+      data,
+      this,
+      false,
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
   };
 
   handleBack = () => {

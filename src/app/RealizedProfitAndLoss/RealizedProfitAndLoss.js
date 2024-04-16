@@ -688,6 +688,7 @@ class RealizedProfitAndLoss extends Component {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredFlowsSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();

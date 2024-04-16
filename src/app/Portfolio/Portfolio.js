@@ -2285,6 +2285,7 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredHomeAssetSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
@@ -2317,6 +2318,7 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredHomeFlowsSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
@@ -2350,6 +2352,7 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredHomeYieldOppSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
@@ -2386,6 +2389,7 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredHomeInsightsSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
@@ -2422,6 +2426,7 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredHomeGasFeesSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();

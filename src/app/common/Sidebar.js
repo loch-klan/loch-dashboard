@@ -81,6 +81,7 @@ import {
   CurrencyType,
   amountFormat,
   numToCurrency,
+  removeSignUpMethods,
   switchToDarkMode,
   switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
@@ -408,9 +409,7 @@ function Sidebar(props) {
   };
   useEffect(() => {
     if (!signupModal && !signinModal) {
-      window.sessionStorage.removeItem("fifteenSecSignInModal");
-      window.sessionStorage.removeItem("referralCodesSignInModal");
-      window.sessionStorage.removeItem("lochPointsSignInModal");
+      removeSignUpMethods();
     }
   }, [signupModal, signinModal]);
   const openSigninModal = (fromWhichPage) => {

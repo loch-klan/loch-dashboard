@@ -729,6 +729,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredYieldOppSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();

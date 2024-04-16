@@ -190,6 +190,7 @@ class GasFeesPage extends Component {
     if (this.state.isPremiumUser) {
       return null;
     }
+    window.sessionStorage.setItem("blurredGasFeesSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();

@@ -8,6 +8,8 @@ import {
   Home_CE_OAuthCompleted,
   LP_CE_OAuthCompleted,
   LochPointsSignInPopupEmailVerified,
+  SignInModalEmailAdded,
+  SignInModalOTPverified,
   SigninMenuEmailVerified,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
@@ -26,6 +28,7 @@ import {
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
 import { DARK_MODE } from "../intelligence/ActionTypes";
+import { whichSignUpMethod } from "../../utils/ReusableFunctions";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -1068,12 +1071,20 @@ export const SendOtp = (data, ctx, isForMobile) => {
 
 // Verify email
 
-export const VerifyEmail = (data, ctx, passedStopUpdate) => {
+export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
   postLoginInstance
     .post("organisation/user/verify-otp-code", data)
     .then((res) => {
       if (!res.data.error) {
         let isOptValid = res.data.data.otp_verified;
+        if (isOptValid) {
+          const signUpMethod = whichSignUpMethod();
+          SignInModalOTPverified({
+            session_id: getCurrentUser().id,
+            email_address: passedEmail,
+            signUpMethod: signUpMethod,
+          });
+        }
         let token = res.data.data.token;
 
         //  window.sessionStorage.setItem(

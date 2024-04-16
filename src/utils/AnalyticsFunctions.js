@@ -6910,6 +6910,92 @@ export const LochPointsLoginModalOpen = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const PayModalPay = ({
+  session_id,
+  email_address,
+  path,
+  paymentMethod,
+}) => {
+  const event_name = "Inside: Pay Modal: pay initiated";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+    paymentMethod: paymentMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalOpened = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalClosed = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: close";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalUpgrade = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: upgrade tab";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalUpgradeBack = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: upgrade tab: go back";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalUpgradeClose = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: upgrade tab: close";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SignInModalEmailAdded = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign in: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    signUpMethod: signUpMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SignInModalOTPverified = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign in: otp verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    signUpMethod: signUpMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const SignUpModalEmailAdded = ({
   session_id,
   email_address,

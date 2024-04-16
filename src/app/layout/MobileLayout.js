@@ -21,6 +21,7 @@ import {
   ProfileMenu,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
+  SignInModalEmailAdded,
   SignUpModalEmailAdded,
   resetUser,
   signInUser,
@@ -56,6 +57,7 @@ import "./_mobileLayout.scss";
 import {
   dontOpenLoginPopup,
   removeOpenModalAfterLogin,
+  removeSignUpMethods,
   whichSignUpMethod,
 } from "../../utils/ReusableFunctions.js";
 import PaywallModal from "../common/PaywallModal.js";
@@ -151,9 +153,7 @@ class MobileLayout extends BaseReactComponent {
         this.state.authmodal !== "login" &&
         this.state.authmodal !== "verify"
       ) {
-        window.sessionStorage.removeItem("fifteenSecSignInModal");
-        window.sessionStorage.removeItem("referralCodesSignInModal");
-        window.sessionStorage.removeItem("lochPointsSignInModal");
+        removeSignUpMethods();
       }
     }
     if (!this.props.commonState?.mobileLayout) {
@@ -746,6 +746,14 @@ class MobileLayout extends BaseReactComponent {
   handleSubmitEmail = () => {
     let data = new URLSearchParams();
     data.append("email", this.state.email);
+
+    const signUpMethod = whichSignUpMethod();
+    SignInModalEmailAdded({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      signUpMethod: signUpMethod,
+    });
+
     SendOtp(data, this, true);
   };
   showSignInOtpPage = () => {
@@ -764,7 +772,12 @@ class MobileLayout extends BaseReactComponent {
         ? "generic pop up"
         : this.props.tracking
     );
-    VerifyEmail(data, this, true);
+    VerifyEmail(
+      data,
+      this,
+      true,
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
   };
   openSignInModal = () => {
     this.setState({
