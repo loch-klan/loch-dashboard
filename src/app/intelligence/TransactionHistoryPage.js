@@ -2156,7 +2156,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               selectedTokens={this.state.selectedNetworks}
               transactionHistorySavedData
             />
-            Network
+            <span className="inter-display-medium f-s-13 lh-16 ">Network</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -2193,13 +2193,11 @@ class TransactionHistoryPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Hash
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Hash</span>
             {/* <Image
               src={sortByIcon}
               className={
