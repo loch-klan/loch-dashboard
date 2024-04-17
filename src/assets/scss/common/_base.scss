@@ -664,21 +664,20 @@ body {
 
 .Toastify__toast {
   background-color: var(--toastify);
-  border: 1px solid var(--toastifyBorder);
+  border: 1px solid transparent;
   color: var(--toastifyText);
-  padding: 0.5rem 2rem;
-  border-radius: 0.8rem;
-
+  padding: 1rem 2rem;
+  border-radius: 1.6rem;
   .Toastify__toast-body {
     flex-direction: row-reverse;
     gap: 10px;
     margin: 0;
     padding: 0;
     @include font(var(--black191), "Inter-SemiBold", 1.6rem, 600, 19px);
+    font-size: 16px;
 
     .Toastify__toast-icon {
-      margin-right: 0;
-      margin-left: 8rem;
+      margin: 0;
       background-image: var(--toastifySuccessIcon);
       background-size: 100% 100%;
       width: 4rem;
@@ -687,6 +686,16 @@ body {
       svg {
         display: none;
       }
+    }
+    &::after {
+      content: "Dismiss";
+      background-color: white;
+      color: #19191a;
+      font-size: 13px;
+      border: 0.15rem solid #e5e5e6;
+      padding: 0.7rem 1.3rem;
+      border-radius: 0.7rem;
+      margin-left: 60px;
     }
   }
 
@@ -701,6 +710,12 @@ body {
       }
     }
   }
+}
+.Toastify__toast--success {
+  background-image: linear-gradient(to bottom, #f4fff8, #ffffff);
+}
+.Toastify__toast--error {
+  background-image: linear-gradient(to bottom, #fff1ef, #ffffff);
 }
 
 .blur-effect {
