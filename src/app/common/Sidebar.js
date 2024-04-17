@@ -1791,6 +1791,7 @@ function Sidebar(props) {
               ? "Loch points profile"
               : ""
           }
+          iconImage={SignInIcon}
           comingDirectly={comingDirectly}
           hideOnblur
           showHiddenError
