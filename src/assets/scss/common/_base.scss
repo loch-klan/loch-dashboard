@@ -689,13 +689,13 @@ body {
     }
     &::after {
       content: "Dismiss";
-      background-color: white;
-      color: #19191a;
-      font-size: 13px;
-      border: 0.15rem solid #e5e5e6;
+      background-color: var(--toastifyBtn);
+      color: var(--toastifyBtnText);
+      font-size: 12px;
+      border: 0.15rem solid var(--toastifyBtnBorder);
       padding: 0.7rem 1.3rem;
       border-radius: 0.7rem;
-      margin-left: 60px;
+      margin-left: 50px;
     }
   }
 
@@ -710,12 +710,38 @@ body {
       }
     }
   }
+  &.Toastify__toast--warning {
+    .Toastify__toast-body {
+      .Toastify__toast-icon {
+        background-image: var(--toastifyWarningIcon);
+
+        svg {
+          display: none;
+        }
+      }
+    }
+  }
 }
 .Toastify__toast--success {
-  background-image: linear-gradient(to bottom, #f4fff8, #ffffff);
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifySuccessGradientFrom),
+    var(--toastifySuccessGradientTo)
+  );
 }
 .Toastify__toast--error {
-  background-image: linear-gradient(to bottom, #fff1ef, #ffffff);
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifyErrorGradientFrom),
+    var(--toastifyErrorGradientTo)
+  );
+}
+.Toastify__toast--warning {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifyWarningGradientFrom),
+    var(--toastifyWarningGradientTo)
+  );
 }
 
 .blur-effect {
