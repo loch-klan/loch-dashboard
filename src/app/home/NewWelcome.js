@@ -122,12 +122,13 @@ class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      canCallConnectWalletFun: false,
       //Sign up referral
       isReferralCodeStep: false,
       referralCode: "",
       isReferralCodeLoading: false,
       //Sign up referral
-      canCallConnectWalletFun: false,
       pageName: "Landing Page",
       areNewAddresses: false,
       isPrevAddressNew: true,
@@ -1675,7 +1676,10 @@ class NewWelcome extends BaseReactComponent {
   handleSubmitEmail = (val = false) => {
     if (this.state.email) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email.toLowerCase());
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       EmailAddressAdded({ email_address: this.state.email, session_id: "" });
       signIn(this, data, true, val);
       // this.toggleAuthModal('verify');
@@ -1685,7 +1689,10 @@ class NewWelcome extends BaseReactComponent {
   handleSubmitEmailSignup = () => {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
-      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append(
+        "email",
+        this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
+      );
       data.append("signed_up_from", "welcome");
       data.append("referral_code", this.state.referralCode);
       EmailAddressAddedSignUp({
@@ -2205,9 +2212,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Rank
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Rank</span>
             {/* <Image
           src={sortByIcon}
           className={
@@ -2253,9 +2258,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Wallet
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Wallet</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -2316,9 +2319,7 @@ class NewWelcome extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Nametag
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Nametag</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -2368,7 +2369,7 @@ class NewWelcome extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Net worth
             </span>
             {/* <Image
@@ -2428,7 +2429,7 @@ class NewWelcome extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Net flows (1 year)
             </span>
           </div>
@@ -2514,7 +2515,7 @@ class NewWelcome extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Unrealized PnL
             </span>
             {/* <Image
@@ -3104,7 +3105,8 @@ class NewWelcome extends BaseReactComponent {
                   </div>
                 ) : null}
                 <div className="newHomeAddAnotherGoContainer inter-display-regular">
-                  {this.state.walletInput.length < 10 ? (
+                  {this.state.walletInput.length < 10 &&
+                  this.state.isPremiumUser ? (
                     <button
                       onClick={() => {
                         this.addInputField();

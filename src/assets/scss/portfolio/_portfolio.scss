@@ -556,6 +556,16 @@
         padding-right: 13.5rem;
         background-color: var(--cardBackgroud);
       }
+      .welcome-card-topbar-blurred {
+        background-color: var(--outOfFocusTopBar);
+      }
+      .welcome-card-topbar-input-blurred {
+        background-color: var(--cardBackgroud);
+        border-radius: 10px;
+      }
+    }
+    .welcome-card-section-topbar-blurred {
+      box-shadow: none;
     }
 
     //         .welcome-card-section {

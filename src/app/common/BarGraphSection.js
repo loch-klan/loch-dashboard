@@ -101,6 +101,10 @@ class BarGraphSection extends Component {
   }
 
   handleFooter = (event) => {
+    if (this.props.isBlurred) {
+      this.props.goToPayModal();
+      return null;
+    }
     this.setState({
       activeFooter: event.target.id,
       activeBadge: [{ name: "All", id: "" }],
@@ -110,10 +114,14 @@ class BarGraphSection extends Component {
     this.props.timeFunction(event.target.id, this.state.activeBadgeList);
   };
   handleFunction = (badge) => {
-    // console.log("badge",badge)
     let activeFooter = this.props.showFooterDropdown
       ? this.props.activeDropdown
       : this.state.activeFooter;
+    if (this.props.isBlurred) {
+      this.props.goToPayModal();
+      return null;
+    }
+
     if (badge?.[0].name === "All") {
       this.setState(
         {
@@ -279,6 +287,8 @@ class BarGraphSection extends Component {
     return (
       <div
         className={`bar-graph-section ${
+          this.props.isBlurred ? "bar-graph-section-blurred " : ""
+        } ${
           this.props.floatingWatermark && !this.props.isLoading && data
             ? this.props.isCounterPartyGasFeesPage
               ? "tableWatermarkOverlayCounterParty"
@@ -881,7 +891,13 @@ class BarGraphSection extends Component {
                 (this.props.isFromHome
                   ? data.labels.length > 3
                   : data.labels.length > 8) ? (
-                  <div style={{ width: `${digit}rem` }}>
+                  <div
+                    className={
+                      this.props.isBlurred ? "bar-graph-section-y-axis" : ""
+                    }
+                    style={{ width: `${digit}rem` }}
+                    onClick={this.props.goToPayModal}
+                  >
                     <Bar options={options2} data={data} />
                   </div>
                 ) : (
@@ -909,6 +925,7 @@ class BarGraphSection extends Component {
                         : "100%"
                     }`,
                   }}
+                  onClick={this.props.goToPayModal}
                 >
                   {this.props.isGraphLoading ? (
                     <div
@@ -985,11 +1002,14 @@ class BarGraphSection extends Component {
                               ? {
                                   maxHeight: "35.55rem",
                                   overflow: "hidden",
+                                  cursor: "pointer",
                                 }
                               : {
                                   overflow: "hidden",
+                                  cursor: "pointer",
                                 }
                           }
+                          onClick={this.props.goToPayModal}
                         >
                           <div
                             style={{

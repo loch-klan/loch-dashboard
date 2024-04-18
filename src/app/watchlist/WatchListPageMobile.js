@@ -35,12 +35,10 @@ class WatchListPageMobile extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter no-hover"
+            className="cp history-table-header-col goToCenter table-header-font no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Account
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Account</span>
           </div>
         ),
         dataKey: "account",
@@ -128,7 +126,7 @@ class WatchListPageMobile extends BaseReactComponent {
       {
         labelName: (
           <div
-            className={`cp history-table-header-col goToCenter ${
+            className={`cp history-table-header-col goToCenter table-header-font ${
               this.props.tableData.length === 0 ? "no-hover" : ""
             }`}
             id="Accounts"
@@ -138,9 +136,7 @@ class WatchListPageMobile extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Nametag
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Nametag</span>
             <Image
               src={sortByIcon}
               className={
