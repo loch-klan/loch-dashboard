@@ -162,7 +162,7 @@ class CustomTable extends BaseReactComponent {
                         (this.props.showDataAtBottom && this.props.moreData
                           ? 58
                           : 60) *
-                          (tableData.length + 1) -
+                          (tableData ? tableData.length + 1 : 1) -
                         10
                       }
                       headerHeight={headerHeight ? headerHeight : 80}
@@ -171,13 +171,15 @@ class CustomTable extends BaseReactComponent {
                           ? 58
                           : 60
                       }
-                      rowCount={tableData.length}
+                      rowCount={tableData ? tableData.length : 0}
                       rowGetter={({ index }) => tableData[index]}
                       className={`custom-table ${className}`}
                       gridClassName={`${
                         this.props.addWatermark
                           ? "tableWatermark"
-                          : this.props.fakeWatermark && tableData.length > 1
+                          : this.props.fakeWatermark &&
+                            tableData &&
+                            tableData.length > 1
                           ? "tableWatermarkFake"
                           : ""
                       } ${
@@ -270,7 +272,7 @@ class CustomTable extends BaseReactComponent {
                           (this.props.showDataAtBottom && this.props.moreData
                             ? 58
                             : 60) *
-                            (tableData.length + 1) -
+                            (tableData ? tableData.length + 1 : 1) -
                           10
                         }
                         headerHeight={headerHeight ? headerHeight : 80}
@@ -279,13 +281,15 @@ class CustomTable extends BaseReactComponent {
                             ? 58
                             : 60
                         }
-                        rowCount={tableData.length}
+                        rowCount={tableData ? tableData.length : 0}
                         rowGetter={({ index }) => tableData[index]}
                         className={`custom-table ${className}`}
                         gridClassName={`${
                           this.props.addWatermark
                             ? "tableWatermark"
-                            : this.props.fakeWatermark && tableData.length > 1
+                            : this.props.fakeWatermark &&
+                              tableData &&
+                              tableData.length > 1
                             ? "tableWatermarkFake"
                             : ""
                         } ${
