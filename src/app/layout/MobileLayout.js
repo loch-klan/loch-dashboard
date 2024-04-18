@@ -931,7 +931,8 @@ class MobileLayout extends BaseReactComponent {
               ))}
             </div>
             {!(this.state.walletInput && this.state.walletInput[0].address) &&
-            !this.props.hideAddresses ? (
+            !this.props.hideAddresses &&
+            !this.props.hideShare ? (
               <div className="mpcMobileShare" onClick={this.handleShare}>
                 <Image
                   style={{

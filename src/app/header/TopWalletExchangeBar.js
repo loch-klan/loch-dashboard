@@ -1630,6 +1630,11 @@ class TopWalletExchangeBar extends Component {
               }
             }
             className="topBarContainerInputBlockContainer"
+            onClick={() => {
+              if (this.props.isBlurred) {
+                this.props.focusOriginalInputBar();
+              }
+            }}
           >
             <div className="topBarContainerInputBlockContainerLeftOfInput">
               {this.state.walletInput[0].address ? (
@@ -1753,6 +1758,10 @@ class TopWalletExchangeBar extends Component {
                   ? "topBarContainerRightBlockMultiple"
                   : ""
               }`}
+              style={{
+                opacity: this.props.isBlurred ? 0 : 1,
+                pointerEvents: this.props.isBlurred ? "none" : "all",
+              }}
             >
               {/* <div
                 ref={this.props.buttonRef}
