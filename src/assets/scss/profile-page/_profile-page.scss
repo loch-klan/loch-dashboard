@@ -17,7 +17,7 @@
       justify-content: space-between;
       cursor: pointer;
       border: 0.1rem solid transparent;
-
+      transition-duration: 300ms;
       .psrcb-left {
         display: flex;
         align-items: center;
@@ -303,6 +303,7 @@
           padding: 2rem;
           border-radius: 1.2rem;
           cursor: pointer;
+          transition-duration: 300ms;
           &:hover {
             box-shadow: var(--profileReferralHoverShadow);
             background-color: var(--sidebarHoverLink);
@@ -369,8 +370,10 @@
         }
         .profileLochCreditPointsBlockCompleted {
           cursor: default;
+          background-color: var(--referalCompletedTasks);
+          opacity: 0.7;
           &:hover {
-            background-color: var(--cardBackgroud);
+            background-color: var(--referalCompletedTasks);
             box-shadow: none;
           }
         }

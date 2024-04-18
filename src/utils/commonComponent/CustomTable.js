@@ -69,7 +69,14 @@ class CustomTable extends BaseReactComponent {
         className={`table-wrapper ${
           this.props.xAxisScrollable ? "table-wrapper-mobile-x-scroll" : ""
         } ${this.props.yAxisScrollable ? "table-wrapper-mobile-y-scroll" : ""}`}
-        style={wrapperStyle}
+        style={
+          this.props.showHeaderOnEmpty &&
+          (!this.props.tableData || this.props.tableData.length === 0)
+            ? {
+                overflowX: "hidden",
+              }
+            : null
+        }
       >
         {isLoading === true ? (
           <div
@@ -170,9 +177,7 @@ class CustomTable extends BaseReactComponent {
                       gridClassName={`${
                         this.props.addWatermark
                           ? "tableWatermark"
-                          : this.props.fakeWatermark &&
-                            tableData &&
-                            tableData.length > 1
+                          : this.props.fakeWatermark && tableData.length > 1
                           ? "tableWatermarkFake"
                           : ""
                       } ${
@@ -252,20 +257,46 @@ class CustomTable extends BaseReactComponent {
                   <AutoSizer disableHeight>
                     {({ width }) => (
                       <Table
-                        width={width}
-                        height={60 * (tableData.length + 1) - 10}
+                        width={
+                          this.props.xAxisScrollable
+                            ? width *
+                              (columnList.length /
+                                (this.props.xAxisScrollableColumnWidth
+                                  ? this.props.xAxisScrollableColumnWidth
+                                  : 3.5))
+                            : width
+                        }
+                        height={
+                          (this.props.showDataAtBottom && this.props.moreData
+                            ? 58
+                            : 60) *
+                            (tableData.length + 1) -
+                          10
+                        }
                         headerHeight={headerHeight ? headerHeight : 80}
-                        rowHeight={60}
+                        rowHeight={
+                          this.props.showDataAtBottom && this.props.moreData
+                            ? 58
+                            : 60
+                        }
                         rowCount={tableData.length}
                         rowGetter={({ index }) => tableData[index]}
                         className={`custom-table ${className}`}
                         gridClassName={`${
-                          this.props.addWatermark ? "tableWatermark" : ""
+                          this.props.addWatermark
+                            ? "tableWatermark"
+                            : this.props.fakeWatermark && tableData.length > 1
+                            ? "tableWatermarkFake"
+                            : ""
+                        } ${
+                          this.props.bottomCombiedValues
+                            ? "topMarginForCombiedValues"
+                            : ""
                         } ${
                           this.props.addWatermarkMoveUp
                             ? "tableWatermarkMoveUp"
                             : ""
-                        } ${watermarkOnTop ? "watermarkOnTop" : ""}`}
+                        }`}
                       >
                         {columnList &&
                           columnList.length > 0 &&
@@ -274,11 +305,20 @@ class CustomTable extends BaseReactComponent {
                               <Column
                                 key={key}
                                 // width={item.coumnWidth}
-                                width={width * item.coumnWidth}
+                                width={
+                                  this.props.xAxisScrollable
+                                    ? width *
+                                      item.coumnWidth *
+                                      (columnList.length /
+                                        (this.props.xAxisScrollableColumnWidth
+                                          ? this.props
+                                              .xAxisScrollableColumnWidth
+                                          : 3.5))
+                                    : width * item.coumnWidth
+                                }
                                 className={item.className}
                                 label={item.labelName}
                                 dataKey={item.dataKey}
-                                style={item.style}
                                 cellRenderer={({ rowData, rowIndex }) => {
                                   return item.cell(
                                     rowData,
@@ -299,11 +339,25 @@ class CustomTable extends BaseReactComponent {
                     isMiniversion ? "not-found-mini-wrapper" : ""
                   }`}
                 >
-                  {/* <Image src={notFoundImage} /> */}
-                  <p className="inter-display-medium f-s-16 lh-19 ">
-                    {" "}
-                    {moduleName ? "No " + moduleName + " Found" : message}
-                  </p>
+                  <div>
+                    {this.props.noDataImage ? (
+                      <Image
+                        className="not-found-wrapper-image"
+                        src={this.props.noDataImage}
+                      />
+                    ) : null}
+                    {/* <Image src={notFoundImage} /> */}
+                    <p
+                      className={`inter-display-medium f-s-16 lh-19 ${
+                        this.props.noDataImage
+                          ? "not-found-wrapper-image-text"
+                          : ""
+                      }`}
+                    >
+                      {" "}
+                      {moduleName ? "No " + moduleName + " Found" : message}
+                    </p>
+                  </div>
                   {isButton && (
                     <Button className="primary-btn" onClick={isButton}>
                       {buttonText}
@@ -373,23 +427,13 @@ class CustomTable extends BaseReactComponent {
                     flex: "0.11",
                   }}
                 >
-                  <div className="cost-common-container">
-                    <CustomOverlay
-                      position="top"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      text={
-                        this.props.combinedCostBasis
-                          ? CurrencyType(false) +
-                            amountFormat(
-                              this.props.combinedCostBasis,
-                              "en-US",
-                              "USD"
-                            )
-                          : CurrencyType(false) + "0.00"
-                      }
-                    >
+                  <div
+                    className={`cost-common-container ${
+                      this.props.shouldBlurElements ? "blurred-elements" : ""
+                    }`}
+                    onClick={this.props.showBlurredItem}
+                  >
+                    {this.props.shouldBlurElements ? (
                       <div className="cost-common">
                         <span
                           onMouseEnter={() => {
@@ -407,7 +451,42 @@ class CustomTable extends BaseReactComponent {
                             : CurrencyType(false) + "0.00"}
                         </span>
                       </div>
-                    </CustomOverlay>
+                    ) : (
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={
+                          this.props.combinedCostBasis
+                            ? CurrencyType(false) +
+                              amountFormat(
+                                this.props.combinedCostBasis,
+                                "en-US",
+                                "USD"
+                              )
+                            : CurrencyType(false) + "0.00"
+                        }
+                      >
+                        <div className="cost-common">
+                          <span
+                            onMouseEnter={() => {
+                              // CostCostBasisHover({
+                              //   session_id: getCurrentUser().id,
+                              //   email_address: getCurrentUser().email,
+                              // });
+                            }}
+                          >
+                            {this.props.combinedCostBasis
+                              ? CurrencyType(false) +
+                                numToCurrency(
+                                  this.props.combinedCostBasis.toFixed(2)
+                                ).toLocaleString("en-US")
+                              : CurrencyType(false) + "0.00"}
+                          </span>
+                        </div>
+                      </CustomOverlay>
+                    )}
                   </div>
                 </div>
                 <div
@@ -458,10 +537,13 @@ class CustomTable extends BaseReactComponent {
                 <div
                   aria-colindex="8"
                   role="gridcell"
-                  className="inter-display-medium bottomCombinedItemBlock"
+                  className={`inter-display-medium bottomCombinedItemBlock ${
+                    this.props.shouldBlurElements ? "blurred-elements" : ""
+                  }`}
                   style={{
                     flex: "0.11",
                   }}
+                  onClick={this.props.showBlurredItem}
                 >
                   <div
                     onMouseEnter={() => {
@@ -472,23 +554,7 @@ class CustomTable extends BaseReactComponent {
                     }}
                     className="gainLossContainer"
                   >
-                    <CustomOverlay
-                      position="top"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      text={
-                        this.props.combinedUnrealizedGains
-                          ? CurrencyType(false) +
-                            amountFormat(
-                              Math.abs(this.props.combinedUnrealizedGains),
-                              "en-US",
-                              "USD"
-                            )
-                          : CurrencyType(false) + "0.00"
-                      }
-                      colorCode="#000"
-                    >
+                    {this.props.shouldBlurElements ? (
                       <div className={`gainLoss`}>
                         {this.props.combinedUnrealizedGains &&
                         this.props.combinedUnrealizedGains !== 0 ? (
@@ -514,16 +580,63 @@ class CustomTable extends BaseReactComponent {
                             : CurrencyType(false) + "0.00"}
                         </span>
                       </div>
-                    </CustomOverlay>
+                    ) : (
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={
+                          this.props.combinedUnrealizedGains
+                            ? CurrencyType(false) +
+                              amountFormat(
+                                Math.abs(this.props.combinedUnrealizedGains),
+                                "en-US",
+                                "USD"
+                              )
+                            : CurrencyType(false) + "0.00"
+                        }
+                        colorCode="#000"
+                      >
+                        <div className={`gainLoss`}>
+                          {this.props.combinedUnrealizedGains &&
+                          this.props.combinedUnrealizedGains !== 0 ? (
+                            <Image
+                              className="mr-2"
+                              style={{
+                                height: "1.5rem",
+                                width: "1.5rem",
+                              }}
+                              src={
+                                this.props.combinedUnrealizedGains < 0
+                                  ? ArrowDownLeftSmallIcon
+                                  : ArrowUpRightSmallIcon
+                              }
+                            />
+                          ) : null}
+                          <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                            {this.props.combinedUnrealizedGains
+                              ? CurrencyType(false) +
+                                numToCurrency(
+                                  this.props.combinedUnrealizedGains
+                                ).toLocaleString("en-US")
+                              : CurrencyType(false) + "0.00"}
+                          </span>
+                        </div>
+                      </CustomOverlay>
+                    )}
                   </div>
                 </div>
                 <div
                   aria-colindex="9"
                   role="gridcell"
-                  className="inter-display-medium bottomCombinedItemBlock"
+                  className={`inter-display-medium bottomCombinedItemBlock ${
+                    this.props.shouldBlurElements ? "blurred-elements" : ""
+                  }`}
                   style={{
                     flex: "0.11",
                   }}
+                  onClick={this.props.showBlurredItem}
                 >
                   <div
                     onMouseEnter={() => {
@@ -534,21 +647,7 @@ class CustomTable extends BaseReactComponent {
                     }}
                     className="gainLossContainer"
                   >
-                    <CustomOverlay
-                      position="top"
-                      isIcon={false}
-                      isInfo={true}
-                      isText={true}
-                      text={
-                        this.props.combinedReturn &&
-                        this.props.combinedReturn !== 0
-                          ? Math.abs(this.props.combinedReturn).toLocaleString(
-                              "en-US"
-                            ) + "%"
-                          : "0.00%"
-                      }
-                      colorCode="#000"
-                    >
+                    {this.props.shouldBlurElements ? (
                       <div className={`gainLoss`}>
                         {this.props.combinedReturn &&
                         this.props.combinedReturn !== 0 ? (
@@ -576,7 +675,51 @@ class CustomTable extends BaseReactComponent {
                             : "0.00%"}
                         </span>
                       </div>
-                    </CustomOverlay>
+                    ) : (
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={
+                          this.props.combinedReturn &&
+                          this.props.combinedReturn !== 0
+                            ? Math.abs(
+                                this.props.combinedReturn
+                              ).toLocaleString("en-US") + "%"
+                            : "0.00%"
+                        }
+                        colorCode="#000"
+                      >
+                        <div className={`gainLoss`}>
+                          {this.props.combinedReturn &&
+                          this.props.combinedReturn !== 0 ? (
+                            <Image
+                              className="mr-2"
+                              style={{
+                                height: "1.5rem",
+                                width: "1.5rem",
+                              }}
+                              src={
+                                this.props.combinedReturn < 0
+                                  ? ArrowDownLeftSmallIcon
+                                  : ArrowUpRightSmallIcon
+                              }
+                            />
+                          ) : null}
+                          <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                            {this.props.combinedReturn &&
+                            this.props.combinedReturn !== 0
+                              ? Math.abs(
+                                  noExponents(
+                                    this.props.combinedReturn.toFixed(2)
+                                  )
+                                ).toLocaleString("en-US") + "%"
+                              : "0.00%"}
+                          </span>
+                        </div>
+                      </CustomOverlay>
+                    )}
                   </div>
                 </div>
                 <div
