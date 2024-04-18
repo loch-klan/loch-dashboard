@@ -375,6 +375,7 @@
 }
 .transaction-history-table {
   min-width: 85rem;
+  min-height: 40rem !important;
   .loadingSizeContainer {
     height: 50vh;
     display: flex;
