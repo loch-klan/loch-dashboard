@@ -79,8 +79,15 @@ class InsightsPageMobile extends Component {
                         alignItems: "flex-start",
                         // background: "var(--cardBackgroud)",
                       }}
-                      className="insights-card"
+                      className={`insights-card ${
+                        index > 0 ? "blurred-elements" : ""
+                      }`}
                       key={index}
+                      onClick={() => {
+                        if (index > 0) {
+                          this.props.goToPayModal();
+                        }
+                      }}
                     >
                       <div>
                         <div

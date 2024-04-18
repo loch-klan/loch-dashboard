@@ -45,6 +45,7 @@ class RealizedProfitAndLossMobile extends Component {
             </div>
           ) : (
             <BarGraphSection
+              goToPayModal={this.props.goToPayModal}
               dontShowAssets
               showToCalendar={this.props.showToCalendar}
               hideToCalendar={this.props.hideToCalendar}

@@ -257,14 +257,20 @@ export default function WelcomeCard(props) {
     //     ""
     //   )}
     // </div>
-    <div className="welcome-card-section-topbar">
+    <div
+      className={`welcome-card-section-topbar ${
+        props.isBlurred ? "welcome-card-section-topbar-blurred" : ""
+      }`}
+    >
       <div
         className={`welcome-card-topbar ${
           props.isSidebarClosed ? "welcome-card-topbar-closed" : ""
-        }`}
+        } ${props.isBlurred ? "welcome-card-topbar-blurred" : ""}`}
       >
         <div
-          className="row-div"
+          className={`row-div ${
+            props.isBlurred ? "welcome-card-topbar-input-blurred" : ""
+          }`}
           style={{
             display: "flex",
             flex: 1,
@@ -325,6 +331,8 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              focusOriginalInputBar={props.focusOriginalInputBar}
+              isBlurred={props.isBlurred}
               connectedWalletAddress={props.connectedWalletAddress}
               connectedWalletevents={props.connectedWalletevents}
               updateOnFollow={props.updateOnFollow}

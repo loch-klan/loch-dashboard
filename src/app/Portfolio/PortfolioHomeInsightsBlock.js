@@ -72,6 +72,11 @@ class PortfolioHomeInsightsBlock extends Component {
                     return (
                       <>
                         <div
+                          onClick={() => {
+                            if (key > 0 && this.props.showBlurredInsights) {
+                              this.props.showBlurredInsights();
+                            }
+                          }}
                           style={{
                             overflow: "hidden",
                             whiteSpace: "nowrap",
@@ -83,7 +88,9 @@ class PortfolioHomeInsightsBlock extends Component {
                             border: "0.1rem solid #E5E5E6",
                             alignItems: "flex-start",
                           }}
-                          className="insights-card"
+                          className={`insights-card ${
+                            key > 0 ? "blurred-elements" : ""
+                          }`}
                           key={key}
                         >
                           <div className="insights-cards-home-left">
@@ -180,8 +187,15 @@ class PortfolioHomeInsightsBlock extends Component {
                           alignItems: "flex-start",
                           background: "var(--cardBackgroud)",
                         }}
-                        className="insights-card"
+                        className={`insights-card ${
+                          key > 0 ? "blurred-elements" : ""
+                        }`}
                         key={key}
+                        onClick={() => {
+                          if (key > 0 && this.props.showBlurredInsights) {
+                            this.props.showBlurredInsights();
+                          }
+                        }}
                       >
                         <div>
                           <div
