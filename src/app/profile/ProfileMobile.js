@@ -36,6 +36,7 @@ class ProfileMobile extends Component {
             isUpdate={this.props.isUpdate}
             history={this.props.history}
             lochUser={this.props.lochUser}
+            isMobile
           />
 
           <div

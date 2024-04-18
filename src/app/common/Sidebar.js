@@ -748,7 +748,7 @@ function Sidebar(props) {
             onClick={handleDarkMode}
             style={{
               zIndex: "9",
-              right: "0px",
+              right: "10px",
             }}
             className="navbar-button-container-mode"
           >
@@ -762,7 +762,7 @@ function Sidebar(props) {
             onClick={handleDarkMode}
             style={{
               zIndex: "9",
-              right: "0px",
+              right: "10px",
             }}
             className="navbar-button-container-mode"
           >
