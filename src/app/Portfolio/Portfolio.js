@@ -4843,10 +4843,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "38rem",
+                        height: "41rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "38rem",
+                        minHeight: "41rem",
                         marginBottom: 0,
                       }}
                     >
@@ -4942,6 +4942,10 @@ class Portfolio extends BaseReactComponent {
                               tableDataCostBasis?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
+                            } ${
+                              !this.state.AvgCostLoading
+                                ? "newHomeTableContainerLoading"
+                                : ""
                             }`}
                           >
                             <TransactionTable
@@ -4976,21 +4980,22 @@ class Portfolio extends BaseReactComponent {
                                 className="bottomExtraInfoText"
                               >
                                 {this.props.intelligenceState
-                                  ?.Average_cost_basis &&
-                                this.props.intelligenceState.Average_cost_basis
-                                  .length > 10
-                                  ? `Click here to see ${numToCurrency(
-                                      this.props.intelligenceState
-                                        .Average_cost_basis.length - 10,
-                                      true
-                                    ).toLocaleString("en-US")}+ asset${
-                                      this.props.intelligenceState
-                                        .Average_cost_basis.length -
-                                        10 >
-                                      1
-                                        ? "s"
-                                        : ""
-                                    }`
+                                  ?.Average_cost_basis
+                                  ? this.props.intelligenceState
+                                      .Average_cost_basis.length > 10
+                                    ? `Click here to see ${numToCurrency(
+                                        this.props.intelligenceState
+                                          .Average_cost_basis.length - 10,
+                                        true
+                                      ).toLocaleString("en-US")}+ asset${
+                                        this.props.intelligenceState
+                                          .Average_cost_basis.length -
+                                          10 >
+                                        1
+                                          ? "s"
+                                          : ""
+                                      }`
+                                    : "Click here to see more"
                                   : "Click here to see more"}
                               </div>
                             </div>
@@ -5009,10 +5014,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="section-table"
                       style={{
-                        height: "38rem",
+                        height: "41rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "38rem",
+                        minHeight: "41rem",
                         marginBottom: 0,
                       }}
                     >
@@ -5238,6 +5243,10 @@ class Portfolio extends BaseReactComponent {
                                 this.state.localNftData?.length < 1
                                   ? ""
                                   : "tableWatermarkOverlay"
+                              } ${
+                                this.state.nftTableLoading
+                                  ? "newHomeTableContainerLoading"
+                                  : ""
                               }`}
                             >
                               <TransactionTable
@@ -5264,18 +5273,18 @@ class Portfolio extends BaseReactComponent {
                                   onClick={this.goToNftPage}
                                   className="bottomExtraInfoText"
                                 >
-                                  {this.state.localNftData &&
-                                  this.state.localNftData?.length > 10
-                                    ? `Click here to see ${numToCurrency(
-                                        this.state.localNftData?.length - 10,
-                                        true
-                                      ).toLocaleString("en-US")}+ NFT ${
-                                        this.state.localNftData?.length - 10 > 1
-                                          ? "s"
-                                          : ""
-                                      }`
-                                    : this.state.localNftData?.length === 0
-                                    ? ""
+                                  {this.state.localNftData
+                                    ? this.state.localNftData?.length > 10
+                                      ? `Click here to see ${numToCurrency(
+                                          this.state.localNftData?.length - 10,
+                                          true
+                                        ).toLocaleString("en-US")}+ NFT ${
+                                          this.state.localNftData?.length - 10 >
+                                          1
+                                            ? "s"
+                                            : ""
+                                        }`
+                                      : "Click here to see more"
                                     : "Click here to see more"}
                                 </div>
                               </div>
@@ -5300,8 +5309,8 @@ class Portfolio extends BaseReactComponent {
                       style={{
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "38rem",
-                        height: "38rem",
+                        minHeight: "41rem",
+                        height: "41rem",
                         marginBottom: 0,
                       }}
                     >
@@ -5482,6 +5491,10 @@ class Portfolio extends BaseReactComponent {
                               yieldOpportunitiesListTemp?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
+                            } ${
+                              this.state.yieldOpportunitiesTableLoading
+                                ? "newHomeTableContainerLoading"
+                                : ""
                             }`}
                           >
                             <TransactionTable
@@ -5514,19 +5527,21 @@ class Portfolio extends BaseReactComponent {
                                 onClick={this.goToYieldOppPage}
                                 className="bottomExtraInfoText"
                               >
-                                {this.state.yieldOpportunitiesTotalCount &&
-                                this.state.yieldOpportunitiesTotalCount > 10
-                                  ? `Click here to see ${numToCurrency(
-                                      this.state.yieldOpportunitiesTotalCount -
-                                        10,
-                                      true
-                                    ).toLocaleString("en-US")}+ yield ${
-                                      this.state.yieldOpportunitiesTotalCount -
-                                        10 >
-                                      1
-                                        ? "opportunities"
-                                        : "opportunity"
-                                    }`
+                                {this.state.yieldOpportunitiesTotalCount
+                                  ? this.state.yieldOpportunitiesTotalCount > 10
+                                    ? `Click here to see ${numToCurrency(
+                                        this.state
+                                          .yieldOpportunitiesTotalCount - 10,
+                                        true
+                                      ).toLocaleString("en-US")}+ yield ${
+                                        this.state
+                                          .yieldOpportunitiesTotalCount -
+                                          10 >
+                                        1
+                                          ? "opportunities"
+                                          : "opportunity"
+                                      }`
+                                    : "Click here to see more"
                                   : "Click here to see more"}
                               </div>
                             </div>
@@ -5546,10 +5561,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="section-table"
                       style={{
-                        height: "38rem",
+                        height: "41rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "38rem",
+                        minHeight: "41rem",
                         marginBottom: 0,
                       }}
                     >
@@ -5699,6 +5714,10 @@ class Portfolio extends BaseReactComponent {
                               this.state.tableLoading || tableData?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
+                            } ${
+                              this.state.tableLoading
+                                ? "newHomeTableContainerLoading"
+                                : ""
                             }`}
                           >
                             <TransactionTable

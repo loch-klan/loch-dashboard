@@ -24,7 +24,7 @@ class PortfolioHomeInsightsBlock extends Component {
       return (
         <div
           style={{
-            height: this.props.isMobile ? "44rem" : "32rem",
+            height: this.props.isMobile ? "44rem" : "35rem",
           }}
         >
           <div
@@ -57,7 +57,7 @@ class PortfolioHomeInsightsBlock extends Component {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 position: "relative",
-                height: this.props?.isMobile ? "40.5rem" : "30rem",
+                height: this.props?.isMobile ? "40.5rem" : "33rem",
                 padding: this.props?.isMobile
                   ? "0rem 0.5rem 0rem 0rem"
                   : "0rem 0.5rem",
