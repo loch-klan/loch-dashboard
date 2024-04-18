@@ -370,10 +370,10 @@
         }
         .profileLochCreditPointsBlockCompleted {
           cursor: default;
-          background-color: var(--referalCompletedTasks);
+          background-color: var(--referallCopyBtn);
           opacity: 0.7;
           &:hover {
-            background-color: var(--referalCompletedTasks);
+            background-color: var(--referallCopyBtn);
             box-shadow: none;
           }
         }
