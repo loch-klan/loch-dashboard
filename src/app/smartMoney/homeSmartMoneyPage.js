@@ -1283,6 +1283,15 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     if (mobileCheck()) {
       return (
         <MobileLayout hideFooter history={this.props.history}>
+          {this.state.showNotifyOnTransactionModal ? (
+            <NotifyOnTransactionSizeModal
+              show={this.state.showNotifyOnTransactionModal}
+              onHide={this.hideNotifyOnTransactionModal}
+              history={this.props.history}
+              selectedAddress={this.state.addressToNotify}
+              isMobile
+            />
+          ) : null}
           <HomeSmartMoneyMobile
             accountList={this.state.accountList}
             currency={this.state.currency}

@@ -132,3 +132,5 @@ export { default as CopyTradeReviewStarIcon } from "./copyTradeReviewStar.svg";
 export { default as NewModalBackArrowIcon } from "./newModalBackArrow.svg";
 export { default as CreditCardPaywallIcon } from "./creditCardPaywall.svg";
 export { default as CryptoWalletPaywallIcon } from "./cryptoWalletPaywall.svg";
+export { default as CustomTransactionTelegramIcon } from "./customTransactionTelegram.svg";
+export { default as CustomTransactionMailIcon } from "./customTransactionMail.svg";

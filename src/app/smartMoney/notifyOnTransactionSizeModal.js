@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import {
   BackArrowSmartMoneyIcon,
   CrossSmartMoneyIcon,
+  CustomTransactionMailIcon,
+  CustomTransactionTelegramIcon,
   RingingBellIcon,
 } from "../../assets/images/icons";
 import {
@@ -21,6 +23,8 @@ import moment from "moment";
 import { getTransactionAsset } from "../intelligence/Api";
 import { PaywallModal } from "../common";
 import { BASE_URL_S3 } from "../../utils/Constant";
+import CheckboxCustomTable from "../common/customCheckboxTable";
+import validator from "validator";
 
 class NotifyOnTransactionSizeModal extends BaseReactComponent {
   constructor(props) {
@@ -31,7 +35,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       minSliderVal: null,
       maxSliderVal: null,
       curMinSliderVal: "100",
-      curMaxSliderVal: "1000000000",
+      curMaxSliderVal: "5000000000",
       isDisabled: false,
       AssetList: [],
       selectedActiveBadge: [],
@@ -42,9 +46,31 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       passedCTNotificationEmailAddress: "",
       passedCTAddress: "",
       passedCTCopyTradeAmount: "",
+      userEmail: "",
+      userTelegram: "",
+      isUserEmailSelected: false,
+      isUserTelegramSelected: false,
     };
   }
+  setTooltipPos = () => {
+    const xAndYMax = document
+      .getElementsByClassName("rc-slider-handle-1")[0]
+      .getBoundingClientRect();
+
+    const sliderMin = document.getElementById("smbSliderMinBox");
+    sliderMin.style.left = xAndYMax.x + "px";
+    sliderMin.style.top = xAndYMax.y - 50 + "px";
+
+    const xAndYMin = document
+      .getElementsByClassName("rc-slider-handle-2")[0]
+      .getBoundingClientRect();
+
+    const sliderMax = document.getElementById("smbSliderMaxBox");
+    sliderMax.style.left = xAndYMin.x + "px";
+    sliderMax.style.top = xAndYMin.y - 50 + "px";
+  };
   componentDidMount() {
+    this.setTooltipPos();
     this.assetList();
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.setState({
@@ -54,48 +80,75 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
   componentDidUpdate(prevProps, prevState) {
     if (
       prevState.curMinSliderVal !== this.state.curMinSliderVal ||
-      prevState.curMaxSliderVal !== this.state.curMaxSliderVal
+      prevState.curMaxSliderVal !== this.state.curMaxSliderVal ||
+      prevState.userEmail !== this.state.userEmail ||
+      prevState.isUserEmailSelected !== this.state.isUserEmailSelected
     ) {
+      let isDis = false;
       if (
         Number(this.state.curMaxSliderVal) >
           Number(this.state.curMinSliderVal) &&
         Number(this.state.curMinSliderVal) >= 100 &&
         Number(this.state.curMaxSliderVal) <= 10000000000
       ) {
-        this.setState({
-          isDisabled: false,
-        });
+        isDis = false;
       } else {
+        isDis = true;
+      }
+
+      if (isDis) {
         this.setState({
           isDisabled: true,
         });
+      } else {
+        if (this.state.isUserEmailSelected) {
+          if (
+            this.state.userEmail.length > 0 &&
+            validator.isEmail(this.state.userEmail)
+          ) {
+            this.setState({
+              isDisabled: false,
+            });
+          } else {
+            this.setState({
+              isDisabled: true,
+            });
+          }
+        } else {
+          this.setState({
+            isDisabled: false,
+          });
+        }
       }
     }
   }
-  minAmountChange = (e) => {
+  userEmailChange = (e) => {
     let curVal = e.target.value;
-    curVal = curVal.replace("$", "");
-    curVal = curVal.replaceAll(",", "");
+    this.setState({
+      userEmail: curVal,
+    });
+  };
+  userTelegramChange = (e) => {
+    let curVal = e.target.value;
+    this.setState({
+      userTelegram: curVal,
+    });
+  };
+  toggleEmailSelection = () => {
+    this.setState({
+      isUserEmailSelected: !this.state.isUserEmailSelected,
+    });
+  };
+  toggleTelegramSelection = () => {
+    this.setState({
+      isUserTelegramSelected: !this.state.isUserTelegramSelected,
+    });
+  };
 
-    if (!isNaN(curVal)) {
-      this.setState({
-        curMinSliderVal: curVal,
-      });
-    }
-  };
-  maxAmountChange = (e) => {
-    let curVal = e.target.value;
-    curVal = curVal.replace("$", "");
-    curVal = curVal.replaceAll(",", "");
-    if (!isNaN(curVal)) {
-      this.setState({
-        curMaxSliderVal: curVal,
-      });
-    }
-  };
   changeMaxMinSlider = (value) => {
     const newMinVal = value[0];
     const newMaxVal = value[1];
+    this.setTooltipPos();
 
     if (newMinVal <= newMaxVal) {
       this.setState({
@@ -199,7 +252,9 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.props.isMobile ? "transaction-notification-mobile" : ""
+        }`}
         // onHide={this.state.onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal"}
@@ -241,24 +296,89 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
               className="exit-overlay-body"
               style={{ padding: "0rem 10.5rem" }}
             >
-              <h6 className="inter-display-medium text-center f-s-25">
-                Notify on transaction size
+              <h6 className="inter-display-medium text-center f-s-20">
+                Custom Transaction Notifications
               </h6>
-              <p className="inter-display-medium f-s-16 grey-969 m-b-24 text-center">
-                Notify me when{" "}
-                <span
-                  className="sliderModalBodyAddressBtn"
-                  onClick={this.goToWalletAddress}
-                >
-                  {TruncateText(this.props.selectedAddress)}
-                </span>{" "}
-                makes a<br />
-                transaction worth more than
+              <p className="inter-display-medium f-s-16 grey-969 text-center">
+                Set a custom transaction notification for
               </p>
+              <div
+                className="sliderModalBodyAddressBtn"
+                onClick={this.goToWalletAddress}
+              >
+                {TruncateText(this.props.selectedAddress)}
+              </div>
             </div>
             <div className="smbSliderContainer">
+              <div className="smbSlider">
+                <div
+                  style={{
+                    marginBottom: "6rem",
+                  }}
+                  className="inter-display-medium smbTitle"
+                >
+                  Range
+                </div>
+                <div
+                  style={{
+                    position: "fixed",
+                  }}
+                  id="smbSliderMinBox"
+                  className="inter-display-medium smbSliderMinMaxBox"
+                >
+                  <div className="smbSliderMinMaxBoxArrow" />
+                  {this.state.curMinSliderVal &&
+                  this.state.curMinSliderVal.length > 0
+                    ? `$${amountFormat(
+                        this.state.curMinSliderVal,
+                        "en-US",
+                        "USD",
+                        0,
+                        0
+                      )}`
+                    : ""}
+                </div>
+                <div
+                  style={{
+                    position: "fixed",
+                  }}
+                  id="smbSliderMaxBox"
+                  className="inter-display-medium smbSliderMinMaxBox"
+                >
+                  <div className="smbSliderMinMaxBoxArrow" />
+                  {this.state.curMaxSliderVal &&
+                  this.state.curMaxSliderVal.length > 0
+                    ? `$${amountFormat(
+                        this.state.curMaxSliderVal,
+                        "en-US",
+                        "USD",
+                        0,
+                        0
+                      )}`
+                    : ""}
+                </div>
+                <Slider
+                  role="tooltip"
+                  range
+                  min={100}
+                  max={10000000000}
+                  step={1000}
+                  value={[
+                    this.state.curMinSliderVal,
+                    this.state.curMaxSliderVal,
+                  ]}
+                  tooltipVisible={true}
+                  onChange={this.changeMaxMinSlider}
+                />
+                <div className="smbSlidervalueContainer inter-display-medium">
+                  <div className="smbSlidervalues">$100</div>
+                  <div className="smbSlidervalues">$10B</div>
+                </div>
+              </div>
               <div className="smbsAssetDropdownContainer">
+                <div className="inter-display-medium smbTitle">Asset type</div>
                 <CustomDropdown
+                  keepInCenter
                   filtername="All assets"
                   options={this.state.AssetList}
                   selectedTokens={this.props.selectedAssets}
@@ -274,56 +394,66 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                 />
               </div>
               <div className="smbsInputContainer">
-                <input
-                  placeholder="min"
-                  className="inter-display-medium smbsInput"
-                  value={
-                    this.state.curMinSliderVal &&
-                    this.state.curMinSliderVal.length > 0
-                      ? `$${amountFormat(
-                          this.state.curMinSliderVal,
-                          "en-US",
-                          "USD",
-                          0,
-                          0
-                        )}`
-                      : ""
-                  }
-                  onChange={this.minAmountChange}
-                />
-                <input
-                  placeholder="max"
-                  className="inter-display-medium smbsInput"
-                  value={
-                    this.state.curMaxSliderVal &&
-                    this.state.curMaxSliderVal.length > 0
-                      ? `$${amountFormat(
-                          this.state.curMaxSliderVal,
-                          "en-US",
-                          "USD",
-                          0,
-                          0
-                        )}`
-                      : ""
-                  }
-                  onChange={this.maxAmountChange}
+                <div
                   style={{
-                    textAlign: "right",
+                    marginBottom: "0rem",
                   }}
-                />
-              </div>
-              <Slider
-                range
-                min={100}
-                max={10000000000}
-                step={1000}
-                value={[this.state.curMinSliderVal, this.state.curMaxSliderVal]}
-                onChange={this.changeMaxMinSlider}
-              />
-
-              <div className="smbSlidervalueContainer inter-display-medium">
-                <div className="smbSlidervalues">$100</div>
-                <div className="smbSlidervalues">$10b</div>
+                  className="inter-display-medium smbTitle"
+                >
+                  Notification type
+                </div>
+                <div className="smbsInputBlock">
+                  <div className="smbsInputBlockInfo">
+                    <CheckboxCustomTable
+                      dontSelectIt
+                      handleOnClick={this.toggleEmailSelection}
+                      isChecked={this.state.isUserEmailSelected}
+                    />
+                    <Image
+                      src={CustomTransactionMailIcon}
+                      className="smbsInputBlockInfoImage"
+                    />
+                    <div className="inter-display-medium smbsInputBlockInfoTitle">
+                      Email
+                    </div>
+                  </div>
+                  <input
+                    disabled={!this.state.isUserEmailSelected}
+                    placeholder="Enter your email address here"
+                    className={`inter-display-medium smbsInput ${
+                      this.state.isUserEmailSelected ? "" : "smbsInputDisabled"
+                    }`}
+                    value={this.state.userEmail}
+                    onChange={this.userEmailChange}
+                  />
+                </div>
+                <div className="smbsInputBlock">
+                  <div className="smbsInputBlockInfo">
+                    <CheckboxCustomTable
+                      dontSelectIt
+                      handleOnClick={this.toggleTelegramSelection}
+                      isChecked={this.state.isUserTelegramSelected}
+                    />
+                    <Image
+                      src={CustomTransactionTelegramIcon}
+                      className="smbsInputBlockInfoImage"
+                    />
+                    <div className="inter-display-medium smbsInputBlockInfoTitle">
+                      Telegram
+                    </div>
+                  </div>
+                  <input
+                    disabled={!this.state.isUserTelegramSelected}
+                    placeholder="Enter your telegram handle here"
+                    className={`inter-display-medium smbsInput ${
+                      this.state.isUserTelegramSelected
+                        ? ""
+                        : "smbsInputDisabled"
+                    }`}
+                    value={this.state.userTelegram}
+                    onChange={this.userTelegramChange}
+                  />
+                </div>
               </div>
             </div>
             <div className="smbButtonContainer">
