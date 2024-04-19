@@ -704,7 +704,7 @@ class PortfolioHomeDefiBlock extends Component {
               <div
                 style={{
                   textAlign: "center",
-                  height: "23rem",
+                  height: "26rem",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",

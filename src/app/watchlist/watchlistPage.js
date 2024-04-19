@@ -583,12 +583,10 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter no-hover"
+            className="cp history-table-header-col goToCenter table-header-font no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Account
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Account</span>
           </div>
         ),
         dataKey: "account",
@@ -775,12 +773,10 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter no-hover"
+            className="cp history-table-header-col goToCenter table-header-font no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Delete
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Delete</span>
           </div>
         ),
         dataKey: "deleteCol",
@@ -855,6 +851,8 @@ class WatchListPage extends BaseReactComponent {
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           hideFooter
+          hideShare
+          hideAddresses
         >
           <WalletListPageMobile
             tableLoading={this.state.tableLoading}

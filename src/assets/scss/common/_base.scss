@@ -664,21 +664,20 @@ body {
 
 .Toastify__toast {
   background-color: var(--toastify);
-  border: 1px solid var(--toastifyBorder);
+  border: 1px solid transparent;
   color: var(--toastifyText);
-  padding: 0.5rem 2rem;
-  border-radius: 0.8rem;
-
+  padding: 1rem 2rem;
+  border-radius: 1.6rem;
   .Toastify__toast-body {
     flex-direction: row-reverse;
     gap: 10px;
     margin: 0;
     padding: 0;
     @include font(var(--black191), "Inter-SemiBold", 1.6rem, 600, 19px);
+    font-size: 16px;
 
     .Toastify__toast-icon {
-      margin-right: 0;
-      margin-left: 8rem;
+      margin: 0;
       background-image: var(--toastifySuccessIcon);
       background-size: 100% 100%;
       width: 4rem;
@@ -687,6 +686,16 @@ body {
       svg {
         display: none;
       }
+    }
+    &::after {
+      content: "Dismiss";
+      background-color: var(--toastifyBtn);
+      color: var(--toastifyBtnText);
+      font-size: 12px;
+      border: 0.15rem solid var(--toastifyBtnBorder);
+      padding: 0.7rem 1.3rem;
+      border-radius: 0.7rem;
+      margin-left: 50px;
     }
   }
 
@@ -701,6 +710,38 @@ body {
       }
     }
   }
+  &.Toastify__toast--warning {
+    .Toastify__toast-body {
+      .Toastify__toast-icon {
+        background-image: var(--toastifyWarningIcon);
+
+        svg {
+          display: none;
+        }
+      }
+    }
+  }
+}
+.Toastify__toast--success {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifySuccessGradientFrom),
+    var(--toastifySuccessGradientTo)
+  );
+}
+.Toastify__toast--error {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifyErrorGradientFrom),
+    var(--toastifyErrorGradientTo)
+  );
+}
+.Toastify__toast--warning {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifyWarningGradientFrom),
+    var(--toastifyWarningGradientTo)
+  );
 }
 
 .blur-effect {
@@ -1217,6 +1258,13 @@ form {
   .not-found-wrapper {
     text-align: center;
     padding: 10rem;
+  }
+  .not-found-wrapper-image {
+    height: 10rem;
+    margin-bottom: 2rem;
+  }
+  .not-found-wrapper-image-text {
+    color: #adadad;
   }
 }
 .section-table-mobile-scroll {
@@ -2809,10 +2857,13 @@ input {
   img {
     filter: var(--invertColor) !important;
   }
+  transition-duration: 0ms !important;
   &:hover {
     background-color: var(--mainButtonBg) !important;
     color: var(--primaryTextColor) !important;
-
+    border-color: var(--mainButtonBg) !important;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
     div {
       color: var(--primaryTextColor) !important;
     }
@@ -3418,7 +3469,10 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
-
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
+}
 .overflow-table-header-visible {
   .ReactVirtualized__Table__headerRow {
     overflow: visible !important;
@@ -3595,6 +3649,37 @@ input {
   /* Show the checkmark when checked */
   .container input:checked ~ .checkmark:after {
     display: block;
+  }
+}
+
+.blurredElement {
+  background-color: var(--outOfFocusBody);
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
+.blurred-elements {
+  cursor: pointer;
+  filter: blur(4px);
+  opacity: 0.7;
+  padding: 0.2rem 0rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+.bar-graph-section-y-axis {
+  filter: blur(5px);
+  cursor: pointer;
+}
+.bar-graph-section-blurred {
+  .chartArea {
+    canvas {
+      filter: blur(5px) !important;
+      cursor: pointer !important;
+    }
   }
 }
 .sliderModalBody {
@@ -3795,4 +3880,30 @@ input[type="range"] {
       }
     }
   }
+}
+.basicConfirmModalMobile {
+  .modal-content {
+    width: 90vw !important;
+    min-width: 90vw !important;
+    .modal-body {
+      padding: 3rem !important;
+      .leave-modal-btn-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1rem;
+        .secondary-btn {
+          margin-right: 0rem !important;
+        }
+      }
+    }
+  }
+}
+.addCopyTradeInput {
+  &::placeholder {
+    color: var(--inputPlaceHolder) !important;
+  }
+}
+.zeroOpacity {
+  opacity: 0;
 }
