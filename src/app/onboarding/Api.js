@@ -261,6 +261,7 @@ export const getAllCoins = (handleShareLinkUser = null) => {
         },
       ],
     });
+    handleShareLinkUser && handleShareLinkUser();
     // let data = new URLSearchParams();
     // postLoginInstance
     //   .post("wallet/chain/get-chains", data)
