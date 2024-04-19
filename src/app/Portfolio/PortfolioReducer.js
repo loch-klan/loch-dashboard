@@ -9,11 +9,14 @@ import {
   USER_WALLET_LIST,
   YESTERDAY_BALANCE,
 } from "./ActionTypes";
+
 const INITIAL_STATE = {
   coinRateList: [],
   chainWallet: [],
   walletTotal: 0,
-  currency: JSON.parse(window.sessionStorage.getItem("currency")),
+  currency: window.sessionStorage.getItem("currency")
+    ? JSON.parse(window.sessionStorage.getItem("currency"))
+    : {},
 
   // yesterday balance
   yesterdayBalance: 0,

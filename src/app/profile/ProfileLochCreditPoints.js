@@ -131,7 +131,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     this.setState({
       loading: true,
     });
-    this.props.getUserCredits(this);
+    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    this.props.getUserCredits(this, isLochUser);
   }
   lochPointsLoginBtnClickedLocal = () => {
     window.sessionStorage.setItem("lochPointsProfileLoginClicked", true);
@@ -337,6 +338,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       if (!this.state.isLoggedIn && !skipLogin) {
         return false;
       }
+
       if (this.state.tasksDone.includes(whichBlock)) {
         return true;
       }
