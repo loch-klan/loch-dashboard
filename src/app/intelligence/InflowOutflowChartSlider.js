@@ -767,7 +767,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       },
     };
     const minGraphVersion = {
-      style: { height: this.props.isMobileGraph ? "39rem" : "28rem" },
+      style: { height: this.props.isMobileGraph ? "39rem" : "31rem" },
     };
     return (
       <div onMouseLeave={this.props.changeThePriceTodefault}>

@@ -33,7 +33,12 @@ import { getAllCoins } from "../onboarding/Api.js";
 
 import { toast } from "react-toastify";
 import InsightImg from "../../assets/images/icons/insight-msg.svg";
-import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
+import {
+  dontOpenLoginPopup,
+  mobileCheck,
+  removeOpenModalAfterLogin,
+  scrollToTop,
+} from "../../utils/ReusableFunctions";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import DropDown from "../common/DropDown";
@@ -44,11 +49,14 @@ import InsightsPageMobile from "./InsightsPageMobile.js";
 
 // Dark theme scss
 import "./intelligenceScss/_darkInsightPage.scss";
+import PaywallModal from "../common/PaywallModal.js";
 
 class InsightsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       // insightList: "",
       isLoading: false,
       updatedInsightList: [],
@@ -151,6 +159,23 @@ class InsightsPage extends Component {
     }
   };
   componentDidMount() {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openInsightsPaymentModal"
+      );
+      const isOpenForSearch = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal && !isOpenForSearch) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     scrollToTop();
     if (
       !this.props.commonState.insight ||
@@ -460,6 +485,36 @@ class InsightsPage extends Component {
     });
     this.updateTimer();
   };
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    window.sessionStorage.setItem("blurredInsightsSignInModal", true);
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openInsightsPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   render() {
     if (mobileCheck()) {
       return (
@@ -469,9 +524,21 @@ class InsightsPage extends Component {
           showpath
           currentPage={"insights"}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+              title="Access Risk and Cost Reduction Insights"
+              description="Unlimited wallets insights"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <InsightsPageMobile
             updatedInsightList={this.state.updatedInsightList}
             handleMobileInsightSelect={this.handleMobileInsightSelect}
+            goToPayModal={this.goToPayModal}
             selectedFilter={this.state.selectedFilter}
             isLoading={this.state.isLoading}
           />
@@ -543,6 +610,16 @@ class InsightsPage extends Component {
                   updateTimer={this.updateTimer}
                 />
               )}
+              {this.state.isLochPaymentModal ? (
+                <PaywallModal
+                  show={this.state.isLochPaymentModal}
+                  onHide={this.hidePaymentModal}
+                  redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+                  title="Access Risk and Cost Reduction Insights"
+                  description="Unlimited wallets insights"
+                  hideBackBtn
+                />
+              ) : null}
 
               <PageHeader
                 title={"Insights"}
@@ -628,8 +705,15 @@ class InsightsPage extends Component {
                                 ? "3rem"
                                 : "",
                           }}
-                          className="insights-card"
+                          className={`insights-card ${
+                            key > 0 ? "blurred-elements" : ""
+                          }`}
                           key={key}
+                          onClick={() => {
+                            if (key > 0) {
+                              this.goToPayModal();
+                            }
+                          }}
                         >
                           <Image
                             src={

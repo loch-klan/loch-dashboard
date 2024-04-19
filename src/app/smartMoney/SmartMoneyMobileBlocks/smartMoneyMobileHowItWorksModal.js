@@ -54,30 +54,14 @@ class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
             />
           </div>
         </div>
-        <Image
-          src={SmartMoneyAboutMobileImage}
-          className="msmpModalHowItWorks"
-          onLoad={() => {
-            this.setState({
-              SmartMoneyAboutMobileImageLoaded: true,
-            });
-          }}
-          style={{
-            opacity: this.state.SmartMoneyAboutMobileImageLoaded ? 1 : 0,
-          }}
-        />
+        <Image className="msmpModalHowItWorks" />
         <div
           style={{
             marginTop: "22rem",
           }}
           className="msmpModalTexts msmpModalAboutHeading"
         >
-          <h6
-            className="inter-display-medium f-s-20 lh-24 m-b-4"
-            style={{
-              color: "#0d0d0d",
-            }}
-          >
+          <h6 className="inter-display-medium f-s-20 lh-24 m-b-4">
             About Loch Leaderboard
           </h6>
           <p className="inter-display-medium f-s-14 lh-19 m-b-24 text-center  grey-7C7">
@@ -86,63 +70,66 @@ class SmartMoneyMobileHowItWorksModal extends BaseReactComponent {
         </div>
         <div className="msmpModalAboutContentContainer">
           <div className="msmpModalAboutContentBlock">
-            <div
-              style={{
-                marginTop: "0rem",
-              }}
-              className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15"
-            >
-              You see a token 2x in price.
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              You see another token plummet by 4x overnight.
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              You think to yourself, how is this possible?
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              Most adjacent tokens are flat.
-            </div>
-
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              <span>The answer is always simple -- </span>
-              <span
+            <div className="msmpModalAboutContentBlockChild">
+              <div
                 style={{
-                  fontWeight: "bold",
+                  marginTop: "0rem",
                 }}
+                className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15"
               >
-                Follow the leaderboard.
-              </span>
-            </div>
+                You see a token 2x in price.
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                You see another token plummet by 4x overnight.
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                You think to yourself, how is this possible?
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                Most adjacent tokens are flat.
+              </div>
 
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              Loch’s team of sleuth’s and researchers have assiduously put
-              together this list of the smartest money on-chain.
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              This is the lazy analyst’s ultimate guide to alpha.
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              The list is updated daily. We know it’s not enough to just look at
-              net worth. That’s why Loch gives you the realized and unrealized
-              PnL for each address.
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              You can click, analyze, and follow any or all of these addresses.
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              The best part of using this leaderboard is that you’ll get the
-              confidence backed by your own increasingly successful results.
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              You’ll become more proficient in the most valuable skill in
-              crypto, which is finding and analyzing leaderboard.
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              Loch’s team has benefited immensely from this leaderboard.
-            </div>
-            <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
-              It’s your turn now.
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                <span>The answer is always simple -- </span>
+                <span
+                  style={{
+                    fontWeight: "bold",
+                  }}
+                >
+                  Follow the leaderboard.
+                </span>
+              </div>
+
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                Loch’s team of sleuth’s and researchers have assiduously put
+                together this list of the smartest money on-chain.
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                This is the lazy analyst’s ultimate guide to alpha.
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                The list is updated daily. We know it’s not enough to just look
+                at net worth. That’s why Loch gives you the realized and
+                unrealized PnL for each address.
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                You can click, analyze, and follow any or all of these
+                addresses.
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                The best part of using this leaderboard is that you’ll get the
+                confidence backed by your own increasingly successful results.
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                You’ll become more proficient in the most valuable skill in
+                crypto, which is finding and analyzing leaderboard.
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                Loch’s team has benefited immensely from this leaderboard.
+              </div>
+              <div className="smartMoneyHowItWorksTextLine  inter-display-medium f-s-15">
+                It’s your turn now.
+              </div>
             </div>
           </div>
         </div>
