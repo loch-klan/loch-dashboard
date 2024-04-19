@@ -216,7 +216,7 @@ class PaywallOptionsModal extends BaseReactComponent {
           interval: "month",
         },
         product_data: {
-          name: "Copy Trader Plan",
+          name: "Loch Premium",
         },
       })
       .then((res) => {

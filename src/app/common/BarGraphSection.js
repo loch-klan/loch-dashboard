@@ -102,7 +102,7 @@ class BarGraphSection extends Component {
 
   handleFooter = (event) => {
     if (this.props.isBlurred) {
-      this.props.goToPayModal();
+      this.goToPayModalPass();
       return null;
     }
     this.setState({
@@ -214,6 +214,12 @@ class BarGraphSection extends Component {
     this.setState({
       switchselected: !this.state.switchselected,
     });
+  };
+  goToPayModalPass = () => {
+    if (this.props.isPremiumUser) {
+      return null;
+    }
+    this.props.goToPayModal();
   };
   render() {
     const {
@@ -896,7 +902,7 @@ class BarGraphSection extends Component {
                       this.props.isBlurred ? "bar-graph-section-y-axis" : ""
                     }
                     style={{ width: `${digit}rem` }}
-                    onClick={this.props.goToPayModal}
+                    onClick={this.goToPayModalPass}
                   >
                     <Bar options={options2} data={data} />
                   </div>
@@ -925,7 +931,7 @@ class BarGraphSection extends Component {
                         : "100%"
                     }`,
                   }}
-                  onClick={this.props.goToPayModal}
+                  onClick={this.goToPayModalPass}
                 >
                   {this.props.isGraphLoading ? (
                     <div
@@ -1009,7 +1015,7 @@ class BarGraphSection extends Component {
                                   cursor: "pointer",
                                 }
                           }
-                          onClick={this.props.goToPayModal}
+                          onClick={this.goToPayModalPass}
                         >
                           <div
                             style={{

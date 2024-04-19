@@ -330,7 +330,10 @@ class InsightsPage extends Component {
     // console.log("api respinse", value);
   };
   handleSelect = (value) => {
-    console.log("value", value);
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return;
+    }
     let insightList = this.props.intelligenceState?.updatedInsightList
       ? this.props.intelligenceState?.updatedInsightList
       : [];
@@ -398,6 +401,10 @@ class InsightsPage extends Component {
   };
 
   handleInsights = (e) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return;
+    }
     let title = e.split(" ")[1];
     if (e.split(" ")[2] !== undefined) {
       title = title + " " + e.split(" ")[2];

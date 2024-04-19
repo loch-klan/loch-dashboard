@@ -528,6 +528,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     }
   };
   addCondition = (key, value) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return null;
+    }
     if (key === "SEARCH_BY_ASSETS_IN") {
       let assets = [];
       Promise.all([
