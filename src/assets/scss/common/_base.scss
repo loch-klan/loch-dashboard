@@ -3479,6 +3479,19 @@ input {
 }
 
 .transaction-searchbar-full {
+  .searchBar {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    &:hover {
+      .form-group {
+        input {
+          &::placeholder {
+            color: var(--primaryTextColor);
+          }
+        }
+      }
+    }
+  }
   .form-group {
     flex-grow: 1;
   }
