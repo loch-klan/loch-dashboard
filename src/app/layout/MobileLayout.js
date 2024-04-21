@@ -753,15 +753,16 @@ class MobileLayout extends BaseReactComponent {
   };
   handleSubmitEmail = () => {
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
-
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     const signUpMethod = whichSignUpMethod();
     SignInModalEmailAdded({
       session_id: getCurrentUser().id,
       email_address: this.state.email,
       signUpMethod: signUpMethod,
     });
-
     SendOtp(data, this, true);
   };
   showSignInOtpPage = () => {

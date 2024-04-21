@@ -63,6 +63,9 @@ const OTPInputs = ({ numberOfDigits, handleChangeOTP, isMobile }) => {
     <div className="new-auth-content-input--otp-pills-holder">
       {otp.map((digit, index) => (
         <input
+          type="number"
+          pattern="[0-9]*"
+          inputmode="numeric"
           key={index}
           value={digit}
           maxLength={1}
