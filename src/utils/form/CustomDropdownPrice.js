@@ -487,7 +487,9 @@ class CustomDropdown extends Component {
         style={{ position: "relative" }}
       >
         <div
-          className={`placeholderPriceDropdown  ${
+          className={`placeholderPriceDropdown ${
+            this.props.keepInCenter ? "placeholderPriceDropdownCenter" : ""
+          }  ${
             this.props.isLineChart ||
             this.props.isChain ||
             this.props.LightTheme

@@ -12,6 +12,7 @@ import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   ActiveSmartMoneySidebarIcon,
+  EmultionSidebarIcon,
   FollowingSidebarIcon,
   HomeSidebarIcon,
   InactiveSmartMoneySidebarIcon,
@@ -81,6 +82,7 @@ import {
   CurrencyType,
   amountFormat,
   numToCurrency,
+  removeSignUpMethods,
   switchToDarkMode,
   switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
@@ -408,9 +410,7 @@ function Sidebar(props) {
   };
   useEffect(() => {
     if (!signupModal && !signinModal) {
-      window.sessionStorage.removeItem("fifteenSecSignInModal");
-      window.sessionStorage.removeItem("referralCodesSignInModal");
-      window.sessionStorage.removeItem("lochPointsSignInModal");
+      removeSignUpMethods();
     }
   }, [signupModal, signinModal]);
   const openSigninModal = (fromWhichPage) => {
@@ -748,7 +748,7 @@ function Sidebar(props) {
             onClick={handleDarkMode}
             style={{
               zIndex: "9",
-              right: "0px",
+              right: "10px",
             }}
             className="navbar-button-container-mode"
           >
@@ -762,7 +762,7 @@ function Sidebar(props) {
             onClick={handleDarkMode}
             style={{
               zIndex: "9",
-              right: "0px",
+              right: "10px",
             }}
             className="navbar-button-container-mode"
           >
@@ -1033,6 +1033,48 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
+                            text={"Copy Trade"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/copy-trade"
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuCopyTradelist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
                             text={"Feedback"}
                           >
                             <div
@@ -1232,6 +1274,37 @@ function Sidebar(props) {
                                 className="followingImg"
                               />
                               Profile
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuCopyTradelist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/copy-trade"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                              Copy Trade
                             </NavLink>
                           </li>
                         </>
@@ -1718,6 +1791,7 @@ function Sidebar(props) {
               ? "Loch points profile"
               : ""
           }
+          iconImage={SignInIcon}
           comingDirectly={comingDirectly}
           hideOnblur
           showHiddenError

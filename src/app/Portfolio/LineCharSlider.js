@@ -1292,7 +1292,7 @@ backdrop-filter: blur(15px);">
                     : ""
                 }
                 style={{
-                  height: this.props.hideTimeFilter ? "35.2rem" : "35rem",
+                  height: this.props.hideTimeFilter ? "38.2rem" : "35rem",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",

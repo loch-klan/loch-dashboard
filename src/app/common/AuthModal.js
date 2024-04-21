@@ -30,14 +30,17 @@ import { v4 as uuidv4 } from "uuid";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import {
   ConnectExPopupEmailAdded,
+  CopyTradePopupEmailAdded,
   GeneralPopupEmailAdded,
   LochPointsSignInPopupEmailAdded,
+  SignInModalEmailAdded,
   SigninMenuEmailAdded,
   UpgradeSignInEmailVerified,
   WhaleCreateAccountPrivacyHover,
   WhalePopupEmailAdded,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { whichSignUpMethod } from "../../utils/ReusableFunctions.js";
 
 class AuthModal extends BaseReactComponent {
   constructor(props) {
@@ -104,7 +107,18 @@ class AuthModal extends BaseReactComponent {
   handleAccountCreate = () => {
     //   console.log("create email", this.state.email);
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
+
+    const signUpMethod = whichSignUpMethod();
+    SignInModalEmailAdded({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      signUpMethod: signUpMethod,
+    });
+
     SendOtp(data, this);
 
     if (this.props.tracking === "Sign in button") {
@@ -140,6 +154,11 @@ class AuthModal extends BaseReactComponent {
         email_address: this.state.email,
         from: this.props.tracking,
       });
+    } else if (this.props.tracking === "Copy trade") {
+      CopyTradePopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+      });
     }
 
     if (this.props?.popupType === "general_popup") {
@@ -173,7 +192,12 @@ class AuthModal extends BaseReactComponent {
         ? "generic pop up"
         : this.props.tracking
     );
-    VerifyEmail(data, this);
+    VerifyEmail(
+      data,
+      this,
+      false,
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
   };
 
   handleBack = () => {
