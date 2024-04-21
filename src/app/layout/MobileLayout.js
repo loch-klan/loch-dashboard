@@ -692,7 +692,10 @@ class MobileLayout extends BaseReactComponent {
   };
   handleSubmitEmail = () => {
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     SendOtp(data, this, true);
   };
   showSignInOtpPage = () => {
