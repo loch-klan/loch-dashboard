@@ -24,7 +24,7 @@ export const GetAssetFilter = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         let response = res.data.data?.assets;
-        let assetFilter = [{ value: "allAssets", label: "All assets" }];
+        let assetFilter = [{ value: "allAssets", label: "All tokens" }];
         response?.map((e) => {
           assetFilter.push({
             value: e._id,

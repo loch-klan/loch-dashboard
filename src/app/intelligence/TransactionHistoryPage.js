@@ -690,7 +690,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         TransactionHistoryAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          asset_filter: value === "allAssets" ? "All assets" : assets,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
           isSearchUsed: tempIsAssetUsed,
         });
         this.updateTimer();

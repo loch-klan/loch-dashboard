@@ -524,7 +524,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         YieldOpportunitiesAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          asset_filter: value === "allAssets" ? "All assets" : assets,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
           isSearchUsed: tempIsAssetUsed,
         });
         this.updateTimer();
@@ -1091,7 +1091,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
 
                   <Col md={4}>
                     <CustomDropdown
-                      filtername="All assets"
+                      filtername="All tokens"
                       options={this.props.intelligenceState.assetFilter}
                       action={SEARCH_BY_ASSETS_IN}
                       handleClick={(key, value) =>
