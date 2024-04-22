@@ -331,6 +331,7 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              hideFocusedInput={props.hideFocusedInput}
               focusOriginalInputBar={props.focusOriginalInputBar}
               isBlurred={props.isBlurred}
               connectedWalletAddress={props.connectedWalletAddress}

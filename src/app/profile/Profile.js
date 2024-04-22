@@ -405,6 +405,7 @@ class Profile extends Component {
                   <WelcomeCard
                     isBlurred
                     focusOriginalInputBar={this.focusOriginalInputBar}
+                    hideFocusedInput={this.hideFocusedInput}
                     openConnectWallet={this.props.openConnectWallet}
                     connectedWalletAddress={this.props.connectedWalletAddress}
                     connectedWalletevents={this.props.connectedWalletevents}
