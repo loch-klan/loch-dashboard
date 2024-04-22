@@ -155,7 +155,7 @@ class CustomTable extends BaseReactComponent {
                         (this.props.showDataAtBottom && this.props.moreData
                           ? 58
                           : 60) *
-                          (tableData.length + 1) -
+                          (tableData ? tableData.length + 1 : 1) -
                         10
                       }
                       headerHeight={headerHeight ? headerHeight : 80}
@@ -164,7 +164,7 @@ class CustomTable extends BaseReactComponent {
                           ? 58
                           : 60
                       }
-                      rowCount={tableData.length}
+                      rowCount={tableData ? tableData.length : 0}
                       rowGetter={({ index }) => tableData[index]}
                       className={`custom-table ${className}`}
                       gridClassName={`${
@@ -253,10 +253,12 @@ class CustomTable extends BaseReactComponent {
                     {({ width }) => (
                       <Table
                         width={width}
-                        height={60 * (tableData.length + 1) - 10}
+                        height={
+                          60 * (tableData ? tableData.length + 1 : 1) - 10
+                        }
                         headerHeight={headerHeight ? headerHeight : 80}
                         rowHeight={60}
-                        rowCount={tableData.length}
+                        rowCount={tableData ? tableData.length : 0}
                         rowGetter={({ index }) => tableData[index]}
                         className={`custom-table ${className}`}
                         gridClassName={`${

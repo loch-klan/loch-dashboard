@@ -2493,6 +2493,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   <TransactionTable
                     noSubtitleBottomPadding
                     tableData={tableData}
+                    showHeaderOnEmpty
                     columnList={columnList}
                     message={"No Transactions Found"}
                     totalPage={totalPage}
