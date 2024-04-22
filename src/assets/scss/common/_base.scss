@@ -664,21 +664,27 @@ body {
 
 .Toastify__toast {
   background-color: var(--toastify);
-  border: 1px solid var(--toastifyBorder);
+  border: 1px solid transparent;
   color: var(--toastifyText);
-  padding: 0.5rem 2rem;
-  border-radius: 0.8rem;
-
+  padding: 1rem 2rem;
+  border-radius: 1.6rem;
   .Toastify__toast-body {
+    div {
+      text-transform: lowercase;
+      display: inline-block;
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
     flex-direction: row-reverse;
     gap: 10px;
     margin: 0;
     padding: 0;
     @include font(var(--black191), "Inter-SemiBold", 1.6rem, 600, 19px);
+    font-size: 16px;
 
     .Toastify__toast-icon {
-      margin-right: 0;
-      margin-left: 8rem;
+      margin: 0;
       background-image: var(--toastifySuccessIcon);
       background-size: 100% 100%;
       width: 4rem;
@@ -687,6 +693,16 @@ body {
       svg {
         display: none;
       }
+    }
+    &::after {
+      content: "Dismiss";
+      background-color: var(--toastifyBtn);
+      color: var(--toastifyBtnText);
+      font-size: 12px;
+      border: 0.15rem solid var(--toastifyBtnBorder);
+      padding: 0.7rem 1.3rem;
+      border-radius: 0.7rem;
+      margin-left: 50px;
     }
   }
 
@@ -701,6 +717,38 @@ body {
       }
     }
   }
+  &.Toastify__toast--warning {
+    .Toastify__toast-body {
+      .Toastify__toast-icon {
+        background-image: var(--toastifyWarningIcon);
+
+        svg {
+          display: none;
+        }
+      }
+    }
+  }
+}
+.Toastify__toast--success {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifySuccessGradientFrom),
+    var(--toastifySuccessGradientTo)
+  );
+}
+.Toastify__toast--error {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifyErrorGradientFrom),
+    var(--toastifyErrorGradientTo)
+  );
+}
+.Toastify__toast--warning {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifyWarningGradientFrom),
+    var(--toastifyWarningGradientTo)
+  );
 }
 
 .blur-effect {
@@ -1217,6 +1265,13 @@ form {
   .not-found-wrapper {
     text-align: center;
     padding: 10rem;
+  }
+  .not-found-wrapper-image {
+    height: 10rem;
+    margin-bottom: 2rem;
+  }
+  .not-found-wrapper-image-text {
+    color: #adadad;
   }
 }
 .section-table-mobile-scroll {
@@ -2852,10 +2907,13 @@ input {
   img {
     filter: var(--invertColor) !important;
   }
+  transition-duration: 0ms !important;
   &:hover {
     background-color: var(--mainButtonBg) !important;
     color: var(--primaryTextColor) !important;
-
+    border-color: var(--mainButtonBg) !important;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
     div {
       color: var(--primaryTextColor) !important;
     }
@@ -3461,7 +3519,10 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
-
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
+}
 .overflow-table-header-visible {
   .ReactVirtualized__Table__headerRow {
     overflow: visible !important;
@@ -3522,6 +3583,19 @@ input {
 }
 
 .transaction-searchbar-full {
+  .searchBar {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    &:hover {
+      .form-group {
+        input {
+          &::placeholder {
+            color: var(--primaryTextColor);
+          }
+        }
+      }
+    }
+  }
   .form-group {
     flex-grow: 1;
   }
@@ -3640,6 +3714,16 @@ input {
     display: block;
   }
 }
+
+.blurredElement {
+  background-color: var(--outOfFocusBody);
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
 .blurred-elements {
   cursor: pointer;
   filter: blur(4px);
@@ -3660,4 +3744,241 @@ input {
       cursor: pointer !important;
     }
   }
+}
+.sliderModalBody {
+  .sliderModalBodyAddressBtn {
+    text-decoration: underline;
+    color: var(--addressText);
+    cursor: pointer;
+    font-size: 15px;
+    background-color: var(--greyCardBackgroud);
+    padding: 0.3rem 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    &:hover {
+      filter: var(--hoverBrightness);
+    }
+  }
+  .smbButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3rem 5rem;
+    padding-top: 4.5rem;
+  }
+  .smbSliderContainer {
+    .smbTitle {
+      font-size: 13px;
+      margin-bottom: 1rem;
+    }
+    .smbSlider {
+      padding: 3rem 5rem;
+      border-bottom: 0.1rem solid var(--referallCopyBtn);
+      .smbSliderMinMaxBox {
+        position: relative;
+        background-color: var(--cardBackgroud);
+        padding: 1rem 1.5rem;
+        border-radius: 0.8rem;
+        box-shadow: 0px 6.18px 18.54px 0px var(--primaryBoxShadowColor);
+        border: 0.1rem solid var(--notificationTooltipHover);
+        transform: translateX(-50%);
+        font-size: 15px;
+        .smbSliderMinMaxBoxArrow {
+          height: 1rem;
+          width: 1rem;
+          background-color: var(--cardBackgroud);
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateY(30%) translateX(-30%) rotate(45deg);
+        }
+        .smbSliderMinMaxBoxInput {
+          border: none;
+          background-color: transparent;
+          outline: none;
+          text-align: center;
+          &:hover {
+            opacity: 0.4;
+            &:focus-visible {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+    .smbsAssetDropdownContainer {
+      position: relative;
+      padding: 3rem 5rem;
+      padding-bottom: 3.5rem;
+      z-index: 3;
+      border-bottom: 0.1rem solid var(--referallCopyBtn);
+    }
+    .smbsInputContainer {
+      padding: 3rem 5rem;
+      padding-bottom: 0rem;
+      .smbsInputBlock {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1rem;
+        .smbsInputBlockInfo {
+          width: 28%;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-right: 5rem;
+          .smbsInputBlockInfoTitle {
+            font-size: 14px;
+          }
+          .smbsInputBlockInfoImage {
+            height: 16px;
+            filter: var(--invertColor);
+          }
+          .custom-checkbox {
+            margin: 0px !important;
+            height: 16px !important;
+            width: 16px !important;
+            border-radius: 4.5px !important;
+            img {
+              height: 8px !important;
+            }
+          }
+        }
+        .smbsInput {
+          width: 72%;
+          border: 0.1rem solid var(--referallCopyBtn);
+          border-radius: 0.8rem;
+          padding: 1rem 1.5rem;
+          text-align: left;
+          outline: none;
+          font-size: 14px;
+          &:hover {
+            border: 0.1rem solid var(--primaryTextColor);
+          }
+        }
+        .smbsInputDisabled {
+          opacity: 0.5;
+          &:hover {
+            border: 0.1rem solid var(--referallCopyBtn);
+          }
+        }
+      }
+    }
+    .smbSlidervalueContainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      .smbSlidervalues {
+        color: var(--sidebarBottomOptions);
+      }
+    }
+    .rc-slider-handle {
+      background-color: var(--primaryTextColor);
+      border: none;
+      height: 1.5rem;
+      width: 0.5rem;
+      border-radius: 1.5rem;
+      margin-top: -1rem;
+      opacity: 1;
+    }
+    .rc-slider-handle-dragging {
+      box-shadow: none;
+    }
+    .rc-slider-rail {
+      background-color: var(--greyCardBackgroud);
+      height: 0.5rem;
+      opacity: 1;
+      z-index: 1;
+    }
+    .rc-slider-track {
+      z-index: 2;
+      position: relative;
+      background-color: var(--primaryTextColor);
+      height: 0.5rem;
+      border-top-left-radius: 1rem;
+      border-bottom-left-radius: 1rem;
+      opacity: 1 !important;
+    }
+  }
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+.transaction-notification-mobile {
+  .modal-content {
+    min-width: 90vw !important;
+    width: 90vw !important;
+    .modal-header {
+      padding: 2rem !important;
+      padding-bottom: 1.7rem !important;
+    }
+    .modal-body {
+      .sliderModalBody {
+        .exit-overlay-body {
+          padding: 0rem 2rem !important;
+        }
+        .smbSliderContainer {
+          .smbSlider {
+            padding: 3rem 2rem !important;
+          }
+          .smbsAssetDropdownContainer {
+            padding: 3rem 2rem !important;
+          }
+          .smbsInputContainer {
+            padding: 3rem 2rem !important;
+            padding-bottom: 0rem !important;
+            .smbsInputBlock {
+              flex-direction: column;
+              align-items: flex-start;
+              .smbsInputBlockInfo {
+                width: 100%;
+              }
+              .smbsInput {
+                width: 100%;
+                margin-top: 1rem;
+              }
+            }
+          }
+        }
+        .smbButtonContainer {
+          padding: 3rem 2rem !important;
+          flex-direction: column-reverse;
+          gap: 2rem;
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
+.basicConfirmModalMobile {
+  .modal-content {
+    width: 90vw !important;
+    min-width: 90vw !important;
+    .modal-body {
+      padding: 3rem !important;
+      .leave-modal-btn-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1rem;
+        .secondary-btn {
+          margin-right: 0rem !important;
+        }
+      }
+    }
+  }
+}
+.addCopyTradeInput {
+  &::placeholder {
+    color: var(--inputPlaceHolder) !important;
+  }
+}
+.zeroOpacity {
+  opacity: 0;
 }

@@ -16,6 +16,9 @@
     justify-content: center;
     pointer-events: none;
     padding-bottom: 4rem;
+    animation-name: feedbackModalAnimation;
+    animation-duration: 0.3s;
+
     .sidebarCustonDontLoseDataModal {
       pointer-events: all;
       cursor: grab;
@@ -158,6 +161,14 @@
           }
         }
       }
+    }
+  }
+  @keyframes feedbackModalAnimation {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0%);
     }
   }
 }

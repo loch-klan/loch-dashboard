@@ -760,6 +760,9 @@ class TopWalletExchangeBar extends Component {
       return;
     }
     this.hideTheTopBarHistoryItems();
+    if (this.props.isBlurred) {
+      this.props.hideFocusedInput();
+    }
     if (this.state.walletInput[0]) {
       SearchBarAddressAdded({
         session_id: getCurrentUser().id,
@@ -1513,6 +1516,11 @@ class TopWalletExchangeBar extends Component {
         onOutsideClick={this.hideTheTopBarHistoryItems}
       >
         <div
+          onClick={(e) => {
+            if (this.props.isBlurred) {
+              e.stopPropagation();
+            }
+          }}
           className={`topBarContainer ${
             this.state.walletList.length > 0 ? "topBarContainerMultiple" : ""
           }`}
@@ -1753,6 +1761,10 @@ class TopWalletExchangeBar extends Component {
                   ? "topBarContainerRightBlockMultiple"
                   : ""
               }`}
+              style={{
+                opacity: this.props.isBlurred ? 0 : 1,
+                pointerEvents: this.props.isBlurred ? "none" : "all",
+              }}
             >
               {/* <div
                 ref={this.props.buttonRef}

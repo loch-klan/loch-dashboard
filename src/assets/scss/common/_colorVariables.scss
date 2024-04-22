@@ -40,9 +40,18 @@
   --white191darke5ee6: #19191a;
   --dropdownActiveSelected: #19191a;
   --referallCopyBtn: #e5e5e6;
+  --notificationTooltipHover: transparent;
   --referallUsedBtn: #e5e5e680;
   --referallUsedBtnText: #7c7d81;
+  --referalCompletedTasks: #e5e5e6;
   --w3m-z-index: 1000 !important;
+  --w3m-z-index: 1000 !important;
+  --referallCopyBtn: #e5e5e6;
+  --referallUsedBtn: #e5e5e680;
+  --referallUsedBtnText: #7c7d81;
+  --popularAccountsDataBlock: #e5e5e64d;
+  --popularAccountsHeaderBrightness: brightness(0.96);
+  --brightenDarkModeColors: brightness(1);
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
@@ -50,6 +59,7 @@
   --invertColor2: invert(100%);
   --brightInDarkMode: brightness(1);
   --hoverBrightness: brightness(50%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(0);
   --hoverBrightnessValueInvert: brightness(20);
   --infoBrightnessPortfolio: brightness(1);
@@ -69,6 +79,7 @@
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
+  --grey5b5b: #5b5b5d;
   --grey313: #313233;
   --greyb0b: #b0b1b3;
   --grey969: #96979a;
@@ -195,6 +206,7 @@
   --tableHeading: #4f4f4f;
   --tableData: #313233;
 
+  --inputPlaceHolder: #d4d4d4;
   --inputBorder: #d4d4d4;
   --inputBorderHover: #0d0d0d;
 
@@ -218,12 +230,23 @@
   // Toastify
   --toastify: white;
   --toastifyBorder: #e5e5e6;
+  --toastifyBtn: white;
+  --toastifySuccessGradientFrom: #f4fff8;
+  --toastifySuccessGradientTo: #ffffff;
+  --toastifyErrorGradientFrom: #fff1ef;
+  --toastifyErrorGradientTo: #ffffff;
+  --toastifyWarningGradientFrom: #fff6e1;
+  --toastifyWarningGradientTo: #ffffff;
+  --toastifyBtnText: #19191a;
+  --toastifyBtnBorder: #e5e5e6;
   --toastifyText: #0d0d0d;
   --toastifySuccessIcon: url(../../images/icons/toastSuccessLight.svg);
+  --toastifyWarningIcon: url(../../images/icons/toastWarningLight.svg);
   --toastifyErrorIcon: url(../../images/icons/toastErrorLight.svg);
 
   // Leaderboard
   --leaderboardFaq: white;
+  --leaderboardFaqBlocksMobile: white;
   --leaderboardFaqBlocks: #f8f8f8;
   --leaderboardFaqBlocksBorder: #e5e5e6;
   --leaderboardFaqAnswerBlock: white;
@@ -248,6 +271,10 @@
   // Fremium
   --fremiumTooltipHeader: #19191a;
   --fremiumTooltipDescription: #cacbcc;
+  --outOfFocusBody: rgba(0, 0, 0, 0.8);
+  --outOfFocusTopBar: #3a3a3a;
+  //Slider
+  --addressText: #1a1a1a;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -292,6 +319,7 @@
   --white191darke5ee6: #e5e5e6;
   --dropdownActiveSelected: #e5e5e6;
   --referallCopyBtn: #303030;
+  --notificationTooltipHover: #303030;
   --referallUsedBtn: rgba(229, 229, 230, 0.2);
   --referallUsedBtnText: #cacbcc;
 
@@ -301,6 +329,7 @@
   --invertColor2: invert(0%);
   --brightInDarkMode: brightness(2);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(1);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: invert(1);
@@ -324,6 +353,7 @@
   --grey636: #636467;
   --greyE5e: #e5e5e6;
   --greyCac: #cacbcc;
+  --grey5b5b: #cacbcc;
   --grey313: #cacbcc;
   --greyb0b: #4a4b4d;
   --backColor: rgba(255, 255, 255, 0.95);
@@ -337,6 +367,9 @@
   //Table
   --tableNumberCover: #313233;
   --tablePersonalTint: rgba(16, 16, 16, 0.6);
+  --popularAccountsDataBlock: #303030;
+  --popularAccountsHeaderBrightness: brightness(1.3);
+  --brightenDarkModeColors: brightness(2);
   --tableHeadingLightBorder: #313233;
   --tableSectionToggleBg: #101010;
   --tableCostCommonColor: #141414;
@@ -435,7 +468,7 @@
 
   --tableHeading: #cacbcc;
   --tableData: #cacbcc;
-
+  --inputPlaceHolder: #5a5a5b;
   --inputBorder: #313233;
   --inputBorderHover: #cacbcc;
 
@@ -457,14 +490,25 @@
   --connectExchangeModalBlockStepCircleActive: #cacbcc;
 
   // Toastify
-  --toastify: #313233;
+  --toastify: #202020;
   --toastifyBorder: #4a4b4d;
-  --toastifyText: #e5e5e6;
+  --toastifyBtn: #101010;
+  --toastifySuccessGradientFrom: #5abe7e1a;
+  --toastifySuccessGradientTo: #5abe7e00;
+  --toastifyErrorGradientFrom: #f04d611a;
+  --toastifyErrorGradientTo: #f04d6100;
+  --toastifyWarningGradientFrom: #ffc12e1a;
+  --toastifyWarningGradientTo: #ffc12e00;
+  --toastifyBtnText: #e5e5e6;
+  --toastifyBtnBorder: #101010;
+  --toastifyText: #b0b1b3;
   --toastifySuccessIcon: url(../../images/icons/toastSuccessDark.svg);
+  --toastifyWarningIcon: url(../../images/icons/toastWarningDark.svg);
   --toastifyErrorIcon: url(../../images/icons/toastErrorDark.svg);
 
   // Leaderboard
   --leaderboardFaqModal: #1a1a1a;
+  --leaderboardFaqBlocksMobile: #202020;
   --leaderboardFaqBlocks: #202020;
   --leaderboardFaqBlocksBorder: #303030;
   --leaderboardFaqAnswerBlock: #202020;
@@ -489,6 +533,10 @@
   // Fremium
   --fremiumTooltipHeader: white;
   --fremiumTooltipDescription: #b0b1b3;
+  --outOfFocusBody: rgba(255, 255, 255, 0.8);
+  --outOfFocusTopBar: #d7d7d7;
+  //Slider
+  --addressText: #cacbcc;
 }
 [data-theme="dark2"] {
   // UPDATED
@@ -508,6 +556,7 @@
   --primaryDropdownSelectedItem: #313233;
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
+  --swapContainer: rgba(86, 72, 107, 0.3);
   --primaryFilter: #313233;
   --primaryActiveFilter: #636467;
   --black191: #e7e9ea;
@@ -519,6 +568,7 @@
   --invertColor: invert(100%);
   --invertColor2: invert(0%);
   --hoverBrightness: brightness(200%);
+  --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
   --infoBrightnessPortfolio: none;

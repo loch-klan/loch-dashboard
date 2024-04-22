@@ -365,7 +365,7 @@
   }
 }
 .transaction-table-loading-wrapper-smaller {
-  height: 32rem;
+  height: 35rem;
   .animation-wrapper {
     height: 100%;
   }
@@ -375,6 +375,7 @@
 }
 .transaction-history-table {
   min-width: 85rem;
+  min-height: 40rem !important;
   .loadingSizeContainer {
     height: 50vh;
     display: flex;
@@ -395,10 +396,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 42rem;
+      height: 45rem;
     }
     .not-found-mini-wrapper {
-      height: 42rem;
+      height: 45rem;
+      padding: 5rem;
     }
   }
 }

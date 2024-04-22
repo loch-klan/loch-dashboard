@@ -2,6 +2,8 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  EmultionSidebarIcon,
+  MobileNavCopyTraderIcon,
   MobileNavFollow,
   MobileNavHome,
   MobileNavLeaderboard,
@@ -113,6 +115,12 @@ class MobileLayout extends BaseReactComponent {
           path: "/home-leaderboard",
         },
 
+        {
+          pageIcon: MobileNavCopyTraderIcon,
+
+          text: "Copy",
+          path: "/copy-trade",
+        },
         {
           pageIcon: MobileNavProfile,
           text: "Profile",
@@ -745,15 +753,16 @@ class MobileLayout extends BaseReactComponent {
   };
   handleSubmitEmail = () => {
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
-
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     const signUpMethod = whichSignUpMethod();
     SignInModalEmailAdded({
       session_id: getCurrentUser().id,
       email_address: this.state.email,
       signUpMethod: signUpMethod,
     });
-
     SendOtp(data, this, true);
   };
   showSignInOtpPage = () => {
@@ -923,7 +932,8 @@ class MobileLayout extends BaseReactComponent {
               ))}
             </div>
             {!(this.state.walletInput && this.state.walletInput[0].address) &&
-            !this.props.hideAddresses ? (
+            !this.props.hideAddresses &&
+            !this.props.hideShare ? (
               <div className="mpcMobileShare" onClick={this.handleShare}>
                 <Image
                   style={{
@@ -1045,14 +1055,12 @@ class MobileLayout extends BaseReactComponent {
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                          }
-                          //  else if (index === 3) {
-                          //   MenuCopyTradelist({
-                          //     session_id: getCurrentUser().id,
-                          //     email_address: getCurrentUser().email,
-                          //   });
-                          // }
-                          else if (index === 3) {
+                          } else if (index === 3) {
+                            MenuCopyTradelist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 4) {
                             ProfileMenu({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
