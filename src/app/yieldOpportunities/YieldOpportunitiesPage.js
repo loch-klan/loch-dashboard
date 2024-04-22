@@ -780,7 +780,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               onClick={() => this.handleTableSort("asset")}
               src={sortByIcon}

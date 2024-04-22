@@ -592,7 +592,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             className="cp history-table-header-col table-header-font"
             id="Asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
@@ -1374,7 +1374,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               />
             )}
             <PageHeader
-              title="Assets"
+              title="Tokens"
               subTitle="Understand your unrealized profit and loss per token"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
