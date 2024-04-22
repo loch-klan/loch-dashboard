@@ -515,7 +515,7 @@ class PortfolioHomeDefiBlock extends Component {
                                 <Col md={3}>
                                   <div className="header-col">
                                     <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
-                                      Asset
+                                      Token
                                     </span>
                                   </div>
                                 </Col>
