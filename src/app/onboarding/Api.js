@@ -16,44 +16,541 @@ import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import { COINS_LIST, PARENT_COINS_LIST, WALLET_LIST } from "./ActionTypes";
 export const getAllCoins = (handleShareLinkUser = null) => {
   return async function (dispatch, getState) {
-    let data = new URLSearchParams();
-    postLoginInstance
-      .post("wallet/chain/get-chains", data)
-      .then((res) => {
-        let coinsList =
-          res.data && res.data.data && res.data.data.chains.length > 0
-            ? res.data.data.chains
-            : [];
-        dispatch({
-          type: COINS_LIST,
-          payload: coinsList,
-        });
-        handleShareLinkUser && handleShareLinkUser();
-      })
-      .catch((err) => {
-        // console.log("Catch", err);
-      });
+    dispatch({
+      type: COINS_LIST,
+      payload: [
+        {
+          active: true,
+          code: "ETH",
+          color: "#7B44DA",
+          created_on: "2022-09-27 20:01:48.928000+00:00",
+          default_asset_code: "ETH",
+          default_asset_id: "ethereum",
+          id: "633356acb6afee98bcd4436b",
+          is_evm: true,
+          modified_on: "2022-12-19 12:35:33.439000+00:00",
+          name: "Ethereum",
+          parent: null,
+          platform_code: "ETH",
+          platform_id: "ethereum",
+          symbol: "https://media.loch.one/loch-ethereum.svg",
+        },
+        {
+          active: true,
+          code: "BTC",
+          color: "#F19938",
+          created_on: "2022-09-27 20:01:48.930000+00:00",
+          default_asset_code: "BTC",
+          default_asset_id: "bitcoin",
+          id: "633356acb6afee98bcd4436c",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.443000+00:00",
+          name: "Bitcoin",
+          parent: null,
+          platform_code: "BTC",
+          platform_id: "bitcoin",
+          symbol: "https://media.loch.one/loch-bitcoin.svg",
+        },
+        {
+          active: true,
+          code: "SOL",
+          color: "#5ADDA6",
+          created_on: "2022-09-27 20:01:48.931000+00:00",
+          default_asset_code: "SOL",
+          default_asset_id: "solana",
+          id: "633356acb6afee98bcd4436d",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.445000+00:00",
+          name: "Solana",
+          parent: null,
+          platform_code: "SOLANA",
+          platform_id: "solana",
+          symbol: "https://media.loch.one/loch-solana.svg",
+        },
+        {
+          active: true,
+          code: "BSC",
+          color: "#F0B90B",
+          created_on: "2022-09-27 20:01:48.932000+00:00",
+          default_asset_code: "BNB",
+          default_asset_id: "binancecoin",
+          id: "633356acb6afee98bcd4436e",
+          is_evm: true,
+          modified_on: "2022-12-19 12:35:33.447000+00:00",
+          name: "BSC",
+          parent: "633356acb6afee98bcd4436b",
+          platform_code: "BSC",
+          platform_id: "binance-smart-chain",
+          symbol: "https://media.loch.one/loch-binance.svg",
+        },
+        {
+          active: true,
+          code: "AVAX",
+          color: "#E84042",
+          created_on: "2022-09-27 20:01:48.932000+00:00",
+          default_asset_code: "AVAX",
+          default_asset_id: "avalanche-2",
+          id: "633356acb6afee98bcd4436f",
+          is_evm: true,
+          modified_on: "2022-12-19 12:35:33.449000+00:00",
+          name: "Avalanche",
+          parent: "633356acb6afee98bcd4436b",
+          platform_code: "AVALANCHE",
+          platform_id: "avalanche",
+          symbol: "https://media.loch.one/loch-avalanche.svg",
+        },
+        {
+          active: true,
+          code: "FTM",
+          color: "#13B5EC",
+          created_on: "2022-09-27 20:01:48.933000+00:00",
+          default_asset_code: "FTM",
+          default_asset_id: "fantom",
+          id: "633356acb6afee98bcd44370",
+          is_evm: true,
+          modified_on: "2022-12-19 12:35:33.453000+00:00",
+          name: "Fantom",
+          parent: "633356acb6afee98bcd4436b",
+          platform_code: "FANTOM",
+          platform_id: "fantom",
+          symbol: "https://media.loch.one/loch-fantom.svg",
+        },
+        {
+          active: true,
+          code: "POLYGON",
+          color: "#8247E5",
+          created_on: "2022-09-27 20:01:48.934000+00:00",
+          default_asset_code: "MATIC",
+          default_asset_id: "matic-network",
+          id: "633356acb6afee98bcd44371",
+          is_evm: true,
+          modified_on: "2022-12-19 12:35:33.458000+00:00",
+          name: "Polygon",
+          parent: "633356acb6afee98bcd4436b",
+          platform_code: "POLYGON",
+          platform_id: "polygon-pos",
+          symbol: "https://media.loch.one/loch-polygon.svg",
+        },
+        {
+          active: true,
+          code: "CELO",
+          color: "#F4CE6F",
+          created_on: "2022-09-27 20:01:48.934000+00:00",
+          default_asset_code: "CELO",
+          default_asset_id: "celo",
+          id: "633356acb6afee98bcd44372",
+          is_evm: true,
+          modified_on: "2022-12-19 12:35:33.461000+00:00",
+          name: "Celo",
+          parent: "633356acb6afee98bcd4436b",
+          platform_code: "CELO",
+          platform_id: "celo",
+          symbol: "https://media.loch.one/loch-celo.svg",
+        },
+        {
+          active: true,
+          code: "LTC",
+          color: "#345D9D",
+          created_on: "2022-09-27 20:01:48.935000+00:00",
+          default_asset_code: "LTC",
+          default_asset_id: "litecoin",
+          id: "633356acb6afee98bcd44373",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.463000+00:00",
+          name: "Litecoin",
+          parent: null,
+          platform_code: "LITECOIN",
+          platform_id: "litecoin",
+          symbol: "https://media.loch.one/loch-litecoin.svg",
+        },
+        {
+          active: true,
+          code: "ALGO",
+          color: "#19191A",
+          created_on: "2022-09-27 20:01:48.936000+00:00",
+          default_asset_code: "ALGO",
+          default_asset_id: "algorand",
+          id: "633356acb6afee98bcd44374",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.474000+00:00",
+          name: "Algorand",
+          parent: null,
+          platform_code: "ALGORAND",
+          platform_id: "algorand",
+          symbol: "https://media.loch.one/loch-algorand.svg",
+        },
+        {
+          active: true,
+          code: "OP",
+          color: "#FF0420",
+          created_on: "2022-09-27 20:01:48.937000+00:00",
+          default_asset_code: "OP",
+          default_asset_id: "optimism",
+          id: "633356acb6afee98bcd44375",
+          is_evm: true,
+          modified_on: "2022-12-19 12:35:33.477000+00:00",
+          name: "Optimism",
+          parent: "633356acb6afee98bcd4436b",
+          platform_code: "OPTIMISM",
+          platform_id: "optimistic-ethereum",
+          symbol: "https://media.loch.one/loch-optimism.svg",
+        },
+        {
+          active: true,
+          code: "ARB",
+          color: "#2C374B",
+          created_on: "2022-09-27 20:01:48.937000+00:00",
+          default_asset_code: "ETH",
+          default_asset_id: "ethereum",
+          id: "633356acb6afee98bcd44376",
+          is_evm: true,
+          modified_on: "2022-12-19 12:35:33.479000+00:00",
+          name: "Arbitrum",
+          parent: "633356acb6afee98bcd4436b",
+          platform_code: "ARBITRUM",
+          platform_id: "arbitrum-one",
+          symbol: "https://media.loch.one/loch-arbitrum.svg",
+        },
+        {
+          active: true,
+          code: "TRX",
+          color: "#FF060A",
+          created_on: "2022-09-27 20:01:48.938000+00:00",
+          default_asset_code: "TRX",
+          default_asset_id: "tron",
+          id: "633356acb6afee98bcd44377",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.482000+00:00",
+          name: "Tron",
+          parent: null,
+          platform_code: "TRON",
+          platform_id: "tron",
+          symbol: "https://media.loch.one/loch-tron.svg",
+        },
+        {
+          active: true,
+          code: "ADA",
+          color: "#0033AD",
+          created_on: "2022-09-27 20:01:48.939000+00:00",
+          default_asset_code: "ADA",
+          default_asset_id: "cardano",
+          id: "633356acb6afee98bcd44378",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.484000+00:00",
+          name: "Cardano",
+          parent: null,
+          platform_code: "ADA",
+          platform_id: "cardano",
+          symbol: "https://media.loch.one/loch-cardano.svg",
+        },
+        {
+          active: true,
+          code: "XLM",
+          color: "#19191A",
+          created_on: "2022-09-27 20:01:48.939000+00:00",
+          default_asset_code: "XLM",
+          default_asset_id: "stellar",
+          id: "633356acb6afee98bcd44379",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.486000+00:00",
+          name: "Stellar",
+          parent: null,
+          platform_code: "XLM",
+          platform_id: "stellar",
+          symbol: "https://media.loch.one/loch-stellar.svg",
+        },
+      ],
+    });
+    handleShareLinkUser && handleShareLinkUser();
+    // let data = new URLSearchParams();
+    // postLoginInstance
+    //   .post("wallet/chain/get-chains", data)
+    //   .then((res) => {
+    //     let coinsList =
+    //       res.data && res.data.data && res.data.data.chains.length > 0
+    //         ? res.data.data.chains
+    //         : [];
+    //     dispatch({
+    //       type: COINS_LIST,
+    //       payload: coinsList,
+    //     });
+    //     handleShareLinkUser && handleShareLinkUser();
+    //   })
+    //   .catch((err) => {
+    //     // console.log("Catch", err);
+    //   });
   };
 };
 
 export const getAllParentChains = () => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
-    postLoginInstance
-      .post("wallet/chain/get-parent-chains", data)
-      .then((res) => {
-        let coinsList =
-          res.data && res.data.data && res.data.data.chains.length > 0
-            ? res.data.data.chains
-            : [];
-        dispatch({
-          type: PARENT_COINS_LIST,
-          payload: coinsList,
-        });
-      })
-      .catch((err) => {
-        // console.log("Catch", err);
-      });
+    dispatch({
+      type: PARENT_COINS_LIST,
+      payload: [
+        {
+          active: true,
+          code: "ETH",
+          color: "#7B44DA",
+          created_on: "2022-09-27 20:01:48.928000+00:00",
+          default_asset_code: "ETH",
+          default_asset_id: "ethereum",
+          id: "633356acb6afee98bcd4436b",
+          is_evm: true,
+          modified_on: "2022-12-19 12:35:33.439000+00:00",
+          name: "Ethereum",
+          parent: null,
+          platform_code: "ETH",
+          platform_id: "ethereum",
+          sub_chains: [
+            {
+              active: true,
+              code: "ARB",
+              color: "#2C374B",
+              created_on: "2022-09-27 20:01:48.937000+00:00",
+              default_asset_code: "ETH",
+              default_asset_id: "ethereum",
+              id: "633356acb6afee98bcd44376",
+              is_evm: true,
+              modified_on: "2022-12-19 12:35:33.479000+00:00",
+              name: "Arbitrum",
+              parent: "633356acb6afee98bcd4436b",
+              platform_code: "ARBITRUM",
+              platform_id: "arbitrum-one",
+              symbol: "https://media.loch.one/loch-arbitrum.svg",
+            },
+            {
+              active: true,
+              code: "AVAX",
+              color: "#E84042",
+              created_on: "2022-09-27 20:01:48.932000+00:00",
+              default_asset_code: "AVAX",
+              default_asset_id: "avalanche-2",
+              id: "633356acb6afee98bcd4436f",
+              is_evm: true,
+              modified_on: "2022-12-19 12:35:33.449000+00:00",
+              name: "Avalanche",
+              parent: "633356acb6afee98bcd4436b",
+              platform_code: "AVALANCHE",
+              platform_id: "avalanche",
+              symbol: "https://media.loch.one/loch-avalanche.svg",
+            },
+            {
+              active: true,
+              code: "BSC",
+              color: "#F0B90B",
+              created_on: "2022-09-27 20:01:48.932000+00:00",
+              default_asset_code: "BNB",
+              default_asset_id: "binancecoin",
+              id: "633356acb6afee98bcd4436e",
+              is_evm: true,
+              modified_on: "2022-12-19 12:35:33.447000+00:00",
+              name: "BSC",
+              parent: "633356acb6afee98bcd4436b",
+              platform_code: "BSC",
+              platform_id: "binance-smart-chain",
+              symbol: "https://media.loch.one/loch-binance.svg",
+            },
+            {
+              active: true,
+              code: "CELO",
+              color: "#F4CE6F",
+              created_on: "2022-09-27 20:01:48.934000+00:00",
+              default_asset_code: "CELO",
+              default_asset_id: "celo",
+              id: "633356acb6afee98bcd44372",
+              is_evm: true,
+              modified_on: "2022-12-19 12:35:33.461000+00:00",
+              name: "Celo",
+              parent: "633356acb6afee98bcd4436b",
+              platform_code: "CELO",
+              platform_id: "celo",
+              symbol: "https://media.loch.one/loch-celo.svg",
+            },
+            {
+              active: true,
+              code: "FTM",
+              color: "#13B5EC",
+              created_on: "2022-09-27 20:01:48.933000+00:00",
+              default_asset_code: "FTM",
+              default_asset_id: "fantom",
+              id: "633356acb6afee98bcd44370",
+              is_evm: true,
+              modified_on: "2022-12-19 12:35:33.453000+00:00",
+              name: "Fantom",
+              parent: "633356acb6afee98bcd4436b",
+              platform_code: "FANTOM",
+              platform_id: "fantom",
+              symbol: "https://media.loch.one/loch-fantom.svg",
+            },
+            {
+              active: true,
+              code: "OP",
+              color: "#FF0420",
+              created_on: "2022-09-27 20:01:48.937000+00:00",
+              default_asset_code: "OP",
+              default_asset_id: "optimism",
+              id: "633356acb6afee98bcd44375",
+              is_evm: true,
+              modified_on: "2022-12-19 12:35:33.477000+00:00",
+              name: "Optimism",
+              parent: "633356acb6afee98bcd4436b",
+              platform_code: "OPTIMISM",
+              platform_id: "optimistic-ethereum",
+              symbol: "https://media.loch.one/loch-optimism.svg",
+            },
+            {
+              active: true,
+              code: "POLYGON",
+              color: "#8247E5",
+              created_on: "2022-09-27 20:01:48.934000+00:00",
+              default_asset_code: "MATIC",
+              default_asset_id: "matic-network",
+              id: "633356acb6afee98bcd44371",
+              is_evm: true,
+              modified_on: "2022-12-19 12:35:33.458000+00:00",
+              name: "Polygon",
+              parent: "633356acb6afee98bcd4436b",
+              platform_code: "POLYGON",
+              platform_id: "polygon-pos",
+              symbol: "https://media.loch.one/loch-polygon.svg",
+            },
+          ],
+          symbol: "https://media.loch.one/loch-ethereum.svg",
+        },
+        {
+          active: true,
+          code: "BTC",
+          color: "#F19938",
+          created_on: "2022-09-27 20:01:48.930000+00:00",
+          default_asset_code: "BTC",
+          default_asset_id: "bitcoin",
+          id: "633356acb6afee98bcd4436c",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.443000+00:00",
+          name: "Bitcoin",
+          parent: null,
+          platform_code: "BTC",
+          platform_id: "bitcoin",
+          sub_chains: [],
+          symbol: "https://media.loch.one/loch-bitcoin.svg",
+        },
+        {
+          active: true,
+          code: "SOL",
+          color: "#5ADDA6",
+          created_on: "2022-09-27 20:01:48.931000+00:00",
+          default_asset_code: "SOL",
+          default_asset_id: "solana",
+          id: "633356acb6afee98bcd4436d",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.445000+00:00",
+          name: "Solana",
+          parent: null,
+          platform_code: "SOLANA",
+          platform_id: "solana",
+          sub_chains: [],
+          symbol: "https://media.loch.one/loch-solana.svg",
+        },
+        {
+          active: true,
+          code: "LTC",
+          color: "#345D9D",
+          created_on: "2022-09-27 20:01:48.935000+00:00",
+          default_asset_code: "LTC",
+          default_asset_id: "litecoin",
+          id: "633356acb6afee98bcd44373",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.463000+00:00",
+          name: "Litecoin",
+          parent: null,
+          platform_code: "LITECOIN",
+          platform_id: "litecoin",
+          sub_chains: [],
+          symbol: "https://media.loch.one/loch-litecoin.svg",
+        },
+        {
+          active: true,
+          code: "ALGO",
+          color: "#19191A",
+          created_on: "2022-09-27 20:01:48.936000+00:00",
+          default_asset_code: "ALGO",
+          default_asset_id: "algorand",
+          id: "633356acb6afee98bcd44374",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.474000+00:00",
+          name: "Algorand",
+          parent: null,
+          platform_code: "ALGORAND",
+          platform_id: "algorand",
+          sub_chains: [],
+          symbol: "https://media.loch.one/loch-algorand.svg",
+        },
+        {
+          active: true,
+          code: "TRX",
+          color: "#FF060A",
+          created_on: "2022-09-27 20:01:48.938000+00:00",
+          default_asset_code: "TRX",
+          default_asset_id: "tron",
+          id: "633356acb6afee98bcd44377",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.482000+00:00",
+          name: "Tron",
+          parent: null,
+          platform_code: "TRON",
+          platform_id: "tron",
+          sub_chains: [],
+          symbol: "https://media.loch.one/loch-tron.svg",
+        },
+        {
+          active: true,
+          code: "ADA",
+          color: "#0033AD",
+          created_on: "2022-09-27 20:01:48.939000+00:00",
+          default_asset_code: "ADA",
+          default_asset_id: "cardano",
+          id: "633356acb6afee98bcd44378",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.484000+00:00",
+          name: "Cardano",
+          parent: null,
+          platform_code: "ADA",
+          platform_id: "cardano",
+          sub_chains: [],
+          symbol: "https://media.loch.one/loch-cardano.svg",
+        },
+        {
+          active: true,
+          code: "XLM",
+          color: "#19191A",
+          created_on: "2022-09-27 20:01:48.939000+00:00",
+          default_asset_code: "XLM",
+          default_asset_id: "stellar",
+          id: "633356acb6afee98bcd44379",
+          is_evm: false,
+          modified_on: "2022-12-19 12:35:33.486000+00:00",
+          name: "Stellar",
+          parent: null,
+          platform_code: "XLM",
+          platform_id: "stellar",
+          sub_chains: [],
+          symbol: "https://media.loch.one/loch-stellar.svg",
+        },
+      ],
+    });
+    // postLoginInstance
+    //   .post("wallet/chain/get-parent-chains", data)
+    //   .then((res) => {
+    //     console.log("parent chain res ", res.data.data.chains);
+    //     let coinsList =
+    //       res.data && res.data.data && res.data.data.chains.length > 0
+    //         ? res.data.data.chains
+    //         : [];
+    //   })
+    //   .catch((err) => {
+    //     // console.log("Catch", err);
+    //   });
   };
 };
 
@@ -415,26 +912,26 @@ export const verifyUser = (ctx, info, v2 = false, goToSmartMoney = false) => {
             email_address: res.data.data.user.email,
             session_id: res.data.data.user?.link,
           });
-          if (window.sessionStorage.getItem("lochToken")) {
-            postLoginInstance
-              .post("wallet/user-wallet/add-yield-pools")
-              .then((res) => {
-                dispatch({
-                  type: YIELD_POOLS,
-                  payload: res,
-                });
-              })
-              .catch(() => {
-                console.log("Issue here");
-              });
+          // if (window.sessionStorage.getItem("lochToken")) {
+          //   postLoginInstance
+          //     .post("wallet/user-wallet/add-yield-pools")
+          //     .then((res) => {
+          //       dispatch({
+          //         type: YIELD_POOLS,
+          //         payload: res,
+          //       });
+          //     })
+          //     .catch(() => {
+          //       console.log("Issue here");
+          //     });
 
-            postLoginInstance
-              .post("wallet/user-wallet/add-nfts")
-              .then((res) => {})
-              .catch(() => {
-                console.log("Issue here");
-              });
-          }
+          //   postLoginInstance
+          //     .post("wallet/user-wallet/add-nfts")
+          //     .then((res) => {})
+          //     .catch(() => {
+          //       console.log("Issue here");
+          //     });
+          // }
         } else {
           UserWrongCode({ email_address: ctx.state.email });
           toast.error(
@@ -652,27 +1149,27 @@ export const createAnonymousUserApi = (
           let passAddress = newAddWallet?.map((wallet) => {
             return wallet.address;
           });
-          if (window.sessionStorage.getItem("lochToken") && passAddress) {
-            const yieldData = new URLSearchParams();
-            yieldData.append("wallet_addresses", JSON.stringify(passAddress));
-            postLoginInstance
-              .post("wallet/user-wallet/add-yield-pools", yieldData)
-              .then((res) => {
-                dispatch({
-                  type: YIELD_POOLS,
-                  payload: res,
-                });
-              })
-              .catch(() => {
-                console.log("Issue here");
-              });
-            postLoginInstance
-              .post("wallet/user-wallet/add-nfts", yieldData)
-              .then(() => {})
-              .catch(() => {
-                console.log("Issue here");
-              });
-          }
+          // if (window.sessionStorage.getItem("lochToken") && passAddress) {
+          //   const yieldData = new URLSearchParams();
+          //   yieldData.append("wallet_addresses", JSON.stringify(passAddress));
+          //   postLoginInstance
+          //     .post("wallet/user-wallet/add-yield-pools", yieldData)
+          //     .then((res) => {
+          //       dispatch({
+          //         type: YIELD_POOLS,
+          //         payload: res,
+          //       });
+          //     })
+          //     .catch(() => {
+          //       console.log("Issue here");
+          //     });
+          //   postLoginInstance
+          //     .post("wallet/user-wallet/add-nfts", yieldData)
+          //     .then(() => {})
+          //     .catch(() => {
+          //       console.log("Issue here");
+          //     });
+          // }
         } else {
           toast.error(res.data.message || "Something Went Wrong");
         }

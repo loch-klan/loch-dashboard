@@ -748,7 +748,7 @@ function Sidebar(props) {
             onClick={handleDarkMode}
             style={{
               zIndex: "9",
-              right: "-10px",
+              right: "0px",
             }}
             className="navbar-button-container-mode"
           >
@@ -762,7 +762,7 @@ function Sidebar(props) {
             onClick={handleDarkMode}
             style={{
               zIndex: "9",
-              right: "-10px",
+              right: "0px",
             }}
             className="navbar-button-container-mode"
           >
@@ -831,7 +831,7 @@ function Sidebar(props) {
                 <Image src={logo} />
                 <span className="loch-text">Loch</span>
               </div>
-              <div className="currency-wrapper">
+              {/* <div className="currency-wrapper">
                 <DropdownButton
                   id="currency-dropdown"
                   title={
@@ -860,7 +860,7 @@ function Sidebar(props) {
                     );
                   })}
                 </DropdownButton>
-              </div>
+              </div> */}
             </div>
 
             <div

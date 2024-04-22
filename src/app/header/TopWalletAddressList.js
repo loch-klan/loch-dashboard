@@ -1,4 +1,3 @@
-import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
 // import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
@@ -13,7 +12,6 @@ import {
   HomeUnFollow,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
-import { ARCX_API_KEY } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { TruncateText } from "../../utils/ReusableFunctions";
 import {
@@ -36,8 +34,8 @@ import {
 import TopBarDropDown from "./TopBarDropDown";
 import "./_topWalletAddressList.scss";
 
-import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
+import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import Breadcrums from "../common/Breadcrums";
 
 class TopWalletAddressList extends Component {

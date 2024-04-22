@@ -1,5 +1,3 @@
-import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
-import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -27,7 +25,6 @@ import {
   SearchBarAddressAdded,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
-import { ARCX_API_KEY } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   CurrencyType,
@@ -349,6 +346,9 @@ class TopWalletExchangeBar extends Component {
             }
           }
         }
+        const walletCreditScore = new URLSearchParams();
+        walletCreditScore.append("credits", "wallet_connected");
+        this.props.addUserCredits(walletCreditScore);
         ConnectedWalletTopBar({
           session_id: getCurrentUser ? getCurrentUser()?.id : "",
           email_address: getCurrentUser ? getCurrentUser()?.email : "",

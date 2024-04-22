@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Switch } from "react-router-dom";
 // import './App.css';
-import routes from "./routes";
-import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
-import MobileDevice from "./app/common/mobileDevice";
 import ReactGA from "react-ga4";
-import { ARCX_API_KEY, BASE_GA_KEY } from "./utils/Constant";
-import { ArcxAnalyticsProvider } from "@arcxmoney/analytics";
+import { connect } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { SwitchDarkMode } from "./app/common/Api";
+import routes from "./routes";
+import { DarkModeDefaltView } from "./utils/AnalyticsFunctions";
+import { BASE_GA_KEY } from "./utils/Constant";
 import {
   mobileCheck,
   switchToDarkMode,
   switchToLightMode,
 } from "./utils/ReusableFunctions";
-import { connect } from "react-redux";
-import { SwitchDarkMode } from "./app/common/Api";
-import { DarkModeDefaltView } from "./utils/AnalyticsFunctions";
 
 function App(props) {
   const [isMobile, setIsMobile] = useState(false);
@@ -75,37 +73,35 @@ function App(props) {
   // ) : (
   return (
     <div>
-      <ArcxAnalyticsProvider apiKey={ARCX_API_KEY}>
-        <BrowserRouter>
-          <Switch>
-            {routes.map((prop, key) => {
-              return (
-                <prop.type
-                  exact
-                  path={prop.path}
-                  key={key}
-                  component={prop.component}
-                />
-              );
-            })}
-            {/* <Route exact path="/" component={Home} /> */}
-          </Switch>
-        </BrowserRouter>
-        {/* <ToastContainer hideProgressBar /> */}
-        <ToastContainer
-          position="top-center"
-          autoClose={2000}
-          hideProgressBar
-          newestOnTop={false}
-          // closeOnClick
-          closeButton={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      </ArcxAnalyticsProvider>
+      <BrowserRouter>
+        <Switch>
+          {routes.map((prop, key) => {
+            return (
+              <prop.type
+                exact
+                path={prop.path}
+                key={key}
+                component={prop.component}
+              />
+            );
+          })}
+          {/* <Route exact path="/" component={Home} /> */}
+        </Switch>
+      </BrowserRouter>
+      {/* <ToastContainer hideProgressBar /> */}
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar
+        newestOnTop={false}
+        // closeOnClick
+        closeButton={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
   // );
