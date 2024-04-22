@@ -84,6 +84,7 @@ import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import YieldOpportunitiesMobilePage from "./YieldOpportunitiesMobilePage.js";
 import PaywallModal from "../common/PaywallModal.js";
+import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -819,14 +820,19 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               );
             }
             return (
-              <div className={`blurred-elements`} onClick={this.goToPayModal}>
-                <CoinChip
-                  hideNameWithouthImage
-                  coin_img_src={rowData.asset.symbol}
-                  coin_code={rowData.asset.code}
-                  chain={rowData?.network}
-                />
-              </div>
+              <CustomOverlayUgradeToPremium
+                position="top"
+                disabled={this.state.isPremiumUser}
+              >
+                <div className={`blurred-elements`} onClick={this.goToPayModal}>
+                  <CoinChip
+                    hideNameWithouthImage
+                    coin_img_src={rowData.asset.symbol}
+                    coin_code={rowData.asset.code}
+                    chain={rowData?.network}
+                  />
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -889,17 +895,22 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             }
           }
           return (
-            <div
-              onClick={this.goToPayModal}
-              className={`cost-common-container blurred-elements`}
+            <CustomOverlayUgradeToPremium
+              position="top"
+              disabled={this.state.isPremiumUser}
             >
-              <div className="cost-common">
-                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                  {CurrencyType(false) +
-                    numToCurrency(rowData.value * this.state.currency?.rate)}
-                </span>
+              <div
+                onClick={this.goToPayModal}
+                className={`cost-common-container blurred-elements`}
+              >
+                <div className="cost-common">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {CurrencyType(false) +
+                      numToCurrency(rowData.value * this.state.currency?.rate)}
+                  </span>
+                </div>
               </div>
-            </div>
+            </CustomOverlayUgradeToPremium>
           );
         },
       },
@@ -934,12 +945,17 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               );
             }
             return (
-              <div
-                onClick={this.goToPayModal}
-                className={`inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements`}
+              <CustomOverlayUgradeToPremium
+                position="top"
+                disabled={this.state.isPremiumUser}
               >
-                {rowData.project ? rowData.project : "-"}
-              </div>
+                <div
+                  onClick={this.goToPayModal}
+                  className={`inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements`}
+                >
+                  {rowData.project ? rowData.project : "-"}
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -975,12 +991,17 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               );
             }
             return (
-              <div
-                onClick={this.goToPayModal}
-                className={`inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements`}
+              <CustomOverlayUgradeToPremium
+                position="top"
+                disabled={this.state.isPremiumUser}
               >
-                {rowData.pool ? rowData.pool : "-"}
-              </div>
+                <div
+                  onClick={this.goToPayModal}
+                  className={`inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements`}
+                >
+                  {rowData.pool ? rowData.pool : "-"}
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -1037,17 +1058,22 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               );
             }
             return (
-              <div
-                onClick={this.goToPayModal}
-                className="cost-common-container blurred-elements"
+              <CustomOverlayUgradeToPremium
+                position="top"
+                disabled={this.state.isPremiumUser}
               >
-                <div className="cost-common">
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {CurrencyType(false) +
-                      numToCurrency(rowData.tvl * this.state.currency?.rate)}
-                  </span>
+                <div
+                  onClick={this.goToPayModal}
+                  className="cost-common-container blurred-elements"
+                >
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {CurrencyType(false) +
+                        numToCurrency(rowData.tvl * this.state.currency?.rate)}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -1094,15 +1120,20 @@ class YieldOpportunitiesPage extends BaseReactComponent {
               );
             }
             return (
-              <div
-                onClick={this.goToPayModal}
-                className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements"
+              <CustomOverlayUgradeToPremium
+                position="top"
+                disabled={this.state.isPremiumUser}
               >
-                {rowData.apy
-                  ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
-                    "%"
-                  : "-"}
-              </div>
+                <div
+                  onClick={this.goToPayModal}
+                  className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements"
+                >
+                  {rowData.apy
+                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
+                      "%"
+                    : "-"}
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },

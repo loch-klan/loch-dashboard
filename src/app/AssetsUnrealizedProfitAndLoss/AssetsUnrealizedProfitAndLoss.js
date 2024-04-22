@@ -80,6 +80,7 @@ import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AssetUnrealizedProfitAndLossMobile from "./AssetUnrealizedProfitAndLossMobile.js";
 import PaywallModal from "../common/PaywallModal.js";
+import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
 
 class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
@@ -714,14 +715,19 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     </span>
                   </CustomOverlay>
                 ) : (
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {rowData.AverageCostPrice
-                      ? CurrencyType(false) +
-                        numToCurrency(
-                          rowData.AverageCostPrice.toFixed(2)
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </span>
+                  <CustomOverlayUgradeToPremium
+                    position="top"
+                    disabled={this.state.isPremiumUser}
+                  >
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {rowData.AverageCostPrice
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.AverageCostPrice.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </span>
+                  </CustomOverlayUgradeToPremium>
                 )}
               </div>
             );
@@ -902,24 +908,29 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     </div>
                   </CustomOverlay>
                 ) : (
-                  <div className="cost-common">
-                    <span
-                      className="table-data-font"
-                      onMouseEnter={() => {
-                        CostCostBasisHover({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
-                    >
-                      {rowData.CostBasis
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CostBasis.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
+                  <CustomOverlayUgradeToPremium
+                    position="top"
+                    disabled={this.state.isPremiumUser}
+                  >
+                    <div className="cost-common">
+                      <span
+                        className="table-data-font"
+                        onMouseEnter={() => {
+                          CostCostBasisHover({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        }}
+                      >
+                        {rowData.CostBasis
+                          ? CurrencyType(false) +
+                            numToCurrency(
+                              rowData.CostBasis.toFixed(2)
+                            ).toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"}
+                      </span>
+                    </div>
+                  </CustomOverlayUgradeToPremium>
                 )}
               </div>
             );
@@ -1065,28 +1076,33 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     </div>
                   </CustomOverlay>
                 ) : (
-                  <div className={`gainLoss`}>
-                    {rowData.GainAmount !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainAmount < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {rowData.GainAmount
-                        ? CurrencyType(false) +
-                          tempDataHolder.toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
+                  <CustomOverlayUgradeToPremium
+                    position="top"
+                    disabled={this.state.isPremiumUser}
+                  >
+                    <div className={`gainLoss`}>
+                      {rowData.GainAmount !== 0 ? (
+                        <Image
+                          className="mr-2"
+                          style={{
+                            height: "1.5rem",
+                            width: "1.5rem",
+                          }}
+                          src={
+                            rowData.GainAmount < 0
+                              ? ArrowDownLeftSmallIcon
+                              : ArrowUpRightSmallIcon
+                          }
+                        />
+                      ) : null}
+                      <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                        {rowData.GainAmount
+                          ? CurrencyType(false) +
+                            tempDataHolder.toLocaleString("en-US")
+                          : CurrencyType(false) + "0.00"}
+                      </span>
+                    </div>
+                  </CustomOverlayUgradeToPremium>
                 )}
               </div>
             );
@@ -1166,27 +1182,33 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     </div>
                   </CustomOverlay>
                 ) : (
-                  <div className={`gainLoss`}>
-                    {rowData.GainLoss !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainLoss < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                        : "0.00%"}
-                    </span>
-                  </div>
+                  <CustomOverlayUgradeToPremium
+                    position="top"
+                    disabled={this.state.isPremiumUser}
+                  >
+                    <div className={`gainLoss`}>
+                      {rowData.GainLoss !== 0 ? (
+                        <Image
+                          className="mr-2"
+                          style={{
+                            height: "1.5rem",
+                            width: "1.5rem",
+                          }}
+                          src={
+                            rowData.GainLoss < 0
+                              ? ArrowDownLeftSmallIcon
+                              : ArrowUpRightSmallIcon
+                          }
+                        />
+                      ) : null}
+                      <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                        {tempDataHolder
+                          ? Math.abs(tempDataHolder).toLocaleString("en-US") +
+                            "%"
+                          : "0.00%"}
+                      </span>
+                    </div>
+                  </CustomOverlayUgradeToPremium>
                 )}
               </div>
             );
@@ -1396,6 +1418,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             >
               <div style={{ position: "relative" }}>
                 <TransactionTable
+                  isPremiumUser={this.state.isPremiumUser}
                   shouldBlurElements={!this.state.isPremiumUser}
                   showBlurredItem={this.showBlurredItem}
                   message="No assets found"

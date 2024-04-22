@@ -1763,6 +1763,46 @@ form {
     }
   }
 }
+.tool-tip-fremium-container {
+  position: relative;
+  .tooltip-inner {
+    background-color: var(--cardBackgroud) !important;
+    border-color: var(--greyCardBackgroud) !important;
+    height: 8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    width: 21.5rem;
+    .freemium-tooltip-header {
+      font-size: 13px !important;
+      color: var(--fremiumTooltipHeader) !important;
+      z-index: 2;
+    }
+    .freemium-tooltip-desc {
+      font-size: 13px !important;
+      color: var(--fremiumTooltipDescription) !important;
+      z-index: 2;
+      width: 70%;
+    }
+    .freemium-tooltip-image {
+      position: absolute;
+      top: 50%;
+      right: 0.1rem;
+      transform: translateY(-55%);
+      height: 8rem;
+      z-index: 1;
+    }
+  }
+  .arrow {
+    &::before {
+      border-top-color: var(--greyCardBackgroud) !important;
+    }
+  }
+}
+.tool-tip-container-hidden {
+  display: none !important;
+}
 @media all and (max-width: 800px) {
   .Toastify__toast {
     .Toastify__toast-body {
@@ -2773,6 +2813,9 @@ input {
 .overlay-tool-tip-container {
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
+}
+.overlay-tool-tip-container-disabled {
+  cursor: default !important;
 }
 
 .main-button {

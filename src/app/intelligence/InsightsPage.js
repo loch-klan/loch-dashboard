@@ -50,6 +50,7 @@ import InsightsPageMobile from "./InsightsPageMobile.js";
 // Dark theme scss
 import "./intelligenceScss/_darkInsightPage.scss";
 import PaywallModal from "../common/PaywallModal.js";
+import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
 
 class InsightsPage extends Component {
   constructor(props) {
@@ -705,60 +706,65 @@ class InsightsPage extends Component {
                     this.state.updatedInsightList.length > 0 ? (
                     this.state.updatedInsightList?.map((insight, key) => {
                       return (
-                        <div
-                          style={{
-                            marginBottom:
-                              key === this.state.updatedInsightList.length - 1
-                                ? "3rem"
-                                : "",
-                          }}
-                          className={`insights-card ${
-                            key > 0 ? "blurred-elements" : ""
-                          }`}
-                          key={key}
-                          onClick={() => {
-                            if (key > 0) {
-                              this.goToPayModal();
-                            }
-                          }}
+                        <CustomOverlayUgradeToPremium
+                          position="top"
+                          disabled={this.state.isPremiumUser || key === 0}
                         >
-                          <Image
-                            src={
-                              insight.insight_type ===
-                              InsightType.COST_REDUCTION
-                                ? reduceCost
-                                : insight.insight_type ===
-                                  InsightType.RISK_REDUCTION
-                                ? reduceRisk
-                                : increaseYield
-                            }
-                            className="insight-icon"
-                          />
-                          <div className="insights-content">
-                            <div className="chips-wrapper">
-                              <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                                {InsightType.getText(insight.insight_type)}
-                              </h5>
-                              {insight?.sub_type && (
-                                <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
-                                  {InsightType.getRiskType(insight.sub_type)}
+                          <div
+                            style={{
+                              marginBottom:
+                                key === this.state.updatedInsightList.length - 1
+                                  ? "3rem"
+                                  : "",
+                            }}
+                            className={`insights-card ${
+                              key > 0 ? "blurred-elements" : ""
+                            }`}
+                            key={key}
+                            onClick={() => {
+                              if (key > 0) {
+                                this.goToPayModal();
+                              }
+                            }}
+                          >
+                            <Image
+                              src={
+                                insight.insight_type ===
+                                InsightType.COST_REDUCTION
+                                  ? reduceCost
+                                  : insight.insight_type ===
+                                    InsightType.RISK_REDUCTION
+                                  ? reduceRisk
+                                  : increaseYield
+                              }
+                              className="insight-icon"
+                            />
+                            <div className="insights-content">
+                              <div className="chips-wrapper">
+                                <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                                  {InsightType.getText(insight.insight_type)}
                                 </h5>
-                              )}
+                                {insight?.sub_type && (
+                                  <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
+                                    {InsightType.getRiskType(insight.sub_type)}
+                                  </h5>
+                                )}
+                              </div>
+                              <p
+                                className="inter-display-medium f-s-13 lh-16 grey-969"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.sub_title,
+                                }}
+                              ></p>
+                              <h4
+                                className="inter-display-medium f-s-16 lh-19 grey-313"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.title,
+                                }}
+                              ></h4>
                             </div>
-                            <p
-                              className="inter-display-medium f-s-13 lh-16 grey-969"
-                              dangerouslySetInnerHTML={{
-                                __html: insight.sub_title,
-                              }}
-                            ></p>
-                            <h4
-                              className="inter-display-medium f-s-16 lh-19 grey-313"
-                              dangerouslySetInnerHTML={{
-                                __html: insight.title,
-                              }}
-                            ></h4>
                           </div>
-                        </div>
+                        </CustomOverlayUgradeToPremium>
                       );
                     })
                   ) : (

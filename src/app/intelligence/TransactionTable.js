@@ -35,6 +35,7 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        isPremiumUser={props.isPremiumUser}
         shouldBlurElements={props.shouldBlurElements}
         showBlurredItem={props.showBlurredItem}
         isSmartMoney={props.isSmartMoney}
