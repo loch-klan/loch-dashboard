@@ -1087,7 +1087,7 @@ class BarGraphSection extends Component {
                       ? this.props.customGraphLoadingHeight
                       : this.props.isMobileGraph
                       ? "44rem"
-                      : "32rem",
+                      : "35rem",
                   }
                 : {
                     flex: 1,

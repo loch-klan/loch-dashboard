@@ -383,7 +383,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   height: this.props.hideTimeFilter
                     ? this.props.isMobileGraph
                       ? "38rem"
-                      : "28.5rem"
+                      : "31.5rem"
                     : "50rem",
                   display: "flex",
                   justifyContent: "center",
