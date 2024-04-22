@@ -2368,7 +2368,7 @@ class Portfolio extends BaseReactComponent {
                 onClick={() => {
                   this.toggleAgeTimestamp();
                 }}
-                className="inter-display-medium f-s-13 lh-16 table-header-font"
+                className="inter-display-medium f-s-13 lh-16"
                 style={{
                   textDecoration: "underline",
                 }}
@@ -4254,9 +4254,7 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Holdings
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Holdings</span>
             {/* <Image
               onClick={() =>
                 this.handleTableSort(this.state.tableSortOpt[0].title)
@@ -4285,7 +4283,7 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Collection
             </span>
 
@@ -4319,9 +4317,7 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Image
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Image</span>
           </div>
         ),
         dataKey: "imgs",
