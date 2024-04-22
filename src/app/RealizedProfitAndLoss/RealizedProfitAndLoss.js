@@ -494,6 +494,10 @@ class RealizedProfitAndLoss extends Component {
     getTransactionAsset(data, this, true);
   };
   changeFromDate = (passedDate) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return null;
+    }
     if (passedDate) {
       let toText = "";
       if (this.state.toDate) {
@@ -514,6 +518,10 @@ class RealizedProfitAndLoss extends Component {
     }
   };
   changeToDate = (passedDate) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return null;
+    }
     if (passedDate) {
       let fromText = "";
       if (this.state.fromDate) {
@@ -648,6 +656,11 @@ class RealizedProfitAndLoss extends Component {
   };
 
   handleAssetSelected = (arr) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      this.setState({ selectedAssets: [] });
+      return null;
+    }
     this.setState(
       {
         selectedAssets: arr[0].name === "All" ? [] : arr.map((e) => e?.id),
@@ -736,6 +749,7 @@ class RealizedProfitAndLoss extends Component {
             />
           ) : null}
           <RealizedProfitAndLossMobile
+            isPremiumUser={this.state.isPremiumUser}
             goToPayModal={this.goToPayModal}
             showToCalendar={this.showToCalendar}
             hideToCalendar={this.hideToCalendar}
@@ -848,6 +862,8 @@ class RealizedProfitAndLoss extends Component {
               >
                 {!this.state.netFlowLoading ? (
                   <BarGraphSection
+                    isPremiumUser={this.state.isPremiumUser}
+                    isBlurred={!this.state.isPremiumUser}
                     goToPayModal={this.goToPayModal}
                     dontShowAssets
                     showToCalendar={this.showToCalendar}

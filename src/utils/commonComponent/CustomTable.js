@@ -26,6 +26,7 @@ import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
 } from "../../assets/images/icons";
+import CustomOverlayUgradeToPremium from "./CustomOverlayUgradeToPremium";
 class CustomTable extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -431,47 +432,17 @@ class CustomTable extends BaseReactComponent {
                     flex: "0.11",
                   }}
                 >
-                  <div
-                    className={`cost-common-container ${
-                      this.props.shouldBlurElements ? "blurred-elements" : ""
-                    }`}
-                    onClick={this.props.showBlurredItem}
+                  <CustomOverlayUgradeToPremium
+                    position="top"
+                    disabled={this.props.isPremiumUser}
                   >
-                    {this.props.shouldBlurElements ? (
-                      <div className="cost-common">
-                        <span
-                          onMouseEnter={() => {
-                            // CostCostBasisHover({
-                            //   session_id: getCurrentUser().id,
-                            //   email_address: getCurrentUser().email,
-                            // });
-                          }}
-                        >
-                          {this.props.combinedCostBasis
-                            ? CurrencyType(false) +
-                              numToCurrency(
-                                this.props.combinedCostBasis.toFixed(2)
-                              ).toLocaleString("en-US")
-                            : CurrencyType(false) + "0.00"}
-                        </span>
-                      </div>
-                    ) : (
-                      <CustomOverlay
-                        position="top"
-                        isIcon={false}
-                        isInfo={true}
-                        isText={true}
-                        text={
-                          this.props.combinedCostBasis
-                            ? CurrencyType(false) +
-                              amountFormat(
-                                this.props.combinedCostBasis,
-                                "en-US",
-                                "USD"
-                              )
-                            : CurrencyType(false) + "0.00"
-                        }
-                      >
+                    <div
+                      className={`cost-common-container ${
+                        this.props.shouldBlurElements ? "blurred-elements" : ""
+                      }`}
+                      onClick={this.props.showBlurredItem}
+                    >
+                      {this.props.shouldBlurElements ? (
                         <div className="cost-common">
                           <span
                             onMouseEnter={() => {
@@ -489,9 +460,44 @@ class CustomTable extends BaseReactComponent {
                               : CurrencyType(false) + "0.00"}
                           </span>
                         </div>
-                      </CustomOverlay>
-                    )}
-                  </div>
+                      ) : (
+                        <CustomOverlay
+                          position="top"
+                          isIcon={false}
+                          isInfo={true}
+                          isText={true}
+                          text={
+                            this.props.combinedCostBasis
+                              ? CurrencyType(false) +
+                                amountFormat(
+                                  this.props.combinedCostBasis,
+                                  "en-US",
+                                  "USD"
+                                )
+                              : CurrencyType(false) + "0.00"
+                          }
+                        >
+                          <div className="cost-common">
+                            <span
+                              onMouseEnter={() => {
+                                // CostCostBasisHover({
+                                //   session_id: getCurrentUser().id,
+                                //   email_address: getCurrentUser().email,
+                                // });
+                              }}
+                            >
+                              {this.props.combinedCostBasis
+                                ? CurrencyType(false) +
+                                  numToCurrency(
+                                    this.props.combinedCostBasis.toFixed(2)
+                                  ).toLocaleString("en-US")
+                                : CurrencyType(false) + "0.00"}
+                            </span>
+                          </div>
+                        </CustomOverlay>
+                      )}
+                    </div>
+                  </CustomOverlayUgradeToPremium>
                 </div>
                 <div
                   aria-colindex="7"
@@ -538,70 +544,31 @@ class CustomTable extends BaseReactComponent {
                     </CustomOverlay>
                   </div>
                 </div>
-                <div
-                  aria-colindex="8"
-                  role="gridcell"
-                  className={`inter-display-medium bottomCombinedItemBlock ${
-                    this.props.shouldBlurElements ? "blurred-elements" : ""
-                  }`}
-                  style={{
-                    flex: "0.11",
-                  }}
-                  onClick={this.props.showBlurredItem}
+                <CustomOverlayUgradeToPremium
+                  position="top"
+                  disabled={this.props.isPremiumUser}
                 >
                   <div
-                    onMouseEnter={() => {
-                      // CostGainHover({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
+                    aria-colindex="8"
+                    role="gridcell"
+                    className={`inter-display-medium bottomCombinedItemBlock ${
+                      this.props.shouldBlurElements ? "blurred-elements" : ""
+                    }`}
+                    style={{
+                      flex: "0.11",
                     }}
-                    className="gainLossContainer"
+                    onClick={this.props.showBlurredItem}
                   >
-                    {this.props.shouldBlurElements ? (
-                      <div className={`gainLoss`}>
-                        {this.props.combinedUnrealizedGains &&
-                        this.props.combinedUnrealizedGains !== 0 ? (
-                          <Image
-                            className="mr-2"
-                            style={{
-                              height: "1.5rem",
-                              width: "1.5rem",
-                            }}
-                            src={
-                              this.props.combinedUnrealizedGains < 0
-                                ? ArrowDownLeftSmallIcon
-                                : ArrowUpRightSmallIcon
-                            }
-                          />
-                        ) : null}
-                        <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                          {this.props.combinedUnrealizedGains
-                            ? CurrencyType(false) +
-                              numToCurrency(
-                                this.props.combinedUnrealizedGains
-                              ).toLocaleString("en-US")
-                            : CurrencyType(false) + "0.00"}
-                        </span>
-                      </div>
-                    ) : (
-                      <CustomOverlay
-                        position="top"
-                        isIcon={false}
-                        isInfo={true}
-                        isText={true}
-                        text={
-                          this.props.combinedUnrealizedGains
-                            ? CurrencyType(false) +
-                              amountFormat(
-                                Math.abs(this.props.combinedUnrealizedGains),
-                                "en-US",
-                                "USD"
-                              )
-                            : CurrencyType(false) + "0.00"
-                        }
-                        colorCode="#000"
-                      >
+                    <div
+                      onMouseEnter={() => {
+                        // CostGainHover({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }}
+                      className="gainLossContainer"
+                    >
+                      {this.props.shouldBlurElements ? (
                         <div className={`gainLoss`}>
                           {this.props.combinedUnrealizedGains &&
                           this.props.combinedUnrealizedGains !== 0 ? (
@@ -627,74 +594,79 @@ class CustomTable extends BaseReactComponent {
                               : CurrencyType(false) + "0.00"}
                           </span>
                         </div>
-                      </CustomOverlay>
-                    )}
+                      ) : (
+                        <CustomOverlay
+                          position="top"
+                          isIcon={false}
+                          isInfo={true}
+                          isText={true}
+                          text={
+                            this.props.combinedUnrealizedGains
+                              ? CurrencyType(false) +
+                                amountFormat(
+                                  Math.abs(this.props.combinedUnrealizedGains),
+                                  "en-US",
+                                  "USD"
+                                )
+                              : CurrencyType(false) + "0.00"
+                          }
+                          colorCode="#000"
+                        >
+                          <div className={`gainLoss`}>
+                            {this.props.combinedUnrealizedGains &&
+                            this.props.combinedUnrealizedGains !== 0 ? (
+                              <Image
+                                className="mr-2"
+                                style={{
+                                  height: "1.5rem",
+                                  width: "1.5rem",
+                                }}
+                                src={
+                                  this.props.combinedUnrealizedGains < 0
+                                    ? ArrowDownLeftSmallIcon
+                                    : ArrowUpRightSmallIcon
+                                }
+                              />
+                            ) : null}
+                            <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                              {this.props.combinedUnrealizedGains
+                                ? CurrencyType(false) +
+                                  numToCurrency(
+                                    this.props.combinedUnrealizedGains
+                                  ).toLocaleString("en-US")
+                                : CurrencyType(false) + "0.00"}
+                            </span>
+                          </div>
+                        </CustomOverlay>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div
-                  aria-colindex="9"
-                  role="gridcell"
-                  className={`inter-display-medium bottomCombinedItemBlock ${
-                    this.props.shouldBlurElements ? "blurred-elements" : ""
-                  }`}
-                  style={{
-                    flex: "0.11",
-                  }}
-                  onClick={this.props.showBlurredItem}
+                </CustomOverlayUgradeToPremium>
+                <CustomOverlayUgradeToPremium
+                  position="top"
+                  disabled={this.props.isPremiumUser}
                 >
                   <div
-                    onMouseEnter={() => {
-                      // CostGainLossHover({
-                      //   session_id: getCurrentUser().id,
-                      //   email_address: getCurrentUser().email,
-                      // });
+                    aria-colindex="9"
+                    role="gridcell"
+                    className={`inter-display-medium bottomCombinedItemBlock ${
+                      this.props.shouldBlurElements ? "blurred-elements" : ""
+                    }`}
+                    style={{
+                      flex: "0.11",
                     }}
-                    className="gainLossContainer"
+                    onClick={this.props.showBlurredItem}
                   >
-                    {this.props.shouldBlurElements ? (
-                      <div className={`gainLoss`}>
-                        {this.props.combinedReturn &&
-                        this.props.combinedReturn !== 0 ? (
-                          <Image
-                            className="mr-2"
-                            style={{
-                              height: "1.5rem",
-                              width: "1.5rem",
-                            }}
-                            src={
-                              this.props.combinedReturn < 0
-                                ? ArrowDownLeftSmallIcon
-                                : ArrowUpRightSmallIcon
-                            }
-                          />
-                        ) : null}
-                        <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                          {this.props.combinedReturn &&
-                          this.props.combinedReturn !== 0
-                            ? Math.abs(
-                                noExponents(
-                                  this.props.combinedReturn.toFixed(2)
-                                )
-                              ).toLocaleString("en-US") + "%"
-                            : "0.00%"}
-                        </span>
-                      </div>
-                    ) : (
-                      <CustomOverlay
-                        position="top"
-                        isIcon={false}
-                        isInfo={true}
-                        isText={true}
-                        text={
-                          this.props.combinedReturn &&
-                          this.props.combinedReturn !== 0
-                            ? Math.abs(
-                                this.props.combinedReturn
-                              ).toLocaleString("en-US") + "%"
-                            : "0.00%"
-                        }
-                        colorCode="#000"
-                      >
+                    <div
+                      onMouseEnter={() => {
+                        // CostGainLossHover({
+                        //   session_id: getCurrentUser().id,
+                        //   email_address: getCurrentUser().email,
+                        // });
+                      }}
+                      className="gainLossContainer"
+                    >
+                      {this.props.shouldBlurElements ? (
                         <div className={`gainLoss`}>
                           {this.props.combinedReturn &&
                           this.props.combinedReturn !== 0 ? (
@@ -722,10 +694,54 @@ class CustomTable extends BaseReactComponent {
                               : "0.00%"}
                           </span>
                         </div>
-                      </CustomOverlay>
-                    )}
+                      ) : (
+                        <CustomOverlay
+                          position="top"
+                          isIcon={false}
+                          isInfo={true}
+                          isText={true}
+                          text={
+                            this.props.combinedReturn &&
+                            this.props.combinedReturn !== 0
+                              ? Math.abs(
+                                  this.props.combinedReturn
+                                ).toLocaleString("en-US") + "%"
+                              : "0.00%"
+                          }
+                          colorCode="#000"
+                        >
+                          <div className={`gainLoss`}>
+                            {this.props.combinedReturn &&
+                            this.props.combinedReturn !== 0 ? (
+                              <Image
+                                className="mr-2"
+                                style={{
+                                  height: "1.5rem",
+                                  width: "1.5rem",
+                                }}
+                                src={
+                                  this.props.combinedReturn < 0
+                                    ? ArrowDownLeftSmallIcon
+                                    : ArrowUpRightSmallIcon
+                                }
+                              />
+                            ) : null}
+                            <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                              {this.props.combinedReturn &&
+                              this.props.combinedReturn !== 0
+                                ? Math.abs(
+                                    noExponents(
+                                      this.props.combinedReturn.toFixed(2)
+                                    )
+                                  ).toLocaleString("en-US") + "%"
+                                : "0.00%"}
+                            </span>
+                          </div>
+                        </CustomOverlay>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </CustomOverlayUgradeToPremium>
                 <div
                   aria-colindex="9"
                   role="gridcell"

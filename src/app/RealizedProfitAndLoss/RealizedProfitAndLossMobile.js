@@ -45,6 +45,8 @@ class RealizedProfitAndLossMobile extends Component {
             </div>
           ) : (
             <BarGraphSection
+              isPremiumUser={this.props.isPremiumUser}
+              isBlurred={!this.props.isPremiumUser}
               goToPayModal={this.props.goToPayModal}
               dontShowAssets
               showToCalendar={this.props.showToCalendar}
