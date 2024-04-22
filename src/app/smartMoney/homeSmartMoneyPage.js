@@ -1242,9 +1242,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Notify
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Notify</span>
           </div>
         ),
         dataKey: "following",
@@ -1287,6 +1285,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           <HomeSmartMoneyMobile
             accountList={this.state.accountList}
             currency={this.state.currency}
+            openNotifyOnTransactionModal={this.openNotifyOnTransactionModal}
             handleFollowUnfollow={this.handleFollowUnfollow}
             openSignInOnclickModal={this.openSignInOnclickModal}
             blurTable={this.state.blurTable}

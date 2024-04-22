@@ -3742,6 +3742,18 @@ input {
           left: 50%;
           transform: translateY(30%) translateX(-30%) rotate(45deg);
         }
+        .smbSliderMinMaxBoxInput {
+          border: none;
+          background-color: transparent;
+          outline: none;
+          text-align: center;
+          &:hover {
+            opacity: 0.4;
+            &:focus-visible {
+              opacity: 1;
+            }
+          }
+        }
       }
     }
     .smbsAssetDropdownContainer {
