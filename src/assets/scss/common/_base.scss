@@ -669,6 +669,13 @@ body {
   padding: 1rem 2rem;
   border-radius: 1.6rem;
   .Toastify__toast-body {
+    div {
+      text-transform: lowercase;
+      display: inline-block;
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
     flex-direction: row-reverse;
     gap: 10px;
     margin: 0;
