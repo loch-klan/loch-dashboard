@@ -71,6 +71,8 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
   };
   componentDidMount() {
     this.setTooltipPos();
+    this.setMaxInput();
+    this.setMinInput();
     this.assetList();
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.setState({
@@ -120,6 +122,13 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
           });
         }
       }
+    }
+    if (
+      prevState.curMinSliderVal !== this.state.curMinSliderVal ||
+      prevState.curMaxSliderVal !== this.state.curMaxSliderVal
+    ) {
+      this.setMaxInput();
+      this.setMinInput();
     }
   }
   userEmailChange = (e) => {
@@ -248,6 +257,50 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       isPayModalOpen: false,
     });
   };
+  setMaxInput = () => {
+    const maxInp = document.getElementById("smbSliderMaxBoxInput");
+    if (maxInp && maxInp.value.length > 0) {
+      maxInp.setAttribute("size", maxInp.value.length);
+    }
+  };
+  setMinInput = () => {
+    const minInp = document.getElementById("smbSliderMinBoxInput");
+    if (minInp && minInp.value.length > 0) {
+      minInp.setAttribute("size", minInp.value.length);
+    }
+  };
+  maxAmountChange = (e) => {
+    let curVal = e.target.value;
+    curVal = curVal.replace("$", "");
+    curVal = curVal.replaceAll(",", "");
+    if (!isNaN(curVal) && Number(curVal) <= 10000000000) {
+      this.setState(
+        {
+          curMaxSliderVal: curVal,
+        },
+        () => {
+          this.setTooltipPos();
+        }
+      );
+    }
+  };
+  minAmountChange = (e) => {
+    e.target.setAttribute("size", e.target.value.length);
+    let curVal = e.target.value;
+    curVal = curVal.replace("$", "");
+    curVal = curVal.replaceAll(",", "");
+
+    if (!isNaN(curVal) && Number(curVal) <= 10000000000) {
+      this.setState(
+        {
+          curMinSliderVal: curVal,
+        },
+        () => {
+          this.setTooltipPos();
+        }
+      );
+    }
+  };
   render() {
     return (
       <Modal
@@ -327,16 +380,23 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                   className="inter-display-medium smbSliderMinMaxBox"
                 >
                   <div className="smbSliderMinMaxBoxArrow" />
-                  {this.state.curMinSliderVal &&
-                  this.state.curMinSliderVal.length > 0
-                    ? `$${amountFormat(
-                        this.state.curMinSliderVal,
-                        "en-US",
-                        "USD",
-                        0,
-                        0
-                      )}`
-                    : ""}
+                  <input
+                    id="smbSliderMinBoxInput"
+                    className="smbSliderMinMaxBoxInput"
+                    value={
+                      this.state.curMinSliderVal &&
+                      this.state.curMinSliderVal.length > 0
+                        ? `$${amountFormat(
+                            this.state.curMinSliderVal,
+                            "en-US",
+                            "USD",
+                            0,
+                            0
+                          )}`
+                        : ""
+                    }
+                    onChange={this.minAmountChange}
+                  />
                 </div>
                 <div
                   style={{
@@ -346,16 +406,23 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                   className="inter-display-medium smbSliderMinMaxBox"
                 >
                   <div className="smbSliderMinMaxBoxArrow" />
-                  {this.state.curMaxSliderVal &&
-                  this.state.curMaxSliderVal.length > 0
-                    ? `$${amountFormat(
-                        this.state.curMaxSliderVal,
-                        "en-US",
-                        "USD",
-                        0,
-                        0
-                      )}`
-                    : ""}
+                  <input
+                    id="smbSliderMaxBoxInput"
+                    className="smbSliderMinMaxBoxInput"
+                    value={
+                      this.state.curMaxSliderVal &&
+                      this.state.curMaxSliderVal.length > 0
+                        ? `$${amountFormat(
+                            this.state.curMaxSliderVal,
+                            "en-US",
+                            "USD",
+                            0,
+                            0
+                          )}`
+                        : ""
+                    }
+                    onChange={this.maxAmountChange}
+                  />
                 </div>
                 <Slider
                   role="tooltip"
