@@ -892,10 +892,18 @@ class TopWalletExchangeBar extends Component {
     }
   };
   addAddingWalletFromHistory = (resAdd) => {
+    console.log("resAdd is ", resAdd);
+    let result = "";
+
+    if (resAdd[1] && resAdd[1].endsWith(".eth")) {
+      result = resAdd[1];
+    } else {
+      result = resAdd[0];
+    }
     const tempTarget = {
       target: {
         name: this.state.walletInput[0].id,
-        value: resAdd,
+        value: result,
       },
     };
     this.handleOnLocalChange(tempTarget);
@@ -927,6 +935,7 @@ class TopWalletExchangeBar extends Component {
     );
   };
   addWalletToHistory = () => {
+    let tempRevData = [...this.state.topBarHistoryItems];
     for (let i = 0; i < this.state.topBarHistoryItems.length; i++) {
       if (
         (this.state.topBarHistoryItems[i][0] !== "" &&
@@ -942,8 +951,9 @@ class TopWalletExchangeBar extends Component {
           this.state.topBarHistoryItems[i][1] ===
             this.state.walletInput[0].address)
       ) {
-        this.cancelAddingWallet();
-        return;
+        // this.cancelAddingWallet();
+        tempRevData = tempRevData.filter((res, index) => index !== i);
+        // return;
       }
     }
     let tempItem = ["", ""];
@@ -955,7 +965,7 @@ class TopWalletExchangeBar extends Component {
         tempItem[1] = this.state.walletInput[0].address;
       }
     }
-    const tempHolder = [tempItem, ...this.state.topBarHistoryItems];
+    const tempHolder = [tempItem, ...tempRevData];
     this.setState(
       {
         topBarHistoryItems: tempHolder,
@@ -1523,7 +1533,7 @@ class TopWalletExchangeBar extends Component {
                       <div
                         className={`inter-display-medium topBarHistoryItemBlock`}
                         onClick={() => {
-                          this.addAddingWalletFromHistory(res[0]);
+                          this.addAddingWalletFromHistory(res);
                         }}
                       >
                         <div className="topBarHistoryItemBlockText">
