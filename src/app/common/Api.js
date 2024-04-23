@@ -439,7 +439,7 @@ export const getUserAddresses = (
       setTimeout(() => {
         if (showSuccessMessage) {
           setTimeout(() => {
-            toast.success("Your email has been verified");
+            toast.success("Congratulations! Your email has been verified");
           }, 1000);
         }
         if (stayOnWelcomePage) {
