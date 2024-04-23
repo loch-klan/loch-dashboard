@@ -16,6 +16,7 @@ import {
   amountFormat,
   goToAddress,
   isSameDateAs,
+  sliderBillionToMillion,
 } from "../../utils/ReusableFunctions";
 import { BaseReactComponent, CustomButton } from "../../utils/form";
 import CustomDropdown from "../../utils/form/CustomDropdownPrice";
@@ -30,12 +31,18 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      sliderConvertor: [
+        100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000,
+        10000000000,
+      ],
       show: props.show,
       onHide: props.onHide,
       minSliderVal: null,
       maxSliderVal: null,
       curMinSliderVal: "100",
       curMaxSliderVal: "5000000000",
+      curMinSliderValConverted: "",
+      curMaxSliderValConverted: "",
       isDisabled: false,
       AssetList: [],
       selectedActiveBadge: [],
@@ -74,12 +81,34 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     this.setMaxInput();
     this.setMinInput();
     this.assetList();
+    this.convertMinMaxToSlider();
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.setState({
       userDetailsState: userDetails,
     });
   }
+  convertMinMaxToSlider = () => {
+    this.setState(
+      {
+        curMinSliderValConverted: sliderBillionToMillion(
+          this.state.curMinSliderVal
+        ),
+        curMaxSliderValConverted: sliderBillionToMillion(
+          this.state.curMaxSliderVal
+        ),
+      },
+      () => {
+        this.setTooltipPos();
+      }
+    );
+  };
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.curMinSliderVal !== this.state.curMinSliderVal ||
+      prevState.curMaxSliderVal !== this.state.curMaxSliderVal
+    ) {
+      this.convertMinMaxToSlider();
+    }
     if (
       prevState.curMinSliderVal !== this.state.curMinSliderVal ||
       prevState.curMaxSliderVal !== this.state.curMaxSliderVal ||
@@ -155,18 +184,17 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
   };
 
   changeMaxMinSlider = (value) => {
-    const newMinVal = value[0];
-    const newMaxVal = value[1];
-    this.setTooltipPos();
+    const newMinVal = this.state.sliderConvertor[value[0]];
+    const newMaxVal = this.state.sliderConvertor[value[1]];
 
     if (newMinVal <= newMaxVal) {
       this.setState({
-        curMinSliderVal: `${value[0]}`,
+        curMinSliderVal: `${newMinVal}`,
       });
     }
     if (newMaxVal >= newMinVal) {
       this.setState({
-        curMaxSliderVal: `${value[1]}`,
+        curMaxSliderVal: `${newMaxVal}`,
       });
     }
   };
@@ -427,12 +455,12 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                 <Slider
                   role="tooltip"
                   range
-                  min={100}
-                  max={10000000000}
-                  step={1000}
+                  min={0}
+                  max={8}
+                  step={1}
                   value={[
-                    this.state.curMinSliderVal,
-                    this.state.curMaxSliderVal,
+                    this.state.curMinSliderValConverted,
+                    this.state.curMaxSliderValConverted,
                   ]}
                   tooltipVisible={true}
                   onChange={this.changeMaxMinSlider}
