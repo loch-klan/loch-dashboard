@@ -23,13 +23,44 @@ export const dontOpenLoginPopup = () => {
 export const whichSignUpMethod = () => {
   if (window.sessionStorage.getItem("lochPointsSignInModal")) {
     return "Loch points";
-  } else if (window.sessionStorage.getItem("referralCodesSignInModal")) {
-    return "Referral code";
-  } else if (window.sessionStorage.getItem("fifteenSecSignInModal")) {
-    return "15 sec";
-  } else {
-    return "Sidebar";
   }
+  if (window.sessionStorage.getItem("referralCodesSignInModal")) {
+    return "Referral code";
+  }
+  if (window.sessionStorage.getItem("blurredHomeAssetSignInModal")) {
+    return "Home Assets Block";
+  }
+  if (window.sessionStorage.getItem("blurredHomeFlowsSignInModal")) {
+    return "Home Flows Block";
+  }
+  if (window.sessionStorage.getItem("blurredHomeYieldOppSignInModal")) {
+    return "Home Yield Opp Block";
+  }
+  if (window.sessionStorage.getItem("blurredHomeInsightsSignInModal")) {
+    return "Home Insights Block";
+  }
+  if (window.sessionStorage.getItem("blurredHomeGasFeesSignInModal")) {
+    return "Home Gas Fees Block";
+  }
+  if (window.sessionStorage.getItem("blurredAssetSignInModal")) {
+    return "Assets Page";
+  }
+  if (window.sessionStorage.getItem("blurredFlowsSignInModal")) {
+    return "Flows Page";
+  }
+  if (window.sessionStorage.getItem("blurredYieldOppSignInModal")) {
+    return "Yield Opp Page";
+  }
+  if (window.sessionStorage.getItem("blurredInsightsSignInModal")) {
+    return "Insights Page";
+  }
+  if (window.sessionStorage.getItem("blurredGasFeesSignInModal")) {
+    return "Gas Fees Page";
+  }
+  if (window.sessionStorage.getItem("fifteenSecSignInModal")) {
+    return "15 sec";
+  }
+  return "Sidebar";
 };
 export const sliderBillionToMillion = (passedValue) => {
   const value = Number(passedValue);
@@ -51,6 +82,31 @@ export const sliderBillionToMillion = (passedValue) => {
       return 0;
     }
   }
+};
+export const removeSignUpMethods = () => {
+  window.sessionStorage.removeItem("fifteenSecSignInModal");
+  window.sessionStorage.removeItem("referralCodesSignInModal");
+  window.sessionStorage.removeItem("lochPointsSignInModal");
+  window.sessionStorage.removeItem("blurredHomeAssetSignInModal");
+  window.sessionStorage.removeItem("blurredHomeFlowsSignInModal");
+  window.sessionStorage.removeItem("blurredHomeYieldOppSignInModal");
+  window.sessionStorage.removeItem("blurredHomeInsightsSignInModal");
+  window.sessionStorage.removeItem("blurredHomeGasFeesSignInModal");
+  window.sessionStorage.removeItem("blurredAssetSignInModal");
+  window.sessionStorage.removeItem("blurredFlowsSignInModal");
+  window.sessionStorage.removeItem("blurredYieldOppSignInModal");
+  window.sessionStorage.removeItem("blurredInsightsSignInModal");
+  window.sessionStorage.removeItem("blurredGasFeesSignInModal");
+};
+export const removeOpenModalAfterLogin = () => {
+  window.sessionStorage.removeItem("openHomePaymentModal");
+  window.sessionStorage.removeItem("openAssetPaymentModal");
+  window.sessionStorage.removeItem("openFlowsPaymentModal");
+  window.sessionStorage.removeItem("openYieldOppPaymentModal");
+  window.sessionStorage.removeItem("openInsightsPaymentModal");
+  window.sessionStorage.removeItem("openSearchbarPaymentModal");
+  window.sessionStorage.removeItem("openExportPaymentModal");
+  window.sessionStorage.removeItem("openGasFeesModal");
 };
 export const goToAddress = (passedAddress) => {
   let slink = passedAddress;

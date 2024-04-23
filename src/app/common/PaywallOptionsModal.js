@@ -18,10 +18,16 @@ import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import {
   CopyTradePayCreditCardPayment,
   CopyTradePayCryptoPayment,
+  PayModalUpgrade,
+  PayModalUpgradeBack,
+  PayModalUpgradeClose,
 } from "../../utils/AnalyticsFunctions";
 import { STRIPE_SECRET_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { loadingAnimation } from "../../utils/ReusableFunctions";
+import {
+  loadingAnimation,
+  whichSignUpMethod,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 
@@ -38,7 +44,22 @@ class PaywallOptionsModal extends BaseReactComponent {
       userDetailsState: undefined,
     };
   }
+  goBackToPayWallPass = () => {
+    const path = whichSignUpMethod();
+    PayModalUpgradeBack({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+    });
+    this.props.goBackToPayWall();
+  };
   componentDidMount() {
+    const path = whichSignUpMethod();
+    PayModalUpgrade({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+    });
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.setState({
       userDetailsState: userDetails,
@@ -114,6 +135,13 @@ class PaywallOptionsModal extends BaseReactComponent {
     this.setState({
       isCryptoBtnLoading: true,
     });
+    const path = whichSignUpMethod();
+    PayModalUpgradeClose({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+      paymentMethod: "crypto",
+    });
     this.fetchChargeData()
       .then((res) => {
         if (res) {
@@ -133,6 +161,12 @@ class PaywallOptionsModal extends BaseReactComponent {
       });
   };
   hideModal = () => {
+    const path = whichSignUpMethod();
+    PayModalUpgradeClose({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+    });
     this.state.onHide();
   };
 
@@ -167,6 +201,13 @@ class PaywallOptionsModal extends BaseReactComponent {
     this.setState({
       isCreditBtnLoading: true,
     });
+    const path = whichSignUpMethod();
+    PayModalUpgradeClose({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+      paymentMethod: "stripe",
+    });
     await stripe.prices
       .create({
         currency: "usd",
@@ -175,7 +216,7 @@ class PaywallOptionsModal extends BaseReactComponent {
           interval: "month",
         },
         product_data: {
-          name: "Copy Trader Plan",
+          name: "Loch Premium",
         },
       })
       .then((res) => {
@@ -211,7 +252,7 @@ class PaywallOptionsModal extends BaseReactComponent {
           {this.props.isMobile ? (
             <div className="mobile-copy-trader-popup-header">
               <div
-                onClick={this.props.goBackToPayWall}
+                onClick={this.goBackToPayWallPass}
                 className="mobile-copy-trader-popup-header-close-icon"
               >
                 <Image src={NewModalBackArrowIcon} />
@@ -235,7 +276,7 @@ class PaywallOptionsModal extends BaseReactComponent {
                 style={{
                   left: "2.8rem",
                 }}
-                onClick={this.props.goBackToPayWall}
+                onClick={this.goBackToPayWallPass}
               >
                 <Image src={NewModalBackArrowIcon} />
               </div>
