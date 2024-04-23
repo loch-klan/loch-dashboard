@@ -248,7 +248,7 @@ export const getFilters = (ctx) => {
     postLoginInstance
       .post("wallet/transaction/get-transaction-filter", data)
       .then((res) => {
-        let assetFilter = [{ value: "allAssets", label: "All assets" }];
+        let assetFilter = [{ value: "allAssets", label: "All tokens" }];
         res.data.data.filters.asset_filters.map((item) => {
           let obj = {
             value: item._id,
@@ -390,7 +390,8 @@ export const getAssetProfitLoss = (
   endDate,
   selectedChains = false,
   selectedAsset = false,
-  isDefault = true
+  isDefault = true,
+  isPremiumUser = false
 ) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
@@ -414,7 +415,8 @@ export const getAssetProfitLoss = (
               payload: {
                 ProfitLossAsset: getProfitLossAsset(
                   res.data.data?.profit_loss,
-                  ctx
+                  ctx,
+                  isPremiumUser
                 ),
                 ProfitLossAssetData: res.data.data?.profit_loss,
               },
@@ -422,7 +424,7 @@ export const getAssetProfitLoss = (
           }
           if (ctx.setProfitLossAssetLocal) {
             ctx.setProfitLossAssetLocal(
-              getProfitLossAsset(res.data.data?.profit_loss, ctx)
+              getProfitLossAsset(res.data.data?.profit_loss, ctx, isPremiumUser)
             );
           }
           const shouldRecallApis =
@@ -456,17 +458,23 @@ export const getAssetProfitLoss = (
       });
   };
 };
-export const updateAssetProfitLoss = (passedData, ctx) => {
+export const updateAssetProfitLoss = (
+  passedData,
+  ctx,
+  isPremiumUser = false
+) => {
   return async function (dispatch, getState) {
     dispatch({
       type: PORTFOLIO_ASSET,
       payload: {
-        ProfitLossAsset: getProfitLossAsset(passedData, ctx),
+        ProfitLossAsset: getProfitLossAsset(passedData, ctx, isPremiumUser),
         ProfitLossAssetData: passedData,
       },
     });
     if (ctx.setProfitLossAssetLocal) {
-      ctx.setProfitLossAssetLocal(getProfitLossAsset(passedData, ctx));
+      ctx.setProfitLossAssetLocal(
+        getProfitLossAsset(passedData, ctx, isPremiumUser)
+      );
     }
   };
 };
@@ -476,7 +484,7 @@ export const getTransactionAsset = (data, ctx, isCodeInsteadOfLabel) => {
     .post("wallet/transaction/get-transaction-asset-filter")
     .then((res) => {
       if (!res.data.error) {
-        let assetFilter = [{ value: "allAssets", label: "All assets" }];
+        let assetFilter = [{ value: "allAssets", label: "All tokens" }];
         if (isCodeInsteadOfLabel) {
           res?.data?.data?.assets?.forEach((e) => {
             assetFilter.push({

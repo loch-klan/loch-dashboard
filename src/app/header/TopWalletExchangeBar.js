@@ -25,11 +25,14 @@ import {
   SearchBarAddressAdded,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
+import { ARCX_API_KEY, BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
+  dontOpenLoginPopup,
   numToCurrency,
+  removeOpenModalAfterLogin,
 } from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser, isNewAddress } from "../Portfolio/Api";
@@ -46,10 +49,13 @@ import {
   setIsWalletConnectedReducer,
   setMetamaskConnectedReducer,
 } from "./HeaderAction";
+import { PaywallModal } from "../common";
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       canCallConnectWalletFun: false,
       showAmountsAtTop: false,
       topBarHistoryItems: [],
@@ -261,6 +267,20 @@ class TopWalletExchangeBar extends Component {
     });
   };
   componentDidMount() {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     setTimeout(() => {
       this.setState({
         canCallConnectWalletFun: true,
@@ -705,8 +725,44 @@ class TopWalletExchangeBar extends Component {
     });
     this.props.handleAddWalletClick();
   };
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openSearchbarPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   handleAddWallet = (replaceAddresses) => {
+    if (!replaceAddresses) {
+      this.goToPayModal();
+      return;
+    }
     this.hideTheTopBarHistoryItems();
+    if (this.props.isBlurred) {
+      this.props.hideFocusedInput();
+    }
     if (this.state.walletInput[0]) {
       SearchBarAddressAdded({
         session_id: getCurrentUser().id,
@@ -889,10 +945,18 @@ class TopWalletExchangeBar extends Component {
     }
   };
   addAddingWalletFromHistory = (resAdd) => {
+    console.log("resAdd is ", resAdd);
+    let result = "";
+
+    if (resAdd[1] && resAdd[1].endsWith(".eth")) {
+      result = resAdd[1];
+    } else {
+      result = resAdd[0];
+    }
     const tempTarget = {
       target: {
         name: this.state.walletInput[0].id,
-        value: resAdd,
+        value: result,
       },
     };
     this.handleOnLocalChange(tempTarget);
@@ -924,6 +988,7 @@ class TopWalletExchangeBar extends Component {
     );
   };
   addWalletToHistory = () => {
+    let tempRevData = [...this.state.topBarHistoryItems];
     for (let i = 0; i < this.state.topBarHistoryItems.length; i++) {
       if (
         (this.state.topBarHistoryItems[i][0] !== "" &&
@@ -939,8 +1004,9 @@ class TopWalletExchangeBar extends Component {
           this.state.topBarHistoryItems[i][1] ===
             this.state.walletInput[0].address)
       ) {
-        this.cancelAddingWallet();
-        return;
+        // this.cancelAddingWallet();
+        tempRevData = tempRevData.filter((res, index) => index !== i);
+        // return;
       }
     }
     let tempItem = ["", ""];
@@ -952,7 +1018,7 @@ class TopWalletExchangeBar extends Component {
         tempItem[1] = this.state.walletInput[0].address;
       }
     }
-    const tempHolder = [tempItem, ...this.state.topBarHistoryItems];
+    const tempHolder = [tempItem, ...tempRevData];
     this.setState(
       {
         topBarHistoryItems: tempHolder,
@@ -1460,10 +1526,25 @@ class TopWalletExchangeBar extends Component {
         onOutsideClick={this.hideTheTopBarHistoryItems}
       >
         <div
+          onClick={(e) => {
+            if (this.props.isBlurred) {
+              e.stopPropagation();
+            }
+          }}
           className={`topBarContainer ${
             this.state.walletList.length > 0 ? "topBarContainerMultiple" : ""
           }`}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/"}
+              title="Aggregate Wallets with Loch"
+              description="Aggregate unlimited wallets"
+              hideBackBtn
+            />
+          ) : null}
           {this.state.topBarHistoryItems &&
           this.state.topBarHistoryItems.length > 0 &&
           this.state.showTopBarHistoryItems ? (
@@ -1515,7 +1596,7 @@ class TopWalletExchangeBar extends Component {
                       <div
                         className={`inter-display-medium topBarHistoryItemBlock`}
                         onClick={() => {
-                          this.addAddingWalletFromHistory(res[0]);
+                          this.addAddingWalletFromHistory(res);
                         }}
                       >
                         <div className="topBarHistoryItemBlockText">
@@ -1690,6 +1771,10 @@ class TopWalletExchangeBar extends Component {
                   ? "topBarContainerRightBlockMultiple"
                   : ""
               }`}
+              style={{
+                opacity: this.props.isBlurred ? 0 : 1,
+                pointerEvents: this.props.isBlurred ? "none" : "all",
+              }}
             >
               {/* <div
                 ref={this.props.buttonRef}

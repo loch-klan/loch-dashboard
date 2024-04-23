@@ -7,7 +7,7 @@ import {
 
 const labels = ["Inflow", "Outflow", "Net"];
 
-export const getProfitLossAsset = (arr, parentCtx) => {
+export const getProfitLossAsset = (arr, parentCtx, isPremiumUser) => {
   // console.log(arr);
   //   Find total inflows by calculating inflows.totalvolume
   // Find total outflows by calculating outflows.totalvolume
@@ -215,9 +215,11 @@ backdrop-filter: blur(15px);">
                                   this.x
                                 }</b> <b class="inter-display-semi-bold m-l-10" style="color:${
           this.x === "Net" ? netColor : "#ffffff"
-        };">${CurrencyType(false)}${numToCurrency(
+        };"><span class="${
+          isPremiumUser ? "" : "blurred-elements"
+        }" >${CurrencyType(false)}${numToCurrency(
           net_amount * currency?.rate
-        )}</b></div>${
+        )}</span></b></div>${
           tooltipData.length !== 0
             ? `<div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>`
             : ""
@@ -226,7 +228,9 @@ backdrop-filter: blur(15px);">
       tooltipData.length !== 0
         ? tooltipData
             .map((item) => {
-              return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
+              return `<div class="${
+                isPremiumUser ? "" : "blurred-elements"
+              } inter-display-medium f-s-13 w-100 pt-3 px-4">
                                     <span style='width:10px; height: 10px; border-radius: 50%; background-color:${
                                       item.color == modeCOlor ||
                                       ((item.color == "#16182B" ||
