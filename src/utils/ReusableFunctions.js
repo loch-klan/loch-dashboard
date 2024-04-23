@@ -31,7 +31,27 @@ export const whichSignUpMethod = () => {
     return "Sidebar";
   }
 };
+export const sliderBillionToMillion = (passedValue) => {
+  const value = Number(passedValue);
+  const resultHoder = [
+    100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000,
+    10000000000,
+  ];
 
+  for (let i = resultHoder.length - 1; i >= 0; i--) {
+    const element = resultHoder[i];
+    const index = i;
+    if (index > 0) {
+      if (value === element) {
+        return index;
+      } else if (value < element && value > resultHoder[index - 1]) {
+        return index - 1;
+      }
+    } else {
+      return 0;
+    }
+  }
+};
 export const goToAddress = (passedAddress) => {
   let slink = passedAddress;
   let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
