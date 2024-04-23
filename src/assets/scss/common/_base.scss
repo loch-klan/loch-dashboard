@@ -1823,35 +1823,50 @@ form {
   .tooltip-inner {
     background-color: var(--cardBackgroud) !important;
     border-color: var(--greyCardBackgroud) !important;
-    height: 8rem;
+    min-height: 7.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     text-align: left;
-    width: 21.5rem;
+    width: 21rem;
+    padding: 1.2rem !important;
+    border-radius: 1rem !important;
+    box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem rgba(24, 39, 75, 0.05),
+      0rem 0.63099rem 0.63099rem -0.31549rem rgba(24, 39, 75, 0.05);
     .freemium-tooltip-header {
-      font-size: 13px !important;
+      font-size: 13.5px !important;
       color: var(--fremiumTooltipHeader) !important;
       z-index: 2;
     }
     .freemium-tooltip-desc {
-      font-size: 13px !important;
+      font-size: 13.5px !important;
       color: var(--fremiumTooltipDescription) !important;
       z-index: 2;
       width: 70%;
+      margin-top: 0.45rem;
     }
     .freemium-tooltip-image {
       position: absolute;
       top: 50%;
       right: 0.1rem;
       transform: translateY(-55%);
-      height: 8rem;
+      height: 7rem;
       z-index: 1;
     }
   }
   .arrow {
     &::before {
-      border-top-color: var(--greyCardBackgroud) !important;
+      background-color: white;
+      display: block !important;
+      width: 1rem !important;
+      height: 1rem !important;
+      border: none;
+      top: -4px;
+      transform: translateY(-50%) rotate(45deg);
+      border: 0rem solid var(--greyCardBackgroud);
+
+      border-bottom-width: 0.1rem;
+      border-right-width: 0.1rem;
     }
   }
 }
