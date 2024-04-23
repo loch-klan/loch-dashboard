@@ -390,6 +390,13 @@
 }
 
 .transaction-table-section {
+  position: relative;
+  .not-found-mini-wrapper-floating {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+  }
   .table-wrapper {
     flex: 1;
     .not-found-wrapper {
