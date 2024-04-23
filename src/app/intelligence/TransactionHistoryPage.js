@@ -2491,7 +2491,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         control={{
                           type: CustomTextControl,
                           settings: {
-                            placeholder: "Search addresses",
+                            placeholder: "Search address",
                           },
                         }}
                         classes={{
