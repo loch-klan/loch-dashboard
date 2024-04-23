@@ -29,7 +29,20 @@ export const whichSignUpMethod = () => {
     return "Sidebar";
   }
 };
-
+export const openLoginPopUp = () => {
+  window.sessionStorage.setItem("dontOpenLoginPopup", true);
+  if (document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")) {
+    document
+      .getElementById("sidebar-open-sign-in-btn-loch-points-profile")
+      .click();
+  } else if (
+    document.getElementById("sidebar-closed-sign-in-btn-loch-points-profile")
+  ) {
+    document
+      .getElementById("sidebar-closed-sign-in-btn-loch-points-profile")
+      .click();
+  }
+};
 export const goToTelegram = () => {
   window.open("https://t.me/loch_chain", "_blank");
 };

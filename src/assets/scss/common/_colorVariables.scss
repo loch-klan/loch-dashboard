@@ -244,6 +244,14 @@
   --profileUnrecognizedWallet: #f2f2f2;
   --profileWalletDivider: rgba(229, 229, 230, 0.5);
   --profileWalletAddress: #b0b1b3;
+
+  // Copy Trader Welcome
+  --blockOneHeaderGradMain: #000000;
+  --blockOneHeaderGradSecondary: #666666;
+  --blockOneDesc: #0000004d;
+  --blockOneBtnBackground: #5f33ff;
+  --blockFourHeader: #000000;
+  --blockFiveHeader: #c0c0c0;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -481,6 +489,14 @@
   --profileUnrecognizedWallet: #313233;
   --profileWalletDivider: #313233;
   --profileWalletAddress: #636467;
+
+  // Copy Trader Welcome
+  --blockOneHeaderGradMain: white;
+  --blockOneHeaderGradSecondary: rgb(169, 169, 169);
+  --blockOneDesc: #cacbcc;
+  --blockOneBtnBackground: #5f33ff;
+  --blockFourHeader: white;
+  --blockFiveHeader: #c0c0c0;
 }
 [data-theme="dark2"] {
   // UPDATED

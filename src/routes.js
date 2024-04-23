@@ -30,6 +30,7 @@ import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import PublicRoute from "./utils/PublicRoute";
+import CopyTradeWelcome from "./app/CopyTradeWelcome/CopyTradeWelcome";
 const routes = [
   {
     path: "/",
@@ -116,6 +117,12 @@ const routes = [
     name: "Insights",
     type: PrivateRoute,
     component: InsightsPage,
+  },
+  {
+    path: "/copy-trade-welcome",
+    name: "Copy Trade Welcome",
+    type: PrivateRoute,
+    component: CopyTradeWelcome,
   },
 
   {
