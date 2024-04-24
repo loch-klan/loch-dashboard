@@ -12,8 +12,9 @@ import {
   LochBigLogoCopyTradeWelcome,
   WhaleTail,
 } from "../../assets/images/index.js";
+import CopyTradeMobileWelcome from "./CopyTradeMobileWelcome.js";
 
-class InsightsPage extends Component {
+class CopyTradeWelcome extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -25,10 +26,11 @@ class InsightsPage extends Component {
         <MobileLayout
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
-          showpath
           currentPage={"insights"}
+          hideAddresses
+          hideFooter
         >
-          <div>Red</div>
+          <CopyTradeMobileWelcome />
         </MobileLayout>
       );
     } else
@@ -93,7 +95,7 @@ class InsightsPage extends Component {
                 </div>
               </div>
               <div className="ctwpbtwo-right">
-                <div className="ctwpbtwor-desc">LOCH</div>
+                <div className="ctwpbtwor-desc">VERSATILITY</div>
                 <div className="ctwpbtwor-title">
                   Follow, analyze, and
                   <br />
@@ -162,4 +164,4 @@ const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(InsightsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CopyTradeWelcome);
