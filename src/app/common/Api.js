@@ -87,6 +87,28 @@ export const SwitchDarkMode = (passedData) => {
     });
   };
 };
+export const createUserPayment = (passedData, stopCreditBtnLoading) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("commerce/payment/create-payment", passedData)
+      .then((res) => {
+        if (stopCreditBtnLoading) {
+          stopCreditBtnLoading();
+        }
+        if (!res.data.error) {
+        } else {
+          toast.error("Something went wrong");
+        }
+      })
+      .catch((err) => {
+        if (stopCreditBtnLoading) {
+          stopCreditBtnLoading();
+        }
+        toast.error("Something went wrong");
+        // console.log("fixwallet",err)
+      });
+  };
+};
 export const fixWalletApi = (ctx, info, stopBtnLoading) => {
   postLoginInstance
     .post("organisation/user/update-user", info)
