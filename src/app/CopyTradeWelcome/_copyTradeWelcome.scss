@@ -257,3 +257,31 @@
     }
   }
 }
+.copy-trade-welcome-page-mobile-container {
+  width: 100vw;
+  margin-left: -2rem;
+  margin-top: 2rem;
+  .copy-trade-welcome-page {
+    .ctwp-block-one {
+      flex-direction: column;
+      min-width: unset;
+      .ctwpbo-left {
+        width: 100%;
+        align-items: center;
+        .ctwpbol-header {
+          text-align: center;
+        }
+        .ctwpbol-desc {
+          text-align: center;
+          margin: 2rem 0rem;
+        }
+        .copy-trade-welcome-button {
+          padding: 2rem 4rem;
+        }
+      }
+      .ctwpbo-right {
+        width: 100%;
+      }
+    }
+  }
+}
