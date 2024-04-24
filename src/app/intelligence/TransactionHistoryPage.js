@@ -375,7 +375,10 @@ class TransactionHistoryPage extends BaseReactComponent {
     } else {
       if (
         !this.props.commonState.transactionHistory ||
-        !this.props.intelligenceState.table
+        !(
+          this.props.intelligenceState.table &&
+          this.props.intelligenceState.table.length > 0
+        )
       ) {
         this.props.updateWalletListFlag("transactionHistory", true);
         let tempData = new URLSearchParams();
@@ -2175,7 +2178,6 @@ class TransactionHistoryPage extends BaseReactComponent {
               >
                 <div
                   onMouseEnter={() => {
-                    // console.log('here');
                     TransactionHistoryHashHover({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
