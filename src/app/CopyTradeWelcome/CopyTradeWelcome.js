@@ -28,6 +28,7 @@ class CopyTradeWelcome extends Component {
           isSidebarClosed={this.props.isSidebarClosed}
           currentPage={"insights"}
           hideAddresses
+          hideFooter
         >
           <CopyTradeMobileWelcome />
         </MobileLayout>

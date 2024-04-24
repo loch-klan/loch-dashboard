@@ -1,10 +1,6 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { mobileCheck, openLoginPopUp } from "../../utils/ReusableFunctions.js";
-import MobileLayout from "../layout/MobileLayout.js";
-import WelcomeCard from "../Portfolio/WelcomeCard.js";
-import "./_copyTradeWelcome.scss";
 import { Image } from "react-bootstrap";
+import { connect } from "react-redux";
 import {
   GreekOne,
   GreekThree,
@@ -12,6 +8,8 @@ import {
   LochBigLogoCopyTradeWelcome,
   WhaleTail,
 } from "../../assets/images/index.js";
+import { openLoginPopUp } from "../../utils/ReusableFunctions.js";
+import "./_copyTradeWelcome.scss";
 
 class CopyTradeMobileWelcome extends Component {
   constructor(props) {

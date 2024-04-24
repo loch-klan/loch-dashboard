@@ -125,9 +125,8 @@
         }
         .ctwpbtwor-greek-man-shadow-container {
           height: 47rem;
-          //   background-color: red;
           transform: rotateY(180deg);
-          margin-left: -7.5rem;
+          margin-left: -0.4rem;
           .ctwpbtwor-greek-man-shadow-gradient {
             background: linear-gradient(
               90deg,
@@ -262,25 +261,117 @@
   margin-left: -2rem;
   margin-top: 2rem;
   .copy-trade-welcome-page {
+    .copy-trade-welcome-button {
+      padding: 1.7rem 4.5rem;
+    }
+    .ctwp-block {
+      min-width: unset;
+      height: unset;
+    }
     .ctwp-block-one {
       flex-direction: column;
-      min-width: unset;
+      padding-top: 1rem;
       .ctwpbo-left {
         width: 100%;
         align-items: center;
+        padding: 0rem;
+
         .ctwpbol-header {
           text-align: center;
         }
         .ctwpbol-desc {
           text-align: center;
-          margin: 2rem 0rem;
-        }
-        .copy-trade-welcome-button {
-          padding: 2rem 4rem;
+          margin: 1.5rem 0rem;
         }
       }
       .ctwpbo-right {
         width: 100%;
+        padding-top: 1.5rem;
+        .ctwpbor-greek-man {
+          height: unset;
+          width: 100%;
+        }
+      }
+    }
+    .ctwp-block-two {
+      flex-direction: column-reverse;
+
+      .ctwpbtwo-left {
+        width: 100%;
+        height: unset;
+
+        .ctwpbtwor-greek-man {
+          width: 50%;
+          height: unset;
+        }
+        .ctwpbtwor-greek-man-shadow-container {
+          height: unset;
+          width: 50%;
+          .ctwpbtwor-greek-man-shadow {
+            width: 100%;
+          }
+        }
+      }
+      .ctwpbtwo-right {
+        width: 100%;
+        padding-top: 4rem;
+        padding-bottom: 2rem;
+        .ctwpbtwor-title {
+          text-align: center;
+        }
+      }
+    }
+    .ctwp-block-three {
+      .ctwpbo-left {
+        padding-top: 4rem;
+        padding-bottom: 2rem;
+        .ctwpbothird-header {
+          text-align: center;
+        }
+      }
+      .ctwpbo-right {
+        padding: 0rem 2rem;
+        .ctwpbor-greek-man {
+          height: unset;
+          width: 100%;
+        }
+      }
+    }
+    .ctwp-block-four {
+      .ctwpbf-loch {
+        height: unset;
+        width: 90%;
+      }
+      .ctwpbf-content {
+        justify-content: center;
+        padding: 0rem 7rem;
+        .ctwpbofour-header {
+          text-align: center;
+        }
+        .ctwpbofour-desc {
+          text-align: center;
+          margin: 1.5rem 0rem;
+        }
+      }
+    }
+    .ctwp-block-five {
+      padding-top: 2rem;
+      .ctwpbofive-image {
+        width: 60%;
+        .ctwpbfive-loch {
+          height: 100%;
+        }
+      }
+      .ctwpbofive-content-container {
+        width: 60vw;
+        margin-left: -10vw;
+        padding-right: 1rem;
+        .ctwpbofive-content {
+          .ctwpbofive-header {
+            font-size: 12px;
+            text-align: right;
+          }
+        }
       }
     }
   }
