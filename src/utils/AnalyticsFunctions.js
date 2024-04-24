@@ -1,4 +1,3 @@
-import amplitude from "amplitude-js";
 import Mixpanel from "mixpanel-browser";
 import { deleteToken } from "./ManageToken";
 import { mobileCheck } from "./ReusableFunctions";
@@ -6034,6 +6033,68 @@ export const CopyTradeCopiedWalletClicked = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CopyTradePopularAccountWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: Popular accounts to copy: wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePopularAccountCopyClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: Popular accounts to copy: copy clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayWallOpen = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayWallOptionsOpen = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: Pay options: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayCryptoPayment = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: Pay options: crypto payment clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayCreditCardPayment = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name =
+    "Copy Trade: Paywall: Pay options: credit card payment clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const CopyTradeAvailableCopiedWalletClicked = ({
   session_id,
   email_address,
@@ -6137,6 +6198,22 @@ export const SmartMoneyTimeSpent = ({
     "session id": session_id,
     "email address": email_address,
     "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyNotifyClick = ({ session_id, email_address }) => {
+  const event_name = "Smart money: notify checkbox clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyModalCloseClick = ({ session_id, email_address }) => {
+  const event_name = "Smart money: notify transaction: modal close";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -6907,6 +6984,92 @@ export const LochPointsLoginModalOpen = ({ session_id, email_address }) => {
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalPay = ({
+  session_id,
+  email_address,
+  path,
+  paymentMethod,
+}) => {
+  const event_name = "Inside: Pay Modal: pay initiated";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+    paymentMethod: paymentMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalOpened = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalClosed = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: close";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalUpgrade = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: upgrade tab";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalUpgradeBack = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: upgrade tab: go back";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalUpgradeClose = ({ session_id, email_address, path }) => {
+  const event_name = "Inside: Pay Modal: upgrade tab: close";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: path,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SignInModalEmailAdded = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign in: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    signUpMethod: signUpMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SignInModalOTPverified = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign in: otp verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    signUpMethod: signUpMethod,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

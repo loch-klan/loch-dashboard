@@ -171,7 +171,7 @@ class PieChart2Mobile extends BaseReactComponent {
         labelName: (
           <div className="cp history-table-header-col no-hover" id="Asset">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Asset
+            Token
             </span>
           </div>
         ),

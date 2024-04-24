@@ -756,7 +756,7 @@ class PortfolioMobile extends BaseReactComponent {
                     this.props.changeBlockOneItem(1);
                   }}
                 >
-                  Assets
+                  Tokens
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
@@ -1002,6 +1002,7 @@ class PortfolioMobile extends BaseReactComponent {
                   <div className="profit-chart profit-chart-mobile">
                     {this.props.blockTwoSelectedItem === 1 ? (
                       <BarGraphSection
+                        goToPayModal={this.props.showBlurredFlows}
                         openChartPage={this.props.goToRealizedGainsPage}
                         newHomeSetup
                         disableOnLoading
@@ -1046,6 +1047,8 @@ class PortfolioMobile extends BaseReactComponent {
                           Loch
                         </div>
                         <BarGraphSection
+                          goToPayModal={this.props.showBlurredGasFees}
+                          isBlurred={!this.props.isPremiumUser}
                           digit={this.props.GraphDigit}
                           isFromHome
                           // openChartPage={() => {}}
@@ -1238,6 +1241,7 @@ class PortfolioMobile extends BaseReactComponent {
                       updatedInsightList={this.props.updatedInsightList}
                       insightsBlockLoading={this.props.insightsBlockLoading}
                       isMobile
+                      showBlurredInsights={this.props.showBlurredInsights}
                     />
                   </div>
                 ) : null}

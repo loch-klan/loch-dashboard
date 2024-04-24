@@ -78,7 +78,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 }}
               >
                 <CustomDropdown
-                  filtername="All assets"
+                  filtername="All tokens"
                   options={this.props.intelligenceState.assetFilter}
                   action={SEARCH_BY_ASSETS_IN}
                   handleClick={(key, value) =>

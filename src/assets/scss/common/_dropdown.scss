@@ -42,7 +42,7 @@
   min-height: 4rem;
   user-select: none;
 
-  &.custom-dropdown-icon{
+  &.custom-dropdown-icon {
     border: none;
     min-height: auto;
   }
@@ -50,7 +50,7 @@
   &:hover {
     //  background-color: rgba(229, 229, 230, 0.35);
     border: 0.1rem solid var(--black191);
-    &.custom-dropdown-icon{
+    &.custom-dropdown-icon {
       border: none;
     }
   }
@@ -263,7 +263,7 @@
     }
   }
 
-  &.custom-dropdown-icon{
+  &.custom-dropdown-icon {
     .dropdown-content {
       top: 3rem;
       left: -2rem;
@@ -351,6 +351,9 @@
     svg path {
       fill: hsl(0, 0%, 80%);
     }
+  }
+  .placeholderPriceDropdownCenter {
+    justify-content: center;
   }
 
   .dropdown-content-price {
