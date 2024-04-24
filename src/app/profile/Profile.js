@@ -184,7 +184,7 @@ class Profile extends Component {
       this.props.getReferallCodes();
     } else {
       this.setState({
-        codesLeftToUse: 10,
+        codesLeftToUse: 20,
       });
     }
     ManageLink(this);
