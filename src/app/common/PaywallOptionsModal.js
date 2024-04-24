@@ -30,6 +30,7 @@ import {
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import { createUserPayment } from "./Api";
 
 const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
@@ -169,19 +170,29 @@ class PaywallOptionsModal extends BaseReactComponent {
     });
     this.state.onHide();
   };
-
+  stopCreditBtnLoading = () => {
+    this.setState({
+      isCreditBtnLoading: false,
+    });
+  };
   getCurrentUrl = async (passedId) => {
     await stripe.paymentLinks
       .create({
         line_items: [
           {
-            price: passedId,
+            price: "price_1P8EGbFKqIbhlomARI3I5ddt",
             quantity: 1,
           },
         ],
       })
       .then((res) => {
-        window.open(res.url, "_self");
+        const createUserData = new URLSearchParams();
+        createUserData.append("price_id", "price_1P8EGbFKqIbhlomARI3I5ddt");
+        this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
+        setTimeout(() => {
+          window.open(res.url, "_blank");
+          this.state.onHide();
+        }, 500);
       })
       .catch(() => {
         this.setState({
@@ -479,7 +490,7 @@ class PaywallOptionsModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = { createUserPayment };
 
 PaywallOptionsModal.propTypes = {};
 
