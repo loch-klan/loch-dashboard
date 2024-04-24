@@ -95,6 +95,10 @@ export const createUserPayment = (passedData, stopCreditBtnLoading) => {
           stopCreditBtnLoading();
         }
         if (!res.data.error) {
+          const redirectUrl = res.data.data?.payment?.payment_url;
+          if (redirectUrl) {
+            window.open(redirectUrl, "_blank");
+          }
         } else {
           toast.error("Something went wrong");
         }

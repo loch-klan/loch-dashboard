@@ -219,26 +219,33 @@ class PaywallOptionsModal extends BaseReactComponent {
       path: path,
       paymentMethod: "stripe",
     });
-    await stripe.prices
-      .create({
-        currency: "usd",
-        unit_amount: 50,
-        recurring: {
-          interval: "month",
-        },
-        product_data: {
-          name: "Loch Premium",
-        },
-      })
-      .then((res) => {
-        this.getCurrentUrl(res.id);
-      })
-      .catch(() => {
-        this.setState({
-          isCreditBtnLoading: false,
-        });
-        toast.error("Something went wrong");
-      });
+    const createUserData = new URLSearchParams();
+    createUserData.append("price_id", "price_1P8EGbFKqIbhlomARI3I5ddt");
+    this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
+    setTimeout(() => {
+      // window.open(res.url, "_blank");
+      // this.state.onHide();
+    }, 500);
+    // await stripe.prices
+    //   .create({
+    //     currency: "usd",
+    //     unit_amount: 50,
+    //     recurring: {
+    //       interval: "month",
+    //     },
+    //     product_data: {
+    //       name: "Loch Premium",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     this.getCurrentUrl(res.id);
+    //   })
+    //   .catch(() => {
+    //     this.setState({
+    //       isCreditBtnLoading: false,
+    //     });
+    //     toast.error("Something went wrong");
+    //   });
   };
 
   render() {
