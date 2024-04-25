@@ -756,7 +756,7 @@ class PortfolioMobile extends BaseReactComponent {
                     this.props.changeBlockOneItem(1);
                   }}
                 >
-                  Assets
+                  Tokens
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${

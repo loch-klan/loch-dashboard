@@ -96,7 +96,7 @@ function App(props) {
         newestOnTop={false}
         // closeOnClick
         closeButton={false}
-        rtl={false}
+        rtl
         pauseOnFocusLoss
         draggable
         pauseOnHover

@@ -165,7 +165,7 @@
     z-index: 0;
   }
   .insights-card {
-    background-color: var(--cardBackgroud);
+    background-color: var(--insightsBlock);
     width: 100%;
     padding: 1.6rem 2rem;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
@@ -363,7 +363,7 @@
       margin-bottom: 2rem;
     }
     .insights-card {
-      background-color: var(--cardBackgroud);
+      background-color: var(--insightsBlock);
       width: 100%;
       padding: 1.6rem 2rem;
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),

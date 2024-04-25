@@ -49,7 +49,7 @@ class PortfolioHomeNetworksBlock extends Component {
       return (
         <div
           style={{
-            height: "32rem",
+            height: "35rem",
           }}
         >
           <div
@@ -80,7 +80,7 @@ class PortfolioHomeNetworksBlock extends Component {
             whiteSpace: "nowrap",
             textOverflow: "ellipsis",
             position: "relative",
-            height: "31rem",
+            height: "34rem",
             padding: "0rem 0.5rem",
             paddingRight: "1rem",
           }}
