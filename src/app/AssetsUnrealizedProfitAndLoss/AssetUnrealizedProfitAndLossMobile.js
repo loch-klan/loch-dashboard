@@ -19,7 +19,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
           }}
           className="mobile-header-container"
         >
-          <h4>Assets</h4>
+          <h4>Tokens</h4>
           <p>Understand your unrealized profit and loss per token</p>
         </div>
         <div

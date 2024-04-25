@@ -693,7 +693,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         TransactionHistoryAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          asset_filter: value === "allAssets" ? "All assets" : assets,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
           isSearchUsed: tempIsAssetUsed,
         });
         this.updateTimer();
@@ -1823,7 +1823,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               selectedTokens={this.state.selectedAssets}
               transactionHistorySavedData
             />
-            <span className="inter-display-medium f-s-13 lh-16 ">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Token</span>
             <Image
               src={sortByIcon}
               onClick={() => this.handleTableSort("asset")}
