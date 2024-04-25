@@ -57,6 +57,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import {
   TruncateText,
+  dontOpenLoginPopup,
   mobileCheck,
   scrollToBottomAfterPageChange,
   scrollToTop,
@@ -73,6 +74,8 @@ import {
 } from "./redux/WatchListApi";
 import MobileLayout from "../layout/MobileLayout";
 import WalletListPageMobile from "./WatchListPageMobile";
+import CheckboxCustomTable from "../common/customCheckboxTable";
+import NotifyOnTransactionSizeModal from "../smartMoney/notifyOnTransactionSizeModal";
 
 class WatchListPage extends BaseReactComponent {
   constructor(props) {
@@ -82,6 +85,8 @@ class WatchListPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      addressToNotify: "",
+      showNotifyOnTransactionModal: false,
       goToBottom: false,
       initialList: false,
       showAddWatchListAddress: false,
@@ -157,6 +162,22 @@ class WatchListPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openFollowingNoficationModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          window.sessionStorage.removeItem("openFollowingNoficationModal");
+          window.sessionStorage.removeItem("openSmartMoneyNoficationModal");
+          this.setState({
+            showNotifyOnTransactionModal: true,
+            addressToNotify: shouldOpenNoficationModal,
+          });
+        }, 1000);
+      }
+    }
     scrollToTop();
     resetPreviewAddress();
     this.props?.TopsetPageFlagDefault();
@@ -522,6 +543,41 @@ class WatchListPage extends BaseReactComponent {
       name_tag: passedNameTag,
     });
   };
+  openNotifyOnTransactionModal = (passedAddress) => {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      this.setState(
+        {
+          addressToNotify: passedAddress,
+        },
+        () => {
+          window.sessionStorage.setItem("dontOpenLoginPopup", "true");
+          this.setState({
+            showNotifyOnTransactionModal: true,
+          });
+        }
+      );
+    } else {
+      window.sessionStorage.setItem(
+        "openFollowingNoficationModal",
+        passedAddress
+      );
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hideNotifyOnTransactionModal = () => {
+    window.sessionStorage.removeItem("dontOpenLoginPopup");
+    this.setState({
+      showNotifyOnTransactionModal: false,
+      addressToNotify: "",
+    });
+  };
   render() {
     const columnList = [
       {
@@ -754,6 +810,40 @@ class WatchListPage extends BaseReactComponent {
           }
         },
       },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col goToCenter no-hover"
+            id="netflows"
+          >
+            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+              Notify
+            </span>
+          </div>
+        ),
+        dataKey: "following",
+
+        coumnWidth: 0.125,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "following") {
+            const handleOnClick = (addItem) => {
+              // SmartMoneyNotifyClick({
+              //   session_id: getCurrentUser().id,
+              //   email_address: getCurrentUser().email,
+              // });
+              this.openNotifyOnTransactionModal(rowData.address);
+            };
+            return (
+              <CheckboxCustomTable
+                handleOnClick={handleOnClick}
+                isChecked={false}
+                dontSelectIt
+              />
+            );
+          }
+        },
+      },
     ];
     if (mobileCheck()) {
       return (
@@ -762,6 +852,7 @@ class WatchListPage extends BaseReactComponent {
           history={this.props.history}
           hideFooter
           hideShare
+          hideAddresses
         >
           <WalletListPageMobile
             tableLoading={this.state.tableLoading}
@@ -821,6 +912,14 @@ class WatchListPage extends BaseReactComponent {
                 history={this.props.history}
                 callApi={this.callApi}
                 location={this.props.location}
+              />
+            ) : null}
+            {this.state.showNotifyOnTransactionModal ? (
+              <NotifyOnTransactionSizeModal
+                show={this.state.showNotifyOnTransactionModal}
+                onHide={this.hideNotifyOnTransactionModal}
+                history={this.props.history}
+                selectedAddress={this.state.addressToNotify}
               />
             ) : null}
             {this.state.addModal && (

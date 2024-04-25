@@ -50,9 +50,11 @@ import {
   UpgradeTriggered,
   amountFormat,
   compareTwoArrayOfObjects,
+  dontOpenLoginPopup,
   mobileCheck,
   noExponents,
   numToCurrency,
+  removeOpenModalAfterLogin,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
@@ -81,6 +83,8 @@ import CoinChip from "../wallet/CoinChip";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import YieldOpportunitiesMobilePage from "./YieldOpportunitiesMobilePage.js";
+import PaywallModal from "../common/PaywallModal.js";
+import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
 
 class YieldOpportunitiesPage extends BaseReactComponent {
   constructor(props) {
@@ -94,6 +98,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     });
     const cond = [];
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       isMobileDevice: false,
       //YO
       yieldOpportunitiesList: [],
@@ -201,6 +207,23 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       this.setState({
         isMobileDevice: true,
       });
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openYieldOppPaymentModal"
+      );
+      const isOpenForSearch = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal && !isOpenForSearch) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
     }
     scrollToTop();
     this.props.history.replace({
@@ -506,6 +529,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     }
   };
   addCondition = (key, value) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return null;
+    }
     if (key === "SEARCH_BY_ASSETS_IN") {
       let assets = [];
       Promise.all([
@@ -703,6 +730,36 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     });
     this.updateTimer();
   };
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    window.sessionStorage.setItem("blurredYieldOppSignInModal", true);
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openYieldOppPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
 
   render() {
     const { yieldOpportunitiesList } = this.state;
@@ -747,15 +804,35 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         headerClassName: this.state.isMobileDevice
           ? ""
           : "yeildOppYourPortfolioContainer top-l-r-3",
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
+          console.log("rowIndex ", rowIndex);
           if (dataKey === "asset") {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <div>
+                  <CoinChip
+                    hideNameWithouthImage
+                    coin_img_src={rowData.asset.symbol}
+                    coin_code={rowData.asset.code}
+                    chain={rowData?.network}
+                  />
+                </div>
+              );
+            }
             return (
-              <CoinChip
-                hideNameWithouthImage
-                coin_img_src={rowData.asset.symbol}
-                coin_code={rowData.asset.code}
-                chain={rowData?.network}
-              />
+              <CustomOverlayUgradeToPremium
+                position="top"
+                disabled={this.state.isPremiumUser}
+              >
+                <div className={`blurred-elements`} onClick={this.goToPayModal}>
+                  <CoinChip
+                    hideNameWithouthImage
+                    coin_img_src={rowData.asset.symbol}
+                    coin_code={rowData.asset.code}
+                    chain={rowData?.network}
+                  />
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -785,36 +862,56 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         headerClassName: this.state.isMobileDevice
           ? ""
           : "yeildOppYourPortfolioContainer",
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (dataKey === "usdValue") {
-            return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  amountFormat(
-                    rowData.value * this.state.currency?.rate,
-                    "en-US",
-                    "USD"
-                  )
-                }
-              >
-                <div className="cost-common-container">
-                  <div className="cost-common">
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {CurrencyType(false) +
-                        numToCurrency(
-                          rowData.value * this.state.currency?.rate
-                        )}
-                    </span>
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    CurrencyType(false) +
+                    amountFormat(
+                      rowData.value * this.state.currency?.rate,
+                      "en-US",
+                      "USD"
+                    )
+                  }
+                >
+                  <div className="cost-common-container">
+                    <div className="cost-common">
+                      <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                        {CurrencyType(false) +
+                          numToCurrency(
+                            rowData.value * this.state.currency?.rate
+                          )}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </CustomOverlay>
-            );
+                </CustomOverlay>
+              );
+            }
           }
+          return (
+            <CustomOverlayUgradeToPremium
+              position="top"
+              disabled={this.state.isPremiumUser}
+            >
+              <div
+                onClick={this.goToPayModal}
+                className={`cost-common-container blurred-elements`}
+              >
+                <div className="cost-common">
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {CurrencyType(false) +
+                      numToCurrency(rowData.value * this.state.currency?.rate)}
+                  </span>
+                </div>
+              </div>
+            </CustomOverlayUgradeToPremium>
+          );
         },
       },
       {
@@ -836,12 +933,29 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         dataKey: "project",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (dataKey === "project") {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <div
+                  className={`inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div`}
+                >
+                  {rowData.project ? rowData.project : "-"}
+                </div>
+              );
+            }
             return (
-              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                {rowData.project ? rowData.project : "-"}
-              </div>
+              <CustomOverlayUgradeToPremium
+                position="top"
+                disabled={this.state.isPremiumUser}
+              >
+                <div
+                  onClick={this.goToPayModal}
+                  className={`inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements`}
+                >
+                  {rowData.project ? rowData.project : "-"}
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -865,12 +979,29 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         dataKey: "pool",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (dataKey === "pool") {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <div
+                  className={`inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div`}
+                >
+                  {rowData.pool ? rowData.pool : "-"}
+                </div>
+              );
+            }
             return (
-              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                {rowData.pool ? rowData.pool : "-"}
-              </div>
+              <CustomOverlayUgradeToPremium
+                position="top"
+                disabled={this.state.isPremiumUser}
+              >
+                <div
+                  onClick={this.goToPayModal}
+                  className={`inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements`}
+                >
+                  {rowData.pool ? rowData.pool : "-"}
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -895,24 +1026,46 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         className: "usd-value",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (dataKey === "tvl") {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    CurrencyType(false) +
+                    amountFormat(
+                      rowData.tvl * this.state.currency?.rate,
+                      "en-US",
+                      "USD"
+                    )
+                  }
+                >
+                  <div className="cost-common-container">
+                    <div className="cost-common">
+                      <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                        {CurrencyType(false) +
+                          numToCurrency(
+                            rowData.tvl * this.state.currency?.rate
+                          )}
+                      </span>
+                    </div>
+                  </div>
+                </CustomOverlay>
+              );
+            }
             return (
-              <CustomOverlay
+              <CustomOverlayUgradeToPremium
                 position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  amountFormat(
-                    rowData.tvl * this.state.currency?.rate,
-                    "en-US",
-                    "USD"
-                  )
-                }
+                disabled={this.state.isPremiumUser}
               >
-                <div className="cost-common-container">
+                <div
+                  onClick={this.goToPayModal}
+                  className="cost-common-container blurred-elements"
+                >
                   <div className="cost-common">
                     <span className="inter-display-medium f-s-13 lh-16 table-data-font">
                       {CurrencyType(false) +
@@ -920,7 +1073,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                     </span>
                   </div>
                 </div>
-              </CustomOverlay>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -945,23 +1098,42 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         className: "usd-value",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (dataKey === "apy") {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={rowData.apy ? rowData.apy + "%" : "-"}
+                >
+                  <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                    {rowData.apy
+                      ? Number(noExponents(rowData.apy)).toLocaleString(
+                          "en-US"
+                        ) + "%"
+                      : "-"}
+                  </div>
+                </CustomOverlay>
+              );
+            }
             return (
-              <CustomOverlay
+              <CustomOverlayUgradeToPremium
                 position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={rowData.apy ? rowData.apy + "%" : "-"}
+                disabled={this.state.isPremiumUser}
               >
-                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                <div
+                  onClick={this.goToPayModal}
+                  className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements"
+                >
                   {rowData.apy
                     ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
                       "%"
                     : "-"}
                 </div>
-              </CustomOverlay>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -975,6 +1147,17 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           currentPage={"yield-opportunities"}
           history={this.props.history}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/yield-opportunities"}
+              title="Access Loch's Yield Opportunities"
+              description="Unlimited yield opportunities"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <YieldOpportunitiesMobilePage
             tableData={tableData}
             columnList={columnList}
@@ -1062,6 +1245,16 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 updateTimer={this.updateTimer}
               />
             )}
+            {this.state.isLochPaymentModal ? (
+              <PaywallModal
+                show={this.state.isLochPaymentModal}
+                onHide={this.hidePaymentModal}
+                redirectLink={BASE_URL_S3 + "/yield-opportunities"}
+                title="Access Loch's Yield Opportunities"
+                description="Unlimited yield opportunities"
+                hideBackBtn
+              />
+            ) : null}
             <PageHeader
               title={"Yield opportunities"}
               subTitle={

@@ -3,11 +3,14 @@ import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import {
   ConnectExEmailVerified,
+  CopyTradeSignInPopupEmailVerified,
   FollowSignInPopupEmailVerified,
   GeneralPopupEmailVerified,
   Home_CE_OAuthCompleted,
   LP_CE_OAuthCompleted,
   LochPointsSignInPopupEmailVerified,
+  SignInModalEmailAdded,
+  SignInModalOTPverified,
   SigninMenuEmailVerified,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
@@ -26,6 +29,7 @@ import {
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
 import { DARK_MODE } from "../intelligence/ActionTypes";
+import { whichSignUpMethod } from "../../utils/ReusableFunctions";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -81,6 +85,32 @@ export const SwitchDarkMode = (passedData) => {
       type: DARK_MODE,
       payload: passedData,
     });
+  };
+};
+export const createUserPayment = (passedData, stopCreditBtnLoading) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("commerce/payment/create-payment", passedData)
+      .then((res) => {
+        if (stopCreditBtnLoading) {
+          stopCreditBtnLoading();
+        }
+        if (!res.data.error) {
+          const redirectUrl = res.data.data?.payment?.payment_url;
+          if (redirectUrl) {
+            window.open(redirectUrl, "_blank");
+          }
+        } else {
+          toast.error("Something went wrong");
+        }
+      })
+      .catch((err) => {
+        if (stopCreditBtnLoading) {
+          stopCreditBtnLoading();
+        }
+        toast.error("Something went wrong");
+        // console.log("fixwallet",err)
+      });
   };
 };
 export const fixWalletApi = (ctx, info, stopBtnLoading) => {
@@ -1040,13 +1070,16 @@ export const getAllCurrencyRatesApi = () => {
 
 // Send Email OTP from whale pod
 
-export const SendOtp = (data, ctx, isForMobile) => {
+export const SendOtp = (data, ctx, isForMobile, isCopyTrader) => {
   postLoginInstance
     .post("organisation/user/send-email-otp", data)
     .then((res) => {
       if (!res.data.error) {
         if (isForMobile && ctx.showSignInOtpPage) {
           ctx.showSignInOtpPage();
+        }
+        if (isCopyTrader && ctx.toggleAuthModal) {
+          ctx.toggleAuthModal("verify");
         }
         // console.log("res", res.data);
         else {
@@ -1077,12 +1110,20 @@ export const SendOtp = (data, ctx, isForMobile) => {
 
 // Verify email
 
-export const VerifyEmail = (data, ctx) => {
+export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
   postLoginInstance
     .post("organisation/user/verify-otp-code", data)
     .then((res) => {
       if (!res.data.error) {
         let isOptValid = res.data.data.otp_verified;
+        if (isOptValid) {
+          const signUpMethod = whichSignUpMethod();
+          SignInModalOTPverified({
+            session_id: getCurrentUser().id,
+            email_address: passedEmail,
+            signUpMethod: signUpMethod,
+          });
+        }
         let token = res.data.data.token;
 
         //  window.sessionStorage.setItem(
@@ -1205,6 +1246,11 @@ export const VerifyEmail = (data, ctx) => {
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
           });
+        } else if (ctx.props.tracking === "Copy trade") {
+          CopyTradeSignInPopupEmailVerified({
+            session_id: getCurrentUser().id,
+            email_address: res.data.data.user?.email,
+          });
         }
         if (ctx.props?.popupType === "general_popup") {
           //
@@ -1244,7 +1290,7 @@ export const VerifyEmail = (data, ctx) => {
             isOptInValid: false,
           },
           () => {
-            if (ctx.props.stopUpdate) {
+            if (ctx.props.stopUpdate || passedStopUpdate) {
               window.sessionStorage.removeItem("lochDummyUser");
 
               const allChains = ctx.props.OnboardingState.coinsList;
@@ -1328,7 +1374,9 @@ export const VerifyEmail = (data, ctx) => {
               addLocalWalletList(JSON.stringify(addWallet));
               //  console.log("only sign");
               setTimeout(() => {
-                ctx.state.onHide();
+                if (ctx.state.onHide) {
+                  ctx.state.onHide();
+                }
                 // console.log("reload")
                 window.location.reload();
               }, 3000);
@@ -1339,7 +1387,7 @@ export const VerifyEmail = (data, ctx) => {
                 //  console.log("only whale watch for both new and old");
                 let userdata = new URLSearchParams();
                 userdata.append("old_user_id", userId);
-                UpdateUserDetails(userdata, ctx);
+                UpdateUserDetails(userdata, ctx, false);
               } else {
                 // update wallet
                 const apiResponse = res.data.data;
@@ -1473,7 +1521,7 @@ export const VerifyEmail = (data, ctx) => {
 
 // Update user details
 
-export const UpdateUserDetails = (data, ctx) => {
+export const UpdateUserDetails = (data, ctx, isCopyTrade) => {
   postLoginInstance
     .post("organisation/user/update-user-details", data)
     .then((res) => {
@@ -1504,6 +1552,9 @@ export const UpdateUserDetails = (data, ctx) => {
         if (ctx.AddEmailModal) {
           // for upgrade
           ctx.AddEmailModal();
+        } else if (isCopyTrade) {
+          ctx.onHide();
+          window.location.reload();
         } else {
           // for whale watch
           ctx.state.onHide();

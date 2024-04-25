@@ -25,11 +25,14 @@ import {
   SearchBarAddressAdded,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
+import { ARCX_API_KEY, BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
+  dontOpenLoginPopup,
   numToCurrency,
+  removeOpenModalAfterLogin,
 } from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser, isNewAddress } from "../Portfolio/Api";
@@ -46,10 +49,13 @@ import {
   setIsWalletConnectedReducer,
   setMetamaskConnectedReducer,
 } from "./HeaderAction";
+import { PaywallModal } from "../common";
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       canCallConnectWalletFun: false,
       showAmountsAtTop: false,
       topBarHistoryItems: [],
@@ -261,6 +267,20 @@ class TopWalletExchangeBar extends Component {
     });
   };
   componentDidMount() {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     setTimeout(() => {
       this.setState({
         canCallConnectWalletFun: true,
@@ -705,7 +725,40 @@ class TopWalletExchangeBar extends Component {
     });
     this.props.handleAddWalletClick();
   };
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openSearchbarPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   handleAddWallet = (replaceAddresses) => {
+    if (!replaceAddresses) {
+      this.goToPayModal();
+      return;
+    }
     this.hideTheTopBarHistoryItems();
     if (this.props.isBlurred) {
       this.props.hideFocusedInput();
@@ -1482,6 +1535,16 @@ class TopWalletExchangeBar extends Component {
             this.state.walletList.length > 0 ? "topBarContainerMultiple" : ""
           }`}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/"}
+              title="Aggregate Wallets with Loch"
+              description="Aggregate unlimited wallets"
+              hideBackBtn
+            />
+          ) : null}
           {this.state.topBarHistoryItems &&
           this.state.topBarHistoryItems.length > 0 &&
           this.state.showTopBarHistoryItems ? (

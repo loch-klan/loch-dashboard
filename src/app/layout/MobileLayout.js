@@ -2,6 +2,8 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  EmultionSidebarIcon,
+  MobileNavCopyTraderIcon,
   MobileNavFollow,
   MobileNavHome,
   MobileNavLeaderboard,
@@ -21,6 +23,7 @@ import {
   ProfileMenu,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
+  SignInModalEmailAdded,
   SignUpModalEmailAdded,
   resetUser,
   signInUser,
@@ -53,12 +56,20 @@ import { addUserCredits, updateUser } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
-import { whichSignUpMethod } from "../../utils/ReusableFunctions.js";
+import {
+  dontOpenLoginPopup,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
+  whichSignUpMethod,
+} from "../../utils/ReusableFunctions.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       authmodal: "",
       email: "",
       otp: "",
@@ -105,6 +116,12 @@ class MobileLayout extends BaseReactComponent {
         },
 
         {
+          pageIcon: MobileNavCopyTraderIcon,
+
+          text: "Copy",
+          path: "/copy-trade",
+        },
+        {
           pageIcon: MobileNavProfile,
           text: "Profile",
           path: "/profile",
@@ -144,9 +161,7 @@ class MobileLayout extends BaseReactComponent {
         this.state.authmodal !== "login" &&
         this.state.authmodal !== "verify"
       ) {
-        window.sessionStorage.removeItem("fifteenSecSignInModal");
-        window.sessionStorage.removeItem("referralCodesSignInModal");
-        window.sessionStorage.removeItem("lochPointsSignInModal");
+        removeSignUpMethods();
       }
     }
     if (!this.props.commonState?.mobileLayout) {
@@ -162,6 +177,20 @@ class MobileLayout extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     // for chain detect
     let activeTab = window.location.pathname;
     if (
@@ -215,11 +244,43 @@ class MobileLayout extends BaseReactComponent {
     //   email_address: getCurrentUser().email,
     // });
   };
-
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openSearchbarPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   handleAddWallet = (replaceAddresses) => {
     sessionStorage.setItem("replacedOrAddedAddress", true);
     if (this.state.goBtnDisabled) {
       return null;
+    }
+    if (replaceAddresses === false) {
+      this.goToPayModal();
+      return;
     }
     if (this.state.walletInput[0]) {
       SearchBarAddressAdded({
@@ -696,6 +757,12 @@ class MobileLayout extends BaseReactComponent {
       "email",
       this.state.email ? this.state.email.toLowerCase() : ""
     );
+    const signUpMethod = whichSignUpMethod();
+    SignInModalEmailAdded({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      signUpMethod: signUpMethod,
+    });
     SendOtp(data, this, true);
   };
   showSignInOtpPage = () => {
@@ -714,7 +781,12 @@ class MobileLayout extends BaseReactComponent {
         ? "generic pop up"
         : this.props.tracking
     );
-    VerifyEmail(data, this);
+    VerifyEmail(
+      data,
+      this,
+      true,
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
   };
   openSignInModal = () => {
     this.setState({
@@ -758,7 +830,17 @@ class MobileLayout extends BaseReactComponent {
             onHide={this.closeConfirmLeaveModal}
           />
         ) : null}
-
+        {this.state.isLochPaymentModal ? (
+          <PaywallModal
+            show={this.state.isLochPaymentModal}
+            onHide={this.hidePaymentModal}
+            redirectLink={BASE_URL_S3 + "/"}
+            title="Aggregate Wallets with Loch"
+            description="Aggregate unlimited wallets"
+            hideBackBtn
+            isMobile
+          />
+        ) : null}
         {this.state.authmodal === "login" ? (
           <LoginMobile
             toggleModal={this.toggleAuthModal}
@@ -973,14 +1055,12 @@ class MobileLayout extends BaseReactComponent {
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
                             });
-                          }
-                          //  else if (index === 3) {
-                          //   MenuCopyTradelist({
-                          //     session_id: getCurrentUser().id,
-                          //     email_address: getCurrentUser().email,
-                          //   });
-                          // }
-                          else if (index === 3) {
+                          } else if (index === 3) {
+                            MenuCopyTradelist({
+                              session_id: getCurrentUser().id,
+                              email_address: getCurrentUser().email,
+                            });
+                          } else if (index === 4) {
                             ProfileMenu({
                               session_id: getCurrentUser().id,
                               email_address: getCurrentUser().email,
