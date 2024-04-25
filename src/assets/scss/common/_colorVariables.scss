@@ -256,6 +256,9 @@
   --profileUnrecognizedWallet: #f2f2f2;
   --profileWalletDivider: rgba(229, 229, 230, 0.5);
   --profileWalletAddress: #b0b1b3;
+
+  --outOfFocusBody: rgba(0, 0, 0, 0.8);
+  --outOfFocusTopBar: #3a3a3a;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -504,6 +507,9 @@
   --profileUnrecognizedWallet: #313233;
   --profileWalletDivider: #313233;
   --profileWalletAddress: #636467;
+
+  --outOfFocusBody: rgba(255, 255, 255, 0.8);
+  --outOfFocusTopBar: #d7d7d7;
 }
 [data-theme="dark2"] {
   // UPDATED
