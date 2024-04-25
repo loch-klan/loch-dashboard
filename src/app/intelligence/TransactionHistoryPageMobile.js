@@ -159,6 +159,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
                   noSubtitleBottomPadding
                   disableOnLoading
                   isMiniversion
+                  showHeaderOnEmpty
                   headerHeight={60}
                   isArrow={true}
                   fakeWatermark

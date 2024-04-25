@@ -1331,7 +1331,7 @@
         }
       }
       .newHomeTableContainer {
-        min-height: 30rem;
+        min-height: 33rem;
         &::-webkit-scrollbar {
           width: 0rem;
           height: 0rem;
@@ -1368,7 +1368,7 @@
         }
         .table-wrapper-mobile-y-scroll {
           overflow-x: scroll;
-          max-height: 30.5rem;
+          max-height: 32.5rem;
           position: relative;
           display: flex;
           flex-direction: column;
@@ -1462,13 +1462,13 @@
     // min-height: 28rem;
 
     .bar-graph-section {
-      height: 32rem;
-      min-height: 32rem;
+      height: 35rem;
+      min-height: 35rem;
       margin-bottom: 0;
       width: 100%;
       box-shadow: none;
       .portfolio-profit-and-loss {
-        height: 90%;
+        height: 92%;
       }
     }
     // .ChartAreaWrapper,
@@ -1501,8 +1501,8 @@
       height: 100%;
     }
     .chartAreaOldBar {
-      height: 29rem;
-      min-height: 29rem;
+      height: 32rem;
+      min-height: 32rem;
     }
     .header {
       h4 {

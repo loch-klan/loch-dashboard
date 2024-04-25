@@ -375,7 +375,10 @@ class TransactionHistoryPage extends BaseReactComponent {
     } else {
       if (
         !this.props.commonState.transactionHistory ||
-        !this.props.intelligenceState.table
+        !(
+          this.props.intelligenceState.table &&
+          this.props.intelligenceState.table.length > 0
+        )
       ) {
         this.props.updateWalletListFlag("transactionHistory", true);
         let tempData = new URLSearchParams();
@@ -2107,7 +2110,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               selectedTokens={this.state.selectedNetworks}
               transactionHistorySavedData
             />
-            Network
+            <span className="inter-display-medium f-s-13 lh-16 ">Network</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -2144,13 +2147,11 @@ class TransactionHistoryPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col"
+            className="cp history-table-header-col table-header-font"
             id="hash"
             // onClick={() => this.handleTableSort("hash")}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Hash
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Hash</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -2177,7 +2178,6 @@ class TransactionHistoryPage extends BaseReactComponent {
               >
                 <div
                   onMouseEnter={() => {
-                    // console.log('here');
                     TransactionHistoryHashHover({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
@@ -2493,6 +2493,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   <TransactionTable
                     noSubtitleBottomPadding
                     tableData={tableData}
+                    showHeaderOnEmpty
                     columnList={columnList}
                     message={"No Transactions Found"}
                     totalPage={totalPage}

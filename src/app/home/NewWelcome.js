@@ -2205,9 +2205,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Rank
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Rank</span>
             {/* <Image
           src={sortByIcon}
           className={
@@ -2253,9 +2251,7 @@ class NewWelcome extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Wallet
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Wallet</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -2316,9 +2312,7 @@ class NewWelcome extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Nametag
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Nametag</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -2368,7 +2362,7 @@ class NewWelcome extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Net worth
             </span>
             {/* <Image
@@ -2428,7 +2422,7 @@ class NewWelcome extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Net flows (1 year)
             </span>
           </div>
@@ -2514,7 +2508,7 @@ class NewWelcome extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Unrealized PnL
             </span>
             {/* <Image

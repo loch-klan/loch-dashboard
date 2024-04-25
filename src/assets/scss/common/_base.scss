@@ -3479,6 +3479,19 @@ input {
 }
 
 .transaction-searchbar-full {
+  .searchBar {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    &:hover {
+      .form-group {
+        input {
+          &::placeholder {
+            color: var(--primaryTextColor);
+          }
+        }
+      }
+    }
+  }
   .form-group {
     flex-grow: 1;
   }
@@ -3596,4 +3609,11 @@ input {
   .container input:checked ~ .checkmark:after {
     display: block;
   }
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
 }
