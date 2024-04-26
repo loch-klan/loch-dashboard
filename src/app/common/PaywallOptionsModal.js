@@ -179,14 +179,14 @@ class PaywallOptionsModal extends BaseReactComponent {
       .create({
         line_items: [
           {
-            price: "price_1P8EGbFKqIbhlomARI3I5ddt",
+            price: "price_1P9l5KFKqIbhlomA8Kt1NaPl",
             quantity: 1,
           },
         ],
       })
       .then((res) => {
         const createUserData = new URLSearchParams();
-        createUserData.append("price_id", "price_1P8EGbFKqIbhlomARI3I5ddt");
+        createUserData.append("price_id", "price_1P9l5KFKqIbhlomA8Kt1NaPl");
         this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
         setTimeout(() => {
           window.open(res.url, "_blank");
@@ -219,7 +219,7 @@ class PaywallOptionsModal extends BaseReactComponent {
       paymentMethod: "stripe",
     });
     const createUserData = new URLSearchParams();
-    createUserData.append("price_id", "price_1P8EGbFKqIbhlomARI3I5ddt");
+    createUserData.append("price_id", "price_1P9l5KFKqIbhlomA8Kt1NaPl");
     this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
     setTimeout(() => {
       // window.open(res.url, "_blank");
@@ -256,7 +256,9 @@ class PaywallOptionsModal extends BaseReactComponent {
         }`}
         onHide={this.state.onHide}
         size="lg"
-        dialogClassName={"exit-overlay-modal bottom-modal"}
+        dialogClassName={`exit-overlay-modal ${
+          this.props.isMobile ? "bottom-modal" : ""
+        }`}
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"

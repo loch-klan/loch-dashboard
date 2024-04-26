@@ -182,7 +182,9 @@ class PaywallModal extends BaseReactComponent {
         }`}
         onHide={this.hideModal}
         size="lg"
-        dialogClassName={"exit-overlay-modal bottom-modal"}
+        dialogClassName={`exit-overlay-modal ${
+          this.props.isMobile ? "bottom-modal" : ""
+        }`}
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
