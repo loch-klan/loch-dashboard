@@ -4,3 +4,4 @@ export { default as SmartMoneyAboutImage } from "./SmartMoneyAbout.png";
 export { default as CopyClipboardIcon } from "./CopyClipboardIcon.svg";
 export { default as SmartMoneyAboutDarkImage } from "./SmartMoneyAboutDark.png";
 export { default as LochPremiumTooltipImage } from "./loch-premium-tooltip.png";
+export { default as LochPremiumTooltipDarkImage } from "./loch-premium-tooltip-dark.png";
