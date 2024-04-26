@@ -1,3 +1,4 @@
+import amplitude from "amplitude-js";
 import Mixpanel from "mixpanel-browser";
 import { deleteToken } from "./ManageToken";
 import { mobileCheck } from "./ReusableFunctions";
