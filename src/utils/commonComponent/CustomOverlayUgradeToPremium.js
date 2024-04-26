@@ -42,7 +42,7 @@ function CustomOverlayUgradeToPremium({
       <div className="inter-display-medium freemium-tooltip-desc">
         and unlock the full possibilities of Loch
       </div>
-      <Image className="freemium-tooltip-image" src={LochPremiumTooltipImage} />
+      <Image className="freemium-tooltip-image" />
     </Tooltip>
   );
 

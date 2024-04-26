@@ -146,5 +146,6 @@ export { default as UserProfileMobileIcon } from "./userProfileMobile.svg";
 export { default as RingingBellIcon } from "./ringingBell.svg";
 export { default as UnrecodgnizedProfileWalletIcon } from "./unrecodgnizedProfileWallet.svg";
 export { default as PieChartPorifleIcon } from "./pieChartPorifle.svg";
+export { default as PurpleCheckIcon } from "./purpleCheck.svg";
 export { default as CustomTransactionTelegramIcon } from "./customTransactionTelegram.svg";
 export { default as CustomTransactionMailIcon } from "./customTransactionMail.svg";

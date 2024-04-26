@@ -278,6 +278,16 @@
   // Fremium
   --fremiumTooltipHeader: #19191a;
   --fremiumTooltipDescription: #cacbcc;
+
+  //Tooltip
+  --freemiumTooltip: url(../../images/loch-premium-tooltip.png);
+  --freemiumTooltipShadow: rgba(24, 39, 75, 0.05);
+
+  //PayModal
+  --payModalBg: #5f33ff1a;
+  --payModalBgOpacity: 1;
+  --payModalPurpleText: #5f33ff;
+  --payModalDescText: #5a5b5d;
   --outOfFocusBody: rgba(0, 0, 0, 0.8);
   --outOfFocusTopBar: #3a3a3a;
   //Slider
@@ -547,6 +557,16 @@
   // Fremium
   --fremiumTooltipHeader: white;
   --fremiumTooltipDescription: #b0b1b3;
+
+  //Tooltip
+  --freemiumTooltip: url(../../images/loch-premium-tooltip-dark.png);
+  --freemiumTooltipShadow: rgba(255, 255, 255, 0.05);
+
+  //PayModal
+  --payModalBg: #673dfc1a;
+  --payModalBgOpacity: 0.9;
+  --payModalPurpleText: #5f33ff;
+  --payModalDescText: #5a5b5d;
   --outOfFocusBody: rgba(255, 255, 255, 0.8);
   --outOfFocusTopBar: #d7d7d7;
   //Slider
