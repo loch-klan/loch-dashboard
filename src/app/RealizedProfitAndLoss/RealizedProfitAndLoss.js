@@ -862,6 +862,7 @@ class RealizedProfitAndLoss extends Component {
               >
                 {!this.state.netFlowLoading ? (
                   <BarGraphSection
+                    showPremiumHover
                     isPremiumUser={this.state.isPremiumUser}
                     isBlurred={!this.state.isPremiumUser}
                     goToPayModal={this.goToPayModal}

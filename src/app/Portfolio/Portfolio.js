@@ -5138,6 +5138,7 @@ class Portfolio extends BaseReactComponent {
                       <div className="profit-chart">
                         {this.state.blockTwoSelectedItem === 1 ? (
                           <BarGraphSection
+                          showPremiumHover
                             goToPayModal={this.showBlurredFlows}
                             openChartPage={this.goToRealizedGainsPage}
                             newHomeSetup
@@ -5204,6 +5205,7 @@ class Portfolio extends BaseReactComponent {
                             </div>
 
                             <BarGraphSection
+                            showPremiumHover
                               goToPayModal={this.showBlurredGasFees}
                               isBlurred={!this.state.isPremiumUser}
                               digit={this.state.GraphDigit}

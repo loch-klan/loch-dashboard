@@ -721,6 +721,7 @@ class GasFeesPage extends Component {
               id="gasfeesspent"
             >
               <BarGraphSection
+                showPremiumHover
                 goToPayModal={this.goToPayModal}
                 isBlurred={!this.state.isPremiumUser}
                 data={

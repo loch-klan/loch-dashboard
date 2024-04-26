@@ -894,7 +894,9 @@ class BarGraphSection extends Component {
               {/* Graph Section */}
               <CustomOverlayUgradeToPremium
                 position="top"
-                disabled={this.props.isPremiumUser}
+                disabled={
+                  this.props.isPremiumUser || !this.props.showPremiumHover
+                }
               >
                 <div className={className} style={{ display: "flex" }}>
                   {options2 != undefined &&
