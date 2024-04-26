@@ -1024,7 +1024,11 @@ class ExitOverlay extends BaseReactComponent {
               ) : this.state.showRedirection ? null : (
                 <div className="exitOverlayIcon popup-main-icon-with-border">
                   <Image
-                    src={ExitOverlayIcon}
+                    src={
+                      this.props.iconImage
+                        ? this.props.iconImage
+                        : ExitOverlayIcon
+                    }
                     style={{ filter: "var(--invertColor)" }}
                   />
                 </div>

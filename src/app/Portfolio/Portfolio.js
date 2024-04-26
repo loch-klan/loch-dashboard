@@ -3035,7 +3035,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               src={sortByIcon}
               onClick={() => this.handleTableSort("asset")}
@@ -3410,7 +3410,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col  table-header-font"
             id="asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               onClick={() => this.handleYieldOppTableSort("asset")}
               src={sortByIcon}
@@ -3672,7 +3672,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="Asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
@@ -4573,7 +4573,7 @@ class Portfolio extends BaseReactComponent {
                               else this.changeBlockOneItem(1);
                             }}
                           >
-                            Assets
+                            Tokens
                             <CustomOverlay
                               position="top"
                               isIcon={false}
