@@ -3,6 +3,9 @@ import { deleteToken } from "./ManageToken";
 import { mobileCheck } from "./ReusableFunctions";
 
 //Api Config
+export const initAmplitudeAnalytics = () => {
+  amplitude.getInstance().init("ef30c3acc2f92a216e6b99a7db33166b");
+};
 export const initAmplitude = () => {
   // amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
   Mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY, {
@@ -29,6 +32,9 @@ export const sendAmplitudeData = (eventType, eventProperties) => {
     isMobile: mobileCheck(),
   };
   Mixpanel.track(eventType, newEventProperties);
+  if (amplitude.getInstance()) {
+    amplitude.getInstance().logEvent(eventType, newEventProperties);
+  }
 };
 
 export const signInUser = ({
