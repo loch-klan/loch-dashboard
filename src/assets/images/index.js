@@ -1,3 +1,9 @@
+export { default as GreekOne } from "./GreekOne.png";
+export { default as GreekTwo } from "./GreekTwo.png";
+export { default as GreekTwoShadow } from "./GreekTwoShadow.png";
+export { default as GreekThree } from "./GreekThree.png";
+export { default as WhaleTail } from "./WhaleTail.png";
+export { default as LochBigLogoCopyTradeWelcome } from "./LochBigLogoCopyTradeWelcome.png";
 export { default as EditIcon } from "./EditIcon.svg";
 export { default as SmartMoneyAboutMobileImage } from "./SmartMoneyAboutMobile.png";
 export { default as SmartMoneyAboutImage } from "./SmartMoneyAbout.png";

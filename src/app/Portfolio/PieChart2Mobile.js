@@ -171,7 +171,7 @@ class PieChart2Mobile extends BaseReactComponent {
         labelName: (
           <div className="cp history-table-header-col no-hover" id="Asset">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Asset
+              Token
             </span>
           </div>
         ),
@@ -471,7 +471,7 @@ class PieChart2Mobile extends BaseReactComponent {
           </div>
         </div>
 
-        <div
+        {/* <div
           style={{
             marginTop: "3rem",
             display: "flex",
@@ -628,7 +628,7 @@ class PieChart2Mobile extends BaseReactComponent {
               </div>
               <div className="balance-list-content-parent">
                 <div className="balance-list-content">
-                  {/* For yeild */}
+
                   {this.state.isYeildToggle && (
                     <div>
                       {this.props.defiState.YieldValues &&
@@ -662,7 +662,6 @@ class PieChart2Mobile extends BaseReactComponent {
                     </div>
                   )}
 
-                  {/* For debt */}
                   {this.state.isDebtToggle && (
                     <div>
                       {this.props.defiState.DebtValues &&
@@ -698,7 +697,7 @@ class PieChart2Mobile extends BaseReactComponent {
               </div>
             </div>
           )}
-        </div>
+        </div> */}
         {/* <h2
           style={{
             marginTop: "3rem",

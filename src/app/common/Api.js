@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import {
   ConnectExEmailVerified,
+  CopyTradeSignInPopupEmailVerified,
   FollowSignInPopupEmailVerified,
   GeneralPopupEmailVerified,
   Home_CE_OAuthCompleted,
@@ -379,7 +380,7 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
         //     },
         //   });
         // }, 3000);
-        getUserAddresses(ctx, stayOnWelcomePage);
+        getUserAddresses(ctx, stayOnWelcomePage, true);
       } else {
         ctx.setState({ error: true });
       }
@@ -391,7 +392,11 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
 
 // get user detail for chain
 
-export const getUserAddresses = (ctx, stayOnWelcomePage = false) => {
+export const getUserAddresses = (
+  ctx,
+  stayOnWelcomePage = false,
+  showSuccessMessage = false
+) => {
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
       let apiResponse = res.data?.data;
@@ -462,6 +467,11 @@ export const getUserAddresses = (ctx, stayOnWelcomePage = false) => {
       window.sessionStorage.setItem("addWallet", JSON.stringify(newAddWallet));
       addLocalWalletList(JSON.stringify(newAddWallet));
       setTimeout(() => {
+        if (showSuccessMessage) {
+          setTimeout(() => {
+            toast.success("Congratulations! Your email has been verified");
+          }, 1000);
+        }
         if (stayOnWelcomePage) {
           ctx.props.history.push({
             pathname: "/",
@@ -1060,13 +1070,16 @@ export const getAllCurrencyRatesApi = () => {
 
 // Send Email OTP from whale pod
 
-export const SendOtp = (data, ctx, isForMobile) => {
+export const SendOtp = (data, ctx, isForMobile, isCopyTrader) => {
   postLoginInstance
     .post("organisation/user/send-email-otp", data)
     .then((res) => {
       if (!res.data.error) {
         if (isForMobile && ctx.showSignInOtpPage) {
           ctx.showSignInOtpPage();
+        }
+        if (isCopyTrader && ctx.toggleAuthModal) {
+          ctx.toggleAuthModal("verify");
         }
         // console.log("res", res.data);
         else {
@@ -1233,6 +1246,11 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
           });
+        } else if (ctx.props.tracking === "Copy trade") {
+          CopyTradeSignInPopupEmailVerified({
+            session_id: getCurrentUser().id,
+            email_address: res.data.data.user?.email,
+          });
         }
         if (ctx.props?.popupType === "general_popup") {
           //
@@ -1369,7 +1387,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
                 //  console.log("only whale watch for both new and old");
                 let userdata = new URLSearchParams();
                 userdata.append("old_user_id", userId);
-                UpdateUserDetails(userdata, ctx);
+                UpdateUserDetails(userdata, ctx, false);
               } else {
                 // update wallet
                 const apiResponse = res.data.data;
@@ -1503,7 +1521,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
 
 // Update user details
 
-export const UpdateUserDetails = (data, ctx) => {
+export const UpdateUserDetails = (data, ctx, isCopyTrade) => {
   postLoginInstance
     .post("organisation/user/update-user-details", data)
     .then((res) => {
@@ -1534,6 +1552,9 @@ export const UpdateUserDetails = (data, ctx) => {
         if (ctx.AddEmailModal) {
           // for upgrade
           ctx.AddEmailModal();
+        } else if (isCopyTrade) {
+          ctx.onHide();
+          window.location.reload();
         } else {
           // for whale watch
           ctx.state.onHide();

@@ -756,7 +756,7 @@ class PortfolioMobile extends BaseReactComponent {
                     this.props.changeBlockOneItem(1);
                   }}
                 >
-                  Assets
+                  Tokens
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ${
@@ -1150,12 +1150,12 @@ class PortfolioMobile extends BaseReactComponent {
                 </div>
                 <div
                   className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                    this.props.blockFourSelectedItem === 2
+                    this.props.blockFourSelectedItem === 4
                       ? "section-table-toggle-element-selected"
                       : ""
                   }`}
                   onClick={() => {
-                    this.props.changeBlockFourItem(2);
+                    this.props.changeBlockFourItem(4);
                   }}
                 >
                   Transactions
@@ -1191,7 +1191,7 @@ class PortfolioMobile extends BaseReactComponent {
                       isMobileGraph
                     />
                   </div>
-                ) : this.props.blockFourSelectedItem === 2 ? (
+                ) : this.props.blockFourSelectedItem === 4 ? (
                   <div>
                     <div
                       className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainer-transaction-history newHomeTableContainerMobile hide-scrollbar ${

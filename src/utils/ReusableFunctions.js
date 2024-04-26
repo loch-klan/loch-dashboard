@@ -1,6 +1,6 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import { API_LIMIT } from "./Constant";
+import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
 import { DARK_MODE } from "../app/intelligence/ActionTypes";
 import { SwitchDarkMode } from "../app/common/Api";
@@ -60,8 +60,28 @@ export const whichSignUpMethod = () => {
   if (window.sessionStorage.getItem("fifteenSecSignInModal")) {
     return "15 sec";
   }
-
   return "Sidebar";
+};
+export const sliderBillionToMillion = (passedValue) => {
+  const value = Number(passedValue);
+  const resultHoder = [
+    100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000,
+    10000000000,
+  ];
+
+  for (let i = resultHoder.length - 1; i >= 0; i--) {
+    const element = resultHoder[i];
+    const index = i;
+    if (index > 0) {
+      if (value === element) {
+        return index;
+      } else if (value < element && value > resultHoder[index - 1]) {
+        return index - 1;
+      }
+    } else {
+      return 0;
+    }
+  }
 };
 export const removeSignUpMethods = () => {
   window.sessionStorage.removeItem("fifteenSecSignInModal");
@@ -78,6 +98,20 @@ export const removeSignUpMethods = () => {
   window.sessionStorage.removeItem("blurredInsightsSignInModal");
   window.sessionStorage.removeItem("blurredGasFeesSignInModal");
 };
+export const openLoginPopUp = () => {
+  window.sessionStorage.setItem("dontOpenLoginPopup", true);
+  if (document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")) {
+    document
+      .getElementById("sidebar-open-sign-in-btn-loch-points-profile")
+      .click();
+  } else if (
+    document.getElementById("sidebar-closed-sign-in-btn-loch-points-profile")
+  ) {
+    document
+      .getElementById("sidebar-closed-sign-in-btn-loch-points-profile")
+      .click();
+  }
+};
 export const removeOpenModalAfterLogin = () => {
   window.sessionStorage.removeItem("openHomePaymentModal");
   window.sessionStorage.removeItem("openAssetPaymentModal");
@@ -87,6 +121,12 @@ export const removeOpenModalAfterLogin = () => {
   window.sessionStorage.removeItem("openSearchbarPaymentModal");
   window.sessionStorage.removeItem("openExportPaymentModal");
   window.sessionStorage.removeItem("openGasFeesModal");
+};
+export const goToAddress = (passedAddress) => {
+  let slink = passedAddress;
+  let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
+
+  window.open(shareLink, "_blank", "noreferrer");
 };
 export const goToTelegram = () => {
   window.open("https://t.me/loch_chain", "_blank");
@@ -356,11 +396,17 @@ export const lightenDarkenColor = (hex, lum) => {
   return rgb;
 };
 
-export const amountFormat = (number, locals, currency_type) => {
+export const amountFormat = (
+  number,
+  locals,
+  currency_type,
+  minimumFractionDigits = 2,
+  maximumFractionDigits = 2
+) => {
   return new Intl.NumberFormat(locals, {
     currency: currency_type,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: minimumFractionDigits,
+    maximumFractionDigits: maximumFractionDigits,
   }).format(number);
 };
 export const getPadding = (val, e, OnboardingState) => {
