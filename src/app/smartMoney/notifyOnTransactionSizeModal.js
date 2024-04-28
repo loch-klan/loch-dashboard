@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import {
   BackArrowSmartMoneyIcon,
   CrossSmartMoneyIcon,
+  CrossTransactionNotificationWalletIcon,
   CustomTransactionMailIcon,
   CustomTransactionTelegramIcon,
   RingingBellIcon,
@@ -26,11 +27,31 @@ import { PaywallModal } from "../common";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import CheckboxCustomTable from "../common/customCheckboxTable";
 import validator from "validator";
+import { isNewAddress } from "../Portfolio/Api";
+import { detectCoin } from "../onboarding/Api";
 
 class NotifyOnTransactionSizeModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      loadAddBtn: false,
+      disableAddBtn: false,
+      walletInput: [
+        {
+          id: `wallet1`,
+          address: "",
+          coins: [],
+          displayAddress: "",
+          wallet_metadata: {},
+          nickname: "",
+          showAddress: true,
+          showNickname: true,
+          apiAddress: "",
+          showNameTag: true,
+          nameTag: "",
+        },
+      ],
+      addedWallets: [],
       sliderConvertor: [
         100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000,
         10000000000,
@@ -59,6 +80,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       isUserTelegramSelected: false,
     };
   }
+
   setTooltipPos = () => {
     const xAndYMax = document
       .getElementsByClassName("rc-slider-handle-1")[0]
@@ -86,6 +108,11 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     this.setState({
       userDetailsState: userDetails,
     });
+    const allEle = document.getElementsByClassName("exit-overlay-form");
+    const myEle = allEle[0];
+    myEle.addEventListener("scroll", () => {
+      this.setTooltipPos();
+    });
   }
   convertMinMaxToSlider = () => {
     this.setState(
@@ -103,6 +130,9 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     );
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.addedWallets !== this.state.addedWallets) {
+      this.setTooltipPos();
+    }
     if (
       prevState.curMinSliderVal !== this.state.curMinSliderVal ||
       prevState.curMaxSliderVal !== this.state.curMaxSliderVal
@@ -329,6 +359,226 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       );
     }
   };
+  handleOnLocalChange = (e) => {
+    let { name, value } = e.target;
+    let walletCopy = [...this.state.walletInput];
+    let foundIndex = walletCopy.findIndex((obj) => obj.id === name);
+    if (foundIndex > -1) {
+      let prevValue = walletCopy[foundIndex].address;
+
+      walletCopy[foundIndex].address = value;
+      if (value === "" || prevValue !== value) {
+        walletCopy[foundIndex].coins = [];
+      }
+      if (value === "") {
+        walletCopy[foundIndex].coinFound = false;
+        walletCopy[foundIndex].nickname = "";
+      }
+    }
+    this.setState({
+      addButtonVisible: this.state.walletInput.some((wallet) =>
+        wallet.address ? true : false
+      ),
+      walletInput: walletCopy,
+    });
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    // timeout;
+    this.timeout = setTimeout(() => {
+      this.getCoinBasedOnLocalWalletAddress(name, value);
+    }, 1000);
+  };
+  handleTopBarInputKeyDown = (curKey) => {
+    if (
+      curKey &&
+      curKey.code &&
+      curKey.code === "Enter" &&
+      this.state.walletInput[0].coinFound &&
+      this.state.walletInput[0].coins.length > 0 &&
+      !this.state.disableAddBtn
+    ) {
+      this.addToAddedWallets();
+    }
+  };
+  getCoinBasedOnLocalWalletAddress = (name, value) => {
+    let parentCoinList = this.props.OnboardingState.parentCoinList;
+
+    if (parentCoinList && value) {
+      window.sessionStorage.removeItem("shouldRecallApis");
+      const tempWalletAddress = [value];
+      const data = new URLSearchParams();
+      data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
+
+      this.props.isNewAddress(data);
+      for (let i = 0; i < parentCoinList.length; i++) {
+        this.props.detectCoin(
+          {
+            id: name,
+            coinCode: parentCoinList[i].code,
+            coinSymbol: parentCoinList[i].symbol,
+            coinName: parentCoinList[i].name,
+            address: value,
+            coinColor: parentCoinList[i].color,
+            subChains: parentCoinList[i].sub_chains,
+          },
+          this,
+          false,
+          0,
+          false,
+          true
+        );
+      }
+    }
+  };
+  handleSetCoinByLocalWallet = (data) => {
+    let coinList = {
+      chain_detected: data.chain_detected,
+      coinCode: data.coinCode,
+      coinName: data.coinName,
+      coinSymbol: data.coinSymbol,
+      coinColor: data.coinColor,
+    };
+    let newCoinList = [];
+    newCoinList.push(coinList);
+    data.subChains &&
+      data.subChains?.map((item) =>
+        newCoinList.push({
+          chain_detected: data.chain_detected,
+          coinCode: item.code,
+          coinName: item?.name,
+          coinSymbol: item.symbol,
+          coinColor: item.color,
+        })
+      );
+    let i = this.state.walletInput.findIndex((obj) => obj.id === data.id);
+    let newAddress = [...this.state.walletInput];
+
+    //new code
+    data.address !== newAddress[i].address
+      ? (newAddress[i].coins = [])
+      : newAddress[i].coins.push(...newCoinList);
+
+    // if (data.id === newAddress[i].id) {
+    //   newAddress[i].address = data.address;
+    // }
+
+    newAddress[i].coinFound = newAddress[i].coins.some(
+      (e) => e.chain_detected === true
+    );
+
+    newAddress[i].apiAddress = data?.apiaddress;
+
+    this.setState({
+      walletInput: newAddress,
+    });
+  };
+  isDisabledFun = (isLoading) => {
+    let isDisableFlag = true;
+
+    this.state.walletInput?.forEach((e) => {
+      if (e.address) {
+        if (e.coins.length !== this.props.OnboardingState.coinsList.length) {
+          e.coins.forEach((a) => {
+            if (a.chain_detected === true) {
+              isDisableFlag = false;
+            }
+          });
+        } else if (e.coins.length > 0 && !isLoading) {
+          e.coins.forEach((a) => {
+            if (a.chain_detected === true) {
+              isDisableFlag = false;
+            }
+          });
+        } else {
+          isDisableFlag = false;
+        }
+      }
+    });
+    if (isLoading && isDisableFlag) {
+      if (this.state.walletInput.length > 1) {
+        return false;
+      }
+    }
+    return isDisableFlag;
+  };
+  addToAddedWallets = () => {
+    let shouldAdd = true;
+
+    this.state.addedWallets.forEach((res) => {
+      if (
+        (res.address &&
+          this.state.walletInput[0].address &&
+          res.address === this.state.walletInput[0].address) ||
+        (res.apiAddress &&
+          this.state.walletInput[0].apiAddress &&
+          res.apiAddress === this.state.walletInput[0].apiAddress) ||
+        (res.apiAddress &&
+          this.state.walletInput[0].address &&
+          res.apiAddress === this.state.walletInput[0].address) ||
+        (res.address &&
+          this.state.walletInput[0].apiAddress &&
+          res.address === this.state.walletInput[0].apiAddress)
+      ) {
+        shouldAdd = false;
+      }
+    });
+    if (shouldAdd) {
+      this.setState(
+        {
+          addedWallets: [...this.state.addedWallets, this.state.walletInput[0]],
+        },
+        () => {
+          this.setState({
+            walletInput: [
+              {
+                id: `wallet1`,
+                address: "",
+                coins: [],
+                displayAddress: "",
+                wallet_metadata: {},
+                nickname: "",
+                showAddress: true,
+                showNickname: true,
+                apiAddress: "",
+                showNameTag: true,
+                nameTag: "",
+              },
+            ],
+          });
+        }
+      );
+    } else {
+      this.setState({
+        walletInput: [
+          {
+            id: `wallet1`,
+            address: "",
+            coins: [],
+            displayAddress: "",
+            wallet_metadata: {},
+            nickname: "",
+            showAddress: true,
+            showNickname: true,
+            apiAddress: "",
+            showNameTag: true,
+            nameTag: "",
+          },
+        ],
+      });
+    }
+  };
+  removeWallet = (removeThisIndex) => {
+    const afterRemoved = this.state.addedWallets.filter(
+      (res, resIndex) => resIndex !== removeThisIndex
+    );
+    this.setState({
+      addedWallets: [...afterRemoved],
+    });
+  };
+  scrollTester = () => {
+    console.log("scroller");
+  };
   render() {
     return (
       <Modal
@@ -390,6 +640,96 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                 {TruncateText(this.props.selectedAddress)}
               </div>
             </div>
+            <div className="smbWalletsContainer">
+              <div
+                style={{
+                  marginBottom: "1.5rem",
+                }}
+                className="inter-display-medium smbTitle"
+              >
+                Wallets
+              </div>
+              <div className="smbwInputContainer">
+                <input
+                  style={{
+                    textAlign:
+                      this.state.walletInput[0] &&
+                      this.state.walletInput[0].address
+                        ? "left"
+                        : "",
+                  }}
+                  placeholder="Add an address here"
+                  className={`inter-display-medium smbwInput`}
+                  value={
+                    (this.state.walletInput &&
+                      this.state.walletInput[0] &&
+                      this.state.walletInput[0].address) ||
+                    ""
+                  }
+                  title={
+                    (this.state.walletInput &&
+                      this.state.walletInput[0] &&
+                      this.state.walletInput[0].address) ||
+                    ""
+                  }
+                  onChange={(e) => this.handleOnLocalChange(e)}
+                  onKeyDown={this.handleTopBarInputKeyDown}
+                  name={`wallet${1}`}
+                  autoComplete="off"
+                />
+                {/* <div className="inter-display-medium smbwInputBtn">Add</div> */}
+                {this.state.walletInput &&
+                this.state.walletInput[0] &&
+                this.state.walletInput[0].address ? (
+                  <CustomButton
+                    className="primary-btn go-btn main-button-invert smbwInputBtn"
+                    type="submit"
+                    buttonText="Add"
+                    handleClick={this.addToAddedWallets}
+                    isLoading={
+                      (this.state.addButtonVisible
+                        ? this.isDisabledFun(true)
+                        : false) || this.state.loadAddBtn
+                    }
+                    isDisabled={
+                      (this.state.addButtonVisible
+                        ? this.isDisabledFun()
+                        : true) || this.state.loadAddBtn
+                    }
+                  />
+                ) : null}
+              </div>
+              {this.state.addedWallets && this.state.addedWallets.length > 0 ? (
+                <div className="smbwAddedWalletBlock">
+                  <div
+                    style={{
+                      marginTop: "2rem",
+                    }}
+                    className="inter-display-medium smbTitle"
+                  >
+                    Added wallets
+                  </div>
+                  <div className="smbwAddedWalletContainer">
+                    {this.state.addedWallets.map((wallet, index) => {
+                      return (
+                        <div
+                          onClick={() => {
+                            this.removeWallet(index);
+                          }}
+                          className="inter-display-medium smbwAddedWalletItem"
+                        >
+                          {wallet.address}
+                          <Image
+                            className="smbwAddedWalletCross"
+                            src={CrossTransactionNotificationWalletIcon}
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
+            </div>
             <div className="smbSliderContainer">
               <div className="smbSlider">
                 <div
@@ -407,7 +747,20 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                   id="smbSliderMinBox"
                   className="inter-display-medium smbSliderMinMaxBox"
                 >
+                  <span>
+                    {this.state.curMinSliderVal &&
+                    this.state.curMinSliderVal.length > 0
+                      ? `$${amountFormat(
+                          this.state.curMinSliderVal,
+                          "en-US",
+                          "USD",
+                          0,
+                          0
+                        )}`
+                      : ""}
+                  </span>
                   <div className="smbSliderMinMaxBoxArrow" />
+                  {/* 
                   <input
                     id="smbSliderMinBoxInput"
                     className="smbSliderMinMaxBoxInput"
@@ -424,7 +777,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                         : ""
                     }
                     onChange={this.minAmountChange}
-                  />
+                  /> */}
                 </div>
                 <div
                   style={{
@@ -433,8 +786,20 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                   id="smbSliderMaxBox"
                   className="inter-display-medium smbSliderMinMaxBox"
                 >
+                  <span>
+                    {this.state.curMaxSliderVal &&
+                    this.state.curMaxSliderVal.length > 0
+                      ? `$${amountFormat(
+                          this.state.curMaxSliderVal,
+                          "en-US",
+                          "USD",
+                          0,
+                          0
+                        )}`
+                      : ""}
+                  </span>
                   <div className="smbSliderMinMaxBoxArrow" />
-                  <input
+                  {/* <input
                     id="smbSliderMaxBoxInput"
                     className="smbSliderMinMaxBoxInput"
                     value={
@@ -450,7 +815,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                         : ""
                     }
                     onChange={this.maxAmountChange}
-                  />
+                  /> */}
                 </div>
                 <Slider
                   role="tooltip"
@@ -577,7 +942,10 @@ const mapStateToProps = (state) => ({
   InflowOutflowAssetListState: state.InflowOutflowAssetListState,
   OnboardingState: state.OnboardingState,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  isNewAddress,
+  detectCoin,
+};
 
 NotifyOnTransactionSizeModal.propTypes = {};
 
