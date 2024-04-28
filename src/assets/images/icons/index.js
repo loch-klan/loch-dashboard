@@ -149,3 +149,4 @@ export { default as PieChartPorifleIcon } from "./pieChartPorifle.svg";
 export { default as PurpleCheckIcon } from "./purpleCheck.svg";
 export { default as CustomTransactionTelegramIcon } from "./customTransactionTelegram.svg";
 export { default as CustomTransactionMailIcon } from "./customTransactionMail.svg";
+export { default as CrossTransactionNotificationWalletIcon } from "./crossTransactionNotificationWallet.svg";
