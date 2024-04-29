@@ -51,6 +51,7 @@ import {
   amountFormat,
   compareTwoArrayOfObjects,
   dontOpenLoginPopup,
+  isPremiumUser,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -202,7 +203,19 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       this.checkForInactivity();
     }, 900000);
   };
+  checkPremium = () => {
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUser: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUser: false,
+      });
+    }
+  };
   componentDidMount() {
+    this.checkPremium();
     if (mobileCheck()) {
       this.setState({
         isMobileDevice: true,
@@ -405,6 +418,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (
       prevProps.yieldOpportunitiesState !== this.props.yieldOpportunitiesState
     ) {
+      this.checkPremium();
       this.setState({
         yieldOpportunitiesList: this.props.yieldOpportunitiesState.yield_pools
           ? this.props.yieldOpportunitiesState.yield_pools
