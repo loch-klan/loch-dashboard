@@ -395,6 +395,7 @@ export const getUserAddresses = (ctx, stayOnWelcomePage = false) => {
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
       let apiResponse = res.data?.data;
+
       let newAddWallet = [];
       if (apiResponse?.wallets) {
         // const allChains = getState().OnboardingState.coinsList;
@@ -1801,6 +1802,16 @@ export const getUser = (ctx = null, showToast = false) => {
   return async function () {
     postLoginInstance.post("organisation/user/get-user").then((res) => {
       if (!res.data.error) {
+        let currentUserPlan = "Free";
+        if (res.data?.data?.current_plan?.name) {
+          currentUserPlan = res.data.data.current_plan.name;
+        }
+        window.sessionStorage.setItem(
+          "currentUserPaymentPlan",
+          currentUserPlan
+        );
+
+        console.log("apiResponse is ", currentUserPlan);
         // free pricing
         let plan = {
           defi_enabled: true,

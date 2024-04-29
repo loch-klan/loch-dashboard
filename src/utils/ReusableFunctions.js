@@ -17,6 +17,16 @@ export const scrollToBottomAfterPageChange = () => {
     window.scroll(0, document.body.scrollHeight);
   }
 };
+export const isPremiumUser = () => {
+  const currentUserPaymentPlan = window.sessionStorage.getItem(
+    "currentUserPaymentPlan"
+  );
+  if (currentUserPaymentPlan === "Loch Premium") {
+    return true;
+  }
+  return false;
+};
+
 export const dontOpenLoginPopup = () => {
   window.sessionStorage.setItem("dontOpenLoginPopup", true);
 };
@@ -329,6 +339,9 @@ export const numToCurrency = (
 };
 
 export const lightenDarkenColor = (hex, lum) => {
+  if (hex === undefined || hex === "xxxxx") {
+    hex = "#ffffff";
+  }
   // var num = parseInt(col, 16);
   // var r = (num >> 16) + amt;
   // var b = ((num >> 8) & 0x00FF) + amt;

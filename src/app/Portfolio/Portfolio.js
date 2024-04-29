@@ -125,6 +125,7 @@ import {
   amountFormat,
   convertNtoNumber,
   dontOpenLoginPopup,
+  isPremiumUser,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -197,6 +198,7 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      isPremiumUserDay1: false,
       isPremiumUser: false,
       isLochPaymentModal: false,
       payModalTitle: "",
@@ -816,7 +818,28 @@ class Portfolio extends BaseReactComponent {
       }
     }, 5000);
   };
+  checkPremium = () => {
+    // if (isPremiumUser()) {
+    //   this.setState({
+    //     isPremiumUser: true,
+    //   });
+    // } else {
+    //   this.setState({
+    //     isPremiumUser: false,
+    //   });
+    // }
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUserDay1: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUserDay1: false,
+      });
+    }
+  };
   componentDidMount() {
+    this.checkPremium();
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       const shouldOpenNoficationModal = window.sessionStorage.getItem(
@@ -1118,6 +1141,20 @@ class Portfolio extends BaseReactComponent {
         localNftData: this.props.NFTState?.nfts,
         nftTableLoading: false,
       });
+    }
+    if (
+      prevState.AvgCostLoading !== this.state.AvgCostLoading ||
+      prevState.netFlowLoading !== this.state.netFlowLoading ||
+      prevState.gasFeesGraphLoading !== this.state.gasFeesGraphLoading ||
+      prevState.nftTableLoading !== this.state.nftTableLoading ||
+      prevState.counterGraphLoading !== this.state.counterGraphLoading ||
+      prevState.chainLoader !== this.state.chainLoader ||
+      prevState.insightsBlockLoading !== this.state.insightsBlockLoading ||
+      prevState.tableLoading !== this.state.tableLoading ||
+      prevState.yieldOpportunitiesTableLoading !==
+        this.state.yieldOpportunitiesTableLoading
+    ) {
+      this.checkPremium();
     }
     // Block One
     if (this.props.commonState !== prevProps.commonState) {
@@ -3643,7 +3680,8 @@ class Portfolio extends BaseReactComponent {
             return null;
           }
           if (dataKey === "asset") {
-            if (this.state.isPremiumUser || rowIndex === 0) {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
               return (
                 <CoinChip
                   hideNameWithouthImage
@@ -3656,7 +3694,8 @@ class Portfolio extends BaseReactComponent {
             return (
               <CustomOverlayUgradeToPremium
                 position="top"
-                disabled={this.state.isPremiumUser}
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUserDay1}
               >
                 <div
                   className={`blurred-elements`}
@@ -3700,7 +3739,8 @@ class Portfolio extends BaseReactComponent {
             return null;
           }
           if (dataKey === "project") {
-            if (this.state.isPremiumUser || rowIndex === 0) {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
               return (
                 <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                   {rowData.project ? rowData.project : "-"}
@@ -3710,7 +3750,8 @@ class Portfolio extends BaseReactComponent {
             return (
               <CustomOverlayUgradeToPremium
                 position="top"
-                disabled={this.state.isPremiumUser}
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUserDay1}
               >
                 <div
                   className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements"
@@ -3750,7 +3791,8 @@ class Portfolio extends BaseReactComponent {
             return null;
           }
           if (dataKey === "tvl") {
-            if (this.state.isPremiumUser || rowIndex === 0) {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
               return (
                 <div className="cost-common-container">
                   <div className="cost-common">
@@ -3767,7 +3809,8 @@ class Portfolio extends BaseReactComponent {
             return (
               <CustomOverlayUgradeToPremium
                 position="top"
-                disabled={this.state.isPremiumUser}
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUserDay1}
               >
                 <div
                   onClick={this.showBlurredYieldOpp}
@@ -3814,7 +3857,8 @@ class Portfolio extends BaseReactComponent {
             return null;
           }
           if (dataKey === "apy") {
-            if (this.state.isPremiumUser || rowIndex === 0) {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
               return (
                 <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                   {rowData.apy
@@ -3827,7 +3871,8 @@ class Portfolio extends BaseReactComponent {
             return (
               <CustomOverlayUgradeToPremium
                 position="top"
-                disabled={this.state.isPremiumUser}
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUserDay1}
               >
                 <div
                   onClick={this.showBlurredYieldOpp}
@@ -3869,7 +3914,8 @@ class Portfolio extends BaseReactComponent {
             return null;
           }
           if (dataKey === "usdValue") {
-            if (this.state.isPremiumUser || rowIndex === 0) {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
               return (
                 <div className="cost-common-container">
                   <div className="cost-common">
@@ -3886,7 +3932,8 @@ class Portfolio extends BaseReactComponent {
             return (
               <CustomOverlayUgradeToPremium
                 position="top"
-                disabled={this.state.isPremiumUser}
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUserDay1}
               >
                 <div
                   onClick={this.showBlurredYieldOpp}
@@ -3932,7 +3979,8 @@ class Portfolio extends BaseReactComponent {
             return null;
           }
           if (dataKey === "pool") {
-            if (this.state.isPremiumUser || rowIndex === 0) {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
               return (
                 <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                   {rowData.pool ? rowData.pool : "-"}
@@ -3942,7 +3990,8 @@ class Portfolio extends BaseReactComponent {
             return (
               <CustomOverlayUgradeToPremium
                 position="top"
-                disabled={this.state.isPremiumUser}
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUserDay1}
               >
                 <div
                   onClick={this.showBlurredYieldOpp}
@@ -5138,7 +5187,7 @@ class Portfolio extends BaseReactComponent {
                       <div className="profit-chart">
                         {this.state.blockTwoSelectedItem === 1 ? (
                           <BarGraphSection
-                          showPremiumHover
+                            showPremiumHover
                             goToPayModal={this.showBlurredFlows}
                             openChartPage={this.goToRealizedGainsPage}
                             newHomeSetup
@@ -5205,7 +5254,7 @@ class Portfolio extends BaseReactComponent {
                             </div>
 
                             <BarGraphSection
-                            showPremiumHover
+                              showPremiumHover
                               goToPayModal={this.showBlurredGasFees}
                               isBlurred={!this.state.isPremiumUser}
                               digit={this.state.GraphDigit}
@@ -5749,7 +5798,8 @@ class Portfolio extends BaseReactComponent {
                           history={this.props.history}
                           updatedInsightList={this.state.updatedInsightList}
                           insightsBlockLoading={this.state.insightsBlockLoading}
-                          isPremiumUser={this.state.isPremiumUser}
+                          // isPremiumUser={this.state.isPremiumUser}
+                          isPremiumUser={this.state.isPremiumUserDay1}
                         />
                       ) : null}
                     </div>

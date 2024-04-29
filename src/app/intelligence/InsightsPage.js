@@ -35,6 +35,7 @@ import { toast } from "react-toastify";
 import InsightImg from "../../assets/images/icons/insight-msg.svg";
 import {
   dontOpenLoginPopup,
+  isPremiumUser,
   mobileCheck,
   removeOpenModalAfterLogin,
   scrollToTop,
@@ -159,7 +160,19 @@ class InsightsPage extends Component {
       });
     }
   };
+  checkPremium = () => {
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUser: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUser: false,
+      });
+    }
+  };
   componentDidMount() {
+    this.checkPremium();
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       const shouldOpenNoficationModal = window.sessionStorage.getItem(
@@ -265,6 +278,7 @@ class InsightsPage extends Component {
       prevProps.intelligenceState.updatedInsightList !==
       this.props.intelligenceState.updatedInsightList
     ) {
+      this.checkPremium();
       // insight_type: 30
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
