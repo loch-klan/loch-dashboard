@@ -220,7 +220,9 @@ class BarGraphSection extends Component {
     if (this.props.isPremiumUser) {
       return null;
     }
-    this.props.goToPayModal();
+    if (this.props.goToPayModal) {
+      this.props.goToPayModal();
+    }
   };
   render() {
     const {

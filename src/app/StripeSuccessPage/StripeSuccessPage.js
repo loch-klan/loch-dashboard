@@ -6,6 +6,7 @@ import PaymentSuccessModal from "../common/PaymentSuccessModal";
 import MobileLayout from "../layout/MobileLayout";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 import StripeSuccessPageMobile from "./StripeSuccessPageMobile";
+import { getUser } from "../common/Api";
 
 class StripeSuccessPage extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class StripeSuccessPage extends Component {
   }
 
   onHide = () => {
+    this.props.getUser();
     this.props.history.push("/home");
   };
 
@@ -61,6 +63,6 @@ class StripeSuccessPage extends Component {
 }
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { getUser };
 
 export default connect(mapStateToProps, mapDispatchToProps)(StripeSuccessPage);

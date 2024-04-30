@@ -5249,6 +5249,8 @@ class Portfolio extends BaseReactComponent {
                         {this.state.blockTwoSelectedItem === 1 ? (
                           <BarGraphSection
                             // showPremiumHover={!this.state.isPremiumUser}
+                            // isPremiumUser={this.state.isPremiumUser}
+                            isPremiumUser={this.state.isPremiumUserDay1}
                             showPremiumHover={!this.state.isPremiumUserDay1}
                             goToPayModal={this.showBlurredFlows}
                             openChartPage={this.goToRealizedGainsPage}
@@ -5317,6 +5319,8 @@ class Portfolio extends BaseReactComponent {
 
                             <BarGraphSection
                               // showPremiumHover={!this.state.isPremiumUser}
+                              // isPremiumUser={this.state.isPremiumUser}
+                              isPremiumUser={this.state.isPremiumUserDay1}
                               showPremiumHover={!this.state.isPremiumUserDay1}
                               goToPayModal={this.showBlurredGasFees}
                               // isBlurred={!this.state.isPremiumUser}
