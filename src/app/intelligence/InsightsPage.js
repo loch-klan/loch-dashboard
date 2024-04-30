@@ -732,7 +732,11 @@ class InsightsPage extends Component {
                                   : "",
                             }}
                             className={`insights-card ${
-                              key > 0 ? "blurred-elements" : ""
+                              key > 0
+                                ? this.state.isPremiumUser
+                                  ? ""
+                                  : "blurred-elements"
+                                : ""
                             }`}
                             key={key}
                             onClick={() => {
