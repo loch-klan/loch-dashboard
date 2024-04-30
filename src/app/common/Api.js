@@ -97,7 +97,7 @@ export const createUserPayment = (passedData, stopCreditBtnLoading) => {
         if (!res.data.error) {
           const redirectUrl = res.data.data?.payment?.payment_url;
           if (redirectUrl) {
-            window.open(redirectUrl, "_blank");
+            window.open(redirectUrl, "_self");
           }
         } else {
           toast.error("Something went wrong");
@@ -1876,18 +1876,18 @@ export const getUser = (ctx = null, showToast = false) => {
           showToast === true
         ) {
           // console.log(ctx,showToast)
-          toast.success(
-            <div
-              style={{
-                width: "38rem",
-              }}
-            >
-              {res.data.data.current_plan.name === "Trial"
-                ? `Congratulations you’re a sovereign for a day!`
-                : `Congratulations! You’re
-            officially a ${res.data.data.current_plan.name}.`}
-            </div>
-          );
+          // toast.success(
+          //   <div
+          //     style={{
+          //       width: "38rem",
+          //     }}
+          //   >
+          //     {res.data.data.current_plan.name === "Trial"
+          //       ? `Congratulations you’re a sovereign for a day!`
+          //       : `Congratulations! You’re
+          //   officially a ${res.data.data.current_plan.name}.`}
+          //   </div>
+          // );
           if (showToast) {
           } else {
             ctx.props.history.replace("/home");

@@ -30,6 +30,7 @@ import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import PublicRoute from "./utils/PublicRoute";
+import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
 const routes = [
   {
     path: "/",
@@ -192,6 +193,12 @@ const routes = [
     name: "Sandox",
     type: Route,
     component: Sandbox,
+  },
+  {
+    path: "/stripe-success",
+    name: "Stripe Success",
+    type: PrivateRoute,
+    component: StripeSuccessPage,
   },
 ];
 export default routes;

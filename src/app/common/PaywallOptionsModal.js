@@ -263,9 +263,6 @@ class PaywallOptionsModal extends BaseReactComponent {
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
         animation={false}
-        style={{
-          zIndex: "10001",
-        }}
       >
         <div
           style={{
