@@ -32,6 +32,7 @@ import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   dontOpenLoginPopup,
+  isPremiumUser,
   mobileCheck,
   removeOpenModalAfterLogin,
   scrollToTop,
@@ -216,7 +217,19 @@ class GasFeesPage extends Component {
       isLochPaymentModal: false,
     });
   };
+  checkPremium = () => {
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUser: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUser: false,
+      });
+    }
+  };
   componentDidMount() {
+    this.checkPremium();
     scrollToTop();
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
@@ -295,6 +308,7 @@ class GasFeesPage extends Component {
       prevProps.intelligenceState.graphfeeValue !==
       this.props.intelligenceState.graphfeeValue
     ) {
+      this.checkPremium();
       this.setState({
         graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,
       });
@@ -303,6 +317,7 @@ class GasFeesPage extends Component {
       prevProps.intelligenceState.GraphfeeData !==
       this.props.intelligenceState.GraphfeeData
     ) {
+      this.checkPremium();
       this.setState({
         graphfeeDataLocal: this.props.intelligenceState.GraphfeeData,
       });
@@ -313,6 +328,7 @@ class GasFeesPage extends Component {
       prevState.apiResponse !== this.state.apiResponse ||
       !this.props.commonState.gasFeesPage
     ) {
+      this.checkPremium();
       this.props.updateWalletListFlag("gasFeesPage", true);
       this.props.getAllCoins();
       this.getBlockchainFee(0);
@@ -721,7 +737,7 @@ class GasFeesPage extends Component {
               id="gasfeesspent"
             >
               <BarGraphSection
-                showPremiumHover
+                showPremiumHover={!this.state.isPremiumUser}
                 goToPayModal={this.goToPayModal}
                 isBlurred={!this.state.isPremiumUser}
                 data={

@@ -393,6 +393,7 @@ export const getAssetProfitLoss = (
   isDefault = true,
   isPremiumUser = false
 ) => {
+  console.log("Call ", isPremiumUser);
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {
@@ -463,6 +464,7 @@ export const updateAssetProfitLoss = (
   ctx,
   isPremiumUser = false
 ) => {
+  console.log("Update ", isPremiumUser);
   return async function (dispatch, getState) {
     dispatch({
       type: PORTFOLIO_ASSET,

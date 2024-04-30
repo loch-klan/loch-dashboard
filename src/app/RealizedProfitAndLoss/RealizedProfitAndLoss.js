@@ -39,6 +39,7 @@ import {
 import { toast } from "react-toastify";
 import {
   dontOpenLoginPopup,
+  isPremiumUser,
   isSameDateAs,
   mobileCheck,
   removeOpenModalAfterLogin,
@@ -58,7 +59,7 @@ class RealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPremiumUser: false,
+      isPremiumUser: isPremiumUser() ? true : false,
       isLochPaymentModal: false,
       fromDateInitial: new Date(
         new Date().setFullYear(new Date().getFullYear() - 1)
@@ -190,7 +191,19 @@ class RealizedProfitAndLoss extends Component {
       ProfitLossAssetLocal: ProfitLossAssetPassed,
     });
   };
+  checkPremium = () => {
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUser: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUser: false,
+      });
+    }
+  };
   componentDidMount() {
+    this.checkPremium();
     // if (mobileCheck()) {
     //   this.props.history.push("/home");
     // }
@@ -343,23 +356,27 @@ class RealizedProfitAndLoss extends Component {
     // add wallet
     // used for filter
     if (this.props.darkModeState !== prevProps.darkModeState) {
-      if (this.props.intelligenceState?.ProfitLossAssetData) {
-        this.props.updateAssetProfitLoss(
-          this.props.intelligenceState?.ProfitLossAssetData,
-          this,
-          this.state.isPremiumUser
-        );
-      }
-      // Set all filters to initial
-      this.setState({
-        selectedActiveBadgeLocal: [],
-      });
-      // Set all filters to initial
+      this.checkPremium();
+      setTimeout(() => {
+        if (this.props.intelligenceState?.ProfitLossAssetData) {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            this.state.isPremiumUser
+          );
+        }
+        // Set all filters to initial
+        this.setState({
+          selectedActiveBadgeLocal: [],
+        });
+        // Set all filters to initial
+      }, 500);
     }
     if (
       prevProps.intelligenceState?.ProfitLossAsset !==
       this.props.intelligenceState?.ProfitLossAsset
     ) {
+      this.checkPremium();
       this.setState({
         ProfitLossAssetLocal: this.props.intelligenceState?.ProfitLossAsset,
       });

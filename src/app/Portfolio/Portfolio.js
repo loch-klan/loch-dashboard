@@ -198,7 +198,7 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
-      isPremiumUserDay1: false,
+      isPremiumUserDay1: isPremiumUser() ? true : false,
       isPremiumUser: false,
       isLochPaymentModal: false,
       payModalTitle: "",
@@ -999,7 +999,25 @@ class Portfolio extends BaseReactComponent {
         });
         // this.props.getProfitAndLossApi(this, false, false, false);
         // netflow breakdown
-        this.props.getAssetProfitLoss(this, false, false, false);
+        // this.props.getAssetProfitLoss(
+        //   this,
+        // null,
+        //   null,
+        //   false,
+        //   false,
+        //   true,
+        //   this.state.isPremiumUser
+        // );
+
+        this.props.getAssetProfitLoss(
+          this,
+          null,
+          null,
+          false,
+          false,
+          true,
+          this.state.isPremiumUserDay1
+        );
       }
     }
     this.callPriceGaugeApi();
@@ -1133,6 +1151,14 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.isPremiumUserDay1 !== this.state.isPremiumUserDay1) {
+      this.props.updateAssetProfitLoss(
+        this.props.intelligenceState?.ProfitLossAssetData,
+        this,
+        // this.state.isPremiumUser
+        this.state.isPremiumUserDay1
+      );
+    }
     if (
       this.props.NFTState?.nfts &&
       this.props.NFTState?.nfts !== prevProps.NFTState?.nfts
@@ -1207,7 +1233,24 @@ class Portfolio extends BaseReactComponent {
         });
         // this.props.getProfitAndLossApi(this, false, false, false);
         // netflow breakdown
-        this.props.getAssetProfitLoss(this, false, false, false);
+        // this.props.getAssetProfitLoss(
+        //   this,
+        // null,
+        //   null,
+        //   false,
+        //   false,
+        //   true,
+        //   this.state.isPremiumUser
+        // );
+        this.props.getAssetProfitLoss(
+          this,
+          null,
+          null,
+          false,
+          false,
+          true,
+          this.state.isPremiumUserDay1
+        );
       }
       // Gas fees api call
       else if (
@@ -1507,7 +1550,23 @@ class Portfolio extends BaseReactComponent {
         });
         // this.props.getProfitAndLossApi(this, false, false, false);
         // netflow breakdown
-        this.props.getAssetProfitLoss(this, false, false, false);
+        // this.props.getAssetProfitLoss(
+        //   this,
+        //   false,
+        //   false,
+        //   true,
+        //   this.state.isPremiumUser
+        // );
+        console.log("From here ", this.state.isPremiumUserDay1);
+        this.props.getAssetProfitLoss(
+          this,
+          null,
+          null,
+          false,
+          false,
+          true,
+          this.state.isPremiumUserDay1
+        );
       }
 
       // Gas fees api call
@@ -1646,7 +1705,8 @@ class Portfolio extends BaseReactComponent {
         this.props.updateAssetProfitLoss(
           this.props.intelligenceState?.ProfitLossAssetData,
           this,
-          this.state.isPremiumUser
+          // this.state.isPremiumUser
+          this.state.isPremiumUserDay1
         );
       }
     }
@@ -5188,7 +5248,8 @@ class Portfolio extends BaseReactComponent {
                       <div className="profit-chart">
                         {this.state.blockTwoSelectedItem === 1 ? (
                           <BarGraphSection
-                            showPremiumHover
+                            // showPremiumHover={!this.state.isPremiumUser}
+                            showPremiumHover={!this.state.isPremiumUserDay1}
                             goToPayModal={this.showBlurredFlows}
                             openChartPage={this.goToRealizedGainsPage}
                             newHomeSetup
@@ -5255,9 +5316,11 @@ class Portfolio extends BaseReactComponent {
                             </div>
 
                             <BarGraphSection
-                              showPremiumHover
+                              // showPremiumHover={!this.state.isPremiumUser}
+                              showPremiumHover={!this.state.isPremiumUserDay1}
                               goToPayModal={this.showBlurredGasFees}
-                              isBlurred={!this.state.isPremiumUser}
+                              // isBlurred={!this.state.isPremiumUser}
+                              isBlurred={!this.state.isPremiumUserDay1}
                               digit={this.state.GraphDigit}
                               isFromHome
                               openChartPage={this.goToGasFeesSpentPage}
