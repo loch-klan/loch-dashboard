@@ -4733,7 +4733,8 @@ class Portfolio extends BaseReactComponent {
             showBlurredFlows={this.showBlurredFlows}
             showBlurredInsights={this.showBlurredInsights}
             showBlurredGasFees={this.showBlurredGasFees}
-            isPremiumUser={this.state.isPremiumUser}
+            // isPremiumUser={this.state.isPremiumUser}
+            isPremiumUser={this.state.isPremiumUserDay1}
             chainLoader={this.state.chainLoader}
             loader={this.state.loader}
             totalChainDetechted={this.state.totalChainDetechted}

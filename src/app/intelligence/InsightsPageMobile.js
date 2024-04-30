@@ -80,7 +80,11 @@ class InsightsPageMobile extends Component {
                         // background: "var(--cardBackgroud)",
                       }}
                       className={`insights-card ${
-                        index > 0 ? "blurred-elements" : ""
+                        index > 0
+                          ? this.props.isPremiumUser
+                            ? ""
+                            : "blurred-elements"
+                          : ""
                       }`}
                       key={index}
                       onClick={() => {

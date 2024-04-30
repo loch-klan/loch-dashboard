@@ -563,6 +563,7 @@ class InsightsPage extends Component {
             goToPayModal={this.goToPayModal}
             selectedFilter={this.state.selectedFilter}
             isLoading={this.state.isLoading}
+            isPremiumUser={this.state.isPremiumUser}
           />
         </MobileLayout>
       );

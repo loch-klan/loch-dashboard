@@ -94,8 +94,10 @@ class PortfolioHomeInsightsBlock extends Component {
                               alignItems: "flex-start",
                             }}
                             className={`insights-card ${
-                              key > 0 && !this.props.isPremiumUser
-                                ? "blurred-elements"
+                              key > 0
+                                ? this.props.isPremiumUser
+                                  ? ""
+                                  : "blurred-elements"
                                 : ""
                             }`}
                             key={key}

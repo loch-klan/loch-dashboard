@@ -1242,6 +1242,7 @@ class PortfolioMobile extends BaseReactComponent {
                       insightsBlockLoading={this.props.insightsBlockLoading}
                       isMobile
                       showBlurredInsights={this.props.showBlurredInsights}
+                      isPremiumUser={this.props.isPremiumUser}
                     />
                   </div>
                 ) : null}
