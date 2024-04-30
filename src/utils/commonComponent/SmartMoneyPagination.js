@@ -149,8 +149,9 @@ const SmartMoneyPagination = (props) => {
               onLoad={leftLogoLoadingComplete}
             />
           </div>
-          <h5 className="inter-display-medium f-s-14 input-noshadow-dark input-hover-states">
+          <div className="inter-display-medium f-s-14 input-noshadow-dark input-hover-states">
             <input
+              className="smartMoneyPaginationContainerInput"
               type="number"
               name="pagenumber"
               id="pageNo"
@@ -162,7 +163,7 @@ const SmartMoneyPagination = (props) => {
             />
             <span className="smartMoneyPaginationOfTxt">of</span>
             {props.pageCount}
-          </h5>
+          </div>
           <div
             className={`smartMoneyPaginationArrowContainer ${
               props.page === props.pageCount
@@ -234,7 +235,7 @@ const SmartMoneyPagination = (props) => {
               className={"smartMoneyPaginationArrow"}
             />
           </div>
-          <h5 className="inter-display-medium f-s-14 input-noshadow-dark input-hover-states">
+          <div className="inter-display-medium f-s-14 input-noshadow-dark input-hover-states">
             <input
               type="number"
               name="pagenumber"
@@ -247,7 +248,7 @@ const SmartMoneyPagination = (props) => {
             />
             <span className="smartMoneyPaginationOfTxt">of</span>
             {props.pageCount}
-          </h5>
+          </div>
           <div
             className={`smartMoneyPaginationArrowContainer ${
               props.page === props.pageCount

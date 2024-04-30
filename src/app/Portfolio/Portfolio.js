@@ -902,6 +902,7 @@ class Portfolio extends BaseReactComponent {
       passedAddress &&
       passedAddress !== "alreadyAdded" &&
       passedAddress !== "/home" &&
+      passedAddress !== "/copy-trade" &&
       getCurrentUser().id &&
       tempPathName === "/home"
     ) {
@@ -1206,12 +1207,23 @@ class Portfolio extends BaseReactComponent {
       }
       // Transaction table
 
-      if (
-        this.state.blockOneSelectedItem === 2 &&
-        (!(this.state.defiState && this.state.defiState?.defiList) ||
-          !this.props.commonState.defi)
-      ) {
-        this.props.updateWalletListFlag("defi", true);
+      if (this.state.blockOneSelectedItem === 2) {
+        // if (
+        //   !(this.state.defiState && this.state.defiState?.defiList) ||
+        //   !this.props.commonState.defi
+        // ) {
+        //   this.props.updateWalletListFlag("defi", true);
+        // }
+        if (
+          !this.props.intelligenceState.table ||
+          !this.props.commonState.transactionHistory
+        ) {
+          this.getTableData();
+        } else {
+          this.setState({
+            graphLoading: false,
+          });
+        }
       }
     }
 
@@ -1253,17 +1265,18 @@ class Portfolio extends BaseReactComponent {
         );
       }
       // Gas fees api call
-      else if (
-        this.state.blockTwoSelectedItem === 2 &&
-        (!(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0]) ||
-          !this.props.commonState.gasFeesPage)
-      ) {
-        this.setState({
-          gasFeesGraphLoading: true,
-          shouldCallGraphFeesApi: false,
-        });
-        this.props.updateWalletListFlag("gasFeesPage", true);
-        this.props.getAllFeeApi(this, false, false);
+      else if (this.state.blockTwoSelectedItem === 2) {
+        if (
+          !(this.state.homeGraphFeesData && this.state.homeGraphFeesData[0]) ||
+          !this.props.commonState.gasFeesPage
+        ) {
+          this.setState({
+            gasFeesGraphLoading: true,
+            shouldCallGraphFeesApi: false,
+          });
+          this.props.updateWalletListFlag("gasFeesPage", true);
+          this.props.getAllFeeApi(this, false, false);
+        }
       } else if (
         this.state.blockTwoSelectedItem === 3 &&
         ((this.state.localNftData && this.state.localNftData.length === 0) ||
@@ -1319,6 +1332,37 @@ class Portfolio extends BaseReactComponent {
     // Block Four
     if (prevState.blockFourSelectedItem !== this.state.blockFourSelectedItem) {
       if (this.state.blockFourSelectedItem === 2) {
+        // if (
+        //   !this.props.intelligenceState.table ||
+        //   !this.props.commonState.transactionHistory
+        // ) {
+        //   this.getTableData();
+        // } else {
+        //   this.setState({
+        //     graphLoading: false,
+        //   });
+        // }
+        if (!this.state.updatedInsightList || !this.props.commonState.insight) {
+          this.props.updateWalletListFlag("insight", true);
+          this.setState({
+            insightsBlockLoading: true,
+            shouldCallInsightsApi: false,
+          });
+          this.props.getAllInsightsApi(this);
+        }
+      }
+
+      if (this.state.blockFourSelectedItem === 3) {
+        if (!this.state.updatedInsightList || !this.props.commonState.insight) {
+          this.props.updateWalletListFlag("insight", true);
+          this.setState({
+            insightsBlockLoading: true,
+            shouldCallInsightsApi: false,
+          });
+          this.props.getAllInsightsApi(this);
+        }
+      }
+      if (this.state.blockFourSelectedItem === 4) {
         if (
           !this.props.intelligenceState.table ||
           !this.props.commonState.transactionHistory
@@ -1329,18 +1373,6 @@ class Portfolio extends BaseReactComponent {
             graphLoading: false,
           });
         }
-      }
-
-      if (
-        this.state.blockFourSelectedItem === 3 &&
-        (!this.state.updatedInsightList || !this.props.commonState.insight)
-      ) {
-        this.props.updateWalletListFlag("insight", true);
-        this.setState({
-          insightsBlockLoading: true,
-          shouldCallInsightsApi: false,
-        });
-        this.props.getAllInsightsApi(this);
       }
     }
 
@@ -1505,31 +1537,35 @@ class Portfolio extends BaseReactComponent {
       }
 
       if (
-        this.state.blockOneSelectedItem === 1 &&
-        (!(this.state.defiState && this.state.defiState?.defiList) ||
-          !this.props.commonState.defi)
+        this.state.blockOneSelectedItem === 2 ||
+        this.state.blockFourSelectedItem === 4
       ) {
-        let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
-        const allAddresses = [];
-        UserWallet?.forEach((e) => {
-          allAddresses.push(e.address);
-        });
-        let data = new URLSearchParams();
-        data.append("wallet_address", JSON.stringify(allAddresses));
+        // if (
+        //   !(this.state.defiState && this.state.defiState?.defiList) ||
+        //   !this.props.commonState.defi
+        // ) {
+        //   let UserWallet = JSON.parse(
+        //     window.sessionStorage.getItem("addWallet")
+        //   );
+        //   const allAddresses = [];
+        //   UserWallet?.forEach((e) => {
+        //     allAddresses.push(e.address);
+        //   });
+        //   let data = new URLSearchParams();
+        //   data.append("wallet_address", JSON.stringify(allAddresses));
 
-        this.props.getProtocolBalanceApi(this, data);
-        this.props.updateWalletListFlag("defi", true);
-      }
-
-      if (this.state.blockFourSelectedItem === 2) {
+        //   this.props.getProtocolBalanceApi(this, data);
+        //   this.props.updateWalletListFlag("defi", true);
+        // }
         if (
-          !(
-            this.props.intelligenceState?.table &&
-            this.props.intelligenceState?.table.length > 0
-          ) ||
+          !this.props.intelligenceState.table ||
           !this.props.commonState.transactionHistory
         ) {
           this.getTableData();
+        } else {
+          this.setState({
+            graphLoading: false,
+          });
         }
       }
 
@@ -1640,17 +1676,38 @@ class Portfolio extends BaseReactComponent {
       if (this.state.blockFourSelectedItem === 1) {
         this.callPriceGaugeApi();
       }
-
-      if (
-        this.state.blockFourSelectedItem === 3 &&
-        (!this.props.intelligenceState?.updatedInsightList ||
-          !this.props.commonState.insight)
-      ) {
-        this.props.updateWalletListFlag("insight", true);
-        this.setState({
-          insightsBlockLoading: false,
-        });
-        this.props.getAllInsightsApi(this);
+      if (this.state.blockFourSelectedItem === 2) {
+        // if (
+        //   !(
+        //     this.props.intelligenceState?.table &&
+        //     this.props.intelligenceState?.table.length > 0
+        //   ) ||
+        //   !this.props.commonState.transactionHistory
+        // ) {
+        //   this.getTableData();
+        // }
+        if (
+          !this.props.intelligenceState?.updatedInsightList ||
+          !this.props.commonState.insight
+        ) {
+          this.props.updateWalletListFlag("insight", true);
+          this.setState({
+            insightsBlockLoading: true,
+          });
+          this.props.getAllInsightsApi(this);
+        }
+      }
+      if (this.state.blockFourSelectedItem === 3) {
+        if (
+          !this.props.intelligenceState?.updatedInsightList ||
+          !this.props.commonState.insight
+        ) {
+          this.props.updateWalletListFlag("insight", true);
+          this.setState({
+            insightsBlockLoading: true,
+          });
+          this.props.getAllInsightsApi(this);
+        }
       }
 
       // for chain detect
@@ -2678,7 +2735,7 @@ class Portfolio extends BaseReactComponent {
                 onClick={() => {
                   this.toggleAgeTimestamp();
                 }}
-                className="inter-display-medium f-s-13 lh-16 table-header-font"
+                className="inter-display-medium f-s-13 lh-16"
                 style={{
                   textDecoration: "underline",
                 }}
@@ -3345,7 +3402,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               src={sortByIcon}
               onClick={() => this.handleTableSort("asset")}
@@ -3720,7 +3777,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col  table-header-font"
             id="asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               onClick={() => this.handleYieldOppTableSort("asset")}
               src={sortByIcon}
@@ -4072,7 +4129,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="Asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
@@ -4632,9 +4689,7 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Holdings
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Holdings</span>
             {/* <Image
               onClick={() =>
                 this.handleTableSort(this.state.tableSortOpt[0].title)
@@ -4663,7 +4718,7 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Collection
             </span>
 
@@ -4697,9 +4752,7 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Image
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Image</span>
           </div>
         ),
         dataKey: "imgs",
@@ -4954,10 +5007,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "38rem",
+                        height: "41rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "38rem",
+                        minHeight: "41rem",
                         marginBottom: 0,
                       }}
                     >
@@ -4975,7 +5028,7 @@ class Portfolio extends BaseReactComponent {
                               else this.changeBlockOneItem(1);
                             }}
                           >
-                            Assets
+                            Tokens
                             <CustomOverlay
                               position="top"
                               isIcon={false}
@@ -5003,7 +5056,7 @@ class Portfolio extends BaseReactComponent {
                               src={HomeTabArrowIcon}
                             />
                           </div>
-                          <div
+                          {/* <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
                               this.state.blockOneSelectedItem === 2
                                 ? "section-table-toggle-element-selected"
@@ -5024,6 +5077,43 @@ class Portfolio extends BaseReactComponent {
                               className={"fix-width"}
                               text={
                                 "Decipher all your DeFi positions from one place"
+                              }
+                            >
+                              <Image
+                                src={InfoIconI}
+                                className="infoIcon info-icon-home"
+                                style={{
+                                  cursor: "pointer",
+                                  height: "13px",
+                                }}
+                              />
+                            </CustomOverlay>
+                            <Image
+                              className="homeTabArrowIcon"
+                              src={HomeTabArrowIcon}
+                            />
+                          </div> */}
+                          <div
+                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                              this.state.blockOneSelectedItem === 2
+                                ? "section-table-toggle-element-selected"
+                                : ""
+                            }`}
+                            onClick={() => {
+                              if (this.state.blockOneSelectedItem === 2)
+                                this.goToTransactionHistoryPage();
+                              else this.changeBlockOneItem(2);
+                            }}
+                          >
+                            Transactions
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              className={"fix-width"}
+                              text={
+                                "Sort, filter, and dissect all your transactions from one place"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -5053,6 +5143,10 @@ class Portfolio extends BaseReactComponent {
                               tableDataCostBasis?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
+                            } ${
+                              !this.state.AvgCostLoading
+                                ? "newHomeTableContainerLoading"
+                                : ""
                             }`}
                           >
                             <TransactionTable
@@ -5087,32 +5181,83 @@ class Portfolio extends BaseReactComponent {
                                 className="bottomExtraInfoText"
                               >
                                 {this.props.intelligenceState
-                                  ?.Average_cost_basis &&
-                                this.props.intelligenceState.Average_cost_basis
-                                  .length > 10
-                                  ? `Click here to see ${numToCurrency(
-                                      this.props.intelligenceState
-                                        .Average_cost_basis.length - 10,
-                                      true
-                                    ).toLocaleString("en-US")}+ asset${
-                                      this.props.intelligenceState
-                                        .Average_cost_basis.length -
-                                        10 >
-                                      1
-                                        ? "s"
-                                        : ""
-                                    }`
+                                  ?.Average_cost_basis
+                                  ? this.props.intelligenceState
+                                      .Average_cost_basis.length > 10
+                                    ? `Click here to see ${numToCurrency(
+                                        this.props.intelligenceState
+                                          .Average_cost_basis.length - 10,
+                                        true
+                                      ).toLocaleString("en-US")}+ asset${
+                                        this.props.intelligenceState
+                                          .Average_cost_basis.length -
+                                          10 >
+                                        1
+                                          ? "s"
+                                          : ""
+                                      }`
+                                    : "Click here to see more"
                                   : "Click here to see more"}
                               </div>
                             </div>
                           ) : null}
                         </div>
                       ) : this.state.blockOneSelectedItem === 2 ? (
-                        <PortfolioHomeDefiBlock
-                          lochToken={this.state.lochToken}
-                          history={this.props.history}
-                          userWalletList={this.state.userWalletList}
-                        />
+                        // <PortfolioHomeDefiBlock
+                        //   lochToken={this.state.lochToken}
+                        //   history={this.props.history}
+                        //   userWalletList={this.state.userWalletList}
+                        // />
+                        <div>
+                          <div
+                            className={`newHomeTableContainer freezeTheFirstColumn ${
+                              this.state.tableLoading || tableData?.length < 1
+                                ? ""
+                                : "tableWatermarkOverlay"
+                            } ${
+                              this.state.tableLoading
+                                ? "newHomeTableContainerLoading"
+                                : ""
+                            }`}
+                          >
+                            <TransactionTable
+                              xAxisScrollable={
+                                !this.state.tableLoading &&
+                                tableData?.length > 0
+                              }
+                              xAxisScrollableColumnWidth={5.1}
+                              noSubtitleBottomPadding
+                              disableOnLoading
+                              isMiniversion
+                              tableData={tableData}
+                              columnList={columnList}
+                              headerHeight={60}
+                              isArrow={true}
+                              isLoading={this.state.tableLoading}
+                              watermarkOnTop
+                              // addWatermark
+                              fakeWatermark
+                              yAxisScrollable={!this.state.tableLoading}
+                            />
+                          </div>
+                          {!this.state.tableLoading ? (
+                            <div className="inter-display-medium bottomExtraInfo">
+                              <div
+                                onClick={this.goToTransactionHistoryPage}
+                                className="bottomExtraInfoText"
+                              >
+                                {totalCount && totalCount > 10
+                                  ? `Click here to see ${numToCurrency(
+                                      totalCount - 10,
+                                      true
+                                    ).toLocaleString("en-US")}+ transaction${
+                                      totalCount - 10 > 1 ? "s" : ""
+                                    }`
+                                  : "Click here to see more"}
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
                       ) : null}
                     </div>
                   </Col>
@@ -5120,10 +5265,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="section-table"
                       style={{
-                        height: "38rem",
+                        height: "41rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "38rem",
+                        minHeight: "41rem",
                         marginBottom: 0,
                       }}
                     >
@@ -5355,6 +5500,10 @@ class Portfolio extends BaseReactComponent {
                                 this.state.localNftData?.length < 1
                                   ? ""
                                   : "tableWatermarkOverlay"
+                              } ${
+                                this.state.nftTableLoading
+                                  ? "newHomeTableContainerLoading"
+                                  : ""
                               }`}
                             >
                               <TransactionTable
@@ -5381,18 +5530,18 @@ class Portfolio extends BaseReactComponent {
                                   onClick={this.goToNftPage}
                                   className="bottomExtraInfoText"
                                 >
-                                  {this.state.localNftData &&
-                                  this.state.localNftData?.length > 10
-                                    ? `Click here to see ${numToCurrency(
-                                        this.state.localNftData?.length - 10,
-                                        true
-                                      ).toLocaleString("en-US")}+ NFT ${
-                                        this.state.localNftData?.length - 10 > 1
-                                          ? "s"
-                                          : ""
-                                      }`
-                                    : this.state.localNftData?.length === 0
-                                    ? ""
+                                  {this.state.localNftData
+                                    ? this.state.localNftData?.length > 10
+                                      ? `Click here to see ${numToCurrency(
+                                          this.state.localNftData?.length - 10,
+                                          true
+                                        ).toLocaleString("en-US")}+ NFT ${
+                                          this.state.localNftData?.length - 10 >
+                                          1
+                                            ? "s"
+                                            : ""
+                                        }`
+                                      : "Click here to see more"
                                     : "Click here to see more"}
                                 </div>
                               </div>
@@ -5417,8 +5566,8 @@ class Portfolio extends BaseReactComponent {
                       style={{
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "38rem",
-                        height: "38rem",
+                        minHeight: "41rem",
+                        height: "41rem",
                         marginBottom: 0,
                       }}
                     >
@@ -5599,6 +5748,10 @@ class Portfolio extends BaseReactComponent {
                               yieldOpportunitiesListTemp?.length < 1
                                 ? ""
                                 : "tableWatermarkOverlay"
+                            } ${
+                              this.state.yieldOpportunitiesTableLoading
+                                ? "newHomeTableContainerLoading"
+                                : ""
                             }`}
                           >
                             <TransactionTable
@@ -5631,19 +5784,21 @@ class Portfolio extends BaseReactComponent {
                                 onClick={this.goToYieldOppPage}
                                 className="bottomExtraInfoText"
                               >
-                                {this.state.yieldOpportunitiesTotalCount &&
-                                this.state.yieldOpportunitiesTotalCount > 10
-                                  ? `Click here to see ${numToCurrency(
-                                      this.state.yieldOpportunitiesTotalCount -
-                                        10,
-                                      true
-                                    ).toLocaleString("en-US")}+ yield ${
-                                      this.state.yieldOpportunitiesTotalCount -
-                                        10 >
-                                      1
-                                        ? "opportunities"
-                                        : "opportunity"
-                                    }`
+                                {this.state.yieldOpportunitiesTotalCount
+                                  ? this.state.yieldOpportunitiesTotalCount > 10
+                                    ? `Click here to see ${numToCurrency(
+                                        this.state
+                                          .yieldOpportunitiesTotalCount - 10,
+                                        true
+                                      ).toLocaleString("en-US")}+ yield ${
+                                        this.state
+                                          .yieldOpportunitiesTotalCount -
+                                          10 >
+                                        1
+                                          ? "opportunities"
+                                          : "opportunity"
+                                      }`
+                                    : "Click here to see more"
                                   : "Click here to see more"}
                               </div>
                             </div>
@@ -5663,10 +5818,10 @@ class Portfolio extends BaseReactComponent {
                     <div
                       className="section-table"
                       style={{
-                        height: "38rem",
+                        height: "41rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "38rem",
+                        minHeight: "41rem",
                         marginBottom: 0,
                       }}
                     >
@@ -5712,7 +5867,7 @@ class Portfolio extends BaseReactComponent {
                               src={HomeTabArrowIcon}
                             />
                           </div>
-                          <div
+                          {/* <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
                               this.state.blockFourSelectedItem === 2
                                 ? "section-table-toggle-element-selected"
@@ -5735,9 +5890,6 @@ class Portfolio extends BaseReactComponent {
                                 "Sort, filter, and dissect all your transactions from one place"
                               }
                             >
-                              {/* <div className="info-icon-i">
-                                  i
-                                </div> */}
                               <Image
                                 src={InfoIconI}
                                 className="infoIcon info-icon-home"
@@ -5751,18 +5903,18 @@ class Portfolio extends BaseReactComponent {
                               className="homeTabArrowIcon"
                               src={HomeTabArrowIcon}
                             />
-                          </div>
+                          </div> */}
 
                           <div
                             className={`inter-display-medium section-table-toggle-element ml-1 ${
-                              this.state.blockFourSelectedItem === 3
+                              this.state.blockFourSelectedItem === 2
                                 ? "section-table-toggle-element-selected"
                                 : ""
                             }`}
                             onClick={() => {
-                              if (this.state.blockFourSelectedItem === 3) {
+                              if (this.state.blockFourSelectedItem === 2) {
                                 this.goToInsightsPage();
-                              } else this.changeBlockFourItem(3);
+                              } else this.changeBlockFourItem(2);
                             }}
                           >
                             Insights
@@ -5809,54 +5961,59 @@ class Portfolio extends BaseReactComponent {
                             this.state.callChildPriceGaugeApi
                           }
                         />
-                      ) : this.state.blockFourSelectedItem === 2 ? (
-                        <div>
-                          <div
-                            className={`newHomeTableContainer freezeTheFirstColumn ${
-                              this.state.tableLoading || tableData?.length < 1
-                                ? ""
-                                : "tableWatermarkOverlay"
-                            }`}
-                          >
-                            <TransactionTable
-                              xAxisScrollable={
-                                !this.state.tableLoading &&
-                                tableData?.length > 0
-                              }
-                              xAxisScrollableColumnWidth={5.1}
-                              noSubtitleBottomPadding
-                              disableOnLoading
-                              isMiniversion
-                              tableData={tableData}
-                              columnList={columnList}
-                              headerHeight={60}
-                              isArrow={true}
-                              isLoading={this.state.tableLoading}
-                              watermarkOnTop
-                              // addWatermark
-                              fakeWatermark
-                              yAxisScrollable={!this.state.tableLoading}
-                            />
-                          </div>
-                          {!this.state.tableLoading ? (
-                            <div className="inter-display-medium bottomExtraInfo">
-                              <div
-                                onClick={this.goToTransactionHistoryPage}
-                                className="bottomExtraInfoText"
-                              >
-                                {totalCount && totalCount > 10
-                                  ? `Click here to see ${numToCurrency(
-                                      totalCount - 10,
-                                      true
-                                    ).toLocaleString("en-US")}+ transaction${
-                                      totalCount - 10 > 1 ? "s" : ""
-                                    }`
-                                  : "Click here to see more"}
-                              </div>
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : this.state.blockFourSelectedItem === 3 ? (
+                      ) : // : this.state.blockFourSelectedItem === 2 ? (
+                      //   <div>
+                      //     <div
+                      //       className={`newHomeTableContainer freezeTheFirstColumn ${
+                      //         this.state.tableLoading || tableData?.length < 1
+                      //           ? ""
+                      //           : "tableWatermarkOverlay"
+                      //       } ${
+                      //         this.state.tableLoading
+                      //           ? "newHomeTableContainerLoading"
+                      //           : ""
+                      //       }`}
+                      //     >
+                      //       <TransactionTable
+                      //         xAxisScrollable={
+                      //           !this.state.tableLoading &&
+                      //           tableData?.length > 0
+                      //         }
+                      //         xAxisScrollableColumnWidth={5.1}
+                      //         noSubtitleBottomPadding
+                      //         disableOnLoading
+                      //         isMiniversion
+                      //         tableData={tableData}
+                      //         columnList={columnList}
+                      //         headerHeight={60}
+                      //         isArrow={true}
+                      //         isLoading={this.state.tableLoading}
+                      //         watermarkOnTop
+                      //         // addWatermark
+                      //         fakeWatermark
+                      //         yAxisScrollable={!this.state.tableLoading}
+                      //       />
+                      //     </div>
+                      //     {!this.state.tableLoading ? (
+                      //       <div className="inter-display-medium bottomExtraInfo">
+                      //         <div
+                      //           onClick={this.goToTransactionHistoryPage}
+                      //           className="bottomExtraInfoText"
+                      //         >
+                      //           {totalCount && totalCount > 10
+                      //             ? `Click here to see ${numToCurrency(
+                      //                 totalCount - 10,
+                      //                 true
+                      //               ).toLocaleString("en-US")}+ transaction${
+                      //                 totalCount - 10 > 1 ? "s" : ""
+                      //               }`
+                      //             : "Click here to see more"}
+                      //         </div>
+                      //       </div>
+                      //     ) : null}
+                      //   </div>
+                      // )
+                      this.state.blockFourSelectedItem === 2 ? (
                         <PortfolioHomeInsightsBlock
                           showBlurredInsights={this.showBlurredInsights}
                           history={this.props.history}

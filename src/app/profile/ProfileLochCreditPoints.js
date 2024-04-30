@@ -162,19 +162,23 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   };
   returnWhichBlock = (whichBlock, whichBlockIndex) => {
     const openAddressModal = () => {
-      if (
-        document.getElementById("topBarContainerInputBlockInputId") &&
-        document.getElementById("topBarContainerInputBlockInputId").focus
-      ) {
-        document.getElementById("topBarContainerInputBlockInputId").focus();
-      }
-      if (this.state.isMobile) {
+      if (this.props.isMobile) {
         if (
-          document.getElementById("newWelcomeWallet-1") &&
-          document.getElementById("newWelcomeWallet-1").focus
+          document.getElementById("topBarContainerInputBlockInputId") &&
+          document.getElementById("topBarContainerInputBlockInputId").focus
         ) {
-          document.getElementById("newWelcomeWallet-1").focus();
+          document.getElementById("topBarContainerInputBlockInputId").focus();
         }
+        if (this.state.isMobile) {
+          if (
+            document.getElementById("newWelcomeWallet-1") &&
+            document.getElementById("newWelcomeWallet-1").focus
+          ) {
+            document.getElementById("newWelcomeWallet-1").focus();
+          }
+        }
+      } else {
+        this.props.showFocusedInput();
       }
     };
 

@@ -342,6 +342,16 @@ class ReferralCodesPage extends BaseReactComponent {
                                 style={{
                                   paddingTop:
                                     curReferralCodeIndex === 0 ? "0px" : "",
+                                  paddingBottom:
+                                    curReferralCodeIndex ===
+                                    this.state.referralCodes.length - 1
+                                      ? "0px"
+                                      : "",
+                                  borderBottom:
+                                    curReferralCodeIndex ===
+                                    this.state.referralCodes.length - 1
+                                      ? "none"
+                                      : "",
                                 }}
                                 className="rpbdd-referral-block"
                               >

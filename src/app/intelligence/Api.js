@@ -248,7 +248,7 @@ export const getFilters = (ctx) => {
     postLoginInstance
       .post("wallet/transaction/get-transaction-filter", data)
       .then((res) => {
-        let assetFilter = [{ value: "allAssets", label: "All assets" }];
+        let assetFilter = [{ value: "allAssets", label: "All tokens" }];
         res.data.data.filters.asset_filters.map((item) => {
           let obj = {
             value: item._id,
@@ -486,7 +486,7 @@ export const getTransactionAsset = (data, ctx, isCodeInsteadOfLabel) => {
     .post("wallet/transaction/get-transaction-asset-filter")
     .then((res) => {
       if (!res.data.error) {
-        let assetFilter = [{ value: "allAssets", label: "All assets" }];
+        let assetFilter = [{ value: "allAssets", label: "All tokens" }];
         if (isCodeInsteadOfLabel) {
           res?.data?.data?.assets?.forEach((e) => {
             assetFilter.push({
