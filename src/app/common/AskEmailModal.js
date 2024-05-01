@@ -50,7 +50,10 @@ class AskEmailModal extends BaseReactComponent {
   handleUpdateEmail = () => {
     const data = new URLSearchParams();
 
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     data.append("signed_up_from", "Email added after metamask connect");
 
     this.props.updateUser(data, this);

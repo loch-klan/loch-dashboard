@@ -38,6 +38,7 @@ function TransactionTable(props) {
         isPremiumUser={props.isPremiumUser}
         shouldBlurElements={props.shouldBlurElements}
         showBlurredItem={props.showBlurredItem}
+        noDataImage={props.noDataImage}
         isSmartMoney={props.isSmartMoney}
         openSignInOnclickModal={props.openSignInOnclickModal}
         wrapperStyle={props.wrapperStyle}

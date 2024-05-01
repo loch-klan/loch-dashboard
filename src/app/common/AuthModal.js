@@ -30,6 +30,7 @@ import { v4 as uuidv4 } from "uuid";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import {
   ConnectExPopupEmailAdded,
+  CopyTradePopupEmailAdded,
   GeneralPopupEmailAdded,
   LochPointsSignInPopupEmailAdded,
   SignInModalEmailAdded,
@@ -106,7 +107,10 @@ class AuthModal extends BaseReactComponent {
   handleAccountCreate = () => {
     //   console.log("create email", this.state.email);
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
 
     const signUpMethod = whichSignUpMethod();
     SignInModalEmailAdded({
@@ -149,6 +153,11 @@ class AuthModal extends BaseReactComponent {
         session_id: getCurrentUser().id,
         email_address: this.state.email,
         from: this.props.tracking,
+      });
+    } else if (this.props.tracking === "Copy trade") {
+      CopyTradePopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
       });
     }
 

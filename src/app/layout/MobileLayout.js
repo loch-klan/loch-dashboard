@@ -2,6 +2,8 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  EmultionSidebarIcon,
+  MobileNavCopyTraderIcon,
   MobileNavFollow,
   MobileNavHome,
   MobileNavLeaderboard,
@@ -794,6 +796,7 @@ class MobileLayout extends BaseReactComponent {
   };
 
   render() {
+    let activeTab = window.location.pathname;
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
         const tempWallet = this.props.portfolioState.walletTotal
