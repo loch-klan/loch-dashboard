@@ -655,7 +655,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                   fakeWatermark
                   xAxisScrollable
                   yAxisScrollable
-                  xAxisScrollableColumnWidth={2.5}
+                  xAxisScrollableColumnWidth={3.5}
                 />
               </div>
             </div>
@@ -666,7 +666,12 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  OnboardingState: state.OnboardingState,
+  intelligenceState: state.IntelligenceState,
+  commonState: state.CommonState,
+  emulationsState: state.EmulationsState,
+});
 const mapDispatchToProps = {
   signUpWelcome,
   verifyUser,
