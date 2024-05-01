@@ -31,6 +31,7 @@ import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import PublicRoute from "./utils/PublicRoute";
 import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
+import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
 const routes = [
   {
     path: "/",
@@ -199,6 +200,12 @@ const routes = [
     name: "Stripe Success",
     type: PrivateRoute,
     component: StripeSuccessPage,
+  },
+  {
+    path: "/stripe-cancel",
+    name: "Stripe Error",
+    type: PrivateRoute,
+    component: StripeErrorPage,
   },
 ];
 export default routes;

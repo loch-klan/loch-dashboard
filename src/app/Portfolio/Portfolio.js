@@ -839,6 +839,23 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentDidMount() {
+    const isBackFromPayment = window.sessionStorage.getItem(
+      "openPaymentOptionsAgain"
+    );
+
+    if (isBackFromPayment === "true") {
+      this.setState(
+        {
+          openLochPaymentModalWithOptions: true,
+        },
+        () => {
+          window.sessionStorage.removeItem("openPaymentOptionsAgain");
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }
+      );
+    }
     this.checkPremium();
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
@@ -1557,7 +1574,7 @@ class Portfolio extends BaseReactComponent {
         //   true,
         //   this.state.isPremiumUser
         // );
-        console.log("From here ", this.state.isPremiumUserDay1);
+
         this.props.getAssetProfitLoss(
           this,
           null,
@@ -2560,6 +2577,7 @@ class Portfolio extends BaseReactComponent {
   hidePaymentModal = () => {
     this.setState({
       isLochPaymentModal: false,
+      openLochPaymentModalWithOptions: false,
     });
   };
   render() {
@@ -4777,6 +4795,7 @@ class Portfolio extends BaseReactComponent {
           {this.state.isLochPaymentModal ? (
             <PaywallModal
               isMobile
+              openWithOptions={this.state.openLochPaymentModalWithOptions}
               show={this.state.isLochPaymentModal}
               onHide={this.hidePaymentModal}
               redirectLink={BASE_URL_S3 + "/"}
@@ -5917,6 +5936,7 @@ class Portfolio extends BaseReactComponent {
         )}
         {this.state.isLochPaymentModal ? (
           <PaywallModal
+            openWithOptions={this.state.openLochPaymentModalWithOptions}
             show={this.state.isLochPaymentModal}
             onHide={this.hidePaymentModal}
             redirectLink={BASE_URL_S3 + "/"}

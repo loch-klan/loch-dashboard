@@ -393,7 +393,6 @@ export const getAssetProfitLoss = (
   isDefault = true,
   isPremiumUser = false
 ) => {
-  console.log("Call ", isPremiumUser);
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (startDate) {

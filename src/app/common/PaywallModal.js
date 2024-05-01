@@ -97,6 +97,9 @@ class PaywallModal extends BaseReactComponent {
     this.setState({
       userDetailsState: userDetails,
     });
+    if (this.props.openWithOptions) {
+      this.goToPayWallOptions();
+    }
   }
   async createCharge() {
     const url = "https://api.commerce.coinbase.com/charges";
