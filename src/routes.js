@@ -152,12 +152,12 @@ const routes = [
     type: PrivateRoute,
     component: WatchList,
   },
-  {
-    path: "/decentralized-finance",
-    name: "Decentralized Finance",
-    type: PrivateRoute,
-    component: Defi,
-  },
+  // {
+  //   path: "/decentralized-finance",
+  //   name: "Decentralized Finance",
+  //   type: PrivateRoute,
+  //   component: Defi,
+  // },
   {
     path: "/verify-email",
     name: "Verify Email",

@@ -279,12 +279,14 @@ class ReferralCodesPage extends BaseReactComponent {
                       </div>
                     ) : null}
                   </div>
-                  <div
-                    onClick={this.copyAllTheCodes}
-                    className="inter-display-medium rpbdh-copy-button"
-                  >
-                    Copy all codes
-                  </div>
+                  {this.state.referralsLoading ? null : (
+                    <div
+                      onClick={this.copyAllTheCodes}
+                      className="inter-display-medium rpbdh-copy-button"
+                    >
+                      Copy all codes
+                    </div>
+                  )}
                 </div>
 
                 {this.state.referralsLoading ? (
@@ -310,7 +312,7 @@ class ReferralCodesPage extends BaseReactComponent {
                           >
                             Twitter
                           </span>
-                          ,{" "}
+                          <span> or </span>
                           <span
                             onClick={() => {
                               this.getMoreReferralCodes("telegram");
@@ -318,15 +320,6 @@ class ReferralCodesPage extends BaseReactComponent {
                             className="psrcb-text-btn"
                           >
                             Telegram
-                          </span>
-                          , or email at{" "}
-                          <span
-                            onClick={() => {
-                              this.getMoreReferralCodes("email");
-                            }}
-                            className="psrcb-text-btn"
-                          >
-                            prithvir@loch.one
                           </span>
                         </div>
                       </div>
@@ -342,6 +335,16 @@ class ReferralCodesPage extends BaseReactComponent {
                                 style={{
                                   paddingTop:
                                     curReferralCodeIndex === 0 ? "0px" : "",
+                                  paddingBottom:
+                                    curReferralCodeIndex ===
+                                    this.state.referralCodes.length - 1
+                                      ? "0px"
+                                      : "",
+                                  borderBottom:
+                                    curReferralCodeIndex ===
+                                    this.state.referralCodes.length - 1
+                                      ? "none"
+                                      : "",
                                 }}
                                 className="rpbdd-referral-block"
                               >

@@ -26,6 +26,8 @@ export default function Breadcrums(props) {
       linkName = "NFT";
     } else if (linkName === "referral-codes") {
       linkName = "referrals";
+    } else if (linkName === "assets") {
+      linkName = "Tokens";
     }
     return (
       e && (

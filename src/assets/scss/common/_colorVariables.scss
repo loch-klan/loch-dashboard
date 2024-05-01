@@ -42,6 +42,7 @@
   --referallCopyBtn: #e5e5e6;
   --referallUsedBtn: #e5e5e680;
   --referallUsedBtnText: #7c7d81;
+  --referalCompletedTasks: #e5e5e6;
   --w3m-z-index: 1000 !important;
 
   // FILTERS
@@ -218,12 +219,23 @@
   // Toastify
   --toastify: white;
   --toastifyBorder: #e5e5e6;
+  --toastifyBtn: white;
+  --toastifySuccessGradientFrom: #f4fff8;
+  --toastifySuccessGradientTo: #ffffff;
+  --toastifyErrorGradientFrom: #fff1ef;
+  --toastifyErrorGradientTo: #ffffff;
+  --toastifyWarningGradientFrom: #fff6e1;
+  --toastifyWarningGradientTo: #ffffff;
+  --toastifyBtnText: #19191a;
+  --toastifyBtnBorder: #e5e5e6;
   --toastifyText: #0d0d0d;
   --toastifySuccessIcon: url(../../images/icons/toastSuccessLight.svg);
+  --toastifyWarningIcon: url(../../images/icons/toastWarningLight.svg);
   --toastifyErrorIcon: url(../../images/icons/toastErrorLight.svg);
 
   // Leaderboard
   --leaderboardFaq: white;
+  --leaderboardFaqBlocksMobile: white;
   --leaderboardFaqBlocks: #f8f8f8;
   --leaderboardFaqBlocksBorder: #e5e5e6;
   --leaderboardFaqAnswerBlock: white;
@@ -258,6 +270,8 @@
   --payModalBgOpacity: 1;
   --payModalPurpleText: #5f33ff;
   --payModalDescText: #5a5b5d;
+  --outOfFocusBody: rgba(0, 0, 0, 0.8);
+  --outOfFocusTopBar: #3a3a3a;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -467,14 +481,25 @@
   --connectExchangeModalBlockStepCircleActive: #cacbcc;
 
   // Toastify
-  --toastify: #313233;
+  --toastify: #202020;
   --toastifyBorder: #4a4b4d;
-  --toastifyText: #e5e5e6;
+  --toastifyBtn: #101010;
+  --toastifySuccessGradientFrom: #5abe7e1a;
+  --toastifySuccessGradientTo: #5abe7e00;
+  --toastifyErrorGradientFrom: #f04d611a;
+  --toastifyErrorGradientTo: #f04d6100;
+  --toastifyWarningGradientFrom: #ffc12e1a;
+  --toastifyWarningGradientTo: #ffc12e00;
+  --toastifyBtnText: #e5e5e6;
+  --toastifyBtnBorder: #101010;
+  --toastifyText: #b0b1b3;
   --toastifySuccessIcon: url(../../images/icons/toastSuccessDark.svg);
+  --toastifyWarningIcon: url(../../images/icons/toastWarningDark.svg);
   --toastifyErrorIcon: url(../../images/icons/toastErrorDark.svg);
 
   // Leaderboard
   --leaderboardFaqModal: #1a1a1a;
+  --leaderboardFaqBlocksMobile: #202020;
   --leaderboardFaqBlocks: #202020;
   --leaderboardFaqBlocksBorder: #303030;
   --leaderboardFaqAnswerBlock: #202020;
@@ -509,6 +534,8 @@
   --payModalBgOpacity: 0.9;
   --payModalPurpleText: #5f33ff;
   --payModalDescText: #5a5b5d;
+  --outOfFocusBody: rgba(255, 255, 255, 0.8);
+  --outOfFocusTopBar: #d7d7d7;
 }
 [data-theme="dark2"] {
   // UPDATED

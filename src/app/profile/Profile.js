@@ -129,6 +129,7 @@ class Profile extends Component {
 
     this.state = {
       // add new wallet
+      isInputFocused: false,
       isMobileDevice: false,
       codesLeftToUse: false,
       userWalletList: window.sessionStorage.getItem("addWallet")
@@ -184,7 +185,7 @@ class Profile extends Component {
       this.props.getReferallCodes();
     } else {
       this.setState({
-        codesLeftToUse: 10,
+        codesLeftToUse: 20,
       });
     }
     ManageLink(this);
@@ -317,6 +318,32 @@ class Profile extends Component {
   dontOpenLoginPopup = () => {
     window.sessionStorage.setItem("dontOpenLoginPopup", true);
   };
+  showFocusedInput = () => {
+    this.setState({
+      isInputFocused: true,
+    });
+  };
+  hideFocusedInput = () => {
+    this.setState({
+      isInputFocused: false,
+    });
+  };
+  focusOriginalInputBar = () => {
+    if (
+      document.getElementById("topBarContainerInputBlockInputId") &&
+      document.getElementById("topBarContainerInputBlockInputId").focus
+    ) {
+      document.getElementById("topBarContainerInputBlockInputId").focus();
+    }
+    if (this.state.isMobile) {
+      if (
+        document.getElementById("newWelcomeWallet-1") &&
+        document.getElementById("newWelcomeWallet-1").focus
+      ) {
+        document.getElementById("newWelcomeWallet-1").focus();
+      }
+    }
+  };
   render() {
     if (this.state.isMobileDevice) {
       return (
@@ -326,6 +353,7 @@ class Profile extends Component {
           history={this.props.history}
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
+          hideShare
         >
           <ProfileMobile
             goToMyReferralCodes={this.goToMyReferralCodes}
@@ -365,6 +393,37 @@ class Profile extends Component {
             </div>
           </div>
         </div>
+        {this.state.isInputFocused ? (
+          <div onClick={this.hideFocusedInput} className="blurredElement">
+            <div className="portfolio-page-section">
+              <div
+                className="portfolio-container page"
+                style={{ overflow: "visible" }}
+              >
+                <div className="portfolio-section">
+                  {/* welcome card */}
+                  <WelcomeCard
+                    isBlurred
+                    focusOriginalInputBar={this.focusOriginalInputBar}
+                    hideFocusedInput={this.hideFocusedInput}
+                    openConnectWallet={this.props.openConnectWallet}
+                    connectedWalletAddress={this.props.connectedWalletAddress}
+                    connectedWalletevents={this.props.connectedWalletevents}
+                    disconnectWallet={this.props.disconnectWallet}
+                    updateOnFollow={this.onFollowUpdate}
+                    isSidebarClosed={this.props.isSidebarClosed}
+                    apiResponse={(e) => this.CheckApiResponse(e)}
+                    history={this.props.history}
+                    // add wallet address modal
+                    handleAddModal={this.handleAddModal}
+                    handleUpdate={this.handleUpdateWallet}
+                    hideShare
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
         <div className="profile-page-section m-t-80">
           <div className="profile-section page">
             {this.state.addModal && (
@@ -404,6 +463,7 @@ class Profile extends Component {
                     isUpdate={this.state.isUpdate}
                     history={this.props.history}
                     lochUser={this.state.lochUser}
+                    showFocusedInput={this.showFocusedInput}
                   />
                 </Col>
               </Row>

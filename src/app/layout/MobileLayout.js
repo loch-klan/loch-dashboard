@@ -745,7 +745,10 @@ class MobileLayout extends BaseReactComponent {
   };
   handleSubmitEmail = () => {
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
 
     const signUpMethod = whichSignUpMethod();
     SignInModalEmailAdded({
@@ -923,7 +926,8 @@ class MobileLayout extends BaseReactComponent {
               ))}
             </div>
             {!(this.state.walletInput && this.state.walletInput[0].address) &&
-            !this.props.hideAddresses ? (
+            !this.props.hideAddresses &&
+            !this.props.hideShare ? (
               <div className="mpcMobileShare" onClick={this.handleShare}>
                 <Image
                   style={{

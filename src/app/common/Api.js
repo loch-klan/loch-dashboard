@@ -379,7 +379,7 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
         //     },
         //   });
         // }, 3000);
-        getUserAddresses(ctx, stayOnWelcomePage);
+        getUserAddresses(ctx, stayOnWelcomePage, true);
       } else {
         ctx.setState({ error: true });
       }
@@ -391,7 +391,11 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
 
 // get user detail for chain
 
-export const getUserAddresses = (ctx, stayOnWelcomePage = false) => {
+export const getUserAddresses = (
+  ctx,
+  stayOnWelcomePage = false,
+  showSuccessMessage = false
+) => {
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
       let apiResponse = res.data?.data;
@@ -463,6 +467,11 @@ export const getUserAddresses = (ctx, stayOnWelcomePage = false) => {
       window.sessionStorage.setItem("addWallet", JSON.stringify(newAddWallet));
       addLocalWalletList(JSON.stringify(newAddWallet));
       setTimeout(() => {
+        if (showSuccessMessage) {
+          setTimeout(() => {
+            toast.success("Congratulations! Your email has been verified");
+          }, 1000);
+        }
         if (stayOnWelcomePage) {
           ctx.props.history.push({
             pathname: "/",
