@@ -375,7 +375,10 @@ class TransactionHistoryPage extends BaseReactComponent {
     } else {
       if (
         !this.props.commonState.transactionHistory ||
-        !this.props.intelligenceState.table
+        !(
+          this.props.intelligenceState.table &&
+          this.props.intelligenceState.table.length > 0
+        )
       ) {
         this.props.updateWalletListFlag("transactionHistory", true);
         let tempData = new URLSearchParams();
@@ -690,7 +693,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         TransactionHistoryAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          asset_filter: value === "allAssets" ? "All assets" : assets,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
           isSearchUsed: tempIsAssetUsed,
         });
         this.updateTimer();
@@ -1820,7 +1823,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               selectedTokens={this.state.selectedAssets}
               transactionHistorySavedData
             />
-            <span className="inter-display-medium f-s-13 lh-16 ">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Token</span>
             <Image
               src={sortByIcon}
               onClick={() => this.handleTableSort("asset")}
@@ -2175,7 +2178,6 @@ class TransactionHistoryPage extends BaseReactComponent {
               >
                 <div
                   onMouseEnter={() => {
-                    // console.log('here');
                     TransactionHistoryHashHover({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
@@ -2432,7 +2434,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                         control={{
                           type: CustomTextControl,
                           settings: {
-                            placeholder: "Search addresses",
+                            placeholder: "Search address",
                           },
                         }}
                         classes={{
