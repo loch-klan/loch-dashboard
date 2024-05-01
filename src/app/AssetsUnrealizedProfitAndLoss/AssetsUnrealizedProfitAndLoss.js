@@ -541,7 +541,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             className="cp history-table-header-col table-header-font"
             id="Asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
@@ -567,9 +567,11 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                 style={{
                   display: "flex",
                   justifyContent: "center",
+                  alignItems: "center",
                 }}
+                className="dotDotText"
               >
-                <CustomOverlay
+                {/* <CustomOverlay
                   position="top"
                   isIcon={false}
                   isInfo={true}
@@ -580,16 +582,26 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     rowData?.chain?.name +
                     "]"
                   }
-                >
-                  <div>
-                    <CoinChip
-                      coin_img_src={rowData.Asset}
-                      coin_code={rowData.AssetCode}
-                      chain={rowData?.chain}
-                      hideText={true}
-                    />
+                > */}
+                <div>
+                  <CoinChip
+                    coin_img_src={rowData.Asset}
+                    coin_code={rowData.AssetCode}
+                    chain={rowData?.chain}
+                    hideText={true}
+                  />
+                </div>
+                {rowData.Asset ? (
+                  <div
+                    className="dotDotText"
+                    style={{
+                      marginLeft: "1rem",
+                    }}
+                  >
+                    {rowData.AssetCode ? rowData.AssetCode : ""}
                   </div>
-                </CustomOverlay>
+                ) : null}
+                {/* </CustomOverlay> */}
               </div>
             );
           }
@@ -1123,6 +1135,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -1186,7 +1202,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               />
             )}
             <PageHeader
-              title="Assets"
+              title="Tokens"
               subTitle="Understand your unrealized profit and loss per token"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}

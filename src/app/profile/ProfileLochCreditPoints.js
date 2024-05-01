@@ -21,11 +21,13 @@ import { updateWalletListFlag } from "../common/Api.js";
 import Loading from "../common/Loading.js";
 import { addUserCredits, getUserCredits } from "./Api.js";
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
+import { goToTelegram, mobileCheck } from "../../utils/ReusableFunctions.js";
 
 class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: false,
       greenLinePercentage: 0,
       loading: false,
       lochScore: "",
@@ -54,7 +56,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   };
 
   componentDidMount() {
-    this.callApi();
+    if (mobileCheck()) {
+      this.setState({
+        isMobile: true,
+      });
+    }
+    if (this.props.commonState.creditPointsBlock) {
+      this.callApi();
+    }
     if (this.props.lochUser && this.props.lochUser.email) {
       this.setState({
         isLoggedIn: true,
@@ -106,9 +115,6 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       this.props.updateWalletListFlag("creditPointsBlock", true);
       this.callApi();
     }
-    if (this.props.followFlag !== prevProps.followFlag) {
-      this.callApi();
-    }
     if (prevProps.lochUser !== this.props.lochUser) {
       if (this.props.lochUser && this.props.lochUser.email) {
         this.setState({
@@ -125,7 +131,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     this.setState({
       loading: true,
     });
-    this.props.getUserCredits(this);
+    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    this.props.getUserCredits(this, isLochUser);
   }
   lochPointsLoginBtnClickedLocal = () => {
     window.sessionStorage.setItem("lochPointsProfileLoginClicked", true);
@@ -135,6 +142,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
+
+    window.sessionStorage.setItem("lochPointsSignInModal", true);
     if (
       document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")
     ) {
@@ -153,11 +162,23 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   };
   returnWhichBlock = (whichBlock, whichBlockIndex) => {
     const openAddressModal = () => {
-      if (
-        document.getElementById("topBarContainerInputBlockInputId") &&
-        document.getElementById("topBarContainerInputBlockInputId").focus
-      ) {
-        document.getElementById("topBarContainerInputBlockInputId").focus();
+      if (this.props.isMobile) {
+        if (
+          document.getElementById("topBarContainerInputBlockInputId") &&
+          document.getElementById("topBarContainerInputBlockInputId").focus
+        ) {
+          document.getElementById("topBarContainerInputBlockInputId").focus();
+        }
+        if (this.state.isMobile) {
+          if (
+            document.getElementById("newWelcomeWallet-1") &&
+            document.getElementById("newWelcomeWallet-1").focus
+          ) {
+            document.getElementById("newWelcomeWallet-1").focus();
+          }
+        }
+      } else {
+        this.props.showFocusedInput();
       }
     };
 
@@ -308,7 +329,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           email_address: getCurrentUser ? getCurrentUser()?.email : "",
           task: "Joined Telegram chat",
         });
-        window.open("https://t.me/loch_chain", "_blank");
+        goToTelegram();
         const joinTelegram = new URLSearchParams();
         joinTelegram.append("credits", "joined_telegram");
         this.props.addUserCredits(joinTelegram, this);
@@ -321,6 +342,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       if (!this.state.isLoggedIn && !skipLogin) {
         return false;
       }
+
       if (this.state.tasksDone.includes(whichBlock)) {
         return true;
       }
@@ -508,7 +530,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
                       : this.state.lochScore}
                   </span>
                   {this.state.topPercentage
-                    ? `, which puts you in
+                    ? `${this.state.isMobile ? "" : ", "}which puts you in
                   the top ${
                     this.state.isLoggedIn
                       ? this.state.topPercentage
@@ -540,6 +562,12 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           className="profileCreditPointsBody"
         >
           {this.state.tasksList.map((singleTask, singleTaskIndex) => {
+            if (!this.state.tasksDone.includes(singleTask)) {
+              return this.returnWhichBlock(singleTask, singleTaskIndex);
+            }
+            return null;
+          })}
+          {this.state.tasksDone.map((singleTask, singleTaskIndex) => {
             return this.returnWhichBlock(singleTask, singleTaskIndex);
           })}
 

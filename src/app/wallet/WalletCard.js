@@ -17,6 +17,7 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import EditWalletExchange from "./EditWalletExchange";
+import { UnrecodgnizedProfileWalletIcon } from "../../assets/images/icons";
 export default function WalletCard(props) {
   const [show, setShow] = React.useState(false);
   const [EditModal, setEditModal] = React.useState(false);
@@ -116,28 +117,42 @@ export default function WalletCard(props) {
         <>
           <div className={`${!props?.protocol ? "m-b-32" : ""} wallet-details`}>
             <div className="wallet-account-details">
-              <div className="m-r-16 wallet-img">
-                <Image
-                  src={
-                    props.wallet_metadata
-                      ? props.wallet_metadata.symbol
-                      : unrecognizedIcon
-                  }
-                />
+              <div className="wallet-account-details-name-container">
+                <div className="wallet-account-details-name">
+                  <div className="m-r-16 wallet-img">
+                    <Image
+                      src={
+                        props.wallet_metadata
+                          ? props.wallet_metadata.symbol
+                          : UnrecodgnizedProfileWalletIcon
+                      }
+                    />
+                  </div>
+                  <h6
+                    className={`inter-display-medium f-s-20 lh-24 ${
+                      props.wallet_metadata && props.wallet_metadata.name
+                        ? "m-r-16"
+                        : ""
+                    }`}
+                  >
+                    {props.wallet_metadata || props.wallet_coins.length > 0
+                      ? props.wallet_metadata
+                        ? toTitleCase(props.wallet_metadata.name)
+                        : ``
+                      : "Unrecognized wallet "}
+                  </h6>
+                </div>
+                {props.isMobileDevice ? (
+                  <div className="amount-details">
+                    <h6 className="inter-display-medium f-s-20 lh-24">
+                      {numToCurrency(props.wallet_amount)}
+                    </h6>
+                    <span className="inter-display-semi-bold f-s-10 lh-12">
+                      {CurrencyType(true)}
+                    </span>
+                  </div>
+                ) : null}
               </div>
-              <h6
-                className={`inter-display-medium f-s-20 lh-24 ${
-                  props.wallet_metadata && props.wallet_metadata.name
-                    ? "m-r-16"
-                    : ""
-                }`}
-              >
-                {props.wallet_metadata || props.wallet_coins.length > 0
-                  ? props.wallet_metadata
-                    ? toTitleCase(props.wallet_metadata.name)
-                    : ``
-                  : "Unrecognized wallet " + " "}
-              </h6>
               {props.nickname && (
                 <CustomOverlay
                   position="top"
@@ -152,16 +167,16 @@ export default function WalletCard(props) {
                   </div>
                 </CustomOverlay>
               )}
-              {props.protocol && (
+              {props.protocol && !props.isMobileDevice ? (
                 <Image
                   src={EditIcon}
                   onClick={handleEdit}
                   className="m-l-4 cp delete-icon"
                 />
-              )}
+              ) : null}
               {!props.protocol && (
                 <div className="account-details">
-                  {props.display_address && (
+                  {props.display_address && !props.isMobileDevice ? (
                     <>
                       <span
                         className="inter-display-regular f-s-13 lh-16"
@@ -177,8 +192,8 @@ export default function WalletCard(props) {
                         />
                       )}
                     </>
-                  )}
-                  {props.nameTag && (
+                  ) : null}
+                  {props.nameTag && !props.isMobileDevice ? (
                     <>
                       <span
                         className="inter-display-regular f-s-13 lh-16 mr-4"
@@ -187,11 +202,11 @@ export default function WalletCard(props) {
                         {props.nameTag}
                       </span>
                     </>
-                  )}
+                  ) : null}
                   {props.wallet_account_number && (
                     <>
                       <span
-                        className="inter-display-regular f-s-13 lh-16"
+                        className="inter-display-regular f-s-13 lh-16 account-details-address"
                         id="account_number"
                       >
                         {props.wallet_account_number}
@@ -211,14 +226,16 @@ export default function WalletCard(props) {
               )}
               {/* </div> */}
             </div>
-            <div className="amount-details">
-              <h6 className="inter-display-medium f-s-20 lh-24">
-                {numToCurrency(props.wallet_amount)}
-              </h6>
-              <span className="inter-display-semi-bold f-s-10 lh-12">
-                {CurrencyType(true)}
-              </span>
-            </div>
+            {props.isMobileDevice ? null : (
+              <div className="amount-details">
+                <h6 className="inter-display-medium f-s-20 lh-24">
+                  {numToCurrency(props.wallet_amount)}
+                </h6>
+                <span className="inter-display-semi-bold f-s-10 lh-12">
+                  {CurrencyType(true)}
+                </span>
+              </div>
+            )}
           </div>
           {!props?.protocol && (
             <div className="coins-chip">

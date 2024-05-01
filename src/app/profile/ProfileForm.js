@@ -4,7 +4,6 @@ import { CustomTextControl, Form, FormElement } from "../../utils/form";
 // import CustomButton from "../../utils/form/CustomButton";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 // import ReactDOM from 'react-dom';
-import { ethers } from "ethers";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
@@ -29,6 +28,7 @@ class ProfileForm extends BaseReactComponent {
       lastName: userDetails?.last_name || "",
       email: userDetails?.email || "",
       mobileNumber: userDetails?.mobile || "",
+      referred_by: userDetails?.referred_by || "",
       link:
         userDetails?.link ||
         window.sessionStorage.getItem("lochDummyUser") ||
@@ -48,37 +48,6 @@ class ProfileForm extends BaseReactComponent {
     };
     // this.onClose = this.onClose.bind(this);
   }
-
-  connectMetamask = async (isSignin = true) => {
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const address = await signer.getAddress();
-        const balance = ethers.utils.formatEther(
-          await provider.getBalance(address)
-        );
-
-        this.setState({
-          MetaAddress: address,
-          balance: balance,
-          signer: signer,
-          provider: provider,
-          btnloader: true,
-        });
-
-        if (!window.sessionStorage.getItem("lochUser")) {
-          this.SigninWallet();
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      console.error("Please install MetaMask!");
-      toast.error("Please install Metamask extension");
-    }
-  };
 
   // Signin wit wallet
   SigninWallet = () => {
@@ -104,6 +73,26 @@ class ProfileForm extends BaseReactComponent {
     SigninWallet(data, this);
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.userDetails !== this.props.userDetails) {
+      const userDetails = this.props.userDetails;
+      this.setState({
+        firstName: userDetails?.first_name || "",
+        lastName: userDetails?.last_name || "",
+        email: userDetails?.email || "",
+        mobileNumber: userDetails?.mobile || "",
+        referred_by: userDetails?.referred_by || "",
+        link:
+          userDetails?.link ||
+          window.sessionStorage.getItem("lochDummyUser") ||
+          "",
+        prevfirstName: userDetails?.first_name || "",
+        prevlastName: userDetails?.last_name || "",
+        prevemail: userDetails?.email || "",
+        prevmobileNumber: userDetails?.mobile || "",
+      });
+    }
+  }
   componentDidMount() {
     ManageLink(this);
 
@@ -187,6 +176,7 @@ class ProfileForm extends BaseReactComponent {
       this.state.email ? this.state.email.toLowerCase() : ""
     );
     data.append("mobile", this.state.mobileNumber);
+    data.append("referral_code", this.state.referred_by);
     data.append("signed_up_from", "Profile page");
     this.props.updateUser(data, this);
   };

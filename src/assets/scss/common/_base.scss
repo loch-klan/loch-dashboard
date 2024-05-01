@@ -663,21 +663,29 @@ body {
 }
 
 .Toastify__toast {
-  background-color: var(--cardBackgroud);
-  border: 1px solid var(--borderwhiteDarkLight);
-  color: var(--black191);
-  padding: 0.5rem 2rem;
-
+  background-color: var(--toastify);
+  border: 1px solid transparent;
+  color: var(--toastifyText);
+  padding: 1rem 2rem;
+  border-radius: 1.6rem;
   .Toastify__toast-body {
+    div {
+      text-transform: lowercase;
+      display: inline-block;
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
     flex-direction: row-reverse;
     gap: 10px;
     margin: 0;
     padding: 0;
     @include font(var(--black191), "Inter-SemiBold", 1.6rem, 600, 19px);
+    font-size: 16px;
 
     .Toastify__toast-icon {
-      margin-right: 0;
-      background-image: url(../../images/icons/success.svg);
+      margin: 0;
+      background-image: var(--toastifySuccessIcon);
       background-size: 100% 100%;
       width: 4rem;
       height: 4rem;
@@ -686,12 +694,22 @@ body {
         display: none;
       }
     }
+    &::after {
+      content: "Dismiss";
+      background-color: var(--toastifyBtn);
+      color: var(--toastifyBtnText);
+      font-size: 12px;
+      border: 0.15rem solid var(--toastifyBtnBorder);
+      padding: 0.7rem 1.3rem;
+      border-radius: 0.7rem;
+      margin-left: 50px;
+    }
   }
 
   &.Toastify__toast--error {
     .Toastify__toast-body {
       .Toastify__toast-icon {
-        background-image: url(../../images/icons/alert-icon.svg);
+        background-image: var(--toastifyErrorIcon);
 
         svg {
           display: none;
@@ -699,6 +717,38 @@ body {
       }
     }
   }
+  &.Toastify__toast--warning {
+    .Toastify__toast-body {
+      .Toastify__toast-icon {
+        background-image: var(--toastifyWarningIcon);
+
+        svg {
+          display: none;
+        }
+      }
+    }
+  }
+}
+.Toastify__toast--success {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifySuccessGradientFrom),
+    var(--toastifySuccessGradientTo)
+  );
+}
+.Toastify__toast--error {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifyErrorGradientFrom),
+    var(--toastifyErrorGradientTo)
+  );
+}
+.Toastify__toast--warning {
+  background-image: linear-gradient(
+    to bottom,
+    var(--toastifyWarningGradientFrom),
+    var(--toastifyWarningGradientTo)
+  );
 }
 
 .blur-effect {
@@ -1769,6 +1819,13 @@ form {
   }
 }
 @media all and (max-width: 800px) {
+  .Toastify__toast {
+    .Toastify__toast-body {
+      .Toastify__toast-icon {
+        margin-left: 0.5rem;
+      }
+    }
+  }
   .tool-tip-container {
     .arrow::before {
       top: -1px;
@@ -2731,7 +2788,7 @@ textarea {
 .page-header {
   margin-bottom: 1.5rem;
   h4 {
-    font-size: 2rem;
+    font-size: 25px;
     // line-height: 2.4;
   }
   .pageHeaderSubtitles {
@@ -3398,14 +3455,16 @@ input {
 
 .input-hover-states {
   input {
+    background-color: var(--modalInput);
     border: 1px solid var(--inputBorder) !important;
     &::placeholder {
-      color: var(--inputPlaceHolder) !important;
+      color: var(--modalInputPlaceholder) !important;
+      opacity: 0.5;
     }
     &:hover {
       border: 1px solid var(--inputBorderHover) !important;
       &::placeholder {
-        color: var(--inputPlaceHolder) !important;
+        color: var(--modalInputPlaceholder) !important;
       }
     }
   }
@@ -3481,6 +3540,19 @@ input {
 }
 
 .transaction-searchbar-full {
+  .searchBar {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    &:hover {
+      .form-group {
+        input {
+          &::placeholder {
+            color: var(--primaryTextColor);
+          }
+        }
+      }
+    }
+  }
   .form-group {
     flex-grow: 1;
   }
@@ -3624,4 +3696,20 @@ input {
 }
 .zeroOpacity {
   opacity: 0;
+}
+.blurredElement {
+  background-color: var(--outOfFocusBody);
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
 }

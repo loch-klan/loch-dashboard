@@ -70,6 +70,19 @@
       .left {
         display: flex;
         align-items: center;
+        .net-worth-icon-container {
+          height: 4.3rem;
+          width: 4.3rem;
+          border-radius: 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: var(--profileUnrecognizedWallet);
+          .net-worth-icon {
+            height: 2.6rem;
+            filter: var(--invertColor);
+          }
+        }
         h3 {
           padding-left: 1.2rem;
         }
@@ -96,13 +109,29 @@
             align-items: center;
             // margin-right: 4.9rem;
             width: 85%;
+            .wallet-account-details-name-container {
+              display: flex;
+              align-items: center;
+              .wallet-account-details-name {
+                display: flex;
+                align-items: center;
+              }
+            }
             .wallet-img {
               box-shadow: 0rem 0.4rem 0.8rem var(--greyF2f),
                 0rem 0.1rem 0.3rem var(--diffModeColorWithOpacity);
               border-radius: 0.8rem;
+              background-color: var(--profileUnrecognizedWallet);
+              height: 4.3rem;
+              width: 4.3rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 1.5rem;
               img {
                 border-radius: 0.8rem;
-                width: 4.3rem;
+                height: 2.6rem;
+                filter: var(--brightInDarkMode);
               }
             }
 
@@ -137,6 +166,9 @@
               // margin-left: 1.6rem;
               text-overflow: ellipsis;
               overflow: hidden;
+              .account-details-address {
+                color: var(--profileWalletAddress);
+              }
               span {
                 color: $grey-B0B;
                 // width: 92%;
@@ -158,7 +190,7 @@
 
             h6 {
               margin-right: 0.6rem;
-              color: $black-191;
+              color: var(--primaryTextColor);
             }
 
             span {
@@ -171,7 +203,7 @@
         .coins-chip {
           display: flex;
           padding-top: 2rem;
-          border-top: 1px solid rgba(229, 229, 230, 0.5);
+          border-top: 1px solid var(--profileWalletDivider);
           justify-content: space-between;
           align-items: center;
           .chips-section {

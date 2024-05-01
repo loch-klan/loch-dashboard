@@ -376,9 +376,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Holdings
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Holdings</span>
             {/* <Image
               onClick={() =>
                 this.handleTableSort(this.state.tableSortOpt[0].title)
@@ -407,7 +405,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Collection
             </span>
 
@@ -441,9 +439,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Image
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Image</span>
           </div>
         ),
         dataKey: "imgs",
@@ -524,6 +520,10 @@ class NFT extends BaseReactComponent {
           >
             <div className="portfolio-section">
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history

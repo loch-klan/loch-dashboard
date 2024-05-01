@@ -11,6 +11,7 @@ const deleteToken = (notCurrencyRates) => {
     window.sessionStorage.removeItem("currencyRates");
     window.sessionStorage.removeItem("currency");
   }
+  window.sessionStorage.removeItem("dontOpenLoginPopup");
   window.sessionStorage.removeItem("currentPlan");
   window.sessionStorage.removeItem("share_id");
   window.sessionStorage.removeItem("Plans");

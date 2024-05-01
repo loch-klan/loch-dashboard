@@ -17,6 +17,7 @@ export const updateUser = (data, ctx) => {
             email: ctx.state.email,
             mobile: ctx.state.mobileNumber,
             link: ctx.state.link,
+            referred_by: ctx.state.referred_by,
           };
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
           dispatch({
@@ -91,7 +92,7 @@ export const ManageLink = (ctx) => {
       console.log("fixwallet", err);
     });
 };
-export const getUserCredits = (ctx) => {
+export const getUserCredits = (ctx, lochUser) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/get-credits")
@@ -113,8 +114,14 @@ export const getUserCredits = (ctx) => {
             if (tempHolder.credits) {
               let tempAnswerHolder = [];
               tempHolder.credits.forEach((minData) => {
-                if (minData !== "multiple_address_added") {
-                  tempAnswerHolder.push(minData);
+                if (!(lochUser && lochUser.email)) {
+                  if (minData === "ens_added" || minData === "address_added") {
+                    tempAnswerHolder.push(minData);
+                  }
+                } else {
+                  if (minData !== "multiple_address_added") {
+                    tempAnswerHolder.push(minData);
+                  }
                 }
               });
               ctx.setState({ tasksDone: tempAnswerHolder });

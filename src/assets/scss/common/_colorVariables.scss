@@ -7,6 +7,7 @@
   --cardBorder: #cacbcc;
   --greyCardBackgroud: #e5e5e680;
   --cardSeperator: #e5e5e680;
+  --lighterDarkIcons: 1;
   --primaryTextColor: #0d0d0d;
   --primaryTextColorGrey: #0d0d0d;
   --primarySubTextColor: #adadad;
@@ -19,6 +20,20 @@
   --primaryBoxShadowDarkerColor: rgba(0, 0, 0, 0.04);
   --swapContainer: #f4edfd;
   --purpleHighlight: #5f33ff;
+  --modalInput: white;
+  --modalInputPlaceholder: #d4d4d4;
+  --modalHeaderIcon: transparent;
+  --modalPrimaryCTA: #0d0d0d;
+  --modalPrimaryCTAHover: white;
+  --modalPrimaryCTAHoverText: #0d0d0d;
+  --modalPrimaryCTAColor: white;
+  --modalSecondaryCTA: white;
+  --modalSecondaryCTAHover: #202020;
+  --modalSecondaryCTATextHoverColor: white;
+  --modalPrimaryCTABorder: #0d0d0d;
+  --swapContainer: #f4edfd;
+  --purpleHighlight: #5f33ff;
+  --purpleHighlightBorder: rgba(95, 51, 255, 0.5);
   --primaryFilter: #f2f2f2;
   --primaryActiveFilter: #fff;
   --black191: #19191a;
@@ -29,11 +44,17 @@
   --popularAccountsDataBlock: #e5e5e64d;
   --popularAccountsHeaderBrightness: brightness(0.96);
   --brightenDarkModeColors: brightness(1);
+  --referallCopyBtn: #e5e5e6;
+  --referallUsedBtn: #e5e5e680;
+  --referallUsedBtnText: #7c7d81;
+  --referalCompletedTasks: #e5e5e6;
+  --w3m-z-index: 1000 !important;
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0);
   --invertColor2: invert(100%);
+  --brightInDarkMode: brightness(1);
   --hoverBrightness: brightness(50%);
   --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(0);
@@ -83,8 +104,12 @@
   --sidebarBottomOptions: #b0b1b3;
   --sidebarWalletAmount: #1d2129;
   --sidebarHoverLink: white;
+  --profileReferralHoverShadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.15);
+  // --profileReferralHoverShadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
+  //   0px 18px 88px -4px rgba(24, 39, 75, 0.12);
   --sidebarHoverShadow: 0px 8px 28px -6px rgba(24, 39, 75, 0.12),
     0px 18px 88px -4px rgba(24, 39, 75, 0.12);
+  --sidebarSectional: #ffffff;
   --sidebarSectionalBOrder: #e5e5e680;
   --sidebarSectionalBOrderNoOpacity: #e5e5e6;
   --sidebarInactiveIconsFilter: invert(0);
@@ -184,8 +209,67 @@
 
   --activeToggleBg: rgba(255, 255, 255, 0.7);
   --whiteOnlyInvert: invert(1);
+
+  // Insights page
+  --insightsBlock: white;
+  --insightsFilter: #e5e5e6;
+  --insightsFilterSelected: white;
+  --insightsIconBorder: transparent;
+
+  // Connect Exchange Modal
+  --connectExchangeModal: white;
+  --connectExchangeModalBlock: #f8f8f8;
+  --connectExchangeModalBlockBorder: #e5e5e6;
+  --connectExchangeModalBlockStep: #e5e5e680;
+  --connectExchangeModalBlockStepCircle: #e5e5e6;
+  --connectExchangeModalBlockStepCircleActive: #636467;
+
+  // Toastify
+  --toastify: white;
+  --toastifyBorder: #e5e5e6;
+  --toastifyBtn: white;
+  --toastifySuccessGradientFrom: #f4fff8;
+  --toastifySuccessGradientTo: #ffffff;
+  --toastifyErrorGradientFrom: #fff1ef;
+  --toastifyErrorGradientTo: #ffffff;
+  --toastifyWarningGradientFrom: #fff6e1;
+  --toastifyWarningGradientTo: #ffffff;
+  --toastifyBtnText: #19191a;
+  --toastifyBtnBorder: #e5e5e6;
+  --toastifyText: #0d0d0d;
+  --toastifySuccessIcon: url(../../images/icons/toastSuccessLight.svg);
+  --toastifyWarningIcon: url(../../images/icons/toastWarningLight.svg);
+  --toastifyErrorIcon: url(../../images/icons/toastErrorLight.svg);
+
+  // Leaderboard
+  --leaderboardFaq: white;
+  --leaderboardFaqBlocksMobile: white;
+  --leaderboardFaqBlocks: #f8f8f8;
+  --leaderboardFaqBlocksBorder: #e5e5e6;
+  --leaderboardFaqAnswerBlock: white;
+  --leaderboardFaqAnswerBlockBorder: #e5e5e6;
+
+  //Sidebar
+  --closedSideBarPersonBackgroundColor: #ffffff;
+  --closedSideBarPersonBackgroundBorderColor: #e5e5e6;
+  --closeTwitterBackgroundColor: #e5e5e680;
+  --closeTwitterBackgroundBorderColor: #e5e5e680;
+
+  // Smart Money
+  --abountSmartMoneyIamge: url(../../images/SmartMoneyAbout.png);
+  --abountSmartMoneyTextBlock: white;
+  --abountSmartMoneyTextBlockBorder: #e5e5e6;
+
+  // Profile
+  --profileUnrecognizedWallet: #f2f2f2;
+  --profileWalletDivider: rgba(229, 229, 230, 0.5);
+  --profileWalletAddress: #b0b1b3;
+
+  --outOfFocusBody: rgba(0, 0, 0, 0.8);
+  --outOfFocusTopBar: #3a3a3a;
 }
 [data-theme="dark"] {
+  --w3m-z-index: 1000 !important;
   // UPDATED
   --sidebarBackgroud: #1a1a1a;
   --primaryBackgroud: #141414;
@@ -194,6 +278,7 @@
   --cardBorder: #313233;
   --greyCardBackgroud: #313233;
   --cardSeperator: #313233;
+  --lighterDarkIcons: 0.7;
   --primaryTextColor: #cacbcc;
   --primaryTextColorGrey: #cacbcc;
   --primarySubTextColor: #7c7d81;
@@ -206,6 +291,20 @@
   --primaryBoxShadowDarkerColor: #2a2a2a;
   --swapContainer: rgba(86, 72, 107, 0.3);
   --purpleHighlight: #be66ff;
+  --modalInput: #202020;
+  --modalInputPlaceholder: #cacbcc;
+  --modalHeaderIcon: #303030;
+  --modalPrimaryCTA: #303030;
+  --modalPrimaryCTAHover: white;
+  --modalPrimaryCTAHoverText: #0d0d0d;
+  --modalPrimaryCTAColor: white;
+  --modalSecondaryCTA: #202020;
+  --modalSecondaryCTAHover: white;
+  --modalSecondaryCTATextHoverColor: #0d0d0d;
+  --modalPrimaryCTABorder: #404040;
+  --swapContainer: rgba(86, 72, 107, 0.3);
+  --purpleHighlight: #be66ff;
+  --purpleHighlightBorder: rgba(190, 102, 255, 0.5);
   --primaryFilter: #303030;
   --primaryActiveFilter: #636467;
   --black191: #cacbcc;
@@ -213,11 +312,15 @@
   --glassCardBg: rgba(24, 24, 24, 0.8);
   --white191darke5ee6: #e5e5e6;
   --dropdownActiveSelected: #e5e5e6;
+  --referallCopyBtn: #303030;
+  --referallUsedBtn: rgba(229, 229, 230, 0.2);
+  --referallUsedBtnText: #cacbcc;
 
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(100%);
   --invertColor2: invert(0%);
+  --brightInDarkMode: brightness(2);
   --hoverBrightness: brightness(200%);
   --darkerBrightness: brightness(1);
   --hoverBrightnessValue: brightness(20);
@@ -276,6 +379,7 @@
   --sidebarWalletAmount: #cacbcc;
   --sidebarHoverLink: #282828bd;
   --sidebarHoverShadow: none;
+  --sidebarSectional: #202020;
   --sidebarSectionalBOrder: #303030;
   --sidebarSectionalBOrderNoOpacity: #303030;
   --sidebarInactiveIconsFilter: invert(1);
@@ -304,7 +408,7 @@
   --dropdownContentBorderColor: #313233;
   --whiteTransparentBlackE5e5e6: #e5e5e6;
   --borderwhiteDarkLight: #313233;
-  --popupCenterIconsBorder: #2a2a2a;
+  --popupCenterIconsBorder: #404040;
 
   //badges
   --lochPointsBadgeSuccessBg: #bdfade30;
@@ -363,6 +467,64 @@
 
   --activeToggleBg: rgba(26, 26, 26, 0.5);
   --whiteOnlyInvert: invert(0);
+
+  // Insights page
+  --insightsBlock: #202020;
+  --insightsFilter: #101010;
+  --insightsFilterSelected: #202020;
+  --insightsIconBorder: #cfcfcf;
+
+  // Connect Exchange Modal
+  --connectExchangeModal: #1a1a1a;
+  --connectExchangeModalBlock: #202020;
+  --connectExchangeModalBlockBorder: #303030;
+  --connectExchangeModalBlockStep: #313233;
+  --connectExchangeModalBlockStepCircle: #313233;
+  --connectExchangeModalBlockStepCircleActive: #cacbcc;
+
+  // Toastify
+  --toastify: #202020;
+  --toastifyBorder: #4a4b4d;
+  --toastifyBtn: #101010;
+  --toastifySuccessGradientFrom: #5abe7e1a;
+  --toastifySuccessGradientTo: #5abe7e00;
+  --toastifyErrorGradientFrom: #f04d611a;
+  --toastifyErrorGradientTo: #f04d6100;
+  --toastifyWarningGradientFrom: #ffc12e1a;
+  --toastifyWarningGradientTo: #ffc12e00;
+  --toastifyBtnText: #e5e5e6;
+  --toastifyBtnBorder: #101010;
+  --toastifyText: #b0b1b3;
+  --toastifySuccessIcon: url(../../images/icons/toastSuccessDark.svg);
+  --toastifyWarningIcon: url(../../images/icons/toastWarningDark.svg);
+  --toastifyErrorIcon: url(../../images/icons/toastErrorDark.svg);
+
+  // Leaderboard
+  --leaderboardFaqModal: #1a1a1a;
+  --leaderboardFaqBlocksMobile: #202020;
+  --leaderboardFaqBlocks: #202020;
+  --leaderboardFaqBlocksBorder: #303030;
+  --leaderboardFaqAnswerBlock: #202020;
+  --leaderboardFaqAnswerBlockBorder: #303030;
+
+  //Sidebar
+  --closedSideBarPersonBackgroundColor: #303030;
+  --closedSideBarPersonBackgroundBorderColor: #404040;
+  --closeTwitterBackgroundColor: #202020;
+  --closeTwitterBackgroundBorderColor: #202020;
+
+  // Smart Money
+  --abountSmartMoneyIamge: url(../../images/SmartMoneyAboutDark.png);
+  --abountSmartMoneyTextBlock: #101010;
+  --abountSmartMoneyTextBlockBorder: #202020;
+
+  // Profile
+  --profileUnrecognizedWallet: #313233;
+  --profileWalletDivider: #313233;
+  --profileWalletAddress: #636467;
+
+  --outOfFocusBody: rgba(255, 255, 255, 0.8);
+  --outOfFocusTopBar: #d7d7d7;
 }
 [data-theme="dark2"] {
   // UPDATED

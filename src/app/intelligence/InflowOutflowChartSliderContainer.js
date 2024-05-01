@@ -364,7 +364,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
           >
             {!this.props.isPage && (
               <GraphHeader
-                title="Asset value"
+                title="Token value"
                 subtitle="Analyze your portfolio value over time"
                 isArrow={true}
                 isAnalytics="Asset Value"
@@ -383,7 +383,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   height: this.props.hideTimeFilter
                     ? this.props.isMobileGraph
                       ? "38rem"
-                      : "28.5rem"
+                      : "31.5rem"
                     : "50rem",
                   display: "flex",
                   justifyContent: "center",

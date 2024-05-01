@@ -286,6 +286,36 @@ export const ConnectWalletButtonClicked = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const ConnectedWalletWelcome = ({
+  session_id,
+  email_address,
+  wallet_address,
+  wallet_name,
+}) => {
+  const event_name = "Welcome: Wallet connected";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    wallet: wallet_address,
+    "wallet provider": wallet_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const ConnectedWalletTopBar = ({
+  session_id,
+  email_address,
+  wallet_address,
+  wallet_name,
+}) => {
+  const event_name = "Top Bar: Wallet connected";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    wallet: wallet_address,
+    "wallet provider": wallet_name,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const DisconnectWalletButtonClicked = ({
   session_id,
   email_address,
@@ -2363,7 +2393,6 @@ export const InsightPage = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Pageview Insights");
 };
 // Page View: Watch List
 export const WatchlistPage = ({ session_id, email_address }) => {
@@ -2373,7 +2402,66 @@ export const WatchlistPage = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Pageview Insights");
+};
+export const ProfileReferralPage = ({ session_id, email_address }) => {
+  const event_name = "Page View: Referral Codes";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyAllCodesProfileReferralPage = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Profile: Referral Codes: copied all codes";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyCodeProfileReferralPage = ({
+  session_id,
+  email_address,
+  code,
+}) => {
+  const event_name = "Profile: Referral Codes: copied code";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    code: code,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyCodeProfileGetMoreCodes = ({
+  session_id,
+  email_address,
+  contact_point,
+}) => {
+  const event_name = "Profile: Referral Codes: request more codes";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "contact by": contact_point,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const TimeSpentReferralCodes = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name =
+    "Profile: Referral Codes: time spent on referral codes page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
 };
 export const NFTPage = ({ session_id, email_address }) => {
   const event_name = "Page View: NFT";
@@ -2382,7 +2470,6 @@ export const NFTPage = ({ session_id, email_address }) => {
     "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
-  //console.log("Pageview Insights");
 };
 
 // Page View: Onboarding
@@ -6881,6 +6968,102 @@ export const LochPointsLoginModalOpen = ({ session_id, email_address }) => {
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SignUpModalEmailAdded = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    signUpMethod: signUpMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SignUpModalReferralCodeTabClosed = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign up: referral code tab closed";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    signUpMethod: signUpMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const HomeSignedUpReferralCode = ({
+  session_id,
+  email_address,
+  referall_code,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign Up: signed up with referral code";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "referall code": referall_code,
+    signUpMethod: signUpMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const HomeSignUpGetReferralCode = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign Up: request code on telegram";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    signUpMethod: signUpMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const WelcomeSignUpModalEmailAdded = ({ session_id, email_address }) => {
+  const event_name = "Welcome: Sign up: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WelcomeSignUpReferralModalClosed = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name = "Welcome: Sign up: referral code tab closed";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+
+export const WelcomeSignedUpReferralCode = ({
+  session_id,
+  email_address,
+  referral_code,
+}) => {
+  const event_name = "Welcome: Sign Up: signed up with referral code";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "referall code": referral_code,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const WelcomeSignUpGetReferralCode = ({ session_id, email_address }) => {
+  const event_name = "Welcome: Sign Up: request code on telegram";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
 };

@@ -527,12 +527,10 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter no-hover"
+            className="cp history-table-header-col goToCenter table-header-font no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Account
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Account</span>
           </div>
         ),
         dataKey: "account",
@@ -719,12 +717,10 @@ class WatchListPage extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter no-hover"
+            className="cp history-table-header-col goToCenter table-header-font no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Delete
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Delete</span>
           </div>
         ),
         dataKey: "deleteCol",
@@ -766,6 +762,7 @@ class WatchListPage extends BaseReactComponent {
           history={this.props.history}
           hideFooter
           hideAddresses
+          hideShare
         >
           <WalletListPageMobile
             tableLoading={this.state.tableLoading}
@@ -798,6 +795,10 @@ class WatchListPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}

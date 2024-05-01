@@ -555,7 +555,7 @@ class BarGraphSection extends Component {
                         </div>
                         <div className="intelligenceRealisedRightItems intelligenceRealisedRightItemsMobile">
                           <CustomDropdown
-                            filtername="All assets"
+                            filtername="All tokens"
                             options={this.props.assetList}
                             selectedTokens={this.props.selectedAssets}
                             action={null}
@@ -602,7 +602,7 @@ class BarGraphSection extends Component {
                           // }}
                         >
                           <CustomDropdown
-                            filtername="All assets"
+                            filtername="All tokens"
                             options={this.props.assetList}
                             selectedTokens={this.props.selectedAssets}
                             action={null}
@@ -821,7 +821,7 @@ class BarGraphSection extends Component {
                         }}
                       >
                         <CustomDropdown
-                          filtername="All assets selected"
+                          filtername="All tokens selected"
                           options={this.props.assetList}
                           action={null}
                           handleClick={this.props.handleAssetSelected}
@@ -1087,7 +1087,7 @@ class BarGraphSection extends Component {
                       ? this.props.customGraphLoadingHeight
                       : this.props.isMobileGraph
                       ? "44rem"
-                      : "32rem",
+                      : "35rem",
                   }
                 : {
                     flex: 1,

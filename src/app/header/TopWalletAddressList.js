@@ -1,5 +1,4 @@
-import { ArcxAnalyticsSdk } from "@arcxmoney/analytics";
-import { ethers } from "ethers";
+// import { ethers } from "ethers";
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
@@ -13,7 +12,6 @@ import {
   HomeUnFollow,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
-import { ARCX_API_KEY } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import { TruncateText } from "../../utils/ReusableFunctions";
 import {
@@ -36,8 +34,8 @@ import {
 import TopBarDropDown from "./TopBarDropDown";
 import "./_topWalletAddressList.scss";
 
-import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
+import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import Breadcrums from "../common/Breadcrums";
 
 class TopWalletAddressList extends Component {
@@ -607,33 +605,32 @@ class TopWalletAddressList extends Component {
     });
 
     if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-      try {
-        const tempRes = await provider.send("eth_requestAccounts", []);
-        try {
-          const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
-          if (tempRes && tempRes.length > 0 && sdk) {
-            sdk.wallet({
-              account: tempRes[0],
-              chainId: window.ethereum.networkVersion,
-            });
-          }
-        } catch (error) {
-          console.log("ArcxAnalyticsSdk error ", error);
-        }
-        if (tempRes && tempRes.length > 0) {
-          setTimeout(() => {
-            this.props.handleUpdate();
-          }, 1000);
-          const walletCreditScore = new URLSearchParams();
-          walletCreditScore.append("credits", "wallet_connected");
-          this.props.addUserCredits(walletCreditScore);
-          this.addToList(tempRes);
-        }
-      } catch (error) {
-        console.log("ethers error ", error);
-      }
+      // const provider = new ethers.providers.Web3Provider(window.ethereum);
+      // try {
+      //   const tempRes = await provider.send("eth_requestAccounts", []);
+      //   try {
+      //     const sdk = await ArcxAnalyticsSdk.init(ARCX_API_KEY, {});
+      //     if (tempRes && tempRes.length > 0 && sdk) {
+      //       sdk.wallet({
+      //         account: tempRes[0],
+      //         chainId: window.ethereum.networkVersion,
+      //       });
+      //     }
+      //   } catch (error) {
+      //     console.log("ArcxAnalyticsSdk error ", error);
+      //   }
+      //   if (tempRes && tempRes.length > 0) {
+      //     setTimeout(() => {
+      //       this.props.handleUpdate();
+      //     }, 1000);
+      //     const walletCreditScore = new URLSearchParams();
+      //     walletCreditScore.append("credits", "wallet_connected");
+      //     this.props.addUserCredits(walletCreditScore);
+      //     this.addToList(tempRes);
+      //   }
+      // } catch (error) {
+      //   console.log("ethers error ", error);
+      // }
     }
   };
   handleSetCoin = (data) => {
@@ -995,6 +992,7 @@ class TopWalletAddressList extends Component {
         <Breadcrums
           showpath={this.props.showpath}
           currentPage={this.props.currentPage}
+          noHomeInPath={this.props.noHomeInPath}
         />
         {/* {this.props.showpath ? breadCrumb : ""} */}
         <div className="topWalletAddressList">

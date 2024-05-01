@@ -524,7 +524,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         YieldOpportunitiesAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          asset_filter: value === "allAssets" ? "All assets" : assets,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
           isSearchUsed: tempIsAssetUsed,
         });
         this.updateTimer();
@@ -728,7 +728,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Asset</span>
+            <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               onClick={() => this.handleTableSort("asset")}
               src={sortByIcon}
@@ -1009,6 +1009,10 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
@@ -1087,7 +1091,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
 
                   <Col md={4}>
                     <CustomDropdown
-                      filtername="All assets"
+                      filtername="All tokens"
                       options={this.props.intelligenceState.assetFilter}
                       action={SEARCH_BY_ASSETS_IN}
                       handleClick={(key, value) =>

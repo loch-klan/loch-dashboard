@@ -1,14 +1,12 @@
 import { Route } from "react-router-dom";
 import Portfolio from "./app/Portfolio/Portfolio";
 import Login from "./app/common/Login";
-import { Home } from "./app/home";
 import { Profile } from "./app/profile";
 import PrivateRoute from "./utils/PrivateRoute";
 import Sandbox from "./utils/form/Sandbox";
 
 import VerifyEmail from "./app/common/VerifyEmail";
 import Defi from "./app/defi/Defi";
-import AssetValueGraph from "./app/intelligence/AssetValueGraph";
 import InsightsPage from "./app/intelligence/InsightsPage";
 import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
 import VerifySmartMoneyEmailLink from "./app/smartMoney/VerifySmartMoneyEmailLink";
@@ -26,13 +24,15 @@ import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
-import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
-import Nft from "./app/nft/Nft";
-import NewWelcome from "./app/home/NewWelcome";
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
 import Emulations from "./app/Emulations/Emulations";
 import EmulationTransactionsPage from "./app/Emulations/EmulationTransactions/EmulationTransactionsPage";
 import AutoLogin from "./app/AutoLogin/AutoLogin";
+import NewWelcome from "./app/home/NewWelcome";
+import Nft from "./app/nft/Nft";
+import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
+import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
+import PublicRoute from "./utils/PublicRoute";
 const routes = [
   {
     path: "/",
@@ -50,7 +50,7 @@ const routes = [
   {
     path: "/welcome",
     name: "Home",
-    type: Route,
+    type: PublicRoute,
     component: NewWelcome,
   },
   {
@@ -58,6 +58,12 @@ const routes = [
     name: "Profile",
     type: PrivateRoute,
     component: Profile,
+  },
+  {
+    path: "/profile/referral-codes",
+    name: "Referral Codes",
+    type: PrivateRoute,
+    component: ReferralCodesPage,
   },
   {
     path: ["/home", "/home/:id", "/wallet/:id"],
@@ -165,12 +171,12 @@ const routes = [
     type: PrivateRoute,
     component: WatchList,
   },
-  {
-    path: "/decentralized-finance",
-    name: "Decentralized Finance",
-    type: PrivateRoute,
-    component: Defi,
-  },
+  // {
+  //   path: "/decentralized-finance",
+  //   name: "Decentralized Finance",
+  //   type: PrivateRoute,
+  //   component: Defi,
+  // },
   {
     path: "/verify-email",
     name: "Verify Email",

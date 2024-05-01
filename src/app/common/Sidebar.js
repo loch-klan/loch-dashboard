@@ -171,6 +171,12 @@ function Sidebar(props) {
         ? true
         : false
     );
+    let isDarkTheme = localStorage.getItem("isDarkTheme");
+    if (isDarkTheme && isDarkTheme === "true") {
+      document.documentElement.style.backgroundColor = "#141414";
+    } else {
+      document.documentElement.style.backgroundColor = "#f2f2f2";
+    }
   }, [document.querySelector("body").getAttribute("data-theme") == "dark"]);
   React.useEffect(() => {
     // console.log("in use effect");
@@ -401,6 +407,13 @@ function Sidebar(props) {
   const openLochTwitter = () => {
     window.open("https://twitter.com/loch_chain", "_blank", "noreferrer");
   };
+  useEffect(() => {
+    if (!signupModal && !signinModal) {
+      window.sessionStorage.removeItem("fifteenSecSignInModal");
+      window.sessionStorage.removeItem("referralCodesSignInModal");
+      window.sessionStorage.removeItem("lochPointsSignInModal");
+    }
+  }, [signupModal, signinModal]);
   const openSigninModal = (fromWhichPage) => {
     if (fromWhichPage === "copyTrade") {
       setIsCopyTraderPopUpModal(true);
@@ -575,7 +588,14 @@ function Sidebar(props) {
       const lochPointsProfileModalOpen = window.sessionStorage.getItem(
         "lochPointsProfileLoginClicked"
       );
-      if (!isCopyTradeModalOpen && !lochPointsProfileModalOpen) {
+      const dontOpenLoginPopup =
+        window.sessionStorage.getItem("dontOpenLoginPopup");
+      if (
+        !isCopyTradeModalOpen &&
+        !lochPointsProfileModalOpen &&
+        !dontOpenLoginPopup
+      ) {
+        window.sessionStorage.setItem("fifteenSecSignInModal", true);
         // if isPopupActive = true then do not open this popup bcoz any other popup still open
         let isPopupActive = JSON.parse(
           window.sessionStorage.getItem("isPopupActive")
@@ -729,7 +749,7 @@ function Sidebar(props) {
             onClick={handleDarkMode}
             style={{
               zIndex: "9",
-              right: "-10px",
+              right: "10px",
             }}
             className="navbar-button-container-mode"
           >
@@ -743,7 +763,7 @@ function Sidebar(props) {
             onClick={handleDarkMode}
             style={{
               zIndex: "9",
-              right: "-10px",
+              right: "10px",
             }}
             className="navbar-button-container-mode"
           >
@@ -812,7 +832,7 @@ function Sidebar(props) {
                 <Image src={logo} />
                 <span className="loch-text">Loch</span>
               </div>
-              <div className="currency-wrapper">
+              {/* <div className="currency-wrapper">
                 <DropdownButton
                   id="currency-dropdown"
                   title={
@@ -841,7 +861,7 @@ function Sidebar(props) {
                     );
                   })}
                 </DropdownButton>
-              </div>
+              </div> */}
             </div>
 
             <div
@@ -993,7 +1013,7 @@ function Sidebar(props) {
                                 if (!isWallet) {
                                   e.preventDefault();
                                 } else {
-                                  MenuWatchlist({
+                                  ProfileMenu({
                                     session_id: getCurrentUser().id,
                                     email_address: getCurrentUser().email,
                                   });
@@ -1003,13 +1023,6 @@ function Sidebar(props) {
                             >
                               <Image
                                 src={ProfileSidebarIcon}
-                                style={
-                                  activeTab === "/profile"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
                                 className="followingImg"
                               />
                             </NavLink>
@@ -1236,7 +1249,6 @@ function Sidebar(props) {
 
                           <li>
                             <NavLink
-                              exact={true}
                               onClick={(e) => {
                                 if (!isWallet) {
                                   e.preventDefault();
@@ -1780,6 +1792,7 @@ function Sidebar(props) {
               ? "Loch points profile"
               : ""
           }
+          iconImage={SignInIcon}
           comingDirectly={comingDirectly}
           hideOnblur
           showHiddenError
@@ -1789,10 +1802,10 @@ function Sidebar(props) {
           history={history}
           modalType={"exitOverlay"}
           handleRedirection={() => {
-            resetUser();
-            setTimeout(function () {
-              props.history.push("/welcome");
-            }, 3000);
+            // resetUser();
+            // setTimeout(function () {
+            //   props.history.push("/welcome");
+            // }, 3000);
           }}
           signup={true}
           goToSignIn={openSigninModal}

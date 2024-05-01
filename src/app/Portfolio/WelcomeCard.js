@@ -123,6 +123,8 @@ export default function WelcomeCard(props) {
   if (props.isMobileRender) {
     return (
       <TopWalletExchangeBar
+        connectedWalletAddress={props.connectedWalletAddress}
+        connectedWalletevents={props.connectedWalletevents}
         changeWalletList={props.changeWalletList}
         apiResponse={props.apiResponse}
         history={history}
@@ -255,14 +257,20 @@ export default function WelcomeCard(props) {
     //     ""
     //   )}
     // </div>
-    <div className="welcome-card-section-topbar">
+    <div
+      className={`welcome-card-section-topbar ${
+        props.isBlurred ? "welcome-card-section-topbar-blurred" : ""
+      }`}
+    >
       <div
         className={`welcome-card-topbar ${
           props.isSidebarClosed ? "welcome-card-topbar-closed" : ""
-        }`}
+        } ${props.isBlurred ? "welcome-card-topbar-blurred" : ""}`}
       >
         <div
-          className="row-div"
+          className={`row-div ${
+            props.isBlurred ? "welcome-card-topbar-input-blurred" : ""
+          }`}
           style={{
             display: "flex",
             flex: 1,
@@ -323,6 +331,11 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              hideFocusedInput={props.hideFocusedInput}
+              focusOriginalInputBar={props.focusOriginalInputBar}
+              isBlurred={props.isBlurred}
+              connectedWalletAddress={props.connectedWalletAddress}
+              connectedWalletevents={props.connectedWalletevents}
               updateOnFollow={props.updateOnFollow}
               afterAddressFollowed={props.afterAddressFollowed}
               isAddressFollowedCount={props.isAddressFollowedCount}
@@ -335,6 +348,8 @@ export default function WelcomeCard(props) {
               handleConnectModal={handleConnectModal}
               handleUpdate={props.handleUpdate}
               hideShare={props.hideShare}
+              openConnectWallet={props.openConnectWallet}
+              disconnectWallet={props.disconnectWallet}
             />
           ) : // <div className="topBarContainer">
           //   <div

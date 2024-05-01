@@ -22,6 +22,23 @@
       font-weight: 500;
     }
   }
+  .mobile-header-container-with-image {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.3rem;
+    .mobile-header-container-image {
+      height: 25px;
+      margin-right: 0.5rem;
+      filter: var(--invertColor);
+      opacity: var(--lighterDarkIcons);
+    }
+    .mobile-header-container {
+      margin-bottom: 0rem;
+      h4 {
+        margin-bottom: 0rem;
+      }
+    }
+  }
 
   .custom-dropdown {
     margin-right: 0px !important;
@@ -422,6 +439,7 @@
               .awInputWrapper {
                 border: none;
                 width: 100%;
+                background-color: var(--modalInput);
                 .awLable {
                   color: #b0b1b3;
                   font-size: 14px;

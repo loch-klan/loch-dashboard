@@ -632,7 +632,7 @@ class RealizedProfitAndLoss extends Component {
         netflowAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
-          selected: arr[0] === "All" ? "All assets" : arr.map((e) => e?.name),
+          selected: arr[0] === "All" ? "All tokens" : arr.map((e) => e?.name),
           isSearchUsed: tempIsSearchUsed,
         });
         this.setState({ isAssetSearchUsed: false });
@@ -712,6 +712,10 @@ class RealizedProfitAndLoss extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
                 handleShare={this.handleShare}
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}

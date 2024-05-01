@@ -84,10 +84,13 @@ export const SwitchDarkMode = (passedData) => {
     });
   };
 };
-export const fixWalletApi = (ctx, info) => {
+export const fixWalletApi = (ctx, info, stopBtnLoading) => {
   postLoginInstance
     .post("organisation/user/update-user", info)
     .then((res) => {
+      if (stopBtnLoading) {
+        stopBtnLoading();
+      }
       if (!res.data.error) {
         ctx.handleRedirection();
         // ctx.props.history.push('/welcome');
@@ -96,6 +99,9 @@ export const fixWalletApi = (ctx, info) => {
       }
     })
     .catch((err) => {
+      if (stopBtnLoading) {
+        stopBtnLoading();
+      }
       // console.log("fixwallet",err)
     });
 };
@@ -316,6 +322,7 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
           email: res.data.data.user?.email,
           mobile: res.data.data.user?.mobile,
           link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
         };
 
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -344,7 +351,7 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
         //     },
         //   });
         // }, 3000);
-        getUserAddresses(ctx, stayOnWelcomePage);
+        getUserAddresses(ctx, stayOnWelcomePage, true);
       } else {
         ctx.setState({ error: true });
       }
@@ -356,7 +363,11 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
 
 // get user detail for chain
 
-export const getUserAddresses = (ctx, stayOnWelcomePage = false) => {
+export const getUserAddresses = (
+  ctx,
+  stayOnWelcomePage = false,
+  showSuccessMessage = false
+) => {
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
       let apiResponse = res.data?.data;
@@ -427,6 +438,11 @@ export const getUserAddresses = (ctx, stayOnWelcomePage = false) => {
       window.sessionStorage.setItem("addWallet", JSON.stringify(newAddWallet));
       addLocalWalletList(JSON.stringify(newAddWallet));
       setTimeout(() => {
+        if (showSuccessMessage) {
+          setTimeout(() => {
+            toast.success("Congratulations! Your email has been verified");
+          }, 1000);
+        }
         if (stayOnWelcomePage) {
           ctx.props.history.push({
             pathname: "/",
@@ -585,6 +601,7 @@ export const sendWhopCode = (ctx, data) => {
           email: res.data.data.user?.email,
           mobile: res.data.data.user?.mobile,
           link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
         };
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
         // window.sessionStorage.setItem("defi_access", true);
@@ -795,57 +812,231 @@ export const sendFeedbackApi = (data, ctx) => {
 };
 
 export const getAllCurrencyApi = (setAllCurrencyList) => {
-  postLoginInstance
-    .post("common/master/get-all-currencies")
-    .then((res) => {
-      if (!res.data.error) {
-        // console.log('set');
-        setAllCurrencyList(res.data.data.currencies);
-      } else {
-        toast.error(res.data.message || "Something went wrong");
-      }
-    })
-    .catch((err) => {
-      console.log("err", err);
-    });
+  setAllCurrencyList([
+    {
+      active: true,
+      code: "AFN",
+      id: "63a2e7e86f28b73c887e88c5",
+      name: "Afghan Afghani",
+      symbol: "Afs",
+    },
+    {
+      active: true,
+      code: "ARS",
+      id: "63a2e7e86f28b73c887e88ca",
+      name: "Argentine Peso",
+      symbol: "$",
+    },
+    {
+      active: true,
+      code: "AUD",
+      id: "63a2e7e86f28b73c887e88cb",
+      name: "Australian Dollar",
+      symbol: "$",
+    },
+    {
+      active: true,
+      code: "BRL",
+      id: "63a2e7e86f28b73c887e88d7",
+      name: "Brazilian Real",
+      symbol: "R$",
+    },
+    {
+      active: true,
+      code: "BTC",
+      id: "63a2e7e86f28b73c887e88d9",
+      name: "Bitcoin",
+      symbol: "\u20bf",
+    },
+    {
+      active: true,
+      code: "CAD",
+      id: "63a2e7e86f28b73c887e88de",
+      name: "Canadian Dollar",
+      symbol: "$",
+    },
+    {
+      active: true,
+      code: "CNY",
+      id: "63a2e7e86f28b73c887e88e4",
+      name: "Chinese Yuan",
+      symbol: "\u00a5",
+    },
+    {
+      active: true,
+      code: "COP",
+      id: "63a2e7e86f28b73c887e88e5",
+      name: "Colombian Peso",
+      symbol: "Col$",
+    },
+    {
+      active: true,
+      code: "ETH",
+      id: "63a2e7e86f28b73c887e88da",
+      name: "Ethers",
+      symbol: "\u039e",
+    },
+    {
+      active: true,
+      code: "EUR",
+      id: "63a2e7e86f28b73c887e88f2",
+      name: "Euro",
+      symbol: "\u20ac",
+    },
+    {
+      active: true,
+      code: "GBP",
+      id: "63a2e7e86f28b73c887e88f5",
+      name: "British Pound Sterling",
+      symbol: "\u00a3",
+    },
+    {
+      active: true,
+      code: "INR",
+      id: "63a2e7e86f28b73c887e8906",
+      name: "Indian Rupee",
+      symbol: "\u20b9",
+    },
+    {
+      active: true,
+      code: "KES",
+      id: "63a2e7e86f28b73c887e890e",
+      name: "Kenyan Shilling",
+      symbol: "KSh",
+    },
+    {
+      active: true,
+      code: "NGN",
+      id: "63a2e7e86f28b73c887e892c",
+      name: "Nigerian Naira",
+      symbol: "\u20a6",
+    },
+    {
+      active: true,
+      code: "PHP",
+      id: "63a2e7e86f28b73c887e8935",
+      name: "Philippine Peso",
+      symbol: "\u20b1",
+    },
+    {
+      active: true,
+      code: "PKR",
+      id: "63a2e7e86f28b73c887e8936",
+      name: "Pakistani Rupee",
+      symbol: "Rs.",
+    },
+    {
+      active: true,
+      code: "RUB",
+      id: "63a2e7e86f28b73c887e893c",
+      name: "Russian Ruble",
+      symbol: "\u20bd",
+    },
+    {
+      active: true,
+      code: "THB",
+      id: "63a2e7e86f28b73c887e894e",
+      name: "Thai Baht",
+      symbol: "\u0e3f",
+    },
+    {
+      active: true,
+      code: "TZS",
+      id: "63a2e7e86f28b73c887e8956",
+      name: "Tanzanian Shilling",
+      symbol: "TZS",
+    },
+    {
+      active: true,
+      code: "UAH",
+      id: "63a2e7e86f28b73c887e8957",
+      name: "Ukrainian Hryvnia",
+      symbol: "UAH",
+    },
+    {
+      active: true,
+      code: "USD",
+      id: "63a2e7e86f28b73c887e8959",
+      name: "United States Dollar",
+      symbol: "$",
+    },
+    {
+      active: true,
+      code: "VND",
+      id: "63a2e7e86f28b73c887e895e",
+      name: "Vietnamese Dong",
+      symbol: "\u20ab",
+    },
+    {
+      active: true,
+      code: "ZAR",
+      id: "63a2e7e86f28b73c887e896b",
+      name: "South African Rand",
+      symbol: "R",
+    },
+  ]);
+  // postLoginInstance
+  //   .post("common/master/get-all-currencies")
+  //   .then((res) => {
+  //     console.log("data ", res.data.data.currencies);
+  //     if (!res.data.error) {
+  //       // console.log('set');
+  //     } else {
+  //       toast.error(res.data.message || "Something went wrong");
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log("err", err);
+  //   });
 };
 export const getAllCurrencyRatesApi = () => {
-  postLoginInstance
-    .post("common/master/get-currency-rates")
-    .then((res) => {
-      if (!res.data.error) {
-        let currency = JSON.parse(
-          window.sessionStorage.getItem("currency")
-        ) || {
-          active: true,
-          code: "USD",
-          id: "6399a2d35a10114b677299fe",
-          name: "United States Dollar",
-          symbol: "$",
-          rate: 1,
-        };
-
-        for (const [key, value] of Object.entries(res.data.data.rates.rates)) {
-          // console.log(`${key}: ${value}`);
-          if (key === currency?.code) {
-            currency = {
-              ...currency,
-              rate: value,
-            };
-          }
-        }
-        window.sessionStorage.setItem("currency", JSON.stringify(currency));
-        window.sessionStorage.setItem(
-          "currencyRates",
-          JSON.stringify(res.data.data.rates)
-        );
-      } else {
-        toast.error(res.data.message || "Something went wrong");
-      }
+  window.sessionStorage.setItem(
+    "currency",
+    JSON.stringify({
+      active: true,
+      code: "USD",
+      id: "6399a2d35a10114b677299fe",
+      name: "United States Dollar",
+      symbol: "$",
+      rate: 1,
     })
-    .catch((err) => {
-      console.log("err", err);
-    });
+  );
+
+  // postLoginInstance
+  //   .post("common/master/get-currency-rates")
+  //   .then((res) => {
+  //     if (!res.data.error) {
+  //       let currency = JSON.parse(
+  //         window.sessionStorage.getItem("currency")
+  //       ) || {
+  //         active: true,
+  //         code: "USD",
+  //         id: "6399a2d35a10114b677299fe",
+  //         name: "United States Dollar",
+  //         symbol: "$",
+  //         rate: 1,
+  //       };
+  //       for (const [key, value] of Object.entries(res.data.data.rates.rates)) {
+  //         // console.log(`${key}: ${value}`);
+  //         if (key === currency?.code) {
+  //           currency = {
+  //             ...currency,
+  //             rate: value,
+  //           };
+  //         }
+  //       }
+  //       window.sessionStorage.setItem("currency", JSON.stringify(currency));
+  //       window.sessionStorage.setItem(
+  //         "currencyRates",
+  //         JSON.stringify(res.data.data.rates)
+  //       );
+  //     } else {
+  //       toast.error(res.data.message || "Something went wrong");
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log("err", err);
+  //   });
 };
 
 // Send Email OTP from whale pod
@@ -952,7 +1143,6 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
         const userId = window.sessionStorage.getItem("lochDummyUser");
 
         // reset redux
-        ctx.props.setPageFlagDefault && ctx.props.setPageFlagDefault();
         // if (res.data.data.is_new_user) {
         //   signUpProperties({
         //     email_address: res.data.data.user?.email,
@@ -1045,6 +1235,19 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
           last_name: res.data.data.user?.last_name,
           track: track,
         });
+        let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        obj = {
+          ...obj,
+          first_name: res.data.data.user?.first_name,
+          last_name: res.data.data.user?.last_name,
+          email: res.data.data.user?.email,
+          mobile: res.data.data.user?.mobile,
+          link: res.data.data.user?.link,
+          referred_by: res.data.data.user?.referred_by,
+        };
+
+        window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+
         ctx.setState(
           {
             isOptInValid: false,
@@ -1052,17 +1255,6 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
           () => {
             if (ctx.props.stopUpdate) {
               window.sessionStorage.removeItem("lochDummyUser");
-              let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
-              obj = {
-                ...obj,
-                first_name: res.data.data.user?.first_name,
-                last_name: res.data.data.user?.last_name,
-                email: res.data.data.user?.email,
-                mobile: res.data.data.user?.mobile,
-                link: res.data.data.user?.link,
-              };
-
-              window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
 
               const allChains = ctx.props.OnboardingState.coinsList;
               let addWallet = [];
@@ -1162,18 +1354,6 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
                 userdata.append("old_user_id", userId);
                 UpdateUserDetails(userdata, ctx, isCopyTrade);
               } else {
-                // console.log("welcome upgrade signin")
-                let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
-                obj = {
-                  ...obj,
-                  first_name: "",
-                  last_name: "",
-                  email: res.data.data.user?.email,
-                  mobile: "",
-                  link: res.data.data.user?.link,
-                };
-                window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
-
                 // update wallet
                 const apiResponse = res.data.data;
                 if (apiResponse?.user) {
@@ -1270,10 +1450,16 @@ export const VerifyEmail = (data, ctx, isCopyTrade) => {
                   ctx.AddEmailModal();
                 } else {
                   setTimeout(() => {
-                    ctx.state.onHide();
+                    if (ctx.state && ctx.state.onHide) {
+                      ctx.state.onHide();
+                    }
                   }, 3000);
                 }
               }
+            }
+            ctx.props.setPageFlagDefault && ctx.props.setPageFlagDefault();
+            if (ctx.onVerifiedOtp) {
+              ctx.onVerifiedOtp();
             }
           }
         );
@@ -1324,6 +1510,7 @@ export const UpdateUserDetails = (data, ctx, isCopyTrade) => {
             : ctx.state.email,
           mobile: ctx.state.mobileNumber,
           link: res.data.data.user.link,
+          referred_by: res.data.data.user.referred_by,
         };
         window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
         // toast.success(" Your wallets and pods has been saved");
@@ -1347,22 +1534,171 @@ export const UpdateUserDetails = (data, ctx, isCopyTrade) => {
 // get-all-plans
 export const GetAllPlan = () => {
   return async function () {
-    postLoginInstance
-      .post("commerce/plan/get-all-plans")
-      .then((res) => {
-        if (!res.data.error) {
-          // Analytics
+    const tempItemHolder = [
+      {
+        defi_enabled: false,
+        export_address_limit: 1,
+        id: "63f301edd3d94dbf8162e84a",
+        is_default: true,
+        is_trial: false,
+        name: "Free",
+        notifications_limit: 0,
+        notifications_provided: false,
+        plan_reference_id: "prod_NOEBdez1NVZcuk",
+        trial_days: 30,
+        upload_csv: true,
+        wallet_address_limit: 5,
+        whale_pod_address_limit: 5,
+        whale_pod_limit: 1,
+      },
+      {
+        defi_enabled: true,
+        export_address_limit: -1,
+        id: "63f301edd3d94dbf8162e84b",
+        is_default: false,
+        is_trial: false,
+        name: "Baron",
+        notifications_limit: 100,
+        notifications_provided: true,
+        plan_reference_id: "prod_NOEBrbf0jzIxfx",
+        prices: [
+          {
+            active: true,
+            billing_scheme: "per_unit",
+            created: 1678353991,
+            currency: "usd",
+            custom_unit_amount: null,
+            id: "price_1Mjfk3FKqIbhlomAkPsNOxec",
+            livemode: true,
+            lookup_key: null,
+            metadata: {},
+            nickname: null,
+            object: "price",
+            product: "prod_NOEBrbf0jzIxfx",
+            recurring: {
+              aggregate_usage: null,
+              interval: "month",
+              interval_count: 1,
+              trial_period_days: null,
+              usage_type: "licensed",
+            },
+            tax_behavior: "exclusive",
+            tiers_mode: null,
+            transform_quantity: null,
+            type: "recurring",
+            unit_amount: 9900,
+            unit_amount_decimal: "9900",
+          },
+        ],
+        trial_days: 30,
+        upload_csv: true,
+        wallet_address_limit: 50,
+        whale_pod_address_limit: 50,
+        whale_pod_limit: 10,
+      },
+      {
+        defi_enabled: true,
+        export_address_limit: -1,
+        id: "63f301eed3d94dbf8162e84c",
+        is_default: false,
+        is_trial: false,
+        name: "Sovereign",
+        notifications_limit: -1,
+        notifications_provided: true,
+        plan_reference_id: "prod_NOEBIpuFvPRxoo",
+        prices: [
+          {
+            active: true,
+            billing_scheme: "per_unit",
+            created: 1678354026,
+            currency: "usd",
+            custom_unit_amount: null,
+            id: "price_1MjfkcFKqIbhlomA7pGtztNB",
+            livemode: true,
+            lookup_key: null,
+            metadata: {},
+            nickname: null,
+            object: "price",
+            product: "prod_NOEBIpuFvPRxoo",
+            recurring: {
+              aggregate_usage: null,
+              interval: "month",
+              interval_count: 1,
+              trial_period_days: null,
+              usage_type: "licensed",
+            },
+            tax_behavior: "exclusive",
+            tiers_mode: null,
+            transform_quantity: null,
+            type: "recurring",
+            unit_amount: 99900,
+            unit_amount_decimal: "99900",
+          },
+        ],
+        trial_days: 30,
+        upload_csv: true,
+        wallet_address_limit: -1,
+        whale_pod_address_limit: -1,
+        whale_pod_limit: -1,
+      },
+      {
+        defi_enabled: true,
+        export_address_limit: -1,
+        id: "63eb32769b5e4daf6b588208",
+        is_default: false,
+        is_trial: true,
+        name: "Trial",
+        notifications_limit: -1,
+        notifications_provided: true,
+        plan_reference_id: "prod_NUNmkYIJJ1DW8Q",
+        prices: [
+          {
+            active: true,
+            billing_scheme: "per_unit",
+            created: 1678289703,
+            currency: "usd",
+            custom_unit_amount: null,
+            id: "price_1MjP19FKqIbhlomAnfjJXxwb",
+            livemode: true,
+            lookup_key: null,
+            metadata: {},
+            nickname: null,
+            object: "price",
+            product: "prod_NUNmkYIJJ1DW8Q",
+            recurring: null,
+            tax_behavior: "exclusive",
+            tiers_mode: null,
+            transform_quantity: null,
+            type: "one_time",
+            unit_amount: 500,
+            unit_amount_decimal: "500",
+          },
+        ],
+        trial_days: 1,
+        upload_csv: true,
+        wallet_address_limit: -1,
+        whale_pod_address_limit: -1,
+        whale_pod_limit: -1,
+      },
+    ];
+    window.sessionStorage.setItem("Plans", JSON.stringify(tempItemHolder));
 
-          window.sessionStorage.setItem(
-            "Plans",
-            JSON.stringify(res.data.data.plans)
-          );
-          // toast.success(" Your wallets and pods has been saved");
-        }
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
+    //   postLoginInstance
+    //     .post("commerce/plan/get-all-plans")
+    //     .then((res) => {
+    //       if (!res.data.error) {
+    //         // Analytics
+
+    //         window.sessionStorage.setItem(
+    //           "Plans",
+    //           JSON.stringify(res.data.data.plans)
+    //         );
+    //         // toast.success(" Your wallets and pods has been saved");
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       console.log("err", err);
+    //     });
   };
 };
 
@@ -1505,6 +1841,7 @@ export const getUser = (ctx = null, showToast = false) => {
             email: res.data.data.user?.email,
             mobile: res.data.data.user?.mobile,
             link: res.data.data.user?.link,
+            referred_by: res.data.data.user?.referred_by,
           };
 
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1819,6 +2156,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
             email: res.data.data.user?.email,
             mobile: res.data.data.user?.mobile,
             link: res.data.data.user?.link,
+            referred_by: res.data.data.user?.referred_by,
           };
 
           window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
@@ -1912,6 +2250,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
               email: res.data.data.user?.email,
               mobile: "",
               link: res.data.data.user?.link,
+              referred_by: res.data.data.user?.referred_by,
             };
             window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
 
