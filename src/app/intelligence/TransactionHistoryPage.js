@@ -131,7 +131,6 @@ class TransactionHistoryPage extends BaseReactComponent {
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
-      isPremiumUser: false,
       isLochPaymentModal: false,
       isMobileDevice: false,
       intelligenceStateLocal: {},
@@ -268,10 +267,6 @@ class TransactionHistoryPage extends BaseReactComponent {
     }, 900000);
   };
   goToPayModal = () => {
-    if (this.state.isPremiumUser) {
-      this.handleExportModal();
-      return null;
-    }
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
@@ -2529,7 +2524,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   <div sm={1}>
                     {/* <button className="transaction-new-export"> */}
                     <div
-                      onClick={this.goToPayModal}
+                      onClick={this.handleExportModal}
                       className="pageHeaderShareContainer new-export-button"
                     >
                       <Image className="pageHeaderShareImg" src={ExportIcon} />

@@ -31,6 +31,7 @@ import {
   CurrencyType,
   TruncateText,
   dontOpenLoginPopup,
+  isPremiumUser,
   numToCurrency,
   removeOpenModalAfterLogin,
 } from "../../utils/ReusableFunctions";
@@ -54,7 +55,6 @@ class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isPremiumUser: false,
       isLochPaymentModal: false,
       canCallConnectWalletFun: false,
       showAmountsAtTop: false,
@@ -726,9 +726,6 @@ class TopWalletExchangeBar extends Component {
     this.props.handleAddWalletClick();
   };
   goToPayModal = () => {
-    if (this.state.isPremiumUser) {
-      return null;
-    }
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
@@ -755,7 +752,7 @@ class TopWalletExchangeBar extends Component {
     });
   };
   handleAddWallet = (replaceAddresses) => {
-    if (!replaceAddresses) {
+    if (!replaceAddresses && !isPremiumUser()) {
       this.goToPayModal();
       return;
     }

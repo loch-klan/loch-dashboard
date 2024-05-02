@@ -23,6 +23,7 @@ import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import postLoginInstance from "./../../utils/PostLoginAxios";
 import {
+  CURRENT_USER_PAYMENT_PLAN,
   LOCAL_ADD_WALLET_LIST,
   SET_DEFAULT_VALUE,
   TOP_SET_DEFAULT_VALUE,
@@ -1817,17 +1818,22 @@ export const CreatePyment = (data, ctx) => {
 };
 
 export const getUser = (ctx = null, showToast = false) => {
-  return async function () {
+  return async function (dispatch, getState) {
     postLoginInstance.post("organisation/user/get-user").then((res) => {
       if (!res.data.error) {
         let currentUserPlan = "Free";
         if (res.data?.data?.current_plan?.name) {
           currentUserPlan = res.data.data.current_plan.name;
         }
+
         window.sessionStorage.setItem(
           "currentUserPaymentPlan",
           currentUserPlan
         );
+        dispatch({
+          type: CURRENT_USER_PAYMENT_PLAN,
+          payload: currentUserPlan,
+        });
 
         console.log("apiResponse is ", currentUserPlan);
         // free pricing

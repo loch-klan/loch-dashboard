@@ -17,6 +17,7 @@ import {
   HomeSidebarIcon,
   InactiveSmartMoneySidebarIcon,
   LeaderboardSidebarIcon,
+  LochLogoWhiteIcon,
   PersonRoundedSigninIcon,
   ProfileSidebarIcon,
   SidebarLeftArrowIcon,
@@ -81,6 +82,7 @@ import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
+  isPremiumUser,
   numToCurrency,
   removeSignUpMethods,
   switchToDarkMode,
@@ -104,6 +106,7 @@ function Sidebar(props) {
     x: 0,
     y: -(window.innerHeight / 2 - 90),
   });
+  const [isCurPremiumUser, setIsCurPremiumUser] = useState(isPremiumUser());
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
@@ -126,6 +129,10 @@ function Sidebar(props) {
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
   );
+  useEffect(() => {
+    setIsCurPremiumUser(isPremiumUser());
+  }, [props.userPaymentState]);
+
   let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
   if (lochUser) {
     // if loch user remove share id to prevent opening upgrade modal
@@ -1137,6 +1144,14 @@ function Sidebar(props) {
                   ) : null}
                   <nav>
                     <ul>
+                      {isCurPremiumUser ? (
+                        <li>
+                          <div className="nav-premium-banner">
+                            <Image src={LochLogoWhiteIcon} />
+                            Loch Premium
+                          </div>
+                        </li>
+                      ) : null}
                       {isSubmenu && isSubmenu.me && (
                         <>
                           <li>
@@ -1836,6 +1851,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
+  userPaymentState: state.UserPaymentState,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

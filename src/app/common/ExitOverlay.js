@@ -64,8 +64,11 @@ import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
+  dontOpenLoginPopup,
   goToTelegram,
+  isPremiumUser,
   loadingAnimation,
+  removeOpenModalAfterLogin,
   whichSignUpMethod,
 } from "../../utils/ReusableFunctions";
 import CustomChip from "../../utils/commonComponent/CustomChip";
@@ -77,6 +80,7 @@ import { updateUser } from "../profile/Api";
 import { exportDataApi, fixWalletApi } from "./Api.js";
 import UpgradeModal from "./upgradeModal";
 import validator from "validator";
+import PaywallModal from "./PaywallModal.js";
 
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
@@ -94,6 +98,7 @@ class ExitOverlay extends BaseReactComponent {
         : getCurrentUser().id;
 
     this.state = {
+      isLochPaymentModal: false,
       isReferralCodeStep: false,
       referralCode: "",
       isReferralCodeLoading: false,
@@ -674,8 +679,23 @@ class ExitOverlay extends BaseReactComponent {
   handleFromDate = () => {
     this.setState({ toDate: "" });
   };
+  goToPayModal = () => {
+    dontOpenLoginPopup();
+    this.setState({
+      isLochPaymentModal: true,
+    });
+  };
 
+  goBackFromPayModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   handleExportNow = () => {
+    if (!isPremiumUser()) {
+      this.goToPayModal();
+      return null;
+    }
     // console.log('Export');
     let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
     // console.log("add", addWalletList)
@@ -1066,6 +1086,16 @@ class ExitOverlay extends BaseReactComponent {
                 <Image src={CloseIcon} />
               </div>
             </Modal.Header>
+            {this.state.isLochPaymentModal ? (
+              <PaywallModal
+                show={this.state.isLochPaymentModal}
+                onGoBackPayModal={this.goBackFromPayModal}
+                onHide={this.onHidePassThrough}
+                redirectLink={BASE_URL_S3 + "/"}
+                title="Export Valuable Data with Loch"
+                description="Export unlimited data"
+              />
+            ) : null}
             <Modal.Body>
               <div
                 style={

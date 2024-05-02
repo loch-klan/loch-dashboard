@@ -1,4 +1,5 @@
 import {
+  CURRENT_USER_PAYMENT_PLAN,
   LOCAL_ADD_WALLET_LIST,
   PAGE_POPUP,
   SET_COMMON_REDUCER,
@@ -42,7 +43,15 @@ const INITIAL_STATE = {
   top_insight: false,
   top_defi: false,
 };
-
+const INITIAL_PAYMENT_STATE = "Free";
+export const UserPaymentReducer = (state = INITIAL_PAYMENT_STATE, action) => {
+  switch (action.type) {
+    case CURRENT_USER_PAYMENT_PLAN:
+      return action.payload;
+    default:
+      return state;
+  }
+};
 export const CommonReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_COMMON_REDUCER:

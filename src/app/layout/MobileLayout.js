@@ -58,6 +58,7 @@ import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
 import {
   dontOpenLoginPopup,
+  isPremiumUser,
   removeOpenModalAfterLogin,
   removeSignUpMethods,
   whichSignUpMethod,
@@ -276,7 +277,7 @@ class MobileLayout extends BaseReactComponent {
     if (this.state.goBtnDisabled) {
       return null;
     }
-    if (replaceAddresses === false) {
+    if (!replaceAddresses && !isPremiumUser()) {
       this.goToPayModal();
       return;
     }

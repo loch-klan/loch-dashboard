@@ -9,10 +9,10 @@ import {
   ConnectExPopup,
   WalletConnectExchange,
 } from "../../utils/AnalyticsFunctions";
+import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
-  dontOpenLoginPopup,
   numToCurrency,
   removeOpenModalAfterLogin,
 } from "../../utils/ReusableFunctions";
@@ -20,14 +20,12 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import Breadcrums from "./Breadcrums";
 import ConnectModal from "./ConnectModal";
 import PaywallModal from "./PaywallModal";
-import { BASE_URL_S3 } from "../../utils/Constant";
 
 export default function PageHeader(props) {
   const [connectModal, setconnectModal] = React.useState(false);
   const history = useHistory();
 
   const [popupModal, setpopupModal] = React.useState(false);
-  const [isPremiumUser] = useState(false);
   const [isLochPaymentModal, setIsLochPaymentModal] = useState(false);
 
   useEffect(() => {
@@ -44,29 +42,7 @@ export default function PageHeader(props) {
       }
     }
   }, []);
-  const goToPayModal = () => {
-    if (isPremiumUser) {
-      props.handleExportModal();
-      return null;
-    }
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails && userDetails.email) {
-      dontOpenLoginPopup();
-      setIsLochPaymentModal(true);
-    } else {
-      removeOpenModalAfterLogin();
-      setTimeout(() => {
-        window.sessionStorage.setItem("openExportPaymentModal", true);
-      }, 1000);
-      if (document.getElementById("sidebar-open-sign-in-btn")) {
-        document.getElementById("sidebar-open-sign-in-btn").click();
-        dontOpenLoginPopup();
-      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
-        document.getElementById("sidebar-closed-sign-in-btn").click();
-        dontOpenLoginPopup();
-      }
-    }
-  };
+
   const hidePaymentModal = () => {
     setIsLochPaymentModal(false);
   };
@@ -306,7 +282,7 @@ export default function PageHeader(props) {
               ) : null}
               {props.ExportBtn && (
                 <div
-                  onClick={goToPayModal}
+                  onClick={props.handleExportModal}
                   className="pageHeaderShareContainer"
                   style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
                 >
