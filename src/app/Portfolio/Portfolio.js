@@ -848,7 +848,6 @@ class Portfolio extends BaseReactComponent {
     const isBackFromPayment = window.sessionStorage.getItem(
       "openPaymentOptionsAgain"
     );
-
     if (isBackFromPayment === "true") {
       this.setState(
         {
