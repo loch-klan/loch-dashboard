@@ -1835,7 +1835,6 @@ export const getUser = (ctx = null, showToast = false) => {
           payload: currentUserPlan,
         });
 
-        console.log("apiResponse is ", currentUserPlan);
         // free pricing
         let plan = {
           defi_enabled: true,

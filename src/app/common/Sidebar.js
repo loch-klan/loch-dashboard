@@ -130,6 +130,12 @@ function Sidebar(props) {
     JSON.parse(window.sessionStorage.getItem("currency"))
   );
   useEffect(() => {
+    setTimeout(() => {
+      setIsCurPremiumUser(isPremiumUser());
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
     setIsCurPremiumUser(isPremiumUser());
   }, [props.userPaymentState]);
 

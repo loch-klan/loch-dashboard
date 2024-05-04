@@ -17,6 +17,7 @@ import {
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import {
+  PayModalPay,
   PayModalUpgrade,
   PayModalUpgradeBack,
   PayModalUpgradeClose,
@@ -212,7 +213,7 @@ class PaywallOptionsModal extends BaseReactComponent {
       isCreditBtnLoading: true,
     });
     const path = whichSignUpMethod();
-    PayModalUpgradeClose({
+    PayModalPay({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       path: path,

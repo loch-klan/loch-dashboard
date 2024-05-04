@@ -37,7 +37,9 @@ import {
   dontOpenLoginPopup,
   isPremiumUser,
   mobileCheck,
+  removeBlurMethods,
   removeOpenModalAfterLogin,
+  removeSignUpMethods,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
 import WelcomeCard from "../Portfolio/WelcomeCard";
@@ -173,23 +175,23 @@ class InsightsPage extends Component {
   };
   componentDidMount() {
     this.checkPremium();
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails && userDetails.email) {
-      const shouldOpenNoficationModal = window.sessionStorage.getItem(
-        "openInsightsPaymentModal"
-      );
-      const isOpenForSearch = window.sessionStorage.getItem(
-        "openSearchbarPaymentModal"
-      );
-      if (shouldOpenNoficationModal && !isOpenForSearch) {
-        setTimeout(() => {
-          removeOpenModalAfterLogin();
-          this.setState({
-            isLochPaymentModal: true,
-          });
-        }, 1000);
-      }
-    }
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //     "openInsightsPaymentModal"
+    //   );
+    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //       });
+    //     }, 1000);
+    //   }
+    // }
     scrollToTop();
     if (
       !this.props.commonState.insight ||
@@ -511,6 +513,8 @@ class InsightsPage extends Component {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredInsightsSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {

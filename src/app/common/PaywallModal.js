@@ -87,18 +87,21 @@ class PaywallModal extends BaseReactComponent {
     };
   }
   componentDidMount() {
-    const path = whichSignUpMethod();
-    PayModalOpened({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      path: path,
-    });
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.setState({
       userDetailsState: userDetails,
     });
     if (this.props.openWithOptions) {
       this.goToPayWallOptions();
+    } else {
+      setTimeout(() => {
+        const path = whichSignUpMethod();
+        PayModalOpened({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          path: path,
+        });
+      }, 1000);
     }
   }
   async createCharge() {

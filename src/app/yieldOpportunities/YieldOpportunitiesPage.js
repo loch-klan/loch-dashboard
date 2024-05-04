@@ -55,7 +55,9 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  removeBlurMethods,
   removeOpenModalAfterLogin,
+  removeSignUpMethods,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
@@ -221,23 +223,23 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails && userDetails.email) {
-      const shouldOpenNoficationModal = window.sessionStorage.getItem(
-        "openYieldOppPaymentModal"
-      );
-      const isOpenForSearch = window.sessionStorage.getItem(
-        "openSearchbarPaymentModal"
-      );
-      if (shouldOpenNoficationModal && !isOpenForSearch) {
-        setTimeout(() => {
-          removeOpenModalAfterLogin();
-          this.setState({
-            isLochPaymentModal: true,
-          });
-        }, 1000);
-      }
-    }
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //     "openYieldOppPaymentModal"
+    //   );
+    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //       });
+    //     }, 1000);
+    //   }
+    // }
     scrollToTop();
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
@@ -748,6 +750,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredYieldOppSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {

@@ -6,6 +6,8 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 import { getUser } from "../common/Api";
 import MobileLayout from "../layout/MobileLayout";
 import StripeErrorPageMobile from "./StripeErrorPageMobile";
+import { PaymentCanceldMP } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class StripeErrorPage extends Component {
   constructor(props) {
@@ -20,6 +22,11 @@ class StripeErrorPage extends Component {
     setTimeout(() => {
       this.props.history.push("/home");
     }, 500);
+    PaymentCanceldMP({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      paymentMethod: "stripe",
+    });
   }
 
   render() {

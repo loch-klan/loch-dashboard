@@ -129,7 +129,9 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  removeBlurMethods,
   removeOpenModalAfterLogin,
+  removeSignUpMethods,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
 import { GetAllPlan, getUser } from "../common/Api";
@@ -198,8 +200,7 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
-      isPremiumUserDay1: isPremiumUser() ? true : false,
-      isPremiumUser: false,
+      isPremiumUser: isPremiumUser() ? true : false,
       isLochPaymentModal: false,
       payModalTitle: "",
       payModalDescription: "",
@@ -830,15 +831,20 @@ class Portfolio extends BaseReactComponent {
     // }
     if (isPremiumUser()) {
       this.setState({
-        isPremiumUserDay1: true,
+        isPremiumUser: true,
       });
     } else {
       this.setState({
-        isPremiumUserDay1: false,
+        isPremiumUser: false,
       });
     }
   };
   componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        isPremiumUser: isPremiumUser(),
+      });
+    }, 1000);
     const isBackFromPayment = window.sessionStorage.getItem(
       "openPaymentOptionsAgain"
     );
@@ -857,26 +863,26 @@ class Portfolio extends BaseReactComponent {
       );
     }
     this.checkPremium();
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails && userDetails.email) {
-      const shouldOpenNoficationModal = window.sessionStorage.getItem(
-        "openHomePaymentModal"
-      );
-      const isOpenForSearch = window.sessionStorage.getItem(
-        "openSearchbarPaymentModal"
-      );
-      if (shouldOpenNoficationModal && !isOpenForSearch) {
-        setTimeout(() => {
-          removeOpenModalAfterLogin();
-          const titleAndDesc = shouldOpenNoficationModal.split(",");
-          this.setState({
-            isLochPaymentModal: true,
-            payModalTitle: titleAndDesc[0],
-            payModalDescription: titleAndDesc[1],
-          });
-        }, 1000);
-      }
-    }
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //     "openHomePaymentModal"
+    //   );
+    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       const titleAndDesc = shouldOpenNoficationModal.split(",");
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //         payModalTitle: titleAndDesc[0],
+    //         payModalDescription: titleAndDesc[1],
+    //       });
+    //     }, 1000);
+    //   }
+    // }
     this.callAllApisTwice();
     scrollToTop();
     if (
@@ -1009,6 +1015,12 @@ class Portfolio extends BaseReactComponent {
         this.setState({
           netFlowLoading: false,
         });
+        this.props.updateAssetProfitLoss(
+          this.props.intelligenceState?.ProfitLossAssetData,
+          this,
+          // this.state.isPremiumUser
+          this.state.isPremiumUser
+        );
       } else {
         this.props.updateWalletListFlag("realizedGainsPage", true);
         this.setState({
@@ -1034,7 +1046,7 @@ class Portfolio extends BaseReactComponent {
           false,
           false,
           true,
-          this.state.isPremiumUserDay1
+          this.state.isPremiumUser
         );
       }
     }
@@ -1168,13 +1180,65 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.isPremiumUserDay1 !== this.state.isPremiumUserDay1) {
+    if (
+      prevProps.intelligenceState?.ProfitLossAsset !==
+      this.props.intelligenceState?.ProfitLossAsset
+    ) {
+      if (
+        !prevProps.intelligenceState?.ProfitLossAsset ||
+        prevProps.intelligenceState?.ProfitLossAsset.length === 0
+      ) {
+        this.props.updateAssetProfitLoss(
+          this.props.intelligenceState?.ProfitLossAssetData,
+          this,
+          // this.state.isPremiumUser
+          this.state.isPremiumUser
+        );
+        setTimeout(() => {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }, 1000);
+        setTimeout(() => {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }, 1500);
+        setTimeout(() => {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }, 2000);
+      }
+    }
+    if (prevProps.userPaymentState !== this.props.userPaymentState) {
+      this.setState({
+        isPremiumUser: isPremiumUser(),
+      });
       this.props.updateAssetProfitLoss(
         this.props.intelligenceState?.ProfitLossAssetData,
         this,
         // this.state.isPremiumUser
-        this.state.isPremiumUserDay1
+        this.state.isPremiumUser
+      );
+    }
+    if (prevState.isPremiumUser !== this.state.isPremiumUser) {
+      this.props.updateAssetProfitLoss(
+        this.props.intelligenceState?.ProfitLossAssetData,
+        this,
+        // this.state.isPremiumUser
+        this.state.isPremiumUser
       );
     }
     if (
@@ -1247,39 +1311,47 @@ class Portfolio extends BaseReactComponent {
     // Block Two
     if (prevState.blockTwoSelectedItem !== this.state.blockTwoSelectedItem) {
       // Realized gains api call
-      if (
-        this.state.blockTwoSelectedItem === 1 &&
-        (!(
-          this.props.intelligenceState?.ProfitLossAsset?.series &&
-          this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
-        ) ||
-          !this.props.commonState.realizedGainsPage)
-      ) {
-        this.props.updateWalletListFlag("realizedGainsPage", true);
-        this.setState({
-          netFlowLoading: true,
-          shouldCallProfitAndLossApi: false,
-        });
-        // this.props.getProfitAndLossApi(this, false, false, false);
-        // netflow breakdown
-        // this.props.getAssetProfitLoss(
-        //   this,
-        // null,
-        //   null,
-        //   false,
-        //   false,
-        //   true,
-        //   this.state.isPremiumUser
-        // );
-        this.props.getAssetProfitLoss(
-          this,
-          null,
-          null,
-          false,
-          false,
-          true,
-          this.state.isPremiumUserDay1
-        );
+      if (this.state.blockTwoSelectedItem === 1) {
+        if (
+          !(
+            this.props.intelligenceState?.ProfitLossAsset?.series &&
+            this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
+          ) ||
+          !this.props.commonState.realizedGainsPage
+        ) {
+          this.props.updateWalletListFlag("realizedGainsPage", true);
+          this.setState({
+            netFlowLoading: true,
+            shouldCallProfitAndLossApi: false,
+          });
+          // this.props.getProfitAndLossApi(this, false, false, false);
+          // netflow breakdown
+          // this.props.getAssetProfitLoss(
+          //   this,
+          // null,
+          //   null,
+          //   false,
+          //   false,
+          //   true,
+          //   this.state.isPremiumUser
+          // );
+          this.props.getAssetProfitLoss(
+            this,
+            null,
+            null,
+            false,
+            false,
+            true,
+            this.state.isPremiumUser
+          );
+        } else {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }
       }
       // Gas fees api call
       else if (this.state.blockTwoSelectedItem === 2) {
@@ -1588,38 +1660,46 @@ class Portfolio extends BaseReactComponent {
 
       // BLOCK TWO
       // Realized gains api call
-      if (
-        this.state.blockTwoSelectedItem === 1 &&
-        (!this.props.commonState.realizedGainsPage ||
+      if (this.state.blockTwoSelectedItem === 1) {
+        if (
+          !this.props.commonState.realizedGainsPage ||
           !(
             this.props.intelligenceState?.ProfitLossAsset?.series &&
             this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
-          ))
-      ) {
-        this.props.updateWalletListFlag("realizedGainsPage", true);
-        this.setState({
-          netFlowLoading: true,
-          shouldCallProfitAndLossApi: false,
-        });
-        // this.props.getProfitAndLossApi(this, false, false, false);
-        // netflow breakdown
-        // this.props.getAssetProfitLoss(
-        //   this,
-        //   false,
-        //   false,
-        //   true,
-        //   this.state.isPremiumUser
-        // );
+          )
+        ) {
+          this.props.updateWalletListFlag("realizedGainsPage", true);
+          this.setState({
+            netFlowLoading: true,
+            shouldCallProfitAndLossApi: false,
+          });
+          // this.props.getProfitAndLossApi(this, false, false, false);
+          // netflow breakdown
+          // this.props.getAssetProfitLoss(
+          //   this,
+          //   false,
+          //   false,
+          //   true,
+          //   this.state.isPremiumUser
+          // );
 
-        this.props.getAssetProfitLoss(
-          this,
-          null,
-          null,
-          false,
-          false,
-          true,
-          this.state.isPremiumUserDay1
-        );
+          this.props.getAssetProfitLoss(
+            this,
+            null,
+            null,
+            false,
+            false,
+            true,
+            this.state.isPremiumUser
+          );
+        } else {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }
       }
 
       // Gas fees api call
@@ -1780,7 +1860,7 @@ class Portfolio extends BaseReactComponent {
           this.props.intelligenceState?.ProfitLossAssetData,
           this,
           // this.state.isPremiumUser
-          this.state.isPremiumUserDay1
+          this.state.isPremiumUser
         );
       }
     }
@@ -2457,6 +2537,8 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredHomeAssetSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
@@ -2490,6 +2572,8 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredHomeFlowsSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
@@ -2524,6 +2608,8 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredHomeYieldOppSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
@@ -2561,6 +2647,8 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredHomeInsightsSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
@@ -2598,6 +2686,8 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredHomeGasFeesSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
@@ -3816,7 +3906,7 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "asset") {
             // if (this.state.isPremiumUser || rowIndex === 0) {
-            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
               return (
                 <CoinChip
                   hideNameWithouthImage
@@ -3830,7 +3920,7 @@ class Portfolio extends BaseReactComponent {
               <CustomOverlayUgradeToPremium
                 position="top"
                 // disabled={this.state.isPremiumUser}
-                disabled={this.state.isPremiumUserDay1}
+                disabled={this.state.isPremiumUser}
               >
                 <div
                   className={`blurred-elements`}
@@ -3875,7 +3965,7 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "project") {
             // if (this.state.isPremiumUser || rowIndex === 0) {
-            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
               return (
                 <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                   {rowData.project ? rowData.project : "-"}
@@ -3886,7 +3976,7 @@ class Portfolio extends BaseReactComponent {
               <CustomOverlayUgradeToPremium
                 position="top"
                 // disabled={this.state.isPremiumUser}
-                disabled={this.state.isPremiumUserDay1}
+                disabled={this.state.isPremiumUser}
               >
                 <div
                   className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements"
@@ -3927,7 +4017,7 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "tvl") {
             // if (this.state.isPremiumUser || rowIndex === 0) {
-            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
               return (
                 <div className="cost-common-container">
                   <div className="cost-common">
@@ -3945,7 +4035,7 @@ class Portfolio extends BaseReactComponent {
               <CustomOverlayUgradeToPremium
                 position="top"
                 // disabled={this.state.isPremiumUser}
-                disabled={this.state.isPremiumUserDay1}
+                disabled={this.state.isPremiumUser}
               >
                 <div
                   onClick={this.showBlurredYieldOpp}
@@ -3993,7 +4083,7 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "apy") {
             // if (this.state.isPremiumUser || rowIndex === 0) {
-            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
               return (
                 <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                   {rowData.apy
@@ -4007,7 +4097,7 @@ class Portfolio extends BaseReactComponent {
               <CustomOverlayUgradeToPremium
                 position="top"
                 // disabled={this.state.isPremiumUser}
-                disabled={this.state.isPremiumUserDay1}
+                disabled={this.state.isPremiumUser}
               >
                 <div
                   onClick={this.showBlurredYieldOpp}
@@ -4050,7 +4140,7 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "usdValue") {
             // if (this.state.isPremiumUser || rowIndex === 0) {
-            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
               return (
                 <div className="cost-common-container">
                   <div className="cost-common">
@@ -4068,7 +4158,7 @@ class Portfolio extends BaseReactComponent {
               <CustomOverlayUgradeToPremium
                 position="top"
                 // disabled={this.state.isPremiumUser}
-                disabled={this.state.isPremiumUserDay1}
+                disabled={this.state.isPremiumUser}
               >
                 <div
                   onClick={this.showBlurredYieldOpp}
@@ -4115,7 +4205,7 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "pool") {
             // if (this.state.isPremiumUser || rowIndex === 0) {
-            if (this.state.isPremiumUserDay1 || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
               return (
                 <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
                   {rowData.pool ? rowData.pool : "-"}
@@ -4126,7 +4216,7 @@ class Portfolio extends BaseReactComponent {
               <CustomOverlayUgradeToPremium
                 position="top"
                 // disabled={this.state.isPremiumUser}
-                disabled={this.state.isPremiumUserDay1}
+                disabled={this.state.isPremiumUser}
               >
                 <div
                   onClick={this.showBlurredYieldOpp}
@@ -4866,7 +4956,7 @@ class Portfolio extends BaseReactComponent {
             showBlurredInsights={this.showBlurredInsights}
             showBlurredGasFees={this.showBlurredGasFees}
             // isPremiumUser={this.state.isPremiumUser}
-            isPremiumUser={this.state.isPremiumUserDay1}
+            isPremiumUser={this.state.isPremiumUser}
             chainLoader={this.state.chainLoader}
             loader={this.state.loader}
             totalChainDetechted={this.state.totalChainDetechted}
@@ -5414,8 +5504,8 @@ class Portfolio extends BaseReactComponent {
                           <BarGraphSection
                             // showPremiumHover={!this.state.isPremiumUser}
                             // isPremiumUser={this.state.isPremiumUser}
-                            isPremiumUser={this.state.isPremiumUserDay1}
-                            showPremiumHover={!this.state.isPremiumUserDay1}
+                            isPremiumUser={this.state.isPremiumUser}
+                            showPremiumHover={!this.state.isPremiumUser}
                             goToPayModal={this.showBlurredFlows}
                             openChartPage={this.goToRealizedGainsPage}
                             newHomeSetup
@@ -5484,11 +5574,11 @@ class Portfolio extends BaseReactComponent {
                             <BarGraphSection
                               // showPremiumHover={!this.state.isPremiumUser}
                               // isPremiumUser={this.state.isPremiumUser}
-                              isPremiumUser={this.state.isPremiumUserDay1}
-                              showPremiumHover={!this.state.isPremiumUserDay1}
+                              isPremiumUser={this.state.isPremiumUser}
+                              showPremiumHover={!this.state.isPremiumUser}
                               goToPayModal={this.showBlurredGasFees}
                               // isBlurred={!this.state.isPremiumUser}
-                              isBlurred={!this.state.isPremiumUserDay1}
+                              isBlurred={!this.state.isPremiumUser}
                               digit={this.state.GraphDigit}
                               isFromHome
                               openChartPage={this.goToGasFeesSpentPage}
@@ -6043,7 +6133,7 @@ class Portfolio extends BaseReactComponent {
                           updatedInsightList={this.state.updatedInsightList}
                           insightsBlockLoading={this.state.insightsBlockLoading}
                           // isPremiumUser={this.state.isPremiumUser}
-                          isPremiumUser={this.state.isPremiumUserDay1}
+                          isPremiumUser={this.state.isPremiumUser}
                         />
                       ) : null}
                     </div>
@@ -6131,6 +6221,7 @@ const mapStateToProps = (state) => ({
   inflowsOutflowsList: state.inflowsOutflowsList,
   darkModeState: state.darkModeState,
   NFTState: state.NFTState,
+  userPaymentState: state.UserPaymentState,
 });
 const mapDispatchToProps = {
   getCoinRate,

@@ -1,6 +1,6 @@
 import Mixpanel from "mixpanel-browser";
 import { deleteToken } from "./ManageToken";
-import { mobileCheck } from "./ReusableFunctions";
+import { mobileCheck, whichBlurMethod } from "./ReusableFunctions";
 
 //Api Config
 export const initAmplitude = () => {
@@ -6971,63 +6971,91 @@ export const LochPointsLoginModalOpen = ({ session_id, email_address }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const PaymentSuccessfulMP = ({
+  session_id,
+  email_address,
+  paymentMethod,
+}) => {
+  const event_name = "Fremium: Pay: payment successful";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    paymentMethod: paymentMethod,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PaymentCanceldMP = ({
+  session_id,
+  email_address,
+  paymentMethod,
+}) => {
+  const event_name = "Fremium: Pay: payment canceled";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    paymentMethod: paymentMethod,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const PayModalPay = ({
   session_id,
   email_address,
   path,
   paymentMethod,
 }) => {
-  const event_name = "Inside: Pay Modal: pay initiated";
+  const event_name = "Fremium: Pay Modal: pay initiated";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    path: path,
+    path: whichBlurMethod(),
     paymentMethod: paymentMethod,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 export const PayModalOpened = ({ session_id, email_address, path }) => {
-  const event_name = "Inside: Pay Modal: open";
+  const event_name = "Fremium: Pay Modal: open";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    path: path,
+    path: whichBlurMethod(),
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 export const PayModalClosed = ({ session_id, email_address, path }) => {
-  const event_name = "Inside: Pay Modal: close";
+  const event_name = "Fremium: Pay Modal: close";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    path: path,
+    path: whichBlurMethod(),
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 export const PayModalUpgrade = ({ session_id, email_address, path }) => {
-  const event_name = "Inside: Pay Modal: upgrade tab";
+  const event_name = "Fremium: Pay Modal: upgrade tab";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    path: path,
+    path: whichBlurMethod(),
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 export const PayModalUpgradeBack = ({ session_id, email_address, path }) => {
-  const event_name = "Inside: Pay Modal: upgrade tab: go back";
+  const event_name = "Fremium: Pay Modal: upgrade tab: go back";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    path: path,
+    path: whichBlurMethod(),
   };
   sendAmplitudeData(event_name, eventProperties);
 };
 export const PayModalUpgradeClose = ({ session_id, email_address, path }) => {
-  const event_name = "Inside: Pay Modal: upgrade tab: close";
+  const event_name = "Fremium: Pay Modal: upgrade tab: close";
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
-    path: path,
+    path: whichBlurMethod(),
   };
   sendAmplitudeData(event_name, eventProperties);
 };

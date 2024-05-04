@@ -25,13 +25,15 @@ export const getProfitLossAsset = (arr, parentCtx, isPremiumUser) => {
   // push()
 
   let outFlows = arr?.outflows;
-  outFlows.push({
-    asset: {
-      name: "Fees",
-      color: "#2297DB",
-    },
-    total_volume: totalFees,
-  });
+  if (outFlows) {
+    outFlows.push({
+      asset: {
+        name: "Fees",
+        color: "#2297DB",
+      },
+      total_volume: totalFees,
+    });
+  }
   outFlows = arr?.outflows?.sort((a, b) => b.total_volume - a.total_volume);
 
   let totalInflow = 0;
@@ -201,7 +203,11 @@ export const getProfitLossAsset = (arr, parentCtx, isPremiumUser) => {
           ? "#ffffff"
           : "#000000";
         if (this.x === "Net") {
-          netColor = tooltipData.slice(4, 5)[0]?.color;
+          let newtooltipData = [];
+          if (tooltipData && tooltipData.length > 0) {
+            newtooltipData = tooltipData.slice(4, 5);
+          }
+          netColor = newtooltipData.length > 0 ? newtooltipData[0]?.color : "";
           tooltipData = [];
         }
         // console.log("sorted", tooltipData);
@@ -271,18 +277,42 @@ backdrop-filter: blur(15px);">
         name: "One",
         data: [
           {
-            y: topInflow[0]?.total_volume * currency?.rate,
-            color: topInflow[0]?.asset?.color + "4D",
-            borderColor: topInflow[0]?.asset?.color,
+            y:
+              topInflow && topInflow.length > 0
+                ? topInflow[0]?.total_volume * currency?.rate
+                : "",
+            color:
+              topInflow && topInflow.length > 0
+                ? topInflow[0]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topInflow && topInflow.length > 0
+                ? topInflow[0]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topInflow[0]?.asset?.name,
+            name:
+              topInflow && topInflow.length > 0
+                ? topInflow[0]?.asset?.name
+                : "",
           },
           {
-            y: topOutflow[0]?.total_volume * currency?.rate,
-            color: topOutflow[0]?.asset?.color + "4D",
-            borderColor: topOutflow[0]?.asset?.color,
+            y:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[0]?.total_volume * currency?.rate
+                : "",
+            color:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[0]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[0]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topOutflow[0]?.asset?.name,
+            name:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[0]?.asset?.name
+                : "",
           },
           {
             y: 0,
@@ -300,18 +330,42 @@ backdrop-filter: blur(15px);">
         name: "Two",
         data: [
           {
-            y: topInflow[1]?.total_volume * currency?.rate,
-            color: topInflow[1]?.asset?.color + "4D",
-            borderColor: topInflow[1]?.asset?.color,
+            y:
+              topInflow && topInflow.length > 0
+                ? topInflow[1]?.total_volume * currency?.rate
+                : "",
+            color:
+              topInflow && topInflow.length > 0
+                ? topInflow[1]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topInflow && topInflow.length > 0
+                ? topInflow[1]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topInflow[1]?.asset?.name,
+            name:
+              topInflow && topInflow.length > 0
+                ? topInflow[1]?.asset?.name
+                : "",
           },
           {
-            y: topOutflow[1]?.total_volume * currency?.rate,
-            color: topOutflow[1]?.asset?.color + "4D",
-            borderColor: topOutflow[1]?.asset?.color,
+            y:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[1]?.total_volume * currency?.rate
+                : "",
+            color:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[1]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[1]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topOutflow[1]?.asset?.name,
+            name:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[1]?.asset?.name
+                : "",
           },
           {
             y: 0,
@@ -327,18 +381,42 @@ backdrop-filter: blur(15px);">
         name: "Three",
         data: [
           {
-            y: topInflow[2]?.total_volume * currency?.rate,
-            color: topInflow[2]?.asset?.color + "4D",
-            borderColor: topInflow[2]?.asset?.color,
+            y:
+              topInflow && topInflow.length > 0
+                ? topInflow[2]?.total_volume * currency?.rate
+                : "",
+            color:
+              topInflow && topInflow.length > 0
+                ? topInflow[2]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topInflow && topInflow.length > 0
+                ? topInflow[2]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topInflow[2]?.asset?.name,
+            name:
+              topInflow && topInflow.length > 0
+                ? topInflow[2]?.asset?.name
+                : "",
           },
           {
-            y: topOutflow[2]?.total_volume * currency?.rate,
-            color: topOutflow[2]?.asset?.color + "4D",
-            borderColor: topOutflow[2]?.asset?.color,
+            y:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[2]?.total_volume * currency?.rate
+                : "",
+            color:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[2]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[2]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topOutflow[2]?.asset?.name,
+            name:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[2]?.asset?.name
+                : "",
           },
           {
             y: 0,
@@ -354,18 +432,42 @@ backdrop-filter: blur(15px);">
         name: "Four",
         data: [
           {
-            y: topInflow[3]?.total_volume * currency?.rate,
-            color: topInflow[3]?.asset?.color + "4D",
-            borderColor: topInflow[3]?.asset?.color,
+            y:
+              topInflow && topInflow.length > 0
+                ? topInflow[3]?.total_volume * currency?.rate
+                : "",
+            color:
+              topInflow && topInflow.length > 0
+                ? topInflow[3]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topInflow && topInflow.length > 0
+                ? topInflow[3]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topInflow[3]?.asset?.name,
+            name:
+              topInflow && topInflow.length > 0
+                ? topInflow[3]?.asset?.name
+                : "",
           },
           {
-            y: topOutflow[3]?.total_volume * currency?.rate,
-            color: topOutflow[3]?.asset?.color + "4D",
-            borderColor: topOutflow[3]?.asset?.color,
+            y:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[3]?.total_volume * currency?.rate
+                : "",
+            color:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[3]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[3]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topOutflow[3]?.asset?.name,
+            name:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[3]?.asset?.name
+                : "",
           },
           {
             y: 0,

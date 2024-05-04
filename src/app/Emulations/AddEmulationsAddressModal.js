@@ -13,6 +13,7 @@ import validator from "validator";
 import { CopyTradeAdded } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { addCopyTrade } from "./EmulationsApi";
+import { isPremiumUser } from "../../utils/ReusableFunctions";
 
 class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {
@@ -335,10 +336,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
   };
 
   btnClickFunctionPass = () => {
-    if (
-      this.props.paymentStatusLocal === "UNPAID" ||
-      this.props.paymentStatusLocal === "EXPIRED"
-    ) {
+    if (!isPremiumUser()) {
       let emailHolder = "";
       if (this.state.notificationEmailAddress) {
         emailHolder = this.state.notificationEmailAddress.toLowerCase();

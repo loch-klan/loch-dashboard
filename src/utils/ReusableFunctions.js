@@ -27,8 +27,88 @@ export const isPremiumUser = () => {
   return false;
 };
 
+export const openSignInModalFromAnywhere = () => {
+  if (document.getElementById("sidebar-open-sign-in-btn")) {
+    document.getElementById("sidebar-open-sign-in-btn").click();
+    dontOpenLoginPopup();
+  } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+    document.getElementById("sidebar-closed-sign-in-btn").click();
+    dontOpenLoginPopup();
+  }
+};
 export const dontOpenLoginPopup = () => {
   window.sessionStorage.setItem("dontOpenLoginPopup", true);
+};
+export const whichBlurMethod = () => {
+  if (window.sessionStorage.getItem("blurredHomeAssetSignInModal")) {
+    return "Home Assets Block";
+  }
+  if (window.sessionStorage.getItem("blurredHomeFlowsSignInModal")) {
+    return "Home Flows Block";
+  }
+  if (window.sessionStorage.getItem("blurredHomeYieldOppSignInModal")) {
+    return "Home Yield Opp Block";
+  }
+  if (window.sessionStorage.getItem("blurredHomeInsightsSignInModal")) {
+    return "Home Insights Block";
+  }
+  if (window.sessionStorage.getItem("blurredHomeGasFeesSignInModal")) {
+    return "Home Gas Fees Block";
+  }
+  if (window.sessionStorage.getItem("blurredAssetSignInModal")) {
+    return "Assets Page";
+  }
+  if (window.sessionStorage.getItem("blurredFlowsSignInModal")) {
+    return "Flows Page";
+  }
+  if (window.sessionStorage.getItem("blurredYieldOppSignInModal")) {
+    return "Yield Opp Page";
+  }
+  if (window.sessionStorage.getItem("blurredInsightsSignInModal")) {
+    return "Insights Page";
+  }
+  if (window.sessionStorage.getItem("blurredGasFeesSignInModal")) {
+    return "Gas Fees Page";
+  }
+
+  if (window.sessionStorage.getItem("blurredAddMultipleAddressSignInModal")) {
+    return "Multiple Wallet Connect";
+  }
+  if (window.sessionStorage.getItem("blurredAssetExportModal")) {
+    return "Tokens Export";
+  }
+  if (window.sessionStorage.getItem("blurredGasFeesExportModal")) {
+    return "Gas Fees Export";
+  }
+  if (window.sessionStorage.getItem("blurredCounterPartyExportModal")) {
+    return "Counterparty Export";
+  }
+  if (window.sessionStorage.getItem("blurredTransactionHistoryExportModal")) {
+    return "Transaction History Export";
+  }
+  if (window.sessionStorage.getItem("blurredCopyTradeAddModal")) {
+    return "Add Copy Trade";
+  }
+
+  return "";
+};
+export const removeBlurMethods = () => {
+  window.sessionStorage.removeItem("blurredHomeAssetSignInModal");
+  window.sessionStorage.removeItem("blurredHomeFlowsSignInModal");
+  window.sessionStorage.removeItem("blurredHomeYieldOppSignInModal");
+  window.sessionStorage.removeItem("blurredHomeInsightsSignInModal");
+  window.sessionStorage.removeItem("blurredHomeGasFeesSignInModal");
+  window.sessionStorage.removeItem("blurredAssetSignInModal");
+  window.sessionStorage.removeItem("blurredFlowsSignInModal");
+  window.sessionStorage.removeItem("blurredYieldOppSignInModal");
+  window.sessionStorage.removeItem("blurredInsightsSignInModal");
+  window.sessionStorage.removeItem("blurredGasFeesSignInModal");
+  window.sessionStorage.removeItem("blurredAddMultipleAddressSignInModal");
+  window.sessionStorage.removeItem("blurredAssetExportModal");
+  window.sessionStorage.removeItem("blurredGasFeesExportModal");
+  window.sessionStorage.removeItem("blurredCounterPartyExportModal");
+  window.sessionStorage.removeItem("blurredTransactionHistoryExportModal");
+  window.sessionStorage.removeItem("blurredCopyTradeAddModal");
 };
 export const whichSignUpMethod = () => {
   if (window.sessionStorage.getItem("lochPointsSignInModal")) {
@@ -70,6 +150,24 @@ export const whichSignUpMethod = () => {
   if (window.sessionStorage.getItem("fifteenSecSignInModal")) {
     return "15 sec";
   }
+  if (window.sessionStorage.getItem("blurredAddMultipleAddressSignInModal")) {
+    return "Multiple Wallet Connect";
+  }
+  if (window.sessionStorage.getItem("blurredAssetExportModal")) {
+    return "Tokens Export";
+  }
+  if (window.sessionStorage.getItem("blurredGasFeesExportModal")) {
+    return "Gas Fees Export";
+  }
+  if (window.sessionStorage.getItem("blurredCounterPartyExportModal")) {
+    return "Counterparty Export";
+  }
+  if (window.sessionStorage.getItem("blurredTransactionHistoryExportModal")) {
+    return "Transaction History Export";
+  }
+  if (window.sessionStorage.getItem("blurredCopyTradeAddModal")) {
+    return "Add Copy Trade";
+  }
 
   return "Sidebar";
 };
@@ -87,6 +185,12 @@ export const removeSignUpMethods = () => {
   window.sessionStorage.removeItem("blurredYieldOppSignInModal");
   window.sessionStorage.removeItem("blurredInsightsSignInModal");
   window.sessionStorage.removeItem("blurredGasFeesSignInModal");
+  window.sessionStorage.removeItem("blurredAddMultipleAddressSignInModal");
+  window.sessionStorage.removeItem("blurredAssetExportModal");
+  window.sessionStorage.removeItem("blurredGasFeesExportModal");
+  window.sessionStorage.removeItem("blurredCounterPartyExportModal");
+  window.sessionStorage.removeItem("blurredTransactionHistoryExportModal");
+  window.sessionStorage.removeItem("blurredCopyTradeAddModal");
 };
 export const removeOpenModalAfterLogin = () => {
   window.sessionStorage.removeItem("openHomePaymentModal");

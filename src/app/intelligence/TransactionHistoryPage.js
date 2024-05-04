@@ -73,7 +73,10 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  openSignInModalFromAnywhere,
+  removeBlurMethods,
   removeOpenModalAfterLogin,
+  removeSignUpMethods,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
@@ -231,7 +234,19 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   history = this.props;
+  exprotPassThrough = () => {
+    window.sessionStorage.setItem("blurredTransactionHistoryExportModal", true);
+    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (isLochUser && isLochUser.email) {
+      this.handleExportModal();
+    } else {
+      openSignInModalFromAnywhere();
+    }
+  };
   handleExportModal = () => {
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredTransactionHistoryExportModal", true);
     TransactionHistoryExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -2524,7 +2539,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   <div sm={1}>
                     {/* <button className="transaction-new-export"> */}
                     <div
-                      onClick={this.handleExportModal}
+                      onClick={this.exprotPassThrough}
                       className="pageHeaderShareContainer new-export-button"
                     >
                       <Image className="pageHeaderShareImg" src={ExportIcon} />

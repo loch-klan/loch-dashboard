@@ -7,6 +7,8 @@ import MobileLayout from "../layout/MobileLayout";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 import StripeSuccessPageMobile from "./StripeSuccessPageMobile";
 import { getUser } from "../common/Api";
+import { PaymentSuccessfulMP } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 class StripeSuccessPage extends Component {
   constructor(props) {
@@ -20,6 +22,13 @@ class StripeSuccessPage extends Component {
     this.props.getUser();
     this.props.history.push("/home");
   };
+  componentDidMount() {
+    PaymentSuccessfulMP({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      paymentMethod: "stripe",
+    });
+  }
 
   render() {
     if (this.state.isMobile) {

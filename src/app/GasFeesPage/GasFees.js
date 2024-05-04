@@ -34,7 +34,9 @@ import {
   dontOpenLoginPopup,
   isPremiumUser,
   mobileCheck,
+  removeBlurMethods,
   removeOpenModalAfterLogin,
+  removeSignUpMethods,
   scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
@@ -139,6 +141,9 @@ class GasFeesPage extends Component {
     );
   };
   setBlockChainFeesExportModal = () => {
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredGasFeesExportModal", true);
     CostBlockchainFeesExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -191,6 +196,8 @@ class GasFeesPage extends Component {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredGasFeesSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
@@ -231,22 +238,22 @@ class GasFeesPage extends Component {
   componentDidMount() {
     this.checkPremium();
     scrollToTop();
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails && userDetails.email) {
-      const shouldOpenNoficationModal =
-        window.sessionStorage.getItem("openGasFeesModal");
-      const isOpenForSearch = window.sessionStorage.getItem(
-        "openSearchbarPaymentModal"
-      );
-      if (shouldOpenNoficationModal && !isOpenForSearch) {
-        setTimeout(() => {
-          removeOpenModalAfterLogin();
-          this.setState({
-            isLochPaymentModal: true,
-          });
-        }, 1000);
-      }
-    }
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal =
+    //     window.sessionStorage.getItem("openGasFeesModal");
+    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //       });
+    //     }, 1000);
+    //   }
+    // }
     if (this.props.intelligenceState.graphfeeValue) {
       this.setState({
         graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,

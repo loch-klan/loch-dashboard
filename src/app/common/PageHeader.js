@@ -14,6 +14,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
   numToCurrency,
+  openSignInModalFromAnywhere,
   removeOpenModalAfterLogin,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -80,7 +81,23 @@ export default function PageHeader(props) {
       }
     }, 200);
   };
-
+  const exprotPassThrough = () => {
+    if (props.currentPage === "assets") {
+      window.sessionStorage.setItem("blurredAssetExportModal", true);
+    } else if (props.currentPage === "gas-fees") {
+      window.sessionStorage.setItem("blurredGasFeesExportModal", true);
+    } else if (props.currentPage === "counterparty-volume") {
+      window.sessionStorage.setItem("blurredCounterPartyExportModal", true);
+    }
+    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (isLochUser && isLochUser.email) {
+      if (props.handleExportModal) {
+        props.handleExportModal();
+      }
+    } else {
+      openSignInModalFromAnywhere();
+    }
+  };
   return (
     <div
       className={`page-header ${
@@ -282,7 +299,7 @@ export default function PageHeader(props) {
               ) : null}
               {props.ExportBtn && (
                 <div
-                  onClick={props.handleExportModal}
+                  onClick={exprotPassThrough}
                   className="pageHeaderShareContainer"
                   style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
                 >

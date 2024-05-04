@@ -60,10 +60,13 @@ import {
   amountFormat,
   convertNtoNumber,
   dontOpenLoginPopup,
+  isPremiumUser,
   mobileCheck,
   noExponents,
   numToCurrency,
+  removeBlurMethods,
   removeOpenModalAfterLogin,
+  removeSignUpMethods,
   scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
@@ -150,6 +153,9 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     });
   };
   setAverageCostExportModal = () => {
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredAssetExportModal", true);
     CostAvgCostBasisExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -180,24 +186,36 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       this.checkForInactivity();
     }, 900000);
   };
-  componentDidMount() {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails && userDetails.email) {
-      const shouldOpenNoficationModal = window.sessionStorage.getItem(
-        "openAssetPaymentModal"
-      );
-      const isOpenForSearch = window.sessionStorage.getItem(
-        "openSearchbarPaymentModal"
-      );
-      if (shouldOpenNoficationModal && !isOpenForSearch) {
-        setTimeout(() => {
-          removeOpenModalAfterLogin();
-          this.setState({
-            isLochPaymentModal: true,
-          });
-        }, 1000);
-      }
+  checkPremium = () => {
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUser: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUser: false,
+      });
     }
+  };
+  componentDidMount() {
+    this.checkPremium();
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //     "openAssetPaymentModal"
+    //   );
+    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //       });
+    //     }, 1000);
+    //   }
+    // }
     scrollToTop();
     if (
       !this.props.commonState.assetsPage ||
@@ -263,6 +281,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
     ) {
+      this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
       if (this.state.showDust) {
         this.trimAverageCostBasisLocally(
@@ -277,6 +296,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     }
     // add wallet
     if (prevState.apiResponse !== this.state.apiResponse) {
+      this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
 
       this.props.getAllCoins();
@@ -287,6 +307,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       });
     }
     if (!this.props.commonState.assetsPage) {
+      this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
       let tempData = new URLSearchParams();
       tempData.append("start", 0);
@@ -559,6 +580,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredAssetSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {

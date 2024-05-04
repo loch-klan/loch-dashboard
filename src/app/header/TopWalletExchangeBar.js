@@ -33,7 +33,9 @@ import {
   dontOpenLoginPopup,
   isPremiumUser,
   numToCurrency,
+  removeBlurMethods,
   removeOpenModalAfterLogin,
+  removeSignUpMethods,
 } from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser, isNewAddress } from "../Portfolio/Api";
@@ -726,6 +728,8 @@ class TopWalletExchangeBar extends Component {
     this.props.handleAddWalletClick();
   };
   goToPayModal = () => {
+    removeBlurMethods();removeSignUpMethods();
+    window.sessionStorage.setItem("blurredAddMultipleAddressSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();

@@ -42,7 +42,9 @@ import {
   isPremiumUser,
   isSameDateAs,
   mobileCheck,
+  removeBlurMethods,
   removeOpenModalAfterLogin,
+  removeSignUpMethods,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions.js";
 import { GetAllPlan, getUser } from "../common/Api.js";
@@ -207,23 +209,23 @@ class RealizedProfitAndLoss extends Component {
     // if (mobileCheck()) {
     //   this.props.history.push("/home");
     // }
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    if (userDetails && userDetails.email) {
-      const shouldOpenNoficationModal = window.sessionStorage.getItem(
-        "openFlowsPaymentModal"
-      );
-      const isOpenForSearch = window.sessionStorage.getItem(
-        "openSearchbarPaymentModal"
-      );
-      if (shouldOpenNoficationModal && !isOpenForSearch) {
-        setTimeout(() => {
-          removeOpenModalAfterLogin();
-          this.setState({
-            isLochPaymentModal: true,
-          });
-        }, 1000);
-      }
-    }
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //     "openFlowsPaymentModal"
+    //   );
+    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //       });
+    //     }, 1000);
+    //   }
+    // }
     this.startPageView();
     if (this.props.intelligenceState?.updatedInsightList) {
       const newTempHolder =
@@ -718,6 +720,8 @@ class RealizedProfitAndLoss extends Component {
     if (this.state.isPremiumUser) {
       return null;
     }
+    removeBlurMethods();
+    removeSignUpMethods();
     window.sessionStorage.setItem("blurredFlowsSignInModal", true);
     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {

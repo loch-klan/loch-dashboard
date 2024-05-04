@@ -463,7 +463,6 @@ export const updateAssetProfitLoss = (
   ctx,
   isPremiumUser = false
 ) => {
-  console.log("Update ", isPremiumUser);
   return async function (dispatch, getState) {
     dispatch({
       type: PORTFOLIO_ASSET,

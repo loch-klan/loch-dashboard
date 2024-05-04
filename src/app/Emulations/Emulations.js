@@ -50,6 +50,8 @@ import {
   amountFormat,
   mobileCheck,
   numToCurrency,
+  removeBlurMethods,
+  removeSignUpMethods,
   scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
@@ -159,6 +161,9 @@ class Emulations extends Component {
     });
     if (this.state.userDetailsState && this.state.userDetailsState.email) {
       this.removeCopyTradeBtnClickedLocal();
+      removeBlurMethods();
+      removeSignUpMethods();
+      window.sessionStorage.setItem("blurredCopyTradeAddModal", true);
       this.setState({
         isAddCopyTradeAddress: true,
       });
