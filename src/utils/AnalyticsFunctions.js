@@ -5,7 +5,7 @@ import { mobileCheck, whichBlurMethod } from "./ReusableFunctions";
 
 //Api Config
 export const initAmplitudeAnalytics = () => {
-  amplitude.getInstance().init("ef30c3acc2f92a216e6b99a7db33166b");
+  amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
 };
 export const initAmplitude = () => {
   // amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
