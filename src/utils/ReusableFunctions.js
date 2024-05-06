@@ -89,6 +89,9 @@ export const whichBlurMethod = () => {
   if (window.sessionStorage.getItem("blurredCopyTradeAddModal")) {
     return "Add Copy Trade";
   }
+  if (window.sessionStorage.getItem("blurredSubscribeToPremiumLochPoint")) {
+    return "Subscribe To Premium Loch Point";
+  }
 
   return "";
 };
@@ -109,6 +112,7 @@ export const removeBlurMethods = () => {
   window.sessionStorage.removeItem("blurredCounterPartyExportModal");
   window.sessionStorage.removeItem("blurredTransactionHistoryExportModal");
   window.sessionStorage.removeItem("blurredCopyTradeAddModal");
+  window.sessionStorage.removeItem("blurredSubscribeToPremiumLochPoint");
 };
 export const whichSignUpMethod = () => {
   if (window.sessionStorage.getItem("lochPointsSignInModal")) {
@@ -168,6 +172,9 @@ export const whichSignUpMethod = () => {
   if (window.sessionStorage.getItem("blurredCopyTradeAddModal")) {
     return "Add Copy Trade";
   }
+  if (window.sessionStorage.getItem("blurredSubscribeToPremiumLochPoint")) {
+    return "Subscribe To Premium Loch Point";
+  }
 
   return "Sidebar";
 };
@@ -191,6 +198,7 @@ export const removeSignUpMethods = () => {
   window.sessionStorage.removeItem("blurredCounterPartyExportModal");
   window.sessionStorage.removeItem("blurredTransactionHistoryExportModal");
   window.sessionStorage.removeItem("blurredCopyTradeAddModal");
+  window.sessionStorage.removeItem("blurredSubscribeToPremiumLochPoint");
 };
 export const removeOpenModalAfterLogin = () => {
   window.sessionStorage.removeItem("openHomePaymentModal");

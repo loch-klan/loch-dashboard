@@ -36,6 +36,7 @@ export { default as InfoCircleSmartMoneyIcon } from "./infoCircleSmartMoney.svg"
 export { default as LinkVectorWhiteIcon } from "./linkVectorWhite.svg";
 export { default as LoaderIcon } from "./loader.svg";
 export { default as LochLogoWhiteIcon } from "./lochLogoWhite.svg";
+export { default as LochLogoBlackThickIcon } from "./lochLogoBlackThick.svg";
 export { default as MacIcon } from "./mac.svg";
 export { default as MetamaskIcon } from "./metamask.svg";
 export { default as MobileSearchGreyIcon } from "./mobileSearchGrey.svg";
