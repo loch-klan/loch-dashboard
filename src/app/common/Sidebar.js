@@ -1150,14 +1150,6 @@ function Sidebar(props) {
                   ) : null}
                   <nav>
                     <ul>
-                      {isCurPremiumUser ? (
-                        <li>
-                          <div className="nav-premium-banner">
-                            <Image src={LochLogoWhiteIcon} />
-                            Loch Premium
-                          </div>
-                        </li>
-                      ) : null}
                       {isSubmenu && isSubmenu.me && (
                         <>
                           <li>
@@ -1405,7 +1397,11 @@ function Sidebar(props) {
                           >
                             <div
                               onClick={handleGoToProfile}
-                              className=" sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
+                              className={`sideBarFooterSignInIconContainerClosed ${
+                                isCurPremiumUser
+                                  ? "sideBarFooterSignInIconContainerClosedPremium"
+                                  : ""
+                              } inter-display-medium f-s-13 lh-19`}
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
@@ -1525,7 +1521,13 @@ function Sidebar(props) {
                                     }`
                                   : "Signed In"}
                               </div>
+                              {isCurPremiumUser ? (
+                                <div className="sideabr-premium-banner">
+                                  Premium
+                                </div>
+                              ) : null}
                             </div>
+
                             <span
                               onClick={handleLeaveChild}
                               onMouseOver={(e) =>
@@ -1538,9 +1540,6 @@ function Sidebar(props) {
                               className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
                             >
                               <Image src={LeaveIcon} />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                                Leave
-                              </Button>
                             </span>
                           </div>
                         ) : (
