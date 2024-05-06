@@ -39,6 +39,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     super(props);
     this.state = {
       isLochPaymentModal: false,
+      lochPremiumCredits: 10,
       isMobile: false,
       greenLinePercentage: 0,
       loading: false,
@@ -125,6 +126,19 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     //   });
     // }
     if (prevState.tasksDone !== this.state.tasksDone) {
+      if (this.state.tasksDone.length > 0) {
+        let curCredits = 0;
+        for (let i = 0; i < this.state.tasksDone.length; i++) {
+          if (this.state.tasksDone[i] === "loch_premium") {
+            curCredits = curCredits + 10;
+          }
+        }
+        if (curCredits >= 10) {
+          this.setState({
+            lochPremiumCredits: curCredits,
+          });
+        }
+      }
       if (this.state.tasksDone.length >= this.state.tasksList.length) {
         this.setState({
           greenLinePercentage: 100,
@@ -442,7 +456,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
               ? "Subscribed to Loch Premium"
               : "Subscribe to Loch Premium"
           }
-          earnPoints={10}
+          earnPoints={this.state.lochPremiumCredits}
           imageIcon={LochLogoBlackThickIcon}
           isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
