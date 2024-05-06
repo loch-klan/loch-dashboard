@@ -13,7 +13,11 @@ import {
 } from "../../assets/images/icons";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import { PayModalClosed, PayModalOpened } from "../../utils/AnalyticsFunctions";
+import {
+  PayModalClosed,
+  PayModalOpened,
+  PayModalPay,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   loadingAnimation,
@@ -23,13 +27,14 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import PaywallOptionsModal from "./PaywallOptionsModal";
 import "./_paywallModal.scss";
+import { createUserPayment } from "./Api";
 
 class PaywallModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
       isPayWallOptions: false,
-      isBtnLoading: false,
+      isCreditBtnLoading: false,
       show: props.show,
       onHide: this.props.onHide,
       userDetailsState: undefined,
@@ -92,7 +97,7 @@ class PaywallModal extends BaseReactComponent {
       userDetailsState: userDetails,
     });
     if (this.props.openWithOptions) {
-      this.goToPayWallOptions();
+      // this.goToPayWallOptions();
     } else {
       setTimeout(() => {
         const path = whichSignUpMethod();
@@ -179,6 +184,29 @@ class PaywallModal extends BaseReactComponent {
       isPayWallOptions: false,
     });
   };
+
+  // Pay with string
+  payWithStripe = async () => {
+    if (this.state.isCreditBtnLoading) {
+      return;
+    }
+
+    this.setState({
+      isCreditBtnLoading: true,
+    });
+    const path = whichSignUpMethod();
+    PayModalPay({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+      paymentMethod: "stripe",
+    });
+    const createUserData = new URLSearchParams();
+    createUserData.append("price_id", "price_1P9l5KFKqIbhlomA8Kt1NaPl");
+
+    this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
+  };
+  // Pay with string
   render() {
     return (
       <Modal
@@ -419,7 +447,7 @@ class PaywallModal extends BaseReactComponent {
                       />
                       Netflows
                     </div>
-                    <div
+                    {/* <div
                       style={{
                         padding: this.props.isMobile ? "0.25rem" : "",
                       }}
@@ -430,6 +458,18 @@ class PaywallModal extends BaseReactComponent {
                         src={PurpleCheckIcon}
                       />
                       Copy trader
+                    </div> */}
+                    <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Export data
                     </div>
                     <div
                       style={{
@@ -443,6 +483,19 @@ class PaywallModal extends BaseReactComponent {
                       />
                       Earn 10 points each month
                     </div>
+                    <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Aggregate multiple wallets
+                    </div>
+
                     <div
                       style={{
                         padding: this.props.isMobile ? "0.25rem" : "",
@@ -477,12 +530,17 @@ class PaywallModal extends BaseReactComponent {
                     </div>
                   </div>
                   <div
-                    onClick={this.goToPayWallOptions}
+                    // onClick={this.goToPayWallOptions}
+                    onClick={this.payWithStripe}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-button ${
-                      this.state.isBtnLoading ? "ctpb-plan-button-loading" : ""
+                      this.state.isCreditBtnLoading
+                        ? "ctpb-plan-button-loading"
+                        : ""
                     }`}
                   >
-                    {this.state.isBtnLoading ? loadingAnimation() : "Upgrade"}
+                    {this.state.isCreditBtnLoading
+                      ? loadingAnimation()
+                      : "Upgrade"}
                   </div>
                 </div>
               </div>
@@ -541,7 +599,7 @@ class PaywallModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = { createUserPayment };
 
 PaywallModal.propTypes = {};
 

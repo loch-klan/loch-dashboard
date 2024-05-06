@@ -827,7 +827,7 @@ function Sidebar(props) {
                 style={{ cursor: "pointer" }}
                 onClick={(e) => {
                   let tempToken = getToken();
-                  if (tempToken === "jsk") {
+                  if (!tempToken || tempToken === "jsk") {
                     return null;
                   }
                   if (!isWallet) {
@@ -903,9 +903,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   HomeMenu({
                                     session_id: getCurrentUser().id,
@@ -945,9 +942,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuWatchlist({
                                     session_id: getCurrentUser().id,
@@ -988,9 +982,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuLeaderboard({
                                     session_id: getCurrentUser().id,
@@ -1021,9 +1012,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   ProfileMenu({
                                     session_id: getCurrentUser().id,
@@ -1162,9 +1150,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   HomeMenu({
                                     session_id: getCurrentUser().id,
@@ -1197,9 +1182,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuWatchlist({
                                     session_id: getCurrentUser().id,
@@ -1231,9 +1213,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuLeaderboard({
                                     session_id: getCurrentUser().id,
@@ -1262,7 +1241,8 @@ function Sidebar(props) {
                           <li>
                             <NavLink
                               onClick={(e) => {
-                                if (!isWallet) {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                 } else {
                                   ProfileMenu({

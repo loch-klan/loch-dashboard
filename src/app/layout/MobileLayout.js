@@ -59,6 +59,7 @@ import "./_mobileLayout.scss";
 import {
   dontOpenLoginPopup,
   isPremiumUser,
+  removeBlurMethods,
   removeOpenModalAfterLogin,
   removeSignUpMethods,
   whichSignUpMethod,
@@ -278,6 +279,12 @@ class MobileLayout extends BaseReactComponent {
       return null;
     }
     if (!replaceAddresses && !isPremiumUser()) {
+      removeBlurMethods();
+      removeSignUpMethods();
+      window.sessionStorage.setItem(
+        "blurredAddMultipleAddressSignInModal",
+        true
+      );
       this.goToPayModal();
       return;
     }

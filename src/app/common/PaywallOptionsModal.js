@@ -417,12 +417,19 @@ class PaywallOptionsModal extends BaseReactComponent {
                         />
                         Netflows
                       </div>
-                      <div className="ctpb-plan-purple-button-child">
+                      {/* <div className="ctpb-plan-purple-button-child">
                         <Image
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
                         Copy trader
+                      </div> */}
+                      <div className="ctpb-plan-purple-button-child">
+                        <Image
+                          className="ctpb-plan-purple-button-icon"
+                          src={PurpleCheckIcon}
+                        />
+                        Export data
                       </div>
                       <div className="ctpb-plan-purple-button-child">
                         <Image
@@ -430,6 +437,13 @@ class PaywallOptionsModal extends BaseReactComponent {
                           src={PurpleCheckIcon}
                         />
                         Earn 10 points each month
+                      </div>
+                      <div className="ctpb-plan-purple-button-child">
+                        <Image
+                          className="ctpb-plan-purple-button-icon"
+                          src={PurpleCheckIcon}
+                        />
+                        Aggregate multiple wallets
                       </div>
                       <div className="ctpb-plan-purple-button-child">
                         <Image
