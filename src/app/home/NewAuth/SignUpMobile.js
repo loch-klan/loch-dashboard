@@ -268,7 +268,7 @@ const SignUpMobile = ({
                         : ""
                     }`}
                   >
-                    Sign Up
+                    Sign up
                   </button>
                 </div>
                 <div className="new-auth-content-bottom-cta-holder new-auth-content-bottom-cta-holder-mobile">
