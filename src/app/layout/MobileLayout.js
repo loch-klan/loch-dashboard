@@ -115,11 +115,11 @@ class MobileLayout extends BaseReactComponent {
           text: "Leaderboard",
           path: "/home-leaderboard",
         },
-        {
-          pageIcon: MobileNavCopyTraderIcon,
-          text: "Copy",
-          path: "/copy-trade",
-        },
+        // {
+        //   pageIcon: MobileNavCopyTraderIcon,
+        //   text: "Copy",
+        //   path: "/copy-trade",
+        // },
         {
           pageIcon: MobileNavProfile,
           text: "Profile",

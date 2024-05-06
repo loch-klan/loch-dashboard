@@ -1040,7 +1040,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        <li>
+                        {/* <li>
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -1081,7 +1081,7 @@ function Sidebar(props) {
                               />
                             </NavLink>
                           </CustomOverlay>
-                        </li>
+                        </li> */}
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1297,7 +1297,7 @@ function Sidebar(props) {
                               Profile
                             </NavLink>
                           </li>
-                          <li>
+                          {/* <li>
                             <NavLink
                               exact={true}
                               onClick={(e) => {
@@ -1327,7 +1327,7 @@ function Sidebar(props) {
                               />
                               Copy Trade
                             </NavLink>
-                          </li>
+                          </li> */}
                         </>
                       )}
                       <li>

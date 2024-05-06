@@ -104,18 +104,18 @@ const routes = [
     type: PrivateRoute,
     component: AssetsUnrealizedProfitAndLoss,
   },
-  {
-    path: "/copy-trade",
-    name: "Emulations",
-    type: PrivateRoute,
-    component: Emulations,
-  },
-  {
-    path: "/copy-trade/transactions",
-    name: "Emulations",
-    type: PrivateRoute,
-    component: EmulationTransactionsPage,
-  },
+  // {
+  //   path: "/copy-trade",
+  //   name: "Emulations",
+  //   type: PrivateRoute,
+  //   component: Emulations,
+  // },
+  // {
+  //   path: "/copy-trade/transactions",
+  //   name: "Emulations",
+  //   type: PrivateRoute,
+  //   component: EmulationTransactionsPage,
+  // },
   {
     path: "/nft",
     name: "NFT",
