@@ -22,7 +22,10 @@ import "./assets/scss/common/_commonClasses.scss";
 import "./assets/scss/common/_colorVariables.scss";
 
 //Amplitude
-import { initAmplitude } from "./utils/AnalyticsFunctions";
+import {
+  initAmplitude,
+  initAmplitudeAnalytics,
+} from "./utils/AnalyticsFunctions";
 
 //sentry
 import * as Sentry from "@sentry/react";
@@ -47,6 +50,7 @@ if (process.env.NODE_ENV === "production") {
 
 //Amplitude Analytics initialization
 initAmplitude();
+initAmplitudeAnalytics();
 
 // test({ session_id: "session id", chains: ["value1", "value2", "value3"] });
 
