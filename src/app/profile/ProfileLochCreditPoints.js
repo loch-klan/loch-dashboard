@@ -40,6 +40,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     this.state = {
       isLochPaymentModal: false,
       lochPremiumCredits: 10,
+      lochPremiumCreditMonths: 1,
       isMobile: false,
       greenLinePercentage: 0,
       loading: false,
@@ -136,6 +137,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         if (curCredits >= 10) {
           this.setState({
             lochPremiumCredits: curCredits,
+            lochPremiumCreditMonths: curCredits / 10,
           });
         }
       }
@@ -453,8 +455,10 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         <ProfileLochCreditPointsBlock
           title={
             isTheTaskDone()
-              ? "Subscribed to Loch Premium"
-              : "Subscribe to Loch Premium"
+              ? `Premium: ${this.state.lochPremiumCreditMonths} month${
+                  this.state.lochPremiumCreditMonths > 1 ? "s" : ""
+                }`
+              : `Premium: 1 month`
           }
           earnPoints={this.state.lochPremiumCredits}
           imageIcon={LochLogoBlackThickIcon}

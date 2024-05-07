@@ -206,6 +206,11 @@ class PaywallModal extends BaseReactComponent {
 
     this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
   };
+  stopCreditBtnLoading = () => {
+    this.setState({
+      isCreditBtnLoading: false,
+    });
+  };
   // Pay with string
   render() {
     return (

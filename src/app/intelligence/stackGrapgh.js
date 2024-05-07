@@ -20,7 +20,10 @@ export const getProfitLossAsset = (arr, parentCtx, isPremiumUser) => {
   let totalFees = 0;
   fees?.map((e) => (totalFees = totalFees + e.total_fees));
 
-  let inFlows = arr?.inflows?.sort((a, b) => b.total_volume - a.total_volume);
+  let inFlows = [];
+  if (arr?.inflows && arr?.inflows.length > 0) {
+    inFlows = arr?.inflows?.sort((a, b) => b.total_volume - a.total_volume);
+  }
 
   // push()
 
@@ -34,7 +37,9 @@ export const getProfitLossAsset = (arr, parentCtx, isPremiumUser) => {
       total_volume: totalFees,
     });
   }
-  outFlows = arr?.outflows?.sort((a, b) => b.total_volume - a.total_volume);
+  if (arr?.outflows && arr?.outflows.length > 0) {
+    outFlows = arr?.outflows?.sort((a, b) => b.total_volume - a.total_volume);
+  }
 
   let totalInflow = 0;
   inFlows?.map((e) => (totalInflow = totalInflow + e.total_volume));
@@ -280,7 +285,7 @@ backdrop-filter: blur(15px);">
             y:
               topInflow && topInflow.length > 0
                 ? topInflow[0]?.total_volume * currency?.rate
-                : "",
+                : 0,
             color:
               topInflow && topInflow.length > 0
                 ? topInflow[0]?.asset?.color + "4D"
@@ -299,7 +304,7 @@ backdrop-filter: blur(15px);">
             y:
               topOutflow && topOutflow.length > 0
                 ? topOutflow[0]?.total_volume * currency?.rate
-                : "",
+                : 0,
             color:
               topOutflow && topOutflow.length > 0
                 ? topOutflow[0]?.asset?.color + "4D"
@@ -333,7 +338,7 @@ backdrop-filter: blur(15px);">
             y:
               topInflow && topInflow.length > 0
                 ? topInflow[1]?.total_volume * currency?.rate
-                : "",
+                : 0,
             color:
               topInflow && topInflow.length > 0
                 ? topInflow[1]?.asset?.color + "4D"
@@ -352,7 +357,7 @@ backdrop-filter: blur(15px);">
             y:
               topOutflow && topOutflow.length > 0
                 ? topOutflow[1]?.total_volume * currency?.rate
-                : "",
+                : 0,
             color:
               topOutflow && topOutflow.length > 0
                 ? topOutflow[1]?.asset?.color + "4D"
@@ -384,7 +389,7 @@ backdrop-filter: blur(15px);">
             y:
               topInflow && topInflow.length > 0
                 ? topInflow[2]?.total_volume * currency?.rate
-                : "",
+                : 0,
             color:
               topInflow && topInflow.length > 0
                 ? topInflow[2]?.asset?.color + "4D"
@@ -403,7 +408,7 @@ backdrop-filter: blur(15px);">
             y:
               topOutflow && topOutflow.length > 0
                 ? topOutflow[2]?.total_volume * currency?.rate
-                : "",
+                : 0,
             color:
               topOutflow && topOutflow.length > 0
                 ? topOutflow[2]?.asset?.color + "4D"
@@ -435,7 +440,7 @@ backdrop-filter: blur(15px);">
             y:
               topInflow && topInflow.length > 0
                 ? topInflow[3]?.total_volume * currency?.rate
-                : "",
+                : 0,
             color:
               topInflow && topInflow.length > 0
                 ? topInflow[3]?.asset?.color + "4D"
@@ -454,7 +459,7 @@ backdrop-filter: blur(15px);">
             y:
               topOutflow && topOutflow.length > 0
                 ? topOutflow[3]?.total_volume * currency?.rate
-                : "",
+                : 0,
             color:
               topOutflow && topOutflow.length > 0
                 ? topOutflow[3]?.asset?.color + "4D"
@@ -484,7 +489,7 @@ backdrop-filter: blur(15px);">
         name: "Other",
         data: [
           {
-            y: otherInflow * currency?.rate,
+            y: otherInflow ? otherInflow * currency?.rate : 0,
             color: parentCtx?.props?.darkModeState?.flag
               ? "#CACBCC4D"
               : "#16182B4D",
@@ -495,7 +500,7 @@ backdrop-filter: blur(15px);">
             name: "Other",
           },
           {
-            y: otherOutflow * currency?.rate,
+            y: otherOutflow ? otherOutflow * currency?.rate : 0,
             color: parentCtx?.props?.darkModeState?.flag
               ? "#CACBCC4D"
               : "#16182B4D",
