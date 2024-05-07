@@ -202,7 +202,7 @@ class PaywallModal extends BaseReactComponent {
       paymentMethod: "stripe",
     });
     const createUserData = new URLSearchParams();
-    createUserData.append("price_id", "price_1P9l5KFKqIbhlomA8Kt1NaPl");
+    createUserData.append("price_id", process.env.REACT_APP_STRIPE_PRICE_ID);
 
     this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
   };
