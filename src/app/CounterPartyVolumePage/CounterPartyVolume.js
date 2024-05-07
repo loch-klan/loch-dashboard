@@ -33,7 +33,12 @@ import { toast } from "react-toastify";
 import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions.js";
+import {
+  mobileCheck,
+  removeBlurMethods,
+  removeSignUpMethods,
+  scrollToTop,
+} from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -151,6 +156,8 @@ class CounterPartyVolume extends Component {
     );
   };
   setCounterpartyVolumeExportModal = () => {
+    removeBlurMethods();removeSignUpMethods();
+    window.sessionStorage.setItem("blurredCounterPartyExportModal", true);
     CostCounterpartyFeesExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,

@@ -3,11 +3,14 @@ import { toast } from "react-toastify";
 import { preLoginInstance } from "../../utils";
 import {
   ConnectExEmailVerified,
+  CopyTradeSignInPopupEmailVerified,
   FollowSignInPopupEmailVerified,
   GeneralPopupEmailVerified,
   Home_CE_OAuthCompleted,
   LP_CE_OAuthCompleted,
   LochPointsSignInPopupEmailVerified,
+  SignInModalEmailAdded,
+  SignInModalOTPverified,
   SigninMenuEmailVerified,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
@@ -20,12 +23,14 @@ import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import postLoginInstance from "./../../utils/PostLoginAxios";
 import {
+  CURRENT_USER_PAYMENT_PLAN,
   LOCAL_ADD_WALLET_LIST,
   SET_DEFAULT_VALUE,
   TOP_SET_DEFAULT_VALUE,
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
 import { DARK_MODE } from "../intelligence/ActionTypes";
+import { whichSignUpMethod } from "../../utils/ReusableFunctions";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -81,6 +86,32 @@ export const SwitchDarkMode = (passedData) => {
       type: DARK_MODE,
       payload: passedData,
     });
+  };
+};
+export const createUserPayment = (passedData, stopCreditBtnLoading) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("commerce/payment/create-payment", passedData)
+      .then((res) => {
+        if (stopCreditBtnLoading) {
+          stopCreditBtnLoading();
+        }
+        if (!res.data.error) {
+          const redirectUrl = res.data.data?.payment?.payment_url;
+          if (redirectUrl) {
+            window.open(redirectUrl, "_self");
+          }
+        } else {
+          toast.error("Something went wrong");
+        }
+      })
+      .catch((err) => {
+        if (stopCreditBtnLoading) {
+          stopCreditBtnLoading();
+        }
+        toast.error("Something went wrong");
+        // console.log("fixwallet",err)
+      });
   };
 };
 export const fixWalletApi = (ctx, info, stopBtnLoading) => {
@@ -370,6 +401,7 @@ export const getUserAddresses = (
   postLoginInstance.post("organisation/user/get-user").then((res) => {
     if (!res.data.error) {
       let apiResponse = res.data?.data;
+
       let newAddWallet = [];
       if (apiResponse?.wallets) {
         // const allChains = getState().OnboardingState.coinsList;
@@ -1040,13 +1072,16 @@ export const getAllCurrencyRatesApi = () => {
 
 // Send Email OTP from whale pod
 
-export const SendOtp = (data, ctx, isForMobile) => {
+export const SendOtp = (data, ctx, isForMobile, isCopyTrader) => {
   postLoginInstance
     .post("organisation/user/send-email-otp", data)
     .then((res) => {
       if (!res.data.error) {
         if (isForMobile && ctx.showSignInOtpPage) {
           ctx.showSignInOtpPage();
+        }
+        if (isCopyTrader && ctx.toggleAuthModal) {
+          ctx.toggleAuthModal("verify");
         }
         // console.log("res", res.data);
         else {
@@ -1077,12 +1112,20 @@ export const SendOtp = (data, ctx, isForMobile) => {
 
 // Verify email
 
-export const VerifyEmail = (data, ctx) => {
+export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
   postLoginInstance
     .post("organisation/user/verify-otp-code", data)
     .then((res) => {
       if (!res.data.error) {
         let isOptValid = res.data.data.otp_verified;
+        if (isOptValid) {
+          const signUpMethod = whichSignUpMethod();
+          SignInModalOTPverified({
+            session_id: getCurrentUser().id,
+            email_address: passedEmail,
+            signUpMethod: signUpMethod,
+          });
+        }
         let token = res.data.data.token;
 
         //  window.sessionStorage.setItem(
@@ -1205,6 +1248,11 @@ export const VerifyEmail = (data, ctx) => {
             session_id: getCurrentUser().id,
             email_address: res.data.data.user?.email,
           });
+        } else if (ctx.props.tracking === "Copy trade") {
+          CopyTradeSignInPopupEmailVerified({
+            session_id: getCurrentUser().id,
+            email_address: res.data.data.user?.email,
+          });
         }
         if (ctx.props?.popupType === "general_popup") {
           //
@@ -1244,7 +1292,7 @@ export const VerifyEmail = (data, ctx) => {
             isOptInValid: false,
           },
           () => {
-            if (ctx.props.stopUpdate) {
+            if (ctx.props.stopUpdate || passedStopUpdate) {
               window.sessionStorage.removeItem("lochDummyUser");
 
               const allChains = ctx.props.OnboardingState.coinsList;
@@ -1328,7 +1376,9 @@ export const VerifyEmail = (data, ctx) => {
               addLocalWalletList(JSON.stringify(addWallet));
               //  console.log("only sign");
               setTimeout(() => {
-                ctx.state.onHide();
+                if (ctx.state.onHide) {
+                  ctx.state.onHide();
+                }
                 // console.log("reload")
                 window.location.reload();
               }, 3000);
@@ -1768,9 +1818,23 @@ export const CreatePyment = (data, ctx) => {
 };
 
 export const getUser = (ctx = null, showToast = false) => {
-  return async function () {
+  return async function (dispatch, getState) {
     postLoginInstance.post("organisation/user/get-user").then((res) => {
       if (!res.data.error) {
+        let currentUserPlan = "Free";
+        if (res.data?.data?.current_plan?.name) {
+          currentUserPlan = res.data.data.current_plan.name;
+        }
+
+        window.sessionStorage.setItem(
+          "currentUserPaymentPlan",
+          currentUserPlan
+        );
+        dispatch({
+          type: CURRENT_USER_PAYMENT_PLAN,
+          payload: currentUserPlan,
+        });
+
         // free pricing
         let plan = {
           defi_enabled: true,
@@ -1835,18 +1899,18 @@ export const getUser = (ctx = null, showToast = false) => {
           showToast === true
         ) {
           // console.log(ctx,showToast)
-          toast.success(
-            <div
-              style={{
-                width: "38rem",
-              }}
-            >
-              {res.data.data.current_plan.name === "Trial"
-                ? `Congratulations you’re a sovereign for a day!`
-                : `Congratulations! You’re
-            officially a ${res.data.data.current_plan.name}.`}
-            </div>
-          );
+          // toast.success(
+          //   <div
+          //     style={{
+          //       width: "38rem",
+          //     }}
+          //   >
+          //     {res.data.data.current_plan.name === "Trial"
+          //       ? `Congratulations you’re a sovereign for a day!`
+          //       : `Congratulations! You’re
+          //   officially a ${res.data.data.current_plan.name}.`}
+          //   </div>
+          // );
           if (showToast) {
           } else {
             ctx.props.history.replace("/home");

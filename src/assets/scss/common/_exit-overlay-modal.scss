@@ -59,7 +59,7 @@
 // .exit-overlay-modal {
 .exit-overlay-modal {
   .modal-content {
-    background-color: var(connectExchangeModal);
+    background-color: var(--connectExchangeModal);
     border-radius: 1.2rem;
     width: 78rem;
 
@@ -1039,11 +1039,18 @@
 .date-picker-control-modal {
   display: flex;
   .modal-content {
-    width: 30.1rem;
-    position: absolute;
-    top: 5.3rem;
+    width: fit-content !important;
+    min-width: unset !important;
+    position: relative !important;
     border-color: var(--topbarBackgroud);
     border-radius: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
+    .modal-body {
+      width: fit-content !important;
+    }
   }
   .calendar-select {
     padding: 0.6rem;

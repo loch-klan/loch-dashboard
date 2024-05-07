@@ -40,7 +40,7 @@ const DatePickerControl = (props) => {
       />
       {showDateIcon && <Image src={dateIcon} className="date-icon" />}
       <CustomModal
-        modalClass="date-picker-control-modal"
+        modalClass="date-picker-control-modal modal-dialog-centered"
         show={showModal}
         onHide={() => setShowModal(false)}
         // title={"Select Date"}

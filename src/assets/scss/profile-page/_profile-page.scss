@@ -333,7 +333,7 @@
               display: flex;
               margin-top: 0.5rem;
               min-width: 15rem;
-              justify-content: space-between;
+              justify-content: flex-start;
               .profileLochCreditPointsBlockInfoBlockDesc {
                 color: #96979a;
                 .profileLochCreditPointsBlockInfoBlockDescPoints {
@@ -354,6 +354,7 @@
                 display: flex;
                 align-items: center;
                 transition-duration: 300ms;
+                margin-left: 2rem;
                 cursor: pointer;
                 .profileLochCreditPointsBlockInfoBlockDescGo {
                   font-weight: 600;
