@@ -724,7 +724,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     text={
                       rowData.AverageCostPrice
                         ? CurrencyType(false) +
-                          convertNtoNumber(rowData.AverageCostPrice)
+                          amountFormat(rowData.AverageCostPrice, "en-US", "USD")
                         : CurrencyType(false) + "0.00"
                     }
                   >
@@ -796,7 +796,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   text={
                     rowData.CurrentPrice
                       ? CurrencyType(false) +
-                        convertNtoNumber(rowData.CurrentPrice)
+                        amountFormat(rowData.CurrentPrice, "en-US", "USD")
                       : CurrencyType(false) + "0.00"
                   }
                 >
