@@ -1,6 +1,6 @@
 # Loch.one 
 
-The Loch.one is a web-based application that provides a comprehensive overview of various data sources and metrics. It is designed to help users quickly and easily visualize and analyze important information.
+Loch.one is a web-based application that provides a comprehensive overview of various data sources and metrics. It is designed to help users quickly and easily visualize and analyze important information.
 
 ## Features
 
