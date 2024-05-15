@@ -419,68 +419,40 @@ class CustomTable extends BaseReactComponent {
                     }}
                   >
                     <div className="cost-common-container">
-                      {this.props.shouldBlurElements ? (
-                        <CustomOverlayUgradeToPremium
-                          position="top"
-                          disabled={this.props.isPremiumUser}
-                        >
-                          <div
-                            onClick={this.props.showBlurredItem}
-                            className="cost-common blurred-elements"
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={
+                          this.props.combinedCurrentValue
+                            ? CurrencyType(false) +
+                              amountFormat(
+                                this.props.combinedCurrentValue,
+                                "en-US",
+                                "USD"
+                              )
+                            : CurrencyType(false) + "0.00"
+                        }
+                      >
+                        <div className="cost-common">
+                          <span
+                            onMouseEnter={() => {
+                              // CostCostBasisHover({
+                              //   session_id: getCurrentUser().id,
+                              //   email_address: getCurrentUser().email,
+                              // });
+                            }}
                           >
-                            <span
-                              onMouseEnter={() => {
-                                // CostCostBasisHover({
-                                //   session_id: getCurrentUser().id,
-                                //   email_address: getCurrentUser().email,
-                                // });
-                              }}
-                            >
-                              {this.props.combinedCurrentValue
-                                ? CurrencyType(false) +
-                                  numToCurrency(
-                                    this.props.combinedCurrentValue.toFixed(2)
-                                  ).toLocaleString("en-US")
-                                : CurrencyType(false) + "0.00"}
-                            </span>
-                          </div>
-                        </CustomOverlayUgradeToPremium>
-                      ) : (
-                        <CustomOverlay
-                          position="top"
-                          isIcon={false}
-                          isInfo={true}
-                          isText={true}
-                          text={
-                            this.props.combinedCurrentValue
+                            {this.props.combinedCurrentValue
                               ? CurrencyType(false) +
-                                amountFormat(
-                                  this.props.combinedCurrentValue,
-                                  "en-US",
-                                  "USD"
-                                )
-                              : CurrencyType(false) + "0.00"
-                          }
-                        >
-                          <div className="cost-common">
-                            <span
-                              onMouseEnter={() => {
-                                // CostCostBasisHover({
-                                //   session_id: getCurrentUser().id,
-                                //   email_address: getCurrentUser().email,
-                                // });
-                              }}
-                            >
-                              {this.props.combinedCurrentValue
-                                ? CurrencyType(false) +
-                                  numToCurrency(
-                                    this.props.combinedCurrentValue.toFixed(2)
-                                  ).toLocaleString("en-US")
-                                : CurrencyType(false) + "0.00"}
-                            </span>
-                          </div>
-                        </CustomOverlay>
-                      )}
+                                numToCurrency(
+                                  this.props.combinedCurrentValue.toFixed(2)
+                                ).toLocaleString("en-US")
+                              : CurrencyType(false) + "0.00"}
+                          </span>
+                        </div>
+                      </CustomOverlay>
                     </div>
                   </div>
                   <div
@@ -500,36 +472,20 @@ class CustomTable extends BaseReactComponent {
                       }}
                       className="gainLossContainer"
                     >
-                      {this.props.shouldBlurElements ? (
-                        <CustomOverlayUgradeToPremium
-                          position="top"
-                          disabled={this.props.isPremiumUser}
-                        >
-                          <div
-                            onClick={this.props.showBlurredItem}
-                            className={`gainLoss blurred-elements`}
-                          >
-                            <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                              100%
-                            </span>
-                          </div>
-                        </CustomOverlayUgradeToPremium>
-                      ) : (
-                        <CustomOverlay
-                          position="top"
-                          isIcon={false}
-                          isInfo={true}
-                          isText={true}
-                          text={"100%"}
-                          colorCode="#000"
-                        >
-                          <div className={`gainLoss`}>
-                            <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                              100%
-                            </span>
-                          </div>
-                        </CustomOverlay>
-                      )}
+                      <CustomOverlay
+                        position="top"
+                        isIcon={false}
+                        isInfo={true}
+                        isText={true}
+                        text={"100%"}
+                        colorCode="#000"
+                      >
+                        <div className={`gainLoss`}>
+                          <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                            100%
+                          </span>
+                        </div>
+                      </CustomOverlay>
                     </div>
                   </div>
 
