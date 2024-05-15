@@ -53,6 +53,7 @@
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0);
+  --invertColorHover: invert(1);
   --invertColor2: invert(100%);
   --brightInDarkMode: brightness(1);
   --hoverBrightness: brightness(50%);
@@ -332,6 +333,7 @@
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(100%);
+  --invertColorHover: invert(0);
   --invertColor2: invert(0%);
   --brightInDarkMode: brightness(2);
   --hoverBrightness: brightness(200%);

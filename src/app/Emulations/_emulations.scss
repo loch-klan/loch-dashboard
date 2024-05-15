@@ -83,6 +83,8 @@
         &:hover {
           box-shadow: none !important;
           border-color: var(--primaryTextColor) !important;
+          background-color: var(--primaryTextColor) !important;
+          color: var(--cardBackgroud) !important;
         }
       }
       .ctl-otp-btn {
@@ -97,6 +99,8 @@
         opacity: 0.5 !important;
         &:hover {
           border-color: var(--referallCopyBtn) !important;
+          background-color: var(--cardBackgroud) !important;
+          color: var(--primaryTextColor) !important;
         }
       }
     }
@@ -141,6 +145,11 @@
       &:hover {
         box-shadow: none !important;
         border-color: var(--primaryTextColor) !important;
+        background-color: var(--primaryTextColor) !important;
+        color: var(--cardBackgroud) !important;
+        .buttonAttachedImageCutomBtn {
+          filter: var(--invertColorHover) !important;
+        }
       }
     }
     .ct-go-btn-mobile {
@@ -153,6 +162,11 @@
       opacity: 0.5 !important;
       &:hover {
         border-color: var(--referallCopyBtn) !important;
+        background-color: var(--cardBackgroud) !important;
+        color: var(--primaryTextColor) !important;
+        .buttonAttachedImageCutomBtn {
+          filter: var(--invertColor) !important;
+        }
       }
     }
     // .transparent-copy-trade-btn {
