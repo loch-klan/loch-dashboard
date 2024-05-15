@@ -415,7 +415,7 @@ class PaywallModal extends BaseReactComponent {
                     <div className="ctpb-plan-plus-seperator-stick" />
                   </div>
                   <div className="ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-purple-button">
-                    <div
+                    {/* <div
                       style={{
                         padding: this.props.isMobile ? "0.25rem" : "",
                         paddingTop: "0rem",
@@ -427,7 +427,7 @@ class PaywallModal extends BaseReactComponent {
                         src={PurpleCheckIcon}
                       />
                       Notifications
-                    </div>
+                    </div> */}
                     <div
                       style={{
                         padding: this.props.isMobile ? "0.25rem" : "",
