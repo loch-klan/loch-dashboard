@@ -28,22 +28,22 @@ import {
 } from "./utils/AnalyticsFunctions";
 
 //sentry
-import * as Sentry from "@sentry/react";
-import { BrowserTracing } from "@sentry/tracing";
+// import * as Sentry from "@sentry/react";
+// import { BrowserTracing } from "@sentry/tracing";
 import MobileDevice from "./app/common/mobileDevice";
 
 //Sentry Init
-if (process.env.NODE_ENV === "production") {
-  Sentry.init({
-    dsn: "https://e6783c2c434b4624a9067bf8dcee2878@o4504133712936960.ingest.sentry.io/4504156691431424",
-    integrations: [new BrowserTracing()],
+// if (process.env.NODE_ENV === "production") {
+//   Sentry.init({
+//     dsn: "https://e6783c2c434b4624a9067bf8dcee2878@o4504133712936960.ingest.sentry.io/4504156691431424",
+//     integrations: [new BrowserTracing()],
 
-    // Set tracesSampleRate to 1.0 to capture 100%
-    // of transactions for performance monitoring.
-    // We recommend adjusting this value in production
-    tracesSampleRate: 1.0,
-  });
-}
+//     // Set tracesSampleRate to 1.0 to capture 100%
+//     // of transactions for performance monitoring.
+//     // We recommend adjusting this value in production
+//     tracesSampleRate: 1.0,
+//   });
+// }
 
 // Testing Sentry
 //  throw new Error("Santry Successfully added");

@@ -212,7 +212,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             <p>All the wallet addresses you have copied</p>
           </div>
           <div
-            onClick={this.openCopyTradeModal}
+            onClick={this.props.showAddCopyTradeAddress}
             className="mobile-add-copy-trade-button"
           >
             Add
@@ -354,26 +354,9 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                                   </div>
                                   <div
                                     onClick={() => {
-                                      if (curCopyTradeData.address) {
-                                        // this.setState(
-                                        //   {
-                                        //     prefillCopyAddress:
-                                        //       curCopyTradeData.address,
-                                        //   },
-                                        //   () => {
-                                        //     this.props.showAddCopyTradeAddress();
-                                        //   }
-                                        // );
-                                        this.addPrefillCopyAddressLocal(
-                                          curCopyTradeData.address
-                                        );
-
-                                        CopyTradePopularAccountCopyClicked({
-                                          session_id: getCurrentUser().id,
-                                          email_address: getCurrentUser().email,
-                                          wallet: curCopyTradeData.address,
-                                        });
-                                      }
+                                      this.props.copyPopularAddress(
+                                        curCopyTradeData.address
+                                      );
                                     }}
                                     className="inter-display-medium f-s-13 popular-copy-trades-button"
                                   >

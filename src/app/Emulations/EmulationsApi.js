@@ -109,13 +109,16 @@ export const getCopyTrade = (ctx) => {
       });
   };
 };
-export const addCopyTrade = (data, resetBtn) => {
+export const addCopyTrade = (data, hideModal, resetBtn) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/add-copy-trade", data)
       .then((res) => {
         if (resetBtn) {
           resetBtn();
+        }
+        if (hideModal) {
+          hideModal(true);
         }
         if (!res.data.error) {
           if (res.data.data) {

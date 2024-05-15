@@ -1,4 +1,118 @@
 @import "../../../src/assets/scss/common/_variables.scss";
+.copy-trade-sing-in-up-modal {
+  .copy-trade-sing-in-up-body {
+    padding: 10rem 5rem;
+    padding-bottom: 12rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    .ctl-icon {
+      height: 20px;
+      filter: var(--invertColor);
+      margin-bottom: 2rem;
+    }
+    .ctl-heading {
+      font-size: 25px;
+      margin: 1rem 0rem;
+    }
+    .ctl-desc {
+      font-size: 16px;
+      color: var(--grey969);
+    }
+    .ctl-input {
+      margin: 2rem 0rem;
+      .addCopyTraderWrapperContainer {
+        .addWalletWrapper {
+          .awInputWrapper {
+            box-shadow: 0px 4px 10px 0px var(--boxShadowColorMd);
+            border-color: var(--referallCopyBtn) !important;
+            padding: 1.4rem 1rem;
+          }
+        }
+        &:hover {
+          .awInputWrapper {
+            border-color: var(--primaryTextColor) !important;
+          }
+        }
+      }
+    }
+    .ctl-otp-top-text {
+      font-size: 16px;
+      color: var(--black191);
+      margin-top: 2rem;
+    }
+    .ctl-otp-bottom-text {
+      font-size: 16px;
+      color: var(--referallUsedBtnText);
+      transform: translateY(3rem);
+      cursor: pointer;
+      &:hover {
+        filter: brightness(0);
+      }
+    }
+    .ctl-otp-input {
+      width: 33rem;
+      .new-auth-content-input--otp-pills-holder {
+        .new-auth-content-input--otp-pills {
+          box-shadow: 0px 4px 10px 0px var(--boxShadowColorMd) !important;
+          margin: 2rem 0rem;
+          width: 48px;
+        }
+      }
+    }
+    .ctl-btn-container {
+      margin: 0rem;
+      padding: 0rem;
+      width: 33rem;
+
+      .ctl-btn {
+        width: 100%;
+        margin: 0rem;
+        background-color: var(--cardBackgroud) !important;
+        border-color: var(--referallCopyBtn) !important;
+        color: var(--primaryTextColor) !important;
+        font-size: 1.5rem !important;
+        padding: 1.4rem 1rem;
+        box-shadow: 0px 4px 10px 0px var(--boxShadowColorMd);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          box-shadow: none !important;
+          border-color: var(--primaryTextColor) !important;
+        }
+      }
+      .ctl-otp-btn {
+        background-color: var(--primaryTextColor) !important;
+        border-color: var(--primaryTextColor) !important;
+        color: var(--cardBackgroud) !important;
+      }
+      .ctl-btn-loading {
+        pointer-events: none;
+      }
+      .ctl-btn-disabled {
+        opacity: 0.5 !important;
+        &:hover {
+          border-color: var(--referallCopyBtn) !important;
+        }
+      }
+    }
+  }
+  .exit-overlay-modal-mobile-full {
+    .copy-trade-sing-in-up-body {
+      padding: 5rem 3rem;
+      .addCopyTraderWrapperContainer {
+        padding: 0rem !important;
+      }
+      .ctl-btn-container {
+        padding: 0rem !important;
+      }
+    }
+  }
+}
 .addCopyTradeWrapperParent {
   .addWatchListWrapperContainer {
     display: flex;
@@ -13,23 +127,51 @@
   }
   .copeTraderBtnContainer {
     justify-content: flex-end;
-    .transparent-copy-trade-btn {
-      background-color: transparent !important;
-      color: var(--black191) !important;
-      &:disabled {
-        background-color: transparent !important;
-        color: var(--black191) !important;
-      }
-    }
-    .transparent-copy-trade-btn-active {
+    .ct-go-btn {
+      margin: 0rem;
+      background-color: var(--cardBackgroud) !important;
+      border-color: var(--referallCopyBtn) !important;
+      color: var(--primaryTextColor) !important;
+      font-size: 1.5rem !important;
+      box-shadow: 0px 4px 10px 0px var(--boxShadowColorMd);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       &:hover {
-        background-color: var(--black191) !important;
-        color: var(--cardBackgroud) !important;
-        .buttonAttachedImageCutomBtn {
-          filter: invert(1) !important;
-        }
+        box-shadow: none !important;
+        border-color: var(--primaryTextColor) !important;
       }
     }
+    .ct-go-btn-mobile {
+      width: 100%;
+    }
+    .ct-go-btn-loading {
+      pointer-events: none;
+    }
+    .ct-go-btn-disabled {
+      opacity: 0.5 !important;
+      &:hover {
+        border-color: var(--referallCopyBtn) !important;
+      }
+    }
+    // .transparent-copy-trade-btn {
+    //   background-color: transparent !important;
+    //   color: var(--black191) !important;
+    //   &:disabled {
+    //     background-color: transparent !important;
+    //     color: var(--black191) !important;
+    //   }
+    // }
+    // .transparent-copy-trade-btn-active {
+    //   &:hover {
+    //     background-color: var(--black191) !important;
+    //     color: var(--cardBackgroud) !important;
+    //     .buttonAttachedImageCutomBtn {
+    //       filter: invert(1) !important;
+    //     }
+    //   }
+    // }
   }
 }
 .copyTradeExpandedMobile {
@@ -54,13 +196,57 @@
     }
   }
 }
+.exit-overlay-modal-mobile-full {
+  align-items: flex-end !important;
+}
 .mobile-add-copy-trade-modal {
-  .modal-content {
-    min-width: 90vw !important;
-    width: 90vw !important;
-    .modal-header {
-      border-bottom: 0.15rem var(--sidebarSectionalBOrder) solid !important;
+  .add-ct-title {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    .add-ct-heading {
+      font-size: 20px;
+      color: var(--black191);
+    }
+    .add-ct-desc {
+      font-size: 13px;
+      margin-top: 0.5rem;
+      color: #757575;
+    }
+  }
+  .api-modal-header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .api-modal-header {
+      transform: translateY(1.2rem);
+      img {
+        width: 2.4rem;
+        height: 2.4rem;
+        filter: var(--invertColor);
+      }
 
+      &.popup-main-icon-with-border {
+        background-color: var(--modalHeaderIcon);
+        border: 1px solid var(--popupCenterIconsBorder);
+      }
+
+      padding: 1.8rem;
+      box-shadow: 0rem 0.8rem 2.8rem -0.6rem rgba(24, 39, 75, 0.12),
+        0rem 1.8rem 8.8rem -0.4rem rgba(24, 39, 75, 0.14);
+      margin-top: 0rem !important;
+      border-radius: 2rem;
+    }
+  }
+  .modal-content {
+    min-width: 100vw !important;
+    width: 100vw !important;
+    height: 80vh !important;
+    bottom: 0 !important;
+    border-bottom-left-radius: 0rem !important;
+    border-bottom-right-radius: 0rem !important;
+    .modal-header {
+      // border-bottom: 0.15rem var(--sidebarSectionalBOrder) solid !important;
       padding: 2rem !important;
       padding-bottom: 1.7rem !important;
       .mobile-copy-trader-popup-header {

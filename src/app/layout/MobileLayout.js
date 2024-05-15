@@ -65,6 +65,7 @@ import {
   whichSignUpMethod,
 } from "../../utils/ReusableFunctions.js";
 import PaywallModal from "../common/PaywallModal.js";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -116,11 +117,11 @@ class MobileLayout extends BaseReactComponent {
           text: "Leaderboard",
           path: "/home-leaderboard",
         },
-        // {
-        //   pageIcon: MobileNavCopyTraderIcon,
-        //   text: "Copy",
-        //   path: "/copy-trade",
-        // },
+        {
+          pageIcon: MobileNavCopyTraderIcon,
+          text: "Copy",
+          path: "/copy-trade",
+        },
         {
           pageIcon: MobileNavProfile,
           text: "Profile",
@@ -972,9 +973,7 @@ class MobileLayout extends BaseReactComponent {
                       isMobile
                     />
                     <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
-                      {this.props.hideAddresses ? (
-                        <></>
-                      ) : (
+                      {this.props.hideAddresses ? null : (
                         <WelcomeCard
                           openConnectWallet={this.props.openConnectWallet}
                           connectedWalletAddress={
@@ -1001,6 +1000,19 @@ class MobileLayout extends BaseReactComponent {
                         />
                       )}
                     </MobileDarkModeWrapper>
+                    {!this.props.hideShare ? (
+                      <TopWalletAddressList
+                        apiResponse={() => null}
+                        handleShare={() => null}
+                        showpath={false}
+                        currentPage={this.props.currentPage}
+                        noHomeInPath={false}
+                        isMobile
+                        showUpdatesJustNowBtn={this.props.showUpdatesJustNowBtn}
+                        hideShare={false}
+                        hideAddresses={this.props.hideAddresses}
+                      />
+                    ) : null}
                     {/* <TopWalletAddressList
                       apiResponse={(e) => this.CheckApiResponseMobileLayout(e)}
                       handleShare={this.handleShare}

@@ -159,27 +159,27 @@ class Emulations extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    if (this.state.userDetailsState && this.state.userDetailsState.email) {
-      this.removeCopyTradeBtnClickedLocal();
-      removeBlurMethods();
-      removeSignUpMethods();
-      window.sessionStorage.setItem("blurredCopyTradeAddModal", true);
-      this.setState({
-        isAddCopyTradeAddress: true,
-      });
-    } else {
-      if (document.getElementById("sidebar-open-sign-in-btn-copy-trader")) {
-        document.getElementById("sidebar-open-sign-in-btn-copy-trader").click();
-        this.addCopyTradeBtnClickedLocal();
-      } else if (
-        document.getElementById("sidebar-closed-sign-in-btn-copy-trader")
-      ) {
-        this.addCopyTradeBtnClickedLocal();
-        document
-          .getElementById("sidebar-closed-sign-in-btn-copy-trader")
-          .click();
-      }
-    }
+    // if (this.state.userDetailsState && this.state.userDetailsState.email) {
+    this.removeCopyTradeBtnClickedLocal();
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredCopyTradeAddModal", true);
+    this.setState({
+      isAddCopyTradeAddress: true,
+    });
+    // } else {
+    //   if (document.getElementById("sidebar-open-sign-in-btn-copy-trader")) {
+    //     document.getElementById("sidebar-open-sign-in-btn-copy-trader").click();
+    //     this.addCopyTradeBtnClickedLocal();
+    //   } else if (
+    //     document.getElementById("sidebar-closed-sign-in-btn-copy-trader")
+    //   ) {
+    //     this.addCopyTradeBtnClickedLocal();
+    //     document
+    //       .getElementById("sidebar-closed-sign-in-btn-copy-trader")
+    //       .click();
+    //   }
+    // }
   };
   hideAddCopyTradeAddress = (isRecall) => {
     this.removeCopyTradeBtnClickedLocal();
@@ -208,49 +208,24 @@ class Emulations extends Component {
     this.props.GetAllPlan();
     this.props.getUser();
     this.callEmulationsApi();
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     this.getAllWalletList();
 
-    let tempHaveUserPaid = window.sessionStorage.getItem(
-      "haveUserPaidForCopyTrade"
-    );
-    if (tempHaveUserPaid) {
-      this.setState({
-        paymentStatusLocal: "PAID",
-      });
-    }
-    if (userDetails) {
-      this.setState(
-        {
-          userDetailsState: userDetails,
-        },
-        () => {
-          const isLoginAttmepted = window.sessionStorage.getItem(
-            "copyTradeLoginClicked"
-          );
-          const isLoginAttmeptedValue = window.sessionStorage.getItem(
-            "copyTradeLoginClickedValue"
-          );
-
-          if (isLoginAttmepted && isLoginAttmepted === "true") {
-            setTimeout(() => {
-              if (isLoginAttmeptedValue) {
-                this.setState(
-                  {
-                    prefillCopyAddress: isLoginAttmeptedValue,
-                  },
-                  () => {
-                    this.showAddCopyTradeAddress();
-                  }
-                );
-              } else {
-                this.showAddCopyTradeAddress();
-              }
-            }, 1500);
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let isFromUrl = window.sessionStorage.getItem("openCopyTradeModalFromLink");
+    if (isFromUrl) {
+      setTimeout(() => {
+        this.setState(
+          {
+            prefillCopyAddress: isFromUrl,
+          },
+          () => {
+            window.sessionStorage.removeItem("openCopyTradeModalFromLink");
+            this.showAddCopyTradeAddress();
           }
-        }
-      );
+        );
+      }, 1500);
     }
+
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
     const isAddTrade = params.get("addTrade");
@@ -968,6 +943,24 @@ class Emulations extends Component {
       }
     );
   };
+  copyPopularAddress = (passedAddress) => {
+    if (passedAddress) {
+      this.setState(
+        {
+          prefillCopyAddress: passedAddress,
+        },
+        () => {
+          this.showAddCopyTradeAddress();
+        }
+      );
+
+      CopyTradePopularAccountCopyClicked({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        wallet: passedAddress,
+      });
+    }
+  };
   render() {
     const columnData = [
       {
@@ -1135,6 +1128,7 @@ class Emulations extends Component {
             />
           ) : null}
           <EmulationsMobile
+            copyPopularAddress={this.copyPopularAddress}
             addCopyTradeBtnClickedLocal={this.addCopyTradeBtnClickedLocal}
             userDetailsState={this.state.userDetailsState}
             columnData={columnData}
@@ -1328,16 +1322,6 @@ class Emulations extends Component {
               updateTimer={this.updateTimer}
               handleBtn={this.showAddCopyTradeAddress}
             />
-            <div
-              onClick={() => {
-                this.setState({
-                  isPayModalOptionsOpen: true,
-                });
-              }}
-              className="inter-display-medium f-s-16 cp"
-            >
-              Open paywall
-            </div>
             {!this.state.emulationsLoading ? (
               <div
                 className={`available-copy-trades-popular-accounts-container ${
@@ -1458,24 +1442,9 @@ class Emulations extends Component {
                                     </div>
                                     <div
                                       onClick={() => {
-                                        if (curCopyTradeData.address) {
-                                          this.setState(
-                                            {
-                                              prefillCopyAddress:
-                                                curCopyTradeData.address,
-                                            },
-                                            () => {
-                                              this.showAddCopyTradeAddress();
-                                            }
-                                          );
-
-                                          CopyTradePopularAccountCopyClicked({
-                                            session_id: getCurrentUser().id,
-                                            email_address:
-                                              getCurrentUser().email,
-                                            wallet: curCopyTradeData.address,
-                                          });
-                                        }
+                                        this.copyPopularAddress(
+                                          curCopyTradeData.address
+                                        );
                                       }}
                                       className="inter-display-medium f-s-14 popular-copy-trades-button"
                                     >
