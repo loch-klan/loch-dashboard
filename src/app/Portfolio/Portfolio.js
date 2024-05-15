@@ -4356,77 +4356,7 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col table-header-font"
-            id="Gainamount"
-          >
-            <span className="inter-display-medium f-s-13 lh-16">
-              Unrealized gain
-            </span>
-            <Image
-              onClick={() => this.handleSort(this.state.sortBy[6])}
-              src={sortByIcon}
-              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "GainAmount",
 
-        coumnWidth: 0.11,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (rowData === "EMPTY") {
-            return null;
-          }
-          if (dataKey === "GainAmount") {
-            const tempDataHolder = numToCurrency(rowData.GainAmount);
-            return (
-              <div
-                onMouseEnter={() => {
-                  CostGainHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }}
-                onClick={this.showBlurredAssetItem}
-                className={`gainLossContainer ${
-                  this.state.isPremiumUser ? "" : "blurred-elements"
-                }`}
-              >
-                <CustomOverlayUgradeToPremium
-                  position="top"
-                  disabled={this.state.isPremiumUser}
-                >
-                  <div className={`gainLoss`}>
-                    {rowData.GainAmount !== 0 ? (
-                      <Image
-                        className="mr-2"
-                        style={{
-                          height: "1.5rem",
-                          width: "1.5rem",
-                        }}
-                        src={
-                          rowData.GainAmount < 0
-                            ? ArrowDownLeftSmallIcon
-                            : ArrowUpRightSmallIcon
-                        }
-                      />
-                    ) : null}
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {rowData.GainAmount
-                        ? CurrencyType(false) +
-                          tempDataHolder.toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlayUgradeToPremium>
-              </div>
-            );
-          }
-        },
-      },
       {
         labelName: (
           <div
@@ -4490,62 +4420,7 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col  table-header-font"
-            id="Average Cost Price"
-          >
-            <span className="inter-display-medium f-s-13 lh-16">
-              Avg cost price
-            </span>
-            <Image
-              onClick={() => this.handleSort(this.state.sortBy[1])}
-              src={sortByIcon}
-              className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "AverageCostPrice",
 
-        coumnWidth: 0.11,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (rowData === "EMPTY") {
-            return null;
-          }
-          if (dataKey === "AverageCostPrice") {
-            return (
-              <div
-                onMouseEnter={() => {
-                  CostAverageCostPriceHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }}
-                className={`${
-                  this.state.isPremiumUser ? "" : "blurred-elements"
-                }`}
-                onClick={this.showBlurredAssetItem}
-              >
-                <CustomOverlayUgradeToPremium
-                  position="top"
-                  disabled={this.state.isPremiumUser}
-                >
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {rowData.AverageCostPrice
-                      ? CurrencyType(false) +
-                        numToCurrency(
-                          rowData.AverageCostPrice.toFixed(2)
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </span>
-                </CustomOverlayUgradeToPremium>
-              </div>
-            );
-          }
-        },
-      },
       {
         labelName: (
           <div
@@ -4664,16 +4539,80 @@ class Portfolio extends BaseReactComponent {
         labelName: (
           <div
             className="cp history-table-header-col  table-header-font"
+            id="Average Cost Price"
+          >
+            <span className="inter-display-medium f-s-13 lh-16">
+              Avg cost price
+            </span>
+            {this.state.isPremiumUser ? (
+              <Image
+                onClick={() => this.handleSort(this.state.sortBy[1])}
+                src={sortByIcon}
+                className={
+                  !this.state.sortBy[1].down ? "rotateDown" : "rotateUp"
+                }
+              />
+            ) : null}
+          </div>
+        ),
+        dataKey: "AverageCostPrice",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "AverageCostPrice") {
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostAverageCostPriceHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                className={`${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
+                onClick={this.showBlurredAssetItem}
+              >
+                <CustomOverlayUgradeToPremium
+                  position="top"
+                  disabled={this.state.isPremiumUser}
+                >
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {rowData.AverageCostPrice
+                      ? CurrencyType(false) +
+                        numToCurrency(
+                          rowData.AverageCostPrice.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
+                  </span>
+                </CustomOverlayUgradeToPremium>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col  table-header-font"
             id="Cost Basis"
           >
             <span className="inter-display-medium f-s-13 lh-16">
               Cost basis
             </span>
-            <Image
-              onClick={() => this.handleSort(this.state.sortBy[4])}
-              src={sortByIcon}
-              className={!this.state.sortBy[4].down ? "rotateDown" : "rotateUp"}
-            />
+            {this.state.isPremiumUser ? (
+              <Image
+                onClick={() => this.handleSort(this.state.sortBy[4])}
+                src={sortByIcon}
+                className={
+                  !this.state.sortBy[4].down ? "rotateDown" : "rotateUp"
+                }
+              />
+            ) : null}
           </div>
         ),
         dataKey: "CostBasis",
@@ -4720,7 +4659,81 @@ class Portfolio extends BaseReactComponent {
           }
         },
       },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col table-header-font"
+            id="Gainamount"
+          >
+            <span className="inter-display-medium f-s-13 lh-16">
+              Unrealized gain
+            </span>
+            {this.state.isPremiumUser ? (
+              <Image
+                onClick={() => this.handleSort(this.state.sortBy[6])}
+                src={sortByIcon}
+                className={
+                  !this.state.sortBy[6].down ? "rotateDown" : "rotateUp"
+                }
+              />
+            ) : null}
+          </div>
+        ),
+        dataKey: "GainAmount",
 
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (rowData === "EMPTY") {
+            return null;
+          }
+          if (dataKey === "GainAmount") {
+            const tempDataHolder = numToCurrency(rowData.GainAmount);
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostGainHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                onClick={this.showBlurredAssetItem}
+                className={`gainLossContainer ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
+              >
+                <CustomOverlayUgradeToPremium
+                  position="top"
+                  disabled={this.state.isPremiumUser}
+                >
+                  <div className={`gainLoss`}>
+                    {rowData.GainAmount !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainAmount < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {rowData.GainAmount
+                        ? CurrencyType(false) +
+                          tempDataHolder.toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </span>
+                  </div>
+                </CustomOverlayUgradeToPremium>
+              </div>
+            );
+          }
+        },
+      },
       {
         labelName: (
           <div
@@ -4728,11 +4741,15 @@ class Portfolio extends BaseReactComponent {
             id="Gain loss"
           >
             <span className="inter-display-medium f-s-13 lh-16">Return</span>
-            <Image
-              onClick={() => this.handleSort(this.state.sortBy[7])}
-              src={sortByIcon}
-              className={!this.state.sortBy[7].down ? "rotateDown" : "rotateUp"}
-            />
+            {this.state.isPremiumUser ? (
+              <Image
+                onClick={() => this.handleSort(this.state.sortBy[7])}
+                src={sortByIcon}
+                className={
+                  !this.state.sortBy[7].down ? "rotateDown" : "rotateUp"
+                }
+              />
+            ) : null}
           </div>
         ),
         dataKey: "GainLoss",
