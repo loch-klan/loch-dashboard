@@ -1661,6 +1661,15 @@ export const UserCreditGoClickedMP = ({ session_id, email_address, task }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Profile:first name added");
 };
+export const UpgradeBannerClicked = ({ session_id, email_address }) => {
+  const event_name = "Profile: Loch premium banner: upgrade clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Profile:first name added");
+};
 export const UserCreditRightScrollClickedMP = ({
   session_id,
   email_address,

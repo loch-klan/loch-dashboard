@@ -2,13 +2,17 @@ import React, { Component } from "react";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 // import Sidebar from '../common/Sidebar';
-import { ProfilePage, TimeSpentProfile } from "../../utils/AnalyticsFunctions";
+import {
+  ProfilePage,
+  TimeSpentProfile,
+  UpgradeBannerClicked,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import PageHeader from "./../common/PageHeader";
 import ProfileForm from "./ProfileForm";
 
 // add wallet
-import { Col, Row, Image } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
   GetAllPlan,
@@ -19,6 +23,17 @@ import {
 import FixAddModal from "../common/FixAddModal";
 
 // Upgrade
+import {
+  PasswordPurpleIcon,
+  PremiumBannerBellIcon,
+  PremiumBannerCheckCircleIcon,
+  PremiumBannerDiamondIcon,
+  PremiumBannerDownloadIcon,
+  PremiumBannerLayersIcon,
+  PremiumBannerSwapIcon,
+  PremiumBannerWalletIcon,
+  UserCreditScrollRightArrowIcon,
+} from "../../assets/images/icons";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
 import ExportIcon from "../../assets/images/icons/upgrade-export.svg";
@@ -28,23 +43,22 @@ import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
 import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
+import { BASE_URL_S3 } from "../../utils/Constant";
+import {
+  isPremiumUser,
+  mobileCheck,
+  scrollToTop,
+} from "../../utils/ReusableFunctions";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { getReferallCodes } from "../ReferralCodes/ReferralCodesApi";
+import { PaywallModal } from "../common";
 import UpgradeModal from "../common/upgradeModal";
+import TopWalletAddressList from "../header/TopWalletAddressList";
+import MobileLayout from "../layout/MobileLayout";
 import Wallet from "../wallet/Wallet";
 import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
-import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
-import TopWalletAddressList from "../header/TopWalletAddressList";
-import {
-  ArrowUpRightSmallIcon,
-  PasswordIcon,
-  PasswordPurpleIcon,
-  UserCreditRightArrowIcon,
-  UserCreditScrollRightArrowIcon,
-} from "../../assets/images/icons";
-import MobileLayout from "../layout/MobileLayout";
 import ProfileMobile from "./ProfileMobile";
-import { getReferallCodes } from "../ReferralCodes/ReferralCodesApi";
 
 class Profile extends Component {
   constructor(props) {
@@ -129,6 +143,8 @@ class Profile extends Component {
 
     this.state = {
       // add new wallet
+      isLochPaymentModal: false,
+      isPremium: isPremiumUser(),
       isInputFocused: false,
       isMobileDevice: false,
       codesLeftToUse: false,
@@ -144,6 +160,17 @@ class Profile extends Component {
       startTime: "",
       followFlag: false,
       lochUser: undefined,
+      premiumBannerItems: [
+        // { icon: PremiumBannerSwapIcon, text: "Unlimited Copy trades" },
+        { icon: PremiumBannerWalletIcon, text: "Analyze Wallets PnL" },
+        // { icon: PremiumBannerBellIcon, text: "Unlimited Notifications" },
+        { icon: PremiumBannerDownloadIcon, text: "Unlimited data exports" },
+        {
+          icon: PremiumBannerWalletIcon,
+          text: "Unlimited Wallets Aggregation",
+        },
+        { icon: PremiumBannerLayersIcon, text: "Analyze Gas fees" },
+      ],
     };
   }
 
@@ -167,6 +194,11 @@ class Profile extends Component {
   };
   componentDidMount() {
     scrollToTop();
+    setTimeout(() => {
+      this.setState({
+        isPremium: isPremiumUser(),
+      });
+    }, 1000);
     if (mobileCheck()) {
       // this.props.history.push("/home");
       this.setState({
@@ -202,6 +234,9 @@ class Profile extends Component {
   };
   componentDidUpdate(prevProps) {
     if (!this.props.commonState.profilePage) {
+      this.setState({
+        isPremium: isPremiumUser(),
+      });
       this.props.updateWalletListFlag("profilePage", true);
       this.props.GetAllPlan();
       this.props.getUser();
@@ -335,12 +370,52 @@ class Profile extends Component {
     ) {
       document.getElementById("topBarContainerInputBlockInputId").focus();
     }
-    if (this.state.isMobile) {
+    if (this.state.isMobileDevice) {
       if (
         document.getElementById("newWelcomeWallet-1") &&
         document.getElementById("newWelcomeWallet-1").focus
       ) {
         document.getElementById("newWelcomeWallet-1").focus();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
+  showPaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: true,
+    });
+  };
+  upgradeNowBtnClick = () => {
+    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (isLochUser && isLochUser.email) {
+      UpgradeBannerClicked({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+      });
+      this.showPaymentModal();
+    } else {
+      window.sessionStorage.setItem(
+        "upgradePremiumProfileBannerSignInModal",
+        true
+      );
+      if (
+        document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")
+      ) {
+        document
+          .getElementById("sidebar-open-sign-in-btn-loch-points-profile")
+          .click();
+      } else if (
+        document.getElementById(
+          "sidebar-closed-sign-in-btn-loch-points-profile"
+        )
+      ) {
+        document
+          .getElementById("sidebar-closed-sign-in-btn-loch-points-profile")
+          .click();
       }
     }
   };
@@ -353,14 +428,25 @@ class Profile extends Component {
           history={this.props.history}
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
-          hideShare
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <ProfileMobile
             goToMyReferralCodes={this.goToMyReferralCodes}
+            upgradeNowBtnClick={this.upgradeNowBtnClick}
             followFlag={this.state.followFlag}
             isUpdate={this.state.isUpdate}
             lochUser={this.state.lochUser}
             codesLeftToUse={this.state.codesLeftToUse}
+            premiumBannerItems={this.state.premiumBannerItems}
+            isPremium={this.state.isPremium}
             history={this.props.history}
           />
         </MobileLayout>
@@ -388,7 +474,6 @@ class Profile extends Component {
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 handleUpdate={this.handleUpdateWallet}
-                hideShare
               />
             </div>
           </div>
@@ -417,7 +502,6 @@ class Profile extends Component {
                     // add wallet address modal
                     handleAddModal={this.handleAddModal}
                     handleUpdate={this.handleUpdateWallet}
-                    hideShare
                   />
                 </div>
               </div>
@@ -443,7 +527,6 @@ class Profile extends Component {
             )}
             <TopWalletAddressList
               apiResponse={(e) => this.CheckApiResponse(e)}
-              hideShare
               hideFollow
             />
             <PageHeader
@@ -467,6 +550,94 @@ class Profile extends Component {
                   />
                 </Col>
               </Row>
+            </div>
+            {this.state.isLochPaymentModal ? (
+              <PaywallModal
+                show={this.state.isLochPaymentModal}
+                onHide={this.hidePaymentModal}
+                redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+                hideBackBtn
+              />
+            ) : null}
+            <div className="profile-section-loch-premium-banner">
+              <div className="pslpl-heading">
+                <Image className="pslpl-icon" src={PremiumBannerDiamondIcon} />
+                <div className="inter-display-medium pslpl-text">
+                  Loch Premium
+                </div>
+              </div>
+              {this.state.isPremium ? (
+                <div
+                  style={{
+                    marginTop: "3rem",
+                  }}
+                  className="profile-section-loch-premium"
+                >
+                  <div className="pslp-left">
+                    <div className="pslpl-banner">
+                      <div className="inter-display-medium pslpl-banner-des">
+                        Exclusive benefits
+                      </div>
+                      <div className="pslpl-banner-heading">
+                        <Image
+                          src={PremiumBannerCheckCircleIcon}
+                          className="pslpl-banner-heading-image"
+                        />
+                        <div className="inter-display-medium pslpl-banner-heading-text">
+                          Activated
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pslp-right">
+                    <div className="pslpl-conent">
+                      {this.state.premiumBannerItems.map((itemBlock, index) => (
+                        <div key={index} className="pslpl-item-block">
+                          <Image
+                            className="pslpl-item-block-icon"
+                            src={itemBlock.icon}
+                          />
+                          <div className="inter-display-medium pslpl-item-block-text">
+                            {itemBlock.text}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="profile-section-loch-premium">
+                  <div className="pslp-left">
+                    <div className="pslpl-conent">
+                      {this.state.premiumBannerItems.map((itemBlock, index) => (
+                        <div key={index} className="pslpl-item-block">
+                          <Image
+                            className="pslpl-item-block-icon"
+                            src={itemBlock.icon}
+                          />
+                          <div className="inter-display-medium pslpl-item-block-text">
+                            {itemBlock.text}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="pslp-right">
+                    <div className="pslpr-desc">Not a member yet</div>
+                    <div className="pslpr-heading">
+                      Join Loch Premium and enjoy
+                      <br />
+                      exclusive benefits
+                    </div>
+                    <button
+                      onClick={this.upgradeNowBtnClick}
+                      className="pslpr-btn"
+                    >
+                      Upgrade now
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
             <div
               onClick={this.goToMyReferralCodes}
