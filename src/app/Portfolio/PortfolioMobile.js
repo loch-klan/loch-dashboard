@@ -1002,6 +1002,8 @@ class PortfolioMobile extends BaseReactComponent {
                   <div className="profit-chart profit-chart-mobile">
                     {this.props.blockTwoSelectedItem === 1 ? (
                       <BarGraphSection
+                        isPremiumUser={this.props.isPremiumUser}
+                        goToPayModal={this.props.showBlurredFlows}
                         openChartPage={this.props.goToRealizedGainsPage}
                         newHomeSetup
                         disableOnLoading
@@ -1046,6 +1048,9 @@ class PortfolioMobile extends BaseReactComponent {
                           Loch
                         </div>
                         <BarGraphSection
+                          isPremiumUser={this.props.isPremiumUser}
+                          goToPayModal={this.props.showBlurredGasFees}
+                          isBlurred={!this.props.isPremiumUser}
                           digit={this.props.GraphDigit}
                           isFromHome
                           // openChartPage={() => {}}
@@ -1238,6 +1243,8 @@ class PortfolioMobile extends BaseReactComponent {
                       updatedInsightList={this.props.updatedInsightList}
                       insightsBlockLoading={this.props.insightsBlockLoading}
                       isMobile
+                      showBlurredInsights={this.props.showBlurredInsights}
+                      isPremiumUser={this.props.isPremiumUser}
                     />
                   </div>
                 ) : null}

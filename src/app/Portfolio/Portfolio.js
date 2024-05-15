@@ -124,9 +124,14 @@ import {
   UpgradeTriggered,
   amountFormat,
   convertNtoNumber,
+  dontOpenLoginPopup,
+  isPremiumUser,
   mobileCheck,
   noExponents,
   numToCurrency,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
 import { GetAllPlan, getUser } from "../common/Api";
@@ -170,6 +175,8 @@ import { getCounterGraphData, getGraphData } from "../cost/getGraphData.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import { getNFT } from "../nft/NftApi.js";
 import HandleBrokenImages from "../common/HandleBrokenImages.js";
+import PaywallModal from "../common/PaywallModal.js";
+import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -193,6 +200,10 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      isPremiumUser: isPremiumUser() ? true : false,
+      isLochPaymentModal: false,
+      payModalTitle: "",
+      payModalDescription: "",
       localNftData: [],
       nftTableLoading: false,
       shouldAvgCostLoading: false,
@@ -808,7 +819,69 @@ class Portfolio extends BaseReactComponent {
       }
     }, 5000);
   };
+  checkPremium = () => {
+    // if (isPremiumUser()) {
+    //   this.setState({
+    //     isPremiumUser: true,
+    //   });
+    // } else {
+    //   this.setState({
+    //     isPremiumUser: false,
+    //   });
+    // }
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUser: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUser: false,
+      });
+    }
+  };
   componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        isPremiumUser: isPremiumUser(),
+      });
+    }, 1000);
+    const isBackFromPayment = window.sessionStorage.getItem(
+      "openPaymentOptionsAgain"
+    );
+    if (isBackFromPayment === "true") {
+      this.setState(
+        {
+          openLochPaymentModalWithOptions: true,
+        },
+        () => {
+          window.sessionStorage.removeItem("openPaymentOptionsAgain");
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }
+      );
+    }
+    this.checkPremium();
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //     "openHomePaymentModal"
+    //   );
+    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       const titleAndDesc = shouldOpenNoficationModal.split(",");
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //         payModalTitle: titleAndDesc[0],
+    //         payModalDescription: titleAndDesc[1],
+    //       });
+    //     }, 1000);
+    //   }
+    // }
     this.callAllApisTwice();
     scrollToTop();
     if (
@@ -851,6 +924,7 @@ class Portfolio extends BaseReactComponent {
       passedAddress &&
       passedAddress !== "alreadyAdded" &&
       passedAddress !== "/home" &&
+      passedAddress !== "/copy-trade" &&
       getCurrentUser().id &&
       tempPathName === "/home"
     ) {
@@ -940,6 +1014,12 @@ class Portfolio extends BaseReactComponent {
         this.setState({
           netFlowLoading: false,
         });
+        this.props.updateAssetProfitLoss(
+          this.props.intelligenceState?.ProfitLossAssetData,
+          this,
+          // this.state.isPremiumUser
+          this.state.isPremiumUser
+        );
       } else {
         this.props.updateWalletListFlag("realizedGainsPage", true);
         this.setState({
@@ -948,7 +1028,25 @@ class Portfolio extends BaseReactComponent {
         });
         // this.props.getProfitAndLossApi(this, false, false, false);
         // netflow breakdown
-        this.props.getAssetProfitLoss(this, false, false, false);
+        // this.props.getAssetProfitLoss(
+        //   this,
+        // null,
+        //   null,
+        //   false,
+        //   false,
+        //   true,
+        //   this.state.isPremiumUser
+        // );
+
+        this.props.getAssetProfitLoss(
+          this,
+          null,
+          null,
+          false,
+          false,
+          true,
+          this.state.isPremiumUser
+        );
       }
     }
     this.callPriceGaugeApi();
@@ -1081,7 +1179,67 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.intelligenceState?.ProfitLossAsset !==
+      this.props.intelligenceState?.ProfitLossAsset
+    ) {
+      if (
+        !prevProps.intelligenceState?.ProfitLossAsset ||
+        prevProps.intelligenceState?.ProfitLossAsset.length === 0
+      ) {
+        this.props.updateAssetProfitLoss(
+          this.props.intelligenceState?.ProfitLossAssetData,
+          this,
+          // this.state.isPremiumUser
+          this.state.isPremiumUser
+        );
+        setTimeout(() => {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }, 1000);
+        setTimeout(() => {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }, 1500);
+        setTimeout(() => {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }, 2000);
+      }
+    }
+    if (prevProps.userPaymentState !== this.props.userPaymentState) {
+      this.setState({
+        isPremiumUser: isPremiumUser(),
+      });
+      this.props.updateAssetProfitLoss(
+        this.props.intelligenceState?.ProfitLossAssetData,
+        this,
+        // this.state.isPremiumUser
+        this.state.isPremiumUser
+      );
+    }
+    if (prevState.isPremiumUser !== this.state.isPremiumUser) {
+      this.props.updateAssetProfitLoss(
+        this.props.intelligenceState?.ProfitLossAssetData,
+        this,
+        // this.state.isPremiumUser
+        this.state.isPremiumUser
+      );
+    }
     if (
       this.props.NFTState?.nfts &&
       this.props.NFTState?.nfts !== prevProps.NFTState?.nfts
@@ -1090,6 +1248,20 @@ class Portfolio extends BaseReactComponent {
         localNftData: this.props.NFTState?.nfts,
         nftTableLoading: false,
       });
+    }
+    if (
+      prevState.AvgCostLoading !== this.state.AvgCostLoading ||
+      prevState.netFlowLoading !== this.state.netFlowLoading ||
+      prevState.gasFeesGraphLoading !== this.state.gasFeesGraphLoading ||
+      prevState.nftTableLoading !== this.state.nftTableLoading ||
+      prevState.counterGraphLoading !== this.state.counterGraphLoading ||
+      prevState.chainLoader !== this.state.chainLoader ||
+      prevState.insightsBlockLoading !== this.state.insightsBlockLoading ||
+      prevState.tableLoading !== this.state.tableLoading ||
+      prevState.yieldOpportunitiesTableLoading !==
+        this.state.yieldOpportunitiesTableLoading
+    ) {
+      this.checkPremium();
     }
     // Block One
     if (this.props.commonState !== prevProps.commonState) {
@@ -1138,22 +1310,47 @@ class Portfolio extends BaseReactComponent {
     // Block Two
     if (prevState.blockTwoSelectedItem !== this.state.blockTwoSelectedItem) {
       // Realized gains api call
-      if (
-        this.state.blockTwoSelectedItem === 1 &&
-        (!(
-          this.props.intelligenceState?.ProfitLossAsset?.series &&
-          this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
-        ) ||
-          !this.props.commonState.realizedGainsPage)
-      ) {
-        this.props.updateWalletListFlag("realizedGainsPage", true);
-        this.setState({
-          netFlowLoading: true,
-          shouldCallProfitAndLossApi: false,
-        });
-        // this.props.getProfitAndLossApi(this, false, false, false);
-        // netflow breakdown
-        this.props.getAssetProfitLoss(this, false, false, false);
+      if (this.state.blockTwoSelectedItem === 1) {
+        if (
+          !(
+            this.props.intelligenceState?.ProfitLossAsset?.series &&
+            this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
+          ) ||
+          !this.props.commonState.realizedGainsPage
+        ) {
+          this.props.updateWalletListFlag("realizedGainsPage", true);
+          this.setState({
+            netFlowLoading: true,
+            shouldCallProfitAndLossApi: false,
+          });
+          // this.props.getProfitAndLossApi(this, false, false, false);
+          // netflow breakdown
+          // this.props.getAssetProfitLoss(
+          //   this,
+          // null,
+          //   null,
+          //   false,
+          //   false,
+          //   true,
+          //   this.state.isPremiumUser
+          // );
+          this.props.getAssetProfitLoss(
+            this,
+            null,
+            null,
+            false,
+            false,
+            true,
+            this.state.isPremiumUser
+          );
+        } else {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }
       }
       // Gas fees api call
       else if (this.state.blockTwoSelectedItem === 2) {
@@ -1462,22 +1659,46 @@ class Portfolio extends BaseReactComponent {
 
       // BLOCK TWO
       // Realized gains api call
-      if (
-        this.state.blockTwoSelectedItem === 1 &&
-        (!this.props.commonState.realizedGainsPage ||
+      if (this.state.blockTwoSelectedItem === 1) {
+        if (
+          !this.props.commonState.realizedGainsPage ||
           !(
             this.props.intelligenceState?.ProfitLossAsset?.series &&
             this.props.intelligenceState?.ProfitLossAsset?.series.length > 0
-          ))
-      ) {
-        this.props.updateWalletListFlag("realizedGainsPage", true);
-        this.setState({
-          netFlowLoading: true,
-          shouldCallProfitAndLossApi: false,
-        });
-        // this.props.getProfitAndLossApi(this, false, false, false);
-        // netflow breakdown
-        this.props.getAssetProfitLoss(this, false, false, false);
+          )
+        ) {
+          this.props.updateWalletListFlag("realizedGainsPage", true);
+          this.setState({
+            netFlowLoading: true,
+            shouldCallProfitAndLossApi: false,
+          });
+          // this.props.getProfitAndLossApi(this, false, false, false);
+          // netflow breakdown
+          // this.props.getAssetProfitLoss(
+          //   this,
+          //   false,
+          //   false,
+          //   true,
+          //   this.state.isPremiumUser
+          // );
+
+          this.props.getAssetProfitLoss(
+            this,
+            null,
+            null,
+            false,
+            false,
+            true,
+            this.state.isPremiumUser
+          );
+        } else {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            // this.state.isPremiumUser
+            this.state.isPremiumUser
+          );
+        }
       }
 
       // Gas fees api call
@@ -1636,7 +1857,9 @@ class Portfolio extends BaseReactComponent {
       if (this.props.intelligenceState?.ProfitLossAssetData) {
         this.props.updateAssetProfitLoss(
           this.props.intelligenceState?.ProfitLossAssetData,
-          this
+          this,
+          // this.state.isPremiumUser
+          this.state.isPremiumUser
         );
       }
     }
@@ -2307,6 +2530,201 @@ class Portfolio extends BaseReactComponent {
         email_address: getCurrentUser().email,
       });
     }
+  };
+
+  showBlurredAssetItem = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredHomeAssetSignInModal", true);
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState(
+        {
+          payModalTitle: "Profit and Loss with Loch",
+          payModalDescription: "Unlimited wallets PnL",
+        },
+        () => {
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }
+      );
+    } else {
+      const tempArr = ["Profit and Loss with Loch", "Unlimited wallets PnL"];
+      setTimeout(() => {
+        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  showBlurredFlows = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredHomeFlowsSignInModal", true);
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState(
+        {
+          payModalTitle: "Net Flows with Loch",
+          payModalDescription: "Unlimited wallets net flows",
+        },
+        () => {
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }
+      );
+    } else {
+      const tempArr = ["Net Flows with Loch", "Unlimited wallets net flows"];
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  showBlurredYieldOpp = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredHomeYieldOppSignInModal", true);
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState(
+        {
+          payModalTitle: "Access Loch's Yield Opportunities",
+          payModalDescription: "Unlimited yield opportunities",
+        },
+        () => {
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }
+      );
+    } else {
+      const tempArr = [
+        "Access Loch's Yield Opportunities",
+        "Unlimited yield opportunities",
+      ];
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  showBlurredInsights = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredHomeInsightsSignInModal", true);
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState(
+        {
+          payModalTitle: "Access Risk and Cost Reduction Insights",
+          payModalDescription: "Unlimited wallets insights",
+        },
+        () => {
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }
+      );
+    } else {
+      const tempArr = [
+        "Access Risk and Cost Reduction Insights",
+        "Unlimited wallets insights",
+      ];
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  showBlurredGasFees = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredHomeGasFeesSignInModal", true);
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState(
+        {
+          payModalTitle: "Understand Gas Fees with Loch",
+          payModalDescription: "Unlimited wallets gas costs",
+        },
+        () => {
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }
+      );
+    } else {
+      const tempArr = [
+        "Understand Gas Fees with Loch",
+        "Unlimited wallets gas costs",
+      ];
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+      openLochPaymentModalWithOptions: false,
+    });
   };
   render() {
     const { table, assetPriceList_home, totalCount } =
@@ -3481,18 +3899,40 @@ class Portfolio extends BaseReactComponent {
         dataKey: "asset",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (rowData === "EMPTY") {
             return null;
           }
           if (dataKey === "asset") {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <CoinChip
+                  hideNameWithouthImage
+                  coin_img_src={rowData?.asset?.symbol}
+                  coin_code={rowData?.asset?.code}
+                  chain={rowData?.chain}
+                />
+              );
+            }
             return (
-              <CoinChip
-                hideNameWithouthImage
-                coin_img_src={rowData?.asset?.symbol}
-                coin_code={rowData?.asset?.code}
-                chain={rowData?.chain}
-              />
+              <CustomOverlayUgradeToPremium
+                position="top"
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUser}
+              >
+                <div
+                  className={`blurred-elements`}
+                  onClick={this.showBlurredYieldOpp}
+                >
+                  <CoinChip
+                    hideNameWithouthImage
+                    coin_img_src={rowData?.asset?.symbol}
+                    coin_code={rowData?.asset?.code}
+                    chain={rowData?.chain}
+                  />
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -3518,15 +3958,32 @@ class Portfolio extends BaseReactComponent {
         dataKey: "project",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (rowData === "EMPTY") {
             return null;
           }
           if (dataKey === "project") {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                  {rowData.project ? rowData.project : "-"}
+                </div>
+              );
+            }
             return (
-              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                {rowData.project ? rowData.project : "-"}
-              </div>
+              <CustomOverlayUgradeToPremium
+                position="top"
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUser}
+              >
+                <div
+                  className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements"
+                  onClick={this.showBlurredYieldOpp}
+                >
+                  {rowData.project ? rowData.project : "-"}
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -3553,35 +4010,46 @@ class Portfolio extends BaseReactComponent {
         className: "usd-value",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (rowData === "EMPTY") {
             return null;
           }
           if (dataKey === "tvl") {
-            return (
-              // <CustomOverlay
-              //   position="top"
-              //   isIcon={false}
-              //   isInfo={true}
-              //   isText={true}
-              //   text={
-              //     CurrencyType(false) +
-              //     amountFormat(
-              //       rowData.tvlUsd * this.state.currency?.rate,
-              //       "en-US",
-              //       "USD"
-              //     )
-              //   }
-              // >
-              <div className="cost-common-container">
-                <div className="cost-common">
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {CurrencyType(false) +
-                      numToCurrency(rowData.tvlUsd * this.state.currency?.rate)}
-                  </span>
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.tvlUsd * this.state.currency?.rate
+                        )}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              // </CustomOverlay>
+              );
+            }
+            return (
+              <CustomOverlayUgradeToPremium
+                position="top"
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUser}
+              >
+                <div
+                  onClick={this.showBlurredYieldOpp}
+                  className="cost-common-container blurred-elements"
+                >
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.tvlUsd * this.state.currency?.rate
+                        )}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -3608,26 +4076,38 @@ class Portfolio extends BaseReactComponent {
         className: "usd-value",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (rowData === "EMPTY") {
             return null;
           }
           if (dataKey === "apy") {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                  {rowData.apy
+                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
+                      "%"
+                    : "-"}
+                </div>
+              );
+            }
             return (
-              // <CustomOverlay
-              //   position="top"
-              //   isIcon={false}
-              //   isInfo={true}
-              //   isText={true}
-              //   text={rowData.apy ? rowData.apy + "%" : "-"}
-              // >
-              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                {rowData.apy
-                  ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
-                    "%"
-                  : "-"}
-              </div>
-              // </CustomOverlay>
+              <CustomOverlayUgradeToPremium
+                position="top"
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUser}
+              >
+                <div
+                  onClick={this.showBlurredYieldOpp}
+                  className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements"
+                >
+                  {rowData.apy
+                    ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
+                      "%"
+                    : "-"}
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -3653,35 +4133,46 @@ class Portfolio extends BaseReactComponent {
         dataKey: "usdValue",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (rowData === "EMPTY") {
             return null;
           }
           if (dataKey === "usdValue") {
-            return (
-              // <CustomOverlay
-              //   position="top"
-              //   isIcon={false}
-              //   isInfo={true}
-              //   isText={true}
-              //   text={
-              //     CurrencyType(false) +
-              //     amountFormat(
-              //       rowData.value * this.state.currency?.rate,
-              //       "en-US",
-              //       "USD"
-              //     )
-              //   }
-              // >
-              <div className="cost-common-container">
-                <div className="cost-common">
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {CurrencyType(false) +
-                      numToCurrency(rowData.value * this.state.currency?.rate)}
-                  </span>
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <div className="cost-common-container">
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.value * this.state.currency?.rate
+                        )}
+                    </span>
+                  </div>
                 </div>
-              </div>
-              // </CustomOverlay>
+              );
+            }
+            return (
+              <CustomOverlayUgradeToPremium
+                position="top"
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUser}
+              >
+                <div
+                  onClick={this.showBlurredYieldOpp}
+                  className="cost-common-container blurred-elements"
+                >
+                  <div className="cost-common">
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          rowData.value * this.state.currency?.rate
+                        )}
+                    </span>
+                  </div>
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -3707,15 +4198,32 @@ class Portfolio extends BaseReactComponent {
         dataKey: "pool",
         coumnWidth: 0.16,
         isCell: true,
-        cell: (rowData, dataKey) => {
+        cell: (rowData, dataKey, rowIndex) => {
           if (rowData === "EMPTY") {
             return null;
           }
           if (dataKey === "pool") {
+            // if (this.state.isPremiumUser || rowIndex === 0) {
+            if (this.state.isPremiumUser || rowIndex === 0) {
+              return (
+                <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                  {rowData.pool ? rowData.pool : "-"}
+                </div>
+              );
+            }
             return (
-              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
-                {rowData.pool ? rowData.pool : "-"}
-              </div>
+              <CustomOverlayUgradeToPremium
+                position="top"
+                // disabled={this.state.isPremiumUser}
+                disabled={this.state.isPremiumUser}
+              >
+                <div
+                  onClick={this.showBlurredYieldOpp}
+                  className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div blurred-elements"
+                >
+                  {rowData.pool ? rowData.pool : "-"}
+                </div>
+              </CustomOverlayUgradeToPremium>
             );
           }
         },
@@ -3882,48 +4390,38 @@ class Portfolio extends BaseReactComponent {
                     email_address: getCurrentUser().email,
                   });
                 }}
-                className="gainLossContainer"
+                onClick={this.showBlurredAssetItem}
+                className={`gainLossContainer ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
               >
-                {/* <CustomOverlay
+                <CustomOverlayUgradeToPremium
                   position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.GainAmount
-                      ? CurrencyType(false) +
-                        amountFormat(
-                          Math.abs(rowData.GainAmount),
-                          "en-US",
-                          "USD"
-                        )
-                      : CurrencyType(false) + "0.00"
-                  }
-                  colorCode="#000"
-                > */}
-                <div className={`gainLoss`}>
-                  {rowData.GainAmount !== 0 ? (
-                    <Image
-                      className="mr-2"
-                      style={{
-                        height: "1.5rem",
-                        width: "1.5rem",
-                      }}
-                      src={
-                        rowData.GainAmount < 0
-                          ? ArrowDownLeftSmallIcon
-                          : ArrowUpRightSmallIcon
-                      }
-                    />
-                  ) : null}
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {rowData.GainAmount
-                      ? CurrencyType(false) +
-                        tempDataHolder.toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </span>
-                </div>
-                {/* </CustomOverlay> */}
+                  disabled={this.state.isPremiumUser}
+                >
+                  <div className={`gainLoss`}>
+                    {rowData.GainAmount !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainAmount < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {rowData.GainAmount
+                        ? CurrencyType(false) +
+                          tempDataHolder.toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </span>
+                  </div>
+                </CustomOverlayUgradeToPremium>
               </div>
             );
           }
@@ -4025,28 +4523,24 @@ class Portfolio extends BaseReactComponent {
                     email_address: getCurrentUser().email,
                   });
                 }}
+                className={`${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
+                onClick={this.showBlurredAssetItem}
               >
-                {/* <CustomOverlay
+                <CustomOverlayUgradeToPremium
                   position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.AverageCostPrice
+                  disabled={this.state.isPremiumUser}
+                >
+                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                    {rowData.AverageCostPrice
                       ? CurrencyType(false) +
-                        convertNtoNumber(rowData.AverageCostPrice)
-                      : CurrencyType(false) + "0.00"
-                  }
-                > */}
-                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                  {rowData.AverageCostPrice
-                    ? CurrencyType(false) +
-                      numToCurrency(
-                        rowData.AverageCostPrice.toFixed(2)
-                      ).toLocaleString("en-US")
-                    : CurrencyType(false) + "0.00"}
-                </span>
-                {/* </CustomOverlay> */}
+                        numToCurrency(
+                          rowData.AverageCostPrice.toFixed(2)
+                        ).toLocaleString("en-US")
+                      : CurrencyType(false) + "0.00"}
+                  </span>
+                </CustomOverlayUgradeToPremium>
               </div>
             );
           }
@@ -4192,38 +4686,35 @@ class Portfolio extends BaseReactComponent {
           }
           if (dataKey === "CostBasis") {
             return (
-              <div className="cost-common-container">
-                {/* <CustomOverlay
+              <div
+                className={`cost-common-container ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
+                onClick={this.showBlurredAssetItem}
+              >
+                <CustomOverlayUgradeToPremium
                   position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.CostBasis
-                      ? CurrencyType(false) +
-                        amountFormat(rowData.CostBasis, "en-US", "USD")
-                      : CurrencyType(false) + "0.00"
-                  }
-                > */}
-                <div className="cost-common">
-                  <span
-                    onMouseEnter={() => {
-                      CostCostBasisHover({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                      });
-                    }}
-                    className="table-data-font"
-                  >
-                    {rowData.CostBasis
-                      ? CurrencyType(false) +
-                        numToCurrency(
-                          rowData.CostBasis.toFixed(2)
-                        ).toLocaleString("en-US")
-                      : CurrencyType(false) + "0.00"}
-                  </span>
-                </div>
-                {/* </CustomOverlay> */}
+                  disabled={this.state.isPremiumUser}
+                >
+                  <div className="cost-common">
+                    <span
+                      onMouseEnter={() => {
+                        CostCostBasisHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                      className="table-data-font"
+                    >
+                      {rowData.CostBasis
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CostBasis.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </span>
+                  </div>
+                </CustomOverlayUgradeToPremium>
               </div>
             );
           }
@@ -4264,42 +4755,37 @@ class Portfolio extends BaseReactComponent {
                     email_address: getCurrentUser().email,
                   });
                 }}
-                className="gainLossContainer"
+                className={`gainLossContainer ${
+                  this.state.isPremiumUser ? "" : "blurred-elements"
+                }`}
+                onClick={this.showBlurredAssetItem}
               >
-                {/* <CustomOverlay
+                <CustomOverlayUgradeToPremium
                   position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    tempDataHolder
-                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0.00%"
-                  }
-                  colorCode="#000"
-                > */}
-                <div className={`gainLoss`}>
-                  {rowData.GainLoss !== 0 ? (
-                    <Image
-                      className="mr-2"
-                      style={{
-                        height: "1.5rem",
-                        width: "1.5rem",
-                      }}
-                      src={
-                        rowData.GainLoss < 0
-                          ? ArrowDownLeftSmallIcon
-                          : ArrowUpRightSmallIcon
-                      }
-                    />
-                  ) : null}
-                  <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                    {tempDataHolder
-                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0.00%"}
-                  </span>
-                </div>
-                {/* </CustomOverlay> */}
+                  disabled={this.state.isPremiumUser}
+                >
+                  <div className={`gainLoss`}>
+                    {rowData.GainLoss !== 0 ? (
+                      <Image
+                        className="mr-2"
+                        style={{
+                          height: "1.5rem",
+                          width: "1.5rem",
+                        }}
+                        src={
+                          rowData.GainLoss < 0
+                            ? ArrowDownLeftSmallIcon
+                            : ArrowUpRightSmallIcon
+                        }
+                      />
+                    ) : null}
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
+                    </span>
+                  </div>
+                </CustomOverlayUgradeToPremium>
               </div>
             );
           }
@@ -4448,7 +4934,28 @@ class Portfolio extends BaseReactComponent {
           history={this.props.history}
           yesterdayBalance={this.props.portfolioState.yesterdayBalance}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              isMobile
+              openWithOptions={this.state.openLochPaymentModalWithOptions}
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/"}
+              title={this.state.payModalTitle}
+              description={this.state.payModalDescription}
+              hideBackBtn
+            />
+          ) : null}
           <PortfolioMobile
+            payModalTitle={this.state.payModalTitle}
+            payModalDescription={this.state.payModalDescription}
+            isLochPaymentModal={this.state.isLochPaymentModal}
+            hidePaymentModal={this.hidePaymentModal}
+            showBlurredFlows={this.showBlurredFlows}
+            showBlurredInsights={this.showBlurredInsights}
+            showBlurredGasFees={this.showBlurredGasFees}
+            // isPremiumUser={this.state.isPremiumUser}
+            isPremiumUser={this.state.isPremiumUser}
             chainLoader={this.state.chainLoader}
             loader={this.state.loader}
             totalChainDetechted={this.state.totalChainDetechted}
@@ -4994,6 +5501,11 @@ class Portfolio extends BaseReactComponent {
                       <div className="profit-chart">
                         {this.state.blockTwoSelectedItem === 1 ? (
                           <BarGraphSection
+                            // showPremiumHover={!this.state.isPremiumUser}
+                            // isPremiumUser={this.state.isPremiumUser}
+                            isPremiumUser={this.state.isPremiumUser}
+                            showPremiumHover={!this.state.isPremiumUser}
+                            goToPayModal={this.showBlurredFlows}
                             openChartPage={this.goToRealizedGainsPage}
                             newHomeSetup
                             disableOnLoading
@@ -5057,7 +5569,15 @@ class Portfolio extends BaseReactComponent {
                             >
                               Loch
                             </div>
+
                             <BarGraphSection
+                              // showPremiumHover={!this.state.isPremiumUser}
+                              // isPremiumUser={this.state.isPremiumUser}
+                              isPremiumUser={this.state.isPremiumUser}
+                              showPremiumHover={!this.state.isPremiumUser}
+                              goToPayModal={this.showBlurredGasFees}
+                              // isBlurred={!this.state.isPremiumUser}
+                              isBlurred={!this.state.isPremiumUser}
                               digit={this.state.GraphDigit}
                               isFromHome
                               openChartPage={this.goToGasFeesSpentPage}
@@ -5607,9 +6127,12 @@ class Portfolio extends BaseReactComponent {
                       // )
                       this.state.blockFourSelectedItem === 2 ? (
                         <PortfolioHomeInsightsBlock
+                          showBlurredInsights={this.showBlurredInsights}
                           history={this.props.history}
                           updatedInsightList={this.state.updatedInsightList}
                           insightsBlockLoading={this.state.insightsBlockLoading}
+                          // isPremiumUser={this.state.isPremiumUser}
+                          isPremiumUser={this.state.isPremiumUser}
                         />
                       ) : null}
                     </div>
@@ -5657,6 +6180,17 @@ class Portfolio extends BaseReactComponent {
             updateTimer={this.updateTimer}
           />
         )}
+        {this.state.isLochPaymentModal ? (
+          <PaywallModal
+            openWithOptions={this.state.openLochPaymentModalWithOptions}
+            show={this.state.isLochPaymentModal}
+            onHide={this.hidePaymentModal}
+            redirectLink={BASE_URL_S3 + "/"}
+            title={this.state.payModalTitle}
+            description={this.state.payModalDescription}
+            hideBackBtn
+          />
+        ) : null}
 
         {this.state.upgradeModal && (
           <UpgradeModal
@@ -5686,6 +6220,7 @@ const mapStateToProps = (state) => ({
   inflowsOutflowsList: state.inflowsOutflowsList,
   darkModeState: state.darkModeState,
   NFTState: state.NFTState,
+  userPaymentState: state.UserPaymentState,
 });
 const mapDispatchToProps = {
   getCoinRate,

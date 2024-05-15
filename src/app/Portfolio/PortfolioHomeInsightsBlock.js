@@ -10,6 +10,7 @@ import { InsightType } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import { numToCurrency } from "../../utils/ReusableFunctions";
 import Loading from "../common/Loading";
+import { CustomOverlayUgradeToPremium } from "../../utils/commonComponent";
 
 class PortfolioHomeInsightsBlock extends Component {
   goToInsightsPage = () => {
@@ -71,98 +72,114 @@ class PortfolioHomeInsightsBlock extends Component {
                   if (!this.props?.isMobile)
                     return (
                       <>
-                        <div
-                          style={{
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                            textOverflow: "ellipsis",
-                            position: "relative",
-                            marginTop: "1rem",
-                            marginBottom: "0rem",
-                            boxShadow: "none",
-                            border: "0.1rem solid #E5E5E6",
-                            alignItems: "flex-start",
-                          }}
-                          className="insights-card"
-                          key={key}
+                        <CustomOverlayUgradeToPremium
+                          position="top"
+                          disabled={this.props.isPremiumUser || key === 0}
                         >
-                          <div className="insights-cards-home-left">
-                            <Image
-                              src={
-                                insight.insight_type ===
-                                InsightType.COST_REDUCTION
-                                  ? reduceCost
-                                  : insight.insight_type ===
-                                    InsightType.RISK_REDUCTION
-                                  ? reduceRisk
-                                  : increaseYield
+                          <div
+                            onClick={() => {
+                              if (key > 0 && this.props.showBlurredInsights) {
+                                this.props.showBlurredInsights();
                               }
-                              className="insight-icon"
-                            />
-                            <h5
-                              style={{
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                                textOverflow: "ellipsis",
-                                marginTop: "0.5rem",
-                              }}
-                              className="inter-display-medium f-s-13 lh-12"
-                            >
-                              {InsightType.getText(insight.insight_type)}
-                            </h5>
+                            }}
+                            style={{
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                              position: "relative",
+                              marginTop: "1rem",
+                              marginBottom: "0rem",
+                              boxShadow: "none",
+                              border: "0.1rem solid #E5E5E6",
+                              alignItems: "flex-start",
+                            }}
+                            className={`insights-card ${
+                              key > 0
+                                ? this.props.isPremiumUser
+                                  ? ""
+                                  : "blurred-elements"
+                                : ""
+                            }`}
+                            key={key}
+                          >
+                            <div className="insights-cards-home-left">
+                              <Image
+                                src={
+                                  insight.insight_type ===
+                                  InsightType.COST_REDUCTION
+                                    ? reduceCost
+                                    : insight.insight_type ===
+                                      InsightType.RISK_REDUCTION
+                                    ? reduceRisk
+                                    : increaseYield
+                                }
+                                className="insight-icon"
+                              />
+                              <h5
+                                style={{
+                                  overflow: "hidden",
+                                  whiteSpace: "nowrap",
+                                  textOverflow: "ellipsis",
+                                  marginTop: "0.5rem",
+                                }}
+                                className="inter-display-medium f-s-13 lh-12"
+                              >
+                                {InsightType.getText(insight.insight_type)}
+                              </h5>
+                              <div
+                                style={{
+                                  overflow: "hidden",
+                                  whiteSpace: "nowrap",
+                                  textOverflow: "ellipsis",
+                                  marginTop: "0.5rem",
+                                }}
+                                className="chips-wrapper"
+                              >
+                                {insight?.sub_type && (
+                                  <h5
+                                    style={{
+                                      overflow: "hidden",
+                                      whiteSpace: "nowrap",
+                                      textOverflow: "ellipsis",
+                                    }}
+                                    className="inter-display-bold f-s-10 lh-12 risk-chip"
+                                  >
+                                    {InsightType.getRiskType(insight.sub_type)}
+                                  </h5>
+                                )}
+                              </div>
+                            </div>
                             <div
                               style={{
                                 overflow: "hidden",
                                 whiteSpace: "nowrap",
                                 textOverflow: "ellipsis",
-                                marginTop: "0.5rem",
+                                marginLeft: "1rem",
                               }}
-                              className="chips-wrapper"
+                              className="insights-content"
                             >
-                              {insight?.sub_type && (
-                                <h5
-                                  style={{
-                                    overflow: "hidden",
-                                    whiteSpace: "nowrap",
-                                    textOverflow: "ellipsis",
-                                  }}
-                                  className="inter-display-bold f-s-10 lh-12 risk-chip"
-                                >
-                                  {InsightType.getRiskType(insight.sub_type)}
-                                </h5>
-                              )}
+                              <p
+                                style={{
+                                  whiteSpace: "wrap",
+                                  marginTop: "0rem",
+                                }}
+                                className="inter-display-medium f-s-12 lh-16 grey-969"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.sub_title,
+                                }}
+                              ></p>
+                              <h4
+                                style={{
+                                  whiteSpace: "wrap",
+                                }}
+                                className="inter-display-medium f-s-13 lh-19 grey-313"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.title,
+                                }}
+                              ></h4>
                             </div>
                           </div>
-                          <div
-                            style={{
-                              overflow: "hidden",
-                              whiteSpace: "nowrap",
-                              textOverflow: "ellipsis",
-                              marginLeft: "1rem",
-                            }}
-                            className="insights-content"
-                          >
-                            <p
-                              style={{
-                                whiteSpace: "wrap",
-                                marginTop: "0rem",
-                              }}
-                              className="inter-display-medium f-s-12 lh-16 grey-969"
-                              dangerouslySetInnerHTML={{
-                                __html: insight.sub_title,
-                              }}
-                            ></p>
-                            <h4
-                              style={{
-                                whiteSpace: "wrap",
-                              }}
-                              className="inter-display-medium f-s-13 lh-19 grey-313"
-                              dangerouslySetInnerHTML={{
-                                __html: insight.title,
-                              }}
-                            ></h4>
-                          </div>
-                        </div>
+                        </CustomOverlayUgradeToPremium>
                       </>
                     );
                   return (
@@ -180,8 +197,15 @@ class PortfolioHomeInsightsBlock extends Component {
                           alignItems: "flex-start",
                           background: "var(--cardBackgroud)",
                         }}
-                        className="insights-card"
+                        className={`insights-card ${
+                          key > 0 ? "blurred-elements" : ""
+                        }`}
                         key={key}
+                        onClick={() => {
+                          if (key > 0 && this.props.showBlurredInsights) {
+                            this.props.showBlurredInsights();
+                          }
+                        }}
                       >
                         <div>
                           <div

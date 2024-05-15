@@ -99,6 +99,7 @@ class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
       //Sign up referral
       isReferralCodeStep: false,
       referralCode: "",
@@ -1006,7 +1007,10 @@ class NewWelcomeMobile extends BaseReactComponent {
   handleSubmitEmailSignup = (val = false) => {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
-      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append(
+        "email",
+        this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
+      );
       data.append("referral_code", this.state.referralCode);
       data.append("signed_up_from", "welcome");
       EmailAddressAddedSignUp({
@@ -1893,7 +1897,8 @@ class NewWelcomeMobile extends BaseReactComponent {
                 }}
               >
                 <div className="newHomeAddAnotherGoContainer newHomeAddAnotherGoContainer-mobile inter-display-regular">
-                  {this.state.walletInput.length < 10 ? (
+                  {this.state.walletInput.length < 10 &&
+                  this.state.isPremiumUser ? (
                     <button
                       onClick={this.addInputField}
                       className="newHomeAddAnotherGoBtns newHomeAddAnotherBtn"

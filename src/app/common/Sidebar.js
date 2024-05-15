@@ -12,10 +12,12 @@ import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   ActiveSmartMoneySidebarIcon,
+  EmultionSidebarIcon,
   FollowingSidebarIcon,
   HomeSidebarIcon,
   InactiveSmartMoneySidebarIcon,
   LeaderboardSidebarIcon,
+  LochLogoWhiteIcon,
   PersonRoundedSigninIcon,
   ProfileSidebarIcon,
   SidebarLeftArrowIcon,
@@ -80,7 +82,9 @@ import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
+  isPremiumUser,
   numToCurrency,
+  removeSignUpMethods,
   switchToDarkMode,
   switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
@@ -102,6 +106,7 @@ function Sidebar(props) {
     x: 0,
     y: -(window.innerHeight / 2 - 90),
   });
+  const [isCurPremiumUser, setIsCurPremiumUser] = useState(isPremiumUser());
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
@@ -124,6 +129,16 @@ function Sidebar(props) {
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.sessionStorage.getItem("currency"))
   );
+  useEffect(() => {
+    setTimeout(() => {
+      setIsCurPremiumUser(isPremiumUser());
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    setIsCurPremiumUser(isPremiumUser());
+  }, [props.userPaymentState]);
+
   let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
   if (lochUser) {
     // if loch user remove share id to prevent opening upgrade modal
@@ -408,9 +423,7 @@ function Sidebar(props) {
   };
   useEffect(() => {
     if (!signupModal && !signinModal) {
-      window.sessionStorage.removeItem("fifteenSecSignInModal");
-      window.sessionStorage.removeItem("referralCodesSignInModal");
-      window.sessionStorage.removeItem("lochPointsSignInModal");
+      removeSignUpMethods();
     }
   }, [signupModal, signinModal]);
   const openSigninModal = (fromWhichPage) => {
@@ -814,7 +827,7 @@ function Sidebar(props) {
                 style={{ cursor: "pointer" }}
                 onClick={(e) => {
                   let tempToken = getToken();
-                  if (tempToken === "jsk") {
+                  if (!tempToken || tempToken === "jsk") {
                     return null;
                   }
                   if (!isWallet) {
@@ -890,9 +903,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   HomeMenu({
                                     session_id: getCurrentUser().id,
@@ -932,9 +942,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuWatchlist({
                                     session_id: getCurrentUser().id,
@@ -975,9 +982,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuLeaderboard({
                                     session_id: getCurrentUser().id,
@@ -1008,9 +1012,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   ProfileMenu({
                                     session_id: getCurrentUser().id,
@@ -1027,6 +1028,48 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
+                        {/* <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Copy Trade"}
+                          >
+                            <NavLink
+                              className={`nav-link nav-link-closed`}
+                              to="/copy-trade"
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  return null;
+                                }
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuCopyTradelist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li> */}
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1107,9 +1150,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   HomeMenu({
                                     session_id: getCurrentUser().id,
@@ -1142,9 +1182,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuWatchlist({
                                     session_id: getCurrentUser().id,
@@ -1176,9 +1213,6 @@ function Sidebar(props) {
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuLeaderboard({
                                     session_id: getCurrentUser().id,
@@ -1207,7 +1241,8 @@ function Sidebar(props) {
                           <li>
                             <NavLink
                               onClick={(e) => {
-                                if (!isWallet) {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
                                 } else {
                                   ProfileMenu({
@@ -1234,6 +1269,37 @@ function Sidebar(props) {
                               Profile
                             </NavLink>
                           </li>
+                          {/* <li>
+                            <NavLink
+                              exact={true}
+                              onClick={(e) => {
+                                if (!isWallet) {
+                                  e.preventDefault();
+                                } else {
+                                  MenuCopyTradelist({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              className="nav-link"
+                              to="/copy-trade"
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                              Copy Trade
+                            </NavLink>
+                          </li> */}
                         </>
                       )}
                       <li>
@@ -1311,7 +1377,11 @@ function Sidebar(props) {
                           >
                             <div
                               onClick={handleGoToProfile}
-                              className=" sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
+                              className={`sideBarFooterSignInIconContainerClosed ${
+                                isCurPremiumUser
+                                  ? "sideBarFooterSignInIconContainerClosedPremium"
+                                  : ""
+                              } inter-display-medium f-s-13 lh-19`}
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
@@ -1431,7 +1501,13 @@ function Sidebar(props) {
                                     }`
                                   : "Signed In"}
                               </div>
+                              {isCurPremiumUser ? (
+                                <div className="sideabr-premium-banner">
+                                  Premium
+                                </div>
+                              ) : null}
                             </div>
+
                             <span
                               onClick={handleLeaveChild}
                               onMouseOver={(e) =>
@@ -1444,9 +1520,6 @@ function Sidebar(props) {
                               className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
                             >
                               <Image src={LeaveIcon} />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                                Leave
-                              </Button>
                             </span>
                           </div>
                         ) : (
@@ -1763,6 +1836,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
+  userPaymentState: state.UserPaymentState,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

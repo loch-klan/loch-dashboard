@@ -25,17 +25,28 @@ import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
+import Emulations from "./app/Emulations/Emulations";
+import EmulationTransactionsPage from "./app/Emulations/EmulationTransactions/EmulationTransactionsPage";
+import AutoLogin from "./app/AutoLogin/AutoLogin";
 import NewWelcome from "./app/home/NewWelcome";
 import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import PublicRoute from "./utils/PublicRoute";
+import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
+import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
 const routes = [
   {
     path: "/",
     name: "Login",
     type: Route,
     component: Login,
+  },
+  {
+    path: "/auto-login",
+    name: "Auto Login",
+    type: Route,
+    component: AutoLogin,
   },
 
   {
@@ -93,6 +104,18 @@ const routes = [
     type: PrivateRoute,
     component: AssetsUnrealizedProfitAndLoss,
   },
+  // {
+  //   path: "/copy-trade",
+  //   name: "Emulations",
+  //   type: PrivateRoute,
+  //   component: Emulations,
+  // },
+  // {
+  //   path: "/copy-trade/transactions",
+  //   name: "Emulations",
+  //   type: PrivateRoute,
+  //   component: EmulationTransactionsPage,
+  // },
   {
     path: "/nft",
     name: "NFT",
@@ -192,6 +215,18 @@ const routes = [
     name: "Sandox",
     type: Route,
     component: Sandbox,
+  },
+  {
+    path: "/stripe-success",
+    name: "Stripe Success",
+    type: PrivateRoute,
+    component: StripeSuccessPage,
+  },
+  {
+    path: "/stripe-cancel",
+    name: "Stripe Error",
+    type: PrivateRoute,
+    component: StripeErrorPage,
   },
 ];
 export default routes;

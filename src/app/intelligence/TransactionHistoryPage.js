@@ -69,9 +69,14 @@ import {
   amountFormat,
   compareTwoArrayOfObjects,
   convertNtoNumber,
+  dontOpenLoginPopup,
   mobileCheck,
   noExponents,
   numToCurrency,
+  openSignInModalFromAnywhere,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
@@ -109,6 +114,7 @@ import { isEqual } from "lodash";
 import MobileLayout from "../layout/MobileLayout.js";
 import TransactionHistoryPageMobile from "./TransactionHistoryPageMobile.js";
 import CheckboxCustomTable from "../common/customCheckboxTable.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -128,6 +134,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
+      isLochPaymentModal: false,
       isMobileDevice: false,
       intelligenceStateLocal: {},
       minAmount: "1",
@@ -227,7 +234,19 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   history = this.props;
+  exprotPassThrough = () => {
+    window.sessionStorage.setItem("blurredTransactionHistoryExportModal", true);
+    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (isLochUser && isLochUser.email) {
+      this.handleExportModal();
+    } else {
+      openSignInModalFromAnywhere();
+    }
+  };
   handleExportModal = () => {
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredTransactionHistoryExportModal", true);
     TransactionHistoryExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -262,11 +281,51 @@ class TransactionHistoryPage extends BaseReactComponent {
       this.checkForInactivity();
     }, 900000);
   };
+  goToPayModal = () => {
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.sessionStorage.setItem("openTransactionExportModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   componentDidMount() {
     if (mobileCheck()) {
       this.setState({
         isMobileDevice: true,
       });
+    }
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+        "openTransactionExportModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
     }
     scrollToTop();
     const transHistoryPageNumber = window.sessionStorage.getItem(
@@ -2327,6 +2386,16 @@ class TransactionHistoryPage extends BaseReactComponent {
                 updateTimer={this.updateTimer}
               />
             )}
+            {this.state.isLochPaymentModal ? (
+              <PaywallModal
+                show={this.state.isLochPaymentModal}
+                onHide={this.hidePaymentModal}
+                redirectLink={BASE_URL_S3 + "/"}
+                title="Export Valuable Data with Loch"
+                description="Export unlimited data"
+                hideBackBtn
+              />
+            ) : null}
             <PageHeader
               title={"Transactions"}
               subTitle={
@@ -2470,7 +2539,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   <div sm={1}>
                     {/* <button className="transaction-new-export"> */}
                     <div
-                      onClick={this.handleExportModal}
+                      onClick={this.exprotPassThrough}
                       className="pageHeaderShareContainer new-export-button"
                     >
                       <Image className="pageHeaderShareImg" src={ExportIcon} />
