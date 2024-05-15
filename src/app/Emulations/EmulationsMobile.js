@@ -274,7 +274,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                       className="actpacc-header-icon actpacc-header-icon-more-margin"
                     />
                     <div className="inter-display-medium f-s-16">
-                      Popular Accounts to Copy
+                      Top 20 Popular Accounts to Copy
                     </div>
                   </div>
                   <Image
@@ -370,7 +370,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                     </div>
 
                     <div className="available-copy-trades-navigator">
-                      <div className="available-copy-trades-navigator-circles-container">
+                      {/* <div className="available-copy-trades-navigator-circles-container">
                         {this.props.popularAccountsList &&
                         this.props.popularAccountsList.length > 1
                           ? this.props.popularAccountsList.map(
@@ -397,7 +397,8 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                               }
                             )
                           : null}
-                      </div>
+                      </div> */}
+                      <div />
                       <div className="available-copy-trades-navigator-arrows">
                         <Image
                           style={{
