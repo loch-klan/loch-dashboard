@@ -402,20 +402,10 @@ class Profile extends Component {
         "upgradePremiumProfileBannerSignInModal",
         true
       );
-      if (
-        document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")
-      ) {
-        document
-          .getElementById("sidebar-open-sign-in-btn-loch-points-profile")
-          .click();
-      } else if (
-        document.getElementById(
-          "sidebar-closed-sign-in-btn-loch-points-profile"
-        )
-      ) {
-        document
-          .getElementById("sidebar-closed-sign-in-btn-loch-points-profile")
-          .click();
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
       }
     }
   };
