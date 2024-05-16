@@ -132,7 +132,38 @@
           background: rgba(215, 215, 215, 0.197);
         }
       }
+      .new-auth-content-input--otp-pills-holder {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
 
+        .new-auth-content-input--otp-pills {
+          box-shadow: 0px 18px 88px -4px rgba(0, 0, 0, 0.2),
+            0px 8px 28px -6px rgba(0, 0, 0, 0.2) !important;
+          width: 52px;
+          height: 60px;
+          border-radius: 8px;
+          border: 1px solid var(--borderwhiteDarkLight);
+          text-align: center;
+          outline: none;
+
+          &:hover {
+            border: 1px solid var(--primaryTextColor);
+          }
+
+          &:focus {
+            outline: none;
+            border: 1px solid var(--primaryTextColor);
+            background: rgba(215, 215, 215, 0.197);
+          }
+        }
+
+        .new-auth-content-input--otp-pills-mobile {
+          height: 52px;
+          width: 43px;
+        }
+      }
       .new-auth-content-button {
         color: var(--sameModeColor);
         background-color: var(--primaryTextColor);
