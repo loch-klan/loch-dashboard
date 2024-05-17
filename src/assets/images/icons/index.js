@@ -154,3 +154,5 @@ export { default as PremiumBannerDownloadIcon } from "./premiumBannerDownload.sv
 export { default as PremiumBannerLayersIcon } from "./premiumBannerLayers.svg";
 export { default as PremiumBannerDiamondIcon } from "./premiumBannerDiamond.svg";
 export { default as PremiumBannerCheckCircleIcon } from "./premiumBannerCheckCircle.svg";
+export { default as PremiumBannerTelegramIcon } from "./premiumBannerTelegram.svg";
+export { default as PremiumBannerLochIcon } from "./premiumBannerLoch.svg";
