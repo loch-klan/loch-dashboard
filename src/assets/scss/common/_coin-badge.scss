@@ -14,7 +14,7 @@
     padding-bottom: 1rem;
     // width:84rem;
     // background: linear-gradient(270deg, #F2F2F2 8.98%, rgba(242, 242, 242, 0) 88.28%);
-
+    height: 4.5rem;
     .badge-name {
       padding: 0.8rem 1.2rem;
       background: var(--cardBackgroud);
@@ -22,6 +22,7 @@
       border: 0.1rem solid var(--dropdownContentBorderColor);
       border-radius: 0.8rem;
       cursor: pointer;
+      height: fit-content;
     }
 
     .badge-active {
@@ -35,8 +36,8 @@
     }
     &::-webkit-scrollbar {
       height: 0rem;
+      width: 0rem;
     }
-    margin-bottom: 0.4rem;
     &:hover {
       margin-bottom: 0rem;
       &::-webkit-scrollbar {
