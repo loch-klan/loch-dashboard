@@ -21,7 +21,7 @@ export const scrollToBottomAfterPageChange = () => {
 export const openAddressInNewTab = (address, setPageFlagDefault) => {
   const shareLink = BASE_URL_S3 + "replace-address?address=" + address;
 
-  window.open(shareLink, "_blank").focus();
+  window.open(shareLink, "_self").focus();
   if (setPageFlagDefault) {
     setTimeout(() => {
       setPageFlagDefault();
