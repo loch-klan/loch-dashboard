@@ -6,6 +6,8 @@ import validator from "validator";
 import {
   CloseIcon,
   CopyTradeSignInUpCheckIcon,
+  CopyTradeSignInUpCheckStepTwoIcon,
+  CopyTradeSignInUpLochIcon,
   NewModalBackArrowIcon,
 } from "../../assets/images/icons";
 import { CustomButton } from "../../utils/form";
@@ -36,6 +38,7 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
       isVerifyOtpBtnDisabled: true,
       loadVerifyOtpBtn: false,
       isOtpPage: false,
+      isSignUp: false,
     };
   }
 
@@ -123,15 +126,19 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
     );
 
     const signUpMethod = whichSignUpMethod();
-    SignInModalEmailAdded({
-      session_id: getCurrentUser().id,
-      email_address: this.state.emailAddress,
-      signUpMethod: signUpMethod,
-    });
     this.setState({
       loadAddBtn: true,
     });
-    SendOtp(data, this, true, false, resend === true ? true : false);
+
+    if (this.state.isSignUp) {
+    } else {
+      SignInModalEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.emailAddress,
+        signUpMethod: signUpMethod,
+      });
+      SendOtp(data, this, true, false, resend === true ? true : false);
+    }
   };
   showSignInOtpPage = () => {
     this.setState({
@@ -189,6 +196,12 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
     this.state.onHide(isRecall === true ? true : false);
   };
 
+  toggleSignUpIn = () => {
+    this.setState({
+      isSignUp: !this.state.isSignUp,
+    });
+  };
+
   render() {
     return (
       <Modal
@@ -241,11 +254,26 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
         </Modal.Header>
         <Modal.Body>
           <div className="copy-trade-sing-in-up-body inter-display-medium addWatchListWrapperParent addCopyTradeWrapperParent">
-            <Image src={CopyTradeSignInUpCheckIcon} className="ctl-icon" />
-            <div className="ctl-heading">Almost there</div>
+            <Image
+              src={
+                this.state.isSignUp
+                  ? CopyTradeSignInUpLochIcon
+                  : this.state.isOtpPage
+                  ? CopyTradeSignInUpCheckStepTwoIcon
+                  : CopyTradeSignInUpCheckIcon
+              }
+              className={`ctl-icon ${
+                this.state.isSignUp ? "ctl-icon-big" : ""
+              }`}
+            />
+            <div className="ctl-heading">
+              {this.state.isSignUp ? "Sign up with Loch" : "Almost there"}
+            </div>
 
             <div className="ctl-desc">
-              Your copy trade is ready, sign in to get started right away
+              {this.state.isSignUp
+                ? "Don’t have an account yet? Sign up with Loch"
+                : "Your copy trade is ready, sign in to get started right away"}
             </div>
 
             {this.state.isOtpPage ? (
@@ -288,7 +316,13 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
             ) : (
               <>
                 <div className="ctl-input addWatchListWrapperContainer">
-                  <div className="addCopyTraderWrapperContainer">
+                  <div
+                    className={`addCopyTraderWrapperContainer  ${
+                      this.state.loadAddBtn
+                        ? "addCopyTraderWrapperContainerDisabled"
+                        : ""
+                    }`}
+                  >
                     <>
                       <div className="addWalletWrapper inter-display-regular f-s-15 lh-20">
                         <div
@@ -303,6 +337,7 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
                                 onChange={this.handleOnEmailChange}
                                 autoComplete="off"
                                 onKeyDown={this.handleKeyDown}
+                                disabled={this.state.loadAddBtn}
                               />
                             </div>
                           </div>
@@ -325,6 +360,14 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
                     buttonText={"Verify email"}
                     isLoading={this.state.loadAddBtn}
                   />
+                </div>
+                <div
+                  onClick={this.toggleSignUpIn}
+                  className={`ctl-otp-bottom-text ${
+                    this.state.loadAddBtn ? "ctl-otp-bottom-text-disabled" : ""
+                  }`}
+                >
+                  Click here to sign {this.state.isSignUp ? "in" : "up"}.
                 </div>
               </>
             )}

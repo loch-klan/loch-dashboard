@@ -1,7 +1,7 @@
 @import "../../../src/assets/scss/common/_variables.scss";
 .copy-trade-sing-in-up-modal {
   .copy-trade-sing-in-up-body {
-    padding: 10rem 5rem;
+    padding: 5rem 5rem;
     padding-bottom: 12rem;
     display: flex;
     align-items: center;
@@ -9,9 +9,13 @@
     flex-direction: column;
     text-align: center;
     .ctl-icon {
-      height: 20px;
+      height: 28px;
       filter: var(--invertColor);
-      margin-bottom: 2rem;
+      margin-bottom: 1.7rem;
+    }
+    .ctl-icon-big {
+      height: 40px;
+      margin-bottom: 1rem;
     }
     .ctl-heading {
       font-size: 25px;
@@ -37,6 +41,9 @@
           }
         }
       }
+      .addCopyTraderWrapperContainerDisabled {
+        pointer-events: none;
+      }
     }
     .ctl-otp-top-text {
       font-size: 16px;
@@ -51,6 +58,9 @@
       &:hover {
         filter: brightness(0);
       }
+    }
+    .ctl-otp-bottom-text-disabled {
+      pointer-events: none;
     }
     .ctl-otp-input {
       width: 33rem;

@@ -158,4 +158,6 @@ export { default as PremiumBannerLayersIcon } from "./premiumBannerLayers.svg";
 export { default as PremiumBannerDiamondIcon } from "./premiumBannerDiamond.svg";
 export { default as PremiumBannerCheckCircleIcon } from "./premiumBannerCheckCircle.svg";
 export { default as CopyTradeSignInUpCheckIcon } from "./copyTradeSignInUpCheck.svg";
+export { default as CopyTradeSignInUpCheckStepTwoIcon } from "./copyTradeSignInUpCheckStepTwo.svg";
+export { default as CopyTradeSignInUpLochIcon } from "./copyTradeSignInUpLoch.svg";
 export { default as ShareCopyTraderImage } from "./ShareCopyTrader.png";
