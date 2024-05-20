@@ -4102,7 +4102,7 @@ class Portfolio extends BaseReactComponent {
                   {rowData.apy
                     ? Number(noExponents(rowData.apy)).toLocaleString("en-US") +
                       "%"
-                    : "-"}
+                    : "0%"}
                 </div>
               </CustomOverlayUgradeToPremium>
             );
