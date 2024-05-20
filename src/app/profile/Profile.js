@@ -24,15 +24,20 @@ import FixAddModal from "../common/FixAddModal";
 
 // Upgrade
 import {
+  LochLogoBlackThickIcon,
   PasswordPurpleIcon,
   PremiumBannerBellIcon,
   PremiumBannerCheckCircleIcon,
   PremiumBannerDiamondIcon,
   PremiumBannerDownloadIcon,
   PremiumBannerLayersIcon,
+  PremiumBannerLochIcon,
   PremiumBannerSwapIcon,
+  PremiumBannerTelegramIcon,
   PremiumBannerWalletIcon,
   UserCreditScrollRightArrowIcon,
+  UserCreditTelegramIcon,
+  UserCreditTelegramLightIcon,
 } from "../../assets/images/icons";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
@@ -162,14 +167,19 @@ class Profile extends Component {
       lochUser: undefined,
       premiumBannerItems: [
         // { icon: PremiumBannerSwapIcon, text: "Unlimited Copy trades" },
-        { icon: PremiumBannerWalletIcon, text: "Analyze Wallets PnL" },
+        { icon: PremiumBannerWalletIcon, text: "Analyze wallets PnL" },
         // { icon: PremiumBannerBellIcon, text: "Unlimited Notifications" },
+        { icon: PremiumBannerLayersIcon, text: "Analyze gas fees" },
         { icon: PremiumBannerDownloadIcon, text: "Unlimited data exports" },
+        { icon: PremiumBannerLochIcon, text: "10 points each month" },
         {
           icon: PremiumBannerWalletIcon,
-          text: "Unlimited Wallets Aggregation",
+          text: "Unlimited wallets aggregation",
         },
-        { icon: PremiumBannerLayersIcon, text: "Analyze Gas fees" },
+        {
+          icon: PremiumBannerTelegramIcon,
+          text: "Platinum telegram channel",
+        },
       ],
     };
   }
@@ -402,20 +412,10 @@ class Profile extends Component {
         "upgradePremiumProfileBannerSignInModal",
         true
       );
-      if (
-        document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")
-      ) {
-        document
-          .getElementById("sidebar-open-sign-in-btn-loch-points-profile")
-          .click();
-      } else if (
-        document.getElementById(
-          "sidebar-closed-sign-in-btn-loch-points-profile"
-        )
-      ) {
-        document
-          .getElementById("sidebar-closed-sign-in-btn-loch-points-profile")
-          .click();
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
       }
     }
   };

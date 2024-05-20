@@ -161,3 +161,5 @@ export { default as CopyTradeSignInUpCheckIcon } from "./copyTradeSignInUpCheck.
 export { default as CopyTradeSignInUpCheckStepTwoIcon } from "./copyTradeSignInUpCheckStepTwo.svg";
 export { default as CopyTradeSignInUpLochIcon } from "./copyTradeSignInUpLoch.svg";
 export { default as ShareCopyTraderImage } from "./ShareCopyTrader.png";
+export { default as PremiumBannerTelegramIcon } from "./premiumBannerTelegram.svg";
+export { default as PremiumBannerLochIcon } from "./premiumBannerLoch.svg";

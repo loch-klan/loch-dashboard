@@ -1369,10 +1369,7 @@ function Sidebar(props) {
                   <div className="sidebar-footer-content-closed">
                     {isSubmenu && !isSubmenu.discover && (
                       <ul>
-                        {lochUser &&
-                        (lochUser.email ||
-                          lochUser.first_name ||
-                          lochUser.last_name) ? (
+                        {lochUser && lochUser.email ? (
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -1448,7 +1445,6 @@ function Sidebar(props) {
                       <div
                         onClick={openLochTwitter}
                         className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedForTwitter inter-display-medium f-s-13 lh-19 "
-                        id="sidebar-closed-sign-in-btn"
                       >
                         <Image
                           className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter"
@@ -1478,10 +1474,7 @@ function Sidebar(props) {
                   <div className="sidebar-footer-content">
                     {isSubmenu && !isSubmenu.discover && (
                       <ul>
-                        {lochUser &&
-                        (lochUser.email ||
-                          lochUser.first_name ||
-                          lochUser.last_name) ? (
+                        {lochUser && lochUser.email ? (
                           <div
                             onClick={handleGoToProfile}
                             className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
@@ -1572,7 +1565,6 @@ function Sidebar(props) {
                     <div
                       onClick={openLochTwitter}
                       className="sideBarFooterSignInContainer sideBarFooterSignInContainerForTwitter inter-display-medium f-s-13 lh-19 navbar-button"
-                      id="sidebar-open-sign-in-btn"
                     >
                       <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerForTwitter">
                         <Image
