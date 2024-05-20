@@ -158,7 +158,15 @@
       width: 100%;
       min-width: unset;
       margin-top: 3rem;
-
+      .pslpl-heading-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .pslpl-heading-desc {
+          font-size: 13px;
+          color: var(--referallUsedBtnText);
+        }
+      }
       .profile-section-loch-premium {
         flex-direction: column;
         gap: 2.5rem;
@@ -186,17 +194,49 @@
         .pslp-right {
           width: 100%;
           align-items: center;
+          flex-direction: row;
+          padding: 1.5rem;
+          padding-top: 0rem;
+          border-radius: 1rem;
 
-          .pslpr-desc {
-            text-align: center;
-          }
           .pslpr-heading {
-            text-align: center;
+            text-align: left;
+            font-size: 13px;
+            color: var(--black191);
+          }
+          .pslpr-btn {
+            padding: 1rem 2rem;
+            margin-top: 0rem;
+            margin-left: 0.1rem;
+            box-shadow: 0px 18px 88px -4px #18274b24;
+          }
+        }
+        .pslp-right-grey {
+          background-color: var(--greyCardBackgroud);
+          padding-top: 1.5rem;
+        }
+        .pslp-middle {
+          display: flex;
+          align-items: center;
+          width: 90%;
+          .pslp-middle-heading {
+            font-size: 13px;
+            margin: 0rem 1rem;
+          }
+          .pslp-middle-line {
+            height: 0.1rem;
+            flex: 1;
+            background-color: var(--primaryTextColor);
           }
         }
         .pslpl-conent {
           grid-template-columns: 1fr;
           width: 100%;
+          .pslpl-item-block {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
         }
       }
     }
