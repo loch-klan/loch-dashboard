@@ -394,7 +394,7 @@ class PaywallOptionsModal extends BaseReactComponent {
                       <div className="ctpb-plan-plus-seperator-stick" />
                     </div>
                     <div className="ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-purple-button">
-                      <div
+                      {/* <div
                         style={{
                           paddingTop: "0rem",
                         }}
@@ -405,7 +405,7 @@ class PaywallOptionsModal extends BaseReactComponent {
                           src={PurpleCheckIcon}
                         />
                         Notifications
-                      </div>
+                      </div> */}
                       <div className="ctpb-plan-purple-button-child">
                         <Image
                           className="ctpb-plan-purple-button-icon"

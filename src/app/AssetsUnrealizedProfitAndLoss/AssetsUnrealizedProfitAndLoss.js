@@ -686,72 +686,117 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         labelName: (
           <div
             className="cp history-table-header-col table-header-font"
-            id="Average Cost Price"
+            id="Current Value"
           >
             <span className="inter-display-medium f-s-13 lh-16 ">
-              Avg cost price
+              Current value
             </span>
             <Image
-              onClick={() => this.handleSort(this.state.sortBy[1])}
+              onClick={() => this.handleSort(this.state.sortBy[5])}
               src={sortByIcon}
-              className={!this.state.sortBy[1].down ? "rotateDown" : "rotateUp"}
+              className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
             />
           </div>
         ),
-        dataKey: "AverageCostPrice",
+        dataKey: "CurrentValue",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "AverageCostPrice") {
+          if (dataKey === "CurrentValue") {
+            return (
+              <div className="cost-common-container">
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    rowData.CurrentValue
+                      ? CurrencyType(false) +
+                        amountFormat(rowData.CurrentValue, "en-US", "USD")
+                      : CurrencyType(false) + "0.00"
+                  }
+                >
+                  <div className="cost-common">
+                    <span
+                      onMouseEnter={() => {
+                        CostCurrentValueHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                        });
+                      }}
+                      className="table-data-font"
+                    >
+                      {rowData.CurrentValue
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.CurrentValue.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </span>
+                  </div>
+                </CustomOverlay>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col table-header-font"
+            id="Portfolio perc"
+          >
+            <span className="inter-display-medium f-s-13 lh-16">
+              Portfolio (%)
+            </span>
+            <Image
+              onClick={() => this.handleSort(this.state.sortBy[8])}
+              src={sortByIcon}
+              className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
+            />
+          </div>
+        ),
+        dataKey: "PortfolioPercentage",
+
+        coumnWidth: 0.11,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "PortfolioPercentage") {
+            const tempDataHolder = Number(
+              noExponents(rowData.weight.toFixed(2))
+            );
             return (
               <div
                 onMouseEnter={() => {
-                  CostAverageCostPriceHover({
+                  CostGainLossHover({
                     session_id: getCurrentUser().id,
                     email_address: getCurrentUser().email,
                   });
                 }}
-                onClick={this.showBlurredItem}
-                className={this.state.isPremiumUser ? "" : "blurred-elements"}
+                className="gainLossContainer"
               >
-                {this.state.isPremiumUser ? (
-                  <CustomOverlay
-                    position="top"
-                    isIcon={false}
-                    isInfo={true}
-                    isText={true}
-                    text={
-                      rowData.AverageCostPrice
-                        ? CurrencyType(false) +
-                          amountFormat(rowData.AverageCostPrice, "en-US", "USD")
-                        : CurrencyType(false) + "0.00"
-                    }
-                  >
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    tempDataHolder
+                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                      : "0.00%"
+                  }
+                  colorCode="#000"
+                >
+                  <div className={`gainLoss`}>
                     <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {rowData.AverageCostPrice
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.AverageCostPrice.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
+                      {tempDataHolder
+                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
+                        : "0.00%"}
                     </span>
-                  </CustomOverlay>
-                ) : (
-                  <CustomOverlayUgradeToPremium
-                    position="top"
-                    disabled={this.state.isPremiumUser}
-                  >
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {rowData.AverageCostPrice
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.AverageCostPrice.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </CustomOverlayUgradeToPremium>
-                )}
+                  </div>
+                </CustomOverlay>
               </div>
             );
           }
@@ -865,6 +910,86 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           }
         },
       },
+
+      {
+        labelName: (
+          <div
+            className="cp history-table-header-col table-header-font"
+            id="Average Cost Price"
+          >
+            <span className="inter-display-medium f-s-13 lh-16 ">
+              Avg cost price
+            </span>
+            {this.state.isPremiumUser ? (
+              <Image
+                onClick={() => this.handleSort(this.state.sortBy[1])}
+                src={sortByIcon}
+                className={
+                  !this.state.sortBy[1].down ? "rotateDown" : "rotateUp"
+                }
+              />
+            ) : null}
+          </div>
+        ),
+        dataKey: "AverageCostPrice",
+
+        coumnWidth: 0.12,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "AverageCostPrice") {
+            return (
+              <div
+                onMouseEnter={() => {
+                  CostAverageCostPriceHover({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+                onClick={this.showBlurredItem}
+                className={this.state.isPremiumUser ? "" : "blurred-elements"}
+              >
+                {this.state.isPremiumUser ? (
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      rowData.AverageCostPrice
+                        ? CurrencyType(false) +
+                          amountFormat(rowData.AverageCostPrice, "en-US", "USD")
+                        : CurrencyType(false) + "0.00"
+                    }
+                  >
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {rowData.AverageCostPrice
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.AverageCostPrice.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </span>
+                  </CustomOverlay>
+                ) : (
+                  <CustomOverlayUgradeToPremium
+                    position="top"
+                    disabled={this.state.isPremiumUser}
+                  >
+                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                      {rowData.AverageCostPrice
+                        ? CurrencyType(false) +
+                          numToCurrency(
+                            rowData.AverageCostPrice.toFixed(2)
+                          ).toLocaleString("en-US")
+                        : CurrencyType(false) + "0.00"}
+                    </span>
+                  </CustomOverlayUgradeToPremium>
+                )}
+              </div>
+            );
+          }
+        },
+      },
       {
         labelName: (
           <div
@@ -964,77 +1089,20 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         labelName: (
           <div
             className="cp history-table-header-col table-header-font"
-            id="Current Value"
-          >
-            <span className="inter-display-medium f-s-13 lh-16 ">
-              Current value
-            </span>
-            <Image
-              onClick={() => this.handleSort(this.state.sortBy[5])}
-              src={sortByIcon}
-              className={!this.state.sortBy[5].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "CurrentValue",
-
-        coumnWidth: 0.11,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "CurrentValue") {
-            return (
-              <div className="cost-common-container">
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    rowData.CurrentValue
-                      ? CurrencyType(false) +
-                        amountFormat(rowData.CurrentValue, "en-US", "USD")
-                      : CurrencyType(false) + "0.00"
-                  }
-                >
-                  <div className="cost-common">
-                    <span
-                      onMouseEnter={() => {
-                        CostCurrentValueHover({
-                          session_id: getCurrentUser().id,
-                          email_address: getCurrentUser().email,
-                        });
-                      }}
-                      className="table-data-font"
-                    >
-                      {rowData.CurrentValue
-                        ? CurrencyType(false) +
-                          numToCurrency(
-                            rowData.CurrentValue.toFixed(2)
-                          ).toLocaleString("en-US")
-                        : CurrencyType(false) + "0.00"}
-                    </span>
-                  </div>
-                </CustomOverlay>
-              </div>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col table-header-font"
             id="Gainamount"
           >
             <span className="inter-display-medium f-s-13 lh-16 ">
               Unrealized gain
             </span>
-
-            <Image
-              onClick={() => this.handleSort(this.state.sortBy[6])}
-              src={sortByIcon}
-              className={!this.state.sortBy[6].down ? "rotateDown" : "rotateUp"}
-            />
+            {this.state.isPremiumUser ? (
+              <Image
+                onClick={() => this.handleSort(this.state.sortBy[6])}
+                src={sortByIcon}
+                className={
+                  !this.state.sortBy[6].down ? "rotateDown" : "rotateUp"
+                }
+              />
+            ) : null}
           </div>
         ),
         dataKey: "GainAmount",
@@ -1139,11 +1207,15 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             id="Gain loss"
           >
             <span className="inter-display-medium f-s-13 lh-16">Return</span>
-            <Image
-              onClick={() => this.handleSort(this.state.sortBy[7])}
-              src={sortByIcon}
-              className={!this.state.sortBy[7].down ? "rotateDown" : "rotateUp"}
-            />
+            {this.state.isPremiumUser ? (
+              <Image
+                onClick={() => this.handleSort(this.state.sortBy[7])}
+                src={sortByIcon}
+                className={
+                  !this.state.sortBy[7].down ? "rotateDown" : "rotateUp"
+                }
+              />
+            ) : null}
           </div>
         ),
         dataKey: "GainLoss",
@@ -1233,66 +1305,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                     </div>
                   </CustomOverlayUgradeToPremium>
                 )}
-              </div>
-            );
-          }
-        },
-      },
-      {
-        labelName: (
-          <div
-            className="cp history-table-header-col table-header-font"
-            id="Portfolio perc"
-          >
-            <span className="inter-display-medium f-s-13 lh-16">
-              Portfolio (%)
-            </span>
-            <Image
-              onClick={() => this.handleSort(this.state.sortBy[8])}
-              src={sortByIcon}
-              className={!this.state.sortBy[8].down ? "rotateDown" : "rotateUp"}
-            />
-          </div>
-        ),
-        dataKey: "PortfolioPercentage",
-
-        coumnWidth: 0.11,
-        isCell: true,
-        cell: (rowData, dataKey) => {
-          if (dataKey === "PortfolioPercentage") {
-            const tempDataHolder = Number(
-              noExponents(rowData.weight.toFixed(2))
-            );
-            return (
-              <div
-                onMouseEnter={() => {
-                  CostGainLossHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                  });
-                }}
-                className="gainLossContainer"
-              >
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    tempDataHolder
-                      ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                      : "0.00%"
-                  }
-                  colorCode="#000"
-                >
-                  <div className={`gainLoss`}>
-                    <span className="inter-display-medium f-s-13 lh-16 table-data-font">
-                      {tempDataHolder
-                        ? Math.abs(tempDataHolder).toLocaleString("en-US") + "%"
-                        : "0.00%"}
-                    </span>
-                  </div>
-                </CustomOverlay>
               </div>
             );
           }

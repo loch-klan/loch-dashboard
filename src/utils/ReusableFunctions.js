@@ -1,10 +1,11 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import { API_LIMIT } from "./Constant";
+import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
 import { DARK_MODE } from "../app/intelligence/ActionTypes";
 import { SwitchDarkMode } from "../app/common/Api";
 import { toast } from "react-toastify";
+import { getCurrentUser } from "./ManageToken";
 
 export const scrollToBottomAfterPageChange = () => {
   if (mobileCheck()) {
@@ -26,7 +27,47 @@ export const isPremiumUser = () => {
   }
   return false;
 };
+export const getShareLink = () => {
+  let pathName = window.location.pathname;
+  if (pathName.substring(0, 1) === "/") {
+    pathName = pathName.substring(1, pathName.length);
+  }
+  let lochUser = getCurrentUser().id;
+  if (lochUser) {
+    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=" + pathName;
 
+    return shareLink;
+  }
+  return "";
+};
+export const getCopyTradeWalletShareLink = (walletList) => {
+  let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+  let firstWallet = "";
+  if (userWallet && userWallet.length > 0) {
+    firstWallet = userWallet[0].displayAddress || userWallet[0].address;
+  }
+  if (walletList && walletList.length > 0) {
+    if (walletList[0][1] && walletList[0][1].endsWith("eth")) {
+      firstWallet = walletList[0][1];
+    } else {
+      firstWallet = walletList[0][0];
+    }
+  }
+  let lochUser = getCurrentUser().id;
+  if (lochUser) {
+    let slink = firstWallet ? firstWallet : "";
+    let shareLink =
+      BASE_URL_S3 + "home/" + slink + "?redirect=copy-trade-share";
+
+    return shareLink;
+  }
+  return "";
+};
 export const openSignInModalFromAnywhere = () => {
   if (document.getElementById("sidebar-open-sign-in-btn")) {
     document.getElementById("sidebar-open-sign-in-btn").click();
@@ -92,6 +133,9 @@ export const whichBlurMethod = () => {
   if (window.sessionStorage.getItem("blurredSubscribeToPremiumLochPoint")) {
     return "Subscribe To Premium Loch Point";
   }
+  if (window.sessionStorage.getItem("upgradePremiumProfileBannerSignInModal")) {
+    return "Profile loch premium banner";
+  }
 
   return "";
 };
@@ -113,6 +157,7 @@ export const removeBlurMethods = () => {
   window.sessionStorage.removeItem("blurredTransactionHistoryExportModal");
   window.sessionStorage.removeItem("blurredCopyTradeAddModal");
   window.sessionStorage.removeItem("blurredSubscribeToPremiumLochPoint");
+  window.sessionStorage.removeItem("upgradePremiumProfileBannerSignInModal");
 };
 export const whichSignUpMethod = () => {
   if (window.sessionStorage.getItem("lochPointsSignInModal")) {
@@ -120,6 +165,9 @@ export const whichSignUpMethod = () => {
   }
   if (window.sessionStorage.getItem("referralCodesSignInModal")) {
     return "Referral code";
+  }
+  if (window.sessionStorage.getItem("upgradePremiumProfileBannerSignInModal")) {
+    return "Profile loch premium banner";
   }
   if (window.sessionStorage.getItem("blurredHomeAssetSignInModal")) {
     return "Home Assets Block";
@@ -181,6 +229,7 @@ export const whichSignUpMethod = () => {
 export const removeSignUpMethods = () => {
   window.sessionStorage.removeItem("fifteenSecSignInModal");
   window.sessionStorage.removeItem("referralCodesSignInModal");
+  window.sessionStorage.removeItem("upgradePremiumProfileBannerSignInModal");
   window.sessionStorage.removeItem("lochPointsSignInModal");
   window.sessionStorage.removeItem("blurredHomeAssetSignInModal");
   window.sessionStorage.removeItem("blurredHomeFlowsSignInModal");
