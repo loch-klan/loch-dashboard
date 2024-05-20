@@ -26,7 +26,7 @@ export const GraphHeader = (props) => {
     }
   };
   const exprotPassThrough = () => {
-    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (isLochUser && isLochUser.email) {
       if (props.handleExportModal) {
         props.handleExportModal();

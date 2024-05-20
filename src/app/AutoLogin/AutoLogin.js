@@ -22,17 +22,17 @@ class AppFeature extends Component {
       deleteToken();
       setTimeout(() => {
         // My Token
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem(
         //   "lochToken",
         //   "117794e1-37fa-42aa-ad18-639474d4356c"
         // );
 
         // Sumanyas Token
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem(
         //   "lochToken",
         //   "14bc68be-826d-4871-b6b2-fc95f278a39d"
         // );
-        window.sessionStorage.setItem("lochToken", passedToken);
+        window.localStorage.setItem("lochToken", passedToken);
         setTimeout(() => {
           this.props.autoLoginApi(this, redirectTo);
         }, 300);

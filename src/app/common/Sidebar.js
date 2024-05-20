@@ -127,7 +127,7 @@ function Sidebar(props) {
   const [userFeedbackModal, setUserFeedbackModal] = useState(false);
   const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("currency"))
+    JSON.parse(window.localStorage.getItem("currency"))
   );
   useEffect(() => {
     setTimeout(() => {
@@ -139,15 +139,15 @@ function Sidebar(props) {
     setIsCurPremiumUser(isPremiumUser());
   }, [props.userPaymentState]);
 
-  let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+  let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
   if (lochUser) {
     // if loch user remove share id to prevent opening upgrade modal
-    window.sessionStorage.removeItem("share_id");
+    window.localStorage.removeItem("share_id");
   }
   const [Upgrade, setUpgradeModal] = React.useState(false);
   const [connectModal, setconnectModal] = React.useState(false);
   const [isWallet, setWallet] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("addWallet")) ? true : false
+    JSON.parse(window.localStorage.getItem("addWallet")) ? true : false
   );
   const [signinPopup, setSigninPopup] = React.useState(false);
   let triggerId = 6;
@@ -155,8 +155,8 @@ function Sidebar(props) {
   // submenu
 
   const [isSubmenu, setSubmenu] = React.useState(
-    window.sessionStorage.getItem("isSubmenu")
-      ? JSON.parse(window.sessionStorage.getItem("isSubmenu"))
+    window.localStorage.getItem("isSubmenu")
+      ? JSON.parse(window.localStorage.getItem("isSubmenu"))
       : {
           me: true,
           discover: false,
@@ -169,7 +169,7 @@ function Sidebar(props) {
 
   // preview address
   const [previewAddress, setPreviewAddress] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("previewAddress"))
+    JSON.parse(window.localStorage.getItem("previewAddress"))
   );
 
   // Dark mode
@@ -197,7 +197,7 @@ function Sidebar(props) {
 
     // update previewaddress from localstorage
     setPreviewAddress(
-      JSON.parse(window.sessionStorage.getItem("previewAddress"))
+      JSON.parse(window.localStorage.getItem("previewAddress"))
     );
 
     // Me section
@@ -219,10 +219,10 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
       resetPreviewAddress();
       setPreviewAddress(
-        JSON.parse(window.sessionStorage.getItem("previewAddress"))
+        JSON.parse(window.localStorage.getItem("previewAddress"))
       );
     }
     // Me section with intelligence
@@ -239,7 +239,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else if (
       [
         "/intelligence",
@@ -261,7 +261,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
     // Discover section
     else if (
@@ -278,7 +278,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else if (
       [
         "/top-accounts",
@@ -296,7 +296,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else if (
       [
         "/top-accounts/intelligence/transaction-history",
@@ -319,7 +319,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else {
       let obj = {
         me: true,
@@ -331,7 +331,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
   }, []);
 
@@ -346,7 +346,7 @@ function Sidebar(props) {
   }, []);
 
   const getWalletFunction = () => {
-    let status = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let status = JSON.parse(window.localStorage.getItem("addWallet"));
     if (status) {
       setWallet(true);
       // console.log("wallet", isWallet);
@@ -456,11 +456,11 @@ function Sidebar(props) {
     setSignInModalAnimation(true);
     setSigninModal(false);
     setSignupModal(false);
-    const isLochPointsTabOpen = window.sessionStorage.getItem(
+    const isLochPointsTabOpen = window.localStorage.getItem(
       "lochPointsProfileLoginClicked"
     );
     if (isLochPointsTabOpen) {
-      window.sessionStorage.removeItem("lochPointsProfileLoginClicked");
+      window.localStorage.removeItem("lochPointsProfileLoginClicked");
     }
   };
 
@@ -518,8 +518,8 @@ function Sidebar(props) {
     props.updateWalletListFlag("creditPointsBlock", false);
   };
   const handleShare = () => {
-    const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const user = JSON.parse(window.localStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -556,10 +556,10 @@ function Sidebar(props) {
     }
   };
   React.useEffect(() => {
-    let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+    let currency = JSON.parse(window.localStorage.getItem("currency"));
 
     if (!currency) {
-      window.sessionStorage.setItem(
+      window.localStorage.setItem(
         "currency",
         JSON.stringify({
           active: true,
@@ -571,13 +571,13 @@ function Sidebar(props) {
         })
       );
 
-      setCurrency(JSON.parse(window.sessionStorage.getItem("currency")));
+      setCurrency(JSON.parse(window.localStorage.getItem("currency")));
     }
 
     setTimeout(() => {
       //  console.log("curr", currency);
       let currencyRates = JSON.parse(
-        window.sessionStorage.getItem("currencyRates")
+        window.localStorage.getItem("currencyRates")
       );
       // console.log("currency", currencyRates);
       getAllCurrencyApi(setAllCurrencyList);
@@ -592,27 +592,27 @@ function Sidebar(props) {
 
   // function to call popup timer
   const SiginModal = () => {
-    let isPopup = JSON.parse(window.sessionStorage.getItem("isPopup"));
+    let isPopup = JSON.parse(window.localStorage.getItem("isPopup"));
 
     setTimeout(() => {
       const isCopyTradeModalOpen =
-        window.sessionStorage.getItem("copyTradeModalOpen");
-      const lochPointsProfileModalOpen = window.sessionStorage.getItem(
+        window.localStorage.getItem("copyTradeModalOpen");
+      const lochPointsProfileModalOpen = window.localStorage.getItem(
         "lochPointsProfileLoginClicked"
       );
       const dontOpenLoginPopup =
-        window.sessionStorage.getItem("dontOpenLoginPopup");
+        window.localStorage.getItem("dontOpenLoginPopup");
       if (
         !isCopyTradeModalOpen &&
         !lochPointsProfileModalOpen &&
         !dontOpenLoginPopup
       ) {
-        window.sessionStorage.setItem("fifteenSecSignInModal", true);
+        window.localStorage.setItem("fifteenSecSignInModal", true);
         // if isPopupActive = true then do not open this popup bcoz any other popup still open
         let isPopupActive = JSON.parse(
-          window.sessionStorage.getItem("isPopupActive")
+          window.localStorage.getItem("isPopupActive")
         );
-        lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
         if (!isPopupActive) {
           // console.log("inactive popup", isPopupActive);
           if (!lochUser) {
@@ -621,10 +621,10 @@ function Sidebar(props) {
             //   from: history.location.pathname.substring(1),
             // });
             // isPopup && handleSiginPopup();
-            // window.sessionStorage.setItem("isPopup", false);
+            // window.localStorage.setItem("isPopup", false);
             if (isPopup) {
               handleSiginPopup();
-              window.sessionStorage.setItem("isPopup", false);
+              window.localStorage.setItem("isPopup", false);
               GeneralPopup({
                 session_id: getCurrentUser().id,
                 from: history.location.pathname.substring(1),
@@ -642,7 +642,7 @@ function Sidebar(props) {
 
   const handleFunction = (currency) => {
     let currencyRates = JSON.parse(
-      window.sessionStorage.getItem("currencyRates")
+      window.localStorage.getItem("currencyRates")
     );
     for (const [key, value] of Object.entries(currencyRates.rates)) {
       // console.log(`${key}: ${value}`);
@@ -661,7 +661,7 @@ function Sidebar(props) {
     });
     setTimeout(() => {
       setCurrency(currency);
-      window.sessionStorage.setItem("currency", JSON.stringify(currency));
+      window.localStorage.setItem("currency", JSON.stringify(currency));
       window.location.reload();
     }, 200);
   };
@@ -709,14 +709,14 @@ function Sidebar(props) {
     if (data) {
       setDragPosition({ x: data.x, y: data.y });
 
-      // window.sessionStorage.setItem(
+      // window.localStorage.setItem(
       //   "floatingModalPosition",
       //   JSON.stringify({ x: data.x, y: data.y })
       // );
     }
   };
   // useEffect(() => {
-  //   let floatingModalPosition = window.sessionStorage.getItem(
+  //   let floatingModalPosition = window.localStorage.getItem(
   //     "floatingModalPosition"
   //   );
   //   if (floatingModalPosition) {
@@ -1108,7 +1108,7 @@ function Sidebar(props) {
                           isText={true}
                           text={
                             CurrencyType(false) +
-                            (window.sessionStorage.getItem(
+                            (window.localStorage.getItem(
                               "shouldRecallApis"
                             ) === "true"
                               ? "0.00"
@@ -1127,7 +1127,7 @@ function Sidebar(props) {
                         >
                           {CurrencyType(false)}
                           {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                          {window.sessionStorage.getItem("shouldRecallApis") ===
+                          {window.localStorage.getItem("shouldRecallApis") ===
                           "true"
                             ? "0.00"
                             : numToCurrency(getTotalAssetValue())}
@@ -1694,7 +1694,7 @@ function Sidebar(props) {
           show={Upgrade}
           onHide={upgradeModal}
           history={history}
-          isShare={window.sessionStorage.getItem("share_id")}
+          isShare={window.localStorage.getItem("share_id")}
           // isStatic={isStatic}
           triggerId={triggerId}
           pname="sidebar"

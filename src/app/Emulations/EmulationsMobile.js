@@ -46,7 +46,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
     };
   }
   openCopyTradeModal = () => {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       this.props.showAddCopyTradeAddress();
     } else {
@@ -59,7 +59,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
     }
   };
   addPrefillCopyAddressLocal = (passedAddress) => {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       this.props.addPrefillCopyAddress(passedAddress, true);
     } else {

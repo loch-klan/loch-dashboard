@@ -26,9 +26,7 @@ class InflowOutflowChart extends BaseReactComponent {
   }
   componentDidMount() {
     let addressList = [];
-    const userWalletList = JSON.parse(
-      window.sessionStorage.getItem("addWallet")
-    );
+    const userWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     setTimeout(() => {
       this.makeApiCall();
     }, 200);
@@ -83,7 +81,7 @@ class InflowOutflowChart extends BaseReactComponent {
     ) {
       let addressList = [];
       const userWalletList = JSON.parse(
-        window.sessionStorage.getItem("addWallet")
+        window.localStorage.getItem("addWallet")
       );
       userWalletList?.map((wallet) => addressList.push(wallet.address));
       const tempAdd = JSON.stringify(addressList);
@@ -106,7 +104,7 @@ class InflowOutflowChart extends BaseReactComponent {
     ) {
       let addressList = [];
       const userWalletList = JSON.parse(
-        window.sessionStorage.getItem("addWallet")
+        window.localStorage.getItem("addWallet")
       );
       userWalletList?.map((wallet) => addressList.push(wallet.address));
       const tempAdd = JSON.stringify(addressList);
@@ -161,9 +159,7 @@ class InflowOutflowChart extends BaseReactComponent {
     data.append("dust_value", this.state.isDust);
 
     let addressList = [];
-    const userWalletList = JSON.parse(
-      window.sessionStorage.getItem("addWallet")
-    );
+    const userWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     userWalletList?.map((wallet) => addressList.push(wallet.address));
     data.append("wallet_addresses", JSON.stringify(addressList));
     this.props.getInflowsAndOutflowsGraphDataApi(data, this);

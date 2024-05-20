@@ -64,6 +64,7 @@ import {
   convertNtoNumber,
   mobileCheck,
   numToCurrency,
+  openAddressInNewTab,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../../utils/ReusableFunctions";
@@ -98,7 +99,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-    const walletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const walletList = JSON.parse(window.localStorage.getItem("addWallet"));
     const address = walletList?.map((wallet) => {
       return wallet.address;
     });
@@ -122,7 +123,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
       selectedNetworks: [],
       amountFilter: "Size",
       goToBottom: false,
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -181,15 +182,15 @@ class EmulationTransactionsPage extends BaseReactComponent {
         },
       ],
       // add new wallet
-      // userWalletList: window.sessionStorage.getItem("addWallet")
-      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      // userWalletList: window.localStorage.getItem("addWallet")
+      //   ? JSON.parse(window.localStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -221,7 +222,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
   startPageView = () => {
@@ -241,12 +242,9 @@ class EmulationTransactionsPage extends BaseReactComponent {
       this.setState({
         passedAddress: tempPassedAddress,
       });
-      window.sessionStorage.setItem(
-        "copyTradePassedAddress",
-        tempPassedAddress
-      );
+      window.localStorage.setItem("copyTradePassedAddress", tempPassedAddress);
     } else {
-      const storedCopyTradePassedAddress = window.sessionStorage.getItem(
+      const storedCopyTradePassedAddress = window.localStorage.getItem(
         "copyTradePassedAddress"
       );
       if (storedCopyTradePassedAddress) {
@@ -261,14 +259,13 @@ class EmulationTransactionsPage extends BaseReactComponent {
       });
     }
     scrollToTop();
-    const transHistoryPageNumber = window.sessionStorage.getItem(
+    const transHistoryPageNumber = window.localStorage.getItem(
       "transHistoryPageNumber"
     );
-    const transHistoryConditions = window.sessionStorage.getItem(
+    const transHistoryConditions = window.localStorage.getItem(
       "transHistoryConditions"
     );
-    const transHistorySorts =
-      window.sessionStorage.getItem("transHistorySorts");
+    const transHistorySorts = window.localStorage.getItem("transHistorySorts");
 
     if (transHistoryPageNumber || transHistoryConditions || transHistorySorts) {
       this.setState(
@@ -285,7 +282,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
         },
         () => {
           if (transHistoryPageNumber) {
-            window.sessionStorage.removeItem("transHistoryPageNumber");
+            window.localStorage.removeItem("transHistoryPageNumber");
           }
           if (transHistoryConditions) {
             const tempHolder = JSON.parse(transHistoryConditions);
@@ -327,10 +324,10 @@ class EmulationTransactionsPage extends BaseReactComponent {
                 }
               }
             }
-            window.sessionStorage.removeItem("transHistoryConditions");
+            window.localStorage.removeItem("transHistoryConditions");
           }
           if (transHistorySorts) {
-            window.sessionStorage.removeItem("transHistorySorts");
+            window.localStorage.removeItem("transHistorySorts");
           }
 
           this.props.history.replace({
@@ -426,21 +423,21 @@ class EmulationTransactionsPage extends BaseReactComponent {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "copyTraderTransactionHistoryPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       "copyTraderTransactionHistoryPageExpiryTime",
       tempExpiryTime
     );
   };
   endPageView = () => {
     clearInterval(window.checkCopyTraderTransactionHistoryTimer);
-    window.sessionStorage.removeItem(
+    window.localStorage.removeItem(
       "copyTraderTransactionHistoryPageExpiryTime"
     );
     if (this.state.startTime) {
@@ -454,7 +451,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "copyTraderTransactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -462,7 +459,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "copyTraderTransactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -477,11 +474,11 @@ class EmulationTransactionsPage extends BaseReactComponent {
         tempCond.push(tempEle);
       }
     });
-    const arr = window.sessionStorage.getItem("addWallet")
-      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+    const arr = window.localStorage.getItem("addWallet")
+      ? JSON.parse(window.localStorage.getItem("addWallet"))
       : [];
     this.setState({
-      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+      walletList: JSON.parse(window.localStorage.getItem("addWallet")),
     });
     let address = arr?.map((wallet) => {
       return wallet.address;
@@ -1114,7 +1111,8 @@ class EmulationTransactionsPage extends BaseReactComponent {
                   email_address: getCurrentUser().email,
                   wallet: slink,
                 });
-                window.open(shareLink, "_blank", "noreferrer");
+                // window.open(shareLink, "_blank", "noreferrer");
+                openAddressInNewTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -1378,7 +1376,8 @@ class EmulationTransactionsPage extends BaseReactComponent {
                   email_address: getCurrentUser().email,
                   wallet: slink,
                 });
-                window.open(shareLink, "_blank", "noreferrer");
+                // window.open(shareLink, "_blank", "noreferrer");
+                openAddressInNewTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -2053,7 +2052,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
+                isShare={window.localStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"

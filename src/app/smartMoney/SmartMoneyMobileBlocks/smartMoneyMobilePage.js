@@ -53,7 +53,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
       addAddressModal: false,
       howItWorksModal: false,
       faqModal: false,
-      localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      localLochUser: JSON.parse(window.localStorage.getItem("lochUser")),
       signOutModal: false,
       BlackManIconLoaded: false,
       QuestionmarkCircleSmartMoneyIconLoaded: false,
@@ -79,7 +79,7 @@ class SmartMoneyMobilePage extends BaseReactComponent {
     if (prevProps.blurTable !== this.props.blurTable) {
       if (!this.props.blurTable) {
         this.setState({
-          localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+          localLochUser: JSON.parse(window.localStorage.getItem("lochUser")),
         });
       } else {
         this.setState({

@@ -85,13 +85,13 @@ import PaywallModal from "./PaywallModal.js";
 class ExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
+    const dummyUser = window.localStorage.getItem("lochDummyUser");
     let startDate = moment().subtract(1, "month").toDate();
 
     // console.log("props add", props?.walletaddress);
 
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -191,7 +191,7 @@ class ExitOverlay extends BaseReactComponent {
       isCohort: true,
       cohort_name: props.isEdit && props?.headerTitle ? props?.headerTitle : "",
       changeList: props.changeWalletList,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
       upgradeModal: false,
       isStatic: false,
       hidePrevModal: false,
@@ -250,7 +250,7 @@ class ExitOverlay extends BaseReactComponent {
         total_unique_address: 0,
         showWarningMsg: false,
         uploadStatus: "Uploading",
-        userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+        userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
       },
       () => {
         // this.setState({
@@ -276,7 +276,7 @@ class ExitOverlay extends BaseReactComponent {
   }
   componentDidMount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
     this.props.getAllCoins();
     this.props.getAllParentChains();
     if (this.props.selectExportOption) {
@@ -337,7 +337,7 @@ class ExitOverlay extends BaseReactComponent {
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
 
   onDataSelected = () => {
@@ -615,7 +615,7 @@ class ExitOverlay extends BaseReactComponent {
       this.props.updateTimer();
     }
     let email_arr = [];
-    let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let data = JSON.parse(window.localStorage.getItem("addWallet"));
     if (data) {
       data.forEach((info) => {
         email_arr.push(info.address);
@@ -697,7 +697,7 @@ class ExitOverlay extends BaseReactComponent {
       return null;
     }
     // console.log('Export');
-    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     // console.log("add", addWalletList)
     if (
       addWalletList.length <= this.state.userPlan?.export_address_limit ||
@@ -2038,7 +2038,7 @@ class ExitOverlay extends BaseReactComponent {
                               if (this.props.updateTimer) {
                                 this.props.updateTimer();
                               }
-                              window.sessionStorage.setItem("refresh", false);
+                              window.localStorage.setItem("refresh", false);
                               this.props.history.push("/welcome");
                             }}
                             style={{ marginLeft: "4rem" }}
@@ -2093,7 +2093,7 @@ class ExitOverlay extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={window.sessionStorage.getItem("share_id")}
+            isShare={window.localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="ExitOverly"

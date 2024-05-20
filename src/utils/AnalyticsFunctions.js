@@ -26,7 +26,7 @@ export const initAmplitude = () => {
 // send Aplitude Data
 export const sendAmplitudeData = (eventType, eventProperties) => {
   // amplitude.getInstance().logEvent(eventType, eventProperties);
-  let baseToken = window.sessionStorage.getItem("baseToken");
+  let baseToken = window.localStorage.getItem("baseToken");
   let newEventProperties = {
     ...eventProperties,
     access_code: baseToken,

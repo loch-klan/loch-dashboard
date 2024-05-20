@@ -61,7 +61,7 @@ class PaywallOptionsModal extends BaseReactComponent {
       email_address: getCurrentUser().email,
       path: path,
     });
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.setState({
       userDetailsState: userDetails,
     });

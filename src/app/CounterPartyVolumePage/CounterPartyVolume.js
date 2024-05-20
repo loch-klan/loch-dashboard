@@ -91,8 +91,8 @@ class CounterPartyVolume extends Component {
       GraphDigit: 3,
 
       // add new wallet
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -156,8 +156,9 @@ class CounterPartyVolume extends Component {
     );
   };
   setCounterpartyVolumeExportModal = () => {
-    removeBlurMethods();removeSignUpMethods();
-    window.sessionStorage.setItem("blurredCounterPartyExportModal", true);
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.localStorage.setItem("blurredCounterPartyExportModal", true);
     CostCounterpartyFeesExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -388,16 +389,16 @@ class CounterPartyVolume extends Component {
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime =
-      window.sessionStorage.getItem("costPageExpiryTime");
+      window.localStorage.getItem("costPageExpiryTime");
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("costPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("costPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkCostTimer);
-    window.sessionStorage.removeItem("costPageExpiryTime");
+    window.localStorage.removeItem("costPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -409,13 +410,13 @@ class CounterPartyVolume extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -502,7 +503,7 @@ class CounterPartyVolume extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
