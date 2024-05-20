@@ -50,7 +50,6 @@ import {
   amountFormat,
   mobileCheck,
   numToCurrency,
-  openAddressInNewTab,
   removeBlurMethods,
   removeSignUpMethods,
   scrollToTop,
@@ -88,29 +87,104 @@ class Emulations extends Component {
       passedCTCopyTradeAmount: "",
       popularAccountsList: [
         {
-          address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
-          nameTag: "@smartestmoney_",
-          netWorth: 36567693.050387464,
+          address: "0x3e8734Ec146C981E3eD1f6b582D447DDE701d90c",
+          nameTag: "@DefiWhaleX",
+          netWorth: 24847285.518809594,
         },
         {
-          address: "0x36cc7B13029B5DEe4034745FB4F24034f3F2ffc6",
-          nameTag: "@Titanium_32",
-          netWorth: 30361002.434807304,
+          address: "0x47441bD9fb3441370Cb5b6C4684A0104353AEC66",
+          nameTag: "@powerstake_eth",
+          netWorth: 5439484.6517844545,
         },
         {
-          address: "0x6555e1CC97d3cbA6eAddebBCD7Ca51d75771e0B8",
-          nameTag: "@winharper",
-          netWorth: 19306221.746918082,
+          address: "0xbDfA4f4492dD7b7Cf211209C4791AF8d52BF5c50",
+          nameTag: "@bizyugo",
+          netWorth: 3038905.48807547,
         },
         {
-          address: "0x4EE79E19c9c398e364d135F01B25DcCC0473047c",
-          nameTag: "@0xvladilena",
-          netWorth: 18728616.905514523,
+          address: "0x0172e05392aba65366C4dbBb70D958BbF43304E4",
+          nameTag: "@2011mmmavrodi",
+          netWorth: 2429691.923018726,
         },
         {
-          address: "0xB7FA2214c79cAbC24CB270F57D52B83A2a7fEdd8",
-          nameTag: "@PseudonCrypto",
-          netWorth: 8781693.634935401,
+          address: "0x854F1269b659A727a2268AB86FF77CFB30BfB358",
+          nameTag: "@sergey69420",
+          netWorth: 547866.785956473,
+        },
+        {
+          address: "0xAa0c3d6fD25Aa2C23AED2659197EF39AeA306172",
+          nameTag: "@BigSBhodler",
+          netWorth: 436523.3233632607,
+        },
+        {
+          address: "0x0228028A0c92cfd9743e561A96B16edBB4606054",
+          nameTag: "@quid_defi",
+          netWorth: 365429.35013641336,
+        },
+        {
+          address: "0x5028D77B91a3754fb38B2FBB726AF02d1FE44Db6",
+          nameTag: "@ParaFi Capital",
+          netWorth: 356859.5446382175,
+        },
+        {
+          address: "0x5869458f360D8C1CE49e35fCcb3d0A1F25E8d533",
+          nameTag: "@SKAKUN_eth",
+          netWorth: 345362.9985834329,
+        },
+        {
+          address: "0xFB7c1D49e006eaDdff2385c7eF8B0C5Cf49d038A",
+          nameTag: "@0xfb7c",
+          netWorth: 305126.2890452454,
+        },
+        {
+          address: "0xC1E42F862d202B4A0eD552c1145735EE088f6Ccf",
+          nameTag: "@sir_pog",
+          netWorth: 260175.13637706081,
+        },
+        {
+          address: "0xBdC149340cC73B38AeBDe5F67Bae146A1Af9E0d6",
+          nameTag: "@GrimaceOdysseus",
+          netWorth: 259661.05604979707,
+        },
+        {
+          address: "0x5c9E30def85334e587Cf36EB07bdd6A72Bf1452d",
+          nameTag: "@tardfiwhale",
+          netWorth: 240753.61089005525,
+        },
+        {
+          address: "0x78DB576873F032A7C4749b214A8AF6966B3Be239",
+          nameTag: "@OkX Blockdream Ventures",
+          netWorth: 230318.78954778018,
+        },
+        {
+          address: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
+          nameTag: "@whale_everyday",
+          netWorth: 224556.37745334185,
+        },
+        {
+          address: "0x36243adE16d74eedbB3f2b8B2ECf286F538Ef5fD",
+          nameTag: "@0x_Doomer",
+          netWorth: 216917.95525511258,
+        },
+        {
+          address: "0xB72eD8401892466Ea8aF528C1af1d0524bc5e105",
+          nameTag: "@gekko_eth",
+          netWorth: 187193.2650024277,
+        },
+        {
+          address: "0xc8E5c09a577fe77d988E5f41f57fE87673A32e9f",
+          nameTag: "@Hello Capital",
+          netWorth: 181376.75705586385,
+        },
+        {
+          address: "0xBdCD88B1967B6e0e47DF420e5882286776e74AfB",
+          nameTag: "@scenaristooo",
+          netWorth: 171687.99742333655,
+        },
+        {
+          address: "0x0C86262354095Fa35A21b58af3e0DD94d0ba767c",
+          nameTag: "@YoungHustler404",
+          netWorth: 134865.83563650915,
         },
       ],
       prefillCopyAddress: undefined,
@@ -135,8 +209,8 @@ class Emulations extends Component {
       emulationsLoading: true,
       showDust: true,
       connectModal: false,
-      userWalletList: window.localStorage.getItem("addWallet")
-        ? JSON.parse(window.localStorage.getItem("addWallet"))
+      userWalletList: window.sessionStorage.getItem("addWallet")
+        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -160,27 +234,27 @@ class Emulations extends Component {
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
     });
-    if (this.state.userDetailsState && this.state.userDetailsState.email) {
-      this.removeCopyTradeBtnClickedLocal();
-      removeBlurMethods();
-      removeSignUpMethods();
-      window.localStorage.setItem("blurredCopyTradeAddModal", true);
-      this.setState({
-        isAddCopyTradeAddress: true,
-      });
-    } else {
-      if (document.getElementById("sidebar-open-sign-in-btn-copy-trader")) {
-        document.getElementById("sidebar-open-sign-in-btn-copy-trader").click();
-        this.addCopyTradeBtnClickedLocal();
-      } else if (
-        document.getElementById("sidebar-closed-sign-in-btn-copy-trader")
-      ) {
-        this.addCopyTradeBtnClickedLocal();
-        document
-          .getElementById("sidebar-closed-sign-in-btn-copy-trader")
-          .click();
-      }
-    }
+    // if (this.state.userDetailsState && this.state.userDetailsState.email) {
+    this.removeCopyTradeBtnClickedLocal();
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.sessionStorage.setItem("blurredCopyTradeAddModal", true);
+    this.setState({
+      isAddCopyTradeAddress: true,
+    });
+    // } else {
+    //   if (document.getElementById("sidebar-open-sign-in-btn-copy-trader")) {
+    //     document.getElementById("sidebar-open-sign-in-btn-copy-trader").click();
+    //     this.addCopyTradeBtnClickedLocal();
+    //   } else if (
+    //     document.getElementById("sidebar-closed-sign-in-btn-copy-trader")
+    //   ) {
+    //     this.addCopyTradeBtnClickedLocal();
+    //     document
+    //       .getElementById("sidebar-closed-sign-in-btn-copy-trader")
+    //       .click();
+    //   }
+    // }
   };
   hideAddCopyTradeAddress = (isRecall) => {
     this.removeCopyTradeBtnClickedLocal();
@@ -209,54 +283,29 @@ class Emulations extends Component {
     this.props.GetAllPlan();
     this.props.getUser();
     this.callEmulationsApi();
-    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.getAllWalletList();
 
-    let tempHaveUserPaid = window.localStorage.getItem(
-      "haveUserPaidForCopyTrade"
-    );
-    if (tempHaveUserPaid) {
-      this.setState({
-        paymentStatusLocal: "PAID",
-      });
-    }
-    if (userDetails) {
-      this.setState(
-        {
-          userDetailsState: userDetails,
-        },
-        () => {
-          const isLoginAttmepted = window.localStorage.getItem(
-            "copyTradeLoginClicked"
-          );
-          const isLoginAttmeptedValue = window.localStorage.getItem(
-            "copyTradeLoginClickedValue"
-          );
-
-          if (isLoginAttmepted && isLoginAttmepted === "true") {
-            setTimeout(() => {
-              if (isLoginAttmeptedValue) {
-                this.setState(
-                  {
-                    prefillCopyAddress: isLoginAttmeptedValue,
-                  },
-                  () => {
-                    this.showAddCopyTradeAddress();
-                  }
-                );
-              } else {
-                this.showAddCopyTradeAddress();
-              }
-            }, 1500);
+    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let isFromUrl = window.sessionStorage.getItem("openCopyTradeModalFromLink");
+    if (isFromUrl) {
+      setTimeout(() => {
+        this.setState(
+          {
+            prefillCopyAddress: isFromUrl,
+          },
+          () => {
+            window.sessionStorage.removeItem("openCopyTradeModalFromLink");
+            this.showAddCopyTradeAddress();
           }
-        }
-      );
+        );
+      }, 1500);
     }
+
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
     const isAddTrade = params.get("addTrade");
     if (isAddTrade) {
-      window.localStorage.setItem("haveUserPaidForCopyTrade", true);
+      window.sessionStorage.setItem("haveUserPaidForCopyTrade", true);
       let emailHolder = "";
       let walletHolder = "";
       let amountHolder = 0;
@@ -300,21 +349,21 @@ class Emulations extends Component {
     this.callEmulationsApi();
   };
   addCopyTradeBtnClickedLocal = () => {
-    window.localStorage.setItem("copyTradeLoginClicked", true);
+    window.sessionStorage.setItem("copyTradeLoginClicked", true);
     if (this.state.prefillCopyAddress) {
-      window.localStorage.setItem(
+      window.sessionStorage.setItem(
         "copyTradeLoginClickedValue",
         this.state.prefillCopyAddress
       );
     }
   };
   removeCopyTradeBtnClickedLocal = () => {
-    let isLoginClickedStored = window.localStorage.getItem(
+    let isLoginClickedStored = window.sessionStorage.getItem(
       "copyTradeLoginClicked"
     );
     if (isLoginClickedStored) {
-      window.localStorage.removeItem("copyTradeLoginClicked");
-      window.localStorage.removeItem("copyTradeLoginClickedValue");
+      window.sessionStorage.removeItem("copyTradeLoginClicked");
+      window.sessionStorage.removeItem("copyTradeLoginClickedValue");
     }
   };
   callEmulationsApi = (updatedAddress) => {
@@ -343,7 +392,7 @@ class Emulations extends Component {
       }
 
       if (this.props.emulationsState.paymentStatus) {
-        let tempHaveUserPaid = window.localStorage.getItem(
+        let tempHaveUserPaid = window.sessionStorage.getItem(
           "haveUserPaidForCopyTrade"
         );
 
@@ -423,10 +472,10 @@ class Emulations extends Component {
     }
     if (prevState.isAddCopyTradeAddress !== this.state.isAddCopyTradeAddress) {
       if (this.state.isAddCopyTradeAddress) {
-        window.localStorage.setItem("copyTradeModalOpen", true);
+        window.sessionStorage.setItem("copyTradeModalOpen", true);
       } else {
-        if (window.localStorage.getItem("copyTradeModalOpen")) {
-          window.localStorage.removeItem("copyTradeModalOpen");
+        if (window.sessionStorage.getItem("copyTradeModalOpen")) {
+          window.sessionStorage.removeItem("copyTradeModalOpen");
         }
       }
     }
@@ -449,7 +498,7 @@ class Emulations extends Component {
     }
   }
   getAllWalletList = () => {
-    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
     if (userDetails) {
       this.setState({
         userDetailsState: userDetails,
@@ -472,18 +521,18 @@ class Emulations extends Component {
   };
 
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.localStorage.getItem(
+    const tempExistingExpiryTime = window.sessionStorage.getItem(
       "emulationsPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.localStorage.setItem("emulationsPageExpiryTime", tempExpiryTime);
+    window.sessionStorage.setItem("emulationsPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkEmulationsTimer);
-    window.localStorage.removeItem("emulationsPageExpiryTime");
+    window.sessionStorage.removeItem("emulationsPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -495,7 +544,7 @@ class Emulations extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "emulationsPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -504,7 +553,7 @@ class Emulations extends Component {
   };
   componentWillUnmount() {
     this.removeCopyTradeBtnClickedLocal();
-    const tempExpiryTime = window.localStorage.getItem(
+    const tempExpiryTime = window.sessionStorage.getItem(
       "emulationsPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -574,8 +623,7 @@ class Emulations extends Component {
     let slink = passedAddress;
     let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 
-    // window.open(shareLink, "_blank", "noreferrer");
-    openAddressInNewTab(slink, this.props.setPageFlagDefault);
+    window.open(shareLink, "_blank", "noreferrer");
   };
   newPosBase = () => {
     if (this.state.copyTradesAvailableLocal) {
@@ -970,6 +1018,24 @@ class Emulations extends Component {
       }
     );
   };
+  copyPopularAddress = (passedAddress) => {
+    if (passedAddress) {
+      this.setState(
+        {
+          prefillCopyAddress: passedAddress,
+        },
+        () => {
+          this.showAddCopyTradeAddress();
+        }
+      );
+
+      CopyTradePopularAccountCopyClicked({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        wallet: passedAddress,
+      });
+    }
+  };
   render() {
     const columnData = [
       {
@@ -1007,8 +1073,7 @@ class Emulations extends Component {
                       email_address: getCurrentUser().email,
                       wallet: slink,
                     });
-                    // window.open(shareLink, "_blank", "noreferrer");
-                    openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                    window.open(shareLink, "_blank", "noreferrer");
                   }
                 }}
                 className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address"
@@ -1138,6 +1203,7 @@ class Emulations extends Component {
             />
           ) : null}
           <EmulationsMobile
+            copyPopularAddress={this.copyPopularAddress}
             addCopyTradeBtnClickedLocal={this.addCopyTradeBtnClickedLocal}
             userDetailsState={this.state.userDetailsState}
             columnData={columnData}
@@ -1331,16 +1397,6 @@ class Emulations extends Component {
               updateTimer={this.updateTimer}
               handleBtn={this.showAddCopyTradeAddress}
             />
-            <div
-              onClick={() => {
-                this.setState({
-                  isPayModalOptionsOpen: true,
-                });
-              }}
-              className="inter-display-medium f-s-16 cp"
-            >
-              Open paywall
-            </div>
             {!this.state.emulationsLoading ? (
               <div
                 className={`available-copy-trades-popular-accounts-container ${
@@ -1365,7 +1421,7 @@ class Emulations extends Component {
                         className="actpacc-header-icon actpacc-header-icon-more-margin"
                       />
                       <div className="inter-display-medium f-s-16">
-                        Popular Accounts to Copy
+                        Top 20 Popular Accounts to Copy
                       </div>
                     </div>
                     <Image
@@ -1461,24 +1517,9 @@ class Emulations extends Component {
                                     </div>
                                     <div
                                       onClick={() => {
-                                        if (curCopyTradeData.address) {
-                                          this.setState(
-                                            {
-                                              prefillCopyAddress:
-                                                curCopyTradeData.address,
-                                            },
-                                            () => {
-                                              this.showAddCopyTradeAddress();
-                                            }
-                                          );
-
-                                          CopyTradePopularAccountCopyClicked({
-                                            session_id: getCurrentUser().id,
-                                            email_address:
-                                              getCurrentUser().email,
-                                            wallet: curCopyTradeData.address,
-                                          });
-                                        }
+                                        this.copyPopularAddress(
+                                          curCopyTradeData.address
+                                        );
                                       }}
                                       className="inter-display-medium f-s-14 popular-copy-trades-button"
                                     >
@@ -1497,7 +1538,7 @@ class Emulations extends Component {
                       </div>
 
                       <div className="available-copy-trades-navigator">
-                        <div className="available-copy-trades-navigator-circles-container">
+                        {/* <div className="available-copy-trades-navigator-circles-container">
                           {this.state.popularAccountsList &&
                           this.state.popularAccountsList.length > 1
                             ? this.state.popularAccountsList.map(
@@ -1525,7 +1566,8 @@ class Emulations extends Component {
                                 }
                               )
                             : null}
-                        </div>
+                        </div> */}
+                        <div />
                         <div className="available-copy-trades-navigator-arrows">
                           <Image
                             style={{

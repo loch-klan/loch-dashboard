@@ -85,7 +85,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         // ON EVERY ROUTE GET PARAMS FROM URL AND SET TO LOCAL STORAGE.
         // console.log('props',props);
         const searchParams = new URLSearchParams(props.location.search);
-        const redirectPath = searchParams.get("redirect");
+        let redirectPath = searchParams.get("redirect");
         const noPopupFlag = searchParams.get("noPopup");
         const passedRefrenceId = searchParams.get("refrenceId");
         const transHistoryPageNumber = searchParams.get(

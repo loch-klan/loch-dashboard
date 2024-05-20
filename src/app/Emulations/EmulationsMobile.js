@@ -212,7 +212,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             <p>All the wallet addresses you have copied</p>
           </div>
           <div
-            onClick={this.openCopyTradeModal}
+            onClick={this.props.showAddCopyTradeAddress}
             className="mobile-add-copy-trade-button"
           >
             Add
@@ -274,7 +274,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                       className="actpacc-header-icon actpacc-header-icon-more-margin"
                     />
                     <div className="inter-display-medium f-s-16">
-                      Popular Accounts to Copy
+                      Top 20 Popular Accounts to Copy
                     </div>
                   </div>
                   <Image
@@ -354,26 +354,9 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                                   </div>
                                   <div
                                     onClick={() => {
-                                      if (curCopyTradeData.address) {
-                                        // this.setState(
-                                        //   {
-                                        //     prefillCopyAddress:
-                                        //       curCopyTradeData.address,
-                                        //   },
-                                        //   () => {
-                                        //     this.props.showAddCopyTradeAddress();
-                                        //   }
-                                        // );
-                                        this.addPrefillCopyAddressLocal(
-                                          curCopyTradeData.address
-                                        );
-
-                                        CopyTradePopularAccountCopyClicked({
-                                          session_id: getCurrentUser().id,
-                                          email_address: getCurrentUser().email,
-                                          wallet: curCopyTradeData.address,
-                                        });
-                                      }
+                                      this.props.copyPopularAddress(
+                                        curCopyTradeData.address
+                                      );
                                     }}
                                     className="inter-display-medium f-s-13 popular-copy-trades-button"
                                   >
@@ -387,7 +370,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                     </div>
 
                     <div className="available-copy-trades-navigator">
-                      <div className="available-copy-trades-navigator-circles-container">
+                      {/* <div className="available-copy-trades-navigator-circles-container">
                         {this.props.popularAccountsList &&
                         this.props.popularAccountsList.length > 1
                           ? this.props.popularAccountsList.map(
@@ -414,7 +397,8 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                               }
                             )
                           : null}
-                      </div>
+                      </div> */}
+                      <div />
                       <div className="available-copy-trades-navigator-arrows">
                         <Image
                           style={{

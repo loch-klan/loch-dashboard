@@ -41,11 +41,18 @@ class ProfileMobile extends Component {
             isMobile
           />
           <div className="profile-section-loch-premium-banner profile-section-loch-premium-banner-mobile">
-            <div className="pslpl-heading">
-              <Image className="pslpl-icon" src={PremiumBannerDiamondIcon} />
-              <div className="inter-display-medium pslpl-text">
-                Loch Premium
+            <div className="pslpl-heading-container">
+              <div className="pslpl-heading">
+                <Image className="pslpl-icon" src={PremiumBannerDiamondIcon} />
+                <div className="inter-display-medium pslpl-text">
+                  Loch Premium
+                </div>
               </div>
+              {this.props.isPremium ? null : (
+                <div className="inter-display-medium pslpl-heading-desc">
+                  Not a member yet
+                </div>
+              )}
             </div>
             {this.props.isPremium ? (
               <div
@@ -70,7 +77,7 @@ class ProfileMobile extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="pslp-right">
+                <div className={`pslp-right`}>
                   <div className="pslpl-conent">
                     {this.props.premiumBannerItems.map((itemBlock, index) => (
                       <div key={index} className="pslpl-item-block">
@@ -88,6 +95,22 @@ class ProfileMobile extends Component {
               </div>
             ) : (
               <div className="profile-section-loch-premium">
+                <div className={`pslp-right pslp-right-grey`}>
+                  <div className="inter-display-medium pslpr-heading">
+                    Join Loch Premium and enjoy exclusive benefits
+                  </div>
+                  <button
+                    onClick={this.props.upgradeNowBtnClick}
+                    className="pslpr-btn"
+                  >
+                    Upgrade
+                  </button>
+                </div>
+                <div className="inter-display-medium pslp-middle">
+                  <div className="pslp-middle-line" />
+                  <div className="pslp-middle-heading">Get features like</div>
+                  <div className="pslp-middle-line" />
+                </div>
                 <div className="pslp-left">
                   <div className="pslpl-conent">
                     {this.props.premiumBannerItems.map((itemBlock, index) => (
@@ -102,20 +125,6 @@ class ProfileMobile extends Component {
                       </div>
                     ))}
                   </div>
-                </div>
-                <div className="pslp-right">
-                  <div className="pslpr-desc">Not a member yet</div>
-                  <div className="pslpr-heading">
-                    Join Loch Premium and enjoy
-                    <br />
-                    exclusive benefits
-                  </div>
-                  <button
-                    onClick={this.props.upgradeNowBtnClick}
-                    className="pslpr-btn"
-                  >
-                    Upgrade now
-                  </button>
                 </div>
               </div>
             )}

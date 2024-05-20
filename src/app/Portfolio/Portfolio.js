@@ -4947,6 +4947,7 @@ class Portfolio extends BaseReactComponent {
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+          showUpdatesJustNowBtn
         >
           {this.state.isLochPaymentModal ? (
             <PaywallModal

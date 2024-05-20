@@ -20,6 +20,7 @@ import {
   LochLogoWhiteIcon,
   PersonRoundedSigninIcon,
   ProfileSidebarIcon,
+  ShareCopyTraderImage,
   SidebarLeftArrowIcon,
   XFormallyTwitterLogoIcon,
   darkModeIcon,
@@ -90,6 +91,7 @@ import {
 } from "../../utils/ReusableFunctions.js";
 import ConnectModal from "./ConnectModal.js";
 import ExitOverlay from "./ExitOverlay";
+import { Helmet } from "react-helmet";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -756,6 +758,9 @@ function Sidebar(props) {
           props.isSidebarClosed ? "sidebar-section-closed" : ""
         }`}
       >
+        <Helmet>
+          <meta property="og:image" content="/sharing-thumbnailTwo.png" />
+        </Helmet>
         {isDarkMode ? (
           <span
             onClick={handleDarkMode}
@@ -1028,7 +1033,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        {/* <li>
+                        <li>
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -1069,7 +1074,7 @@ function Sidebar(props) {
                               />
                             </NavLink>
                           </CustomOverlay>
-                        </li> */}
+                        </li>
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1269,7 +1274,7 @@ function Sidebar(props) {
                               Profile
                             </NavLink>
                           </li>
-                          {/* <li>
+                          <li>
                             <NavLink
                               exact={true}
                               onClick={(e) => {
@@ -1299,7 +1304,7 @@ function Sidebar(props) {
                               />
                               Copy Trade
                             </NavLink>
-                          </li> */}
+                          </li>
                         </>
                       )}
                       <li>
