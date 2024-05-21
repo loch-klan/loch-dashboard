@@ -358,6 +358,7 @@ function Sidebar(props) {
   };
 
   const handleLeaveChild = (e) => {
+    console.log("YES");
     e.stopPropagation();
     handleLeave();
   };
