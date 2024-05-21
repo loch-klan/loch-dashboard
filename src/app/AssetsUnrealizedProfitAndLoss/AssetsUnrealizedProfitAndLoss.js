@@ -124,8 +124,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       GraphDigit: 3,
 
       // add new wallet
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -155,7 +155,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   setAverageCostExportModal = () => {
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredAssetExportModal", true);
+    window.localStorage.setItem("blurredAssetExportModal", true);
     CostAvgCostBasisExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -199,12 +199,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   };
   componentDidMount() {
     this.checkPremium();
-    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     // if (userDetails && userDetails.email) {
-    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //   const shouldOpenNoficationModal = window.localStorage.getItem(
     //     "openAssetPaymentModal"
     //   );
-    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //   const isOpenForSearch = window.localStorage.getItem(
     //     "openSearchbarPaymentModal"
     //   );
     //   if (shouldOpenNoficationModal && !isOpenForSearch) {
@@ -368,16 +368,16 @@ class AssetsUnrealizedProfitAndLoss extends Component {
 
   updateTimer = (first) => {
     const tempExistingExpiryTime =
-      window.sessionStorage.getItem("costPageExpiryTime");
+      window.localStorage.getItem("costPageExpiryTime");
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("costPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("costPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkCostTimer);
-    window.sessionStorage.removeItem("costPageExpiryTime");
+    window.localStorage.removeItem("costPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -389,13 +389,13 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -561,7 +561,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -582,8 +582,8 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredAssetSignInModal", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredAssetSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState({
@@ -592,7 +592,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     } else {
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openAssetPaymentModal", true);
+        window.localStorage.setItem("openAssetPaymentModal", true);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();

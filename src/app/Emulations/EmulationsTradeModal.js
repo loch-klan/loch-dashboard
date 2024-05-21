@@ -70,11 +70,11 @@ class EmulationsTradeModal extends BaseReactComponent {
   }
 
   componentWillUnmount() {
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
 
   componentDidMount() {
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
   }
   confirmOrRejectCopyTradePass = () => {
     if (this.props.confirmOrRejectCopyTrade && this.props.executeCopyTradeId) {

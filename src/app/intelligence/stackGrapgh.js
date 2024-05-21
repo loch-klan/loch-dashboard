@@ -14,7 +14,7 @@ export const getProfitLossAsset = (arr, parentCtx, isPremiumUser) => {
   // Find total fees by calculating fees.totalfees
   // Net would be total outflows+ totalfees-totalinflows
 
-  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+  let currency = JSON.parse(window.localStorage.getItem("currency"));
   let fees = arr?.fees;
 
   let totalFees = 0;

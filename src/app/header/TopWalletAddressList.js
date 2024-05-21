@@ -67,7 +67,7 @@ class TopWalletAddressList extends Component {
     };
   }
   showFollowOrNot = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson && listJson.length > 0) {
       if (listJson.length === 1) {
         this.isFollowedByUserFun();
@@ -84,7 +84,7 @@ class TopWalletAddressList extends Component {
     }
   };
   isFollowedByUserFun = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -110,7 +110,7 @@ class TopWalletAddressList extends Component {
       this.props.updateOnFollow();
     }
     this.setState({ isFollowingAddress: true });
-    window.sessionStorage.setItem("isFollowingAddress", true);
+    window.localStorage.setItem("isFollowingAddress", true);
     if (openModal) {
       this.afterAddressFollowed(passedAddress);
     }
@@ -133,7 +133,7 @@ class TopWalletAddressList extends Component {
       this.props.updateOnFollow();
     }
     this.setState({ isFollowingAddress: false });
-    window.sessionStorage.setItem("isFollowingAddress", false);
+    window.localStorage.setItem("isFollowingAddress", false);
   };
   toggleMobileWalletList = () => {
     this.setState({
@@ -154,7 +154,7 @@ class TopWalletAddressList extends Component {
     if (!tempToken || tempToken === "jsk") {
       return null;
     }
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -227,7 +227,7 @@ class TopWalletAddressList extends Component {
 
     this.props.getAllCoins();
     this.props.getAllParentChains();
-    const ssItem = window.sessionStorage.getItem(
+    const ssItem = window.localStorage.getItem(
       "setMetamaskConnectedSessionStorage"
     );
     if (ssItem && ssItem !== null) {
@@ -244,7 +244,7 @@ class TopWalletAddressList extends Component {
     }
   }
   checkIsFollowed = () => {
-    const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+    const whatIsIt = window.localStorage.getItem("isFollowingAddress");
 
     if (whatIsIt === "true") {
       this.setState({
@@ -282,7 +282,7 @@ class TopWalletAddressList extends Component {
       prevProps.MetamaskConnectedState !== this.props.MetamaskConnectedState
     ) {
       setTimeout(() => {
-        const ssItem = window.sessionStorage.getItem(
+        const ssItem = window.localStorage.getItem(
           "setMetamaskConnectedSessionStorage"
         );
         if (ssItem !== undefined && ssItem !== null) {
@@ -302,10 +302,10 @@ class TopWalletAddressList extends Component {
     }
   }
   applyLocalStorageWalletList = () => {
-    let tempWalletAdd = window.sessionStorage.getItem(
+    let tempWalletAdd = window.localStorage.getItem(
       "topBarLocalStorageWalletAddresses"
     );
-    let tempFullWalletAdd = window.sessionStorage.getItem(
+    let tempFullWalletAdd = window.localStorage.getItem(
       "topBarLocalStorageFullWalletAddresses"
     );
     if (tempWalletAdd) {
@@ -404,11 +404,11 @@ class TopWalletAddressList extends Component {
           .reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
         const tempWalletFullListLoaclPass = JSON.stringify(tempFullWalletList);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageFullWalletAddresses",
           tempWalletFullListLoaclPass
         );
@@ -506,11 +506,11 @@ class TopWalletAddressList extends Component {
           .reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
         const tempWalletFullListLoaclPass = JSON.stringify(tempFullWalletList);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageFullWalletAddresses",
           tempWalletFullListLoaclPass
         );
@@ -546,17 +546,17 @@ class TopWalletAddressList extends Component {
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
-    const ssItem = window.sessionStorage.getItem(
+    const ssItem = window.localStorage.getItem(
       "setMetamaskConnectedSessionStorage"
     );
     this.removeFromList(ssItem);
     this.props.setMetamaskConnectedReducer("");
-    window.sessionStorage.setItem("setMetamaskConnectedSessionStorage", "");
+    window.localStorage.setItem("setMetamaskConnectedSessionStorage", "");
   };
   removeFromList = (removeThis) => {
     const curItem = removeThis;
 
-    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -589,7 +589,7 @@ class TopWalletAddressList extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -726,7 +726,7 @@ class TopWalletAddressList extends Component {
     }
   };
   callUpdateApi = (passedItem) => {
-    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -766,7 +766,7 @@ class TopWalletAddressList extends Component {
           address: passedItem.address,
         });
         this.props.setMetamaskConnectedReducer(passedItem.address);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "setMetamaskConnectedSessionStorage",
           passedItem.address
         );
@@ -801,7 +801,7 @@ class TopWalletAddressList extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -830,7 +830,7 @@ class TopWalletAddressList extends Component {
     });
   };
   deleteTheAddress = (passedAdd) => {
-    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     if (addWalletList && addWalletList?.length > 0) {
       addWalletList = addWalletList?.map((e) => {
         return {
@@ -903,7 +903,7 @@ class TopWalletAddressList extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -915,7 +915,7 @@ class TopWalletAddressList extends Component {
   getCurrentTime = () => {
     let currentTime = new Date().getTime();
 
-    let prevTime = JSON.parse(window.sessionStorage.getItem("refreshApiTime"));
+    let prevTime = JSON.parse(window.localStorage.getItem("refreshApiTime"));
     // calculate the time difference since the last click
     let timeDiff = prevTime ? currentTime - prevTime : currentTime;
     // console.log(
@@ -969,7 +969,7 @@ class TopWalletAddressList extends Component {
     if (!tempToken || tempToken === "jsk") {
       return null;
     }
-    window.sessionStorage.setItem("callTheUpdateAPI", true);
+    window.localStorage.setItem("callTheUpdateAPI", true);
     HomeRefreshButton({
       email_address: getCurrentUser().email,
       session_id: getCurrentUser().id,

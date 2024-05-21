@@ -129,6 +129,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  openAddressInNewTab,
   removeBlurMethods,
   removeOpenModalAfterLogin,
   removeSignUpMethods,
@@ -183,7 +184,7 @@ class Portfolio extends BaseReactComponent {
     super(props);
 
     if (props.location.state) {
-      // window.sessionStorage.setItem(
+      // window.localStorage.setItem(
       //   "addWallet",
       //   JSON.stringify(props.location.state?.addWallet)
       // );
@@ -212,7 +213,7 @@ class Portfolio extends BaseReactComponent {
       shouldYieldOpportunitiesTableLoading: false,
       counterGraphDigit: 3,
       GraphDigit: 3,
-      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+      walletList: JSON.parse(window.localStorage.getItem("addWallet")),
       // Should call block one
       getCurrentTimeUpdater: false,
       shouldCallAssetsAvgCostBasisApi: true,
@@ -255,8 +256,8 @@ class Portfolio extends BaseReactComponent {
       isMobileDevice: false,
       settings,
       id: props.match.params?.id,
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
 
       // page loader
@@ -391,7 +392,7 @@ class Portfolio extends BaseReactComponent {
       currentPage: "Home",
 
       // get currency
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
 
       // Used in transaction history and piechart as props
       assetPrice: null,
@@ -407,13 +408,13 @@ class Portfolio extends BaseReactComponent {
 
       // upgrade plan
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
 
       // get lock token
-      lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
+      lochToken: JSON.parse(window.localStorage.getItem("stopClick")),
 
       // insight
       updatedInsightList: [],
@@ -534,10 +535,10 @@ class Portfolio extends BaseReactComponent {
   };
   // get token
   getToken = () => {
-    let token = window.sessionStorage.getItem("lochToken");
+    let token = window.localStorage.getItem("lochToken");
     if (!this.state.lochToken) {
       this.setState({
-        lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
+        lochToken: JSON.parse(window.localStorage.getItem("stopClick")),
       });
       setTimeout(() => {
         this.getToken();
@@ -545,39 +546,37 @@ class Portfolio extends BaseReactComponent {
     }
 
     if (token !== "jsk") {
-      window.sessionStorage.setItem("stopClick", true);
+      window.localStorage.setItem("stopClick", true);
       let obj = UpgradeTriggered();
-      const onceAddCredit = window.sessionStorage.getItem(
-        "addAddressCreditOnce"
-      );
+      const onceAddCredit = window.localStorage.getItem("addAddressCreditOnce");
       if (onceAddCredit) {
-        window.sessionStorage.removeItem("addAddressCreditOnce");
+        window.localStorage.removeItem("addAddressCreditOnce");
         const addressCreditScore = new URLSearchParams();
         addressCreditScore.append("credits", "address_added");
         this.props.addUserCredits(addressCreditScore);
       }
-      const multipleAddCredit = window.sessionStorage.getItem(
+      const multipleAddCredit = window.localStorage.getItem(
         "addMultipleAddressCreditOnce"
       );
       if (multipleAddCredit) {
-        window.sessionStorage.removeItem("addMultipleAddressCreditOnce");
+        window.localStorage.removeItem("addMultipleAddressCreditOnce");
         const multipleAddressCreditScore = new URLSearchParams();
         multipleAddressCreditScore.append("credits", "multiple_address_added");
         this.props.addUserCredits(multipleAddressCreditScore);
       }
-      const ensCredit = window.sessionStorage.getItem("addEnsCreditOnce");
+      const ensCredit = window.localStorage.getItem("addEnsCreditOnce");
       if (ensCredit) {
-        window.sessionStorage.removeItem("addEnsCreditOnce");
+        window.localStorage.removeItem("addEnsCreditOnce");
         const ensCreditScore = new URLSearchParams();
         ensCreditScore.append("credits", "ens_added");
         this.props.addUserCredits(ensCreditScore);
       }
 
-      const walletCredit = window.sessionStorage.getItem(
+      const walletCredit = window.localStorage.getItem(
         "connectWalletCreditOnce"
       );
       if (walletCredit) {
-        window.sessionStorage.removeItem("connectWalletCreditOnce");
+        window.localStorage.removeItem("connectWalletCreditOnce");
         const walletCreditScore = new URLSearchParams();
         walletCreditScore.append("credits", "wallet_connected");
         this.props.addUserCredits(walletCreditScore);
@@ -609,7 +608,7 @@ class Portfolio extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -645,7 +644,7 @@ class Portfolio extends BaseReactComponent {
   // add wallet modal
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let shareLink = "";
 
     if (userWallet?.length === 1) {
@@ -682,7 +681,7 @@ class Portfolio extends BaseReactComponent {
     }, 900000);
   };
   showAddressesAdded = (passedAddress, passedNameTag, openModal) => {
-    window.sessionStorage.setItem("isFollowingAddress", true);
+    window.localStorage.setItem("isFollowingAddress", true);
     if (openModal) {
       this.afterAddressFollowed(passedAddress);
     }
@@ -698,8 +697,8 @@ class Portfolio extends BaseReactComponent {
 
     // Loops on coins to fetch details of each coin which exist in wallet
     let isFound = false;
-    const tempUserWalletList = window.sessionStorage.getItem("addWallet")
-      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+    const tempUserWalletList = window.localStorage.getItem("addWallet")
+      ? JSON.parse(window.localStorage.getItem("addWallet"))
       : this.state.userWalletList;
     tempUserWalletList?.forEach((wallet, i) => {
       if (wallet.coinFound) {
@@ -739,7 +738,7 @@ class Portfolio extends BaseReactComponent {
       this.props.getExchangeBalances(this, false);
     }
     if (isUpdate) {
-      window.sessionStorage.removeItem("callTheUpdateAPI");
+      window.localStorage.removeItem("callTheUpdateAPI");
     }
     if (!isFound) {
       this.setState({
@@ -751,8 +750,8 @@ class Portfolio extends BaseReactComponent {
   };
   callYieldOppApi = () => {
     let addressList = [];
-    const tempUserWalletList = window.sessionStorage.getItem("addWallet")
-      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+    const tempUserWalletList = window.localStorage.getItem("addWallet")
+      ? JSON.parse(window.localStorage.getItem("addWallet"))
       : this.state.userWalletList;
     tempUserWalletList.map((wallet) => addressList.push(wallet.address));
 
@@ -785,13 +784,12 @@ class Portfolio extends BaseReactComponent {
   };
   callAllApisTwice = () => {
     setTimeout(() => {
-      const shouldRecallApis =
-        window.sessionStorage.getItem("shouldRecallApis");
+      const shouldRecallApis = window.localStorage.getItem("shouldRecallApis");
 
       if (shouldRecallApis === "true") {
         let tempToken = getToken();
         if (!(!tempToken || tempToken === "jsk")) {
-          window.sessionStorage.setItem("callTheUpdateAPI", true);
+          window.localStorage.setItem("callTheUpdateAPI", true);
 
           this.props.portfolioState.walletTotal = 0;
           this.props.portfolioState.chainPortfolio = {};
@@ -801,7 +799,7 @@ class Portfolio extends BaseReactComponent {
           this.props.setPageFlagDefault(true);
         }
       } else if (shouldRecallApis === "false") {
-        window.sessionStorage.removeItem("shouldRecallApis");
+        window.localStorage.removeItem("shouldRecallApis");
 
         this.setState({
           AvgCostLoading: this.state.shouldAvgCostLoading
@@ -845,7 +843,7 @@ class Portfolio extends BaseReactComponent {
         isPremiumUser: isPremiumUser(),
       });
     }, 1000);
-    const isBackFromPayment = window.sessionStorage.getItem(
+    const isBackFromPayment = window.localStorage.getItem(
       "openPaymentOptionsAgain"
     );
     if (isBackFromPayment === "true") {
@@ -854,7 +852,7 @@ class Portfolio extends BaseReactComponent {
           openLochPaymentModalWithOptions: true,
         },
         () => {
-          window.sessionStorage.removeItem("openPaymentOptionsAgain");
+          window.localStorage.removeItem("openPaymentOptionsAgain");
           this.setState({
             isLochPaymentModal: true,
           });
@@ -862,12 +860,12 @@ class Portfolio extends BaseReactComponent {
       );
     }
     this.checkPremium();
-    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     // if (userDetails && userDetails.email) {
-    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //   const shouldOpenNoficationModal = window.localStorage.getItem(
     //     "openHomePaymentModal"
     //   );
-    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //   const isOpenForSearch = window.localStorage.getItem(
     //     "openSearchbarPaymentModal"
     //   );
     //   if (shouldOpenNoficationModal && !isOpenForSearch) {
@@ -903,7 +901,7 @@ class Portfolio extends BaseReactComponent {
         nftTableLoading: false,
       });
     }
-    const passedAddress = window.sessionStorage.getItem("followThisAddress");
+    const passedAddress = window.localStorage.getItem("followThisAddress");
     const tempPathName = this.props.location?.pathname;
     if (
       this.props.yieldOpportunitiesState &&
@@ -941,7 +939,7 @@ class Portfolio extends BaseReactComponent {
           ""
         );
       }, 3500);
-      window.sessionStorage.setItem("followThisAddress", "alreadyAdded");
+      window.localStorage.setItem("followThisAddress", "alreadyAdded");
     }
 
     if (mobileCheck()) {
@@ -1065,14 +1063,14 @@ class Portfolio extends BaseReactComponent {
       },
     });
     // reset redirect stop
-    window.sessionStorage.setItem("stop_redirect", false);
+    window.localStorage.setItem("stop_redirect", false);
 
     // reset discount modal
-    window.sessionStorage.setItem("discountEmail", false);
+    window.localStorage.setItem("discountEmail", false);
 
     // if share link store share id to show upgrade modal
     if (this.props.match.params.id) {
-      window.sessionStorage.setItem("share_id", this.props.match.params.id);
+      window.localStorage.setItem("share_id", this.props.match.params.id);
     }
 
     if (this.props.location.state?.noLoad) {
@@ -1098,18 +1096,18 @@ class Portfolio extends BaseReactComponent {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "portfolioPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("portfolioPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("portfolioPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkPortfolioTimer);
-    window.sessionStorage.removeItem("portfolioPageExpiryTime");
+    window.localStorage.removeItem("portfolioPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -1121,7 +1119,7 @@ class Portfolio extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "portfolioPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -1129,7 +1127,7 @@ class Portfolio extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "portfolioPageExpiryTime"
     );
     if (tempExpiryTime && !mobileCheck()) {
@@ -1265,9 +1263,9 @@ class Portfolio extends BaseReactComponent {
     }
     // Block One
     if (this.props.commonState !== prevProps.commonState) {
-      if (sessionStorage.getItem("replacedOrAddedAddress")) {
+      if (localStorage.getItem("replacedOrAddedAddress")) {
         this.callAllApisTwice();
-        sessionStorage.removeItem("replacedOrAddedAddress");
+        localStorage.removeItem("replacedOrAddedAddress");
       }
     }
     if (prevState.blockOneSelectedItem !== this.state.blockOneSelectedItem) {
@@ -1501,8 +1499,7 @@ class Portfolio extends BaseReactComponent {
     if (
       prevProps.yieldOpportunitiesState !== this.props.yieldOpportunitiesState
     ) {
-      const shouldRecallApis =
-        window.sessionStorage.getItem("shouldRecallApis");
+      const shouldRecallApis = window.localStorage.getItem("shouldRecallApis");
       if (!shouldRecallApis || shouldRecallApis === "false") {
         this.setState({
           yieldOpportunitiesTableLoading: false,
@@ -1558,13 +1555,13 @@ class Portfolio extends BaseReactComponent {
       });
 
       // if wallet address change
-      const tempAddWall = window.sessionStorage.getItem("addWallet");
+      const tempAddWall = window.localStorage.getItem("addWallet");
       if (
         tempAddWall &&
         JSON.parse(tempAddWall) &&
         JSON.parse(tempAddWall)?.length > 0
       ) {
-        let getItem = window.sessionStorage.getItem("callTheUpdateAPI");
+        let getItem = window.localStorage.getItem("callTheUpdateAPI");
         if (getItem === "true") {
           this.callNetworksApi(true);
         } else {
@@ -1633,7 +1630,7 @@ class Portfolio extends BaseReactComponent {
         //   !this.props.commonState.defi
         // ) {
         //   let UserWallet = JSON.parse(
-        //     window.sessionStorage.getItem("addWallet")
+        //     window.localStorage.getItem("addWallet")
         //   );
         //   const allAddresses = [];
         //   UserWallet?.forEach((e) => {
@@ -1838,7 +1835,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       // if share link
       if (this.props.location.state?.addWallet != undefined) {
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "addWallet",
           JSON.stringify(this.props.location.state?.addWallet)
         );
@@ -1909,9 +1906,9 @@ class Portfolio extends BaseReactComponent {
       // }
       // if its true means we ahve store share data and remove token else remove token and call share api
       let gotShareProtfolio = JSON.parse(
-        window.sessionStorage.getItem("gotShareProtfolio")
+        window.localStorage.getItem("gotShareProtfolio")
       );
-      // window.sessionStorage.setItem(
+      // window.localStorage.setItem(
       //   "addWallet",
       //   JSON.stringify(this.props.location.state?.addWallet)
       // );
@@ -1920,14 +1917,12 @@ class Portfolio extends BaseReactComponent {
 
         const searchParams = new URLSearchParams(this.props.location.search);
         const redirectPath = searchParams.get("redirect");
-        window.sessionStorage.setItem("gotShareProtfolio", true);
+        window.localStorage.setItem("gotShareProtfolio", true);
 
-        let redirect = JSON.parse(
-          window.sessionStorage.getItem("ShareRedirect")
-        );
+        let redirect = JSON.parse(window.localStorage.getItem("ShareRedirect"));
         if (!redirect) {
           if (redirectPath) {
-            window.sessionStorage.setItem(
+            window.localStorage.setItem(
               "ShareRedirect",
               JSON.stringify({
                 path: redirectPath,
@@ -1935,7 +1930,7 @@ class Portfolio extends BaseReactComponent {
               })
             );
           } else {
-            window.sessionStorage.setItem(
+            window.localStorage.setItem(
               "ShareRedirect",
               JSON.stringify({
                 path: "home",
@@ -1958,9 +1953,9 @@ class Portfolio extends BaseReactComponent {
           },
         });
       } else {
-        window.sessionStorage.setItem("gotShareProtfolio", false);
+        window.localStorage.setItem("gotShareProtfolio", false);
         // remove redirect urls
-        window.sessionStorage.removeItem("ShareRedirect");
+        window.localStorage.removeItem("ShareRedirect");
 
         if (
           this.props.location?.state?.hash &&
@@ -2012,8 +2007,8 @@ class Portfolio extends BaseReactComponent {
     let ActionType = ASSET_VALUE_GRAPH_DAY;
     this.setState({ graphLoading: true }, () => {
       let addressList = [];
-      const tempUserWalletList = window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      const tempUserWalletList = window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : this.state.userWalletList;
       tempUserWalletList.map((wallet) => addressList.push(wallet.address));
       let data = new URLSearchParams();
@@ -2034,8 +2029,8 @@ class Portfolio extends BaseReactComponent {
   // transaction history table data
   getTableData = () => {
     this.setState({ tableLoading: true });
-    const arr = window.sessionStorage.getItem("addWallet")
-      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+    const arr = window.localStorage.getItem("addWallet")
+      ? JSON.parse(window.localStorage.getItem("addWallet"))
       : this.state.userWalletList;
     let address = arr?.map((wallet) => {
       return wallet.address;
@@ -2048,7 +2043,7 @@ class Portfolio extends BaseReactComponent {
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.setState({
-      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+      walletList: JSON.parse(window.localStorage.getItem("addWallet")),
     });
     let data = new URLSearchParams();
     data.append("start", START_INDEX);
@@ -2538,8 +2533,8 @@ class Portfolio extends BaseReactComponent {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredHomeAssetSignInModal", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredHomeAssetSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState(
@@ -2556,7 +2551,7 @@ class Portfolio extends BaseReactComponent {
     } else {
       const tempArr = ["Profit and Loss with Loch", "Unlimited wallets PnL"];
       setTimeout(() => {
-        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+        window.localStorage.setItem("openHomePaymentModal", tempArr);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -2573,8 +2568,8 @@ class Portfolio extends BaseReactComponent {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredHomeFlowsSignInModal", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredHomeFlowsSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState(
@@ -2592,7 +2587,7 @@ class Portfolio extends BaseReactComponent {
       const tempArr = ["Net Flows with Loch", "Unlimited wallets net flows"];
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+        window.localStorage.setItem("openHomePaymentModal", tempArr);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -2609,8 +2604,8 @@ class Portfolio extends BaseReactComponent {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredHomeYieldOppSignInModal", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredHomeYieldOppSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState(
@@ -2631,7 +2626,7 @@ class Portfolio extends BaseReactComponent {
       ];
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+        window.localStorage.setItem("openHomePaymentModal", tempArr);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -2648,8 +2643,8 @@ class Portfolio extends BaseReactComponent {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredHomeInsightsSignInModal", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredHomeInsightsSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState(
@@ -2670,7 +2665,7 @@ class Portfolio extends BaseReactComponent {
       ];
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+        window.localStorage.setItem("openHomePaymentModal", tempArr);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -2687,8 +2682,8 @@ class Portfolio extends BaseReactComponent {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredHomeGasFeesSignInModal", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredHomeGasFeesSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState(
@@ -2709,7 +2704,7 @@ class Portfolio extends BaseReactComponent {
       ];
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openHomePaymentModal", tempArr);
+        window.localStorage.setItem("openHomePaymentModal", tempArr);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -2963,7 +2958,8 @@ class Portfolio extends BaseReactComponent {
                   email_address: getCurrentUser().email,
                   wallet: slink,
                 });
-                window.open(shareLink, "_blank", "noreferrer");
+                // window.open(shareLink, "_blank", "noreferrer");
+                openAddressInNewTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -3258,7 +3254,8 @@ class Portfolio extends BaseReactComponent {
                   email_address: getCurrentUser().email,
                   wallet: slink,
                 });
-                window.open(shareLink, "_blank", "noreferrer");
+                // window.open(shareLink, "_blank", "noreferrer");
+                openAddressInNewTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -6214,7 +6211,7 @@ class Portfolio extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={window.sessionStorage.getItem("share_id")}
+            isShare={window.localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="portfolio"

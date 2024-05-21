@@ -82,14 +82,14 @@ class InsightsPage extends Component {
       selectedFilter: 1,
 
       // add new wallet
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 9,
@@ -113,7 +113,7 @@ class InsightsPage extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -175,12 +175,12 @@ class InsightsPage extends Component {
   };
   componentDidMount() {
     this.checkPremium();
-    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     // if (userDetails && userDetails.email) {
-    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //   const shouldOpenNoficationModal = window.localStorage.getItem(
     //     "openInsightsPaymentModal"
     //   );
-    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //   const isOpenForSearch = window.localStorage.getItem(
     //     "openSearchbarPaymentModal"
     //   );
     //   if (shouldOpenNoficationModal && !isOpenForSearch) {
@@ -233,18 +233,18 @@ class InsightsPage extends Component {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "insightsPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkInsightsTimer);
-    window.sessionStorage.removeItem("insightsPageExpiryTime");
+    window.localStorage.removeItem("insightsPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -256,7 +256,7 @@ class InsightsPage extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "insightsPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -264,7 +264,7 @@ class InsightsPage extends Component {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "insightsPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -398,7 +398,7 @@ class InsightsPage extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -515,8 +515,8 @@ class InsightsPage extends Component {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredInsightsSignInModal", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredInsightsSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState({
@@ -525,7 +525,7 @@ class InsightsPage extends Component {
     } else {
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openInsightsPaymentModal", true);
+        window.localStorage.setItem("openInsightsPaymentModal", true);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -630,7 +630,7 @@ class InsightsPage extends Component {
                   show={this.state.upgradeModal}
                   onHide={this.upgradeModal}
                   history={this.props.history}
-                  isShare={window.sessionStorage.getItem("share_id")}
+                  isShare={window.localStorage.getItem("share_id")}
                   isStatic={this.state.isStatic}
                   triggerId={this.state.triggerId}
                   pname="insight-page"

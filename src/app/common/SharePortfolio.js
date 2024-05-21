@@ -14,7 +14,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 function SharePortfolio(props) {
   let lochUser = getCurrentUser().id;
   // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-  let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+  let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
   let slink =
     userWallet?.length === 1
       ? userWallet[0].displayAddress || userWallet[0].address
@@ -22,10 +22,10 @@ function SharePortfolio(props) {
   let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=home";
 
   useEffect(() => {
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
 
     return () => {
-      window.sessionStorage.setItem("isPopupActive", false);
+      window.localStorage.setItem("isPopupActive", false);
     };
   }, []);
   return (

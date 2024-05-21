@@ -90,8 +90,8 @@ class RealizedProfitAndLoss extends Component {
       LeftShow: true,
 
       // add new wallet
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -103,7 +103,7 @@ class RealizedProfitAndLoss extends Component {
       selectedActiveBadge: [],
 
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -159,7 +159,7 @@ class RealizedProfitAndLoss extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -209,12 +209,12 @@ class RealizedProfitAndLoss extends Component {
     // if (mobileCheck()) {
     //   this.props.history.push("/home");
     // }
-    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     // if (userDetails && userDetails.email) {
-    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //   const shouldOpenNoficationModal = window.localStorage.getItem(
     //     "openFlowsPaymentModal"
     //   );
-    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //   const isOpenForSearch = window.localStorage.getItem(
     //     "openSearchbarPaymentModal"
     //   );
     //   if (shouldOpenNoficationModal && !isOpenForSearch) {
@@ -236,13 +236,13 @@ class RealizedProfitAndLoss extends Component {
         updatedInsightList: newTempHolder,
       });
     }
-    const tempLeftExplainerClosed = window.sessionStorage.getItem(
+    const tempLeftExplainerClosed = window.localStorage.getItem(
       "netFlowLeftExplainerClosed"
     );
     if (tempLeftExplainerClosed) {
       this.setState({ LeftShow: false });
     }
-    const tempRightExplainerClosed = window.sessionStorage.getItem(
+    const tempRightExplainerClosed = window.localStorage.getItem(
       "netFlowRightExplainerClosed"
     );
     if (tempRightExplainerClosed) {
@@ -468,18 +468,18 @@ class RealizedProfitAndLoss extends Component {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkIntelligenceTimer);
-    window.sessionStorage.removeItem("intelligencePageExpiryTime");
+    window.localStorage.removeItem("intelligencePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -491,7 +491,7 @@ class RealizedProfitAndLoss extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -499,7 +499,7 @@ class RealizedProfitAndLoss extends Component {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -650,7 +650,7 @@ class RealizedProfitAndLoss extends Component {
   };
 
   RightClose = () => {
-    window.sessionStorage.setItem("netFlowRightExplainerClosed", true);
+    window.localStorage.setItem("netFlowRightExplainerClosed", true);
     this.setState({
       RightShow: false,
     });
@@ -662,7 +662,7 @@ class RealizedProfitAndLoss extends Component {
   };
 
   LeftClose = () => {
-    window.sessionStorage.setItem("netFlowLeftExplainerClosed", true);
+    window.localStorage.setItem("netFlowLeftExplainerClosed", true);
     this.setState({
       LeftShow: false,
     });
@@ -700,7 +700,7 @@ class RealizedProfitAndLoss extends Component {
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -722,8 +722,8 @@ class RealizedProfitAndLoss extends Component {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredFlowsSignInModal", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredFlowsSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState({
@@ -732,7 +732,7 @@ class RealizedProfitAndLoss extends Component {
     } else {
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openFlowsPaymentModal", true);
+        window.localStorage.setItem("openFlowsPaymentModal", true);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -854,7 +854,7 @@ class RealizedProfitAndLoss extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
+                isShare={window.localStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="intelligence"

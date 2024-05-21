@@ -92,7 +92,7 @@ class PaywallModal extends BaseReactComponent {
     };
   }
   componentDidMount() {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.setState({
       userDetailsState: userDetails,
     });

@@ -95,7 +95,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-    const walletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const walletList = JSON.parse(window.localStorage.getItem("addWallet"));
     const address = walletList?.map((wallet) => {
       return wallet.address;
     });
@@ -109,7 +109,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
       totalPage: 0,
       //YO
 
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -157,15 +157,15 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         },
       ],
       // add new wallet
-      // userWalletList: window.sessionStorage.getItem("addWallet")
-      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      // userWalletList: window.localStorage.getItem("addWallet")
+      //   ? JSON.parse(window.localStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -191,7 +191,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
   startPageView = () => {
@@ -223,12 +223,12 @@ class YieldOpportunitiesPage extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    // const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     // if (userDetails && userDetails.email) {
-    //   const shouldOpenNoficationModal = window.sessionStorage.getItem(
+    //   const shouldOpenNoficationModal = window.localStorage.getItem(
     //     "openYieldOppPaymentModal"
     //   );
-    //   const isOpenForSearch = window.sessionStorage.getItem(
+    //   const isOpenForSearch = window.localStorage.getItem(
     //     "openSearchbarPaymentModal"
     //   );
     //   if (shouldOpenNoficationModal && !isOpenForSearch) {
@@ -289,21 +289,21 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "transactionHistoryPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       "transactionHistoryPageExpiryTime",
       tempExpiryTime
     );
   };
   endPageView = () => {
     clearInterval(window.checkTransactionHistoryTimer);
-    window.sessionStorage.removeItem("transactionHistoryPageExpiryTime");
+    window.localStorage.removeItem("transactionHistoryPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -315,7 +315,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "transactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -323,7 +323,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "transactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -339,6 +339,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     ) {
       const walletList = this.props.walletState.walletList;
       const tempWalletList = [];
+      console.log("walletList ", walletList);
       if (walletList) {
         walletList.forEach((data) => {
           let tempAddress = "";
@@ -730,7 +731,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -752,8 +753,8 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredYieldOppSignInModal", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredYieldOppSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState({
@@ -762,7 +763,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     } else {
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openYieldOppPaymentModal", true);
+        window.localStorage.setItem("openYieldOppPaymentModal", true);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -823,7 +824,6 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           ? ""
           : "yeildOppYourPortfolioContainer top-l-r-3",
         cell: (rowData, dataKey, rowIndex) => {
-          console.log("rowIndex ", rowIndex);
           if (dataKey === "asset") {
             if (this.state.isPremiumUser || rowIndex === 0) {
               return (
@@ -1256,7 +1256,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
+                isShare={window.localStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"

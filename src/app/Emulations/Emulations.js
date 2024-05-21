@@ -50,6 +50,7 @@ import {
   amountFormat,
   mobileCheck,
   numToCurrency,
+  openAddressInNewTab,
   removeBlurMethods,
   removeSignUpMethods,
   scrollToTop,
@@ -134,8 +135,8 @@ class Emulations extends Component {
       emulationsLoading: true,
       showDust: true,
       connectModal: false,
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -163,7 +164,7 @@ class Emulations extends Component {
       this.removeCopyTradeBtnClickedLocal();
       removeBlurMethods();
       removeSignUpMethods();
-      window.sessionStorage.setItem("blurredCopyTradeAddModal", true);
+      window.localStorage.setItem("blurredCopyTradeAddModal", true);
       this.setState({
         isAddCopyTradeAddress: true,
       });
@@ -208,10 +209,10 @@ class Emulations extends Component {
     this.props.GetAllPlan();
     this.props.getUser();
     this.callEmulationsApi();
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.getAllWalletList();
 
-    let tempHaveUserPaid = window.sessionStorage.getItem(
+    let tempHaveUserPaid = window.localStorage.getItem(
       "haveUserPaidForCopyTrade"
     );
     if (tempHaveUserPaid) {
@@ -225,10 +226,10 @@ class Emulations extends Component {
           userDetailsState: userDetails,
         },
         () => {
-          const isLoginAttmepted = window.sessionStorage.getItem(
+          const isLoginAttmepted = window.localStorage.getItem(
             "copyTradeLoginClicked"
           );
-          const isLoginAttmeptedValue = window.sessionStorage.getItem(
+          const isLoginAttmeptedValue = window.localStorage.getItem(
             "copyTradeLoginClickedValue"
           );
 
@@ -255,7 +256,7 @@ class Emulations extends Component {
     const params = new URLSearchParams(search);
     const isAddTrade = params.get("addTrade");
     if (isAddTrade) {
-      window.sessionStorage.setItem("haveUserPaidForCopyTrade", true);
+      window.localStorage.setItem("haveUserPaidForCopyTrade", true);
       let emailHolder = "";
       let walletHolder = "";
       let amountHolder = 0;
@@ -299,21 +300,21 @@ class Emulations extends Component {
     this.callEmulationsApi();
   };
   addCopyTradeBtnClickedLocal = () => {
-    window.sessionStorage.setItem("copyTradeLoginClicked", true);
+    window.localStorage.setItem("copyTradeLoginClicked", true);
     if (this.state.prefillCopyAddress) {
-      window.sessionStorage.setItem(
+      window.localStorage.setItem(
         "copyTradeLoginClickedValue",
         this.state.prefillCopyAddress
       );
     }
   };
   removeCopyTradeBtnClickedLocal = () => {
-    let isLoginClickedStored = window.sessionStorage.getItem(
+    let isLoginClickedStored = window.localStorage.getItem(
       "copyTradeLoginClicked"
     );
     if (isLoginClickedStored) {
-      window.sessionStorage.removeItem("copyTradeLoginClicked");
-      window.sessionStorage.removeItem("copyTradeLoginClickedValue");
+      window.localStorage.removeItem("copyTradeLoginClicked");
+      window.localStorage.removeItem("copyTradeLoginClickedValue");
     }
   };
   callEmulationsApi = (updatedAddress) => {
@@ -342,7 +343,7 @@ class Emulations extends Component {
       }
 
       if (this.props.emulationsState.paymentStatus) {
-        let tempHaveUserPaid = window.sessionStorage.getItem(
+        let tempHaveUserPaid = window.localStorage.getItem(
           "haveUserPaidForCopyTrade"
         );
 
@@ -422,10 +423,10 @@ class Emulations extends Component {
     }
     if (prevState.isAddCopyTradeAddress !== this.state.isAddCopyTradeAddress) {
       if (this.state.isAddCopyTradeAddress) {
-        window.sessionStorage.setItem("copyTradeModalOpen", true);
+        window.localStorage.setItem("copyTradeModalOpen", true);
       } else {
-        if (window.sessionStorage.getItem("copyTradeModalOpen")) {
-          window.sessionStorage.removeItem("copyTradeModalOpen");
+        if (window.localStorage.getItem("copyTradeModalOpen")) {
+          window.localStorage.removeItem("copyTradeModalOpen");
         }
       }
     }
@@ -448,7 +449,7 @@ class Emulations extends Component {
     }
   }
   getAllWalletList = () => {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails) {
       this.setState({
         userDetailsState: userDetails,
@@ -471,18 +472,18 @@ class Emulations extends Component {
   };
 
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "emulationsPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("emulationsPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("emulationsPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkEmulationsTimer);
-    window.sessionStorage.removeItem("emulationsPageExpiryTime");
+    window.localStorage.removeItem("emulationsPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -494,7 +495,7 @@ class Emulations extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "emulationsPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -503,7 +504,7 @@ class Emulations extends Component {
   };
   componentWillUnmount() {
     this.removeCopyTradeBtnClickedLocal();
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "emulationsPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -573,7 +574,8 @@ class Emulations extends Component {
     let slink = passedAddress;
     let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 
-    window.open(shareLink, "_blank", "noreferrer");
+    // window.open(shareLink, "_blank", "noreferrer");
+    openAddressInNewTab(slink, this.props.setPageFlagDefault);
   };
   newPosBase = () => {
     if (this.state.copyTradesAvailableLocal) {
@@ -1005,7 +1007,8 @@ class Emulations extends Component {
                       email_address: getCurrentUser().email,
                       wallet: slink,
                     });
-                    window.open(shareLink, "_blank", "noreferrer");
+                    // window.open(shareLink, "_blank", "noreferrer");
+                    openAddressInNewTab(slink, this.props.setPageFlagDefault);
                   }
                 }}
                 className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address"
