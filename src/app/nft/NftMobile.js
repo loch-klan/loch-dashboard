@@ -15,7 +15,7 @@ class NFTMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      localLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      localLochUser: JSON.parse(window.localStorage.getItem("lochUser")),
       BlackManIconLoaded: false,
       ShareProfileIconLoaded: false,
       shouldScrollToBottom: false,

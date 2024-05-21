@@ -2,6 +2,8 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  EmultionSidebarIcon,
+  MobileNavCopyTraderIcon,
   MobileNavFollow,
   MobileNavHome,
   MobileNavLeaderboard,
@@ -21,6 +23,7 @@ import {
   ProfileMenu,
   QuickAddWalletAddress,
   SearchBarAddressAdded,
+  SignInModalEmailAdded,
   SignUpModalEmailAdded,
   resetUser,
   signInUser,
@@ -53,12 +56,22 @@ import { addUserCredits, updateUser } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
-import { whichSignUpMethod } from "../../utils/ReusableFunctions.js";
+import {
+  dontOpenLoginPopup,
+  isPremiumUser,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
+  whichSignUpMethod,
+} from "../../utils/ReusableFunctions.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       authmodal: "",
       email: "",
       otp: "",
@@ -66,7 +79,7 @@ class MobileLayout extends BaseReactComponent {
       isReferralCodeStep: false,
       isReferralCodeLoading: false,
       isOptInValid: false,
-      lochUserLocal: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      lochUserLocal: JSON.parse(window.localStorage.getItem("lochUser")),
       confirmLeave: false,
       activeTab: "/home",
       walletInput: [
@@ -103,7 +116,11 @@ class MobileLayout extends BaseReactComponent {
           text: "Leaderboard",
           path: "/home-leaderboard",
         },
-
+        // {
+        //   pageIcon: MobileNavCopyTraderIcon,
+        //   text: "Copy",
+        //   path: "/copy-trade",
+        // },
         {
           pageIcon: MobileNavProfile,
           text: "Profile",
@@ -144,15 +161,13 @@ class MobileLayout extends BaseReactComponent {
         this.state.authmodal !== "login" &&
         this.state.authmodal !== "verify"
       ) {
-        window.sessionStorage.removeItem("fifteenSecSignInModal");
-        window.sessionStorage.removeItem("referralCodesSignInModal");
-        window.sessionStorage.removeItem("lochPointsSignInModal");
+        removeSignUpMethods();
       }
     }
     if (!this.props.commonState?.mobileLayout) {
       this.props.updateWalletListFlag("mobileLayout", true);
       this.setState({
-        lochUserLocal: JSON.parse(window.sessionStorage.getItem("lochUser")),
+        lochUserLocal: JSON.parse(window.localStorage.getItem("lochUser")),
       });
     }
     if (prevState.otp !== this.state.otp) {
@@ -162,6 +177,20 @@ class MobileLayout extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.localStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     // for chain detect
     let activeTab = window.location.pathname;
     if (
@@ -178,17 +207,17 @@ class MobileLayout extends BaseReactComponent {
     }
 
     setTimeout(() => {
-      window.sessionStorage.setItem("fifteenSecSignInModal", true);
+      window.localStorage.setItem("fifteenSecSignInModal", true);
       const dontOpenLoginPopup =
-        window.sessionStorage.getItem("dontOpenLoginPopup");
+        window.localStorage.getItem("dontOpenLoginPopup");
       const lochUserLocalAgain = JSON.parse(
-        window.sessionStorage.getItem("lochUser")
+        window.localStorage.getItem("lochUser")
       );
       if (
         !dontOpenLoginPopup &&
         !(lochUserLocalAgain && lochUserLocalAgain.email)
       ) {
-        window.sessionStorage.setItem("dontOpenLoginPopup", true);
+        window.localStorage.setItem("dontOpenLoginPopup", true);
         this.setState({
           authmodal: "login",
         });
@@ -201,7 +230,7 @@ class MobileLayout extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -215,11 +244,46 @@ class MobileLayout extends BaseReactComponent {
     //   email_address: getCurrentUser().email,
     // });
   };
-
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.localStorage.setItem("openSearchbarPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   handleAddWallet = (replaceAddresses) => {
-    sessionStorage.setItem("replacedOrAddedAddress", true);
+    localStorage.setItem("replacedOrAddedAddress", true);
     if (this.state.goBtnDisabled) {
       return null;
+    }
+    if (!replaceAddresses && !isPremiumUser()) {
+      removeBlurMethods();
+      removeSignUpMethods();
+      window.localStorage.setItem("blurredAddMultipleAddressSignInModal", true);
+      this.goToPayModal();
+      return;
     }
     if (this.state.walletInput[0]) {
       SearchBarAddressAdded({
@@ -235,7 +299,7 @@ class MobileLayout extends BaseReactComponent {
     let addWalletList = [];
 
     if (!replaceAddresses) {
-      addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
       if (addWalletList && addWalletList?.length > 0) {
         addWalletList = addWalletList?.map((e) => {
           return {
@@ -310,7 +374,7 @@ class MobileLayout extends BaseReactComponent {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     // data.append("wallet_addresses", JSON.stringify(arr));
@@ -523,7 +587,7 @@ class MobileLayout extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
       const tempWalletAddress = [value];
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
@@ -592,7 +656,7 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   signOutFun = () => {
-    window.sessionStorage.setItem("refresh", false);
+    window.localStorage.setItem("refresh", false);
     resetUser();
     this.props.setPageFlagDefault();
     this.closeConfirmLeaveModal();
@@ -652,7 +716,7 @@ class MobileLayout extends BaseReactComponent {
       this.props.updateTimer();
     }
     let email_arr = [];
-    let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let data = JSON.parse(window.localStorage.getItem("addWallet"));
     if (data) {
       data.forEach((info) => {
         email_arr.push(info.address);
@@ -696,6 +760,14 @@ class MobileLayout extends BaseReactComponent {
       "email",
       this.state.email ? this.state.email.toLowerCase() : ""
     );
+
+    const signUpMethod = whichSignUpMethod();
+    SignInModalEmailAdded({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      signUpMethod: signUpMethod,
+    });
+
     SendOtp(data, this, true);
   };
   showSignInOtpPage = () => {
@@ -714,7 +786,12 @@ class MobileLayout extends BaseReactComponent {
         ? "generic pop up"
         : this.props.tracking
     );
-    VerifyEmail(data, this);
+    VerifyEmail(
+      data,
+      this,
+      true,
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
   };
   openSignInModal = () => {
     this.setState({
@@ -728,6 +805,7 @@ class MobileLayout extends BaseReactComponent {
   };
 
   render() {
+    let activeTab = window.location.pathname;
     const getTotalAssetValue = () => {
       if (this.props.portfolioState) {
         const tempWallet = this.props.portfolioState.walletTotal
@@ -758,7 +836,17 @@ class MobileLayout extends BaseReactComponent {
             onHide={this.closeConfirmLeaveModal}
           />
         ) : null}
-
+        {this.state.isLochPaymentModal ? (
+          <PaywallModal
+            show={this.state.isLochPaymentModal}
+            onHide={this.hidePaymentModal}
+            redirectLink={BASE_URL_S3 + "/"}
+            title="Aggregate Wallets with Loch"
+            description="Aggregate unlimited wallets"
+            hideBackBtn
+            isMobile
+          />
+        ) : null}
         {this.state.authmodal === "login" ? (
           <LoginMobile
             toggleModal={this.toggleAuthModal}

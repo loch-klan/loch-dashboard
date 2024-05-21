@@ -7,32 +7,39 @@ import {
 
 const labels = ["Inflow", "Outflow", "Net"];
 
-export const getProfitLossAsset = (arr, parentCtx) => {
+export const getProfitLossAsset = (arr, parentCtx, isPremiumUser) => {
   // console.log(arr);
   //   Find total inflows by calculating inflows.totalvolume
   // Find total outflows by calculating outflows.totalvolume
   // Find total fees by calculating fees.totalfees
   // Net would be total outflows+ totalfees-totalinflows
 
-  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+  let currency = JSON.parse(window.localStorage.getItem("currency"));
   let fees = arr?.fees;
 
   let totalFees = 0;
   fees?.map((e) => (totalFees = totalFees + e.total_fees));
 
-  let inFlows = arr?.inflows?.sort((a, b) => b.total_volume - a.total_volume);
+  let inFlows = [];
+  if (arr?.inflows && arr?.inflows.length > 0) {
+    inFlows = arr?.inflows?.sort((a, b) => b.total_volume - a.total_volume);
+  }
 
   // push()
 
   let outFlows = arr?.outflows;
-  outFlows.push({
-    asset: {
-      name: "Fees",
-      color: "#2297DB",
-    },
-    total_volume: totalFees,
-  });
-  outFlows = arr?.outflows?.sort((a, b) => b.total_volume - a.total_volume);
+  if (outFlows) {
+    outFlows.push({
+      asset: {
+        name: "Fees",
+        color: "#2297DB",
+      },
+      total_volume: totalFees,
+    });
+  }
+  if (arr?.outflows && arr?.outflows.length > 0) {
+    outFlows = arr?.outflows?.sort((a, b) => b.total_volume - a.total_volume);
+  }
 
   let totalInflow = 0;
   inFlows?.map((e) => (totalInflow = totalInflow + e.total_volume));
@@ -201,7 +208,11 @@ export const getProfitLossAsset = (arr, parentCtx) => {
           ? "#ffffff"
           : "#000000";
         if (this.x === "Net") {
-          netColor = tooltipData.slice(4, 5)[0]?.color;
+          let newtooltipData = [];
+          if (tooltipData && tooltipData.length > 0) {
+            newtooltipData = tooltipData.slice(4, 5);
+          }
+          netColor = newtooltipData.length > 0 ? newtooltipData[0]?.color : "";
           tooltipData = [];
         }
         // console.log("sorted", tooltipData);
@@ -215,9 +226,11 @@ backdrop-filter: blur(15px);">
                                   this.x
                                 }</b> <b class="inter-display-semi-bold m-l-10" style="color:${
           this.x === "Net" ? netColor : "#ffffff"
-        };">${CurrencyType(false)}${numToCurrency(
+        };"><span class="${
+          isPremiumUser ? "" : "blurred-elements"
+        }" >${CurrencyType(false)}${numToCurrency(
           net_amount * currency?.rate
-        )}</b></div>${
+        )}</span></b></div>${
           tooltipData.length !== 0
             ? `<div class="w-100 mt-3" style="height: 1px; background-color: #E5E5E680;"></div>`
             : ""
@@ -226,7 +239,9 @@ backdrop-filter: blur(15px);">
       tooltipData.length !== 0
         ? tooltipData
             .map((item) => {
-              return `<div class="inter-display-medium f-s-13 w-100 pt-3 px-4">
+              return `<div class="${
+                isPremiumUser ? "" : "blurred-elements"
+              } inter-display-medium f-s-13 w-100 pt-3 px-4">
                                     <span style='width:10px; height: 10px; border-radius: 50%; background-color:${
                                       item.color == modeCOlor ||
                                       ((item.color == "#16182B" ||
@@ -267,18 +282,42 @@ backdrop-filter: blur(15px);">
         name: "One",
         data: [
           {
-            y: topInflow[0]?.total_volume * currency?.rate,
-            color: topInflow[0]?.asset?.color + "4D",
-            borderColor: topInflow[0]?.asset?.color,
+            y:
+              topInflow && topInflow.length > 0
+                ? topInflow[0]?.total_volume * currency?.rate
+                : 0,
+            color:
+              topInflow && topInflow.length > 0
+                ? topInflow[0]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topInflow && topInflow.length > 0
+                ? topInflow[0]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topInflow[0]?.asset?.name,
+            name:
+              topInflow && topInflow.length > 0
+                ? topInflow[0]?.asset?.name
+                : "",
           },
           {
-            y: topOutflow[0]?.total_volume * currency?.rate,
-            color: topOutflow[0]?.asset?.color + "4D",
-            borderColor: topOutflow[0]?.asset?.color,
+            y:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[0]?.total_volume * currency?.rate
+                : 0,
+            color:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[0]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[0]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topOutflow[0]?.asset?.name,
+            name:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[0]?.asset?.name
+                : "",
           },
           {
             y: 0,
@@ -296,18 +335,42 @@ backdrop-filter: blur(15px);">
         name: "Two",
         data: [
           {
-            y: topInflow[1]?.total_volume * currency?.rate,
-            color: topInflow[1]?.asset?.color + "4D",
-            borderColor: topInflow[1]?.asset?.color,
+            y:
+              topInflow && topInflow.length > 0
+                ? topInflow[1]?.total_volume * currency?.rate
+                : 0,
+            color:
+              topInflow && topInflow.length > 0
+                ? topInflow[1]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topInflow && topInflow.length > 0
+                ? topInflow[1]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topInflow[1]?.asset?.name,
+            name:
+              topInflow && topInflow.length > 0
+                ? topInflow[1]?.asset?.name
+                : "",
           },
           {
-            y: topOutflow[1]?.total_volume * currency?.rate,
-            color: topOutflow[1]?.asset?.color + "4D",
-            borderColor: topOutflow[1]?.asset?.color,
+            y:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[1]?.total_volume * currency?.rate
+                : 0,
+            color:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[1]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[1]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topOutflow[1]?.asset?.name,
+            name:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[1]?.asset?.name
+                : "",
           },
           {
             y: 0,
@@ -323,18 +386,42 @@ backdrop-filter: blur(15px);">
         name: "Three",
         data: [
           {
-            y: topInflow[2]?.total_volume * currency?.rate,
-            color: topInflow[2]?.asset?.color + "4D",
-            borderColor: topInflow[2]?.asset?.color,
+            y:
+              topInflow && topInflow.length > 0
+                ? topInflow[2]?.total_volume * currency?.rate
+                : 0,
+            color:
+              topInflow && topInflow.length > 0
+                ? topInflow[2]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topInflow && topInflow.length > 0
+                ? topInflow[2]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topInflow[2]?.asset?.name,
+            name:
+              topInflow && topInflow.length > 0
+                ? topInflow[2]?.asset?.name
+                : "",
           },
           {
-            y: topOutflow[2]?.total_volume * currency?.rate,
-            color: topOutflow[2]?.asset?.color + "4D",
-            borderColor: topOutflow[2]?.asset?.color,
+            y:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[2]?.total_volume * currency?.rate
+                : 0,
+            color:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[2]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[2]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topOutflow[2]?.asset?.name,
+            name:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[2]?.asset?.name
+                : "",
           },
           {
             y: 0,
@@ -350,18 +437,42 @@ backdrop-filter: blur(15px);">
         name: "Four",
         data: [
           {
-            y: topInflow[3]?.total_volume * currency?.rate,
-            color: topInflow[3]?.asset?.color + "4D",
-            borderColor: topInflow[3]?.asset?.color,
+            y:
+              topInflow && topInflow.length > 0
+                ? topInflow[3]?.total_volume * currency?.rate
+                : 0,
+            color:
+              topInflow && topInflow.length > 0
+                ? topInflow[3]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topInflow && topInflow.length > 0
+                ? topInflow[3]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topInflow[3]?.asset?.name,
+            name:
+              topInflow && topInflow.length > 0
+                ? topInflow[3]?.asset?.name
+                : "",
           },
           {
-            y: topOutflow[3]?.total_volume * currency?.rate,
-            color: topOutflow[3]?.asset?.color + "4D",
-            borderColor: topOutflow[3]?.asset?.color,
+            y:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[3]?.total_volume * currency?.rate
+                : 0,
+            color:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[3]?.asset?.color + "4D"
+                : "",
+            borderColor:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[3]?.asset?.color
+                : "",
             borderWidth: 2,
-            name: topOutflow[3]?.asset?.name,
+            name:
+              topOutflow && topOutflow.length > 0
+                ? topOutflow[3]?.asset?.name
+                : "",
           },
           {
             y: 0,
@@ -378,7 +489,7 @@ backdrop-filter: blur(15px);">
         name: "Other",
         data: [
           {
-            y: otherInflow * currency?.rate,
+            y: otherInflow ? otherInflow * currency?.rate : 0,
             color: parentCtx?.props?.darkModeState?.flag
               ? "#CACBCC4D"
               : "#16182B4D",
@@ -389,7 +500,7 @@ backdrop-filter: blur(15px);">
             name: "Other",
           },
           {
-            y: otherOutflow * currency?.rate,
+            y: otherOutflow ? otherOutflow * currency?.rate : 0,
             color: parentCtx?.props?.darkModeState?.flag
               ? "#CACBCC4D"
               : "#16182B4D",

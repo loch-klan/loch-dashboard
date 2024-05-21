@@ -74,7 +74,7 @@ class PieChart2 extends BaseReactComponent {
       isLoading: props.isLoading,
       isFollowingAddress: false,
       showFollowingAddress: true,
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       isChainToggle: false,
       chainList: null,
       assetPrice: null,
@@ -95,11 +95,11 @@ class PieChart2 extends BaseReactComponent {
       timeNumber: null,
       timeUnit: "",
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       defiLoader: false,
 
       // refresh
-      userWalletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+      userWalletList: JSON.parse(window.localStorage.getItem("addWallet")),
       isStopLoading: false,
 
       chainLoader: false,
@@ -113,7 +113,7 @@ class PieChart2 extends BaseReactComponent {
         isMobileDevice: true,
       });
     }
-    const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+    const whatIsIt = window.localStorage.getItem("isFollowingAddress");
 
     if (whatIsIt === "true") {
       this.setState({
@@ -197,7 +197,7 @@ class PieChart2 extends BaseReactComponent {
     });
     let chainList = [];
 
-    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let UserWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let uniquechains = [];
     // console.log("user wallet",UserWallet)
     UserWallet &&
@@ -293,7 +293,7 @@ class PieChart2 extends BaseReactComponent {
     this.setState({
       defiLoader: true,
     });
-    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let UserWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     //  console.log("wallet_address", UserWallet);
 
     if (UserWallet?.length !== 0) {
@@ -337,7 +337,7 @@ class PieChart2 extends BaseReactComponent {
     if (
       prevProps.isAddressFollowedCount !== this.props.isAddressFollowedCount
     ) {
-      const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+      const whatIsIt = window.localStorage.getItem("isFollowingAddress");
 
       if (whatIsIt === "true") {
         this.setState({
@@ -470,7 +470,7 @@ class PieChart2 extends BaseReactComponent {
       //     });
       //   }
       // });
-      let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      let UserWallet = JSON.parse(window.localStorage.getItem("addWallet"));
       let uniquechains = [];
 
       UserWallet &&
@@ -696,7 +696,7 @@ class PieChart2 extends BaseReactComponent {
   getCurrentTime = () => {
     let currentTime = new Date().getTime();
 
-    let prevTime = JSON.parse(window.sessionStorage.getItem("refreshApiTime"));
+    let prevTime = JSON.parse(window.localStorage.getItem("refreshApiTime"));
     // calculate the time difference since the last click
     let timeDiff = prevTime ? currentTime - prevTime : currentTime;
     // console.log(
@@ -766,8 +766,8 @@ class PieChart2 extends BaseReactComponent {
     this.props.portfolioState.yesterdayBalance = 0;
 
     // console.log("Refresh clicked");
-    // window.sessionStorage.setItem("refreshApiTime", currentTime);
-    let userWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    // window.localStorage.setItem("refreshApiTime", currentTime);
+    let userWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
 
     userWalletList?.map((wallet, i) => {
       if (wallet.coinFound) {
@@ -790,7 +790,7 @@ class PieChart2 extends BaseReactComponent {
     // getUserWallet(this);
   };
   addAddressToWatchListFun = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -850,17 +850,17 @@ class PieChart2 extends BaseReactComponent {
   };
   showAddressesAdded = (passedAddress, passedNameTag, openModal) => {
     this.setState({ isFollowingAddress: true });
-    window.sessionStorage.setItem("isFollowingAddress", true);
+    window.localStorage.setItem("isFollowingAddress", true);
     if (this.props.afterAddressFollowed && openModal) {
       this.props.afterAddressFollowed(passedAddress);
     }
   };
   addressDeleted = () => {
     this.setState({ isFollowingAddress: false });
-    window.sessionStorage.setItem("isFollowingAddress", false);
+    window.localStorage.setItem("isFollowingAddress", false);
   };
   isFollowedByUserFun = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -882,7 +882,7 @@ class PieChart2 extends BaseReactComponent {
     }
   };
   showFollowOrNot = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson && listJson.length > 0) {
       if (listJson.length === 1) {
         this.isFollowedByUserFun();
@@ -1169,8 +1169,8 @@ class PieChart2 extends BaseReactComponent {
       ],
     };
 
-    // console.log("wallet address", JSON.parse(window.sessionStorage.getItem("addWallet")))
-    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    // console.log("wallet address", JSON.parse(window.localStorage.getItem("addWallet")))
+    let UserWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let chainList = [];
     let uniqueAddress = [];
     let uniqueList =
@@ -1267,7 +1267,7 @@ class PieChart2 extends BaseReactComponent {
     // console.log("uniquelist", uniqueList);
     const handleShare = () => {
       let lochUser = getCurrentUser().id;
-      let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
       let shareLink = "";
 
       if (userWallet?.length === 1) {

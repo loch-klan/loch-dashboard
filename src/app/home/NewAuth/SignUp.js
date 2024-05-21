@@ -215,7 +215,7 @@ const SignUp = ({
                         : ""
                     }`}
                   >
-                    Sign Up
+                    Sign up
                   </button>
                 </div>
                 <div

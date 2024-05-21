@@ -396,6 +396,7 @@
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
+    text-align: center;
   }
   .table-wrapper {
     flex: 1;
@@ -406,7 +407,8 @@
       height: 45rem;
     }
     .not-found-mini-wrapper {
-      height: 45rem;
+      height: 42rem;
+      padding: 5rem;
     }
   }
 }

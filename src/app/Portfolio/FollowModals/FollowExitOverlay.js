@@ -65,13 +65,13 @@ import { updateUser } from "../../profile/Api";
 class FollowExitOverlay extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
+    const dummyUser = window.localStorage.getItem("lochDummyUser");
     let startDate = moment().subtract(1, "month").toDate();
 
     // console.log("props add", props?.walletaddress);
 
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -167,7 +167,7 @@ class FollowExitOverlay extends BaseReactComponent {
       isCohort: true,
       cohort_name: props.isEdit && props?.headerTitle ? props?.headerTitle : "",
       changeList: props.changeWalletList,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
       upgradeModal: false,
       isStatic: false,
       hidePrevModal: false,
@@ -226,7 +226,7 @@ class FollowExitOverlay extends BaseReactComponent {
         total_unique_address: 0,
         showWarningMsg: false,
         uploadStatus: "Uploading",
-        userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+        userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
       },
       () => {
         // this.setState({
@@ -240,7 +240,7 @@ class FollowExitOverlay extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
     this.props.getAllCoins();
     this.props.getAllParentChains();
     if (this.props.selectExportOption) {
@@ -301,7 +301,7 @@ class FollowExitOverlay extends BaseReactComponent {
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
 
   onDataSelected = () => {
@@ -513,7 +513,10 @@ class FollowExitOverlay extends BaseReactComponent {
       const data = new URLSearchParams();
       data.append("first_name", this.state.firstName);
       data.append("last_name", this.state.lastName);
-      data.append("email", this.state.email);
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       data.append("mobile", this.state.mobileNumber);
       this.props.updateUser(data, this);
     } else {
@@ -535,7 +538,7 @@ class FollowExitOverlay extends BaseReactComponent {
         this.props.updateTimer();
       }
       let email_arr = [];
-      let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      let data = JSON.parse(window.localStorage.getItem("addWallet"));
       if (data) {
         data.map((info) => {
           email_arr.push(info.address);
@@ -599,7 +602,7 @@ class FollowExitOverlay extends BaseReactComponent {
 
   handleExportNow = () => {
     // console.log('Export');
-    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     // console.log("add", addWalletList)
     if (
       addWalletList.length <= this.state.userPlan?.export_address_limit ||
@@ -1770,7 +1773,7 @@ class FollowExitOverlay extends BaseReactComponent {
                             if (this.props.updateTimer) {
                               this.props.updateTimer();
                             }
-                            window.sessionStorage.setItem("refresh", false);
+                            window.localStorage.setItem("refresh", false);
                             this.props.history.push("/welcome");
                           }}
                           style={{ marginLeft: "4rem" }}

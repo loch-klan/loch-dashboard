@@ -496,9 +496,7 @@ class Home extends BaseReactComponent {
         this.setState({
           onboardingShowPrevModal: onboardingUpgradeModalValue,
         });
-        const userDetails = JSON.parse(
-          window.sessionStorage.getItem("lochUser")
-        );
+        const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
         if (userDetails) {
           this.props.history.push("/home");
         }
@@ -589,13 +587,13 @@ class Home extends BaseReactComponent {
       }
     }
     if (creditIsAddress) {
-      window.sessionStorage.setItem("addAddressCreditOnce", true);
+      window.localStorage.setItem("addAddressCreditOnce", true);
       if (addWallet.length > 1) {
-        window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+        window.localStorage.setItem("addMultipleAddressCreditOnce", true);
       }
     }
     if (creditIsEns) {
-      window.sessionStorage.setItem("addEnsCreditOnce", true);
+      window.localStorage.setItem("addEnsCreditOnce", true);
     }
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
@@ -627,7 +625,7 @@ class Home extends BaseReactComponent {
       // try {
       //   const tempRes = await provider.send("eth_requestAccounts", []);
       //   if (tempRes && tempRes.length > 0) {
-      //     window.sessionStorage.setItem("connectWalletCreditOnce", true);
+      //     window.localStorage.setItem("connectWalletCreditOnce", true);
       //     this.addToList(tempRes);
       //   }
       // } catch (error) {
@@ -732,7 +730,7 @@ class Home extends BaseReactComponent {
     );
   };
   callUpdateApi = (passedItem) => {
-    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -773,7 +771,7 @@ class Home extends BaseReactComponent {
         // });
 
         this.props.setMetamaskConnectedReducer(passedItem.address);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "setMetamaskConnectedSessionStorage",
           passedItem.address
         );
@@ -927,9 +925,7 @@ class Home extends BaseReactComponent {
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     // DiscountEmailPage();
-    let isEmailadded = JSON.parse(
-      window.sessionStorage.getItem("discountEmail")
-    );
+    let isEmailadded = JSON.parse(window.localStorage.getItem("discountEmail"));
     if (isEmailadded) {
       this.setState({
         emailAdded: true,
@@ -939,7 +935,7 @@ class Home extends BaseReactComponent {
     const searchParams = new URLSearchParams(this.props.location.search);
     const planId = searchParams.get("plan_id");
     let currencyRates = JSON.parse(
-      window.sessionStorage.getItem("currencyRates")
+      window.localStorage.getItem("currencyRates")
     );
     if (!currencyRates) {
       getAllCurrencyRatesApi();
@@ -957,8 +953,8 @@ class Home extends BaseReactComponent {
     } else {
       if (getToken()) {
         let isStopRedirect =
-          window.sessionStorage.getItem("stop_redirect") &&
-          JSON.parse(window.sessionStorage.getItem("stop_redirect"));
+          window.localStorage.getItem("stop_redirect") &&
+          JSON.parse(window.localStorage.getItem("stop_redirect"));
         if (isStopRedirect) {
           this.props.setPageFlagDefault();
           if (!mobileCheck()) {
@@ -966,8 +962,8 @@ class Home extends BaseReactComponent {
           }
         } else {
           // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
-          let user = window.sessionStorage.getItem("lochUser")
-            ? JSON.parse(window.sessionStorage.getItem("lochUser"))
+          let user = window.localStorage.getItem("lochUser")
+            ? JSON.parse(window.localStorage.getItem("lochUser"))
             : false;
           if (user) {
             this.props.history.push("/home");
@@ -976,14 +972,14 @@ class Home extends BaseReactComponent {
             if (!mobileCheck()) {
               deleteToken();
             }
-            //  window.sessionStorage.setItem("defi_access", true);
-            //  window.sessionStorage.setItem("isPopup", true);
-            //  // window.sessionStorage.setItem("whalepodview", true);
-            //  window.sessionStorage.setItem(
+            //  window.localStorage.setItem("defi_access", true);
+            //  window.localStorage.setItem("isPopup", true);
+            //  // window.localStorage.setItem("whalepodview", true);
+            //  window.localStorage.setItem(
             //    "whalepodview",
             //    JSON.stringify({ access: true, id: "" })
             //  );
-            // window.sessionStorage.setItem(
+            // window.localStorage.setItem(
             //   "isSubmenu",
             //   JSON.stringify({
             //     me: false,
@@ -992,11 +988,9 @@ class Home extends BaseReactComponent {
             //   })
             // );
             setLocalStoraage();
-            let isRefresh = JSON.parse(
-              window.sessionStorage.getItem("refresh")
-            );
+            let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
             if (!isRefresh) {
-              window.sessionStorage.setItem("refresh", true);
+              window.localStorage.setItem("refresh", true);
               window.location.reload(true);
             }
           }
@@ -1006,15 +1000,15 @@ class Home extends BaseReactComponent {
         if (!mobileCheck()) {
           deleteToken();
         }
-        // window.sessionStorage.setItem("defi_access", true);
-        // window.sessionStorage.setItem("isPopup", true);
-        // // window.sessionStorage.setItem("whalepodview", true);
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem("defi_access", true);
+        // window.localStorage.setItem("isPopup", true);
+        // // window.localStorage.setItem("whalepodview", true);
+        // window.localStorage.setItem(
         //   "whalepodview",
         //   JSON.stringify({ access: true, id: "" })
         // );
-        // // window.sessionStorage.setItem("isSubmenu", false);
-        //  window.sessionStorage.setItem(
+        // // window.localStorage.setItem("isSubmenu", false);
+        //  window.localStorage.setItem(
         //    "isSubmenu",
         //    JSON.stringify({
         //      me: false,
@@ -1023,9 +1017,9 @@ class Home extends BaseReactComponent {
         //    })
         //  );
         setLocalStoraage();
-        let isRefresh = JSON.parse(window.sessionStorage.getItem("refresh"));
+        let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
         if (!isRefresh) {
-          window.sessionStorage.setItem("refresh", true);
+          window.localStorage.setItem("refresh", true);
           window.location.reload(true);
         }
       }
@@ -1054,7 +1048,7 @@ class Home extends BaseReactComponent {
       this.setState({
         showEmailPopup: false,
       });
-      window.sessionStorage.setItem("discountEmail", true);
+      window.localStorage.setItem("discountEmail", true);
     }, 2000);
   };
   handleSkip = () => {
@@ -1261,7 +1255,7 @@ class Home extends BaseReactComponent {
             onHide={this.upgradeModal}
             history={this.props.history}
             triggerId={this.state.triggerId}
-            // isShare={window.sessionStorage.getItem("share_id")}
+            // isShare={window.localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             selectedId={this.state.selectedId}
             signinBack={true}

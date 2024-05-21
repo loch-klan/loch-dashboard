@@ -1,9 +1,12 @@
 import amplitude from "amplitude-js";
 import Mixpanel from "mixpanel-browser";
 import { deleteToken } from "./ManageToken";
-import { mobileCheck } from "./ReusableFunctions";
+import { mobileCheck, whichBlurMethod } from "./ReusableFunctions";
 
 //Api Config
+export const initAmplitudeAnalytics = () => {
+  amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
+};
 export const initAmplitude = () => {
   // amplitude.getInstance().init(process.env.REACT_APP_AMPLITUDE_KEY);
   Mixpanel.init(process.env.REACT_APP_MIXPANEL_KEY, {
@@ -23,13 +26,16 @@ export const initAmplitude = () => {
 // send Aplitude Data
 export const sendAmplitudeData = (eventType, eventProperties) => {
   // amplitude.getInstance().logEvent(eventType, eventProperties);
-  let baseToken = window.sessionStorage.getItem("baseToken");
+  let baseToken = window.localStorage.getItem("baseToken");
   let newEventProperties = {
     ...eventProperties,
     access_code: baseToken,
     isMobile: mobileCheck(),
   };
   Mixpanel.track(eventType, newEventProperties);
+  if (amplitude.getInstance()) {
+    amplitude.getInstance().logEvent(eventType, newEventProperties);
+  }
 };
 
 export const signInUser = ({
@@ -1651,6 +1657,15 @@ export const UserCreditGoClickedMP = ({ session_id, email_address, task }) => {
     "session id": session_id,
     "email address": email_address,
     task: task,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Profile:first name added");
+};
+export const UpgradeBannerClicked = ({ session_id, email_address }) => {
+  const event_name = "Profile: Loch premium banner: upgrade clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
   };
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Profile:first name added");
@@ -6034,6 +6049,68 @@ export const CopyTradeCopiedWalletClicked = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CopyTradePopularAccountWalletClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: Popular accounts to copy: wallet clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePopularAccountCopyClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: Popular accounts to copy: copy clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayWallOpen = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayWallOptionsOpen = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: Pay options: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayCryptoPayment = ({ session_id, email_address }) => {
+  const event_name = "Copy Trade: Paywall: Pay options: crypto payment clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradePayCreditCardPayment = ({
+  session_id,
+  email_address,
+}) => {
+  const event_name =
+    "Copy Trade: Paywall: Pay options: credit card payment clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const CopyTradeAvailableCopiedWalletClicked = ({
   session_id,
   email_address,
@@ -6907,6 +6984,120 @@ export const LochPointsLoginModalOpen = ({ session_id, email_address }) => {
   const eventProperties = {
     "session id": session_id,
     "email added": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PaymentSuccessfulMP = ({
+  session_id,
+  email_address,
+  paymentMethod,
+}) => {
+  const event_name = "Fremium: Pay: payment successful";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    paymentMethod: paymentMethod,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PaymentCanceldMP = ({
+  session_id,
+  email_address,
+  paymentMethod,
+}) => {
+  const event_name = "Fremium: Pay: payment canceled";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    paymentMethod: paymentMethod,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalPay = ({
+  session_id,
+  email_address,
+  path,
+  paymentMethod,
+}) => {
+  const event_name = "Fremium: Pay Modal: pay initiated";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: whichBlurMethod(),
+    paymentMethod: paymentMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalOpened = ({ session_id, email_address, path }) => {
+  const event_name = "Fremium: Pay Modal: open";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalClosed = ({ session_id, email_address, path }) => {
+  const event_name = "Fremium: Pay Modal: close";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalUpgrade = ({ session_id, email_address, path }) => {
+  const event_name = "Fremium: Pay Modal: upgrade tab";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalUpgradeBack = ({ session_id, email_address, path }) => {
+  const event_name = "Fremium: Pay Modal: upgrade tab: go back";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalUpgradeClose = ({ session_id, email_address, path }) => {
+  const event_name = "Fremium: Pay Modal: upgrade tab: close";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SignInModalEmailAdded = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign in: email added";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    signUpMethod: signUpMethod,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SignInModalOTPverified = ({
+  session_id,
+  email_address,
+  signUpMethod,
+}) => {
+  const event_name = "Inside: Sign in: otp verified";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    signUpMethod: signUpMethod,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
