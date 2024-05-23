@@ -19,6 +19,7 @@ function CustomOverlay({
   heading,
   subHeading,
   showNetflowExplainers,
+  copyTradeMobile,
 }) {
   const renderTooltip = (props) => (
     // <Tooltip className={isText ? "text-tooltip-container" : "op-100 tool-tip-container"} id="button-tooltip" {...props}></Tooltip>
@@ -92,6 +93,56 @@ function CustomOverlay({
                     Outflows - Inflows
                   </p>
                 </div>
+              </div>
+            </div>
+          ) : copyTradeMobile ? (
+            <div
+              className={`${isText ? "text-tooltip" : "button-tooltip"} ${
+                isLeftText ? "text-left" : ""
+              }`}
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              <div
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                Loch’s copy trader will email you when
+              </div>
+              <div
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                the underlying wallet makes a swap.
+              </div>
+              <div
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                We’ll calculate the equivalent swap amount
+              </div>
+              <div
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                relative to your portfolio. Use your own
+              </div>
+              <div
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                judgment to decide if you want to
+              </div>
+              <div
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                execute the copy trade or not.
               </div>
             </div>
           ) : heading ? (

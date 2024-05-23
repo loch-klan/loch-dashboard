@@ -42,6 +42,7 @@ import {
   UserCreditScrollRightArrowIcon,
   UserCreditScrollTopArrowIcon,
 } from "../../assets/images/icons/index.js";
+import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
@@ -190,7 +191,9 @@ class Emulations extends Component {
       prefillCopyAddress: undefined,
       isAvailableCopyTradeBlockOpen: true,
       isRejectModal: false,
+      isCancelModal: false,
       executeCopyTradeId: undefined,
+      cancelCopyTradeId: undefined,
       isExecuteCopyTrade: false,
       isPopularLeftArrowDisabled: true,
       isPopularRightArrowDisabled: false,
@@ -589,6 +592,18 @@ class Emulations extends Component {
     this.setState({
       isRejectModal: false,
       executeCopyTradeId: undefined,
+    });
+  };
+  openCancelModal = (tradeId) => {
+    this.setState({
+      isCancelModal: true,
+      cancelCopyTradeId: tradeId,
+    });
+  };
+  closeCancelModal = () => {
+    this.setState({
+      isCancelModal: false,
+      cancelCopyTradeId: undefined,
     });
   };
   executeRejectModal = () => {
@@ -1182,6 +1197,38 @@ class Emulations extends Component {
           }
         },
       },
+      {
+        labelName: (
+          <div className="history-table-header-col" id="CancelCopyTrade">
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Cancel
+            </span>
+          </div>
+        ),
+        dataKey: "CancelCopyTrade",
+
+        coumnWidth: 0.25,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "CancelCopyTrade") {
+            const deleteThisAddress = () => {
+              this.openCancelModal();
+            };
+            return (
+              <div
+                className="copyTraderDeleteContainer"
+                onClick={deleteThisAddress}
+              >
+                <Image
+                  style={{ height: "2rem", width: "2rem" }}
+                  src={DeleteIcon}
+                  className="copyTraderDelete"
+                />
+              </div>
+            );
+          }
+        },
+      },
     ];
     if (mobileCheck()) {
       return (
@@ -1202,7 +1249,31 @@ class Emulations extends Component {
               isMobile
             />
           ) : null}
+          {this.state.isRejectModal ? (
+            <BasicConfirmModal
+              show={this.state.isRejectModal}
+              history={this.props.history}
+              handleClose={this.closeRejectModal}
+              handleYes={this.executeRejectModal}
+              title="Are you sure you want to reject this trade?"
+              isMobile
+            />
+          ) : null}
+          {this.state.isCancelModal ? (
+            <BasicConfirmModal
+              show={this.state.isCancelModal}
+              history={this.props.history}
+              handleClose={this.closeCancelModal}
+              handleYes={this.closeCancelModal}
+              title="Are you sure you want to cancel this trade?"
+              isMobile
+            />
+          ) : null}
+
           <EmulationsMobile
+            title="Copy Trade"
+            subTitle="Don’t be someone else’s exit liquidity. Use our copy trader to enter and exit safety"
+            hoverText="Loch’s copy trader will email you when the underlying wallet makes a swap. We’ll calculate the equivalent swap amount relative to your portfolio. Use your own judgment to decide if you want to execute the copy trade or not."
             copyPopularAddress={this.copyPopularAddress}
             addCopyTradeBtnClickedLocal={this.addCopyTradeBtnClickedLocal}
             userDetailsState={this.state.userDetailsState}
@@ -1264,8 +1335,10 @@ class Emulations extends Component {
             confirmOrRejectCopyTrade={this.confirmOrRejectCopyTrade}
             goToNewAddress={this.goToNewAddress}
             executeCopyTradeId={this.state.executeCopyTradeId}
+            cancelCopyTradeId={this.state.cancelCopyTradeId}
             paymentStatusLocal={this.state.paymentStatusLocal}
             isRejectModal={this.state.isRejectModal}
+            isCancelModal={this.state.isCancelModal}
             openPayModal={this.openPayModal}
             closeRejectModal={this.closeRejectModal}
             openRejectModal={this.openRejectModal}
@@ -1369,6 +1442,15 @@ class Emulations extends Component {
                 title="Are you sure you want to reject this trade?"
               />
             ) : null}
+            {this.state.isCancelModal ? (
+              <BasicConfirmModal
+                show={this.state.isCancelModal}
+                history={this.props.history}
+                handleClose={this.closeCancelModal}
+                handleYes={this.closeCancelModal}
+                title="Are you sure you want to cancel this trade?"
+              />
+            ) : null}
             {this.state.addModal && (
               <FixAddModal
                 show={this.state.addModal}
@@ -1388,7 +1470,8 @@ class Emulations extends Component {
 
             <PageHeader
               title="Copy Trade"
-              subTitle="All the wallet addresses you have copied"
+              subTitle="Don’t be someone else’s exit liquidity. Use our copy trader to enter and exit safety"
+              hoverText="Loch’s copy trader will email you when the underlying wallet makes a swap. We’ll calculate the equivalent swap amount relative to your portfolio. Use your own judgment to decide if you want to execute the copy trade or not."
               btnText="Add copy trade"
               mainThemeBtn
               currentPage={"copy-trade"}

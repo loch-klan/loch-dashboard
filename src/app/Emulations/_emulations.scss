@@ -1117,3 +1117,13 @@
     }
   }
 }
+.copyTraderDeleteContainer {
+  cursor: pointer;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  .copyTraderDelete {
+    &:hover {
+      filter: var(--hoverBrightnessValue);
+    }
+  }
+}

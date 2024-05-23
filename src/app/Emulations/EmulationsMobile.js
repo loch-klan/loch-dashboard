@@ -12,10 +12,8 @@ import {
   UserCreditScrollRightArrowIcon,
   UserCreditScrollTopArrowIcon,
 } from "../../assets/images/icons";
-import {
-  CopyTradePopularAccountCopyClicked,
-  CopyTradePopularAccountWalletClicked,
-} from "../../utils/AnalyticsFunctions";
+import { CopyTradePopularAccountWalletClicked } from "../../utils/AnalyticsFunctions";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
@@ -24,7 +22,6 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import { SendOtp, VerifyEmail } from "../common/Api";
-import BasicConfirmModal from "../common/BasicConfirmModal";
 import Loading from "../common/Loading";
 import LoginMobile from "../home/NewAuth/LoginMobile";
 import RedirectMobile from "../home/NewAuth/RedirectMobile";
@@ -34,6 +31,7 @@ import TransactionTable from "../intelligence/TransactionTable";
 import { signUpWelcome, verifyUser } from "../onboarding/Api";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal";
 import EmulationsTradeModal from "./EmulationsTradeModal";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -146,16 +144,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             executeCopyTradeId={this.props.executeCopyTradeId}
           />
         ) : null}
-        {this.props.isRejectModal ? (
-          <BasicConfirmModal
-            show={this.props.isRejectModal}
-            history={this.props.history}
-            handleClose={this.props.closeRejectModal}
-            handleYes={this.props.executeRejectModal}
-            title="Are you sure you want to reject this trade?"
-            isMobile
-          />
-        ) : null}
+
         {this.state.authmodal == "login" ? (
           // <SmartMoneyMobileModalContainer
           // onHide={this.toggleAuthModal}
@@ -209,7 +198,31 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
         <div className="mobile-header-container-parent">
           <div className="mobile-header-container">
             <h4>Copy Trade</h4>
-            <p>All the wallet addresses you have copied</p>
+
+            <p>
+              {this.props.subTitle}{" "}
+              <span>
+                <CustomOverlay
+                  position="bottom"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={this.props.hoverText}
+                  className={"fix-width tool-tip-container-bottom-arrow"}
+                  copyTradeMobile
+                >
+                  <Image
+                    src={InfoIcon}
+                    className="info-icon"
+                    style={{
+                      width: "1.6rem",
+                      marginTop: "-3px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </CustomOverlay>
+              </span>
+            </p>
           </div>
           <div
             onClick={this.props.showAddCopyTradeAddress}

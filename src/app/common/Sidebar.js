@@ -91,7 +91,6 @@ import {
 } from "../../utils/ReusableFunctions.js";
 import ConnectModal from "./ConnectModal.js";
 import ExitOverlay from "./ExitOverlay";
-import { Helmet } from "react-helmet";
 
 function Sidebar(props) {
   // console.log('props',props);
@@ -758,9 +757,6 @@ function Sidebar(props) {
           props.isSidebarClosed ? "sidebar-section-closed" : ""
         }`}
       >
-        <Helmet>
-          <meta property="og:image" content="/sharing-thumbnailTwo.png" />
-        </Helmet>
         {isDarkMode ? (
           <span
             onClick={handleDarkMode}
