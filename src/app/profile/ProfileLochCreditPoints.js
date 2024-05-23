@@ -78,8 +78,8 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     }
     removeBlurMethods();
     removeSignUpMethods();
-    window.sessionStorage.setItem("blurredSubscribeToPremiumLochPoint", true);
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    window.localStorage.setItem("blurredSubscribeToPremiumLochPoint", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState({
@@ -88,7 +88,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     } else {
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openInsightsPaymentModal", true);
+        window.localStorage.setItem("openInsightsPaymentModal", true);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -194,11 +194,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     this.setState({
       loading: true,
     });
-    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     this.props.getUserCredits(this, isLochUser);
   }
   lochPointsLoginBtnClickedLocal = () => {
-    window.sessionStorage.setItem("lochPointsProfileLoginClicked", true);
+    window.localStorage.setItem("lochPointsProfileLoginClicked", true);
   };
   openLoginBlock = () => {
     LochPointsLoginModalOpen({
@@ -206,7 +206,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
 
-    window.sessionStorage.setItem("lochPointsSignInModal", true);
+    window.localStorage.setItem("lochPointsSignInModal", true);
     if (
       document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")
     ) {

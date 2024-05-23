@@ -68,10 +68,10 @@ import ProfileMobile from "./ProfileMobile";
 class Profile extends Component {
   constructor(props) {
     super(props);
-    const Plans = JSON.parse(window.sessionStorage.getItem("Plans"));
+    const Plans = JSON.parse(window.localStorage.getItem("Plans"));
     let selectedPlan = {};
     let userPlan =
-      JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free";
+      JSON.parse(window.localStorage.getItem("currentPlan")) || "Free";
     Plans?.map((plan) => {
       if (plan.name === userPlan.name) {
         let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
@@ -153,8 +153,8 @@ class Profile extends Component {
       isInputFocused: false,
       isMobileDevice: false,
       codesLeftToUse: false,
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -215,7 +215,7 @@ class Profile extends Component {
         isMobileDevice: true,
       });
     }
-    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (isLochUser) {
       this.setState({
         lochUser: isLochUser,
@@ -250,14 +250,12 @@ class Profile extends Component {
       this.props.updateWalletListFlag("profilePage", true);
       this.props.GetAllPlan();
       this.props.getUser();
-      const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
       if (isLochUser && isLochUser.email) {
         this.props.getReferallCodes();
       }
       setTimeout(() => {
-        const isLochUser = JSON.parse(
-          window.sessionStorage.getItem("lochUser")
-        );
+        const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
         if (isLochUser) {
           this.setState({
             lochUser: isLochUser,
@@ -278,18 +276,18 @@ class Profile extends Component {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "profilePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("profilePageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("profilePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkProfileTimer);
-    window.sessionStorage.removeItem("profilePageExpiryTime");
+    window.localStorage.removeItem("profilePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -301,17 +299,13 @@ class Profile extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
-      "profilePageExpiryTime"
-    );
+    const tempExpiryTime = window.localStorage.getItem("profilePageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
-      "profilePageExpiryTime"
-    );
+    const tempExpiryTime = window.localStorage.getItem("profilePageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -319,7 +313,7 @@ class Profile extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -350,7 +344,7 @@ class Profile extends Component {
     if (this.state.lochUser && this.state.lochUser.email) {
       this.props.history.push("/profile/referral-codes");
     } else {
-      window.sessionStorage.setItem("referralCodesSignInModal", true);
+      window.localStorage.setItem("referralCodesSignInModal", true);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
         this.dontOpenLoginPopup();
@@ -361,7 +355,7 @@ class Profile extends Component {
     }
   };
   dontOpenLoginPopup = () => {
-    window.sessionStorage.setItem("dontOpenLoginPopup", true);
+    window.localStorage.setItem("dontOpenLoginPopup", true);
   };
   showFocusedInput = () => {
     this.setState({
@@ -400,7 +394,7 @@ class Profile extends Component {
     });
   };
   upgradeNowBtnClick = () => {
-    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (isLochUser && isLochUser.email) {
       UpgradeBannerClicked({
         session_id: getCurrentUser ? getCurrentUser()?.id : "",
@@ -408,7 +402,7 @@ class Profile extends Component {
       });
       this.showPaymentModal();
     } else {
-      window.sessionStorage.setItem(
+      window.localStorage.setItem(
         "upgradePremiumProfileBannerSignInModal",
         true
       );
@@ -694,7 +688,7 @@ class Profile extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
+                isShare={window.localStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={0}
                 pname="profile"

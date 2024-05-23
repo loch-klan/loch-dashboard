@@ -12,14 +12,34 @@ import {
 import Wallet from "../wallet/Wallet";
 import ProfileForm from "./ProfileForm";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
+import LeaveBlackIcon from "../../assets/images/icons/LeaveBlackIcon.svg";
+import { resetUser } from "../../utils/AnalyticsFunctions";
+import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal";
 
 class ProfileMobile extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      confirmLeave: false,
+    };
   }
-
+  openConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: true,
+    });
+  };
+  closeConfirmLeaveModal = () => {
+    this.setState({
+      confirmLeave: false,
+    });
+  };
+  handleSignOutWelcome = () => {
+    resetUser(true);
+    setTimeout(() => {
+      this.props.history.push("/welcome");
+    }, 500);
+  };
   render() {
     return (
       <div className="profile-page-section profile-page-mobile">
@@ -160,6 +180,28 @@ class ProfileMobile extends Component {
             </div>
             <ProfileForm userDetails={this.props.lochUser} />
           </div>
+          {this.state.confirmLeave ? (
+            <SmartMoneyMobileSignOutModal
+              onSignOut={this.handleSignOutWelcome}
+              onHide={this.closeConfirmLeaveModal}
+            />
+          ) : null}
+          {this.props.lochUser && this.props.lochUser.email ? (
+            <div
+              onClick={this.openConfirmLeaveModal}
+              className="profile-section-referall-code-btn"
+              style={{
+                marginTop: "-1.5rem",
+              }}
+            >
+              <div className="psrcb-left">
+                <div className="inter-display-medium psrcb-text">Sign out</div>
+              </div>
+              <div className="psrcb-right">
+                <Image className="psrcb-arrow-icon" src={LeaveBlackIcon} />
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
     );

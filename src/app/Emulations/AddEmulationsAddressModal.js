@@ -77,7 +77,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
     this.props.getAllParentChains();
     // Set Metamask connected
 
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       this.setState({
         notificationEmailAddress: userDetails.email,
@@ -342,7 +342,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
   };
 
   btnClickFunctionPass = () => {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       if (!isPremiumUser()) {
         let emailHolder = "";

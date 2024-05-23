@@ -26,7 +26,7 @@ export const initAmplitude = () => {
 // send Aplitude Data
 export const sendAmplitudeData = (eventType, eventProperties) => {
   // amplitude.getInstance().logEvent(eventType, eventProperties);
-  let baseToken = window.sessionStorage.getItem("baseToken");
+  let baseToken = window.localStorage.getItem("baseToken");
   let newEventProperties = {
     ...eventProperties,
     access_code: baseToken,
@@ -5986,6 +5986,19 @@ export const CopyTradeAddCopyTrade = ({ session_id, email_address }) => {
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Costs: share");
 };
+export const CopyTradePopularAccountCopyClicked = ({
+  session_id,
+  email_address,
+  wallet,
+}) => {
+  const event_name = "Copy Trade: Popular accounts to copy: copy clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const CopyTradePopupEmailAdded = ({ session_id, email_added }) => {
   const event_name = "Copy Trade sign in pop up: email added";
   const eventProperties = {
@@ -6055,19 +6068,6 @@ export const CopyTradePopularAccountWalletClicked = ({
   wallet,
 }) => {
   const event_name = "Copy Trade: Popular accounts to copy: wallet clicked";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    wallet: wallet,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-};
-export const CopyTradePopularAccountCopyClicked = ({
-  session_id,
-  email_address,
-  wallet,
-}) => {
-  const event_name = "Copy Trade: Popular accounts to copy: copy clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,

@@ -19,6 +19,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  openAddressInNewTab,
   scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
@@ -101,7 +102,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       blurTable: true,
       addSmartMoneyAddressModal: false,
       pageLimit: 1,
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -141,14 +142,14 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       ],
       showDust: false,
       // add new wallet
-      // userWalletList: window.sessionStorage.getItem("addWallet")
-      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      // userWalletList: window.localStorage.getItem("addWallet")
+      //   ? JSON.parse(window.localStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -159,9 +160,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
       // this is used in chain detect api to check it call from top accout or not
       topAccountPage: true,
-      walletInput: [
-        JSON.parse(window.sessionStorage.getItem("previewAddress")),
-      ],
+      walletInput: [JSON.parse(window.localStorage.getItem("previewAddress"))],
       goToBottom: false,
 
       showClickSignInText: false,
@@ -209,7 +208,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -257,8 +256,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     //   this.props.history.push("/home");
     // }
     getAllCurrencyRatesApi();
-    let token = window.sessionStorage.getItem("lochToken");
-    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let token = window.localStorage.getItem("lochToken");
+    let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
 
     if (token && lochUser && lochUser.email) {
       this.setState({
@@ -282,7 +281,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         });
       }
     }
-    // window.sessionStorage.setItem("previewAddress", "");
+    // window.localStorage.setItem("previewAddress", "");
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -296,18 +295,18 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     this.updateTimer(true);
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "smartMoneyPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkSmartMoneyTimer);
-    window.sessionStorage.removeItem("smartMoneyPageExpiryTime");
+    window.localStorage.removeItem("smartMoneyPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -320,7 +319,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "smartMoneyPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -328,7 +327,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "smartMoneyPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -378,9 +377,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       this.callApi(this.state.currentPage || START_INDEX);
     }
     if (!this.props.commonState.smart_money) {
-      let token = window.sessionStorage.getItem("lochToken");
+      let token = window.localStorage.getItem("lochToken");
       this.props.updateWalletListFlag("smart_money", true);
-      let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
       if (token && lochUser && lochUser.email) {
         this.setState({
           blurTable: false,
@@ -413,9 +412,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-    if (!this.state.currency && window.sessionStorage.getItem("currency")) {
+    if (!this.state.currency && window.localStorage.getItem("currency")) {
       this.setState({
-        currency: JSON.parse(window.sessionStorage.getItem("currency")),
+        currency: JSON.parse(window.localStorage.getItem("currency")),
       });
     }
     if (
@@ -716,11 +715,11 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       tempWatchListata.append("remarks", "");
       tempWatchListata.append("name_tag", tagName);
       this.props.updateAddToWatchList(tempWatchListata);
-      const tempIsModalPopuRemoved = window.sessionStorage.getItem(
+      const tempIsModalPopuRemoved = window.localStorage.getItem(
         "smartMoneyMobilePopupModal"
       );
       if (!tempIsModalPopuRemoved) {
-        window.sessionStorage.setItem("smartMoneyMobilePopupModal", "true");
+        window.localStorage.setItem("smartMoneyMobilePopupModal", "true");
         this.setState({
           mobilePopupModal: true,
         });
@@ -764,6 +763,14 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     });
     let shareLink = BASE_URL_S3 + "leaderboard";
     this.copyTextToClipboard(shareLink);
+  };
+  goToAddress = (slink) => {
+    SmartMoneyWalletClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      wallet: slink,
+    });
+    openAddressInNewTab(slink, this.props.setPageFlagDefault);
   };
   render() {
     const tableData = this.state.accountList;
@@ -835,16 +842,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             return (
               <span
                 onClick={() => {
-                  let slink = rowData.account;
-                  let shareLink =
-                    BASE_URL_S3 + "home/" + slink + "?noPopup=true";
-
-                  SmartMoneyWalletClicked({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    wallet: slink,
-                  });
-                  window.open(shareLink, "_blank", "noreferrer");
+                  this.goToAddress(rowData.account);
                 }}
                 className="top-account-address table-data-font"
               >
@@ -1184,6 +1182,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       return (
         <MobileLayout hideFooter history={this.props.history} hideAddresses>
           <HomeSmartMoneyMobile
+            goToAddress={this.goToAddress}
             accountList={this.state.accountList}
             currency={this.state.currency}
             handleFollowUnfollow={this.handleFollowUnfollow}
@@ -1334,7 +1333,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   show={this.state.upgradeModal}
                   onHide={this.upgradeModal}
                   history={this.props.history}
-                  isShare={window.sessionStorage.getItem("share_id")}
+                  isShare={window.localStorage.getItem("share_id")}
                   isStatic={this.state.isStatic}
                   triggerId={this.state.triggerId}
                   pname="treansaction history"

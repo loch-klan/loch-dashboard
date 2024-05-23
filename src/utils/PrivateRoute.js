@@ -15,11 +15,11 @@ import {
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
   const toggleSideBar = () => {
-    window.sessionStorage.setItem("isSidebarClosed", !isSidebarClosed);
+    window.localStorage.setItem("isSidebarClosed", !isSidebarClosed);
     setIsSidebarClosed(!isSidebarClosed);
   };
   useEffect(() => {
-    const isSidebarClosed = window.sessionStorage.getItem("isSidebarClosed");
+    const isSidebarClosed = window.localStorage.getItem("isSidebarClosed");
     if (isSidebarClosed === "true") {
       setIsSidebarClosed(true);
     } else {
@@ -33,7 +33,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 
       if (isSmall && isSmall.matches) {
         setIsSidebarClosed(true);
-        window.sessionStorage.setItem("isSidebarClosed", true);
+        window.localStorage.setItem("isSidebarClosed", true);
       } else {
         // setIsSidebarClosed(false);
       }
@@ -97,7 +97,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         const transHistorySorts = searchParams.get("transHistorySorts");
         const followThisAddressInLink = searchParams.get("followThisAddress");
         if (noPopupFlag === "true") {
-          window.sessionStorage.setItem("noPopupFlag", true);
+          window.localStorage.setItem("noPopupFlag", true);
         }
         let linkAddress = "";
 
@@ -107,30 +107,24 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               "/wallet/",
               ""
             );
-            window.sessionStorage.setItem("urlWasWallet", true);
+            window.localStorage.setItem("urlWasWallet", true);
             linkAddress = justAddress;
           } else {
-            const wasWalletBefore =
-              window.sessionStorage.getItem("urlWasWallet");
+            const wasWalletBefore = window.localStorage.getItem("urlWasWallet");
             const justAddress = props.location?.pathname.replace("/home/", "");
             linkAddress = justAddress;
             if (!wasWalletBefore) {
-              if (!window.sessionStorage.getItem("followThisAddress")) {
+              if (!window.localStorage.getItem("followThisAddress")) {
                 const noPopupFlagLastTime =
-                  window.sessionStorage.getItem("noPopupFlag");
+                  window.localStorage.getItem("noPopupFlag");
                 if (noPopupFlag !== "true" && noPopupFlagLastTime !== "true") {
-                  window.sessionStorage.setItem(
-                    "followThisAddress",
-                    linkAddress
-                  );
+                  window.localStorage.setItem("followThisAddress", linkAddress);
                 }
               }
             }
           }
         }
-        let redirect = JSON.parse(
-          window.sessionStorage.getItem("ShareRedirect")
-        );
+        let redirect = JSON.parse(window.localStorage.getItem("ShareRedirect"));
 
         if (!redirect) {
           if (redirectPath) {
@@ -138,12 +132,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             console.log("linkAddress ", linkAddress);
             if (redirectPath === "copy-trade-share") {
               redirectPath = "copy-trade";
-              window.sessionStorage.setItem(
+              window.localStorage.setItem(
                 "openCopyTradeModalFromLink",
                 linkAddress
               );
             }
-            window.sessionStorage.setItem(
+            window.localStorage.setItem(
               "ShareRedirect",
               JSON.stringify({
                 path: redirectPath,
@@ -151,7 +145,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               })
             );
             const noPopupFlagLastTime =
-              window.sessionStorage.getItem("noPopupFlag");
+              window.localStorage.getItem("noPopupFlag");
             if (
               followThisAddressInLink === "true" &&
               linkAddress &&
@@ -159,34 +153,31 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               noPopupFlagLastTime !== "true"
             ) {
               console.log("Two here");
-              window.sessionStorage.setItem("followThisAddress", linkAddress);
+              window.localStorage.setItem("followThisAddress", linkAddress);
             }
             if (passedRefrenceId) {
-              window.sessionStorage.setItem(
-                "PassedRefrenceId",
-                passedRefrenceId
-              );
+              window.localStorage.setItem("PassedRefrenceId", passedRefrenceId);
             }
             if (transHistoryPageNumber) {
-              window.sessionStorage.setItem(
+              window.localStorage.setItem(
                 "transHistoryPageNumber",
                 transHistoryPageNumber
               );
             }
             if (transHistoryConditions) {
-              window.sessionStorage.setItem(
+              window.localStorage.setItem(
                 "transHistoryConditions",
                 transHistoryConditions
               );
             }
             if (transHistorySorts) {
-              window.sessionStorage.setItem(
+              window.localStorage.setItem(
                 "transHistorySorts",
                 transHistorySorts
               );
             }
           } else {
-            window.sessionStorage.setItem(
+            window.localStorage.setItem(
               "ShareRedirect",
               JSON.stringify({
                 path: "home",

@@ -33,6 +33,7 @@ import NewWelcome from "./app/home/NewWelcome";
 import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import PublicRoute from "./utils/PublicRoute";
+import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
 const routes = [
   {
     path: "/",
@@ -225,6 +226,12 @@ const routes = [
     name: "Stripe Error",
     type: PrivateRoute,
     component: StripeErrorPage,
+  },
+  {
+    path: "/replace-address",
+    name: "Stripe Error",
+    type: PrivateRoute,
+    component: ReplaceAddressPage,
   },
 ];
 export default routes;

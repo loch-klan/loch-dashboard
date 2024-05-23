@@ -19,7 +19,7 @@ function CustomOverlay({
   heading,
   subHeading,
   showNetflowExplainers,
-  copyTradeMobile,
+  copyTrade,
 }) {
   const renderTooltip = (props) => (
     // <Tooltip className={isText ? "text-tooltip-container" : "op-100 tool-tip-container"} id="button-tooltip" {...props}></Tooltip>
@@ -95,7 +95,7 @@ function CustomOverlay({
                 </div>
               </div>
             </div>
-          ) : copyTradeMobile ? (
+          ) : copyTrade ? (
             <div
               className={`${isText ? "text-tooltip" : "button-tooltip"} ${
                 isLeftText ? "text-left" : ""
