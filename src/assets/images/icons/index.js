@@ -156,3 +156,5 @@ export { default as PremiumBannerDiamondIcon } from "./premiumBannerDiamond.svg"
 export { default as PremiumBannerCheckCircleIcon } from "./premiumBannerCheckCircle.svg";
 export { default as PremiumBannerTelegramIcon } from "./premiumBannerTelegram.svg";
 export { default as PremiumBannerLochIcon } from "./premiumBannerLoch.svg";
+export { default as WalletViewerSidebarIcon } from "./walletViewerSidebar.svg";
+export { default as CopyTradeSwapSidebarIcon } from "./copyTradeSwapSidebar.svg";

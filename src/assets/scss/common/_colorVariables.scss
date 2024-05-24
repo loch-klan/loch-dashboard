@@ -287,6 +287,9 @@
   --payModalDescText: #5a5b5d;
   --outOfFocusBody: rgba(0, 0, 0, 0.8);
   --outOfFocusTopBar: #3a3a3a;
+
+  // Copy trade welcome
+  --dummyHomePageBackground: url(../../images/DummyHomePage.png);
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -565,6 +568,9 @@
   --payModalDescText: #5a5b5d;
   --outOfFocusBody: rgba(255, 255, 255, 0.8);
   --outOfFocusTopBar: #d7d7d7;
+
+  // Copy trade welcome
+  --dummyHomePageBackground: url(../../images/DummyHomePageDark.png);
 }
 [data-theme="dark2"] {
   // UPDATED

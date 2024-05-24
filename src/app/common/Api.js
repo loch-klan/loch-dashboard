@@ -1113,6 +1113,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
     .post("organisation/user/verify-otp-code", data)
     .then((res) => {
       if (!res.data.error) {
+        window.localStorage.removeItem("isCopyTradeWelcomePage");
         let isOptValid = res.data.data.otp_verified;
         if (isOptValid) {
           const signUpMethod = whichSignUpMethod();

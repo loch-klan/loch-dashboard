@@ -17,8 +17,15 @@
       height: 60rem;
       display: flex;
       align-items: flex-end;
+      justify-content: center;
       min-width: 85rem;
       position: relative;
+      .ctwp-block-items {
+        display: flex;
+        width: 100%;
+        max-width: 110rem;
+        align-items: center;
+      }
     }
     .ctwp-block-one {
       z-index: 1;
@@ -99,7 +106,7 @@
         .ctwpbol-desc {
           font-size: 16px;
           color: var(--blockOneDesc);
-          font-weight: 600;
+          font-weight: 500;
           margin: 1.25rem 0rem;
         }
       }
@@ -163,6 +170,8 @@
           letter-spacing: 4px;
           font-weight: 600;
           margin-bottom: 0.5rem;
+          text-align: right;
+          width: 230px;
         }
         .ctwpbtwor-title {
           font-size: 24px;
@@ -176,6 +185,7 @@
       background: linear-gradient(180deg, #7b44da, #7b44da, #986de2, #986de2);
       .ctwpbo-left {
         color: var(--cardBackgroud);
+        transform: translateY(-70%);
         .ctwpbothird-header {
           font-size: 24px;
           line-height: 120%;
@@ -319,10 +329,14 @@
         .ctwpbtwor-title {
           text-align: center;
         }
+        .ctwpbtwor-desc {
+          text-align: center;
+        }
       }
     }
     .ctwp-block-three {
       .ctwpbo-left {
+        transform: translateY(0%);
         padding-top: 4rem;
         padding-bottom: 2rem;
         .ctwpbothird-header {

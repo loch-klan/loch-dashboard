@@ -13,3 +13,4 @@ export { default as LochPremiumTooltipImage } from "./loch-premium-tooltip.png";
 export { default as LochPremiumTooltipDarkImage } from "./loch-premium-tooltip-dark.png";
 export { default as PaywallSuccessLochLogoImage } from "./PaywallSuccessLochLogo.png";
 export { default as PaywallSuccessLochLogoMobileImage } from "./PaywallSuccessLochLogoMobile.png";
+export { default as DummyHomePageImage } from "./DummyHomePage.png";

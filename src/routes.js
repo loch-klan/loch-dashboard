@@ -37,6 +37,8 @@ import CopyTradeWelcome from "./app/CopyTradeWelcome/CopyTradeWelcome";
 import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
 import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
 import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
+import PublicSidebarRoute from "./utils/PublicSidebarRoute";
+import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
 const routes = [
   {
     path: "/",
@@ -145,8 +147,14 @@ const routes = [
   {
     path: "/copy-trade-welcome",
     name: "Copy Trade Welcome",
-    type: PrivateRoute,
+    type: PublicSidebarRoute,
     component: CopyTradeWelcome,
+  },
+  {
+    path: "/wallet-viewer-add-address",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: AddAddressWalletViewer,
   },
 
   {
@@ -158,7 +166,7 @@ const routes = [
   {
     path: "/home-leaderboard",
     name: "Home Leaderboard",
-    type: PrivateRoute,
+    type: PublicSidebarRoute,
     component: HomeSmartMoneyPage,
   },
   {
@@ -239,7 +247,7 @@ const routes = [
   {
     path: "/replace-address",
     name: "Stripe Error",
-    type: PrivateRoute,
+    type: PublicSidebarRoute,
     component: ReplaceAddressPage,
   },
 ];

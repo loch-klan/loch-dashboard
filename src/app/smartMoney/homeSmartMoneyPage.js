@@ -19,7 +19,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
-  openAddressInNewTab,
+  openAddressInSameTab,
   scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
@@ -770,7 +770,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       wallet: slink,
     });
-    openAddressInNewTab(slink, this.props.setPageFlagDefault);
+    openAddressInSameTab(slink, this.props.setPageFlagDefault);
   };
   render() {
     const tableData = this.state.accountList;

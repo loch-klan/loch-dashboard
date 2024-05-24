@@ -50,7 +50,7 @@ import {
   amountFormat,
   mobileCheck,
   numToCurrency,
-  openAddressInNewTab,
+  openAddressInSameTab,
   removeBlurMethods,
   removeSignUpMethods,
   scrollToTop,
@@ -575,7 +575,7 @@ class Emulations extends Component {
     let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 
     // window.open(shareLink, "_blank", "noreferrer");
-    openAddressInNewTab(slink, this.props.setPageFlagDefault);
+    openAddressInSameTab(slink, this.props.setPageFlagDefault);
   };
   newPosBase = () => {
     if (this.state.copyTradesAvailableLocal) {
@@ -1008,7 +1008,7 @@ class Emulations extends Component {
                       wallet: slink,
                     });
                     // window.open(shareLink, "_blank", "noreferrer");
-                    openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                    openAddressInSameTab(slink, this.props.setPageFlagDefault);
                   }
                 }}
                 className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address"

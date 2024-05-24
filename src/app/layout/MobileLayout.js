@@ -1036,47 +1036,50 @@ class MobileLayout extends BaseReactComponent {
                     onClick={(e) => {
                       let tempToken = getToken();
                       if (!tempToken || tempToken === "jsk") {
-                        e.preventDefault();
+                        if (index === 2) {
+                          MenuLeaderboard({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                          this.props.history.push(item.path);
+                        } else {
+                          e.preventDefault();
+                        }
                         return null;
                       }
                       if (item.text === "Sign Out") {
                         this.openConfirmLeaveModal();
                       } else {
-                        let tempToken = getToken();
-                        if (!tempToken || tempToken === "jsk") {
-                          return null;
-                        } else {
-                          if (index === 0) {
-                            HomeMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          } else if (index === 1) {
-                            MenuWatchlist({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          } else if (index === 2) {
-                            MenuLeaderboard({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          }
-                          //  else if (index === 3) {
-                          //   MenuCopyTradelist({
-                          //     session_id: getCurrentUser().id,
-                          //     email_address: getCurrentUser().email,
-                          //   });
-                          // }
-                          else if (index === 3) {
-                            ProfileMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          }
-
-                          this.props.history.push(item.path);
+                        if (index === 0) {
+                          HomeMenu({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        } else if (index === 1) {
+                          MenuWatchlist({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        } else if (index === 2) {
+                          MenuLeaderboard({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
                         }
+                        //  else if (index === 3) {
+                        //   MenuCopyTradelist({
+                        //     session_id: getCurrentUser().id,
+                        //     email_address: getCurrentUser().email,
+                        //   });
+                        // }
+                        else if (index === 3) {
+                          ProfileMenu({
+                            session_id: getCurrentUser().id,
+                            email_address: getCurrentUser().email,
+                          });
+                        }
+
+                        this.props.history.push(item.path);
                       }
                     }}
                     className={`portfolio-mobile-layout-nav-footer-inner-item ${

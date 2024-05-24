@@ -58,7 +58,7 @@ import {
 import {
   TruncateText,
   mobileCheck,
-  openAddressInNewTab,
+  openAddressInSameTab,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
@@ -572,7 +572,7 @@ class WatchListPage extends BaseReactComponent {
                     }
                   }
                   // window.open(shareLink, "_blank", "noreferrer");
-                  openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                  openAddressInSameTab(slink, this.props.setPageFlagDefault);
 
                   // this.updateWatchListAnalyzed(
                   //   rowData.nameTag,

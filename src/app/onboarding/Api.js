@@ -800,6 +800,7 @@ export const verifyUser = (ctx, info, v2 = false, goToSmartMoney = false) => {
       .then((res) => {
         // console.log(res.data.data.user)
         if (!res.data.error) {
+          window.localStorage.removeItem("isCopyTradeWelcomePage");
           window.localStorage.setItem(
             "lochUser",
             JSON.stringify(res.data.data.user)
@@ -1023,6 +1024,7 @@ export const createAnonymousUserApi = (
       .then((res) => {
         // console.log("inside create user function")
         if (!res.data.error) {
+          window.localStorage.removeItem("isCopyTradeWelcomePage");
           window.localStorage.setItem("lochDummyUser", res.data.data.user.link);
           window.localStorage.setItem("lochToken", res.data.data.token);
 
@@ -1214,6 +1216,7 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
 
   postLoginInstance.post("organisation/user/create-user", data).then((res) => {
     if (!res.data.error) {
+      window.localStorage.removeItem("isCopyTradeWelcomePage");
       window.localStorage.setItem("lochDummyUser", res.data.data.user.link);
       window.localStorage.setItem("lochToken", res.data.data.token);
 

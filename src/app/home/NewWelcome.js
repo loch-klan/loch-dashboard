@@ -1473,6 +1473,7 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidMount() {
+    this.props.history.push("/copy-trade-welcome");
     deleteAddWallet();
     setTimeout(() => {
       this.setState({

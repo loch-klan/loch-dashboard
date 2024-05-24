@@ -330,6 +330,7 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              isAddNewAddress={props.isAddNewAddress}
               hideFocusedInput={props.hideFocusedInput}
               focusOriginalInputBar={props.focusOriginalInputBar}
               isBlurred={props.isBlurred}

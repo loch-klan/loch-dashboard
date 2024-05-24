@@ -41,7 +41,12 @@ import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser, isNewAddress } from "../Portfolio/Api";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import { detectNameTag, updateUserWalletApi } from "../common/Api";
-import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
+import {
+  createAnonymousUserApi,
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api";
 import {
   addAddressToWatchList,
@@ -755,6 +760,127 @@ class TopWalletExchangeBar extends Component {
     this.setState({
       isLochPaymentModal: false,
     });
+  };
+  handleAddWelcomeWallet = (replaceAddresses) => {
+    window.localStorage.setItem("shouldRecallApis", true);
+
+    let walletAddress = [];
+    let addWallet = this.state.walletInput;
+    let addWalletTemp = this.state.walletInput;
+    addWalletTemp?.forEach((w, i) => {
+      w.id = `wallet${i + 1}`;
+    });
+    if (addWalletTemp && addWalletTemp.length > 0) {
+      var mySet = new Set();
+
+      const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+        if (filData?.address !== "") {
+          if (mySet.has(filData.address.toLowerCase())) {
+            return false;
+          } else {
+            mySet.add(filData.address.toLowerCase());
+            return true;
+          }
+        }
+        return false;
+      });
+      if (filteredAddWalletTemp) {
+        setTimeout(() => {
+          this.props.setHeaderReducer(filteredAddWalletTemp);
+        }, 500);
+      }
+    }
+    let finalArr = [];
+
+    let addressList = [];
+
+    let nicknameArr = {};
+
+    for (let i = 0; i < addWallet.length; i++) {
+      let curr = addWallet[i];
+      if (
+        !walletAddress.includes(curr.apiAddress?.trim()) &&
+        curr.address?.trim()
+      ) {
+        finalArr.push(curr);
+        walletAddress.push(curr.address?.trim());
+        walletAddress.push(curr.displayAddress?.trim());
+        walletAddress.push(curr.apiAddress?.trim());
+        let address = curr.address?.trim();
+        nicknameArr[address] = curr.nickname;
+        addressList.push(curr.address?.trim());
+      }
+    }
+
+    finalArr = finalArr?.map((item, index) => {
+      return {
+        ...item,
+        id: `wallet${index + 1}`,
+      };
+    });
+    let creditIsAddress = false;
+    let creditIsEns = false;
+    for (let i = 0; i < addressList.length; i++) {
+      const tempItem = addressList[i];
+      const endsWithEth = /\.eth$/i.test(tempItem);
+
+      if (endsWithEth) {
+        creditIsAddress = true;
+        creditIsEns = true;
+      } else {
+        creditIsAddress = true;
+      }
+    }
+    if (creditIsAddress) {
+      window.localStorage.setItem("addAddressCreditOnce", true);
+      if (addWallet.length > 1) {
+        window.localStorage.setItem("addMultipleAddressCreditOnce", true);
+      }
+    }
+    if (creditIsEns) {
+      window.localStorage.setItem("addEnsCreditOnce", true);
+    }
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    // data.append("link", );
+    if (this.state.lochUser && this.state.lochUser.email) {
+      const yieldData = new URLSearchParams();
+      yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+      this.props.updateUserWalletApi(data, this, yieldData, false);
+    } else {
+      this.props.createAnonymousUserApi(data, this, finalArr, null);
+    }
+
+    // const address = finalArr?.map((e) => e.address);
+
+    // const unrecog_address = finalArr
+    //   .filter((e) => !e.coinFound)
+    //   .map((e) => e.address);
+
+    // const blockchainDetected = [];
+    // const nicknames = [];
+    // finalArr
+    //   .filter((e) => e.coinFound)
+    //   .map((obj) => {
+    //     let coinName = obj.coins
+    //       .filter((e) => e.chain_detected)
+    //       .map((name) => name.coinName);
+    //     let address = obj.address;
+    //     let nickname = obj.nickname;
+    //     blockchainDetected.push({ address: address, names: coinName });
+    //     nicknames.push({ address: address, nickname: nickname });
+    //   });
+
+    // LPC_Go({
+    //   addresses: address,
+    //   ENS: address,
+    //   chains_detected_against_them: blockchainDetected,
+    //   unrecognized_addresses: unrecog_address,
+    //   unrecognized_ENS: unrecog_address,
+    //   nicknames: nicknames,
+    // });
   };
   handleAddWallet = (replaceAddresses) => {
     if (!replaceAddresses && !isPremiumUser()) {
@@ -1716,54 +1842,81 @@ class TopWalletExchangeBar extends Component {
                   : ""
               }`}
             >
-              <div
-                ref={this.props.buttonRef}
-                className={`topbar-btn  ml-2 ${
-                  !(
-                    this.state.walletInput[0].coinFound &&
-                    this.state.walletInput[0].coins.length > 0
-                  ) || this.state.disableAddBtn
-                    ? "topbar-btn-light-disabled"
-                    : ""
-                }`}
-                id="address-button-two"
-                onClick={
-                  !(
-                    this.state.walletInput[0].coinFound &&
-                    this.state.walletInput[0].coins.length > 0
-                  ) || this.state.disableAddBtn
-                    ? null
-                    : () => {
-                        this.handleAddWallet(false);
-                      }
-                }
-              >
-                <span className="dotDotText">Add</span>
-              </div>
-              <div
-                ref={this.props.buttonRef}
-                className={`topbar-btn  ml-2 topbar-btn-dark ${
-                  !(
-                    this.state.walletInput[0].coinFound &&
-                    this.state.walletInput[0].coins.length > 0
-                  ) || this.state.disableAddBtn
-                    ? "topbar-btn-dark-disabled"
-                    : ""
-                }`}
-                id="address-button-two"
-                onClick={
-                  !(
-                    this.state.walletInput[0].coinFound &&
-                    this.state.walletInput[0].coins.length > 0
-                  ) || this.state.disableAddBtn
-                    ? null
-                    : () => {
-                        this.handleAddWallet(true);
-                      }
-                }
-              >
-                <span className="dotDotText">Replace</span>
-              </div>
+              {this.props.isAddNewAddress ? (
+                <div
+                  ref={this.props.buttonRef}
+                  className={`topbar-btn  ml-2 topbar-btn-dark ${
+                    !(
+                      this.state.walletInput[0].coinFound &&
+                      this.state.walletInput[0].coins.length > 0
+                    ) || this.state.disableAddBtn
+                      ? "topbar-btn-dark-disabled"
+                      : ""
+                  }`}
+                  id="address-button-two"
+                  onClick={
+                    !(
+                      this.state.walletInput[0].coinFound &&
+                      this.state.walletInput[0].coins.length > 0
+                    ) || this.state.disableAddBtn
+                      ? null
+                      : this.handleAddWelcomeWallet
+                  }
+                >
+                  <span className="dotDotText">Add</span>
+                </div>
+              ) : (
+                <>
+                  <div
+                    ref={this.props.buttonRef}
+                    className={`topbar-btn  ml-2 ${
+                      !(
+                        this.state.walletInput[0].coinFound &&
+                        this.state.walletInput[0].coins.length > 0
+                      ) || this.state.disableAddBtn
+                        ? "topbar-btn-light-disabled"
+                        : ""
+                    }`}
+                    id="address-button-two"
+                    onClick={
+                      !(
+                        this.state.walletInput[0].coinFound &&
+                        this.state.walletInput[0].coins.length > 0
+                      ) || this.state.disableAddBtn
+                        ? null
+                        : () => {
+                            this.handleAddWallet(false);
+                          }
+                    }
+                  >
+                    <span className="dotDotText">Add</span>
+                  </div>
+                  <div
+                    ref={this.props.buttonRef}
+                    className={`topbar-btn  ml-2 topbar-btn-dark ${
+                      !(
+                        this.state.walletInput[0].coinFound &&
+                        this.state.walletInput[0].coins.length > 0
+                      ) || this.state.disableAddBtn
+                        ? "topbar-btn-dark-disabled"
+                        : ""
+                    }`}
+                    id="address-button-two"
+                    onClick={
+                      !(
+                        this.state.walletInput[0].coinFound &&
+                        this.state.walletInput[0].coins.length > 0
+                      ) || this.state.disableAddBtn
+                        ? null
+                        : () => {
+                            this.handleAddWallet(true);
+                          }
+                    }
+                  >
+                    <span className="dotDotText">Replace</span>
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             <div
@@ -1893,6 +2046,7 @@ const mapDispatchToProps = {
   addUserCredits,
   detectNameTag,
   isNewAddress,
+  createAnonymousUserApi,
 };
 
 export default connect(

@@ -14,7 +14,7 @@ import {
   ActiveSmartMoneySidebarIcon,
   EmultionSidebarIcon,
   FollowingSidebarIcon,
-  HomeSidebarIcon,
+  WalletViewerSidebarIcon,
   InactiveSmartMoneySidebarIcon,
   LeaderboardSidebarIcon,
   LochLogoWhiteIcon,
@@ -24,6 +24,7 @@ import {
   XFormallyTwitterLogoIcon,
   darkModeIcon,
   lightModeIcon,
+  CopyTradeSwapSidebarIcon,
 } from "../../assets/images/icons";
 import { default as SignInIcon } from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
@@ -434,10 +435,10 @@ function Sidebar(props) {
       setIsLochPointsProfilePopUpModal(true);
     }
 
-    let tempToken = getToken();
-    if (!tempToken || tempToken === "jsk") {
-      return null;
-    }
+    // let tempToken = getToken();
+    // if (!tempToken || tempToken === "jsk") {
+    //   return null;
+    // }
     setComingDirectly(false);
     setSignUpModalAnimation(false);
     setSignupModal(false);
@@ -892,16 +893,23 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={"Home"}
+                            text={"Wallet Viewer"}
                           >
                             <NavLink
                               exact={true}
                               className="nav-link nav-link-closed"
-                              to={activeTab === "/home" ? "#" : "/home"}
+                              to="/copy-trade-welcome"
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+                                  if (
+                                    window.localStorage.getItem(
+                                      "isCopyTradeWelcomePage"
+                                    )
+                                  ) {
+                                    props.history.push("/copy-trade-welcome");
+                                  }
                                   return null;
                                 } else {
                                   HomeMenu({
@@ -913,9 +921,9 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={HomeSidebarIcon}
+                                src={WalletViewerSidebarIcon}
                                 style={
-                                  activeTab === "/home"
+                                  activeTab === "/copy-trade-welcome"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
@@ -925,7 +933,6 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-
                         <li>
                           <CustomOverlay
                             position="top"
@@ -978,16 +985,16 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/home-leaderboard"
                               onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                } else {
-                                  MenuLeaderboard({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
+                                // let tempToken = getToken();
+                                // if (!tempToken || tempToken === "jsk") {
+                                //   e.preventDefault();
+                                //   return null;
+                                // } else {
+                                MenuLeaderboard({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                // }
                               }}
                               activeclassname="active"
                             >
@@ -995,7 +1002,54 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Wallet Viewer"}
+                          >
+                            <NavLink
+                              exact={true}
+                              className="nav-link nav-link-closed"
+                              to={activeTab === "/home" ? "#" : "/home"}
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  if (
+                                    window.localStorage.getItem(
+                                      "isCopyTradeWelcomePage"
+                                    )
+                                  ) {
+                                    props.history.push(
+                                      "/wallet-viewer-add-address"
+                                    );
+                                  }
+                                  return null;
+                                } else {
+                                  HomeMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={WalletViewerSidebarIcon}
+                                style={
+                                  activeTab === "/home"
+                                    ? {
+                                        filter: "var(--sidebarActiveIcon)",
+                                      }
+                                    : {}
+                                }
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1144,35 +1198,41 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               className="nav-link"
-                              to={activeTab === "/home" ? "#" : "/home"}
+                              to="/copy-trade-welcome"
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+                                  if (
+                                    window.localStorage.getItem(
+                                      "isCopyTradeWelcomePage"
+                                    )
+                                  ) {
+                                    props.history.push("/copy-trade-welcome");
+                                  }
                                   return null;
                                 } else {
-                                  HomeMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
+                                  // HomeMenu({
+                                  //   session_id: getCurrentUser().id,
+                                  //   email_address: getCurrentUser().email,
+                                  // });
                                 }
                               }}
                               activeclassname="active"
                             >
                               <Image
-                                src={HomeSidebarIcon}
+                                src={CopyTradeSwapSidebarIcon}
                                 style={
-                                  activeTab === "/home"
+                                  activeTab === "/copy-trade-welcome"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
                               />
-                              Home
+                              Copy Trade
                             </NavLink>
                           </li>
-
                           <li>
                             <NavLink
                               className={`nav-link`}
@@ -1209,16 +1269,16 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                } else {
-                                  MenuLeaderboard({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
+                                // let tempToken = getToken();
+                                // if (!tempToken || tempToken === "jsk") {
+                                //   e.preventDefault();
+                                //   return null;
+                                // } else {
+                                MenuLeaderboard({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                // }
                               }}
                               className="nav-link"
                               to="/home-leaderboard"
@@ -1237,7 +1297,47 @@ function Sidebar(props) {
                               Leaderboard
                             </NavLink>
                           </li>
-
+                          <li>
+                            <NavLink
+                              exact={true}
+                              className="nav-link"
+                              to={activeTab === "/home" ? "#" : "/home"}
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+                                  if (
+                                    window.localStorage.getItem(
+                                      "isCopyTradeWelcomePage"
+                                    )
+                                  ) {
+                                    props.history.push(
+                                      "/wallet-viewer-add-address"
+                                    );
+                                  }
+                                  return null;
+                                } else {
+                                  HomeMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={WalletViewerSidebarIcon}
+                                style={
+                                  activeTab === "/home"
+                                    ? {
+                                        filter: "var(--sidebarActiveIcon)",
+                                      }
+                                    : {}
+                                }
+                              />
+                              Wallet Viewer
+                            </NavLink>
+                          </li>
                           <li>
                             <NavLink
                               onClick={(e) => {

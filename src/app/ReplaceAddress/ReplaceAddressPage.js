@@ -8,6 +8,8 @@ import MobileLayout from "../layout/MobileLayout";
 import StripeSuccessPageMobile from "./ReplaceAddressPageMobile";
 import "./_replaceAddressPage.scss";
 import Loading from "../common/Loading";
+import { getToken } from "../../utils/ManageToken";
+import { createAnonymousUserApi } from "../onboarding/Api";
 
 class ReplaceAddressPage extends Component {
   constructor(props) {
@@ -18,11 +20,6 @@ class ReplaceAddressPage extends Component {
   }
 
   componentDidMount() {
-    // PaymentSuccessfulMP({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    //   paymentMethod: "stripe",
-    // });
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
     const address = params.get("address");
@@ -38,7 +35,15 @@ class ReplaceAddressPage extends Component {
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
     data.append("wallet_addresses", JSON.stringify(addressList));
     yieldData.append("wallet_addresses", JSON.stringify(addressList));
-    this.props.updateUserWalletApi(data, this, yieldData, true);
+
+    let tempToken = getToken();
+    if (!tempToken || tempToken === "jsk") {
+      let finalArr = [];
+      finalArr.push(address);
+      this.props.createAnonymousUserApi(data, this, finalArr, null);
+    } else {
+      this.props.updateUserWalletApi(data, this, yieldData, true);
+    }
   }
   goToHomeAfterReplace = () => {
     this.props.history.push("/home");
@@ -93,6 +98,10 @@ const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
 });
 
-const mapDispatchToProps = { getUser, updateUserWalletApi };
+const mapDispatchToProps = {
+  getUser,
+  updateUserWalletApi,
+  createAnonymousUserApi,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReplaceAddressPage);

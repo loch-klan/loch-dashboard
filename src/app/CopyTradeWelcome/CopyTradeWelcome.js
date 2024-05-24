@@ -19,7 +19,9 @@ class CopyTradeWelcome extends Component {
     super(props);
     this.state = {};
   }
-
+  componentDidMount() {
+    window.localStorage.setItem("isCopyTradeWelcomePage", true);
+  }
   render() {
     if (mobileCheck()) {
       return (
@@ -65,59 +67,65 @@ class CopyTradeWelcome extends Component {
               <div className="ctwpbo-circular-gradient ctwpbo-circular-gradient1" />
               <div className="ctwpbo-circular-gradient ctwpbo-circular-gradient2" />
               <div className="ctwpbo-circular-gradient ctwpbo-circular-gradient3" />
-              <div className="ctwpbo-left">
-                <div className="ctwpbol-header">
-                  Enabling
-                  <br />
-                  Onchain Imitation
+              <div className="ctwp-block-items">
+                <div className="ctwpbo-left">
+                  <div className="ctwpbol-header">
+                    Enabling
+                    <br />
+                    Onchain Imitation
+                  </div>
+                  <div className="ctwpbol-desc">Welcome to Loch</div>
+                  <div
+                    onClick={openLoginPopUp}
+                    className="copy-trade-welcome-button"
+                  >
+                    Get started
+                  </div>
                 </div>
-                <div className="ctwpbol-desc">Welcome to Loch</div>
-                <div
-                  onClick={openLoginPopUp}
-                  className="copy-trade-welcome-button"
-                >
-                  Get started
+                <div className="ctwpbo-right">
+                  <Image className="ctwpbor-greek-man" src={GreekOne} />
                 </div>
-              </div>
-              <div className="ctwpbo-right">
-                <Image className="ctwpbor-greek-man" src={GreekOne} />
               </div>
             </div>
             <div className="ctwp-block ctwp-block-two">
-              <div className="ctwpbtwo-left">
-                <Image className="ctwpbtwor-greek-man" src={GreekTwo} />
-                <div className="ctwpbtwor-greek-man-shadow-container">
-                  <div className="ctwpbtwor-greek-man-shadow-gradient" />
-                  <Image
-                    className="ctwpbtwor-greek-man ctwpbtwor-greek-man-shadow"
-                    src={GreekTwo}
-                  />
+              <div className="ctwp-block-items">
+                <div className="ctwpbtwo-left">
+                  <Image className="ctwpbtwor-greek-man" src={GreekTwo} />
+                  <div className="ctwpbtwor-greek-man-shadow-container">
+                    <div className="ctwpbtwor-greek-man-shadow-gradient" />
+                    <Image
+                      className="ctwpbtwor-greek-man ctwpbtwor-greek-man-shadow"
+                      src={GreekTwo}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="ctwpbtwo-right">
-                <div className="ctwpbtwor-desc">VERSATILITY</div>
-                <div className="ctwpbtwor-title">
-                  Follow, analyze, and
-                  <br />
-                  copy-trade anyone
-                  <br />
-                  on the blockchain
+                <div className="ctwpbtwo-right">
+                  <div className="ctwpbtwor-desc">VERSATILITY</div>
+                  <div className="ctwpbtwor-title">
+                    Follow, analyze, and
+                    <br />
+                    copy-trade anyone
+                    <br />
+                    on the blockchain
+                  </div>
                 </div>
               </div>
             </div>
             <div className="ctwp-block ctwp-block-one ctwp-block-three">
-              <div className="ctwpbo-left">
-                <div className="ctwpbothird-desc">ON THE GO</div>
-                <div className="ctwpbothird-header">
-                  Accomplish whale-like
-                  <br />
-                  returns without monitorin
-                  <br />
-                  your screen all day
+              <div className="ctwp-block-items">
+                <div className="ctwpbo-left">
+                  <div className="ctwpbothird-desc">ON THE GO</div>
+                  <div className="ctwpbothird-header">
+                    Accomplish whale-like
+                    <br />
+                    returns without monitoring
+                    <br />
+                    your screen all day
+                  </div>
                 </div>
-              </div>
-              <div className="ctwpbo-right">
-                <Image className="ctwpbor-greek-man" src={WhaleTail} />
+                <div className="ctwpbo-right">
+                  <Image className="ctwpbor-greek-man" src={WhaleTail} />
+                </div>
               </div>
             </div>
             <div className="ctwp-block ctwp-block-four">
