@@ -366,7 +366,7 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
                 <div className="ctpb-plan ctpb-payment">
                   <div
                     style={{
-                      marginTop: "2.5rem",
+                      marginTop: "2rem",
                     }}
                     className="inter-display-medium ctpb-payment-title-text f-s-16"
                   >
@@ -424,6 +424,9 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
                         ? "ctpb-plan-payment-button-loading"
                         : ""
                     }`}
+                    style={{
+                      marginBottom: this.props.isMobile ? "" : "12rem",
+                    }}
                   >
                     {this.props.isCreditBtnLoading ? (
                       loadingAnimation()
