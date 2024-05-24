@@ -71,6 +71,7 @@ import AddEmulationsAddressModal from "./AddEmulationsAddressModal.js";
 import {
   addCopyTrade,
   getCopyTrade,
+  removeCopyTrade,
   updaetAvailableCopyTraes,
 } from "./EmulationsApi.js";
 import EmulationsMobile from "./EmulationsMobile.js";
@@ -82,6 +83,8 @@ class Emulations extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedRemoveWallet: "",
+      selectedRemoveWalletId: "",
       isPopularAccountsBlockOpen: true,
       isPayModalOpen: false,
       isPayModalOptionsOpen: false,
@@ -350,6 +353,10 @@ class Emulations extends Component {
     this.props.addCopyTrade(data, this.resetPage);
   };
   resetPage = () => {
+    this.setState({
+      isRejectModal: false,
+      isCancelModal: false,
+    });
     this.props.history.replace("/copy-trade");
     this.callEmulationsApi();
   };
@@ -1048,6 +1055,17 @@ class Emulations extends Component {
       });
     }
   };
+  cancelCopyTradeFun = () => {
+    console.log("One");
+    let data = new URLSearchParams();
+    data.append("copy_trade_id", this.state.selectedRemoveWalletId);
+
+    this.props.removeCopyTrade(
+      data,
+      this.resetPage,
+      this.state.selectedRemoveWallet
+    );
+  };
   render() {
     const columnData = [
       {
@@ -1207,6 +1225,11 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CancelCopyTrade") {
             const deleteThisAddress = () => {
+              console.log("rowData ", rowData);
+              this.setState({
+                selectedRemoveWallet: rowData.wallet,
+                selectedRemoveWalletId: rowData.tradeId,
+              });
               this.openCancelModal();
             };
             return (
@@ -1261,7 +1284,7 @@ class Emulations extends Component {
               show={this.state.isCancelModal}
               history={this.props.history}
               handleClose={this.closeCancelModal}
-              handleYes={this.closeCancelModal}
+              handleYes={this.cancelCopyTradeFun}
               title="Are you sure you want to cancel this trade?"
               isMobile
             />
@@ -1444,7 +1467,7 @@ class Emulations extends Component {
                 show={this.state.isCancelModal}
                 history={this.props.history}
                 handleClose={this.closeCancelModal}
-                handleYes={this.closeCancelModal}
+                handleYes={this.cancelCopyTradeFun}
                 title="Are you sure you want to cancel this trade?"
               />
             ) : null}
@@ -1861,6 +1884,7 @@ const mapDispatchToProps = {
   getCopyTrade,
   updaetAvailableCopyTraes,
   addCopyTrade,
+  removeCopyTrade,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Emulations);

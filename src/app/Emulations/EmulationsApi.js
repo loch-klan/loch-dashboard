@@ -1,7 +1,10 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
 import { GET_EMULATION_DATA } from "./EmulationsActionTypes";
-import { CopyTradeAdded } from "../../utils/AnalyticsFunctions";
+import {
+  CopyTradeAdded,
+  CopyTradeRemoved,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 
 export const getCopyTrade = (ctx) => {
@@ -43,6 +46,7 @@ export const getCopyTrade = (ctx) => {
                   tradeDeposit: tempTradeDeposit,
                   wallet: individualRes.copy_wallet,
                   unrealizedPnL: tempUnrealizedPnL,
+                  tradeId: individualRes._id,
                 };
               });
               tempAvailableCopyTradesArr = [];
@@ -154,6 +158,36 @@ export const addCopyTrade = (
       .catch((err) => {
         if (resetBtn) {
           resetBtn();
+        }
+      });
+  };
+};
+
+export const removeCopyTrade = (data, resetBtn, address) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/cancel-copy-trade", data)
+      .then((res) => {
+        if (!res.data.error) {
+          if (resetBtn) {
+            resetBtn();
+          }
+          CopyTradeRemoved({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            wallet: address,
+          });
+          if (res.data.data) {
+            toast.success("Trade cancelled");
+          }
+        } else {
+          toast.error("Something went wrong");
+        }
+      })
+      .catch((err) => {
+        if (resetBtn) {
+          resetBtn();
+          toast.error("Something went wrong");
         }
       });
   };

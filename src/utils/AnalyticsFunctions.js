@@ -6017,6 +6017,15 @@ export const CopyTradeAdded = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CopyTradeRemoved = ({ session_id, email_address, wallet }) => {
+  const event_name = "Copy Trade: copy trade cancelled";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    wallet: wallet,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const CopyTradeCopiedWalletClicked = ({
   session_id,
   email_address,
