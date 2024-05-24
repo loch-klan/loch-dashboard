@@ -1563,12 +1563,7 @@ export const UpdateUserDetails = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         // Analytics
-        WhaleCreateAccountEmailVerified({
-          session_id: res.data.data.user.link,
-          email_address: res.data.data.user.email
-            ? res.data.data.user.email
-            : ctx.state.email,
-        });
+
         // window.localStorage.setItem("lochDummyUser", null);g
         window.localStorage.removeItem("lochDummyUser");
         let obj = JSON.parse(window.localStorage.getItem("lochUser"));

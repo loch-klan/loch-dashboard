@@ -118,11 +118,13 @@
   .exit-overlay-modal-mobile-full {
     .copy-trade-sing-in-up-body {
       padding: 5rem 3rem;
+      padding-bottom: 8rem;
       .addCopyTraderWrapperContainer {
         padding: 0rem !important;
       }
       .ctl-btn-container {
         padding: 0rem !important;
+        width: 100%;
       }
     }
   }
@@ -265,7 +267,7 @@
   .modal-content {
     min-width: 100vw !important;
     width: 100vw !important;
-    height: 80vh !important;
+    min-height: 80vh !important;
     bottom: 0 !important;
     border-bottom-left-radius: 0rem !important;
     border-bottom-right-radius: 0rem !important;

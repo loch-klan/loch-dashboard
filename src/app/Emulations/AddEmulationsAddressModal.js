@@ -382,17 +382,17 @@ class AddEmulationsAddressModal extends BaseReactComponent {
         this.setState({
           loadAddBtn: true,
         });
-        CopyTradeAdded({
-          session_id: getCurrentUser().id,
-          email_address: getCurrentUser().email,
-          copied_wallet: tempAdd,
-          amount: this.state.copyTradeAmount,
-          notification_email: this.state.notificationEmailAddress
-            ? this.state.notificationEmailAddress.toLowerCase()
-            : "",
-        });
 
-        this.props.addCopyTrade(data, this.hideModal, this.resetBtn);
+        this.props.addCopyTrade(
+          data,
+          this.hideModal,
+          this.resetBtn,
+          tempAdd,
+          this.state.copyTradeAmount,
+          this.state.notificationEmailAddress
+            ? this.state.notificationEmailAddress.toLowerCase()
+            : ""
+        );
       }
     } else {
       this.setState({

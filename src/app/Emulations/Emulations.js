@@ -51,6 +51,7 @@ import {
   amountFormat,
   mobileCheck,
   numToCurrency,
+  openAddressInNewTab,
   removeBlurMethods,
   removeSignUpMethods,
   scrollToTop,
@@ -75,6 +76,7 @@ import {
 import EmulationsMobile from "./EmulationsMobile.js";
 import EmulationsTradeModal from "./EmulationsTradeModal.js";
 import "./_emulations.scss";
+import { toast } from "react-toastify";
 
 class Emulations extends Component {
   constructor(props) {
@@ -636,9 +638,8 @@ class Emulations extends Component {
       wallet: passedAddress,
     });
     let slink = passedAddress;
-    let shareLink = BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 
-    window.open(shareLink, "_blank", "noreferrer");
+    openAddressInNewTab(slink, this.props.setPageFlagDefault);
   };
   newPosBase = () => {
     if (this.state.copyTradesAvailableLocal) {
@@ -984,10 +985,6 @@ class Emulations extends Component {
     );
   };
   openPayModal = (emailHolder, walletHolder, amountHolder) => {
-    CopyTradePayWallOpen({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
     this.setState(
       {
         passedCTNotificationEmailAddress: emailHolder,
@@ -1063,7 +1060,7 @@ class Emulations extends Component {
         ),
         dataKey: "Copiedwallet",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Copiedwallet") {
@@ -1080,15 +1077,13 @@ class Emulations extends Component {
                 onClick={() => {
                   if (rowData.wallet) {
                     let slink = rowData.wallet;
-                    let shareLink =
-                      BASE_URL_S3 + "home/" + slink + "?noPopup=true";
 
                     CopyTradeCopiedWalletClicked({
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
                       wallet: slink,
                     });
-                    window.open(shareLink, "_blank", "noreferrer");
+                    openAddressInNewTab(slink, this.props.setPageFlagDefault);
                   }
                 }}
                 className="inter-display-medium f-s-13 lh-16 grey-313 top-account-address"
@@ -1112,7 +1107,7 @@ class Emulations extends Component {
         ),
         dataKey: "Mycopytradedeposit",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycopytradedeposit") {
@@ -1137,7 +1132,7 @@ class Emulations extends Component {
         ),
         dataKey: "Mycurrentbalance",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycurrentbalance") {
@@ -1162,7 +1157,7 @@ class Emulations extends Component {
         ),
         dataKey: "MyunrealizedPnL",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "MyunrealizedPnL") {
@@ -1207,7 +1202,7 @@ class Emulations extends Component {
         ),
         dataKey: "CancelCopyTrade",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CancelCopyTrade") {
@@ -1233,10 +1228,12 @@ class Emulations extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          handleShare={() => null}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           hideAddresses
           hideFooter
+          hideShare
         >
           {this.state.isPayModalOpen ? (
             <PaywallModal
@@ -1558,11 +1555,6 @@ class Emulations extends Component {
                                           if (curCopyTradeData.address) {
                                             let slink =
                                               curCopyTradeData.address;
-                                            let shareLink =
-                                              BASE_URL_S3 +
-                                              "home/" +
-                                              slink +
-                                              "?noPopup=true";
 
                                             CopyTradePopularAccountWalletClicked(
                                               {
@@ -1572,10 +1564,9 @@ class Emulations extends Component {
                                                 wallet: slink,
                                               }
                                             );
-                                            window.open(
-                                              shareLink,
-                                              "_blank",
-                                              "noreferrer"
+                                            openAddressInNewTab(
+                                              slink,
+                                              this.props.setPageFlagDefault
                                             );
                                           }
                                         }}
@@ -1783,32 +1774,7 @@ class Emulations extends Component {
                       </div>
 
                       <div className="available-copy-trades-navigator">
-                        <div className="available-copy-trades-navigator-circles-container">
-                          {this.state.copyTradesAvailableLocal &&
-                          this.state.copyTradesAvailableLocal.length > 1
-                            ? this.state.copyTradesAvailableLocal.map(
-                                (resCircle, resCircleIndex) => {
-                                  return (
-                                    <div
-                                      style={{
-                                        opacity:
-                                          resCircleIndex ===
-                                          this.state.currentCirclePosition
-                                            ? 1
-                                            : 0.2,
-                                        marginLeft:
-                                          resCircleIndex === 0 ? 0 : "0.5rem",
-                                      }}
-                                      onClick={() => {
-                                        this.goToScrollPosition(resCircleIndex);
-                                      }}
-                                      className="available-copy-trades-navigator-circle"
-                                    />
-                                  );
-                                }
-                              )
-                            : null}
-                        </div>
+                        <div />
                         <div className="available-copy-trades-navigator-arrows">
                           <Image
                             style={{
@@ -1848,7 +1814,7 @@ class Emulations extends Component {
               <div style={{ position: "relative" }}>
                 <TransactionTable
                   showHeaderOnEmpty
-                  message="Select a wallet above to copy trade to get started."
+                  message="Select a wallet above to copy trade to get started"
                   noDataImage={NoCopyTradeTableIcon}
                   noSubtitleBottomPadding
                   tableData={this.state.copyTradesLocal}

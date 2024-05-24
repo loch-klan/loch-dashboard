@@ -1000,7 +1000,7 @@ class MobileLayout extends BaseReactComponent {
                     {!this.props.hideShare ? (
                       <TopWalletAddressList
                         apiResponse={() => null}
-                        handleShare={() => null}
+                        handleShare={this.props.handleShare}
                         showpath={false}
                         currentPage={this.props.currentPage}
                         noHomeInPath={false}

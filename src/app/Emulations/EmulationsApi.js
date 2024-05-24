@@ -1,6 +1,8 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
 import { GET_EMULATION_DATA } from "./EmulationsActionTypes";
+import { CopyTradeAdded } from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 export const getCopyTrade = (ctx) => {
   return async function (dispatch, getState) {
@@ -109,7 +111,14 @@ export const getCopyTrade = (ctx) => {
       });
   };
 };
-export const addCopyTrade = (data, hideModal, resetBtn) => {
+export const addCopyTrade = (
+  data,
+  hideModal,
+  resetBtn,
+  address,
+  amount,
+  email
+) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/add-copy-trade", data)
@@ -121,8 +130,22 @@ export const addCopyTrade = (data, hideModal, resetBtn) => {
           hideModal(true);
         }
         if (!res.data.error) {
+          CopyTradeAdded({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            copied_wallet: address,
+            amount: amount,
+            notification_email: email,
+          });
           if (res.data.data) {
-            toast.success("Congrats! You’ll receive email notifications");
+            toast.success(
+              <div className="custom-toast-msg">
+                <div>Congratulations! Your setup is complete</div>
+                <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                  You’ll receive notifications detailing the exact copy trades
+                </div>
+              </div>
+            );
           }
         } else {
           toast.error(res.data.message || "Something went wrong");
@@ -144,7 +167,7 @@ export const updaetAvailableCopyTraes = (data, recallCopyTrader, isConfirm) => {
         if (!res.data.error) {
           if (res.data.data) {
             if (isConfirm) {
-              toast.success("Congrats! Trade confirmed");
+              toast.success("Congratulations! Trade confirmed");
             } else {
               toast.success("Trade rejected ");
             }

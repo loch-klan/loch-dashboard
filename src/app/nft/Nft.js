@@ -494,6 +494,7 @@ class NFT extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           showpath
           currentPage={"nft"}
           hideFooter

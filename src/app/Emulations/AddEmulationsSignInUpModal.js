@@ -13,7 +13,10 @@ import {
 import { CustomButton } from "../../utils/form";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { whichSignUpMethod } from "../../utils/ReusableFunctions";
-import { SignInModalEmailAdded } from "../../utils/AnalyticsFunctions";
+import {
+  CopyTradeSignIn,
+  SignInModalEmailAdded,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CheckPremiumAfterAPI,
@@ -43,7 +46,12 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {}
-  componentDidMount() {}
+  componentDidMount() {
+    CopyTradeSignIn({
+      session_id: getCurrentUser().id,
+      email_address: this.props.passedEmail,
+    });
+  }
 
   handleOnEmailChange = (e) => {
     let { value } = e.target;
@@ -85,7 +93,7 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
       data,
       this,
       false,
-      this.state.email ? this.state.email.toLowerCase() : "",
+      this.state.emailAddress ? this.state.emailAddress.toLowerCase() : "",
       this.verifyOtpHandleError
     );
   };
@@ -361,14 +369,14 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
                     isLoading={this.state.loadAddBtn}
                   />
                 </div>
-                <div
+                {/* <div
                   onClick={this.toggleSignUpIn}
                   className={`ctl-otp-bottom-text ${
                     this.state.loadAddBtn ? "ctl-otp-bottom-text-disabled" : ""
                   }`}
                 >
                   Click here to sign {this.state.isSignUp ? "in" : "up"}.
-                </div>
+                </div> */}
               </>
             )}
           </div>

@@ -1221,8 +1221,8 @@ class TopWalletAddressList extends Component {
                     ref={this.props.buttonRef}
                     className="topWalletAddressListFollowShareBtn ml-2"
                     id="address-button"
-                    onClick={this.toggleShareModal}
-                    // onClick={this.handleSharePassFun}
+                    // onClick={this.toggleShareModal}
+                    onClick={this.handleSharePassFun}
                   >
                     <Image
                       className="topWalletAddressListFollowShareBtnIcon"
@@ -1432,8 +1432,8 @@ class TopWalletAddressList extends Component {
                     ref={this.props.buttonRef}
                     className="topWalletAddressListFollowShareBtn ml-2"
                     id="address-button"
-                    onClick={this.toggleShareModal}
-                    // onClick={this.handleSharePassFun}
+                    // onClick={this.toggleShareModal}
+                    onClick={this.handleSharePassFun}
                   >
                     <Image
                       className="topWalletAddressListFollowShareBtnIcon"

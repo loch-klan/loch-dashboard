@@ -383,34 +383,6 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                     </div>
 
                     <div className="available-copy-trades-navigator">
-                      {/* <div className="available-copy-trades-navigator-circles-container">
-                        {this.props.popularAccountsList &&
-                        this.props.popularAccountsList.length > 1
-                          ? this.props.popularAccountsList.map(
-                              (resCircle, resCircleIndex) => {
-                                return (
-                                  <div
-                                    style={{
-                                      opacity:
-                                        resCircleIndex ===
-                                        this.props.currentPopularCirclePosition
-                                          ? 1
-                                          : 0.2,
-                                      marginLeft:
-                                        resCircleIndex === 0 ? 0 : "0.5rem",
-                                    }}
-                                    onClick={() => {
-                                      this.props.goToScrollPositionPopular(
-                                        resCircleIndex
-                                      );
-                                    }}
-                                    className="available-copy-trades-navigator-circle"
-                                  />
-                                );
-                              }
-                            )
-                          : null}
-                      </div> */}
                       <div />
                       <div className="available-copy-trades-navigator-arrows">
                         <Image
@@ -548,45 +520,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                     </div>
 
                     <div className="available-copy-trades-navigator">
-                      <div className="available-copy-trades-navigator-circles-container">
-                        {this.props.copyTradesAvailableLocal &&
-                        this.props.copyTradesAvailableLocal.length > 1
-                          ? this.props.copyTradesAvailableLocal.map(
-                              (resCircle, resCircleIndex) => {
-                                return (
-                                  <div
-                                    style={{
-                                      opacity:
-                                        resCircleIndex ===
-                                        this.props.currentCirclePosition
-                                          ? 1
-                                          : 0.2,
-                                      marginLeft:
-                                        resCircleIndex === 0 ? 0 : "0.5rem",
-                                    }}
-                                    onClick={() => {
-                                      this.props.goToScrollPosition(
-                                        resCircleIndex
-                                      );
-                                    }}
-                                    className="available-copy-trades-navigator-circle"
-                                  />
-                                );
-                              }
-                            )
-                          : [...Array(5)].map((resCircle, resCircleIndex) => {
-                              return (
-                                <div
-                                  style={{
-                                    opacity: 0.2,
-                                    marginLeft:
-                                      resCircleIndex === 0 ? 0 : "0.5rem",
-                                  }}
-                                  className="available-copy-trades-navigator-circle"
-                                />
-                              );
-                            })}
-                      </div>
+                      <div />
                       <div className="available-copy-trades-navigator-arrows">
                         <Image
                           style={{
@@ -641,7 +575,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                   disableOnLoading
                   isMiniversion
                   showHeaderOnEmpty
-                  message="Select a wallet above to copy trade to get started."
+                  message="Select a wallet above to copy trade to get started"
                   noDataImage={NoCopyTradeTableIcon}
                   tableData={this.props.tableData}
                   columnList={this.props.columnData}

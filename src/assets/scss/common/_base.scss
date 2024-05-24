@@ -1886,6 +1886,13 @@ form {
       top: -1px;
     }
   }
+  .Toastify__toast {
+    .Toastify__toast-body {
+      &::after {
+        margin-left: 10px;
+      }
+    }
+  }
 }
 .tool-tip-container-bottom-arrow {
   .arrow::before {
