@@ -712,14 +712,7 @@
           }
         }
         .ctpb-plan-payment-button-disabled {
-          cursor: default;
-          &:hover {
-            background-color: transparent;
-            color: var(--primaryTextColor);
-            .ctpb-plan-payment-button-icons {
-              filter: var(--invertColor);
-            }
-          }
+          pointer-events: none;
         }
       }
     }

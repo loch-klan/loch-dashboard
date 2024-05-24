@@ -235,9 +235,11 @@ class PaywallModal extends BaseReactComponent {
         {this.state.isPayWallOptions ? (
           <PaywallOptionsModal
             show={this.state.isPayWallOptions}
+            isCreditBtnLoading={this.state.isCreditBtnLoading}
             onHide={this.props.onHide}
             redirectLink={this.props.redirectLink}
             goBackToPayWall={this.goBackToPayWall}
+            payWithStripe={this.payWithStripe}
             isMobile={this.props.isMobile}
             description={this.props.description}
           />
@@ -535,8 +537,8 @@ class PaywallModal extends BaseReactComponent {
                     </div>
                   </div>
                   <div
-                    // onClick={this.goToPayWallOptions}
-                    onClick={this.payWithStripe}
+                    onClick={this.goToPayWallOptions}
+                    // onClick={this.payWithStripe}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-button ${
                       this.state.isCreditBtnLoading
                         ? "ctpb-plan-button-loading"
