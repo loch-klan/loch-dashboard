@@ -12,10 +12,8 @@ import {
   UserCreditScrollRightArrowIcon,
   UserCreditScrollTopArrowIcon,
 } from "../../assets/images/icons";
-import {
-  CopyTradePopularAccountCopyClicked,
-  CopyTradePopularAccountWalletClicked,
-} from "../../utils/AnalyticsFunctions";
+import { CopyTradePopularAccountWalletClicked } from "../../utils/AnalyticsFunctions";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
@@ -24,7 +22,6 @@ import {
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import { SendOtp, VerifyEmail } from "../common/Api";
-import BasicConfirmModal from "../common/BasicConfirmModal";
 import Loading from "../common/Loading";
 import LoginMobile from "../home/NewAuth/LoginMobile";
 import RedirectMobile from "../home/NewAuth/RedirectMobile";
@@ -34,6 +31,7 @@ import TransactionTable from "../intelligence/TransactionTable";
 import { signUpWelcome, verifyUser } from "../onboarding/Api";
 import AddEmulationsAddressModal from "./AddEmulationsAddressModal";
 import EmulationsTradeModal from "./EmulationsTradeModal";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class AssetUnrealizedProfitAndLossMobile extends Component {
   constructor(props) {
@@ -146,16 +144,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             executeCopyTradeId={this.props.executeCopyTradeId}
           />
         ) : null}
-        {this.props.isRejectModal ? (
-          <BasicConfirmModal
-            show={this.props.isRejectModal}
-            history={this.props.history}
-            handleClose={this.props.closeRejectModal}
-            handleYes={this.props.executeRejectModal}
-            title="Are you sure you want to reject this trade?"
-            isMobile
-          />
-        ) : null}
+
         {this.state.authmodal == "login" ? (
           // <SmartMoneyMobileModalContainer
           // onHide={this.toggleAuthModal}
@@ -209,10 +198,34 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
         <div className="mobile-header-container-parent">
           <div className="mobile-header-container">
             <h4>Copy Trade</h4>
-            <p>All the wallet addresses you have copied</p>
+
+            <p>
+              {this.props.subTitle}{" "}
+              <span>
+                <CustomOverlay
+                  position="bottom"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={this.props.hoverText}
+                  className={"fix-width tool-tip-container-bottom-arrow"}
+                  copyTrade
+                >
+                  <Image
+                    src={InfoIcon}
+                    className="info-icon"
+                    style={{
+                      width: "1.6rem",
+                      marginTop: "-3px",
+                      cursor: "pointer",
+                    }}
+                  />
+                </CustomOverlay>
+              </span>
+            </p>
           </div>
           <div
-            onClick={this.openCopyTradeModal}
+            onClick={this.props.showAddCopyTradeAddress}
             className="mobile-add-copy-trade-button"
           >
             Add
@@ -274,7 +287,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                       className="actpacc-header-icon actpacc-header-icon-more-margin"
                     />
                     <div className="inter-display-medium f-s-16">
-                      Popular Accounts to Copy
+                      Top 20 Popular Accounts to Copy
                     </div>
                   </div>
                   <Image
@@ -354,26 +367,9 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                                   </div>
                                   <div
                                     onClick={() => {
-                                      if (curCopyTradeData.address) {
-                                        // this.setState(
-                                        //   {
-                                        //     prefillCopyAddress:
-                                        //       curCopyTradeData.address,
-                                        //   },
-                                        //   () => {
-                                        //     this.props.showAddCopyTradeAddress();
-                                        //   }
-                                        // );
-                                        this.addPrefillCopyAddressLocal(
-                                          curCopyTradeData.address
-                                        );
-
-                                        CopyTradePopularAccountCopyClicked({
-                                          session_id: getCurrentUser().id,
-                                          email_address: getCurrentUser().email,
-                                          wallet: curCopyTradeData.address,
-                                        });
-                                      }
+                                      this.props.copyPopularAddress(
+                                        curCopyTradeData.address
+                                      );
                                     }}
                                     className="inter-display-medium f-s-13 popular-copy-trades-button"
                                   >
@@ -387,34 +383,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                     </div>
 
                     <div className="available-copy-trades-navigator">
-                      <div className="available-copy-trades-navigator-circles-container">
-                        {this.props.popularAccountsList &&
-                        this.props.popularAccountsList.length > 1
-                          ? this.props.popularAccountsList.map(
-                              (resCircle, resCircleIndex) => {
-                                return (
-                                  <div
-                                    style={{
-                                      opacity:
-                                        resCircleIndex ===
-                                        this.props.currentPopularCirclePosition
-                                          ? 1
-                                          : 0.2,
-                                      marginLeft:
-                                        resCircleIndex === 0 ? 0 : "0.5rem",
-                                    }}
-                                    onClick={() => {
-                                      this.props.goToScrollPositionPopular(
-                                        resCircleIndex
-                                      );
-                                    }}
-                                    className="available-copy-trades-navigator-circle"
-                                  />
-                                );
-                              }
-                            )
-                          : null}
-                      </div>
+                      <div />
                       <div className="available-copy-trades-navigator-arrows">
                         <Image
                           style={{
@@ -551,45 +520,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                     </div>
 
                     <div className="available-copy-trades-navigator">
-                      <div className="available-copy-trades-navigator-circles-container">
-                        {this.props.copyTradesAvailableLocal &&
-                        this.props.copyTradesAvailableLocal.length > 1
-                          ? this.props.copyTradesAvailableLocal.map(
-                              (resCircle, resCircleIndex) => {
-                                return (
-                                  <div
-                                    style={{
-                                      opacity:
-                                        resCircleIndex ===
-                                        this.props.currentCirclePosition
-                                          ? 1
-                                          : 0.2,
-                                      marginLeft:
-                                        resCircleIndex === 0 ? 0 : "0.5rem",
-                                    }}
-                                    onClick={() => {
-                                      this.props.goToScrollPosition(
-                                        resCircleIndex
-                                      );
-                                    }}
-                                    className="available-copy-trades-navigator-circle"
-                                  />
-                                );
-                              }
-                            )
-                          : [...Array(5)].map((resCircle, resCircleIndex) => {
-                              return (
-                                <div
-                                  style={{
-                                    opacity: 0.2,
-                                    marginLeft:
-                                      resCircleIndex === 0 ? 0 : "0.5rem",
-                                  }}
-                                  className="available-copy-trades-navigator-circle"
-                                />
-                              );
-                            })}
-                      </div>
+                      <div />
                       <div className="available-copy-trades-navigator-arrows">
                         <Image
                           style={{
@@ -644,7 +575,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                   disableOnLoading
                   isMiniversion
                   showHeaderOnEmpty
-                  message="Select a wallet above to copy trade to get started."
+                  message="Select a wallet above to copy trade to get started"
                   noDataImage={NoCopyTradeTableIcon}
                   tableData={this.props.tableData}
                   columnList={this.props.columnData}

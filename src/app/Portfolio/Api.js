@@ -83,6 +83,7 @@ export const getCoinRate = () => {
 export const getUserWallet = (wallet, ctx, isRefresh, index) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
+    console.log("chains ++", wallet.coinCode);
     data.append("chain", wallet.coinCode);
     data.append("wallet_address", wallet.address);
 

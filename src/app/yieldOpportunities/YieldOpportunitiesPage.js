@@ -1161,6 +1161,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           showpath
           currentPage={"yield-opportunities"}
           history={this.props.history}
