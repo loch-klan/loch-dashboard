@@ -52,6 +52,7 @@ class ReplaceAddressPage extends Component {
     if (this.state.isMobile) {
       return (
         <MobileLayout
+          handleShare={() => null}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           currentPage={"stripe-success-page"}

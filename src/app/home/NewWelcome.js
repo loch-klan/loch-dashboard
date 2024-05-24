@@ -1224,6 +1224,7 @@ class NewWelcome extends BaseReactComponent {
         }
       });
 
+      console.log("parentCoinList ", parentCoinList);
       for (let i = 0; i < parentCoinList.length; i++) {
         this.props.detectCoin(
           {

@@ -761,7 +761,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "leaderboard";
+    let shareLink = BASE_URL_S3 + "home-leaderboard";
     this.copyTextToClipboard(shareLink);
   };
   goToAddress = (slink) => {
@@ -1180,7 +1180,12 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
     if (mobileCheck()) {
       return (
-        <MobileLayout hideFooter history={this.props.history} hideAddresses>
+        <MobileLayout
+          handleShare={this.handleShare}
+          hideFooter
+          history={this.props.history}
+          hideAddresses
+        >
           <HomeSmartMoneyMobile
             goToAddress={this.goToAddress}
             accountList={this.state.accountList}

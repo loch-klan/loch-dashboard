@@ -30,7 +30,10 @@ import {
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
 import { DARK_MODE } from "../intelligence/ActionTypes";
-import { whichSignUpMethod } from "../../utils/ReusableFunctions";
+import {
+  isPremiumUser,
+  whichSignUpMethod,
+} from "../../utils/ReusableFunctions";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -80,6 +83,14 @@ export const addLocalWalletList = (passedData) => {
   };
 };
 
+export const CheckPremiumAfterAPI = () => {
+  return function (dispatch, getState) {
+    dispatch({
+      type: CURRENT_USER_PAYMENT_PLAN,
+      payload: Math.random(),
+    });
+  };
+};
 export const SwitchDarkMode = (passedData) => {
   return function (dispatch, getState) {
     dispatch({
@@ -1068,11 +1079,14 @@ export const getAllCurrencyRatesApi = () => {
 
 // Send Email OTP from whale pod
 
-export const SendOtp = (data, ctx, isForMobile, isCopyTrader) => {
+export const SendOtp = (data, ctx, isForMobile, isCopyTrader, resendOtp) => {
   postLoginInstance
     .post("organisation/user/send-email-otp", data)
     .then((res) => {
       if (!res.data.error) {
+        if (resendOtp) {
+          toast.success("OTP sent successfully");
+        }
         if (isForMobile && ctx.showSignInOtpPage) {
           ctx.showSignInOtpPage();
         }
@@ -1095,6 +1109,9 @@ export const SendOtp = (data, ctx, isForMobile, isCopyTrader) => {
         }
       } else if (res.data.error === true) {
         toast.error(res.data.message || "Something Went Wrong");
+        if (isForMobile && ctx.handleError) {
+          ctx.handleError();
+        }
       }
     })
     .catch((err) => {
@@ -1108,7 +1125,13 @@ export const SendOtp = (data, ctx, isForMobile, isCopyTrader) => {
 
 // Verify email
 
-export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
+export const VerifyEmail = (
+  data,
+  ctx,
+  passedStopUpdate,
+  passedEmail,
+  handleVerificationError
+) => {
   postLoginInstance
     .post("organisation/user/verify-otp-code", data)
     .then((res) => {
@@ -1130,6 +1153,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
         //    JSON.stringify(res.data.data?.current_plan)
         //  );
         // free pricing
+
         let plan = {
           defi_enabled: true,
           export_address_limit: -1,
@@ -1374,7 +1398,11 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
               //  console.log("only sign");
               setTimeout(() => {
                 if (ctx.state.onHide) {
-                  ctx.state.onHide();
+                  if (ctx.verifyOtpSuccessfull) {
+                    ctx.verifyOtpSuccessfull();
+                  } else {
+                    ctx.state.onHide();
+                  }
                 }
                 // console.log("reload")
                 window.location.reload();
@@ -1485,7 +1513,11 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
                 } else {
                   setTimeout(() => {
                     if (ctx.state && ctx.state.onHide) {
-                      ctx.state.onHide();
+                      if (ctx.verifyOtpSuccessfull) {
+                        ctx.verifyOtpSuccessfull();
+                      } else {
+                        ctx.state.onHide();
+                      }
                     }
                   }, 3000);
                 }
@@ -1507,6 +1539,9 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
 
         // console.log("user id ", userId)
       } else if (res.data.error === true) {
+        if (handleVerificationError) {
+          handleVerificationError(true);
+        }
         // invalid otp
         ctx.setState({
           isOptInValid: true,
@@ -1514,6 +1549,9 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
       }
     })
     .catch((err) => {
+      if (handleVerificationError) {
+        handleVerificationError();
+      }
       console.log("err", err);
     });
 };
@@ -1526,12 +1564,7 @@ export const UpdateUserDetails = (data, ctx) => {
     .then((res) => {
       if (!res.data.error) {
         // Analytics
-        WhaleCreateAccountEmailVerified({
-          session_id: res.data.data.user.link,
-          email_address: res.data.data.user.email
-            ? res.data.data.user.email
-            : ctx.state.email,
-        });
+
         // window.localStorage.setItem("lochDummyUser", null);g
         window.localStorage.removeItem("lochDummyUser");
         let obj = JSON.parse(window.localStorage.getItem("lochUser"));
@@ -1553,7 +1586,11 @@ export const UpdateUserDetails = (data, ctx) => {
           ctx.AddEmailModal();
         } else {
           // for whale watch
-          ctx.state.onHide();
+          if (ctx.verifyOtpSuccessfull) {
+            ctx.verifyOtpSuccessfull();
+          } else {
+            ctx.state.onHide();
+          }
         }
       }
     })
