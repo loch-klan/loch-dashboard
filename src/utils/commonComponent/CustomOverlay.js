@@ -107,42 +107,12 @@ function CustomOverlay({
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
-                Loch’s copy trader will email you when
-              </div>
-              <div
-                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
-                  isCaptialised ? "text-capitalize" : ""
-                }`}
-              >
-                the underlying wallet makes a swap.
-              </div>
-              <div
-                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
-                  isCaptialised ? "text-capitalize" : ""
-                }`}
-              >
-                We’ll calculate the equivalent swap amount
-              </div>
-              <div
-                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
-                  isCaptialised ? "text-capitalize" : ""
-                }`}
-              >
-                relative to your portfolio. Use your own
-              </div>
-              <div
-                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
-                  isCaptialised ? "text-capitalize" : ""
-                }`}
-              >
-                judgment to decide if you want to
-              </div>
-              <div
-                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
-                  isCaptialised ? "text-capitalize" : ""
-                }`}
-              >
-                execute the copy trade or not.
+                <div>Loch’s copy trader will email you when</div>
+                <div>the underlying wallet makes a swap.</div>
+                <div>We’ll calculate the equivalent swap amount</div>
+                <div>relative to your portfolio. Use your own</div>
+                <div>judgment to decide whether you want to</div>
+                <div>execute the copy trade.</div>
               </div>
             </div>
           ) : heading ? (

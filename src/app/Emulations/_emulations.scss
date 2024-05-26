@@ -564,6 +564,10 @@
           .popular-copy-trades-data-nametag {
             color: var(--topbarInput);
             text-align: center;
+            max-width: 10rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
         .popular-copy-trades-button {
