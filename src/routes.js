@@ -35,6 +35,7 @@ import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import PublicRoute from "./utils/PublicRoute";
 import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
 import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
+import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
 const routes = [
   {
     path: "/",
@@ -227,6 +228,12 @@ const routes = [
     name: "Stripe Error",
     type: PrivateRoute,
     component: StripeErrorPage,
+  },
+  {
+    path: "/replace-address",
+    name: "Stripe Error",
+    type: PrivateRoute,
+    component: ReplaceAddressPage,
   },
 ];
 export default routes;

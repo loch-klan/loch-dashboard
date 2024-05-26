@@ -18,7 +18,7 @@ class StripeErrorPage extends Component {
   }
 
   componentDidMount() {
-    window.sessionStorage.setItem("openPaymentOptionsAgain", true);
+    window.localStorage.setItem("openPaymentOptionsAgain", true);
     setTimeout(() => {
       this.props.history.push("/home");
     }, 500);

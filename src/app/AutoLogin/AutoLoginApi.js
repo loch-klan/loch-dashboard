@@ -8,7 +8,7 @@ export const autoLoginApi = (ctx, redirectTo) => {
       .post("organisation/user/get-user-portfolio")
       .then((res) => {
         if (!res.data.error) {
-          window.sessionStorage.setItem(
+          window.localStorage.setItem(
             "lochUser",
             JSON.stringify(res.data.data.user)
           );
@@ -41,14 +41,14 @@ export const autoLoginApi = (ctx, redirectTo) => {
             whale_pod_limit: -1,
             influencer_pod_limit: -1,
           };
-          window.sessionStorage.setItem(
+          window.localStorage.setItem(
             "currentPlan",
             JSON.stringify({
               ...plan,
               influencer_pod_limit: -1,
             })
           );
-          window.sessionStorage.setItem("stopClick", true);
+          window.localStorage.setItem("stopClick", true);
 
           const allChains = res.data.data.chains;
           let addWallet = [];
@@ -111,9 +111,9 @@ export const autoLoginApi = (ctx, redirectTo) => {
             addWallet.push(obj);
           }
 
-          window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+          window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
           addLocalWalletList(JSON.stringify(addWallet));
-          window.sessionStorage.setItem("stop_redirect", true);
+          window.localStorage.setItem("stop_redirect", true);
           if (ctx && ctx.props?.setPageFlagDefault) {
             ctx.props.setPageFlagDefault();
           }
@@ -124,7 +124,7 @@ export const autoLoginApi = (ctx, redirectTo) => {
               ctx.props.history.push("/home");
             }
           }
-          if (window.sessionStorage.getItem("lochToken")) {
+          if (window.localStorage.getItem("lochToken")) {
             postLoginInstance
               .post("wallet/user-wallet/add-yield-pools")
               .then((res) => {

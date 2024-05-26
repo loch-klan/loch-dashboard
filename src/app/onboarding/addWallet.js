@@ -73,7 +73,7 @@ class AddWallet extends BaseReactComponent {
             },
           ],
       loading: false,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -289,7 +289,7 @@ class AddWallet extends BaseReactComponent {
   //     let value = this.state.upgradeModal ? false : true;
   //     this.props.hideModal(value);
 
-  //     const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+  //     const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
   //     if (userDetails) {
   //       this.props.history.push("/home")
   //     }
@@ -326,7 +326,7 @@ class AddWallet extends BaseReactComponent {
     this.props.getAllCoins();
     this.props.getAllParentChains();
     this.setState({
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
 
     this.props.GetAllPlan();
@@ -335,7 +335,7 @@ class AddWallet extends BaseReactComponent {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.userPlan === null) {
       this.state.userPlan = JSON.parse(
-        window.sessionStorage.getItem("currentPlan")
+        window.localStorage.getItem("currentPlan")
       );
     }
     if (this.state.walletInput !== prevState.walletInput) {
@@ -738,7 +738,7 @@ class AddWallet extends BaseReactComponent {
   };
 
   onValidSubmit = () => {
-    window.sessionStorage.setItem("callTheUpdateAPI", true);
+    window.localStorage.setItem("callTheUpdateAPI", true);
     this.setState({
       disableGoBtn: true,
     });
@@ -758,7 +758,7 @@ class AddWallet extends BaseReactComponent {
     }
     let passingData = new URLSearchParams();
     passingData.append("user_account", JSON.stringify(theExchangeData));
-    const islochUser = window.sessionStorage.getItem("lochDummyUser");
+    const islochUser = window.localStorage.getItem("lochDummyUser");
     if (islochUser) {
       this.updateWallet();
       if (theExchangeData && theExchangeData.length > 0) {
@@ -833,13 +833,13 @@ class AddWallet extends BaseReactComponent {
         }
       }
       if (creditIsAddress) {
-        window.sessionStorage.setItem("addAddressCreditOnce", true);
+        window.localStorage.setItem("addAddressCreditOnce", true);
         if (addWallet.length > 1) {
-          window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+          window.localStorage.setItem("addMultipleAddressCreditOnce", true);
         }
       }
       if (creditIsEns) {
-        window.sessionStorage.setItem("addEnsCreditOnce", true);
+        window.localStorage.setItem("addEnsCreditOnce", true);
       }
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(addressList));
@@ -924,7 +924,7 @@ class AddWallet extends BaseReactComponent {
       if (addWallet) {
         this.props.setHeaderReducer(addWallet);
       }
-      window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+      window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
 
       // this.state?.onHide();
       const data = new URLSearchParams();
@@ -1560,7 +1560,7 @@ class AddWallet extends BaseReactComponent {
             onHide={this.upgradeModal}
             history={this.props.history}
             triggerId={this.state.triggerId}
-            // isShare={window.sessionStorage.getItem("share_id")}
+            // isShare={window.localStorage.getItem("share_id")}
             // isStatic={this.state.isStatic}
           />
         )}

@@ -30,9 +30,9 @@ export default function PageHeader(props) {
   const [isLochPaymentModal, setIsLochPaymentModal] = useState(false);
 
   useEffect(() => {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
-      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+      const shouldOpenNoficationModal = window.localStorage.getItem(
         "openExportPaymentModal"
       );
       if (shouldOpenNoficationModal) {
@@ -48,7 +48,7 @@ export default function PageHeader(props) {
     setIsLochPaymentModal(false);
   };
   const handlePopup = () => {
-    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
 
@@ -83,13 +83,13 @@ export default function PageHeader(props) {
   };
   const exprotPassThrough = () => {
     if (props.currentPage === "assets") {
-      window.sessionStorage.setItem("blurredAssetExportModal", true);
+      window.localStorage.setItem("blurredAssetExportModal", true);
     } else if (props.currentPage === "gas-fees") {
-      window.sessionStorage.setItem("blurredGasFeesExportModal", true);
+      window.localStorage.setItem("blurredGasFeesExportModal", true);
     } else if (props.currentPage === "counterparty-volume") {
-      window.sessionStorage.setItem("blurredCounterPartyExportModal", true);
+      window.localStorage.setItem("blurredCounterPartyExportModal", true);
     }
-    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (isLochUser && isLochUser.email) {
       if (props.handleExportModal) {
         props.handleExportModal();

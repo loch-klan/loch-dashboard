@@ -40,7 +40,7 @@ export const loginApi = (ctx, data) => {
       if (!res.data.error) {
         // console.log('res', res.data.data.token);
         // console.log('ctx');
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "currency",
           JSON.stringify({
             active: true,
@@ -51,7 +51,7 @@ export const loginApi = (ctx, data) => {
             rate: 1,
           })
         );
-        window.sessionStorage.setItem("lochToken", res.data.data.token);
+        window.localStorage.setItem("lochToken", res.data.data.token);
         if (ctx.state.link && ctx.state.id) {
           ctx.props.getAllCoins(ctx.handleShareLinkUser);
         } else {
@@ -146,6 +146,7 @@ export const updateUserWalletApi = (
     postLoginInstance
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
+        console.log("res.data ", res.data);
         if (!res.data.error) {
           if (ctx.hideTheTopBarHistoryItems) {
             ctx.hideTheTopBarHistoryItems();
@@ -218,7 +219,7 @@ export const updateUserWalletApi = (
             newAddWallet.push(obj);
           }
           // console.log('newAddWallet',newAddWallet);
-          window.sessionStorage.setItem(
+          window.localStorage.setItem(
             "addWallet",
             JSON.stringify(newAddWallet)
           );
@@ -246,9 +247,7 @@ export const updateUserWalletApi = (
             ctx.props.history?.push({
               pathname: ctx.props.pathName,
               state: {
-                addWallet: JSON.parse(
-                  window.sessionStorage.getItem("addWallet")
-                ),
+                addWallet: JSON.parse(window.localStorage.getItem("addWallet")),
               },
             });
           }
@@ -280,9 +279,14 @@ export const updateUserWalletApi = (
             });
           }
         }
+        if (ctx.goToHomeAfterReplace) {
+          ctx.goToHomeAfterReplace();
+        }
       })
       .catch((err) => {
-        console.log("Three ", err);
+        if (ctx.goToHomeAfterReplace) {
+          ctx.goToHomeAfterReplace();
+        }
         if (ctx.cancelAddingWallet) {
           // ctx.cancelAddingWallet();
           ctx.setState({
@@ -298,9 +302,9 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
     .post("organisation/user/verify-email", data)
     .then((res) => {
       if (!res.data.error) {
-        window.sessionStorage.setItem("lochToken", res.data?.data?.token);
-        // window.sessionStorage.setItem("addWallet", JSON.stringify([]));
-        window.sessionStorage.setItem("stopClick", true);
+        window.localStorage.setItem("lochToken", res.data?.data?.token);
+        // window.localStorage.setItem("addWallet", JSON.stringify([]));
+        window.localStorage.setItem("stopClick", true);
         // free pricing
         let plan = {
           defi_enabled: true,
@@ -332,7 +336,7 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
           influencer_pod_limit: -1,
         };
         // free pricing
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "currentPlan",
           JSON.stringify({
             ...plan,
@@ -340,12 +344,12 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
           })
         );
         // actual
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem(
         //   "currentPlan",
         //   JSON.stringify({...res.data?.data?.current_plan,influencer_pod_limit:
         // res.data.data?.current_plan.name === "Free" ? 1 : -1,} || {})
         // );
-        //  let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        //  let obj = JSON.parse(window.localStorage.getItem("lochUser"));
         let obj = {
           first_name: res.data.data.user?.first_name,
           last_name: res.data.data.user?.last_name,
@@ -355,12 +359,12 @@ export const verifyEmailApi = (ctx, data, stayOnWelcomePage) => {
           referred_by: res.data.data.user?.referred_by,
         };
 
-        window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+        window.localStorage.setItem("lochUser", JSON.stringify(obj));
 
-        // window.sessionStorage.setItem("defi_access", true);
-        // window.sessionStorage.setItem("isPopup", true);
-        // // window.sessionStorage.setItem("whalepodview", true);
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem("defi_access", true);
+        // window.localStorage.setItem("isPopup", true);
+        // // window.localStorage.setItem("whalepodview", true);
+        // window.localStorage.setItem(
         //   "whalepodview",
         //   JSON.stringify({ access: true, id: "" })
         // );
@@ -466,7 +470,7 @@ export const getUserAddresses = (
       }
       // console.log('newAddWallet',newAddWallet);
 
-      window.sessionStorage.setItem("addWallet", JSON.stringify(newAddWallet));
+      window.localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
       addLocalWalletList(JSON.stringify(newAddWallet));
       setTimeout(() => {
         if (showSuccessMessage) {
@@ -505,7 +509,7 @@ export const sendWhopCode = (ctx, data) => {
     .post("commerce/payment/create-user-whop", data)
     .then((res) => {
       if (!res.data.error) {
-        window.sessionStorage.setItem("lochToken", res.data?.data?.token);
+        window.localStorage.setItem("lochToken", res.data?.data?.token);
         let apiResponse = res.data?.data;
         let newAddWallet = [];
         if (apiResponse?.wallets) {
@@ -574,14 +578,11 @@ export const sendWhopCode = (ctx, data) => {
           }
         }
         // console.log('newAddWallet',newAddWallet);
-        window.sessionStorage.setItem(
-          "addWallet",
-          JSON.stringify(newAddWallet)
-        );
+        window.localStorage.setItem("addWallet", JSON.stringify(newAddWallet));
         addLocalWalletList(JSON.stringify(newAddWallet));
 
-        // window.sessionStorage.setItem("addWallet", JSON.stringify(walletAddress));
-        window.sessionStorage.setItem("stopClick", true);
+        // window.localStorage.setItem("addWallet", JSON.stringify(walletAddress));
+        window.localStorage.setItem("stopClick", true);
         // free pricing
         let plan = {
           defi_enabled: true,
@@ -613,19 +614,19 @@ export const sendWhopCode = (ctx, data) => {
           influencer_pod_limit: -1,
         };
         // free pricing
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "currentPlan",
           JSON.stringify({
             ...plan,
             influencer_pod_limit: -1,
           })
         );
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem(
         //   "currentPlan",
         //   JSON.stringify({...res.data?.data?.current_plan,influencer_pod_limit:
         // res.data.data?.current_plan.name === "Free" ? 1 : -1} || {})
         // );
-        //  let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        //  let obj = JSON.parse(window.localStorage.getItem("lochUser"));
         let obj = {
           first_name: res.data.data.user?.first_name,
           last_name: res.data.data.user?.last_name,
@@ -634,11 +635,11 @@ export const sendWhopCode = (ctx, data) => {
           link: res.data.data.user?.link,
           referred_by: res.data.data.user?.referred_by,
         };
-        window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
-        // window.sessionStorage.setItem("defi_access", true);
-        // window.sessionStorage.setItem("isPopup", true);
-        // // window.sessionStorage.setItem("whalepodview", true);
-        // window.sessionStorage.setItem(
+        window.localStorage.setItem("lochUser", JSON.stringify(obj));
+        // window.localStorage.setItem("defi_access", true);
+        // window.localStorage.setItem("isPopup", true);
+        // // window.localStorage.setItem("whalepodview", true);
+        // window.localStorage.setItem(
         //   "whalepodview",
         //   JSON.stringify({ access: true, id: "" })
         // );
@@ -691,9 +692,7 @@ export const getDetectedChainsApi = (ctx) => {
             });
           });
           // console.log('chainList',chainList);
-          let addWallet = JSON.parse(
-            window.sessionStorage.getItem("addWallet")
-          );
+          let addWallet = JSON.parse(window.localStorage.getItem("addWallet"));
           let totalChainDetechted = 0;
           addWallet = addWallet?.map((e) => ({ ...e, apiAddress: e.address }));
           // console.log('addWallet',addWallet);
@@ -758,10 +757,7 @@ export const getDetectedChainsApi = (ctx) => {
           });
           addWallet &&
             addWallet.length > 0 &&
-            window.sessionStorage.setItem(
-              "addWallet",
-              JSON.stringify(addWallet)
-            );
+            window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
           addLocalWalletList(JSON.stringify(addWallet));
         } else {
           toast.error(res.data.message || "Something went wrong");
@@ -1021,7 +1017,7 @@ export const getAllCurrencyApi = (setAllCurrencyList) => {
   //   });
 };
 export const getAllCurrencyRatesApi = () => {
-  window.sessionStorage.setItem(
+  window.localStorage.setItem(
     "currency",
     JSON.stringify({
       active: true,
@@ -1038,7 +1034,7 @@ export const getAllCurrencyRatesApi = () => {
   //   .then((res) => {
   //     if (!res.data.error) {
   //       let currency = JSON.parse(
-  //         window.sessionStorage.getItem("currency")
+  //         window.localStorage.getItem("currency")
   //       ) || {
   //         active: true,
   //         code: "USD",
@@ -1056,8 +1052,8 @@ export const getAllCurrencyRatesApi = () => {
   //           };
   //         }
   //       }
-  //       window.sessionStorage.setItem("currency", JSON.stringify(currency));
-  //       window.sessionStorage.setItem(
+  //       window.localStorage.setItem("currency", JSON.stringify(currency));
+  //       window.localStorage.setItem(
   //         "currencyRates",
   //         JSON.stringify(res.data.data.rates)
   //       );
@@ -1128,7 +1124,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
         }
         let token = res.data.data.token;
 
-        //  window.sessionStorage.setItem(
+        //  window.localStorage.setItem(
         //    "currentPlan",
         //    JSON.stringify(res.data.data?.current_plan)
         //  );
@@ -1163,14 +1159,14 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
           influencer_pod_limit: -1,
         };
         // free pricing
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "currentPlan",
           JSON.stringify({
             ...plan,
             influencer_pod_limit: -1,
           })
         );
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem(
         //   "currentPlan",
         //   JSON.stringify({
         //     ...res.data.data?.current_plan,
@@ -1178,8 +1174,8 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
         //       res.data.data?.current_plan.name === "Free" ? 1 : -1,
         //   })
         // );
-        window.sessionStorage.setItem("lochToken", token);
-        const userId = window.sessionStorage.getItem("lochDummyUser");
+        window.localStorage.setItem("lochToken", token);
+        const userId = window.localStorage.getItem("lochDummyUser");
 
         // reset redux
         // if (res.data.data.is_new_user) {
@@ -1274,7 +1270,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
           last_name: res.data.data.user?.last_name,
           track: track,
         });
-        let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        let obj = JSON.parse(window.localStorage.getItem("lochUser"));
         obj = {
           ...obj,
           first_name: res.data.data.user?.first_name,
@@ -1285,7 +1281,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
           referred_by: res.data.data.user?.referred_by,
         };
 
-        window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+        window.localStorage.setItem("lochUser", JSON.stringify(obj));
 
         ctx.setState(
           {
@@ -1293,7 +1289,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
           },
           () => {
             if (ctx.props.stopUpdate || passedStopUpdate) {
-              window.sessionStorage.removeItem("lochDummyUser");
+              window.localStorage.removeItem("lochDummyUser");
 
               const allChains = ctx.props.OnboardingState.coinsList;
               let addWallet = [];
@@ -1369,7 +1365,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
 
                 addWallet.push(obj);
               }
-              window.sessionStorage.setItem(
+              window.localStorage.setItem(
                 "addWallet",
                 JSON.stringify(addWallet)
               );
@@ -1476,7 +1472,7 @@ export const VerifyEmail = (data, ctx, passedStopUpdate, passedEmail) => {
                     newAddWallet.push(obj);
                   }
 
-                  window.sessionStorage.setItem(
+                  window.localStorage.setItem(
                     "addWallet",
                     JSON.stringify(newAddWallet)
                   );
@@ -1535,9 +1531,9 @@ export const UpdateUserDetails = (data, ctx) => {
             ? res.data.data.user.email
             : ctx.state.email,
         });
-        // window.sessionStorage.setItem("lochDummyUser", null);g
-        window.sessionStorage.removeItem("lochDummyUser");
-        let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        // window.localStorage.setItem("lochDummyUser", null);g
+        window.localStorage.removeItem("lochDummyUser");
+        let obj = JSON.parse(window.localStorage.getItem("lochUser"));
         obj = {
           ...obj,
           first_name: ctx.state.firstName,
@@ -1549,7 +1545,7 @@ export const UpdateUserDetails = (data, ctx) => {
           link: res.data.data.user.link,
           referred_by: res.data.data.user.referred_by,
         };
-        window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+        window.localStorage.setItem("lochUser", JSON.stringify(obj));
         // toast.success(" Your wallets and pods has been saved");
         if (ctx.AddEmailModal) {
           // for upgrade
@@ -1715,7 +1711,7 @@ export const GetAllPlan = () => {
         whale_pod_limit: -1,
       },
     ];
-    window.sessionStorage.setItem("Plans", JSON.stringify(tempItemHolder));
+    window.localStorage.setItem("Plans", JSON.stringify(tempItemHolder));
 
     //   postLoginInstance
     //     .post("commerce/plan/get-all-plans")
@@ -1723,7 +1719,7 @@ export const GetAllPlan = () => {
     //       if (!res.data.error) {
     //         // Analytics
 
-    //         window.sessionStorage.setItem(
+    //         window.localStorage.setItem(
     //           "Plans",
     //           JSON.stringify(res.data.data.plans)
     //         );
@@ -1774,7 +1770,7 @@ export const GetDefaultPlan = () => {
           influencer_pod_limit: -1,
         };
         // free pricing
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "currentPlan",
           JSON.stringify({
             ...plan,
@@ -1782,7 +1778,7 @@ export const GetDefaultPlan = () => {
           })
         );
 
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem(
         //   "currentPlan",
         //   JSON.stringify({
         //     ...res.data.data.plan,
@@ -1826,10 +1822,7 @@ export const getUser = (ctx = null, showToast = false) => {
           currentUserPlan = res.data.data.current_plan.name;
         }
 
-        window.sessionStorage.setItem(
-          "currentUserPaymentPlan",
-          currentUserPlan
-        );
+        window.localStorage.setItem("currentUserPaymentPlan", currentUserPlan);
         dispatch({
           type: CURRENT_USER_PAYMENT_PLAN,
           payload: currentUserPlan,
@@ -1866,14 +1859,14 @@ export const getUser = (ctx = null, showToast = false) => {
           influencer_pod_limit: -1,
         };
         // free pricing
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "currentPlan",
           JSON.stringify({
             ...plan,
             influencer_pod_limit: -1,
           })
         );
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem(
         //   "currentPlan",
         //   JSON.stringify({
         //     ...res.data.data.current_plan,
@@ -1892,7 +1885,7 @@ export const getUser = (ctx = null, showToast = false) => {
             referred_by: res.data.data.user?.referred_by,
           };
 
-          window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+          window.localStorage.setItem("lochUser", JSON.stringify(obj));
         }
         if (
           ctx?.props?.location?.search === "?status=success" ||
@@ -2063,7 +2056,7 @@ export const updateWalletListFlag = (page, status) => {
 export const setPageFlagDefault = (deleteRecall = false) => {
   return async function (dispatch, getState) {
     if (deleteRecall) {
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
     }
     dispatch({
       type: SET_DEFAULT_VALUE,
@@ -2143,7 +2136,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
           influencer_pod_limit: -1,
         };
         // free pricing
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "currentPlan",
           JSON.stringify({
             ...plan,
@@ -2151,7 +2144,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
           })
         );
 
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem(
         //   "currentPlan",
         //   JSON.stringify({
         //     ...res.data.data?.current_plan,
@@ -2159,8 +2152,8 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
         //       res.data.data?.current_plan.name === "Free" ? 1 : -1,
         //   })
         // );
-        window.sessionStorage.setItem("lochToken", token);
-        const userId = window.sessionStorage.getItem("lochDummyUser");
+        window.localStorage.setItem("lochToken", token);
+        const userId = window.localStorage.getItem("lochDummyUser");
 
         // reset redux
         ctx.props.setPageFlagDefault && ctx.props.setPageFlagDefault();
@@ -2195,8 +2188,8 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
         //    from: ctx.props.tracking,
         //  });
         if (ctx.props.stopUpdate) {
-          window.sessionStorage.removeItem("lochDummyUser");
-          let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+          window.localStorage.removeItem("lochDummyUser");
+          let obj = JSON.parse(window.localStorage.getItem("lochUser"));
           obj = {
             ...obj,
             first_name: res.data.data.user?.first_name,
@@ -2207,7 +2200,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
             referred_by: res.data.data.user?.referred_by,
           };
 
-          window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+          window.localStorage.setItem("lochUser", JSON.stringify(obj));
 
           const allChains = ctx.props.OnboardingState.coinsList;
           let addWallet = [];
@@ -2276,7 +2269,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
 
             addWallet.push(obj);
           }
-          window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+          window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
           addLocalWalletList(JSON.stringify(addWallet));
 
           setTimeout(() => {
@@ -2290,7 +2283,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
             userdata.append("old_user_id", userId);
             UpdateUserDetails(userdata, ctx);
           } else {
-            let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+            let obj = JSON.parse(window.localStorage.getItem("lochUser"));
             obj = {
               ...obj,
               first_name: "",
@@ -2300,7 +2293,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
               link: res.data.data.user?.link,
               referred_by: res.data.data.user?.referred_by,
             };
-            window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+            window.localStorage.setItem("lochUser", JSON.stringify(obj));
 
             // update wallet
             const apiResponse = res.data.data;
@@ -2381,7 +2374,7 @@ export const SigninWallet = (data, ctx, userFunction = null) => {
                 newAddWallet.push(obj);
               }
 
-              window.sessionStorage.setItem(
+              window.localStorage.setItem(
                 "addWallet",
                 JSON.stringify(newAddWallet)
               );

@@ -15,12 +15,12 @@ class ConformSmartMoneyLeaveModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
   }
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
 
   render() {

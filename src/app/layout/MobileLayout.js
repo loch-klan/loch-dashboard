@@ -79,7 +79,7 @@ class MobileLayout extends BaseReactComponent {
       isReferralCodeStep: false,
       isReferralCodeLoading: false,
       isOptInValid: false,
-      lochUserLocal: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      lochUserLocal: JSON.parse(window.localStorage.getItem("lochUser")),
       confirmLeave: false,
       activeTab: "/home",
       walletInput: [
@@ -167,7 +167,7 @@ class MobileLayout extends BaseReactComponent {
     if (!this.props.commonState?.mobileLayout) {
       this.props.updateWalletListFlag("mobileLayout", true);
       this.setState({
-        lochUserLocal: JSON.parse(window.sessionStorage.getItem("lochUser")),
+        lochUserLocal: JSON.parse(window.localStorage.getItem("lochUser")),
       });
     }
     if (prevState.otp !== this.state.otp) {
@@ -177,9 +177,9 @@ class MobileLayout extends BaseReactComponent {
     }
   }
   componentDidMount() {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
-      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+      const shouldOpenNoficationModal = window.localStorage.getItem(
         "openSearchbarPaymentModal"
       );
       if (shouldOpenNoficationModal) {
@@ -207,17 +207,17 @@ class MobileLayout extends BaseReactComponent {
     }
 
     setTimeout(() => {
-      window.sessionStorage.setItem("fifteenSecSignInModal", true);
+      window.localStorage.setItem("fifteenSecSignInModal", true);
       const dontOpenLoginPopup =
-        window.sessionStorage.getItem("dontOpenLoginPopup");
+        window.localStorage.getItem("dontOpenLoginPopup");
       const lochUserLocalAgain = JSON.parse(
-        window.sessionStorage.getItem("lochUser")
+        window.localStorage.getItem("lochUser")
       );
       if (
         !dontOpenLoginPopup &&
         !(lochUserLocalAgain && lochUserLocalAgain.email)
       ) {
-        window.sessionStorage.setItem("dontOpenLoginPopup", true);
+        window.localStorage.setItem("dontOpenLoginPopup", true);
         this.setState({
           authmodal: "login",
         });
@@ -230,7 +230,7 @@ class MobileLayout extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -248,7 +248,7 @@ class MobileLayout extends BaseReactComponent {
     if (this.state.isPremiumUser) {
       return null;
     }
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       dontOpenLoginPopup();
       this.setState({
@@ -257,7 +257,7 @@ class MobileLayout extends BaseReactComponent {
     } else {
       removeOpenModalAfterLogin();
       setTimeout(() => {
-        window.sessionStorage.setItem("openSearchbarPaymentModal", true);
+        window.localStorage.setItem("openSearchbarPaymentModal", true);
       }, 1000);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
@@ -274,17 +274,14 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   handleAddWallet = (replaceAddresses) => {
-    sessionStorage.setItem("replacedOrAddedAddress", true);
+    localStorage.setItem("replacedOrAddedAddress", true);
     if (this.state.goBtnDisabled) {
       return null;
     }
     if (!replaceAddresses && !isPremiumUser()) {
       removeBlurMethods();
       removeSignUpMethods();
-      window.sessionStorage.setItem(
-        "blurredAddMultipleAddressSignInModal",
-        true
-      );
+      window.localStorage.setItem("blurredAddMultipleAddressSignInModal", true);
       this.goToPayModal();
       return;
     }
@@ -302,7 +299,7 @@ class MobileLayout extends BaseReactComponent {
     let addWalletList = [];
 
     if (!replaceAddresses) {
-      addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
       if (addWalletList && addWalletList?.length > 0) {
         addWalletList = addWalletList?.map((e) => {
           return {
@@ -377,7 +374,7 @@ class MobileLayout extends BaseReactComponent {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     // data.append("wallet_addresses", JSON.stringify(arr));
@@ -590,7 +587,7 @@ class MobileLayout extends BaseReactComponent {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
       const tempWalletAddress = [value];
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
@@ -659,7 +656,7 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   signOutFun = () => {
-    window.sessionStorage.setItem("refresh", false);
+    window.localStorage.setItem("refresh", false);
     resetUser();
     this.props.setPageFlagDefault();
     this.closeConfirmLeaveModal();
@@ -719,7 +716,7 @@ class MobileLayout extends BaseReactComponent {
       this.props.updateTimer();
     }
     let email_arr = [];
-    let data = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let data = JSON.parse(window.localStorage.getItem("addWallet"));
     if (data) {
       data.forEach((info) => {
         email_arr.push(info.address);

@@ -184,6 +184,7 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
                   let returns = tempReturns * tempCurrencyRate;
                   return (
                     <SmartMoneyMobileBlock
+                      goToAddress={this.props.goToAddress}
                       netWorth={netWorth}
                       netFlows={netFlows}
                       profits={profits}
