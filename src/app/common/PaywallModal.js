@@ -452,7 +452,7 @@ class PaywallModal extends BaseReactComponent {
                       />
                       Netflows
                     </div>
-                    {/* <div
+                    <div
                       style={{
                         padding: this.props.isMobile ? "0.25rem" : "",
                       }}
@@ -463,7 +463,7 @@ class PaywallModal extends BaseReactComponent {
                         src={PurpleCheckIcon}
                       />
                       Copy trader
-                    </div> */}
+                    </div>
                     <div
                       style={{
                         padding: this.props.isMobile ? "0.25rem" : "",

@@ -4944,9 +4944,11 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+          showUpdatesJustNowBtn
         >
           {this.state.isLochPaymentModal ? (
             <PaywallModal

@@ -20,6 +20,7 @@ import {
   LochLogoWhiteIcon,
   PersonRoundedSigninIcon,
   ProfileSidebarIcon,
+  ShareCopyTraderImage,
   SidebarLeftArrowIcon,
   XFormallyTwitterLogoIcon,
   darkModeIcon,
@@ -1028,7 +1029,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        {/* <li>
+                        <li>
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -1045,14 +1046,11 @@ function Sidebar(props) {
                                   e.preventDefault();
                                   return null;
                                 }
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  MenuCopyTradelist({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
+
+                                MenuCopyTradelist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
                               }}
                               activeclassname="active"
                             >
@@ -1069,7 +1067,7 @@ function Sidebar(props) {
                               />
                             </NavLink>
                           </CustomOverlay>
-                        </li> */}
+                        </li>
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1269,18 +1267,19 @@ function Sidebar(props) {
                               Profile
                             </NavLink>
                           </li>
-                          {/* <li>
+                          <li>
                             <NavLink
                               exact={true}
                               onClick={(e) => {
-                                if (!isWallet) {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
-                                } else {
-                                  MenuCopyTradelist({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
+                                  return null;
                                 }
+                                MenuCopyTradelist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
                               }}
                               className="nav-link"
                               to="/copy-trade"
@@ -1299,7 +1298,7 @@ function Sidebar(props) {
                               />
                               Copy Trade
                             </NavLink>
-                          </li> */}
+                          </li>
                         </>
                       )}
                       <li>
