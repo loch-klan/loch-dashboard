@@ -1667,7 +1667,6 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidMount() {
-    deleteAddWallet();
     setTimeout(() => {
       this.setState({
         canCallConnectWalletFun: true,
