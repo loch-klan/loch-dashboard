@@ -166,7 +166,7 @@ class Profile extends Component {
       followFlag: false,
       lochUser: undefined,
       premiumBannerItems: [
-        // { icon: PremiumBannerSwapIcon, text: "Unlimited Copy trades" },
+        { icon: PremiumBannerSwapIcon, text: "Unlimited Copy trades" },
         { icon: PremiumBannerWalletIcon, text: "Analyze wallets PnL" },
         // { icon: PremiumBannerBellIcon, text: "Unlimited Notifications" },
         { icon: PremiumBannerLayersIcon, text: "Analyze gas fees" },
