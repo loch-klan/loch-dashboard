@@ -15,7 +15,6 @@ import {
 } from "../../assets/images/icons";
 import {
   CopyTradeExecuteModalBack,
-  CopyTradeExecuteTradeConfirmed,
   CopyTradeExecuteTradeSwapClicked,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
@@ -77,13 +76,8 @@ class EmulationsTradeModal extends BaseReactComponent {
     window.localStorage.setItem("isPopupActive", true);
   }
   confirmOrRejectCopyTradePass = () => {
-    if (this.props.confirmOrRejectCopyTrade && this.props.executeCopyTradeId) {
-      CopyTradeExecuteTradeConfirmed({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-        swapAddress: this.props.executeCopyTradeId,
-      });
-      this.props.confirmOrRejectCopyTrade(this.props.executeCopyTradeId, true);
+    if (this.props.confirmOrRejectCopyTrade && this.props.executeCopyTrade) {
+      this.props.confirmOrRejectCopyTrade(this.props.executeCopyTrade, true);
       this.state.onHide();
     }
   };
@@ -112,7 +106,11 @@ class EmulationsTradeModal extends BaseReactComponent {
               CopyTradeExecuteModalBack({
                 session_id: getCurrentUser().id,
                 email_address: getCurrentUser().email,
-                swapAddress: this.props.executeCopyTradeId,
+                swapAddress: this.props.executeCopyTrade.copyAddress,
+                swapAssetFrom: this.props.executeCopyTrade.assetFrom,
+                swapAmountFrom: this.props.executeCopyTrade.valueFrom,
+                swapAssetTo: this.props.executeCopyTrade.assetTo,
+                swapAmountTo: this.props.executeCopyTrade.valueTo,
               });
               this.state.onHide();
             }}
@@ -138,7 +136,11 @@ class EmulationsTradeModal extends BaseReactComponent {
                       session_id: getCurrentUser().id,
                       email_address: getCurrentUser().email,
                       swap: item.name,
-                      address: this.props.executeCopyTradeId,
+                      swapAddress: this.props.executeCopyTrade.copyAddress,
+                      swapAssetFrom: this.props.executeCopyTrade.assetFrom,
+                      swapAmountFrom: this.props.executeCopyTrade.valueFrom,
+                      swapAssetTo: this.props.executeCopyTrade.assetTo,
+                      swapAmountTo: this.props.executeCopyTrade.valueTo,
                     });
                     window.open(item.goToLink, "_blank");
                   };
