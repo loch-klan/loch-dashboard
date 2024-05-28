@@ -418,6 +418,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                         ) {
                           // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                           if (e.coinFound && e.coins.length > 0) {
+                            console.log("e.coins ", e.coins);
                             return (
                               <CustomCoin
                                 isStatic

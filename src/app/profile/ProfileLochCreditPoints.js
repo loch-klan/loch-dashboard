@@ -2,6 +2,7 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
+  CopyTradeSwapIcon,
   FeedbackCreditIcon,
   LochLogoBlackThickIcon,
   UserCreditDiamondIcon,
@@ -59,6 +60,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "feedbacks_added",
         "address_added",
         "loch_premium",
+        "copy_trade",
         // "twitter_spaces",
         // "provide_feedback",
         // "use_referral_code",
@@ -277,6 +279,18 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       }
     };
 
+    const goClickGoToCopyTrade = () => {
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Added one copy trade",
+        });
+        this.props.history.push("/copy-trade");
+      } else {
+        this.openLoginBlock();
+      }
+    };
     const goClickAddAddress = () => {
       if (this.props.lochUser && this.props.lochUser.email) {
         UserCreditGoClickedMP({
@@ -428,6 +442,19 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           isDone={isTheTaskDone(true)}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickAddAddress}
+        />
+      );
+    } else if (whichBlock === "copy_trade") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title={
+            isTheTaskDone(true) ? "Added one copy trade" : "Add one copy trade"
+          }
+          earnPoints={5}
+          imageIcon={CopyTradeSwapIcon}
+          isDone={isTheTaskDone(true)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={goClickGoToCopyTrade}
         />
       );
     } else if (whichBlock === "ens_added") {

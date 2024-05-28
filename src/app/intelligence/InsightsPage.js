@@ -545,6 +545,7 @@ class InsightsPage extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
           showpath

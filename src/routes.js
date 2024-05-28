@@ -6,7 +6,6 @@ import PrivateRoute from "./utils/PrivateRoute";
 import Sandbox from "./utils/form/Sandbox";
 
 import VerifyEmail from "./app/common/VerifyEmail";
-import Defi from "./app/defi/Defi";
 import InsightsPage from "./app/intelligence/InsightsPage";
 import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
 import VerifySmartMoneyEmailLink from "./app/smartMoney/VerifySmartMoneyEmailLink";
@@ -24,18 +23,17 @@ import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
-import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
-import Emulations from "./app/Emulations/Emulations";
-import EmulationTransactionsPage from "./app/Emulations/EmulationTransactions/EmulationTransactionsPage";
 import AutoLogin from "./app/AutoLogin/AutoLogin";
+import Emulations from "./app/Emulations/Emulations";
+import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
+import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
+import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
+import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
 import NewWelcome from "./app/home/NewWelcome";
 import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
-import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import PublicRoute from "./utils/PublicRoute";
 import CopyTradeWelcome from "./app/CopyTradeWelcome/CopyTradeWelcome";
-import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
-import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
 import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
 import PublicSidebarRoute from "./utils/PublicSidebarRoute";
 import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
@@ -110,15 +108,15 @@ const routes = [
     type: PrivateRoute,
     component: AssetsUnrealizedProfitAndLoss,
   },
-  // {
-  //   path: "/copy-trade",
-  //   name: "Emulations",
-  //   type: PrivateRoute,
-  //   component: Emulations,
-  // },
+  {
+    path: "/copy-trade",
+    name: "Emulations",
+    type: PrivateRoute,
+    component: Emulations,
+  },
   // {
   //   path: "/copy-trade/transactions",
-  //   name: "Emulations",
+  //   name: "Emulations Transactions",
   //   type: PrivateRoute,
   //   component: EmulationTransactionsPage,
   // },

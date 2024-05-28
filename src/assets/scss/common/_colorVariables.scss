@@ -53,6 +53,7 @@
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0);
+  --invertColorHover: invert(1);
   --invertColor2: invert(100%);
   --brightInDarkMode: brightness(1);
   --hoverBrightness: brightness(50%);
@@ -303,7 +304,7 @@
   --greyCardBackgroud: #313233;
   --cardSeperator: #313233;
   --lighterDarkIcons: 0.7;
-  --primaryTextColor: #cacbcc;
+  --primaryTextColor: white;
   --primaryTextColorGrey: #cacbcc;
   --primarySubTextColor: #7c7d81;
   --primaryGainColor: rgba(208, 252, 234, 1);
@@ -343,6 +344,7 @@
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(100%);
+  --invertColorHover: invert(0);
   --invertColor2: invert(0%);
   --brightInDarkMode: brightness(2);
   --hoverBrightness: brightness(200%);

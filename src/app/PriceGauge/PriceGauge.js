@@ -578,6 +578,7 @@ class PriceGauge extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           CheckApiResponse={(e) => this.CheckApiResponse(e)}
