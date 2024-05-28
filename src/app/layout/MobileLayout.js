@@ -51,7 +51,11 @@ import RedirectMobile from "../home/NewAuth/RedirectMobile.js";
 import SignUpMobile from "../home/NewAuth/SignUpMobile.js";
 import VerifyMobile from "../home/NewAuth/VerifyMobile.js";
 import NewHomeInputBlock from "../home/NewHomeInputBlock";
-import { detectCoin } from "../onboarding/Api";
+import {
+  createAnonymousUserApi,
+  detectCoin,
+  getAllParentChains,
+} from "../onboarding/Api";
 import { addUserCredits, updateUser } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
@@ -177,6 +181,7 @@ class MobileLayout extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    this.props.getAllParentChains();
     const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       const shouldOpenNoficationModal = window.localStorage.getItem(
@@ -274,6 +279,9 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   handleAddWallet = (replaceAddresses) => {
+    this.setState({
+      welcomeAddBtnLoading: true,
+    });
     localStorage.setItem("replacedOrAddedAddress", true);
     if (this.state.goBtnDisabled) {
       return null;
@@ -371,9 +379,6 @@ class MobileLayout extends BaseReactComponent {
       }
     });
 
-    if (addWallet) {
-      this.props.setHeaderReducer(addWallet);
-    }
     window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
@@ -404,27 +409,41 @@ class MobileLayout extends BaseReactComponent {
       }
     }
 
-    if (creditIsAddress) {
-      // Single address
-      const addressCreditScore = new URLSearchParams();
-      addressCreditScore.append("credits", "address_added");
-      this.props.addUserCredits(addressCreditScore, this.resetCreditPoints);
-
-      // Multiple address
-      const multipleAddressCreditScore = new URLSearchParams();
-      multipleAddressCreditScore.append("credits", "multiple_address_added");
-      this.props.addUserCredits(
-        multipleAddressCreditScore,
-        this.resetCreditPoints
+    if (this.props.blurredElement) {
+      const finalArr = [];
+      this.props.createAnonymousUserApi(
+        data,
+        this,
+        finalArr,
+        null,
+        this.props.goToPageAfterLogin
       );
-    }
-    if (creditIsEns) {
-      const ensCreditScore = new URLSearchParams();
-      ensCreditScore.append("credits", "ens_added");
-      this.props.addUserCredits(ensCreditScore, this.resetCreditPoints);
-    }
-    this.props.updateUserWalletApi(data, this, yieldData, true);
+    } else {
+      if (addWallet) {
+        this.props.setHeaderReducer(addWallet);
+      }
+      if (creditIsAddress) {
+        // Single address
+        const addressCreditScore = new URLSearchParams();
+        addressCreditScore.append("credits", "address_added");
+        this.props.addUserCredits(addressCreditScore, this.resetCreditPoints);
 
+        // Multiple address
+        const multipleAddressCreditScore = new URLSearchParams();
+        multipleAddressCreditScore.append("credits", "multiple_address_added");
+        this.props.addUserCredits(
+          multipleAddressCreditScore,
+          this.resetCreditPoints
+        );
+      }
+      if (creditIsEns) {
+        const ensCreditScore = new URLSearchParams();
+        ensCreditScore.append("credits", "ens_added");
+        this.props.addUserCredits(ensCreditScore, this.resetCreditPoints);
+      }
+
+      this.props.updateUserWalletApi(data, this, yieldData, true);
+    }
     const address = addWalletList?.map((e) => e.address);
 
     const addressDeleted = this.state.deletedAddress;
@@ -906,6 +925,15 @@ class MobileLayout extends BaseReactComponent {
             show={this.state.authmodal === "redirect"}
           />
         ) : null}
+        {this.props.blurredElement ? (
+          <div
+            style={{
+              marginTop: "5.5rem",
+            }}
+            className="blurredElement"
+            onClick={this.props.goBackToWelcomePage}
+          />
+        ) : null}
         <div className="portfolio-mobile-layout-wrapper">
           {/* Search Bar */}
           <div className="mpcMobileSearch input-noshadow-dark">
@@ -933,6 +961,9 @@ class MobileLayout extends BaseReactComponent {
                     onKeyDown={this.onKeyPressInput}
                     goBtnDisabled={this.state.disableAddBtn}
                     removeFocusOnEnter
+                    isAddNewAddress={this.props.isAddNewAddress}
+                    goToPageAfterLogin={this.props.goToPageAfterLogin}
+                    welcomeAddBtnLoading={this.state.welcomeAddBtnLoading}
                   />
                 </div>
               ))}
@@ -995,6 +1026,8 @@ class MobileLayout extends BaseReactComponent {
                           isLoading={false}
                           handleManage={() => {}}
                           isMobileRender
+                          isAddNewAddress={this.props.isAddNewAddress}
+                          goToPageAfterLogin={this.props.goToPageAfterLogin}
                         />
                       )}
                     </MobileDarkModeWrapper>
@@ -1133,6 +1166,8 @@ const mapDispatchToProps = {
   isNewAddress,
   checkReferallCodeValid,
   updateUser,
+  createAnonymousUserApi,
+  getAllParentChains,
 };
 
 MobileLayout.propTypes = {};

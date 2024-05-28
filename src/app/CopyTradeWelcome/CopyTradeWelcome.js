@@ -136,10 +136,10 @@ class CopyTradeWelcome extends Component {
 
               <div className="ctwpbf-content">
                 <div className="ctwpbofour-header">
-                  Don’t be someone else’s exit liquidity.
+                  Don’t be someone else’s exit liquidity
                 </div>
                 <div className="ctwpbofour-desc">
-                  Use Loch’s copy trader to enter and exit safety.
+                  Use Loch’s copy trader to enter and exit safety
                 </div>
                 <div
                   onClick={openLoginPopUp}

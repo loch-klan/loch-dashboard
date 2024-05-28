@@ -369,12 +369,21 @@ function Sidebar(props) {
     });
     setConfirmLeave(!confirmLeave);
   };
-  const handleGoToProfile = () => {
+  const handleGoToProfile = (e) => {
     let tempToken = getToken();
     if (!tempToken || tempToken === "jsk") {
+      e.preventDefault();
+      if (window.localStorage.getItem("isCopyTradeWelcomePage")) {
+        props.history.push("/profile-add-address");
+      }
       return null;
+    } else {
+      ProfileMenu({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      props.history.push("/profile");
     }
-    props.history.push("/profile");
   };
   const handleApiModal = () => {
     setApiModal(!apiModal);
@@ -893,7 +902,7 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={"Wallet Viewer"}
+                            text={"Copy Trade"}
                           >
                             <NavLink
                               exact={true}
@@ -921,7 +930,7 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={WalletViewerSidebarIcon}
+                                src={CopyTradeSwapSidebarIcon}
                                 style={
                                   activeTab === "/copy-trade-welcome"
                                     ? {
@@ -948,6 +957,15 @@ function Sidebar(props) {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+                                  if (
+                                    window.localStorage.getItem(
+                                      "isCopyTradeWelcomePage"
+                                    )
+                                  ) {
+                                    props.history.push(
+                                      "/following-add-address"
+                                    );
+                                  }
                                   return null;
                                 } else {
                                   MenuWatchlist({
@@ -1061,18 +1079,7 @@ function Sidebar(props) {
                             <NavLink
                               className={`nav-link nav-link-closed`}
                               to="/profile"
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
+                              onClick={handleGoToProfile}
                               activeclassname="active"
                             >
                               <Image
@@ -1241,6 +1248,15 @@ function Sidebar(props) {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+                                  if (
+                                    window.localStorage.getItem(
+                                      "isCopyTradeWelcomePage"
+                                    )
+                                  ) {
+                                    props.history.push(
+                                      "/following-add-address"
+                                    );
+                                  }
                                   return null;
                                 } else {
                                   MenuWatchlist({
@@ -1340,17 +1356,7 @@ function Sidebar(props) {
                           </li>
                           <li>
                             <NavLink
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
+                              onClick={handleGoToProfile}
                               className="nav-link"
                               to="/profile"
                               activeclassname="active"

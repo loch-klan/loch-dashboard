@@ -19,11 +19,11 @@ class FormElementComponent extends BaseReactComponent {
   } */
 
   componentDidMount() {
-    this.props.formContext.registerElement(this);
+    this.props.formContext?.registerElement(this);
   }
 
   componentWillUnmount() {
-    this.props.formContext.unRegisterElement(this);
+    this.props.formContext?.unRegisterElement(this);
   }
 
   validate = (stateValue = null) => {

@@ -71,7 +71,7 @@ class CopyTradeMobileWelcome extends Component {
               <div className="ctwpbothird-header">
                 Accomplish whale-like
                 <br />
-                returns without monitorin
+                returns without monitoring
                 <br />
                 your screen all day
               </div>
@@ -85,10 +85,10 @@ class CopyTradeMobileWelcome extends Component {
 
             <div className="ctwpbf-content">
               <div className="ctwpbofour-header">
-                Don’t be someone else’s exit liquidity.
+                Don’t be someone else’s exit liquidity
               </div>
               <div className="ctwpbofour-desc">
-                Use Loch’s copy trader to enter and exit safety.
+                Use Loch’s copy trader to enter and exit safety
               </div>
               <div
                 onClick={openLoginPopUp}

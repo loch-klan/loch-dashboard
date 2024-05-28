@@ -39,6 +39,8 @@ import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
 import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
 import PublicSidebarRoute from "./utils/PublicSidebarRoute";
 import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
+import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
+import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
 const routes = [
   {
     path: "/",
@@ -155,6 +157,24 @@ const routes = [
     name: "Copy Trade Welcome",
     type: PublicSidebarRoute,
     component: AddAddressWalletViewer,
+  },
+  {
+    path: "/profile-add-address",
+    name: "Profile Add Address",
+    type: PublicSidebarRoute,
+    component: AddAddressProfile,
+  },
+  {
+    path: "/following-add-address",
+    name: "Following Add Address",
+    type: PublicSidebarRoute,
+    component: AddAddressFollowing,
+  },
+  {
+    path: "/profile-add-address",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: AddAddressProfile,
   },
 
   {

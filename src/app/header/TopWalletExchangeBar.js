@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import {
   EyeIcon,
+  LoaderIcon,
   SearchHistoryClockIcon,
   SearchHistoryDeleteIcon,
   TopBarSearchIcon,
@@ -32,6 +33,7 @@ import {
   TruncateText,
   dontOpenLoginPopup,
   isPremiumUser,
+  loadingAnimation,
   numToCurrency,
   removeBlurMethods,
   removeOpenModalAfterLogin,
@@ -62,6 +64,7 @@ class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      welcomeAddBtnLoading: false,
       isLochPaymentModal: false,
       canCallConnectWalletFun: false,
       showAmountsAtTop: false,
@@ -243,7 +246,11 @@ class TopWalletExchangeBar extends Component {
       this.state.walletInput[0].coins.length > 0 &&
       !this.state.disableAddBtn
     ) {
-      this.handleAddWallet(true);
+      if (this.props.isAddNewAddress) {
+        this.handleAddWelcomeWallet();
+      } else {
+        this.handleAddWallet(true);
+      }
     }
   };
   seeTheTopBarHistoryItems = () => {
@@ -761,7 +768,10 @@ class TopWalletExchangeBar extends Component {
       isLochPaymentModal: false,
     });
   };
-  handleAddWelcomeWallet = (replaceAddresses) => {
+  handleAddWelcomeWallet = () => {
+    this.setState({
+      welcomeAddBtnLoading: true,
+    });
     window.localStorage.setItem("shouldRecallApis", true);
 
     let walletAddress = [];
@@ -850,7 +860,13 @@ class TopWalletExchangeBar extends Component {
 
       this.props.updateUserWalletApi(data, this, yieldData, false);
     } else {
-      this.props.createAnonymousUserApi(data, this, finalArr, null);
+      this.props.createAnonymousUserApi(
+        data,
+        this,
+        finalArr,
+        null,
+        this.props.goToPageAfterLogin
+      );
     }
 
     // const address = finalArr?.map((e) => e.address);
@@ -888,7 +904,7 @@ class TopWalletExchangeBar extends Component {
       return;
     }
     this.hideTheTopBarHistoryItems();
-    if (this.props.isBlurred) {
+    if (this.props.isBlurred && this.props.hideFocusedInput) {
       this.props.hideFocusedInput();
     }
     if (this.state.walletInput[0]) {
@@ -1862,8 +1878,17 @@ class TopWalletExchangeBar extends Component {
                       ? null
                       : this.handleAddWelcomeWallet
                   }
+                  style={{
+                    pointerEvents: this.state.welcomeAddBtnLoading
+                      ? "none"
+                      : "",
+                  }}
                 >
-                  <span className="dotDotText">Add</span>
+                  {this.state.welcomeAddBtnLoading ? (
+                    loadingAnimation()
+                  ) : (
+                    <span className="dotDotText">Add</span>
+                  )}
                 </div>
               ) : (
                 <>

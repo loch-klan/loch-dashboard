@@ -5273,7 +5273,7 @@ class Portfolio extends BaseReactComponent {
                           >
                             <TransactionTable
                               noSubtitleBottomPadding
-                              message="No assets found"
+                              message="No tokens found"
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable={

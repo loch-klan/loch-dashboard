@@ -290,6 +290,7 @@
 
   // Copy trade welcome
   --dummyHomePageBackground: url(../../images/DummyHomePage.png);
+  --dummyProfileBackground: url(../../images/DummyProfilePage.png);
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -571,6 +572,7 @@
 
   // Copy trade welcome
   --dummyHomePageBackground: url(../../images/DummyHomePageDark.png);
+  --dummyProfileBackground: url(../../images/DummyProfilePageDark.png);
 }
 [data-theme="dark2"] {
   // UPDATED

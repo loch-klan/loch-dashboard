@@ -988,7 +988,8 @@ export const createAnonymousUserApi = (
   data,
   ctx,
   addWallet,
-  userFunction = null
+  userFunction = null,
+  goToPage = null
 ) => {
   return function (dispatch, getState) {
     // window.localStorage.setItem('currency',JSON.stringify({
@@ -1007,6 +1008,7 @@ export const createAnonymousUserApi = (
     if (!ctx.props.ishome) {
       if (!ctx.state?.podName) {
         !ctx.state?.id &&
+          !goToPage &&
           ctx.props?.history.push({
             pathname: ctx.state?.id ? ctx.state?.link : "/home",
             // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
@@ -1164,16 +1166,30 @@ export const createAnonymousUserApi = (
                 pathname: ctx.state?.link,
               });
             } else {
-              // console.log("replace")
-              ctx.props.history.replace({
-                pathname: ctx.state?.id ? ctx.state?.link : "/home",
-                state: {
-                  addWallet: ctx.state?.id ? addWallet : newAddWallet,
-                  noLoad: false,
-                  redirectPath: ctx.state?.redirectPath,
-                  hash: ctx?.state?.hash,
-                },
-              });
+              if (goToPage) {
+                setTimeout(() => {
+                  ctx.props.history.replace({
+                    pathname: ctx.state?.id ? ctx.state?.link : goToPage,
+                    state: {
+                      addWallet: ctx.state?.id ? addWallet : newAddWallet,
+                      noLoad: false,
+                      redirectPath: ctx.state?.redirectPath,
+                      hash: ctx?.state?.hash,
+                    },
+                  });
+                }, 1000);
+              } else {
+                // console.log("replace")
+                ctx.props.history.replace({
+                  pathname: ctx.state?.id ? ctx.state?.link : "/home",
+                  state: {
+                    addWallet: ctx.state?.id ? addWallet : newAddWallet,
+                    noLoad: false,
+                    redirectPath: ctx.state?.redirectPath,
+                    hash: ctx?.state?.hash,
+                  },
+                });
+              }
             }
           }
 
