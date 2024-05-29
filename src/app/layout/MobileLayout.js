@@ -2,13 +2,13 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
-  EmultionSidebarIcon,
   MobileNavCopyTraderIcon,
   MobileNavFollow,
-  MobileNavHome,
   MobileNavLeaderboard,
   MobileNavProfile,
+  MobileNavWalletViewer,
   SharePortfolioIconWhite,
+  WalletViewerSidebarIcon,
 } from "../../assets/images/icons";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import {
@@ -30,6 +30,14 @@ import {
 } from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
+import {
+  dontOpenLoginPopup,
+  isPremiumUser,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
+  whichSignUpMethod,
+} from "../../utils/ReusableFunctions.js";
 import { BaseReactComponent } from "../../utils/form";
 import { isNewAddress } from "../Portfolio/Api.js";
 import MobileDarkModeWrapper from "../Portfolio/MobileDarkModeWrapper.js";
@@ -44,28 +52,24 @@ import {
   updateWalletListFlag,
 } from "../common/Api";
 import Breadcrums from "../common/Breadcrums.js";
+import PaywallModal from "../common/PaywallModal.js";
 import Footer from "../common/footer";
 import { setHeaderReducer } from "../header/HeaderAction";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import LoginMobile from "../home/NewAuth/LoginMobile.js";
 import RedirectMobile from "../home/NewAuth/RedirectMobile.js";
 import SignUpMobile from "../home/NewAuth/SignUpMobile.js";
 import VerifyMobile from "../home/NewAuth/VerifyMobile.js";
 import NewHomeInputBlock from "../home/NewHomeInputBlock";
-import { detectCoin } from "../onboarding/Api";
+import {
+  createAnonymousUserApi,
+  detectCoin,
+  getAllParentChains,
+} from "../onboarding/Api";
 import { addUserCredits, updateUser } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
-import {
-  dontOpenLoginPopup,
-  isPremiumUser,
-  removeBlurMethods,
-  removeOpenModalAfterLogin,
-  removeSignUpMethods,
-  whichSignUpMethod,
-} from "../../utils/ReusableFunctions.js";
-import PaywallModal from "../common/PaywallModal.js";
-import TopWalletAddressList from "../header/TopWalletAddressList.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -103,14 +107,16 @@ class MobileLayout extends BaseReactComponent {
       disableAddBtn: false,
       navItems: [
         {
-          pageIcon: MobileNavHome,
-          text: "Home",
-          path: "/home",
+          pageIcon: MobileNavCopyTraderIcon,
+          text: "Copy",
+          path: "/copy-trade",
+          loggedOutPath: "/copy-trade-welcome",
         },
         {
           pageIcon: MobileNavFollow,
           text: "Follow",
           path: "/watchlist",
+          loggedOutPath: "/following-add-address",
         },
         {
           pageIcon: MobileNavLeaderboard,
@@ -118,14 +124,17 @@ class MobileLayout extends BaseReactComponent {
           path: "/home-leaderboard",
         },
         {
-          pageIcon: MobileNavCopyTraderIcon,
-          text: "Copy",
-          path: "/copy-trade",
+          pageIcon: MobileNavWalletViewer,
+          text: "Wallet",
+          path: "/home",
+          loggedOutPath: "/wallet-viewer-add-address",
         },
+
         {
           pageIcon: MobileNavProfile,
           text: "Profile",
           path: "/profile",
+          loggedOutPath: "/profile-add-address",
         },
       ],
       userWalletList: [],
@@ -178,6 +187,7 @@ class MobileLayout extends BaseReactComponent {
     }
   }
   componentDidMount() {
+    this.props.getAllParentChains();
     const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       const shouldOpenNoficationModal = window.localStorage.getItem(
@@ -197,7 +207,11 @@ class MobileLayout extends BaseReactComponent {
     if (
       activeTab === "/watchlist" ||
       activeTab === "/copy-trade" ||
-      activeTab === "/home-leaderboard"
+      activeTab === "/home-leaderboard" ||
+      activeTab === "/copy-trade-welcome" ||
+      activeTab === "/following-add-address" ||
+      activeTab === "/wallet-viewer-add-address" ||
+      activeTab === "/profile-add-address"
     ) {
       this.setState({ activeTab: activeTab });
     } else if (
@@ -275,6 +289,9 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   handleAddWallet = (replaceAddresses) => {
+    this.setState({
+      welcomeAddBtnLoading: true,
+    });
     localStorage.setItem("replacedOrAddedAddress", true);
     if (this.state.goBtnDisabled) {
       return null;
@@ -372,9 +389,6 @@ class MobileLayout extends BaseReactComponent {
       }
     });
 
-    if (addWallet) {
-      this.props.setHeaderReducer(addWallet);
-    }
     window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
@@ -405,27 +419,43 @@ class MobileLayout extends BaseReactComponent {
       }
     }
 
-    if (creditIsAddress) {
-      // Single address
-      const addressCreditScore = new URLSearchParams();
-      addressCreditScore.append("credits", "address_added");
-      this.props.addUserCredits(addressCreditScore, this.resetCreditPoints);
-
-      // Multiple address
-      const multipleAddressCreditScore = new URLSearchParams();
-      multipleAddressCreditScore.append("credits", "multiple_address_added");
-      this.props.addUserCredits(
-        multipleAddressCreditScore,
-        this.resetCreditPoints
+    if (this.props.isAddNewAddress) {
+      const finalArr = [];
+      this.props.createAnonymousUserApi(
+        data,
+        this,
+        finalArr,
+        null,
+        this.props.goToPageAfterLogin,
+        this.props.funAfterUserCreate,
+        addressList
       );
-    }
-    if (creditIsEns) {
-      const ensCreditScore = new URLSearchParams();
-      ensCreditScore.append("credits", "ens_added");
-      this.props.addUserCredits(ensCreditScore, this.resetCreditPoints);
-    }
-    this.props.updateUserWalletApi(data, this, yieldData, true);
+    } else {
+      if (addWallet) {
+        this.props.setHeaderReducer(addWallet);
+      }
+      if (creditIsAddress) {
+        // Single address
+        const addressCreditScore = new URLSearchParams();
+        addressCreditScore.append("credits", "address_added");
+        this.props.addUserCredits(addressCreditScore, this.resetCreditPoints);
 
+        // Multiple address
+        const multipleAddressCreditScore = new URLSearchParams();
+        multipleAddressCreditScore.append("credits", "multiple_address_added");
+        this.props.addUserCredits(
+          multipleAddressCreditScore,
+          this.resetCreditPoints
+        );
+      }
+      if (creditIsEns) {
+        const ensCreditScore = new URLSearchParams();
+        ensCreditScore.append("credits", "ens_added");
+        this.props.addUserCredits(ensCreditScore, this.resetCreditPoints);
+      }
+
+      this.props.updateUserWalletApi(data, this, yieldData, true);
+    }
     const address = addWalletList?.map((e) => e.address);
 
     const addressDeleted = this.state.deletedAddress;
@@ -804,7 +834,53 @@ class MobileLayout extends BaseReactComponent {
       authmodal: "",
     });
   };
+  goToPage = (e, item, index) => {
+    let tempToken = getToken();
+    if (!tempToken || tempToken === "jsk") {
+      if (index === 2) {
+        MenuLeaderboard({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+        this.props.history.push(item.path);
+      } else {
+        e.preventDefault();
+        if (item.loggedOutPath) {
+          this.props.history.push(item.loggedOutPath);
+        }
+      }
+      return null;
+    }
 
+    if (index === 0) {
+      MenuCopyTradelist({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    } else if (index === 1) {
+      MenuWatchlist({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    } else if (index === 2) {
+      MenuLeaderboard({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    } else if (index === 3) {
+      HomeMenu({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    } else if (index === 4) {
+      ProfileMenu({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+    }
+
+    this.props.history.push(item.path);
+  };
   render() {
     let activeTab = window.location.pathname;
     const getTotalAssetValue = () => {
@@ -907,6 +983,14 @@ class MobileLayout extends BaseReactComponent {
             show={this.state.authmodal === "redirect"}
           />
         ) : null}
+        {this.props.blurredElement ? (
+          <div
+            className="blurredElement blurredElementMobile"
+            onClick={this.props.goBackToWelcomePage}
+          >
+            <div className="blurredElementTopShadow" />
+          </div>
+        ) : null}
         <div className="portfolio-mobile-layout-wrapper">
           {/* Search Bar */}
           <div className="mpcMobileSearch input-noshadow-dark">
@@ -923,7 +1007,6 @@ class MobileLayout extends BaseReactComponent {
               {this.state.walletInput?.map((c, index) => (
                 <div className="topSearchBarMobileContainer">
                   <NewHomeInputBlock
-                    noAutofocus
                     onGoBtnClick={this.handleAddWallet}
                     hideMore
                     isMobile
@@ -934,6 +1017,10 @@ class MobileLayout extends BaseReactComponent {
                     onKeyDown={this.onKeyPressInput}
                     goBtnDisabled={this.state.disableAddBtn}
                     removeFocusOnEnter
+                    isAddNewAddress={this.props.isAddNewAddress}
+                    goToPageAfterLogin={this.props.goToPageAfterLogin}
+                    welcomeAddBtnLoading={this.state.welcomeAddBtnLoading}
+                    noAutofocus={this.props.blurredElement ? false : true}
                   />
                 </div>
               ))}
@@ -994,6 +1081,8 @@ class MobileLayout extends BaseReactComponent {
                           isLoading={false}
                           handleManage={() => {}}
                           isMobileRender
+                          isAddNewAddress={this.props.isAddNewAddress}
+                          goToPageAfterLogin={this.props.goToPageAfterLogin}
                         />
                       )}
                     </MobileDarkModeWrapper>
@@ -1046,66 +1135,26 @@ class MobileLayout extends BaseReactComponent {
                   <div
                     key={index}
                     onClick={(e) => {
-                      let tempToken = getToken();
-                      if (!tempToken || tempToken === "jsk") {
-                        e.preventDefault();
-                        return null;
-                      }
-                      if (item.text === "Sign Out") {
-                        this.openConfirmLeaveModal();
-                      } else {
-                        let tempToken = getToken();
-                        if (!tempToken || tempToken === "jsk") {
-                          return null;
-                        } else {
-                          if (index === 0) {
-                            HomeMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          } else if (index === 1) {
-                            MenuWatchlist({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          } else if (index === 2) {
-                            MenuLeaderboard({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          }
-                          //  else if (index === 3) {
-                          //   MenuCopyTradelist({
-                          //     session_id: getCurrentUser().id,
-                          //     email_address: getCurrentUser().email,
-                          //   });
-                          // }
-                          else if (index === 3) {
-                            ProfileMenu({
-                              session_id: getCurrentUser().id,
-                              email_address: getCurrentUser().email,
-                            });
-                          }
-
-                          this.props.history.push(item.path);
-                        }
-                      }
+                      this.goToPage(e, item, index);
                     }}
                     className={`portfolio-mobile-layout-nav-footer-inner-item ${
-                      item.path === this.state.activeTab
+                      item.path === this.state.activeTab ||
+                      item.loggedOutPath === this.state.activeTab
                         ? "portfolio-mobile-layout-nav-footer-inner-item-active"
                         : ""
                     }`}
                   >
                     <Image
                       className={`portfolio-mobile-layout-nav-footer-inner-item-image ${
-                        item.path === this.state.activeTab
+                        item.path === this.state.activeTab ||
+                        item.loggedOutPath === this.state.activeTab
                           ? "portfolio-mobile-layout-nav-footer-inner-item-image-active"
                           : ""
                       }`}
                       style={{
                         filter:
-                          item.path === this.state.activeTab
+                          item.path === this.state.activeTab ||
+                          item.loggedOutPath === this.state.activeTab
                             ? "brightness(0) var(--invertColor)"
                             : "brightness(1) var(--invertColor)",
                       }}
@@ -1142,6 +1191,8 @@ const mapDispatchToProps = {
   isNewAddress,
   checkReferallCodeValid,
   updateUser,
+  createAnonymousUserApi,
+  getAllParentChains,
 };
 
 MobileLayout.propTypes = {};

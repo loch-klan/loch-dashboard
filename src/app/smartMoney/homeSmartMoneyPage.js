@@ -19,7 +19,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
-  openAddressInNewTab,
+  openAddressInSameTab,
   scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
@@ -91,6 +91,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      lochUserState: window.localStorage.getItem("lochToken"),
       mobilePopupModal: false,
       signInModalAnimation: true,
       signInModal: false,
@@ -702,6 +703,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     // this.createEmptyUser();
   };
   handleFollowUnfollow = (walletAddress, addItem, tagName) => {
+    if (!window.localStorage.getItem("lochToken")) {
+      return;
+    }
     let tempWatchListata = new URLSearchParams();
     if (addItem) {
       // TopAccountAddAccountToWatchList({
@@ -770,7 +774,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       wallet: slink,
     });
-    openAddressInNewTab(slink, this.props.setPageFlagDefault);
+    openAddressInSameTab(slink, this.props.setPageFlagDefault);
   };
   render() {
     const tableData = this.state.accountList;
@@ -1171,6 +1175,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               <CheckboxCustomTable
                 handleOnClick={handleOnClick}
                 isChecked={rowData.following}
+                dontSelectIt={!this.state.lochUserState ? true : false}
               />
             );
           }
@@ -1185,8 +1190,14 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           hideFooter
           history={this.props.history}
           hideAddresses
+          hideShare
+          isAddNewAddress={
+            !this.state.lochUserState || this.state.lochUserState === "jsk"
+          }
+          goToPageAfterLogin="/home"
         >
           <HomeSmartMoneyMobile
+            isNoUser={!this.state.lochUserState}
             goToAddress={this.goToAddress}
             accountList={this.state.accountList}
             currency={this.state.currency}
@@ -1239,6 +1250,11 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   // add wallet address modal
                   updateTimer={this.updateTimer}
                   handleAddModal={this.handleAddModal}
+                  isAddNewAddress={
+                    !this.state.lochUserState ||
+                    this.state.lochUserState === "jsk"
+                  }
+                  goToPageAfterLogin="/home"
                 />
               </div>
             </div>

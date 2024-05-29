@@ -106,6 +106,7 @@ export { default as MobileNavLeaderboardActive } from "./mobile-nav-leaderboard-
 export { default as MobileNavProfile } from "./mobile-nav-profile.svg";
 export { default as MobileNavProfileActive } from "./mobile-nav-profile-active.svg";
 export { default as MobileNavNFT } from "./mobile-nav-nft.svg";
+export { default as MobileNavWalletViewer } from "./mobileNavWalletViewer.svg";
 export { default as FollowingSidebarIcon } from "./FollowingSidebar.svg";
 export { default as ProfileSidebarIcon } from "./ProfileSidebar.svg";
 export { default as LeaderboardSidebarIcon } from "./LeaderboardSidebar.svg";
@@ -164,3 +165,5 @@ export { default as ShareCopyTraderImage } from "./ShareCopyTrader.png";
 export { default as PremiumBannerTelegramIcon } from "./premiumBannerTelegram.svg";
 export { default as PremiumBannerLochIcon } from "./premiumBannerLoch.svg";
 export { default as TrophyTopHoldersIcon } from "./trophyTopHolders.svg";
+export { default as WalletViewerSidebarIcon } from "./walletViewerSidebar.svg";
+export { default as CopyTradeSwapSidebarIcon } from "./copyTradeSwapSidebar.svg";

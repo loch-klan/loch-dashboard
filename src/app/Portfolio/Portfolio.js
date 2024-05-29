@@ -129,7 +129,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
-  openAddressInNewTab,
+  openAddressInSameTab,
   removeBlurMethods,
   removeOpenModalAfterLogin,
   removeSignUpMethods,
@@ -2959,7 +2959,7 @@ class Portfolio extends BaseReactComponent {
                   wallet: slink,
                 });
                 // window.open(shareLink, "_blank", "noreferrer");
-                openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                openAddressInSameTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -3255,7 +3255,7 @@ class Portfolio extends BaseReactComponent {
                   wallet: slink,
                 });
                 // window.open(shareLink, "_blank", "noreferrer");
-                openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                openAddressInSameTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -5275,7 +5275,7 @@ class Portfolio extends BaseReactComponent {
                           >
                             <TransactionTable
                               noSubtitleBottomPadding
-                              message="No assets found"
+                              message="No tokens found"
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable={
