@@ -71,7 +71,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               noSubtitleBottomPadding
               disableOnLoading
               isMiniversion
-              message="No assets found"
+              message="No tokens found"
               tableData={this.props.tableData}
               columnList={this.props.columnData}
               headerHeight={60}

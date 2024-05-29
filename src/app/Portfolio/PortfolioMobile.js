@@ -805,7 +805,7 @@ class PortfolioMobile extends BaseReactComponent {
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
-                        message="No assets found"
+                        message="No tokens found"
                         tableData={
                           this.props.tableDataCostBasis
                             ? this.props.tableDataCostBasis.slice(0, 10)

@@ -18,8 +18,10 @@ export const scrollToBottomAfterPageChange = () => {
     window.scroll(0, document.body.scrollHeight);
   }
 };
-export const openAddressInNewTab = (address, setPageFlagDefault) => {
+export const openAddressInSameTab = (address, setPageFlagDefault) => {
   const shareLink = BASE_URL_S3 + "replace-address?address=" + address;
+  // const shareLink =
+  //   "http://localhost:3000/" + "replace-address?address=" + address;
 
   window.open(shareLink, "_self").focus();
   if (setPageFlagDefault) {
@@ -83,6 +85,14 @@ export const getCopyTradeWalletShareLink = (walletList) => {
     return shareLink;
   }
   return "";
+};
+export const openLoginPopUp = () => {
+  window.sessionStorage.setItem("dontOpenLoginPopup", true);
+  if (document.getElementById("sidebar-open-sign-in-btn")) {
+    document.getElementById("sidebar-open-sign-in-btn").click();
+  } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+    document.getElementById("sidebar-closed-sign-in-btn").click();
+  }
 };
 export const openSignInModalFromAnywhere = () => {
   if (document.getElementById("sidebar-open-sign-in-btn")) {
