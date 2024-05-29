@@ -195,6 +195,7 @@ class InflowOutflowChart extends BaseReactComponent {
         /> */}
         <div className="graph-container">
           <InflowOutflowChartSliderContainer
+            showTopHolders={this.props.showTopHolders}
             inflowOutflowData={
               this.state.inflowsOutflowsList
                 ? this.state.inflowsOutflowsList

@@ -16,6 +16,34 @@
   &.lineChartSlider {
     margin-top: 0;
     padding: 4rem 0rem;
+    position: relative;
+    .price-gauge-top-holder-container {
+      margin-top: 4rem;
+      border-top: 2px solid var(--referallUsedBtn);
+      padding: 0rem 4rem;
+      padding-top: 3rem;
+
+      .pg-thc-title-container {
+        display: flex;
+        align-items: center;
+        .pg-thc-title-image {
+          height: 18px;
+          margin-right: 1rem;
+        }
+        .pg-thc-title {
+          text-shadow: 0.2px 0 var(--primaryTextColor);
+          font-size: 16px;
+        }
+      }
+      .pg-thc-table-container {
+        margin-top: 3rem;
+        border: 0.2rem solid var(--sidebarSectionalBOrder);
+        border-radius: 1rem;
+        .ReactVirtualized__Table__headerRow {
+          border-bottom-width: 0.2rem;
+        }
+      }
+    }
   }
 
   .ChartDivider {
@@ -512,6 +540,6 @@
   }
 }
 
-.highcharts-tooltip-container{
+.highcharts-tooltip-container {
   z-index: 999 !important;
 }
