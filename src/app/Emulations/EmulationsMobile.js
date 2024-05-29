@@ -141,7 +141,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             updateTimer={this.props.updateTimer}
             isMobile
             confirmOrRejectCopyTrade={this.props.confirmOrRejectCopyTrade}
-            executeCopyTradeId={this.props.executeCopyTradeId}
+            executeCopyTrade={this.props.executeCopyTrade}
           />
         ) : null}
 
@@ -482,7 +482,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                                     className="available-copy-trades-button"
                                     onClick={() => {
                                       this.props.showExecuteCopyTrade(
-                                        curTradeData.id
+                                        curTradeData
                                       );
                                     }}
                                   >
@@ -494,9 +494,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                                   <div
                                     className="available-copy-trades-button"
                                     onClick={() => {
-                                      this.props.openRejectModal(
-                                        curTradeData.id
-                                      );
+                                      this.props.openRejectModal(curTradeData);
                                     }}
                                     style={{
                                       marginLeft: "1rem",

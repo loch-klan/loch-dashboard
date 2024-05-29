@@ -116,7 +116,7 @@
       justify-content: center;
       .msmpModalSignOutBlock {
         max-width: 70vw;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         padding: 3rem;
         border-radius: 2rem;
         .msmModalBtnContainer {
@@ -129,9 +129,9 @@
             width: 100%;
             border-radius: 1rem;
             padding: 1.5rem 2rem;
-            background-color: var(--black191);
-            border-color: var(--black191);
-            color: white;
+            background-color: var(--primaryTextColor);
+            border-color: var(--primaryTextColor);
+            color: var(--cardBackgroud);
             display: flex;
             align-items: center;
             justify-content: center;

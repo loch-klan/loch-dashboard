@@ -11,6 +11,7 @@ import {
   CopyTradeAdded,
   CopyTradeAvailableCopiedWalletClicked,
   CopyTradeCopiedWalletClicked,
+  CopyTradeExecuteTradeConfirmed,
   CopyTradeExecuteTradeModalOpen,
   CopyTradeExecuteTradeRejected,
   CopyTradePageView,
@@ -19,6 +20,7 @@ import {
   CopyTradePopularAccountCopyClicked,
   CopyTradePopularAccountWalletClicked,
   CopyTradeTimeSpent,
+  TotalCopyTradesAvailable,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 
@@ -197,7 +199,7 @@ class Emulations extends Component {
       isAvailableCopyTradeBlockOpen: true,
       isRejectModal: false,
       isCancelModal: false,
-      executeCopyTradeId: undefined,
+      executeCopyTrade: undefined,
       cancelCopyTradeId: undefined,
       isExecuteCopyTrade: false,
       isPopularLeftArrowDisabled: true,
@@ -475,8 +477,14 @@ class Emulations extends Component {
     if (
       prevState.copyTradesAvailableLocal !==
         this.state.copyTradesAvailableLocal &&
-      this.state.copyTradesAvailableLocal.length > 1
+      this.state.copyTradesAvailableLocal.length > 0
     ) {
+      TotalCopyTradesAvailable({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        totalCT: this.state.copyTradesAvailableLocal.length,
+        availableCopyTrades: this.state.copyTradesAvailableLocal,
+      });
       this.setState({
         isLeftArrowDisabled: true,
         isRightArrowDisabled: false,
@@ -581,26 +589,31 @@ class Emulations extends Component {
       isExecuteCopyTrade: false,
     });
   };
-  showExecuteCopyTrade = (passedTradeId) => {
+  showExecuteCopyTrade = (passedTrade) => {
     CopyTradeExecuteTradeModalOpen({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
+      swapAddress: passedTrade.copyAddress,
+      swapAssetFrom: passedTrade.assetFrom,
+      swapAmountFrom: passedTrade.valueFrom,
+      swapAssetTo: passedTrade.assetTo,
+      swapAmountTo: passedTrade.valueTo,
     });
     this.setState({
       isExecuteCopyTrade: true,
-      executeCopyTradeId: passedTradeId,
+      executeCopyTrade: passedTrade,
     });
   };
-  openRejectModal = (tradeId) => {
+  openRejectModal = (passedTrade) => {
     this.setState({
       isRejectModal: true,
-      executeCopyTradeId: tradeId,
+      executeCopyTrade: passedTrade,
     });
   };
   closeRejectModal = () => {
     this.setState({
       isRejectModal: false,
-      executeCopyTradeId: undefined,
+      executeCopyTrade: undefined,
     });
   };
   openCancelModal = (tradeId) => {
@@ -617,21 +630,35 @@ class Emulations extends Component {
   };
   executeRejectModal = () => {
     this.closeRejectModal();
-    this.confirmOrRejectCopyTrade(this.state.executeCopyTradeId, false);
+    this.confirmOrRejectCopyTrade(this.state.executeCopyTrade, false);
   };
-  confirmOrRejectCopyTrade = (tradeId, isConfirm) => {
+  confirmOrRejectCopyTrade = (passedTrade, isConfirm) => {
     let conRejData = new URLSearchParams();
+
     if (isConfirm) {
+      CopyTradeExecuteTradeConfirmed({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        swapAddress: passedTrade.copyAddress,
+        swapAssetFrom: passedTrade.assetFrom,
+        swapAmountFrom: passedTrade.valueFrom,
+        swapAssetTo: passedTrade.assetTo,
+        swapAmountTo: passedTrade.valueTo,
+      });
       conRejData.append("status", "CONFIRM");
     } else {
       CopyTradeExecuteTradeRejected({
         session_id: getCurrentUser().id,
         email_address: getCurrentUser().email,
-        swapAddress: tradeId,
+        swapAddress: passedTrade.copyAddress,
+        swapAssetFrom: passedTrade.assetFrom,
+        swapAmountFrom: passedTrade.valueFrom,
+        swapAssetTo: passedTrade.assetTo,
+        swapAmountTo: passedTrade.valueTo,
       });
       conRejData.append("status", "REJECT");
     }
-    conRejData.append("trade_id", tradeId);
+    conRejData.append("trade_id", passedTrade.id);
     this.props.updaetAvailableCopyTraes(
       conRejData,
       this.callEmulationsApi,
@@ -1056,7 +1083,6 @@ class Emulations extends Component {
     }
   };
   cancelCopyTradeFun = () => {
-    console.log("One");
     let data = new URLSearchParams();
     data.append("copy_trade_id", this.state.selectedRemoveWalletId);
 
@@ -1225,7 +1251,6 @@ class Emulations extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "CancelCopyTrade") {
             const deleteThisAddress = () => {
-              console.log("rowData ", rowData);
               this.setState({
                 selectedRemoveWallet: rowData.wallet,
                 selectedRemoveWalletId: rowData.tradeId,
@@ -1357,7 +1382,7 @@ class Emulations extends Component {
             hideExecuteCopyTrade={this.hideExecuteCopyTrade}
             confirmOrRejectCopyTrade={this.confirmOrRejectCopyTrade}
             goToNewAddress={this.goToNewAddress}
-            executeCopyTradeId={this.state.executeCopyTradeId}
+            executeCopyTrade={this.state.executeCopyTrade}
             cancelCopyTradeId={this.state.cancelCopyTradeId}
             paymentStatusLocal={this.state.paymentStatusLocal}
             isRejectModal={this.state.isRejectModal}
@@ -1410,7 +1435,7 @@ class Emulations extends Component {
             {this.state.isExecuteCopyTrade ? (
               <EmulationsTradeModal
                 show={this.state.isExecuteCopyTrade}
-                executeCopyTradeId={this.state.executeCopyTradeId}
+                executeCopyTrade={this.state.executeCopyTrade}
                 confirmOrRejectCopyTrade={this.confirmOrRejectCopyTrade}
                 onHide={this.hideExecuteCopyTrade}
                 history={this.props.history}
@@ -1763,9 +1788,7 @@ class Emulations extends Component {
                                     <div
                                       className="available-copy-trades-button"
                                       onClick={() => {
-                                        this.showExecuteCopyTrade(
-                                          curTradeData.id
-                                        );
+                                        this.showExecuteCopyTrade(curTradeData);
                                       }}
                                     >
                                       <Image
@@ -1776,7 +1799,7 @@ class Emulations extends Component {
                                     <div
                                       className="available-copy-trades-button"
                                       onClick={() => {
-                                        this.openRejectModal(curTradeData.id);
+                                        this.openRejectModal(curTradeData);
                                       }}
                                       style={{
                                         marginLeft: "1rem",

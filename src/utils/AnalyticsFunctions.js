@@ -6069,12 +6069,22 @@ export const CopyTradeAvailableCopiedWalletClicked = ({
 export const CopyTradeExecuteTradeModalOpen = ({
   session_id,
   email_address,
+  swapAddress,
+  swapAssetFrom,
+  swapAmountFrom,
+  swapAssetTo,
+  swapAmountTo,
 }) => {
   const event_name =
     "Copy Trade: Available copy trade: execute trade modal open";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
+    address: swapAddress,
+    assetFrom: swapAssetFrom,
+    amountFrom: swapAmountFrom,
+    assetTo: swapAssetTo,
+    amountTo: swapAmountTo,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -6082,14 +6092,22 @@ export const CopyTradeExecuteTradeSwapClicked = ({
   session_id,
   email_address,
   swap,
-  address,
+  swapAddress,
+  swapAssetFrom,
+  swapAmountFrom,
+  swapAssetTo,
+  swapAmountTo,
 }) => {
   const event_name = "Copy Trade: Available copy trade: swap clicked";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     swap: swap,
-    address: address,
+    address: swapAddress,
+    assetFrom: swapAssetFrom,
+    amountFrom: swapAmountFrom,
+    assetTo: swapAssetTo,
+    amountTo: swapAmountTo,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -6097,12 +6115,20 @@ export const CopyTradeExecuteTradeRejected = ({
   session_id,
   email_address,
   swapAddress,
+  swapAssetFrom,
+  swapAmountFrom,
+  swapAssetTo,
+  swapAmountTo,
 }) => {
   const event_name = "Copy Trade: Available copy trade: trade rejected";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     address: swapAddress,
+    assetFrom: swapAssetFrom,
+    amountFrom: swapAmountFrom,
+    assetTo: swapAssetTo,
+    amountTo: swapAmountTo,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -6110,12 +6136,36 @@ export const CopyTradeExecuteTradeConfirmed = ({
   session_id,
   email_address,
   swapAddress,
+  swapAssetFrom,
+  swapAmountFrom,
+  swapAssetTo,
+  swapAmountTo,
 }) => {
-  const event_name = "Copy Trade: Available copy trade: modal done";
+  const event_name = "Copy Trade: Available copy trade: trade confirmed";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     address: swapAddress,
+    assetFrom: swapAssetFrom,
+    amountFrom: swapAmountFrom,
+    assetTo: swapAssetTo,
+    amountTo: swapAmountTo,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TotalCopyTradesAvailable = ({
+  session_id,
+  email_address,
+  totalCT,
+  availableCopyTrades,
+}) => {
+  const event_name =
+    "Copy Trade: Available copy trade: total copy trades available";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    total: totalCT,
+    availableCopyTrades: availableCopyTrades,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
@@ -6123,12 +6173,20 @@ export const CopyTradeExecuteModalBack = ({
   session_id,
   email_address,
   swapAddress,
+  swapAssetFrom,
+  swapAmountFrom,
+  swapAssetTo,
+  swapAmountTo,
 }) => {
   const event_name = "Copy Trade: Available copy trade: modal back";
   const eventProperties = {
     "session id": session_id,
     "email address": email_address,
     address: swapAddress,
+    assetFrom: swapAssetFrom,
+    amountFrom: swapAmountFrom,
+    assetTo: swapAssetTo,
+    amountTo: swapAmountTo,
   };
   sendAmplitudeData(event_name, eventProperties);
 };
