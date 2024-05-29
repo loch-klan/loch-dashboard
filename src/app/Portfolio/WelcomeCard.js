@@ -124,6 +124,7 @@ export default function WelcomeCard(props) {
     return (
       <TopWalletExchangeBar
         goToPageAfterLogin={props.goToPageAfterLogin}
+        funAfterUserCreate={props.funAfterUserCreate}
         connectedWalletAddress={props.connectedWalletAddress}
         connectedWalletevents={props.connectedWalletevents}
         changeWalletList={props.changeWalletList}
@@ -332,6 +333,7 @@ export default function WelcomeCard(props) {
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
               goToPageAfterLogin={props.goToPageAfterLogin}
+              funAfterUserCreate={props.funAfterUserCreate}
               isAddNewAddress={props.isAddNewAddress}
               hideFocusedInput={props.hideFocusedInput}
               focusOriginalInputBar={props.focusOriginalInputBar}

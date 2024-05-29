@@ -800,7 +800,6 @@ export const verifyUser = (ctx, info, v2 = false, goToSmartMoney = false) => {
       .then((res) => {
         // console.log(res.data.data.user)
         if (!res.data.error) {
-          window.localStorage.removeItem("isCopyTradeWelcomePage");
           window.localStorage.setItem(
             "lochUser",
             JSON.stringify(res.data.data.user)
@@ -989,7 +988,9 @@ export const createAnonymousUserApi = (
   ctx,
   addWallet,
   userFunction = null,
-  goToPage = null
+  goToPage = null,
+  funAfterUserCreate,
+  addressList = []
 ) => {
   return function (dispatch, getState) {
     // window.localStorage.setItem('currency',JSON.stringify({
@@ -1026,7 +1027,6 @@ export const createAnonymousUserApi = (
       .then((res) => {
         // console.log("inside create user function")
         if (!res.data.error) {
-          window.localStorage.removeItem("isCopyTradeWelcomePage");
           window.localStorage.setItem("lochDummyUser", res.data.data.user.link);
           window.localStorage.setItem("lochToken", res.data.data.token);
 
@@ -1177,6 +1177,12 @@ export const createAnonymousUserApi = (
                       hash: ctx?.state?.hash,
                     },
                   });
+                  if (funAfterUserCreate) {
+                    if (addressList && addressList.length > 0) {
+                      const tempItem = addressList[0];
+                      funAfterUserCreate(tempItem);
+                    }
+                  }
                 }, 1000);
               } else {
                 // console.log("replace")
@@ -1232,7 +1238,6 @@ export const AppFeaturesCreateUser = (data, ctx, userFunction = null) => {
 
   postLoginInstance.post("organisation/user/create-user", data).then((res) => {
     if (!res.data.error) {
-      window.localStorage.removeItem("isCopyTradeWelcomePage");
       window.localStorage.setItem("lochDummyUser", res.data.data.user.link);
       window.localStorage.setItem("lochToken", res.data.data.token);
 

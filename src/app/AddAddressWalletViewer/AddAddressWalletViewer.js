@@ -8,12 +8,14 @@ import {
 import {
   dontOpenLoginPopup,
   mobileCheck,
+  scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import Footer from "../common/footer.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AddAddressWalletViewerMobile from "./AddAddressWalletViewerMobile.js";
 import "./_addAddressWalletViewer.scss";
+import { getToken } from "../../utils/ManageToken.js";
 
 class AddAddressWalletViewer extends Component {
   constructor(props) {
@@ -26,7 +28,12 @@ class AddAddressWalletViewer extends Component {
     };
   }
   componentDidMount() {
+    scrollToTop();
     dontOpenLoginPopup();
+    let tempToken = getToken();
+    if (tempToken && tempToken !== "jsk") {
+      this.props.history.push("/home");
+    }
   }
   goBackToWelcome = () => {
     this.props.history.push("/copy-trade-welcome");
@@ -44,6 +51,7 @@ class AddAddressWalletViewer extends Component {
           blurredElement
           goToPageAfterLogin="/home"
           isAddNewAddress
+          hideShare
         >
           <AddAddressWalletViewerMobile
             blockOneSelectedItem={this.state.blockOneSelectedItem}

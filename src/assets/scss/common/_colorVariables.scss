@@ -292,6 +292,9 @@
   // Copy trade welcome
   --dummyHomePageBackground: url(../../images/DummyHomePage.png);
   --dummyProfileBackground: url(../../images/DummyProfilePage.png);
+
+  // Mobile Add Address Signed out
+  --mobileSearchInputShadow: rgba(255, 255, 255, 0.95);
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -575,6 +578,7 @@
   // Copy trade welcome
   --dummyHomePageBackground: url(../../images/DummyHomePageDark.png);
   --dummyProfileBackground: url(../../images/DummyProfilePageDark.png);
+  --mobileSearchInputShadow: rgba(0, 0, 0, 0.95);
 }
 [data-theme="dark2"] {
   // UPDATED

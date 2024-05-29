@@ -34,6 +34,7 @@ class AddAddressProfileMobile extends Component {
             history={this.props.history}
             lochUser={this.props.lochUser}
             isMobile
+            dontCallApis
           />
           <div className="profile-section-loch-premium-banner profile-section-loch-premium-banner-mobile">
             <div className="pslpl-heading">
@@ -42,78 +43,38 @@ class AddAddressProfileMobile extends Component {
                 Loch Premium
               </div>
             </div>
-            {this.props.isPremium ? (
-              <div
-                style={{
-                  marginTop: "3rem",
-                }}
-                className="profile-section-loch-premium"
-              >
-                <div className="pslp-left">
-                  <div className="pslpl-banner">
-                    <div className="inter-display-medium pslpl-banner-des">
-                      Exclusive benefits
-                    </div>
-                    <div className="pslpl-banner-heading">
+
+            <div className="profile-section-loch-premium">
+              <div className="pslp-left">
+                <div className="pslpl-conent">
+                  {this.props.premiumBannerItems.map((itemBlock, index) => (
+                    <div key={index} className="pslpl-item-block">
                       <Image
-                        src={PremiumBannerCheckCircleIcon}
-                        className="pslpl-banner-heading-image"
+                        className="pslpl-item-block-icon"
+                        src={itemBlock.icon}
                       />
-                      <div className="inter-display-medium pslpl-banner-heading-text">
-                        Activated
+                      <div className="inter-display-medium pslpl-item-block-text">
+                        {itemBlock.text}
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div className="pslp-right">
-                  <div className="pslpl-conent">
-                    {this.props.premiumBannerItems.map((itemBlock, index) => (
-                      <div key={index} className="pslpl-item-block">
-                        <Image
-                          className="pslpl-item-block-icon"
-                          src={itemBlock.icon}
-                        />
-                        <div className="inter-display-medium pslpl-item-block-text">
-                          {itemBlock.text}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  ))}
                 </div>
               </div>
-            ) : (
-              <div className="profile-section-loch-premium">
-                <div className="pslp-left">
-                  <div className="pslpl-conent">
-                    {this.props.premiumBannerItems.map((itemBlock, index) => (
-                      <div key={index} className="pslpl-item-block">
-                        <Image
-                          className="pslpl-item-block-icon"
-                          src={itemBlock.icon}
-                        />
-                        <div className="inter-display-medium pslpl-item-block-text">
-                          {itemBlock.text}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+              <div className="pslp-right">
+                <div className="pslpr-desc">Not a member yet</div>
+                <div className="pslpr-heading">
+                  Join Loch Premium and enjoy
+                  <br />
+                  exclusive benefits
                 </div>
-                <div className="pslp-right">
-                  <div className="pslpr-desc">Not a member yet</div>
-                  <div className="pslpr-heading">
-                    Join Loch Premium and enjoy
-                    <br />
-                    exclusive benefits
-                  </div>
-                  <button
-                    onClick={this.props.upgradeNowBtnClick}
-                    className="pslpr-btn"
-                  >
-                    Upgrade now
-                  </button>
-                </div>
+                <button
+                  onClick={this.props.upgradeNowBtnClick}
+                  className="pslpr-btn"
+                >
+                  Upgrade now
+                </button>
               </div>
-            )}
+            </div>
           </div>
           <div
             onClick={this.props.goToMyReferralCodes}

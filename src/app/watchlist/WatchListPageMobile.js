@@ -170,7 +170,6 @@ class WatchListPageMobile extends BaseReactComponent {
                       email_address: getCurrentUser().email,
                       hover: rowData.nameTag,
                     });
-                    this.updateTimer();
                   }}
                   className="dotDotText text-center table-data-font"
                 >

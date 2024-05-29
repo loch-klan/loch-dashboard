@@ -13,6 +13,7 @@ import {
   WhaleTail,
 } from "../../assets/images/index.js";
 import CopyTradeMobileWelcome from "./CopyTradeMobileWelcome.js";
+import { getToken } from "../../utils/ManageToken.js";
 
 class CopyTradeWelcome extends Component {
   constructor(props) {
@@ -20,7 +21,10 @@ class CopyTradeWelcome extends Component {
     this.state = {};
   }
   componentDidMount() {
-    window.localStorage.setItem("isCopyTradeWelcomePage", true);
+    let tempToken = getToken();
+    if (tempToken && tempToken !== "jsk") {
+      this.props.history.push("/copy-trade");
+    }
   }
   render() {
     if (mobileCheck()) {
@@ -28,9 +32,12 @@ class CopyTradeWelcome extends Component {
         <MobileLayout
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
-          currentPage={"insights"}
+          currentPage={"Copy Trade Welcome"}
           hideAddresses
           hideFooter
+          hideShare
+          isAddNewAddress
+          goToPageAfterLogin="/home"
         >
           <CopyTradeMobileWelcome />
         </MobileLayout>
@@ -58,6 +65,8 @@ class CopyTradeWelcome extends Component {
                   // add wallet address modal
                   handleAddModal={this.handleAddModal}
                   updateTimer={this.updateTimer}
+                  isAddNewAddress
+                  goToPageAfterLogin="/home"
                 />
               </div>
             </div>

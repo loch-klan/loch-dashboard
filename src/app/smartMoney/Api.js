@@ -201,7 +201,6 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
           loadingVerificationOtpBtn: false,
         });
         if (!res.data.error) {
-          window.localStorage.removeItem("isCopyTradeWelcomePage");
           SmartMoneySignIn({
             session_id: getCurrentUser().id,
             email_address: passedEmail,
@@ -312,7 +311,6 @@ export const createAnonymousUserSmartMoneyApi = (data) => {
       .post("organisation/user/create-user", data)
       .then((res) => {
         if (!res.data.error) {
-          window.localStorage.removeItem("isCopyTradeWelcomePage");
           window.localStorage.setItem("lochDummyUser", res.data.data.user.link);
           window.localStorage.setItem("lochToken", res.data.data.token);
 

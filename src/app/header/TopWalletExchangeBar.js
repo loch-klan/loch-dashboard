@@ -865,7 +865,9 @@ class TopWalletExchangeBar extends Component {
         this,
         finalArr,
         null,
-        this.props.goToPageAfterLogin
+        this.props.goToPageAfterLogin,
+        this.props.funAfterUserCreate,
+        addressList
       );
     }
 

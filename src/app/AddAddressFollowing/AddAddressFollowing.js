@@ -1,13 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import { Form, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
 import sortByIcon from "../../assets/images/icons/triangle-down.svg";
-import { DummyProfilePageImage } from "../../assets/images/index.js";
 import {
   dontOpenLoginPopup,
   mobileCheck,
+  scrollToTop,
 } from "../../utils/ReusableFunctions.js";
+import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
 import CustomTextControl from "../../utils/form/CustomTextControl.js";
 import FormElement from "../../utils/form/FormElement.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
@@ -16,7 +17,10 @@ import TransactionTable from "../intelligence/TransactionTable.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AddAddressFollowingMobile from "./AddAddressFollowingMobile.js";
 import "./_addAddressFollowing.scss";
-import BaseReactComponent from "../../utils/form/BaseReactComponent.js";
+import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
+import { setPageFlagDefault } from "../common/Api.js";
+import { toast } from "react-toastify";
+import { getToken } from "../../utils/ManageToken.js";
 
 class AddAddressFollowing extends BaseReactComponent {
   constructor(props) {
@@ -27,12 +31,35 @@ class AddAddressFollowing extends BaseReactComponent {
     };
   }
   componentDidMount() {
+    scrollToTop();
     dontOpenLoginPopup();
+    let tempToken = getToken();
+    if (tempToken && tempToken !== "jsk") {
+      this.props.history.push("/watchlist");
+    }
   }
   goBackToWelcome = () => {
     this.props.history.push("/copy-trade-welcome");
   };
   onChangeMethod = () => {};
+  funAfterUserCreate = (passedAddress) => {
+    console.log("passedAddress ", passedAddress);
+    const followAddressData = new URLSearchParams();
+    followAddressData.append("wallet_address", passedAddress);
+    followAddressData.append("type", "self");
+    followAddressData.append("name_tag", "");
+
+    this.props.addAddressToWatchList(
+      followAddressData,
+      this,
+      passedAddress,
+      ""
+    );
+  };
+  addressAddedFun = () => {
+    toast.success("You are now following this address");
+    this.props.setPageFlagDefault();
+  };
 
   render() {
     const columnList = [
@@ -128,6 +155,8 @@ class AddAddressFollowing extends BaseReactComponent {
           blurredElement
           goToPageAfterLogin="/watchlist"
           isAddNewAddress
+          hideShare
+          funAfterUserCreate={this.funAfterUserCreate}
         >
           <AddAddressFollowingMobile
             tableData={this.state.tableData}
@@ -159,6 +188,7 @@ class AddAddressFollowing extends BaseReactComponent {
                   handleAddModal={this.handleAddModal}
                   updateTimer={this.updateTimer}
                   goToPageAfterLogin="/watchlist"
+                  funAfterUserCreate={this.funAfterUserCreate}
                 />
               </div>
             </div>
@@ -188,6 +218,7 @@ class AddAddressFollowing extends BaseReactComponent {
                     handleUpdate={this.handleUpdateWallet}
                     isAddNewAddress
                     goToPageAfterLogin="/watchlist"
+                    funAfterUserCreate={this.funAfterUserCreate}
                   />
                 </div>
               </div>
@@ -272,7 +303,10 @@ class AddAddressFollowing extends BaseReactComponent {
 }
 const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  addAddressToWatchList,
+  setPageFlagDefault,
+};
 
 export default connect(
   mapStateToProps,

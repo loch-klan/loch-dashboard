@@ -81,7 +81,12 @@ class CopyTradeMobileWelcome extends Component {
             </div>
           </div>
           <div className="ctwp-block ctwp-block-four">
-            <Image className="ctwpbf-loch" src={LochBigLogoCopyTradeWelcome} />
+            <div className="ctwpbf-loch-container">
+              <Image
+                className="ctwpbf-loch"
+                src={LochBigLogoCopyTradeWelcome}
+              />
+            </div>
 
             <div className="ctwpbf-content">
               <div className="ctwpbofour-header">

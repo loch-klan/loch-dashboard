@@ -298,6 +298,9 @@ class WatchListPage extends BaseReactComponent {
         });
       }
     }
+    if (this.props.commonState !== prevProps.commonState) {
+      this.refetchList();
+    }
   }
 
   onValidSubmit = (val = this.state.search) => {
@@ -961,6 +964,7 @@ class WatchListPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   WatchListState: state.WatchListState,
   WatchListLoadingState: state.WatchListLoadingState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   setPageFlagDefault,

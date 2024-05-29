@@ -15,6 +15,7 @@ import {
 import {
   dontOpenLoginPopup,
   mobileCheck,
+  scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import PageHeader from "../common/PageHeader.js";
@@ -23,6 +24,7 @@ import MobileLayout from "../layout/MobileLayout.js";
 import ProfileLochCreditPoints from "../profile/ProfileLochCreditPoints.js";
 import AddAddressProfileMobile from "./AddAddressProfileMobile.js";
 import "./_addAddressProfile.scss";
+import { getToken } from "../../utils/ManageToken.js";
 
 class AddAddressProfile extends Component {
   constructor(props) {
@@ -47,7 +49,12 @@ class AddAddressProfile extends Component {
     };
   }
   componentDidMount() {
+    scrollToTop();
     dontOpenLoginPopup();
+    let tempToken = getToken();
+    if (tempToken && tempToken !== "jsk") {
+      this.props.history.push("/profile");
+    }
   }
   goBackToWelcome = () => {
     this.props.history.push("/copy-trade-welcome");
@@ -65,6 +72,7 @@ class AddAddressProfile extends Component {
           blurredElement
           goToPageAfterLogin="/profile"
           isAddNewAddress
+          hideShare
         >
           <AddAddressProfileMobile
             premiumBannerItems={this.state.premiumBannerItems}
@@ -148,7 +156,6 @@ class AddAddressProfile extends Component {
                       followFlag={this.state.followFlag}
                       isUpdate={this.state.isUpdate}
                       history={this.props.history}
-                      lochUser={this.state.lochUser}
                       showFocusedInput={this.showFocusedInput}
                       dontCallApis
                     />
