@@ -163,3 +163,4 @@ export { default as CopyTradeSignInUpLochIcon } from "./copyTradeSignInUpLoch.sv
 export { default as ShareCopyTraderImage } from "./ShareCopyTrader.png";
 export { default as PremiumBannerTelegramIcon } from "./premiumBannerTelegram.svg";
 export { default as PremiumBannerLochIcon } from "./premiumBannerLoch.svg";
+export { default as TrophyTopHoldersIcon } from "./trophyTopHolders.svg";
