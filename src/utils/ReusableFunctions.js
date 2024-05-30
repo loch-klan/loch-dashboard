@@ -18,8 +18,10 @@ export const scrollToBottomAfterPageChange = () => {
     window.scroll(0, document.body.scrollHeight);
   }
 };
-export const openAddressInNewTab = (address, setPageFlagDefault) => {
+export const openAddressInSameTab = (address, setPageFlagDefault) => {
   const shareLink = BASE_URL_S3 + "replace-address?address=" + address;
+  // const shareLink =
+  //   "http://localhost:3000/" + "replace-address?address=" + address;
 
   window.open(shareLink, "_self").focus();
   if (setPageFlagDefault) {
@@ -84,6 +86,14 @@ export const getCopyTradeWalletShareLink = (walletList) => {
   }
   return "";
 };
+export const openLoginPopUp = () => {
+  window.sessionStorage.setItem("dontOpenLoginPopup", true);
+  if (document.getElementById("sidebar-open-sign-in-btn")) {
+    document.getElementById("sidebar-open-sign-in-btn").click();
+  } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+    document.getElementById("sidebar-closed-sign-in-btn").click();
+  }
+};
 export const openSignInModalFromAnywhere = () => {
   if (document.getElementById("sidebar-open-sign-in-btn")) {
     document.getElementById("sidebar-open-sign-in-btn").click();
@@ -97,6 +107,9 @@ export const dontOpenLoginPopup = () => {
   window.localStorage.setItem("dontOpenLoginPopup", true);
 };
 export const whichBlurMethod = () => {
+  if (window.localStorage.getItem("copyTradeWelcome")) {
+    return "Copy Trade Welcome";
+  }
   if (window.localStorage.getItem("blurredHomeAssetSignInModal")) {
     return "Home Assets Block";
   }
@@ -174,8 +187,12 @@ export const removeBlurMethods = () => {
   window.localStorage.removeItem("blurredCopyTradeAddModal");
   window.localStorage.removeItem("blurredSubscribeToPremiumLochPoint");
   window.localStorage.removeItem("upgradePremiumProfileBannerSignInModal");
+  window.localStorage.removeItem("copyTradeWelcome");
 };
 export const whichSignUpMethod = () => {
+  if (window.localStorage.getItem("copyTradeWelcome")) {
+    return "Copy Trade Welcome";
+  }
   if (window.localStorage.getItem("lochPointsSignInModal")) {
     return "Loch points";
   }
@@ -264,6 +281,7 @@ export const removeSignUpMethods = () => {
   window.localStorage.removeItem("blurredTransactionHistoryExportModal");
   window.localStorage.removeItem("blurredCopyTradeAddModal");
   window.localStorage.removeItem("blurredSubscribeToPremiumLochPoint");
+  window.localStorage.removeItem("copyTradeWelcome");
 };
 export const removeOpenModalAfterLogin = () => {
   window.localStorage.removeItem("openHomePaymentModal");

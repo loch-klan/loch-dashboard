@@ -1667,6 +1667,7 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidMount() {
+    this.props.history.push("/copy-trade-welcome");
     setTimeout(() => {
       this.setState({
         canCallConnectWalletFun: true,

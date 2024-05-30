@@ -7,7 +7,7 @@ import {
 } from "../../utils/form";
 import {
   TruncateText,
-  openAddressInNewTab,
+  openAddressInSameTab,
 } from "../../utils/ReusableFunctions";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import {
@@ -82,7 +82,7 @@ class WatchListPageMobile extends BaseReactComponent {
                     }
                   }
                   // window.open(shareLink, "_blank", "noreferrer");
-                  openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                  openAddressInSameTab(slink, this.props.setPageFlagDefault);
 
                   // this.updateWatchListAnalyzed(
                   //   rowData.nameTag,
@@ -170,7 +170,6 @@ class WatchListPageMobile extends BaseReactComponent {
                       email_address: getCurrentUser().email,
                       hover: rowData.nameTag,
                     });
-                    this.updateTimer();
                   }}
                   className="dotDotText text-center table-data-font"
                 >

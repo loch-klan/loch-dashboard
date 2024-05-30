@@ -1457,7 +1457,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isPremiumUser={this.state.isPremiumUser}
                   shouldBlurElements={!this.state.isPremiumUser}
                   showBlurredItem={this.showBlurredItem}
-                  message="No assets found"
+                  message="No tokens found"
                   bottomCombiedValues={
                     this.state.Average_cost_basis_local.length > 0
                       ? true

@@ -14,7 +14,7 @@ import {
   ActiveSmartMoneySidebarIcon,
   EmultionSidebarIcon,
   FollowingSidebarIcon,
-  HomeSidebarIcon,
+  WalletViewerSidebarIcon,
   InactiveSmartMoneySidebarIcon,
   LeaderboardSidebarIcon,
   LochLogoWhiteIcon,
@@ -25,6 +25,7 @@ import {
   XFormallyTwitterLogoIcon,
   darkModeIcon,
   lightModeIcon,
+  CopyTradeSwapSidebarIcon,
 } from "../../assets/images/icons";
 import { default as SignInIcon } from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
@@ -102,6 +103,9 @@ function Sidebar(props) {
 
   // console.log("active", activeTab);
   const history = useHistory();
+  const [lochUserState, setLochUserState] = useState(
+    window.localStorage.getItem("lochToken")
+  );
   const [showAmountsAtTop, setShowAmountsAtTop] = useState(false);
   const [dragPosition, setDragPosition] = React.useState({
     x: 0,
@@ -138,6 +142,7 @@ function Sidebar(props) {
 
   useEffect(() => {
     setIsCurPremiumUser(isPremiumUser());
+    setLochUserState(window.localStorage.getItem("lochToken"));
   }, [props.userPaymentState]);
 
   let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
@@ -369,12 +374,19 @@ function Sidebar(props) {
     });
     setConfirmLeave(!confirmLeave);
   };
-  const handleGoToProfile = () => {
+  const handleGoToProfile = (e) => {
     let tempToken = getToken();
     if (!tempToken || tempToken === "jsk") {
+      e.preventDefault();
+      props.history.push("/profile-add-address");
       return null;
+    } else {
+      ProfileMenu({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      props.history.push("/profile");
     }
-    props.history.push("/profile");
   };
   const handleApiModal = () => {
     setApiModal(!apiModal);
@@ -435,10 +447,10 @@ function Sidebar(props) {
       setIsLochPointsProfilePopUpModal(true);
     }
 
-    let tempToken = getToken();
-    if (!tempToken || tempToken === "jsk") {
-      return null;
-    }
+    // let tempToken = getToken();
+    // if (!tempToken || tempToken === "jsk") {
+    //   return null;
+    // }
     setComingDirectly(false);
     setSignUpModalAnimation(false);
     setSignupModal(false);
@@ -893,16 +905,74 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={"Home"}
+                            text={"Copy Trade"}
                           >
                             <NavLink
-                              exact={true}
-                              className="nav-link nav-link-closed"
-                              to={activeTab === "/home" ? "#" : "/home"}
+                              className={`nav-link nav-link-closed`}
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/copy-trade-welcome"
+                                  : "/copy-trade"
+                              }
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+
+                                  props.history.push("/copy-trade-welcome");
+
+                                  return null;
+                                }
+
+                                MenuCopyTradelist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade" ||
+                                  activeTab === "/copy-trade-welcome"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Wallet Viewer"}
+                          >
+                            <NavLink
+                              exact={true}
+                              className="nav-link nav-link-closed"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/wallet-viewer-add-address"
+                                  : activeTab === "/home"
+                                  ? "#"
+                                  : "/home"
+                              }
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+
+                                  props.history.push(
+                                    "/wallet-viewer-add-address"
+                                  );
+
                                   return null;
                                 } else {
                                   HomeMenu({
@@ -914,9 +984,10 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={HomeSidebarIcon}
+                                src={WalletViewerSidebarIcon}
                                 style={
-                                  activeTab === "/home"
+                                  activeTab === "/home" ||
+                                  activeTab === "/wallet-viewer-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
@@ -926,7 +997,6 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-
                         <li>
                           <CustomOverlay
                             position="top"
@@ -937,11 +1007,18 @@ function Sidebar(props) {
                           >
                             <NavLink
                               className={`nav-link nav-link-closed`}
-                              to="/watchlist"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/following-add-address"
+                                  : "/watchlist"
+                              }
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+
+                                  props.history.push("/following-add-address");
+
                                   return null;
                                 } else {
                                   MenuWatchlist({
@@ -955,7 +1032,8 @@ function Sidebar(props) {
                               <Image
                                 src={FollowingSidebarIcon}
                                 style={
-                                  activeTab === "/watchlist"
+                                  activeTab === "/watchlist" ||
+                                  activeTab === "/following-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
@@ -979,16 +1057,16 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/home-leaderboard"
                               onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                } else {
-                                  MenuLeaderboard({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
+                                // let tempToken = getToken();
+                                // if (!tempToken || tempToken === "jsk") {
+                                //   e.preventDefault();
+                                //   return null;
+                                // } else {
+                                MenuLeaderboard({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                // }
                               }}
                               activeclassname="active"
                             >
@@ -1007,19 +1085,12 @@ function Sidebar(props) {
                           >
                             <NavLink
                               className={`nav-link nav-link-closed`}
-                              to="/profile"
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/profile-add-address"
+                                  : "/profile"
+                              }
+                              onClick={handleGoToProfile}
                               activeclassname="active"
                             >
                               <Image
@@ -1029,67 +1100,31 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        <li>
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"Copy Trade"}
-                          >
-                            <NavLink
-                              className={`nav-link nav-link-closed`}
-                              to="/copy-trade"
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                }
 
-                                MenuCopyTradelist({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                              }}
-                              activeclassname="active"
+                        {!lochUserState || lochUserState === "jsk" ? null : (
+                          <li>
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              text={"Feedback"}
                             >
-                              <Image
-                                src={EmultionSidebarIcon}
-                                style={
-                                  activeTab === "/copy-trade"
-                                    ? {
-                                        filter: "brightness(0)",
-                                      }
-                                    : {}
-                                }
-                                className="followingImg"
-                              />
-                            </NavLink>
-                          </CustomOverlay>
-                        </li>
-                        <li>
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"Feedback"}
-                          >
-                            <div
-                              className={`nav-link nav-link-closed`}
-                              style={{ backround: "transparent" }}
-                              id="sidebar-feedback-btn"
-                              onClick={handleUserFeedbackModal}
-                              // activeclassname="active"
-                            >
-                              <Image
-                                src={feedbackIcon}
-                                // className="followingImg"
-                              />
-                            </div>
-                          </CustomOverlay>
-                        </li>
+                              <div
+                                className={`nav-link nav-link-closed`}
+                                style={{ backround: "transparent" }}
+                                id="sidebar-feedback-btn"
+                                onClick={handleUserFeedbackModal}
+                                // activeclassname="active"
+                              >
+                                <Image
+                                  src={feedbackIcon}
+                                  // className="followingImg"
+                                />
+                              </div>
+                            </CustomOverlay>
+                          </li>
+                        )}
                       </ul>
                     </nav>
                   </div>
@@ -1141,12 +1176,63 @@ function Sidebar(props) {
                           <li>
                             <NavLink
                               exact={true}
-                              className="nav-link"
-                              to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+
+                                  props.history.push("/copy-trade-welcome");
+
+                                  return null;
+                                }
+                                MenuCopyTradelist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }}
+                              className="nav-link"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/copy-trade-welcome"
+                                  : "/copy-trade"
+                              }
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade" ||
+                                  activeTab === "/copy-trade-welcome"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                              Copy Trade
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              className="nav-link"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/wallet-viewer-add-address"
+                                  : activeTab === "/home"
+                                  ? "#"
+                                  : "/home"
+                              }
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                if (!tempToken || tempToken === "jsk") {
+                                  e.preventDefault();
+
+                                  props.history.push(
+                                    "/wallet-viewer-add-address"
+                                  );
+
                                   return null;
                                 } else {
                                   HomeMenu({
@@ -1158,27 +1244,34 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={HomeSidebarIcon}
+                                src={WalletViewerSidebarIcon}
                                 style={
-                                  activeTab === "/home"
+                                  activeTab === "/home" ||
+                                  activeTab === "/wallet-viewer-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
                               />
-                              Home
+                              Wallet Viewer
                             </NavLink>
                           </li>
-
                           <li>
                             <NavLink
                               className={`nav-link`}
-                              to="/watchlist"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/following-add-address"
+                                  : "/watchlist"
+                              }
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+
+                                  props.history.push("/following-add-address");
+
                                   return null;
                                 } else {
                                   MenuWatchlist({
@@ -1192,7 +1285,8 @@ function Sidebar(props) {
                               <Image
                                 src={FollowingSidebarIcon}
                                 style={
-                                  activeTab === "/watchlist"
+                                  activeTab === "/watchlist" ||
+                                  activeTab === "/following-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
@@ -1207,16 +1301,16 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                } else {
-                                  MenuLeaderboard({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
+                                // let tempToken = getToken();
+                                // if (!tempToken || tempToken === "jsk") {
+                                //   e.preventDefault();
+                                //   return null;
+                                // } else {
+                                MenuLeaderboard({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                // }
                               }}
                               className="nav-link"
                               to="/home-leaderboard"
@@ -1238,25 +1332,20 @@ function Sidebar(props) {
 
                           <li>
                             <NavLink
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
+                              onClick={handleGoToProfile}
                               className="nav-link"
-                              to="/profile"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/profile-add-address"
+                                  : "/profile"
+                              }
                               activeclassname="active"
                             >
                               <Image
                                 src={ProfileSidebarIcon}
                                 style={
-                                  activeTab === "/profile"
+                                  activeTab === "/profile" ||
+                                  activeTab === "/profile-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
@@ -1267,56 +1356,26 @@ function Sidebar(props) {
                               Profile
                             </NavLink>
                           </li>
-                          <li>
-                            <NavLink
-                              exact={true}
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                }
-                                MenuCopyTradelist({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                              }}
-                              className="nav-link"
-                              to="/copy-trade"
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={EmultionSidebarIcon}
-                                style={
-                                  activeTab === "/copy-trade"
-                                    ? {
-                                        filter: "brightness(0)",
-                                      }
-                                    : {}
-                                }
-                                className="followingImg"
-                              />
-                              Copy Trade
-                            </NavLink>
-                          </li>
                         </>
                       )}
-                      <li>
-                        <NavLink
-                          exact={true}
-                          onClick={handleUserFeedbackModal}
-                          className="nav-link none"
-                          to="#"
-                          activeclassname="none"
-                          id="sidebar-feedback-btn-full"
-                        >
-                          <Image
-                            src={feedbackIcon}
-                            // style={{ filter: "opacity(0.6)" }}
-                          />
-                          Feedback
-                        </NavLink>
-                      </li>
+                      {!lochUserState || lochUserState === "jsk" ? null : (
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={handleUserFeedbackModal}
+                            className="nav-link none"
+                            to="#"
+                            activeclassname="none"
+                            id="sidebar-feedback-btn-full"
+                          >
+                            <Image
+                              src={feedbackIcon}
+                              // style={{ filter: "opacity(0.6)" }}
+                            />
+                            Feedback
+                          </NavLink>
+                        </li>
+                      )}
                       {/* <li>
                         <NavLink
                           exact={true}s

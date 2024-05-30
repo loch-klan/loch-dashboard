@@ -311,10 +311,7 @@ export const createAnonymousUserSmartMoneyApi = (data) => {
       .post("organisation/user/create-user", data)
       .then((res) => {
         if (!res.data.error) {
-          window.localStorage.setItem(
-            "lochDummyUser",
-            res.data.data.user.link
-          );
+          window.localStorage.setItem("lochDummyUser", res.data.data.user.link);
           window.localStorage.setItem("lochToken", res.data.data.token);
 
           let plan = {

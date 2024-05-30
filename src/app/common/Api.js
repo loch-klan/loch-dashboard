@@ -11,7 +11,6 @@ import {
   LochPointsSignInPopupEmailVerified,
   SignInModalEmailAdded,
   SignInModalOTPverified,
-  SigninMenuEmailVerified,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
   WhaleCreateAccountEmailVerified,
@@ -1230,10 +1229,6 @@ export const VerifyEmail = (
         // Analytics
         let track = ctx.props.tracking;
         if (ctx.props.tracking === "Sign in button") {
-          SigninMenuEmailVerified({
-            session_id: getCurrentUser().id,
-            email_address: res.data.data.user?.email,
-          });
         } else if (ctx.props.tracking === "Whale watching") {
           WhalePopupEmailVerified({
             session_id: getCurrentUser().id,
