@@ -33,7 +33,7 @@ class CopyTradeMobileWelcome extends Component {
               </div>
               <div className="ctwpbol-desc">Welcome to Loch</div>
               <div
-                onClick={openLoginPopUp}
+                onClick={this.props.openLoginPopUpPass}
                 className="copy-trade-welcome-button"
               >
                 Get started
@@ -57,11 +57,11 @@ class CopyTradeMobileWelcome extends Component {
             <div className="ctwpbtwo-right">
               <div className="ctwpbtwor-desc">VERSATILITY</div>
               <div className="ctwpbtwor-title">
-                Follow, analyze, and
+                Follow, copy-trade, or
                 <br />
-                copy-trade anyone
+                consult anyone on the
                 <br />
-                on the blockchain
+                blockchain in seconds
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@ class CopyTradeMobileWelcome extends Component {
               </div>
             </div>
             <div className="ctwpbo-right">
-              <Image className="ctwpbor-greek-man" src={WhaleTail} />
+              <Image className="ctwpbor-whale-man" src={WhaleTail} />
             </div>
           </div>
           <div className="ctwp-block ctwp-block-four">
@@ -96,7 +96,7 @@ class CopyTradeMobileWelcome extends Component {
                 Use Loch’s copy trader to enter and exit safety
               </div>
               <div
-                onClick={openLoginPopUp}
+                onClick={this.props.openLoginPopUpPass}
                 className="copy-trade-welcome-button"
               >
                 Get started
@@ -110,7 +110,7 @@ class CopyTradeMobileWelcome extends Component {
             <div className="ctwpbofive-content-container">
               <div className="ctwpbofive-content">
                 <div className="ctwpbofive-header">
-                  “Man differs from animals in his greater aptitud
+                  “Man differs from animals in his greater aptitude
                   <br />
                   for imitation and mimesis”
                 </div>

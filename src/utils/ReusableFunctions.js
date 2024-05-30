@@ -107,6 +107,9 @@ export const dontOpenLoginPopup = () => {
   window.localStorage.setItem("dontOpenLoginPopup", true);
 };
 export const whichBlurMethod = () => {
+  if (window.localStorage.getItem("copyTradeWelcome")) {
+    return "Copy Trade Welcome";
+  }
   if (window.localStorage.getItem("blurredHomeAssetSignInModal")) {
     return "Home Assets Block";
   }
@@ -184,8 +187,12 @@ export const removeBlurMethods = () => {
   window.localStorage.removeItem("blurredCopyTradeAddModal");
   window.localStorage.removeItem("blurredSubscribeToPremiumLochPoint");
   window.localStorage.removeItem("upgradePremiumProfileBannerSignInModal");
+  window.localStorage.removeItem("copyTradeWelcome");
 };
 export const whichSignUpMethod = () => {
+  if (window.localStorage.getItem("copyTradeWelcome")) {
+    return "Copy Trade Welcome";
+  }
   if (window.localStorage.getItem("lochPointsSignInModal")) {
     return "Loch points";
   }
@@ -274,6 +281,7 @@ export const removeSignUpMethods = () => {
   window.localStorage.removeItem("blurredTransactionHistoryExportModal");
   window.localStorage.removeItem("blurredCopyTradeAddModal");
   window.localStorage.removeItem("blurredSubscribeToPremiumLochPoint");
+  window.localStorage.removeItem("copyTradeWelcome");
 };
 export const removeOpenModalAfterLogin = () => {
   window.localStorage.removeItem("openHomePaymentModal");

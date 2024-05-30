@@ -809,6 +809,44 @@ export const TransactionHistoryHashCopied = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CopyTradeWelcomePageView = ({
+  session_id,
+  email_address,
+  hash_copied,
+}) => {
+  const event_name = "Copy Trade: Welcome: page view";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    hash_copied: hash_copied,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeWelcomePageSpent = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Copy Trade: Welcome: time spent on welcome page";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "time spent": time_spent,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const CopyTradeWelcomeGetStartedClicked = ({
+  session_id,
+  email_address,
+  time_spent,
+}) => {
+  const event_name = "Copy Trade: Welcome: Get started clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const CopyTradeTransactionHistoryHashCopied = ({
   session_id,
   email_address,
@@ -3370,16 +3408,6 @@ export const SigninMenuEmailAdded = ({ session_id, email_address }) => {
   //console.log("Menu:intelligence menu");
 };
 
-//  Menu: Sign in: email verified - done
-export const SigninMenuEmailVerified = ({ session_id, email_address }) => {
-  const event_name = "Menu: Sign in: email verified";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:intelligence menu");
-};
 export const SignupEmail = ({ session_id, email_address }) => {
   const event_name = "Home: Sign up";
   const eventProperties = {

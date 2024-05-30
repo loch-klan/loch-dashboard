@@ -1415,7 +1415,11 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                         minimalPagination
                         noSubtitleBottomPadding
                         tableData={tableData}
-                        columnList={columnList}
+                        columnList={
+                          this.state.lochUserState
+                            ? columnList
+                            : columnList.slice(0, columnList.length - 1)
+                        }
                         message={"No accounts found"}
                         totalPage={this.state.totalPage}
                         history={this.props.history}

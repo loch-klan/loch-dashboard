@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { mobileCheck, openLoginPopUp } from "../../utils/ReusableFunctions";
+import {
+  mobileCheck,
+  openLoginPopUp,
+  scrollToTop,
+} from "../../utils/ReusableFunctions";
 import MobileLayout from "../layout/MobileLayout.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import "./_copyTradeWelcome.scss";
@@ -13,19 +17,85 @@ import {
   WhaleTail,
 } from "../../assets/images/index.js";
 import CopyTradeMobileWelcome from "./CopyTradeMobileWelcome.js";
-import { getToken } from "../../utils/ManageToken.js";
+import { getCurrentUser, getToken } from "../../utils/ManageToken.js";
+import {
+  CopyTradeWelcomeGetStartedClicked,
+  CopyTradeWelcomePageSpent,
+  CopyTradeWelcomePageView,
+} from "../../utils/AnalyticsFunctions.js";
 
 class CopyTradeWelcome extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      startTime: "",
+    };
   }
+  startPageView = () => {
+    this.setState({
+      startTime: new Date() * 1,
+    });
+    CopyTradeWelcomePageView({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    // Inactivity Check
+    window.checkCopyTradeWelcomeTimer = setInterval(() => {
+      this.checkForInactivity();
+    }, 900000);
+  };
+  updateTimer = (first) => {
+    const tempExistingExpiryTime = window.localStorage.getItem(
+      "copyTradeWelcomePageExpiryTime"
+    );
+    if (!tempExistingExpiryTime && !first) {
+      this.startPageView();
+    }
+    const tempExpiryTime = Date.now() + 1800000;
+    window.localStorage.setItem(
+      "copyTradeWelcomePageExpiryTime",
+      tempExpiryTime
+    );
+  };
+  endPageView = () => {
+    clearInterval(window.checkCopyTradeWelcomeTimer);
+    window.localStorage.removeItem("copyTradeWelcomePageExpiryTime");
+    if (this.state.startTime) {
+      let endTime = new Date() * 1;
+      let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
+      CopyTradeWelcomePageSpent({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        time_spent: TimeSpent,
+      });
+    }
+  };
+  checkForInactivity = () => {
+    const tempExpiryTime = window.localStorage.getItem(
+      "copyTradeWelcomePageExpiryTime"
+    );
+    if (tempExpiryTime && tempExpiryTime < Date.now()) {
+      this.endPageView();
+    }
+  };
   componentDidMount() {
+    scrollToTop();
     let tempToken = getToken();
     if (tempToken && tempToken !== "jsk") {
       this.props.history.push("/copy-trade");
+    } else {
+      this.startPageView();
+      this.updateTimer(true);
     }
   }
+  openLoginPopUpPass = () => {
+    CopyTradeWelcomeGetStartedClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    window.localStorage.setItem("copyTradeWelcome", true);
+    openLoginPopUp();
+  };
   render() {
     if (mobileCheck()) {
       return (
@@ -39,7 +109,9 @@ class CopyTradeWelcome extends Component {
           isAddNewAddress
           goToPageAfterLogin="/home"
         >
-          <CopyTradeMobileWelcome />
+          <CopyTradeMobileWelcome
+            openLoginPopUpPass={this.openLoginPopUpPass}
+          />
         </MobileLayout>
       );
     } else
@@ -85,7 +157,7 @@ class CopyTradeWelcome extends Component {
                   </div>
                   <div className="ctwpbol-desc">Welcome to Loch</div>
                   <div
-                    onClick={openLoginPopUp}
+                    onClick={this.openLoginPopUpPass}
                     className="copy-trade-welcome-button"
                   >
                     Get started
@@ -111,11 +183,11 @@ class CopyTradeWelcome extends Component {
                 <div className="ctwpbtwo-right">
                   <div className="ctwpbtwor-desc">VERSATILITY</div>
                   <div className="ctwpbtwor-title">
-                    Follow, analyze, and
+                    Follow, copy-trade, or
                     <br />
-                    copy-trade anyone
+                    consult anyone on the
                     <br />
-                    on the blockchain
+                    blockchain in seconds
                   </div>
                 </div>
               </div>
@@ -151,7 +223,7 @@ class CopyTradeWelcome extends Component {
                   Use Loch’s copy trader to enter and exit safety
                 </div>
                 <div
-                  onClick={openLoginPopUp}
+                  onClick={this.openLoginPopUpPass}
                   className="copy-trade-welcome-button"
                 >
                   Get started
@@ -165,7 +237,7 @@ class CopyTradeWelcome extends Component {
               <div className="ctwpbofive-content-container">
                 <div className="ctwpbofive-content">
                   <div className="ctwpbofive-header">
-                    “Man differs from animals in his greater aptitud
+                    “Man differs from animals in his greater aptitude
                     <br />
                     for imitation and mimesis”
                   </div>
