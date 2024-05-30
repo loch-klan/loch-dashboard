@@ -9,7 +9,11 @@ import {
   TrophyTopHoldersIcon,
 } from "../../assets/images/icons/index.js";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  amountFormat,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import { GraphHeader } from "../common/GraphHeader";
@@ -35,6 +39,80 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      tableData: [
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+      ],
       inflowOutflowData: [],
       buySellList: [],
       plotLineHide: 0,
@@ -337,13 +415,13 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             </span>
           </div>
         ),
-        dataKey: "holding",
+        dataKey: "addressens",
 
         coumnWidth: 0.33,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "holding") {
-            return <div />;
+          if (dataKey === "addressens") {
+            return <div>{rowData.address}</div>;
           }
         },
       },
@@ -353,29 +431,32 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             <span className="inter-display-medium f-s-13 lh-16 ">Label</span>
           </div>
         ),
-        dataKey: "holding",
+        dataKey: "label",
 
         coumnWidth: 0.33,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "holding") {
-            return <div />;
+          if (dataKey === "label") {
+            return <div className="dotDotText">{rowData.labelName}</div>;
           }
         },
       },
+
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
             <span className="inter-display-medium f-s-13 lh-16 ">Amount</span>
           </div>
         ),
-        dataKey: "holding",
+        dataKey: "amount",
 
         coumnWidth: 0.33,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "holding") {
-            return <div />;
+          if (dataKey === "amount") {
+            return (
+              <div>{numToCurrency(rowData.amount).toLocaleString("en-US")}</div>
+            );
           }
         },
       },
@@ -385,13 +466,35 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             <span className="inter-display-medium f-s-13 lh-16 ">$ Amount</span>
           </div>
         ),
-        dataKey: "holding",
+        dataKey: "dollaramount",
 
         coumnWidth: 0.33,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "holding") {
-            return <div />;
+          if (dataKey === "dollaramount") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.dollaramount
+                    ? CurrencyType(false) +
+                      amountFormat(rowData.dollaramount, "en-US", "USD")
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.dollaramount
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.dollaramount.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
+            );
           }
         },
       },
@@ -401,13 +504,13 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             <span className="inter-display-medium f-s-13 lh-16 ">Supply %</span>
           </div>
         ),
-        dataKey: "holding",
+        dataKey: "supplypercent",
 
         coumnWidth: 0.33,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "holding") {
-            return <div />;
+          if (dataKey === "supplypercent") {
+            return <div>{rowData.supplypercent}%</div>;
           }
         },
       },
@@ -419,13 +522,35 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             </span>
           </div>
         ),
-        dataKey: "holding",
+        dataKey: "unrealizedgain",
 
         coumnWidth: 0.33,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "holding") {
-            return <div />;
+          if (dataKey === "unrealizedgain") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.unrealizedgain
+                    ? CurrencyType(false) +
+                      amountFormat(rowData.unrealizedgain, "en-US", "USD")
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.unrealizedgain
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.unrealizedgain.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
+            );
           }
         },
       },
@@ -437,13 +562,13 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             </span>
           </div>
         ),
-        dataKey: "holding",
+        dataKey: "unrealizedreturn",
 
         coumnWidth: 0.33,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "holding") {
-            return <div />;
+          if (dataKey === "unrealizedreturn") {
+            return <div>{rowData.unrealizedreturn}%</div>;
           }
         },
       },
@@ -929,7 +1054,13 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   />
                 </div>
                 {this.props.showTopHolders ? (
-                  <div className="price-gauge-top-holder-container">
+                  <div
+                    className={`price-gauge-top-holder-container ${
+                      this.props.isMobile
+                        ? "price-gauge-top-holder-container-mobile"
+                        : ""
+                    }`}
+                  >
                     <div className="pg-thc-title-container inter-display-medium">
                       <Image
                         className="pg-thc-title-image"
@@ -938,23 +1069,21 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       <div className="pg-thc-title">Top Holders</div>
                     </div>
                     <div className="pg-thc-table-container">
-                      <TransactionTable
-                        showHeaderOnEmpty
-                        noSubtitleBottomPadding
-                        tableData={this.state.tableData}
-                        columnList={columnList}
-                        message={"No assets found"}
-                        totalPage={this.props.NFTState?.total_count}
-                        history={this.props.history}
-                        location={this.props.location}
-                        page={this.state.currentPage}
-                        isLoading={this.state.isLoading}
-                        pageLimit={10}
-                        onPageChange={this.onPageChange}
-                        addWatermark
-                        paginationNew
-                        hidePaginationRecords
-                      />
+                      <div className="freezeTheFirstColumn newHomeTableContainer  hide-scrollbar pg-thc-table">
+                        <TransactionTable
+                          isMiniversion={this.props.isMobile}
+                          showHeaderOnEmpty
+                          message={"No assets found"}
+                          tableData={this.state.tableData}
+                          columnList={columnList}
+                          hideTransactionTableSectionClass
+                          //
+                          fakeWatermark={this.props.isMobile}
+                          xAxisScrollable={this.props.isMobile}
+                          yAxisScrollable={this.props.isMobile}
+                          xAxisScrollableColumnWidth={3.5}
+                        />
+                      </div>
                     </div>
                   </div>
                 ) : null}
