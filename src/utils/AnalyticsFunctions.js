@@ -847,6 +847,19 @@ export const CopyTradeWelcomeGetStartedClicked = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const CopyTradeWelcomeAddressAdded = ({
+  session_id,
+  email_address,
+  page,
+}) => {
+  const event_name = "Copy Trade: Welcome: address added";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    page: page,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const CopyTradeTransactionHistoryHashCopied = ({
   session_id,
   email_address,

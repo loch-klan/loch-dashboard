@@ -20,7 +20,8 @@ import "./_addAddressFollowing.scss";
 import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
 import { setPageFlagDefault } from "../common/Api.js";
 import { toast } from "react-toastify";
-import { getToken } from "../../utils/ManageToken.js";
+import { getCurrentUser, getToken } from "../../utils/ManageToken.js";
+import { CopyTradeWelcomeAddressAdded } from "../../utils/AnalyticsFunctions.js";
 
 class AddAddressFollowing extends BaseReactComponent {
   constructor(props) {
@@ -43,12 +44,15 @@ class AddAddressFollowing extends BaseReactComponent {
   };
   onChangeMethod = () => {};
   funAfterUserCreate = (passedAddress) => {
-    console.log("passedAddress ", passedAddress);
     const followAddressData = new URLSearchParams();
     followAddressData.append("wallet_address", passedAddress);
     followAddressData.append("type", "self");
     followAddressData.append("name_tag", "");
-
+    CopyTradeWelcomeAddressAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: "Following page",
+    });
     this.props.addAddressToWatchList(
       followAddressData,
       this,

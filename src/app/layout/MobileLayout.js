@@ -113,10 +113,10 @@ class MobileLayout extends BaseReactComponent {
           loggedOutPath: "/copy-trade-welcome",
         },
         {
-          pageIcon: MobileNavFollow,
-          text: "Follow",
-          path: "/watchlist",
-          loggedOutPath: "/following-add-address",
+          pageIcon: MobileNavWalletViewer,
+          text: "Wallet",
+          path: "/home",
+          loggedOutPath: "/wallet-viewer-add-address",
         },
         {
           pageIcon: MobileNavLeaderboard,
@@ -124,12 +124,11 @@ class MobileLayout extends BaseReactComponent {
           path: "/home-leaderboard",
         },
         {
-          pageIcon: MobileNavWalletViewer,
-          text: "Wallet",
-          path: "/home",
-          loggedOutPath: "/wallet-viewer-add-address",
+          pageIcon: MobileNavFollow,
+          text: "Follow",
+          path: "/watchlist",
+          loggedOutPath: "/following-add-address",
         },
-
         {
           pageIcon: MobileNavProfile,
           text: "Profile",

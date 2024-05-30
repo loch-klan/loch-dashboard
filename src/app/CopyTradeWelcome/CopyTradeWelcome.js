@@ -19,6 +19,7 @@ import {
 import CopyTradeMobileWelcome from "./CopyTradeMobileWelcome.js";
 import { getCurrentUser, getToken } from "../../utils/ManageToken.js";
 import {
+  CopyTradeWelcomeAddressAdded,
   CopyTradeWelcomeGetStartedClicked,
   CopyTradeWelcomePageSpent,
   CopyTradeWelcomePageView,
@@ -96,6 +97,13 @@ class CopyTradeWelcome extends Component {
     window.localStorage.setItem("copyTradeWelcome", true);
     openLoginPopUp();
   };
+  funAfterUserCreate = () => {
+    CopyTradeWelcomeAddressAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: "Copy Trade welcome page",
+    });
+  };
   render() {
     if (mobileCheck()) {
       return (
@@ -108,6 +116,7 @@ class CopyTradeWelcome extends Component {
           hideShare
           isAddNewAddress
           goToPageAfterLogin="/home"
+          funAfterUserCreate={this.funAfterUserCreate}
         >
           <CopyTradeMobileWelcome
             openLoginPopUpPass={this.openLoginPopUpPass}
@@ -139,6 +148,7 @@ class CopyTradeWelcome extends Component {
                   updateTimer={this.updateTimer}
                   isAddNewAddress
                   goToPageAfterLogin="/home"
+                  funAfterUserCreate={this.funAfterUserCreate}
                 />
               </div>
             </div>
