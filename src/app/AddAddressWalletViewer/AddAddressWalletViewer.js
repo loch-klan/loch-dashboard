@@ -15,7 +15,8 @@ import Footer from "../common/footer.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AddAddressWalletViewerMobile from "./AddAddressWalletViewerMobile.js";
 import "./_addAddressWalletViewer.scss";
-import { getToken } from "../../utils/ManageToken.js";
+import { getCurrentUser, getToken } from "../../utils/ManageToken.js";
+import { CopyTradeWelcomeAddressAdded } from "../../utils/AnalyticsFunctions.js";
 
 class AddAddressWalletViewer extends Component {
   constructor(props) {
@@ -38,6 +39,13 @@ class AddAddressWalletViewer extends Component {
   goBackToWelcome = () => {
     this.props.history.push("/copy-trade-welcome");
   };
+  funAfterUserCreate = (passedAddress) => {
+    CopyTradeWelcomeAddressAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: "Wallet viewer page",
+    });
+  };
   render() {
     if (mobileCheck()) {
       return (
@@ -52,6 +60,7 @@ class AddAddressWalletViewer extends Component {
           goToPageAfterLogin="/home"
           isAddNewAddress
           hideShare
+          funAfterUserCreate={this.funAfterUserCreate}
         >
           <AddAddressWalletViewerMobile
             blockOneSelectedItem={this.state.blockOneSelectedItem}
@@ -85,6 +94,7 @@ class AddAddressWalletViewer extends Component {
                   handleAddModal={this.handleAddModal}
                   updateTimer={this.updateTimer}
                   goToPageAfterLogin="/home"
+                  funAfterUserCreate={this.funAfterUserCreate}
                 />
               </div>
             </div>
@@ -120,6 +130,7 @@ class AddAddressWalletViewer extends Component {
                     handleAddModal={this.handleAddModal}
                     handleUpdate={this.handleUpdateWallet}
                     isAddNewAddress
+                    funAfterUserCreate={this.funAfterUserCreate}
                   />
                 </div>
               </div>

@@ -24,7 +24,8 @@ import MobileLayout from "../layout/MobileLayout.js";
 import ProfileLochCreditPoints from "../profile/ProfileLochCreditPoints.js";
 import AddAddressProfileMobile from "./AddAddressProfileMobile.js";
 import "./_addAddressProfile.scss";
-import { getToken } from "../../utils/ManageToken.js";
+import { getCurrentUser, getToken } from "../../utils/ManageToken.js";
+import { CopyTradeWelcomeAddressAdded } from "../../utils/AnalyticsFunctions.js";
 
 class AddAddressProfile extends Component {
   constructor(props) {
@@ -59,6 +60,13 @@ class AddAddressProfile extends Component {
   goBackToWelcome = () => {
     this.props.history.push("/copy-trade-welcome");
   };
+  funAfterUserCreate = () => {
+    CopyTradeWelcomeAddressAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: "Profile page",
+    });
+  };
   render() {
     if (mobileCheck()) {
       return (
@@ -73,6 +81,7 @@ class AddAddressProfile extends Component {
           goToPageAfterLogin="/profile"
           isAddNewAddress
           hideShare
+          funAfterUserCreate={this.funAfterUserCreate}
         >
           <AddAddressProfileMobile
             premiumBannerItems={this.state.premiumBannerItems}
@@ -103,6 +112,7 @@ class AddAddressProfile extends Component {
                   handleAddModal={this.handleAddModal}
                   updateTimer={this.updateTimer}
                   goToPageAfterLogin="/profile"
+                  funAfterUserCreate={this.funAfterUserCreate}
                 />
               </div>
             </div>
@@ -132,6 +142,7 @@ class AddAddressProfile extends Component {
                     handleUpdate={this.handleUpdateWallet}
                     isAddNewAddress
                     goToPageAfterLogin="/profile"
+                    funAfterUserCreate={this.funAfterUserCreate}
                   />
                 </div>
               </div>
