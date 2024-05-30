@@ -184,24 +184,27 @@ class ProfileMobile extends Component {
             <SmartMoneyMobileSignOutModal
               onSignOut={this.handleSignOutWelcome}
               onHide={this.closeConfirmLeaveModal}
+              notSignedIn={!(this.props.lochUser && this.props.lochUser.email)}
             />
           ) : null}
-          {this.props.lochUser && this.props.lochUser.email ? (
-            <div
-              onClick={this.openConfirmLeaveModal}
-              className="profile-section-referall-code-btn"
-              style={{
-                marginTop: "-1.5rem",
-              }}
-            >
-              <div className="psrcb-left">
-                <div className="inter-display-medium psrcb-text">Sign out</div>
-              </div>
-              <div className="psrcb-right">
-                <Image className="psrcb-arrow-icon" src={LeaveBlackIcon} />
+          <div
+            onClick={this.openConfirmLeaveModal}
+            className="profile-section-referall-code-btn"
+            style={{
+              marginTop: "-1.5rem",
+            }}
+          >
+            <div className="psrcb-left">
+              <div className="inter-display-medium psrcb-text">
+                {this.props.lochUser && this.props.lochUser.email
+                  ? "Sign out"
+                  : "Leave"}
               </div>
             </div>
-          ) : null}
+            <div className="psrcb-right">
+              <Image className="psrcb-arrow-icon" src={LeaveBlackIcon} />
+            </div>
+          </div>
         </div>
       </div>
     );

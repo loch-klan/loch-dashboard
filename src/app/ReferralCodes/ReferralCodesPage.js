@@ -201,6 +201,7 @@ class ReferralCodesPage extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={() => null}
           showpath
           noHomeInPath
           currentPage={"referral-codes"}

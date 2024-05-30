@@ -2273,6 +2273,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           CheckApiResponse={this.CheckApiResponse}

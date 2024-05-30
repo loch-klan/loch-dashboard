@@ -166,7 +166,7 @@ class Profile extends Component {
       followFlag: false,
       lochUser: undefined,
       premiumBannerItems: [
-        // { icon: PremiumBannerSwapIcon, text: "Unlimited Copy trades" },
+        { icon: PremiumBannerSwapIcon, text: "Unlimited Copy trades" },
         { icon: PremiumBannerWalletIcon, text: "Analyze wallets PnL" },
         // { icon: PremiumBannerBellIcon, text: "Unlimited Notifications" },
         { icon: PremiumBannerLayersIcon, text: "Analyze gas fees" },
@@ -417,11 +417,13 @@ class Profile extends Component {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={() => null}
           currentPage={"profile"}
           hideFooter
           history={this.props.history}
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
+          hideShare
         >
           {this.state.isLochPaymentModal ? (
             <PaywallModal
