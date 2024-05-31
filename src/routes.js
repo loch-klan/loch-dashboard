@@ -6,7 +6,6 @@ import PrivateRoute from "./utils/PrivateRoute";
 import Sandbox from "./utils/form/Sandbox";
 
 import VerifyEmail from "./app/common/VerifyEmail";
-import Defi from "./app/defi/Defi";
 import InsightsPage from "./app/intelligence/InsightsPage";
 import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
 import VerifySmartMoneyEmailLink from "./app/smartMoney/VerifySmartMoneyEmailLink";
@@ -24,19 +23,23 @@ import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
-import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
-import Emulations from "./app/Emulations/Emulations";
-import EmulationTransactionsPage from "./app/Emulations/EmulationTransactions/EmulationTransactionsPage";
 import AutoLogin from "./app/AutoLogin/AutoLogin";
+import Emulations from "./app/Emulations/Emulations";
+import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
+import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
+import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
+import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
 import NewWelcome from "./app/home/NewWelcome";
 import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
-import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import PublicRoute from "./utils/PublicRoute";
-import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
-import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
+import CopyTradeWelcome from "./app/CopyTradeWelcome/CopyTradeWelcome";
 import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
 import CryptoSuccessPage from "./app/CryptoSuccessPage/CryptoSuccessPage";
+import PublicSidebarRoute from "./utils/PublicSidebarRoute";
+import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
+import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
+import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
 const routes = [
   {
     path: "/",
@@ -106,15 +109,15 @@ const routes = [
     type: PrivateRoute,
     component: AssetsUnrealizedProfitAndLoss,
   },
-  // {
-  //   path: "/copy-trade",
-  //   name: "Emulations",
-  //   type: PrivateRoute,
-  //   component: Emulations,
-  // },
+  {
+    path: "/copy-trade",
+    name: "Emulations",
+    type: PrivateRoute,
+    component: Emulations,
+  },
   // {
   //   path: "/copy-trade/transactions",
-  //   name: "Emulations",
+  //   name: "Emulations Transactions",
   //   type: PrivateRoute,
   //   component: EmulationTransactionsPage,
   // },
@@ -142,6 +145,36 @@ const routes = [
     type: PrivateRoute,
     component: InsightsPage,
   },
+  {
+    path: "/copy-trade-welcome",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: CopyTradeWelcome,
+  },
+  {
+    path: "/wallet-viewer-add-address",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: AddAddressWalletViewer,
+  },
+  {
+    path: "/profile-add-address",
+    name: "Profile Add Address",
+    type: PublicSidebarRoute,
+    component: AddAddressProfile,
+  },
+  {
+    path: "/following-add-address",
+    name: "Following Add Address",
+    type: PublicSidebarRoute,
+    component: AddAddressFollowing,
+  },
+  {
+    path: "/profile-add-address",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: AddAddressProfile,
+  },
 
   {
     path: "/leaderboard",
@@ -152,7 +185,7 @@ const routes = [
   {
     path: "/home-leaderboard",
     name: "Home Leaderboard",
-    type: PrivateRoute,
+    type: PublicSidebarRoute,
     component: HomeSmartMoneyPage,
   },
   {
@@ -239,7 +272,7 @@ const routes = [
   {
     path: "/replace-address",
     name: "Stripe Error",
-    type: PrivateRoute,
+    type: PublicSidebarRoute,
     component: ReplaceAddressPage,
   },
 ];

@@ -631,53 +631,53 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
             return (
-              <div
-                onMouseEnter={() => {
-                  CostAssetHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    asset_hover: rowData.AssetCode,
-                  });
-                }}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                className="dotDotText"
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  (rowData.AssetCode ? rowData.AssetCode : "") +
+                  " [" +
+                  rowData?.chain?.name +
+                  "]"
+                }
               >
-                {/* <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    (rowData.AssetCode ? rowData.AssetCode : "") +
-                    " [" +
-                    rowData?.chain?.name +
-                    "]"
-                  }
-                > */}
-                <div>
-                  <CoinChip
-                    coin_img_src={rowData.Asset}
-                    coin_code={rowData.AssetCode}
-                    chain={rowData?.chain}
-                    hideText={true}
-                  />
-                </div>
-                {rowData.Asset ? (
-                  <div
-                    className="dotDotText"
-                    style={{
-                      marginLeft: "1rem",
-                    }}
-                  >
-                    {rowData.AssetCode ? rowData.AssetCode : ""}
+                <div
+                  onMouseEnter={() => {
+                    CostAssetHover({
+                      session_id: getCurrentUser().id,
+                      email_address: getCurrentUser().email,
+                      asset_hover: rowData.AssetCode,
+                    });
+                  }}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  className="dotDotText"
+                >
+                  <div>
+                    <CoinChip
+                      coin_img_src={rowData.Asset}
+                      coin_code={rowData.AssetCode}
+                      chain={rowData?.chain}
+                      hideText={true}
+                    />
                   </div>
-                ) : null}
-                {/* </CustomOverlay> */}
-              </div>
+                  {rowData.Asset ? (
+                    <div
+                      className="dotDotText"
+                      style={{
+                        marginLeft: "1rem",
+                      }}
+                    >
+                      {rowData.AssetCode ? rowData.AssetCode : ""}
+                    </div>
+                  ) : null}
+                </div>
+              </CustomOverlay>
             );
           }
         },
@@ -1315,6 +1315,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           showpath
@@ -1456,7 +1457,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                   isPremiumUser={this.state.isPremiumUser}
                   shouldBlurElements={!this.state.isPremiumUser}
                   showBlurredItem={this.showBlurredItem}
-                  message="No assets found"
+                  message="No tokens found"
                   bottomCombiedValues={
                     this.state.Average_cost_basis_local.length > 0
                       ? true

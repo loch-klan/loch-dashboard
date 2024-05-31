@@ -53,6 +53,7 @@
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(0);
+  --invertColorHover: invert(1);
   --invertColor2: invert(100%);
   --brightInDarkMode: brightness(1);
   --hoverBrightness: brightness(50%);
@@ -265,6 +266,13 @@
   --profileWalletDivider: rgba(229, 229, 230, 0.5);
   --profileWalletAddress: #b0b1b3;
 
+  // Copy Trader Welcome
+  --blockOneHeaderGradMain: #000000;
+  --blockOneHeaderGradSecondary: rgb(160, 160, 160);
+  --blockOneDesc: #0000004d;
+  --blockOneBtnBackground: #5f33ff;
+  --blockFourHeader: #000000;
+  --blockFiveHeader: #c0c0c0;
   // Fremium
   --fremiumTooltipHeader: #19191a;
   --fremiumTooltipDescription: #cacbcc;
@@ -280,6 +288,13 @@
   --payModalDescText: #5a5b5d;
   --outOfFocusBody: rgba(0, 0, 0, 0.8);
   --outOfFocusTopBar: #3a3a3a;
+
+  // Copy trade welcome
+  --dummyHomePageBackground: url(../../images/DummyHomePage.png);
+  --dummyProfileBackground: url(../../images/DummyProfilePage.png);
+
+  // Mobile Add Address Signed out
+  --mobileSearchInputShadow: rgba(255, 255, 255, 0.95);
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -292,7 +307,7 @@
   --greyCardBackgroud: #313233;
   --cardSeperator: #313233;
   --lighterDarkIcons: 0.7;
-  --primaryTextColor: #cacbcc;
+  --primaryTextColor: white;
   --primaryTextColorGrey: #cacbcc;
   --primarySubTextColor: #7c7d81;
   --primaryGainColor: rgba(208, 252, 234, 1);
@@ -332,6 +347,7 @@
   // FILTERS
   --scrollBarThumb: #cacbcc;
   --invertColor: invert(100%);
+  --invertColorHover: invert(0);
   --invertColor2: invert(0%);
   --brightInDarkMode: brightness(2);
   --hoverBrightness: brightness(200%);
@@ -536,6 +552,13 @@
   --profileWalletDivider: #313233;
   --profileWalletAddress: #636467;
 
+  // Copy Trader Welcome
+  --blockOneHeaderGradMain: white;
+  --blockOneHeaderGradSecondary: rgb(169, 169, 169);
+  --blockOneDesc: #cacbcc;
+  --blockOneBtnBackground: #5f33ff;
+  --blockFourHeader: white;
+  --blockFiveHeader: #c0c0c0;
   // Fremium
   --fremiumTooltipHeader: white;
   --fremiumTooltipDescription: #b0b1b3;
@@ -551,6 +574,11 @@
   --payModalDescText: #5a5b5d;
   --outOfFocusBody: rgba(255, 255, 255, 0.8);
   --outOfFocusTopBar: #d7d7d7;
+
+  // Copy trade welcome
+  --dummyHomePageBackground: url(../../images/DummyHomePageDark.png);
+  --dummyProfileBackground: url(../../images/DummyProfilePageDark.png);
+  --mobileSearchInputShadow: rgba(0, 0, 0, 0.95);
 }
 [data-theme="dark2"] {
   // UPDATED

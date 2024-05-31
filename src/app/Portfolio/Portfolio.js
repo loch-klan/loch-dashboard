@@ -129,7 +129,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
-  openAddressInNewTab,
+  openAddressInSameTab,
   removeBlurMethods,
   removeOpenModalAfterLogin,
   removeSignUpMethods,
@@ -155,7 +155,6 @@ import Footer from "../common/footer";
 import PortfolioMobile from "./PortfolioMobile";
 import "./_mobilePortfolio.scss";
 
-import { addAddressToWatchList } from "../watchlist/redux/WatchListApi.js";
 import { getYieldOpportunities } from "../yieldOpportunities/Api.js";
 import PortfolioHomeInsightsBlock from "./PortfolioHomeInsightsBlock.js";
 
@@ -917,29 +916,6 @@ class Portfolio extends BaseReactComponent {
           this.props.yieldOpportunitiesState.total_count,
         yieldOpportunitiesTableLoading: false,
       });
-    }
-    if (
-      passedAddress &&
-      passedAddress !== "alreadyAdded" &&
-      passedAddress !== "/home" &&
-      passedAddress !== "/copy-trade" &&
-      getCurrentUser().id &&
-      tempPathName === "/home"
-    ) {
-      // Call api
-      const followAddressData = new URLSearchParams();
-      followAddressData.append("wallet_address", passedAddress);
-      followAddressData.append("type", "self");
-      followAddressData.append("name_tag", "");
-      setTimeout(() => {
-        this.props.addAddressToWatchList(
-          followAddressData,
-          this,
-          passedAddress,
-          ""
-        );
-      }, 3500);
-      window.localStorage.setItem("followThisAddress", "alreadyAdded");
     }
 
     if (mobileCheck()) {
@@ -2959,7 +2935,7 @@ class Portfolio extends BaseReactComponent {
                   wallet: slink,
                 });
                 // window.open(shareLink, "_blank", "noreferrer");
-                openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                openAddressInSameTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -3255,7 +3231,7 @@ class Portfolio extends BaseReactComponent {
                   wallet: slink,
                 });
                 // window.open(shareLink, "_blank", "noreferrer");
-                openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                openAddressInSameTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -4944,9 +4920,11 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+          showUpdatesJustNowBtn
         >
           {this.state.isLochPaymentModal ? (
             <PaywallModal
@@ -5273,7 +5251,7 @@ class Portfolio extends BaseReactComponent {
                           >
                             <TransactionTable
                               noSubtitleBottomPadding
-                              message="No assets found"
+                              message="No tokens found"
                               disableOnLoading
                               isMiniversion
                               xAxisScrollable={
@@ -6262,7 +6240,6 @@ const mapDispatchToProps = {
   getDetectedChainsApi,
   GetAllPlan,
   getUser,
-  addAddressToWatchList,
   getAllCounterFeeApi,
   getAllFeeApi,
   getYieldOpportunities,

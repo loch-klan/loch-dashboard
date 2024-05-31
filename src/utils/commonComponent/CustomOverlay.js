@@ -19,6 +19,7 @@ function CustomOverlay({
   heading,
   subHeading,
   showNetflowExplainers,
+  copyTrade,
 }) {
   const renderTooltip = (props) => (
     // <Tooltip className={isText ? "text-tooltip-container" : "op-100 tool-tip-container"} id="button-tooltip" {...props}></Tooltip>
@@ -92,6 +93,26 @@ function CustomOverlay({
                     Outflows - Inflows
                   </p>
                 </div>
+              </div>
+            </div>
+          ) : copyTrade ? (
+            <div
+              className={`${isText ? "text-tooltip" : "button-tooltip"} ${
+                isLeftText ? "text-left" : ""
+              }`}
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              <div
+                className={`w-100 inter-display-semi-bold f-s-13 lh-16 black-191 ${
+                  isCaptialised ? "text-capitalize" : ""
+                }`}
+              >
+                <div>Loch’s copy trader will email you when</div>
+                <div>the underlying wallet makes a swap.</div>
+                <div>We’ll calculate the equivalent swap amount</div>
+                <div>relative to your portfolio. Use your own</div>
+                <div>judgment to decide whether you want to</div>
+                <div>execute the copy trade.</div>
               </div>
             </div>
           ) : heading ? (

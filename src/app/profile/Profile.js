@@ -24,9 +24,7 @@ import FixAddModal from "../common/FixAddModal";
 
 // Upgrade
 import {
-  LochLogoBlackThickIcon,
   PasswordPurpleIcon,
-  PremiumBannerBellIcon,
   PremiumBannerCheckCircleIcon,
   PremiumBannerDiamondIcon,
   PremiumBannerDownloadIcon,
@@ -36,8 +34,6 @@ import {
   PremiumBannerTelegramIcon,
   PremiumBannerWalletIcon,
   UserCreditScrollRightArrowIcon,
-  UserCreditTelegramIcon,
-  UserCreditTelegramLightIcon,
 } from "../../assets/images/icons";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
@@ -166,7 +162,7 @@ class Profile extends Component {
       followFlag: false,
       lochUser: undefined,
       premiumBannerItems: [
-        // { icon: PremiumBannerSwapIcon, text: "Unlimited Copy trades" },
+        { icon: PremiumBannerSwapIcon, text: "Unlimited Copy trades" },
         { icon: PremiumBannerWalletIcon, text: "Analyze wallets PnL" },
         // { icon: PremiumBannerBellIcon, text: "Unlimited Notifications" },
         { icon: PremiumBannerLayersIcon, text: "Analyze gas fees" },
@@ -417,11 +413,13 @@ class Profile extends Component {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={() => null}
           currentPage={"profile"}
           hideFooter
           history={this.props.history}
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
+          hideShare
         >
           {this.state.isLochPaymentModal ? (
             <PaywallModal

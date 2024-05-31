@@ -1,6 +1,11 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
 import { GET_EMULATION_DATA } from "./EmulationsActionTypes";
+import {
+  CopyTradeAdded,
+  CopyTradeRemoved,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
 
 export const getCopyTrade = (ctx) => {
   return async function (dispatch, getState) {
@@ -41,6 +46,7 @@ export const getCopyTrade = (ctx) => {
                   tradeDeposit: tempTradeDeposit,
                   wallet: individualRes.copy_wallet,
                   unrealizedPnL: tempUnrealizedPnL,
+                  tradeId: individualRes._id,
                 };
               });
               tempAvailableCopyTradesArr = [];
@@ -109,7 +115,14 @@ export const getCopyTrade = (ctx) => {
       });
   };
 };
-export const addCopyTrade = (data, resetBtn) => {
+export const addCopyTrade = (
+  data,
+  hideModal,
+  resetBtn,
+  address,
+  amount,
+  email
+) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/add-copy-trade", data)
@@ -117,9 +130,26 @@ export const addCopyTrade = (data, resetBtn) => {
         if (resetBtn) {
           resetBtn();
         }
+        if (hideModal) {
+          hideModal(true);
+        }
         if (!res.data.error) {
+          CopyTradeAdded({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            copied_wallet: address,
+            amount: amount,
+            notification_email: email,
+          });
           if (res.data.data) {
-            toast.success("Congrats! You’ll receive email notifications");
+            toast.success(
+              <div className="custom-toast-msg">
+                <div>Congratulations! Your setup is complete</div>
+                <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                  You’ll receive notifications detailing the exact copy trades
+                </div>
+              </div>
+            );
           }
         } else {
           toast.error(res.data.message || "Something went wrong");
@@ -128,6 +158,36 @@ export const addCopyTrade = (data, resetBtn) => {
       .catch((err) => {
         if (resetBtn) {
           resetBtn();
+        }
+      });
+  };
+};
+
+export const removeCopyTrade = (data, resetBtn, address) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/cancel-copy-trade", data)
+      .then((res) => {
+        if (!res.data.error) {
+          if (resetBtn) {
+            resetBtn();
+          }
+          CopyTradeRemoved({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+            wallet: address,
+          });
+          if (res.data.data) {
+            toast.success("Trade cancelled");
+          }
+        } else {
+          toast.error("Something went wrong");
+        }
+      })
+      .catch((err) => {
+        if (resetBtn) {
+          resetBtn();
+          toast.error("Something went wrong");
         }
       });
   };
@@ -141,7 +201,7 @@ export const updaetAvailableCopyTraes = (data, recallCopyTrader, isConfirm) => {
         if (!res.data.error) {
           if (res.data.data) {
             if (isConfirm) {
-              toast.success("Congrats! Trade confirmed");
+              toast.success("Congratulations! Trade confirmed");
             } else {
               toast.success("Trade rejected ");
             }

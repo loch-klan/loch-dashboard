@@ -524,6 +524,7 @@ class CounterPartyVolume extends Component {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           history={this.props.history}
           CheckApiResponse={(e) => this.CheckApiResponse(e)}
           showpath
