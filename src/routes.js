@@ -36,6 +36,7 @@ import PublicRoute from "./utils/PublicRoute";
 import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
 import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
 import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
+import CryptoSuccessPage from "./app/CryptoSuccessPage/CryptoSuccessPage";
 const routes = [
   {
     path: "/",
@@ -222,6 +223,12 @@ const routes = [
     name: "Stripe Success",
     type: PrivateRoute,
     component: StripeSuccessPage,
+  },
+  {
+    path: "/crypto-success",
+    name: "Crypto Success",
+    type: PrivateRoute,
+    component: CryptoSuccessPage,
   },
   {
     path: "/stripe-cancel",

@@ -22,7 +22,7 @@ import {
   PayModalCryptoBack,
   PayModalCryptoClose,
 } from "../../utils/AnalyticsFunctions";
-import { STRIPE_SECRET_KEY } from "../../utils/Constant";
+import { BASE_URL_S3, STRIPE_SECRET_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   loadingAnimation,
@@ -31,6 +31,7 @@ import {
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { createUserPayment } from "./Api";
+import { copyTradePaid } from "../Emulations/EmulationsApi";
 
 const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
@@ -38,7 +39,8 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isCryptoBtnLoading: false,
+      isCryptoBtnOneLoading: false,
+      isCryptoBtnTwoLoading: false,
       isCreditBtnLoading: false,
       show: props.show,
       onHide: this.props.onHide,
@@ -66,13 +68,18 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
       userDetailsState: userDetails,
     });
   }
-  async createCharge() {
+  async createCharge(payPlan) {
     const url = "https://api.commerce.coinbase.com/charges";
 
-    let redirectLink = this.props.redirectLink;
+    let redirectLink = BASE_URL_S3 + "/crypto-success";
 
     let minAmount = 20;
-
+    console.log("payPlan is ", payPlan);
+    if (payPlan === "quarterly") {
+      minAmount = 1;
+    } else if (payPlan === "yearly") {
+      minAmount = 2;
+    }
     const requestBody = {
       local_price: {
         amount: minAmount, //price of charge
@@ -80,8 +87,8 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
       },
       pricing_type: "fixed_price",
 
-      name: "Email notifications",
-      description: "Get notified when a trade is ready to be executed",
+      name: "Loch Premium",
+      description: "Get access to Loch's premium features",
       redirect_url: redirectLink, //optional redirect URL
 
       metadata: {
@@ -107,58 +114,64 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
       if (!response.ok) {
         throw new Error(`HTTP error Status: ${response.status}`);
       }
-      return await response.json();
+      const myX = await response.json();
+      console.log("response.json() ", myX);
+      return myX;
     } catch (error) {
       console.error("Error creating charge:", error);
       this.setState({
-        isCryptoBtnLoading: false,
+        isCryptoBtnOneLoading: false,
+        isCryptoBtnTwoLoading: false,
       });
     }
   }
-  fetchChargeData = async () => {
-    const chargeData = await this.createCharge();
+  fetchChargeData = async (payPlan) => {
+    const chargeData = await this.createCharge(payPlan);
     if (chargeData && chargeData.data && chargeData.data.hosted_url) {
       // setHostedUrl(chargeData.data.hosted_url);
       return chargeData.data.hosted_url;
     }
   };
-  goCopyTrade = () => {
-    if (this.state.isCreditBtnLoading) {
+  payWithCrypto = (payPlan) => {
+    if (
+      this.state.isCryptoBtnOneLoading ||
+      this.state.isCryptoBtnTwoLoading ||
+      this.state.isCreditBtnLoading
+    ) {
       return;
     }
-    // CopyTradePayCryptoPayment({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    if (this.state.isCryptoBtnLoading) {
-      return;
+    if (payPlan === "quarterly") {
+      this.setState({
+        isCryptoBtnOneLoading: true,
+      });
+    } else if (payPlan === "yearly") {
+      this.setState({
+        isCryptoBtnTwoLoading: true,
+      });
     }
-    this.setState({
-      isCryptoBtnLoading: true,
-    });
-    const path = whichSignUpMethod();
-    PayModalCryptoClose({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      path: path,
-      paymentMethod: "crypto",
-    });
-    this.fetchChargeData()
+    this.fetchChargeData(payPlan)
       .then((res) => {
         if (res) {
           let tempIdHolderArr = res.split("/");
           if (tempIdHolderArr && tempIdHolderArr.length > 0) {
+            const tempIdHolder = tempIdHolderArr[tempIdHolderArr.length - 1];
+
+            let passData = new URLSearchParams();
+            passData.append("charge_id", tempIdHolder);
+
+            this.props.copyTradePaid(passData, res, this.hideModal);
             window.open(res, "_self");
           } else {
-            toast.error("Something went wrong");
+            toast.error("Something went wrong here?");
           }
         }
       })
       .catch((err) => {
         this.setState({
-          isCryptoBtnLoading: false,
+          isCryptoBtnOneLoading: false,
+          isCryptoBtnTwoLoading: false,
         });
-        toast.error("Something went wrong");
+        toast.error("Something went wrong here?");
       });
   };
   hideModal = () => {
@@ -205,7 +218,7 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
       });
   };
   payWithStripe = async () => {
-    if (this.state.isCryptoBtnLoading) {
+    if (this.state.isCryptoBtnOneLoading || this.state.isCryptoBtnTwoLoading) {
       return;
     }
     // CopyTradePayCreditCardPayment({
@@ -251,6 +264,10 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
     //   });
   };
   payQuarterly = () => {
+    this.setState({
+      isCryptoBtnOneLoading: true,
+    });
+    this.payWithCrypto("quarterly");
     PayModalPay({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -259,6 +276,10 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
     });
   };
   payYearly = () => {
+    this.setState({
+      isCryptoBtnTwoLoading: true,
+    });
+    this.payWithCrypto("yearly");
     PayModalPay({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -375,36 +396,36 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
                   <div
                     onClick={this.payQuarterly}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ctpb-plan-payment-button-multiple-months ${
-                      this.props.isCreditBtnLoading
-                        ? "ctpb-plan-payment-button-disabled"
+                      this.state.isCryptoBtnOneLoading
+                        ? "ctpb-plan-payment-button-disabled ctpb-plan-payment-button-loading"
                         : ""
                     }`}
                   >
-                    {/* {this.state.isCreditBtnLoading ? (
+                    {this.state.isCryptoBtnOneLoading ? (
                       loadingAnimation()
-                    ) : ( */}
-                    <>
-                      <span>Quarterly</span>
-                      <span>$55</span>
-                    </>
-                    {/* )} */}
+                    ) : (
+                      <>
+                        <span>Quarterly</span>
+                        <span>$55</span>
+                      </>
+                    )}
                   </div>
                   <div
                     onClick={this.payYearly}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ctpb-plan-payment-button-multiple-months ${
-                      this.props.isCreditBtnLoading
-                        ? "ctpb-plan-payment-button-disabled"
+                      this.state.isCryptoBtnTwoLoading
+                        ? "ctpb-plan-payment-button-disabled ctpb-plan-payment-button-loading"
                         : ""
                     }`}
                   >
-                    {/* {this.state.isCreditBtnLoading ? (
+                    {this.state.isCryptoBtnTwoLoading ? (
                       loadingAnimation()
-                    ) : ( */}
-                    <>
-                      <span>Yearly</span>
-                      <span>$200</span>
-                    </>
-                    {/* )} */}
+                    ) : (
+                      <>
+                        <span>Yearly</span>
+                        <span>$200</span>
+                      </>
+                    )}
                   </div>
 
                   <div
@@ -418,7 +439,8 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
                   <div
                     onClick={this.props.payWithStripe}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ctpb-plan-payment-button-grey ${
-                      this.state.isCryptoBtnLoading
+                      this.state.isCryptoBtnOneLoading ||
+                      this.state.isCryptoBtnTwoLoading
                         ? "ctpb-plan-payment-button-disabled"
                         : this.props.isCreditBtnLoading
                         ? "ctpb-plan-payment-button-loading"
@@ -504,7 +526,7 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
 });
-const mapDispatchToProps = { createUserPayment };
+const mapDispatchToProps = { createUserPayment, copyTradePaid };
 
 PaywallCyptoPlansModal.propTypes = {};
 

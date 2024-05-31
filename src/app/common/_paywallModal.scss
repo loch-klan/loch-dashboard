@@ -338,6 +338,9 @@
         }
         .ctpb-plan-payment-button-disabled {
           pointer-events: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
     }
