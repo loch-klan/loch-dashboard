@@ -32,6 +32,12 @@ class AddAddressWalletViewer extends Component {
   componentDidMount() {
     scrollToTop();
     dontOpenLoginPopup();
+    const userWalletList = window.localStorage.getItem("addWallet")
+      ? JSON.parse(window.localStorage.getItem("addWallet"))
+      : [];
+    if (userWalletList && userWalletList.length > 0) {
+      this.props.history.push("/home");
+    }
     // let tempToken = getToken();
     // if (tempToken && tempToken !== "jsk") {
     //   this.props.history.push("/home");
@@ -47,10 +53,13 @@ class AddAddressWalletViewer extends Component {
       page: "Wallet viewer page",
     });
   };
+  CheckApiResponse = () => {};
+  handleUpdateWallet = () => {};
   render() {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          shouldGoToHomeAfterReplace
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
           currentPage={"home"}
@@ -119,6 +128,7 @@ class AddAddressWalletViewer extends Component {
                 <div className="portfolio-section">
                   {/* welcome card */}
                   <WelcomeCard
+                    shouldGoToHomeAfterReplace
                     isBlurred
                     focusOriginalInputBar={this.focusOriginalInputBar}
                     hideFocusedInput={this.hideFocusedInput}
