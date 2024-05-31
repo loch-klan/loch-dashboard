@@ -1194,6 +1194,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          isAddNewAddressLoggedIn={
+            !this.state.lochUserState || this.state.lochUserState === "jsk"
+          }
           handleShare={this.handleShare}
           hideFooter
           history={this.props.history}
@@ -1261,6 +1264,10 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   updateTimer={this.updateTimer}
                   handleAddModal={this.handleAddModal}
                   isAddNewAddress={
+                    !this.state.lochUserState ||
+                    this.state.lochUserState === "jsk"
+                  }
+                  isAddNewAddressLoggedIn={
                     !this.state.lochUserState ||
                     this.state.lochUserState === "jsk"
                   }
