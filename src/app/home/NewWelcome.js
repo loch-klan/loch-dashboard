@@ -1667,157 +1667,158 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        canCallConnectWalletFun: true,
-      });
-    }, 1500);
-    if (mobileCheck(true)) {
-      this.setState({
-        isMobileDevice: true,
-      });
-    }
-    scrollToTop();
-    this.props.setHeaderReducer([]);
-    this.setState({ startTime: new Date() * 1 });
-    let currencyRates = JSON.parse(
-      window.localStorage.getItem("currencyRates")
-    );
-    getAllCurrencyRatesApi();
-    if (getToken()) {
-      this.props.history.push("/home");
-    }
-    if (getToken()) {
-      let isStopRedirect =
-        window.localStorage.getItem("stop_redirect") &&
-        JSON.parse(window.localStorage.getItem("stop_redirect"));
-      if (isStopRedirect) {
-        this.props.setPageFlagDefault();
+    this.props.history.push("/copy-trade-welcome");
+    // setTimeout(() => {
+    //   this.setState({
+    //     canCallConnectWalletFun: true,
+    //   });
+    // }, 1500);
+    // if (mobileCheck(true)) {
+    //   this.setState({
+    //     isMobileDevice: true,
+    //   });
+    // }
+    // scrollToTop();
+    // this.props.setHeaderReducer([]);
+    // this.setState({ startTime: new Date() * 1 });
+    // let currencyRates = JSON.parse(
+    //   window.localStorage.getItem("currencyRates")
+    // );
+    // getAllCurrencyRatesApi();
+    // if (getToken()) {
+    //   this.props.history.push("/home");
+    // }
+    // if (getToken()) {
+    //   let isStopRedirect =
+    //     window.localStorage.getItem("stop_redirect") &&
+    //     JSON.parse(window.localStorage.getItem("stop_redirect"));
+    //   if (isStopRedirect) {
+    //     this.props.setPageFlagDefault();
 
-        // if (!mobileCheck()) {
-        // deleteToken();
-        // }
-      } else {
-        // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
-        let user = window.localStorage.getItem("lochUser")
-          ? JSON.parse(window.localStorage.getItem("lochUser"))
-          : false;
-        if (user) {
-          // if (!mobileCheck()) {
-          // deleteToken();
-          // } else {
-          // this.props.history.push("/home");
-          // }
-        } else {
-          this.props.setPageFlagDefault();
-          // if (!mobileCheck()) {
-          // deleteToken();
-          // }
-          //  window.localStorage.setItem("defi_access", true);
-          //  window.localStorage.setItem("isPopup", true);
-          //  // window.localStorage.setItem("whalepodview", true);
-          //  window.localStorage.setItem(
-          //    "whalepodview",
-          //    JSON.stringify({ access: true, id: "" })
-          //  );
-          // window.localStorage.setItem(
-          //   "isSubmenu",
-          //   JSON.stringify({
-          //     me: false,
-          //     discover: false,
-          //     intelligence: false,
-          //   })
-          // );
-          setLocalStoraage();
-          let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
-          if (!isRefresh) {
-            window.localStorage.setItem("refresh", true);
-            window.location.reload(true);
-          }
-        }
-      }
-    } else {
-      this.props.setPageFlagDefault();
-      // if (!mobileCheck()) {
-      // deleteToken();
-      // }
-      // window.localStorage.setItem("defi_access", true);
-      // window.localStorage.setItem("isPopup", true);
-      // // window.localStorage.setItem("whalepodview", true);
-      // window.localStorage.setItem(
-      //   "whalepodview",
-      //   JSON.stringify({ access: true, id: "" })
-      // );
-      // // window.localStorage.setItem("isSubmenu", false);
-      //  window.localStorage.setItem(
-      //    "isSubmenu",
-      //    JSON.stringify({
-      //      me: false,
-      //      discover: false,
-      //      intelligence: false,
-      //    })
-      //  );
-      setLocalStoraage();
-      let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
-      if (!isRefresh) {
-        window.localStorage.setItem("refresh", true);
-        window.location.reload(true);
-      }
-    }
-    // For input
-    this.setState({
-      addButtonVisible: this.state.walletInput.some((wallet) =>
-        wallet.address ? true : false
-      ),
-    });
+    //     // if (!mobileCheck()) {
+    //     // deleteToken();
+    //     // }
+    //   } else {
+    //     // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
+    //     let user = window.localStorage.getItem("lochUser")
+    //       ? JSON.parse(window.localStorage.getItem("lochUser"))
+    //       : false;
+    //     if (user) {
+    //       // if (!mobileCheck()) {
+    //       // deleteToken();
+    //       // } else {
+    //       // this.props.history.push("/home");
+    //       // }
+    //     } else {
+    //       this.props.setPageFlagDefault();
+    //       // if (!mobileCheck()) {
+    //       // deleteToken();
+    //       // }
+    //       //  window.localStorage.setItem("defi_access", true);
+    //       //  window.localStorage.setItem("isPopup", true);
+    //       //  // window.localStorage.setItem("whalepodview", true);
+    //       //  window.localStorage.setItem(
+    //       //    "whalepodview",
+    //       //    JSON.stringify({ access: true, id: "" })
+    //       //  );
+    //       // window.localStorage.setItem(
+    //       //   "isSubmenu",
+    //       //   JSON.stringify({
+    //       //     me: false,
+    //       //     discover: false,
+    //       //     intelligence: false,
+    //       //   })
+    //       // );
+    //       setLocalStoraage();
+    //       let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
+    //       if (!isRefresh) {
+    //         window.localStorage.setItem("refresh", true);
+    //         window.location.reload(true);
+    //       }
+    //     }
+    //   }
+    // } else {
+    //   this.props.setPageFlagDefault();
+    //   // if (!mobileCheck()) {
+    //   // deleteToken();
+    //   // }
+    //   // window.localStorage.setItem("defi_access", true);
+    //   // window.localStorage.setItem("isPopup", true);
+    //   // // window.localStorage.setItem("whalepodview", true);
+    //   // window.localStorage.setItem(
+    //   //   "whalepodview",
+    //   //   JSON.stringify({ access: true, id: "" })
+    //   // );
+    //   // // window.localStorage.setItem("isSubmenu", false);
+    //   //  window.localStorage.setItem(
+    //   //    "isSubmenu",
+    //   //    JSON.stringify({
+    //   //      me: false,
+    //   //      discover: false,
+    //   //      intelligence: false,
+    //   //    })
+    //   //  );
+    //   setLocalStoraage();
+    //   let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
+    //   if (!isRefresh) {
+    //     window.localStorage.setItem("refresh", true);
+    //     window.location.reload(true);
+    //   }
+    // }
+    // // For input
+    // this.setState({
+    //   addButtonVisible: this.state.walletInput.some((wallet) =>
+    //     wallet.address ? true : false
+    //   ),
+    // });
 
-    this.props.getAllCoins();
-    this.props.getAllParentChains();
-    this.setState({
-      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
-    });
+    // this.props.getAllCoins();
+    // this.props.getAllParentChains();
+    // this.setState({
+    //   userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
+    // });
 
-    this.props.GetAllPlan();
+    // this.props.GetAllPlan();
 
-    // For smart money
+    // // For smart money
 
-    let token = window.localStorage.getItem("lochToken");
-    let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
+    // let token = window.localStorage.getItem("lochToken");
+    // let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
 
-    if (token && lochUser && lochUser.email) {
-      this.setState({
-        blurTable: false,
-      });
-    } else {
-      this.setState({
-        blurTable: true,
-      });
-    }
+    // if (token && lochUser && lochUser.email) {
+    //   this.setState({
+    //     blurTable: false,
+    //   });
+    // } else {
+    //   this.setState({
+    //     blurTable: true,
+    //   });
+    // }
 
-    if (API_LIMIT) {
-      if (mobileCheck()) {
-        this.setState({
-          pageLimit: 5,
-        });
-      } else {
-        this.setState({
-          pageLimit: API_LIMIT,
-        });
-      }
-    }
-    // window.localStorage.setItem("previewAddress", "");
-    this.props.history.replace({
-      search: `?p=${this.state.currentPage || START_INDEX}`,
-    });
-    this.callApi(this.state.currentPage || START_INDEX);
+    // if (API_LIMIT) {
+    //   if (mobileCheck()) {
+    //     this.setState({
+    //       pageLimit: 5,
+    //     });
+    //   } else {
+    //     this.setState({
+    //       pageLimit: API_LIMIT,
+    //     });
+    //   }
+    // }
+    // // window.localStorage.setItem("previewAddress", "");
+    // this.props.history.replace({
+    //   search: `?p=${this.state.currentPage || START_INDEX}`,
+    // });
+    // this.callApi(this.state.currentPage || START_INDEX);
+
+    // // this.startPageView();
 
     // this.startPageView();
-
-    this.startPageView();
-    this.updateTimer(true);
-    return () => {
-      clearInterval(window.checkMobileWelcomeTimer);
-    };
+    // this.updateTimer(true);
+    // return () => {
+    //   clearInterval(window.checkMobileWelcomeTimer);
+    // };
   }
 
   checkForInactivity = () => {

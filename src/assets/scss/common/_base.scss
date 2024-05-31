@@ -144,6 +144,10 @@ body {
     padding-right: 8.5rem;
     overflow-x: hidden;
   }
+  .main-section-right-margin-handler-closed-ctw {
+    padding-left: 10.3rem;
+    padding-right: 0rem;
+  }
 }
 
 //Fonts
@@ -3794,7 +3798,17 @@ input {
   top: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1000;
+  z-index: 100000;
+}
+.blurredElementMobile {
+  margin-top: 5.5rem;
+}
+.blurredElementTopShadow {
+  height: 0.3rem;
+  width: 100%;
+  background-color: var(--mobileSearchInputShadow);
+  filter: blur(0.4rem);
+  transform: translateY(0.18rem);
 }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {

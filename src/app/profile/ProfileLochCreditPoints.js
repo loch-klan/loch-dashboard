@@ -105,18 +105,20 @@ class ProfileLochCreditPoints extends BaseReactComponent {
   };
 
   componentDidMount() {
-    if (mobileCheck()) {
-      this.setState({
-        isMobile: true,
-      });
-    }
-    if (this.props.commonState.creditPointsBlock) {
-      this.callApi();
-    }
-    if (this.props.lochUser && this.props.lochUser.email) {
-      this.setState({
-        isLoggedIn: true,
-      });
+    if (!this.props.dontCallApis) {
+      if (mobileCheck()) {
+        this.setState({
+          isMobile: true,
+        });
+      }
+      if (this.props.commonState.creditPointsBlock) {
+        this.callApi();
+      }
+      if (this.props.lochUser && this.props.lochUser.email) {
+        this.setState({
+          isLoggedIn: true,
+        });
+      }
     }
   }
 
@@ -174,7 +176,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         }
       }
     }
-    if (!this.props.commonState.creditPointsBlock) {
+    if (!this.props.commonState.creditPointsBlock && !this.props.dontCallApis) {
       this.props.updateWalletListFlag("creditPointsBlock", true);
       this.callApi();
     }

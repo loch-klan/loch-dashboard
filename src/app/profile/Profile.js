@@ -24,9 +24,7 @@ import FixAddModal from "../common/FixAddModal";
 
 // Upgrade
 import {
-  LochLogoBlackThickIcon,
   PasswordPurpleIcon,
-  PremiumBannerBellIcon,
   PremiumBannerCheckCircleIcon,
   PremiumBannerDiamondIcon,
   PremiumBannerDownloadIcon,
@@ -36,8 +34,6 @@ import {
   PremiumBannerTelegramIcon,
   PremiumBannerWalletIcon,
   UserCreditScrollRightArrowIcon,
-  UserCreditTelegramIcon,
-  UserCreditTelegramLightIcon,
 } from "../../assets/images/icons";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
