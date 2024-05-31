@@ -219,8 +219,9 @@ export const updaetAvailableCopyTraes = (data, recallCopyTrader, isConfirm) => {
 export const copyTradePaid = (data, goToUrl, hideModal) => {
   return async function (dispatch, getState) {
     postLoginInstance
-      .post("wallet/user-wallet/copy-trade-paid", data)
+      .post("commerce/payment/coinbase-payment", data)
       .then((res) => {
+        console.log("response res ", res);
         if (!res.data.error && goToUrl) {
           // window.open(goToUrl, "_self");
         } else {
