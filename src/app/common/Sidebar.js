@@ -952,6 +952,72 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
+                            text={"Wallet Viewer"}
+                          >
+                            <NavLink
+                              exact={true}
+                              className="nav-link nav-link-closed"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/wallet-viewer-add-address"
+                                  : activeTab === "/home"
+                                  ? "#"
+                                  : "/home"
+                              }
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                const userWalletList =
+                                  window.localStorage.getItem("addWallet")
+                                    ? JSON.parse(
+                                        window.localStorage.getItem("addWallet")
+                                      )
+                                    : [];
+                                console.log(
+                                  "userWalletList cur ",
+                                  userWalletList
+                                );
+                                if (
+                                  !tempToken ||
+                                  tempToken === "jsk" ||
+                                  !userWalletList ||
+                                  userWalletList.length === 0
+                                ) {
+                                  e.preventDefault();
+
+                                  props.history.push(
+                                    "/wallet-viewer-add-address"
+                                  );
+
+                                  return null;
+                                } else {
+                                  HomeMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={WalletViewerSidebarIcon}
+                                style={
+                                  activeTab === "/home" ||
+                                  activeTab === "/wallet-viewer-add-address"
+                                    ? {
+                                        filter: "var(--sidebarActiveIcon)",
+                                      }
+                                    : {}
+                                }
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
                             text={"Following"}
                           >
                             <NavLink
@@ -1023,57 +1089,7 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        <li>
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"Wallet Viewer"}
-                          >
-                            <NavLink
-                              exact={true}
-                              className="nav-link nav-link-closed"
-                              to={
-                                !lochUserState || lochUserState === "jsk"
-                                  ? "/wallet-viewer-add-address"
-                                  : activeTab === "/home"
-                                  ? "#"
-                                  : "/home"
-                              }
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
 
-                                  props.history.push(
-                                    "/wallet-viewer-add-address"
-                                  );
-
-                                  return null;
-                                } else {
-                                  HomeMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={WalletViewerSidebarIcon}
-                                style={
-                                  activeTab === "/home" ||
-                                  activeTab === "/wallet-viewer-add-address"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
-                              />
-                            </NavLink>
-                          </CustomOverlay>
-                        </li>
                         <li>
                           <CustomOverlay
                             position="top"
@@ -1214,6 +1230,62 @@ function Sidebar(props) {
                           </li>
                           <li>
                             <NavLink
+                              exact={true}
+                              className="nav-link"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/wallet-viewer-add-address"
+                                  : activeTab === "/home"
+                                  ? "#"
+                                  : "/home"
+                              }
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                const userWalletList =
+                                  window.localStorage.getItem("addWallet")
+                                    ? JSON.parse(
+                                        window.localStorage.getItem("addWallet")
+                                      )
+                                    : [];
+
+                                if (
+                                  !tempToken ||
+                                  tempToken === "jsk" ||
+                                  !userWalletList ||
+                                  userWalletList.length === 0
+                                ) {
+                                  e.preventDefault();
+
+                                  props.history.push(
+                                    "/wallet-viewer-add-address"
+                                  );
+
+                                  return null;
+                                } else {
+                                  HomeMenu({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                }
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={WalletViewerSidebarIcon}
+                                style={
+                                  activeTab === "/home" ||
+                                  activeTab === "/wallet-viewer-add-address"
+                                    ? {
+                                        filter: "var(--sidebarActiveIcon)",
+                                      }
+                                    : {}
+                                }
+                              />
+                              Wallet Viewer
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
                               className={`nav-link`}
                               to={
                                 !lochUserState || lochUserState === "jsk"
@@ -1284,50 +1356,7 @@ function Sidebar(props) {
                               Leaderboard
                             </NavLink>
                           </li>
-                          <li>
-                            <NavLink
-                              exact={true}
-                              className="nav-link"
-                              to={
-                                !lochUserState || lochUserState === "jsk"
-                                  ? "/wallet-viewer-add-address"
-                                  : activeTab === "/home"
-                                  ? "#"
-                                  : "/home"
-                              }
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
 
-                                  props.history.push(
-                                    "/wallet-viewer-add-address"
-                                  );
-
-                                  return null;
-                                } else {
-                                  HomeMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={WalletViewerSidebarIcon}
-                                style={
-                                  activeTab === "/home" ||
-                                  activeTab === "/wallet-viewer-add-address"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
-                              />
-                              Wallet Viewer
-                            </NavLink>
-                          </li>
                           <li>
                             <NavLink
                               onClick={handleGoToProfile}

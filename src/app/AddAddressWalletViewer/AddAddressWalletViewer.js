@@ -15,7 +15,8 @@ import Footer from "../common/footer.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AddAddressWalletViewerMobile from "./AddAddressWalletViewerMobile.js";
 import "./_addAddressWalletViewer.scss";
-import { getToken } from "../../utils/ManageToken.js";
+import { getCurrentUser, getToken } from "../../utils/ManageToken.js";
+import { CopyTradeWelcomeAddressAdded } from "../../utils/AnalyticsFunctions.js";
 
 class AddAddressWalletViewer extends Component {
   constructor(props) {
@@ -25,18 +26,26 @@ class AddAddressWalletViewer extends Component {
       blockTwoSelectedItem: 1,
       blockThreeSelectedItem: mobileCheck() ? 4 : 1,
       blockFourSelectedItem: 1,
+      lochUserState: window.localStorage.getItem("lochToken"),
     };
   }
   componentDidMount() {
     scrollToTop();
     dontOpenLoginPopup();
-    let tempToken = getToken();
-    if (tempToken && tempToken !== "jsk") {
-      this.props.history.push("/home");
-    }
+    // let tempToken = getToken();
+    // if (tempToken && tempToken !== "jsk") {
+    //   this.props.history.push("/home");
+    // }
   }
   goBackToWelcome = () => {
     this.props.history.push("/copy-trade-welcome");
+  };
+  funAfterUserCreate = (passedAddress) => {
+    CopyTradeWelcomeAddressAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: "Wallet viewer page",
+    });
   };
   render() {
     if (mobileCheck()) {
@@ -51,7 +60,11 @@ class AddAddressWalletViewer extends Component {
           blurredElement
           goToPageAfterLogin="/home"
           isAddNewAddress
+          isAddNewAddressLoggedIn={
+            !this.state.lochUserState || this.state.lochUserState === "jsk"
+          }
           hideShare
+          funAfterUserCreate={this.funAfterUserCreate}
         >
           <AddAddressWalletViewerMobile
             blockOneSelectedItem={this.state.blockOneSelectedItem}
@@ -85,6 +98,7 @@ class AddAddressWalletViewer extends Component {
                   handleAddModal={this.handleAddModal}
                   updateTimer={this.updateTimer}
                   goToPageAfterLogin="/home"
+                  funAfterUserCreate={this.funAfterUserCreate}
                 />
               </div>
             </div>
@@ -120,6 +134,11 @@ class AddAddressWalletViewer extends Component {
                     handleAddModal={this.handleAddModal}
                     handleUpdate={this.handleUpdateWallet}
                     isAddNewAddress
+                    isAddNewAddressLoggedIn={
+                      !this.state.lochUserState ||
+                      this.state.lochUserState === "jsk"
+                    }
+                    funAfterUserCreate={this.funAfterUserCreate}
                   />
                 </div>
               </div>

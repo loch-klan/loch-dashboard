@@ -42,6 +42,7 @@ import { createAnonymousUserSmartMoneyApi, getSmartMoney } from "./Api.js";
 import ConformSmartMoneyLeaveModal from "./ConformSmartMoneyLeaveModal.js";
 
 import {
+  CopyTradeWelcomeAddressAdded,
   SmartMoneyChangeLimit,
   SmartMoneyFAQClicked,
   SmartMoneyHowItWorksClicked,
@@ -776,6 +777,13 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     });
     openAddressInSameTab(slink, this.props.setPageFlagDefault);
   };
+  funAfterUserCreate = () => {
+    CopyTradeWelcomeAddressAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: "Smart money page",
+    });
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -1195,6 +1203,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             !this.state.lochUserState || this.state.lochUserState === "jsk"
           }
           goToPageAfterLogin="/home"
+          funAfterUserCreate={this.funAfterUserCreate}
         >
           <HomeSmartMoneyMobile
             isNoUser={!this.state.lochUserState}
@@ -1238,6 +1247,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             >
               <div className="portfolio-section">
                 <WelcomeCard
+                  funAfterUserCreate={this.funAfterUserCreate}
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
                   connectedWalletevents={this.props.connectedWalletevents}
@@ -1415,7 +1425,11 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                         minimalPagination
                         noSubtitleBottomPadding
                         tableData={tableData}
-                        columnList={columnList}
+                        columnList={
+                          this.state.lochUserState
+                            ? columnList
+                            : columnList.slice(0, columnList.length - 1)
+                        }
                         message={"No accounts found"}
                         totalPage={this.state.totalPage}
                         history={this.props.history}

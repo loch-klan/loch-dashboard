@@ -120,7 +120,11 @@ const PublicSidebarRoute = ({ component: Component, ...rest }) => {
                   : props.location.pathname !== "/welcome" &&
                     !props.match.params.podName
                   ? isSidebarClosed
-                    ? "main-section-right-margin-handler-closed"
+                    ? `main-section-right-margin-handler-closed  ${
+                        props.location.pathname === "/copy-trade-welcome"
+                          ? "main-section-right-margin-handler-closed-ctw"
+                          : ""
+                      }`
                     : "main-section-right-margin-handler"
                   : ""
               }`}

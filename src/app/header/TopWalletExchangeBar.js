@@ -1878,6 +1878,8 @@ class TopWalletExchangeBar extends Component {
                       this.state.walletInput[0].coins.length > 0
                     ) || this.state.disableAddBtn
                       ? null
+                      : this.props.isAddNewAddressLoggedIn
+                      ? this.handleAddWallet(true)
                       : this.handleAddWelcomeWallet
                   }
                   style={{
