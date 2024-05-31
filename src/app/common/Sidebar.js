@@ -966,7 +966,22 @@ function Sidebar(props) {
                               }
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
+                                const userWalletList =
+                                  window.localStorage.getItem("addWallet")
+                                    ? JSON.parse(
+                                        window.localStorage.getItem("addWallet")
+                                      )
+                                    : [];
+                                console.log(
+                                  "userWalletList cur ",
+                                  userWalletList
+                                );
+                                if (
+                                  !tempToken ||
+                                  tempToken === "jsk" ||
+                                  !userWalletList ||
+                                  userWalletList.length === 0
+                                ) {
                                   e.preventDefault();
 
                                   props.history.push(
@@ -1226,7 +1241,19 @@ function Sidebar(props) {
                               }
                               onClick={(e) => {
                                 let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
+                                const userWalletList =
+                                  window.localStorage.getItem("addWallet")
+                                    ? JSON.parse(
+                                        window.localStorage.getItem("addWallet")
+                                      )
+                                    : [];
+
+                                if (
+                                  !tempToken ||
+                                  tempToken === "jsk" ||
+                                  !userWalletList ||
+                                  userWalletList.length === 0
+                                ) {
                                   e.preventDefault();
 
                                   props.history.push(

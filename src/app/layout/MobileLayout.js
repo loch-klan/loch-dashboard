@@ -12,6 +12,7 @@ import {
 } from "../../assets/images/icons";
 import { default as SearchIcon } from "../../assets/images/icons/search-icon.svg";
 import {
+  EmailAddressAddedSignUp,
   HomeMenu,
   HomeSignedUpReferralCode,
   LeaveEmailAdded,
@@ -65,6 +66,7 @@ import {
   createAnonymousUserApi,
   detectCoin,
   getAllParentChains,
+  signUpWelcome,
 } from "../onboarding/Api";
 import { addUserCredits, updateUser } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
@@ -287,6 +289,9 @@ class MobileLayout extends BaseReactComponent {
       isLochPaymentModal: false,
     });
   };
+  goToHomeAfterReplace = () => {
+    this.props.history.push("/home");
+  };
   handleAddWallet = (replaceAddresses) => {
     this.setState({
       welcomeAddBtnLoading: true,
@@ -419,16 +424,23 @@ class MobileLayout extends BaseReactComponent {
     }
 
     if (this.props.isAddNewAddress) {
-      const finalArr = [];
-      this.props.createAnonymousUserApi(
-        data,
-        this,
-        finalArr,
-        null,
-        this.props.goToPageAfterLogin,
-        this.props.funAfterUserCreate,
-        addressList
-      );
+      if (this.props.handleAddWelcomeWallet) {
+        const finalArr = [];
+        this.props.createAnonymousUserApi(
+          data,
+          this,
+          finalArr,
+          null,
+          this.props.goToPageAfterLogin,
+          this.props.funAfterUserCreate,
+          addressList
+        );
+      } else {
+        console.log("this is here");
+        const yieldData = new URLSearchParams();
+        yieldData.append("wallet_addresses", JSON.stringify(addressList));
+        this.props.updateUserWalletApi(data, this, yieldData, false);
+      }
     } else {
       if (addWallet) {
         this.props.setHeaderReducer(addWallet);
@@ -764,6 +776,27 @@ class MobileLayout extends BaseReactComponent {
       if (this.props.updateTimer) {
         this.props.updateTimer();
       }
+    } else {
+      const data = new URLSearchParams();
+      console.log("this.state.emailSignup ", this.state.emailSignup);
+      data.append(
+        "email",
+        this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
+      );
+      data.append("signed_up_from", "welcome");
+      data.append("referral_code", this.state.referralCode);
+      EmailAddressAddedSignUp({
+        email_address: this.state.emailSignup,
+        session_id: "",
+      });
+
+      this.props.signUpWelcome(
+        this,
+        data,
+        this.toggleAuthModal,
+        this.stopReferallButtonLoading,
+        this.handleRedirection
+      );
     }
   };
   stopReferallButtonLoading = (isSignedUp) => {
@@ -835,50 +868,62 @@ class MobileLayout extends BaseReactComponent {
   };
   goToPage = (e, item, index) => {
     let tempToken = getToken();
-    if (!tempToken || tempToken === "jsk") {
-      if (index === 2) {
+    if (index === 1) {
+      const userWalletList = window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
+        : [];
+      e.preventDefault();
+      if (!userWalletList || userWalletList.length === 0) {
+        this.props.history.push(item.loggedOutPath);
+      } else {
+        this.props.history.push(item.path);
+      }
+    } else {
+      if (!tempToken || tempToken === "jsk") {
+        if (index === 2) {
+          MenuLeaderboard({
+            session_id: getCurrentUser().id,
+            email_address: getCurrentUser().email,
+          });
+          this.props.history.push(item.path);
+        } else {
+          e.preventDefault();
+          if (item.loggedOutPath) {
+            this.props.history.push(item.loggedOutPath);
+          }
+        }
+        return null;
+      }
+
+      if (index === 0) {
+        MenuCopyTradelist({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+      } else if (index === 1) {
+        MenuWatchlist({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+      } else if (index === 2) {
         MenuLeaderboard({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
         });
-        this.props.history.push(item.path);
-      } else {
-        e.preventDefault();
-        if (item.loggedOutPath) {
-          this.props.history.push(item.loggedOutPath);
-        }
+      } else if (index === 3) {
+        HomeMenu({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
+      } else if (index === 4) {
+        ProfileMenu({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+        });
       }
-      return null;
-    }
 
-    if (index === 0) {
-      MenuCopyTradelist({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-    } else if (index === 1) {
-      MenuWatchlist({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-    } else if (index === 2) {
-      MenuLeaderboard({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-    } else if (index === 3) {
-      HomeMenu({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
-    } else if (index === 4) {
-      ProfileMenu({
-        session_id: getCurrentUser().id,
-        email_address: getCurrentUser().email,
-      });
+      this.props.history.push(item.path);
     }
-
-    this.props.history.push(item.path);
   };
   render() {
     let activeTab = window.location.pathname;
@@ -1002,10 +1047,10 @@ class MobileLayout extends BaseReactComponent {
                 className="mpcMobileSearchImage"
                 src={SearchIcon}
               />
-
               {this.state.walletInput?.map((c, index) => (
                 <div className="topSearchBarMobileContainer">
                   <NewHomeInputBlock
+                    isAddNewAddressLoggedIn={this.props.isAddNewAddressLoggedIn}
                     onGoBtnClick={this.handleAddWallet}
                     hideMore
                     isMobile
@@ -1058,6 +1103,9 @@ class MobileLayout extends BaseReactComponent {
                     <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
                       {this.props.hideAddresses ? null : (
                         <WelcomeCard
+                          isAddNewAddressLoggedIn={
+                            this.props.isAddNewAddressLoggedIn
+                          }
                           openConnectWallet={this.props.openConnectWallet}
                           connectedWalletAddress={
                             this.props.connectedWalletAddress
@@ -1192,6 +1240,7 @@ const mapDispatchToProps = {
   updateUser,
   createAnonymousUserApi,
   getAllParentChains,
+  signUpWelcome,
 };
 
 MobileLayout.propTypes = {};

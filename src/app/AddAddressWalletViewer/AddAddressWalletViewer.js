@@ -26,15 +26,16 @@ class AddAddressWalletViewer extends Component {
       blockTwoSelectedItem: 1,
       blockThreeSelectedItem: mobileCheck() ? 4 : 1,
       blockFourSelectedItem: 1,
+      lochUserState: window.localStorage.getItem("lochToken"),
     };
   }
   componentDidMount() {
     scrollToTop();
     dontOpenLoginPopup();
-    let tempToken = getToken();
-    if (tempToken && tempToken !== "jsk") {
-      this.props.history.push("/home");
-    }
+    // let tempToken = getToken();
+    // if (tempToken && tempToken !== "jsk") {
+    //   this.props.history.push("/home");
+    // }
   }
   goBackToWelcome = () => {
     this.props.history.push("/copy-trade-welcome");
@@ -59,6 +60,9 @@ class AddAddressWalletViewer extends Component {
           blurredElement
           goToPageAfterLogin="/home"
           isAddNewAddress
+          isAddNewAddressLoggedIn={
+            !this.state.lochUserState || this.state.lochUserState === "jsk"
+          }
           hideShare
           funAfterUserCreate={this.funAfterUserCreate}
         >
@@ -130,6 +134,10 @@ class AddAddressWalletViewer extends Component {
                     handleAddModal={this.handleAddModal}
                     handleUpdate={this.handleUpdateWallet}
                     isAddNewAddress
+                    isAddNewAddressLoggedIn={
+                      !this.state.lochUserState ||
+                      this.state.lochUserState === "jsk"
+                    }
                     funAfterUserCreate={this.funAfterUserCreate}
                   />
                 </div>

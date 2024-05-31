@@ -709,7 +709,13 @@ export const detectNameTag = (
   };
 };
 
-export const signUpWelcome = (ctx, data, toggleAuthModal, stopBtnLoading) => {
+export const signUpWelcome = (
+  ctx,
+  data,
+  toggleAuthModal,
+  stopBtnLoading,
+  handleRedirection
+) => {
   return async function (dispatch, getState) {
     preLoginInstance
       .post("organisation/user/signup", data)
@@ -721,7 +727,9 @@ export const signUpWelcome = (ctx, data, toggleAuthModal, stopBtnLoading) => {
           toast.error(res.data.message || "Something Went Wrong");
         } else if (res.data.error === false) {
           if (res?.data?.data?.is_new_user) {
-            if (toggleAuthModal) {
+            if (handleRedirection) {
+              handleRedirection();
+            } else if (toggleAuthModal) {
               toggleAuthModal("redirect");
             }
           } else {

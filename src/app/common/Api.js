@@ -490,7 +490,7 @@ export const getUserAddresses = (
         }
         if (stayOnWelcomePage) {
           ctx.props.history.push({
-            pathname: "/",
+            pathname: "/welcome",
             state: {
               isVerified: !apiResponse?.wallets ? true : false,
             },
