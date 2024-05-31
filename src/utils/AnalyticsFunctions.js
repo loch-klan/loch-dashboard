@@ -7127,6 +7127,33 @@ export const PayModalUpgradeClose = ({ session_id, email_address, path }) => {
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const PayModalCrypto = ({ session_id, email_address }) => {
+  const event_name = "Fremium: Pay Modal: crypto tab";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalCryptoBack = ({ session_id, email_address }) => {
+  const event_name = "Fremium: Pay Modal: crypto tab: go back";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const PayModalCryptoClose = ({ session_id, email_address }) => {
+  const event_name = "Fremium: Pay Modal: crypto tab: close";
+  const eventProperties = {
+    "session id": session_id,
+    "email added": email_address,
+    path: whichBlurMethod(),
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const SignInModalEmailAdded = ({
   session_id,
   email_address,

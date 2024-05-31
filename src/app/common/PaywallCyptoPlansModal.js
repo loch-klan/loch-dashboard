@@ -18,11 +18,11 @@ import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import {
   PayModalPay,
-  PayModalUpgrade,
-  PayModalUpgradeBack,
-  PayModalUpgradeClose,
+  PayModalCrypto,
+  PayModalCryptoBack,
+  PayModalCryptoClose,
 } from "../../utils/AnalyticsFunctions";
-import { STRIPE_SECRET_KEY } from "../../utils/Constant";
+import { BASE_URL_S3, STRIPE_SECRET_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   loadingAnimation,
@@ -31,25 +31,25 @@ import {
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { createUserPayment } from "./Api";
-import PaywallCyptoPlansModal from "./PaywallCyptoPlansModal";
+import { copyTradePaid } from "../Emulations/EmulationsApi";
 
 const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
-class PaywallOptionsModal extends BaseReactComponent {
+class PaywallCyptoPlansModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      isCryptoBtnLoading: false,
+      isCryptoBtnOneLoading: false,
+      isCryptoBtnTwoLoading: false,
       isCreditBtnLoading: false,
       show: props.show,
       onHide: this.props.onHide,
       userDetailsState: undefined,
-      isPayWallCrptoPlans: false,
     };
   }
   goBackToPayWallPass = () => {
     const path = whichSignUpMethod();
-    PayModalUpgradeBack({
+    PayModalCryptoBack({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       path: path,
@@ -58,7 +58,7 @@ class PaywallOptionsModal extends BaseReactComponent {
   };
   componentDidMount() {
     const path = whichSignUpMethod();
-    PayModalUpgrade({
+    PayModalCrypto({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       path: path,
@@ -68,13 +68,18 @@ class PaywallOptionsModal extends BaseReactComponent {
       userDetailsState: userDetails,
     });
   }
-  async createCharge() {
+  async createCharge(payPlan) {
     const url = "https://api.commerce.coinbase.com/charges";
 
-    let redirectLink = this.props.redirectLink;
+    let redirectLink = BASE_URL_S3 + "/crypto-success";
 
     let minAmount = 20;
-
+    console.log("payPlan is ", payPlan);
+    if (payPlan === "quarterly") {
+      minAmount = 1;
+    } else if (payPlan === "yearly") {
+      minAmount = 2;
+    }
     const requestBody = {
       local_price: {
         amount: minAmount, //price of charge
@@ -82,8 +87,8 @@ class PaywallOptionsModal extends BaseReactComponent {
       },
       pricing_type: "fixed_price",
 
-      name: "Email notifications",
-      description: "Get notified when a trade is ready to be executed",
+      name: "Loch Premium",
+      description: "Get access to Loch's premium features",
       redirect_url: redirectLink, //optional redirect URL
 
       metadata: {
@@ -109,63 +114,69 @@ class PaywallOptionsModal extends BaseReactComponent {
       if (!response.ok) {
         throw new Error(`HTTP error Status: ${response.status}`);
       }
-      return await response.json();
+      const myX = await response.json();
+      console.log("response.json() ", myX);
+      return myX;
     } catch (error) {
       console.error("Error creating charge:", error);
       this.setState({
-        isCryptoBtnLoading: false,
+        isCryptoBtnOneLoading: false,
+        isCryptoBtnTwoLoading: false,
       });
     }
   }
-  fetchChargeData = async () => {
-    const chargeData = await this.createCharge();
+  fetchChargeData = async (payPlan) => {
+    const chargeData = await this.createCharge(payPlan);
     if (chargeData && chargeData.data && chargeData.data.hosted_url) {
       // setHostedUrl(chargeData.data.hosted_url);
       return chargeData.data.hosted_url;
     }
   };
-  goCopyTrade = () => {
-    if (this.props.isCreditBtnLoading) {
+  payWithCrypto = (payPlan) => {
+    if (
+      this.state.isCryptoBtnOneLoading ||
+      this.state.isCryptoBtnTwoLoading ||
+      this.state.isCreditBtnLoading
+    ) {
       return;
     }
-    // CopyTradePayCryptoPayment({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    if (this.state.isCryptoBtnLoading) {
-      return;
+    if (payPlan === "quarterly") {
+      this.setState({
+        isCryptoBtnOneLoading: true,
+      });
+    } else if (payPlan === "yearly") {
+      this.setState({
+        isCryptoBtnTwoLoading: true,
+      });
     }
-    this.setState({
-      isCryptoBtnLoading: true,
-    });
-    const path = whichSignUpMethod();
-    PayModalUpgradeClose({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      path: path,
-      paymentMethod: "crypto",
-    });
-    this.fetchChargeData()
+    this.fetchChargeData(payPlan)
       .then((res) => {
         if (res) {
           let tempIdHolderArr = res.split("/");
           if (tempIdHolderArr && tempIdHolderArr.length > 0) {
+            const tempIdHolder = tempIdHolderArr[tempIdHolderArr.length - 1];
+
+            let passData = new URLSearchParams();
+            passData.append("charge_id", tempIdHolder);
+
+            this.props.copyTradePaid(passData, res, this.hideModal);
             window.open(res, "_self");
           } else {
-            toast.error("Something went wrong");
+            toast.error("Something went wrong here?");
           }
         }
       })
       .catch((err) => {
         this.setState({
-          isCryptoBtnLoading: false,
+          isCryptoBtnOneLoading: false,
+          isCryptoBtnTwoLoading: false,
         });
-        toast.error("Something went wrong");
+        toast.error("Something went wrong here?");
       });
   };
   hideModal = () => {
     const path = whichSignUpMethod();
-    PayModalUpgradeClose({
+    PayModalCryptoClose({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
       path: path,
@@ -207,7 +218,7 @@ class PaywallOptionsModal extends BaseReactComponent {
       });
   };
   payWithStripe = async () => {
-    if (this.state.isCryptoBtnLoading) {
+    if (this.state.isCryptoBtnOneLoading || this.state.isCryptoBtnTwoLoading) {
       return;
     }
     // CopyTradePayCreditCardPayment({
@@ -252,18 +263,30 @@ class PaywallOptionsModal extends BaseReactComponent {
     //     toast.error("Something went wrong");
     //   });
   };
-
-  goToCryptoPlans = () => {
+  payQuarterly = () => {
     this.setState({
-      isPayWallCrptoPlans: true,
+      isCryptoBtnOneLoading: true,
+    });
+    this.payWithCrypto("quarterly");
+    PayModalPay({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: "",
+      paymentMethod: "crypto quarterly",
     });
   };
-  goBackToPayWall = () => {
+  payYearly = () => {
     this.setState({
-      isPayWallCrptoPlans: false,
+      isCryptoBtnTwoLoading: true,
+    });
+    this.payWithCrypto("yearly");
+    PayModalPay({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: "",
+      paymentMethod: "crypto yearly",
     });
   };
-
   render() {
     return (
       <Modal
@@ -280,21 +303,7 @@ class PaywallOptionsModal extends BaseReactComponent {
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
         animation={false}
-        style={{
-          opacity: this.state.isPayWallCrptoPlans ? 0 : 1,
-        }}
       >
-        {this.state.isPayWallCrptoPlans ? (
-          <PaywallCyptoPlansModal
-            show={this.state.isPayWallCrptoPlans}
-            onHide={this.props.onHide}
-            redirectLink={this.props.redirectLink}
-            goBackToPayWall={this.goBackToPayWall}
-            isCreditBtnLoading={this.props.isCreditBtnLoading}
-            payWithStripe={this.props.payWithStripe}
-            isMobile={this.props.isMobile}
-          />
-        ) : null}
         <div
           style={{
             width: this.props.isMobile ? "100%" : "",
@@ -362,149 +371,84 @@ class PaywallOptionsModal extends BaseReactComponent {
                       this.props.isMobile ? "f-s-20" : "f-s-25"
                     }`}
                   >
-                    {this.props.isMobile ? (
-                      "Create, Track, and Protect your Onchain Fortune"
-                    ) : (
-                      <span>
-                        Create, Track, and Protect your
-                        <br />
-                        Onchain Fortune
-                      </span>
-                    )}
+                    Upgrade to Loch Premium
                   </h6>
                   <p
                     className={`inter-display-medium ctpb-sub-text text-center ${
                       this.props.isMobile ? "f-s-16" : "f-s-16"
                     }`}
                   >
-                    Upgrade your plan
+                    Pay with Crypto
                   </p>
                 </>
               </div>
 
               <div className="ctpb-plans-container ctpb-plans-payment-container">
-                {this.props.isMobile ? null : (
-                  <div className="ctpb-plan ctpb-plan-selected ctpb-plan-selected-shadow">
-                    <div className="ctpb-plan-header">
-                      <div className="ctpb-plan-header-title-container">
-                        <div className="inter-display-medium f-s-20">Loch</div>
-                        <div className="ctpb-plan-header-black-badge">
-                          Premium
-                        </div>
-                      </div>
-                      <div className="inter-display-medium f-s-20">
-                        $20 <span className="grey-ADA f-s-13">/ month</span>
-                      </div>
-                    </div>
-                    <div className="ctpb-plan-body">
-                      <div className="ctpb-plan-body-icons-container">
-                        <Image
-                          className="ctpb-plan-body-icon"
-                          src={ChartDonutPaywallIcon}
-                        />
-                        <Image
-                          className="ctpb-plan-body-icon"
-                          src={ChartLinePaywallIcon}
-                        />
-                        <Image
-                          className="ctpb-plan-body-icon"
-                          src={LightBulbPaywallIcon}
-                        />
-                      </div>
-                      <div className="inter-display-medium ctpb-plan-desc-text f-s-16">
-                        Access to all the essential Loch features
-                      </div>
-                    </div>
-                    <div className="ctpb-plan-plus-seperator">
-                      <div className="ctpb-plan-plus-seperator-stick" />
-                      <div className="ctpb-plan-plus-seperator-text">Plus</div>
-                      <div className="ctpb-plan-plus-seperator-stick" />
-                    </div>
-                    <div className="ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-purple-button">
-                      {/* <div
-                        style={{
-                          paddingTop: "0rem",
-                        }}
-                        className="ctpb-plan-purple-button-child"
-                      >
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        Notifications
-                      </div> */}
-                      <div className="ctpb-plan-purple-button-child">
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        PnL calculations
-                      </div>
-                      <div className="ctpb-plan-purple-button-child">
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        Netflows
-                      </div>
-                      {/* <div className="ctpb-plan-purple-button-child">
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        Copy trader
-                      </div> */}
-                      <div className="ctpb-plan-purple-button-child">
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        Export data
-                      </div>
-                      <div className="ctpb-plan-purple-button-child">
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        Earn 10 points each month
-                      </div>
-                      <div className="ctpb-plan-purple-button-child">
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        Aggregate multiple wallets
-                      </div>
-                      <div className="ctpb-plan-purple-button-child">
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        Can apply to join Loch Platinum
-                      </div>
-                      <div className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text">
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        Telegram channel
-                      </div>
-                    </div>
-                  </div>
-                )}
                 <div className="ctpb-plan ctpb-payment">
-                  <div className="inter-display-medium ctpb-payment-title-text f-s-16">
-                    Choose your payment method
+                  <div
+                    style={{
+                      marginTop: "2rem",
+                    }}
+                    className="inter-display-medium ctpb-payment-title-text f-s-16"
+                  >
+                    Choose longer and save more
+                  </div>
+                  <div
+                    onClick={this.payQuarterly}
+                    className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ctpb-plan-payment-button-multiple-months ${
+                      this.state.isCryptoBtnOneLoading
+                        ? "ctpb-plan-payment-button-disabled ctpb-plan-payment-button-loading"
+                        : ""
+                    }`}
+                  >
+                    {this.state.isCryptoBtnOneLoading ? (
+                      loadingAnimation()
+                    ) : (
+                      <>
+                        <span>Quarterly</span>
+                        <span>$55</span>
+                      </>
+                    )}
+                  </div>
+                  <div
+                    onClick={this.payYearly}
+                    className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ctpb-plan-payment-button-multiple-months ${
+                      this.state.isCryptoBtnTwoLoading
+                        ? "ctpb-plan-payment-button-disabled ctpb-plan-payment-button-loading"
+                        : ""
+                    }`}
+                  >
+                    {this.state.isCryptoBtnTwoLoading ? (
+                      loadingAnimation()
+                    ) : (
+                      <>
+                        <span>Yearly</span>
+                        <span>$200</span>
+                      </>
+                    )}
+                  </div>
+
+                  <div
+                    style={{
+                      margin: "2rem 0rem",
+                    }}
+                    className="inter-display-medium ctpb-payment-title-text f-s-16"
+                  >
+                    Or
                   </div>
                   <div
                     onClick={this.props.payWithStripe}
-                    className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ${
-                      this.state.isCryptoBtnLoading
+                    className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ctpb-plan-payment-button-grey ${
+                      this.state.isCryptoBtnOneLoading ||
+                      this.state.isCryptoBtnTwoLoading
                         ? "ctpb-plan-payment-button-disabled"
                         : this.props.isCreditBtnLoading
                         ? "ctpb-plan-payment-button-loading"
                         : ""
                     }`}
+                    style={{
+                      marginBottom: this.props.isMobile ? "" : "12rem",
+                    }}
                   >
                     {this.props.isCreditBtnLoading ? (
                       loadingAnimation()
@@ -514,23 +458,9 @@ class PaywallOptionsModal extends BaseReactComponent {
                           className="ctpb-plan-payment-button-icons"
                           src={CreditCardPaywallIcon}
                         />
-                        <span>Credit Card</span>
+                        <span>Pay with Credit Card</span>
                       </>
                     )}
-                  </div>
-                  <div
-                    onClick={this.goToCryptoPlans}
-                    className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ${
-                      this.props.isCreditBtnLoading
-                        ? "ctpb-plan-payment-button-disabled"
-                        : ""
-                    }`}
-                  >
-                    <Image
-                      className="ctpb-plan-payment-button-icons"
-                      src={CryptoWalletPaywallIcon}
-                    />
-                    <span>Crypto</span>
                   </div>
                 </div>
               </div>
@@ -596,11 +526,11 @@ class PaywallOptionsModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
 });
-const mapDispatchToProps = { createUserPayment };
+const mapDispatchToProps = { createUserPayment, copyTradePaid };
 
-PaywallOptionsModal.propTypes = {};
+PaywallCyptoPlansModal.propTypes = {};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PaywallOptionsModal);
+)(PaywallCyptoPlansModal);
