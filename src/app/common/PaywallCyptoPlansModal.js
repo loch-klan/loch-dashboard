@@ -71,7 +71,7 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
   async createCharge(payPlan) {
     const url = "https://api.commerce.coinbase.com/charges";
 
-    let redirectLink = BASE_URL_S3 + "/crypto-success";
+    let redirectLink = BASE_URL_S3 + "crypto-success";
 
     let minAmount = 20;
     console.log("payPlan is ", payPlan);
