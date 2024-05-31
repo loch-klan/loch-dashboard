@@ -35,12 +35,22 @@
           font-size: 16px;
         }
       }
-      .pg-thc-table-container {
+      .pg-thc-table {
         margin-top: 3rem;
         border: 0.2rem solid var(--sidebarSectionalBOrder);
         border-radius: 1rem;
         .ReactVirtualized__Table__headerRow {
           border-bottom-width: 0.2rem;
+        }
+      }
+    }
+    .price-gauge-top-holder-container-mobile {
+      padding-left: 0rem;
+      padding-right: 0rem;
+      .pg-thc-table-container {
+        position: relative;
+        .pg-thc-table {
+          overflow-x: scroll;
         }
       }
     }
