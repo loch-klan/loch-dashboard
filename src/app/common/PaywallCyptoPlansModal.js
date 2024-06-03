@@ -17,7 +17,7 @@ import {
   PayModalCryptoClose,
   PayModalPay,
 } from "../../utils/AnalyticsFunctions";
-import { BASE_URL_S3 } from "../../utils/Constant";
+import { BASE_URL_S3, COINBASE_SECRET_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   loadingAnimation,
@@ -67,7 +67,6 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
     let redirectLink = BASE_URL_S3 + "crypto-success";
 
     let minAmount = 20;
-    console.log("payPlan is ", payPlan);
     if (payPlan === "quarterly") {
       minAmount = 55;
     } else if (payPlan === "yearly") {
@@ -98,7 +97,7 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "X-CC-Api-Key": "03c1c210-ace2-4b5e-bc66-de26a70b283e",
+        "X-CC-Api-Key": COINBASE_SECRET_KEY,
       },
       body: JSON.stringify(requestBody),
     };
