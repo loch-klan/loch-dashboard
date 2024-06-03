@@ -28,6 +28,7 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import PaywallOptionsModal from "./PaywallOptionsModal";
 import "./_paywallModal.scss";
 import { createUserPayment } from "./Api";
+import { COINBASE_SECRET_KEY } from "../../utils/Constant";
 
 class PaywallModal extends BaseReactComponent {
   constructor(props) {
@@ -140,7 +141,7 @@ class PaywallModal extends BaseReactComponent {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "X-CC-Api-Key": "03c1c210-ace2-4b5e-bc66-de26a70b283e",
+        "X-CC-Api-Key": COINBASE_SECRET_KEY,
       },
       body: JSON.stringify(requestBody),
     };
