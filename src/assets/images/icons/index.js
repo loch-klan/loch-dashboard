@@ -166,3 +166,7 @@ export { default as PremiumBannerTelegramIcon } from "./premiumBannerTelegram.sv
 export { default as PremiumBannerLochIcon } from "./premiumBannerLoch.svg";
 export { default as WalletViewerSidebarIcon } from "./walletViewerSidebar.svg";
 export { default as CopyTradeSwapSidebarIcon } from "./copyTradeSwapSidebar.svg";
+export { default as CopyTradeActionsCancelIcon } from "./copyTradeActionsCancel.svg";
+export { default as CopyTradeActionsDeleteIcon } from "./copyTradeActionsDelete.svg";
+export { default as CopyTradeActionsPauseIcon } from "./copyTradeActionsPause.svg";
+export { default as CopyTradeActionsPlayIcon } from "./copyTradeActionsPlay.svg";

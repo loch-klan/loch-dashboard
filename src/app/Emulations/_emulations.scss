@@ -1123,13 +1123,55 @@
     }
   }
 }
-.copyTraderDeleteContainer {
+.copy-trader-status-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  .copy-trader-status-color-ball {
+    min-height: 7px;
+    max-height: 7px;
+    min-width: 7px;
+    max-width: 7px;
+    border-radius: 50%;
+    border: 0.5px solid;
+  }
+  .ct-scb-active {
+    background-color: #5abe7e;
+    border-color: #06884f;
+  }
+  .ct-scb-paused {
+    background-color: #f19938;
+    border-color: #c17a2d;
+  }
+  .ct-scb-cancelled {
+    background-color: #e84042;
+    border-color: #ba3335;
+  }
+}
+.copy-trader-action-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   cursor: pointer;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  .copyTraderDelete {
+  .cta-btn-container {
+    height: 20px;
+    width: 20px;
+    border: 1.5px solid var(--currenyConvertorBorder);
+    border-radius: 6px;
+    .cta-btn {
+      height: 8px;
+      width: 8px;
+      filter: var(--invertColor);
+    }
     &:hover {
-      filter: var(--hoverBrightnessValue);
+      background-color: var(--primaryTextColor);
+      border-color: var(--primaryTextColor);
+      .cta-btn {
+        filter: var(--invertColorHover);
+      }
     }
   }
 }

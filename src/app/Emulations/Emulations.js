@@ -15,7 +15,6 @@ import {
   CopyTradeExecuteTradeModalOpen,
   CopyTradeExecuteTradeRejected,
   CopyTradePageView,
-  CopyTradePayWallOpen,
   CopyTradePayWallOptionsOpen,
   CopyTradePopularAccountCopyClicked,
   CopyTradePopularAccountWalletClicked,
@@ -35,6 +34,8 @@ import {
   ArrowUpRightSmallIcon,
   AvailableCopyTradeCheckIcon,
   AvailableCopyTradeCrossIcon,
+  CopyTradeActionsCancelIcon,
+  CopyTradeActionsPauseIcon,
   EmultionSidebarIcon,
   ExportIconWhite,
   NoCopyTradeTableIcon,
@@ -79,7 +80,6 @@ import {
 import EmulationsMobile from "./EmulationsMobile.js";
 import EmulationsTradeModal from "./EmulationsTradeModal.js";
 import "./_emulations.scss";
-import { toast } from "react-toastify";
 
 class Emulations extends Component {
   constructor(props) {
@@ -198,7 +198,10 @@ class Emulations extends Component {
       prefillCopyAddress: undefined,
       isAvailableCopyTradeBlockOpen: true,
       isRejectModal: false,
+      isActivateModal: false,
+      isPauseModal: false,
       isCancelModal: false,
+      isDeleteModal: false,
       executeCopyTrade: undefined,
       cancelCopyTradeId: undefined,
       isExecuteCopyTrade: false,
@@ -357,7 +360,10 @@ class Emulations extends Component {
   resetPage = () => {
     this.setState({
       isRejectModal: false,
+      isActivateModal: false,
+      isPauseModal: false,
       isCancelModal: false,
+      isDeleteModal: false,
     });
     this.props.history.replace("/copy-trade");
     this.callEmulationsApi();
@@ -616,15 +622,48 @@ class Emulations extends Component {
       executeCopyTrade: undefined,
     });
   };
+  openActivateModal = (tradeId) => {
+    this.setState({
+      isActivateModal: true,
+      isPauseModal: false,
+      isDeleteModal: false,
+      isCancelModal: false,
+      cancelCopyTradeId: tradeId,
+    });
+  };
+  openPauseModal = (tradeId) => {
+    this.setState({
+      isActivateModal: false,
+      isPauseModal: true,
+      isDeleteModal: false,
+      isCancelModal: false,
+      cancelCopyTradeId: tradeId,
+    });
+  };
   openCancelModal = (tradeId) => {
     this.setState({
+      isActivateModal: false,
+      isPauseModal: false,
+      isDeleteModal: false,
       isCancelModal: true,
       cancelCopyTradeId: tradeId,
     });
   };
-  closeCancelModal = () => {
+  openDeleteModal = (tradeId) => {
     this.setState({
+      isActivateModal: false,
+      isPauseModal: false,
+      isDeleteModal: true,
       isCancelModal: false,
+      cancelCopyTradeId: tradeId,
+    });
+  };
+  closeActionModal = () => {
+    this.setState({
+      isActivateModal: false,
+      isPauseModal: false,
+      isCancelModal: false,
+      isDeleteModal: false,
       cancelCopyTradeId: undefined,
     });
   };
@@ -1104,7 +1143,7 @@ class Emulations extends Component {
         ),
         dataKey: "Copiedwallet",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.16666667,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Copiedwallet") {
@@ -1151,7 +1190,7 @@ class Emulations extends Component {
         ),
         dataKey: "Mycopytradedeposit",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.16666667,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycopytradedeposit") {
@@ -1176,7 +1215,7 @@ class Emulations extends Component {
         ),
         dataKey: "Mycurrentbalance",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.16666667,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Mycurrentbalance") {
@@ -1201,7 +1240,7 @@ class Emulations extends Component {
         ),
         dataKey: "MyunrealizedPnL",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.16666667,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "MyunrealizedPnL") {
@@ -1238,35 +1277,62 @@ class Emulations extends Component {
       },
       {
         labelName: (
-          <div className="history-table-header-col" id="CancelCopyTrade">
+          <div className="history-table-header-col" id="StatusOfCopyTrade">
             <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
-              Cancel
+              Status
             </span>
           </div>
         ),
-        dataKey: "CancelCopyTrade",
+        dataKey: "StatusOfCopyTrade",
 
-        coumnWidth: 0.2,
+        coumnWidth: 0.16666667,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "CancelCopyTrade") {
-            const deleteThisAddress = () => {
-              this.setState({
-                selectedRemoveWallet: rowData.wallet,
-                selectedRemoveWalletId: rowData.tradeId,
-              });
-              this.openCancelModal();
-            };
+          if (dataKey === "StatusOfCopyTrade") {
             return (
-              <div
-                className="copyTraderDeleteContainer"
-                onClick={deleteThisAddress}
-              >
-                <Image
-                  style={{ height: "2rem", width: "2rem" }}
-                  src={DeleteIcon}
-                  className="copyTraderDelete"
+              <div className="copy-trader-status-container">
+                <div
+                  className={`copy-trader-status-color-ball ${
+                    true ? "ct-scb-active" : ""
+                  }`}
                 />
+                <div className="inter-display-medium f-s-13">
+                  {rowData.status ? rowData.status : "Active"}
+                </div>
+              </div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col" id="CopyTradeActions">
+            <span className="inter-display-medium f-s-13 lh-16 grey-4F4">
+              Actions
+            </span>
+          </div>
+        ),
+        dataKey: "CopyTradeActions",
+
+        coumnWidth: 0.16666667,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "CopyTradeActions") {
+            // const deleteThisAddress = () => {
+            //   this.setState({
+            //     selectedRemoveWallet: rowData.wallet,
+            //     selectedRemoveWalletId: rowData.tradeId,
+            //   });
+            //   this.openCancelModal();
+            // };
+            return (
+              <div className="copy-trader-action-container">
+                <div className="cta-btn-container">
+                  <Image src={CopyTradeActionsPauseIcon} className="cta-btn" />
+                </div>
+                <div className="cta-btn-container">
+                  <Image src={CopyTradeActionsCancelIcon} className="cta-btn" />
+                </div>
               </div>
             );
           }
@@ -1304,13 +1370,43 @@ class Emulations extends Component {
               isMobile
             />
           ) : null}
+          {this.state.isActivateModal ? (
+            <BasicConfirmModal
+              show={this.state.isActivateModal}
+              history={this.props.history}
+              handleClose={this.closeActionModal}
+              handleYes={this.cancelCopyTradeFun}
+              title="Are you sure you want to activate this trade?"
+              isMobile
+            />
+          ) : null}
+          {this.state.isPauseModal ? (
+            <BasicConfirmModal
+              show={this.state.isPauseModal}
+              history={this.props.history}
+              handleClose={this.closeActionModal}
+              handleYes={this.cancelCopyTradeFun}
+              title="Are you sure you want to pause this trade?"
+              isMobile
+            />
+          ) : null}
           {this.state.isCancelModal ? (
             <BasicConfirmModal
               show={this.state.isCancelModal}
               history={this.props.history}
-              handleClose={this.closeCancelModal}
+              handleClose={this.closeActionModal}
               handleYes={this.cancelCopyTradeFun}
               title="Are you sure you want to cancel this trade?"
+              isMobile
+            />
+          ) : null}
+          {this.state.isDeleteModal ? (
+            <BasicConfirmModal
+              show={this.state.isDeleteModal}
+              history={this.props.history}
+              handleClose={this.closeActionModal}
+              handleYes={this.cancelCopyTradeFun}
+              title="Are you sure you want to delete this trade?"
               isMobile
             />
           ) : null}
@@ -1386,7 +1482,10 @@ class Emulations extends Component {
             cancelCopyTradeId={this.state.cancelCopyTradeId}
             paymentStatusLocal={this.state.paymentStatusLocal}
             isRejectModal={this.state.isRejectModal}
+            isActivateModal={this.state.isActivateModal}
+            isPauseModal={this.state.isPauseModal}
             isCancelModal={this.state.isCancelModal}
+            isDeleteModal={this.state.isDeleteModal}
             openPayModal={this.openPayModal}
             closeRejectModal={this.closeRejectModal}
             openRejectModal={this.openRejectModal}
@@ -1490,13 +1589,40 @@ class Emulations extends Component {
                 title="Are you sure you want to reject this trade?"
               />
             ) : null}
+            {this.state.isActivateModal ? (
+              <BasicConfirmModal
+                show={this.state.isActivateModal}
+                history={this.props.history}
+                handleClose={this.closeActionModal}
+                handleYes={this.cancelCopyTradeFun}
+                title="Are you sure you want to activate this trade?"
+              />
+            ) : null}
+            {this.state.isPauseModal ? (
+              <BasicConfirmModal
+                show={this.state.isPauseModal}
+                history={this.props.history}
+                handleClose={this.closeActionModal}
+                handleYes={this.cancelCopyTradeFun}
+                title="Are you sure you want to pause this trade?"
+              />
+            ) : null}
             {this.state.isCancelModal ? (
               <BasicConfirmModal
                 show={this.state.isCancelModal}
                 history={this.props.history}
-                handleClose={this.closeCancelModal}
+                handleClose={this.closeActionModal}
                 handleYes={this.cancelCopyTradeFun}
                 title="Are you sure you want to cancel this trade?"
+              />
+            ) : null}
+            {this.state.isDeleteModal ? (
+              <BasicConfirmModal
+                show={this.state.isDeleteModal}
+                history={this.props.history}
+                handleClose={this.closeActionModal}
+                handleYes={this.cancelCopyTradeFun}
+                title="Are you sure you want to delete this trade?"
               />
             ) : null}
             {this.state.addModal && (
