@@ -5,7 +5,7 @@
     background-color: var(--blockOneBtnBackground);
     color: white;
     font-weight: 600;
-    padding: 1.2rem 3rem;
+    padding: 1.7rem 3.3rem;
     border-radius: 1rem;
     cursor: pointer;
     &:hover {
@@ -31,15 +31,15 @@
       z-index: 1;
       .ctwpbo-circular-gradient {
         z-index: 0;
-        // background-color: red;
-        width: 60%;
-        height: 40%;
+        width: 70%;
+        height: 70%;
+        filter: blur(75px);
+        max-width: 70rem;
         border-radius: 50%;
         position: absolute;
         bottom: 0;
         left: 50%;
-        filter: blur(90px);
-        transform: translateX(-50%) translateY(60%);
+        transform: translateX(-50%) translateY(70%);
       }
       .ctwpbo-circular-gradient1 {
         background: linear-gradient(
@@ -66,6 +66,10 @@
         );
       }
       .ctwpbo-circular-gradient3 {
+        width: 100%;
+        height: 70%;
+        filter: blur(120px);
+        max-width: 140rem;
         background: linear-gradient(
           90deg,
           #7b44da 0%,
@@ -76,6 +80,7 @@
           #976edd 80.5%,
           #7738e4 90.5%
         );
+        opacity: 0.4;
       }
 
       .ctwpbo-left {
@@ -93,11 +98,10 @@
           font-size: 32px;
           line-height: 100%;
           font-weight: 500;
-          background: -webkit-linear-gradient(
-            var(--blockOneHeaderGradSecondary),
-            var(--blockOneHeaderGradMain),
-            var(--blockOneHeaderGradMain),
-            var(--blockOneHeaderGradSecondary)
+          background: linear-gradient(
+            20deg,
+            var(--blockOneHeaderGradMain) 28.03%,
+            var(--blockOneHeaderGradSecondary) 66.59%
           );
           background-clip: text;
           -webkit-background-clip: text;
@@ -108,6 +112,7 @@
           color: var(--blockOneDesc);
           font-weight: 500;
           margin: 1.25rem 0rem;
+          margin-bottom: 1.65rem;
         }
       }
       .ctwpbo-right {
@@ -182,9 +187,9 @@
       }
     }
     .ctwp-block-three {
-      background: linear-gradient(180deg, #7b44da, #7b44da, #986de2, #986de2);
+      background: var(--cardBackgroud);
       .ctwpbo-left {
-        color: var(--cardBackgroud);
+        color: var(--primaryTextColor);
         transform: translateY(-70%);
         .ctwpbothird-header {
           font-size: 24px;
@@ -223,7 +228,8 @@
           font-size: 16px;
           color: var(--blockOneDesc);
           font-weight: 500;
-          margin: 1.25rem 0rem;
+          margin-top: 0.8rem;
+          margin-bottom: 4rem;
         }
       }
     }
@@ -272,7 +278,7 @@
   margin-top: 2rem;
   .copy-trade-welcome-page {
     .copy-trade-welcome-button {
-      padding: 1.7rem 4.5rem;
+      padding: 1.8rem 4rem;
     }
     .ctwp-block {
       min-width: unset;
@@ -292,6 +298,8 @@
         .ctwpbol-desc {
           text-align: center;
           margin: 1.5rem 0rem;
+          margin: 1.25rem 0rem;
+          margin-bottom: 1.65rem;
         }
       }
       .ctwpbo-right {
@@ -377,6 +385,8 @@
         .ctwpbofour-desc {
           text-align: center;
           margin: 1.5rem 0rem;
+          margin-top: 0.8rem;
+          margin-bottom: 3rem;
         }
       }
     }
