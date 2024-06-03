@@ -31,6 +31,7 @@ import {
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { createUserPayment } from "./Api";
+import PaywallCyptoPlansModal from "./PaywallCyptoPlansModal";
 
 const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
@@ -43,6 +44,7 @@ class PaywallOptionsModal extends BaseReactComponent {
       show: props.show,
       onHide: this.props.onHide,
       userDetailsState: undefined,
+      isPayWallCrptoPlans: false,
     };
   }
   goBackToPayWallPass = () => {
@@ -123,7 +125,7 @@ class PaywallOptionsModal extends BaseReactComponent {
     }
   };
   goCopyTrade = () => {
-    if (this.state.isCreditBtnLoading) {
+    if (this.props.isCreditBtnLoading) {
       return;
     }
     // CopyTradePayCryptoPayment({
@@ -251,6 +253,17 @@ class PaywallOptionsModal extends BaseReactComponent {
     //   });
   };
 
+  goToCryptoPlans = () => {
+    this.setState({
+      isPayWallCrptoPlans: true,
+    });
+  };
+  goBackToPayWall = () => {
+    this.setState({
+      isPayWallCrptoPlans: false,
+    });
+  };
+
   render() {
     return (
       <Modal
@@ -267,7 +280,21 @@ class PaywallOptionsModal extends BaseReactComponent {
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
         animation={false}
+        style={{
+          opacity: this.state.isPayWallCrptoPlans ? 0 : 1,
+        }}
       >
+        {this.state.isPayWallCrptoPlans ? (
+          <PaywallCyptoPlansModal
+            show={this.state.isPayWallCrptoPlans}
+            onHide={this.props.onHide}
+            redirectLink={this.props.redirectLink}
+            goBackToPayWall={this.goBackToPayWall}
+            isCreditBtnLoading={this.props.isCreditBtnLoading}
+            payWithStripe={this.props.payWithStripe}
+            isMobile={this.props.isMobile}
+          />
+        ) : null}
         <div
           style={{
             width: this.props.isMobile ? "100%" : "",
@@ -470,16 +497,16 @@ class PaywallOptionsModal extends BaseReactComponent {
                     Choose your payment method
                   </div>
                   <div
-                    onClick={this.payWithStripe}
+                    onClick={this.props.payWithStripe}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ${
                       this.state.isCryptoBtnLoading
                         ? "ctpb-plan-payment-button-disabled"
-                        : this.state.isCreditBtnLoading
+                        : this.props.isCreditBtnLoading
                         ? "ctpb-plan-payment-button-loading"
                         : ""
                     }`}
                   >
-                    {this.state.isCreditBtnLoading ? (
+                    {this.props.isCreditBtnLoading ? (
                       loadingAnimation()
                     ) : (
                       <>
@@ -492,26 +519,18 @@ class PaywallOptionsModal extends BaseReactComponent {
                     )}
                   </div>
                   <div
-                    onClick={this.goCopyTrade}
+                    onClick={this.goToCryptoPlans}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ${
-                      this.state.isCreditBtnLoading
+                      this.props.isCreditBtnLoading
                         ? "ctpb-plan-payment-button-disabled"
-                        : this.state.isCryptoBtnLoading
-                        ? "ctpb-plan-payment-button-loading"
                         : ""
                     }`}
                   >
-                    {this.state.isCryptoBtnLoading ? (
-                      loadingAnimation()
-                    ) : (
-                      <>
-                        <Image
-                          className="ctpb-plan-payment-button-icons"
-                          src={CryptoWalletPaywallIcon}
-                        />
-                        <span>Crypto</span>
-                      </>
-                    )}
+                    <Image
+                      className="ctpb-plan-payment-button-icons"
+                      src={CryptoWalletPaywallIcon}
+                    />
+                    <span>Crypto</span>
                   </div>
                 </div>
               </div>

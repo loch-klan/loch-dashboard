@@ -315,7 +315,20 @@
             }
           }
         }
+        .ctpb-plan-payment-button-grey {
+          background-color: var(--referallUsedBtn);
+          border-color: var(--referallUsedBtn);
+        }
+        .ctpb-plan-payment-button-multiple-months {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-color: var(--grey969);
+        }
         .ctpb-plan-payment-button-loading {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           cursor: default;
           background-color: var(--primaryTextColor);
           .spinner-chip-container {
@@ -327,14 +340,7 @@
           }
         }
         .ctpb-plan-payment-button-disabled {
-          cursor: default;
-          &:hover {
-            background-color: transparent;
-            color: var(--primaryTextColor);
-            .ctpb-plan-payment-button-icons {
-              filter: var(--invertColor);
-            }
-          }
+          pointer-events: none;
         }
       }
     }
