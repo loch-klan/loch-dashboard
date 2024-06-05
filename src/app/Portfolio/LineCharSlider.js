@@ -36,7 +36,7 @@ import {
   CurrencyType,
   noExponents,
   numToCurrency,
-  openAddressInNewTab,
+  openAddressInSameTab,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CustomDropdown from "../../utils/form/CustomDropdown";
@@ -1599,7 +1599,7 @@ backdrop-filter: blur(15px);">
                                 wallet: slink,
                               });
                               // window.open(shareLink, "_blank", "noreferrer");
-                              openAddressInNewTab(
+                              openAddressInSameTab(
                                 slink,
                                 this.props.setPageFlagDefault
                               );
@@ -1714,7 +1714,7 @@ backdrop-filter: blur(15px);">
                                 wallet: slink,
                               });
                               // window.open(shareLink, "_blank", "noreferrer");
-                              openAddressInNewTab(
+                              openAddressInSameTab(
                                 slink,
                                 this.props.setPageFlagDefault
                               );

@@ -11,7 +11,6 @@ import {
   LochPointsSignInPopupEmailVerified,
   SignInModalEmailAdded,
   SignInModalOTPverified,
-  SigninMenuEmailVerified,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
   WhaleCreateAccountEmailVerified,
@@ -157,7 +156,6 @@ export const updateUserWalletApi = (
     postLoginInstance
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
-        console.log("res.data ", res.data);
         if (!res.data.error) {
           if (ctx.hideTheTopBarHistoryItems) {
             ctx.hideTheTopBarHistoryItems();
@@ -291,7 +289,12 @@ export const updateUserWalletApi = (
           }
         }
         if (ctx.goToHomeAfterReplace) {
-          ctx.goToHomeAfterReplace();
+          if (ctx.props.setPageFlagDefault) {
+            ctx.props.setPageFlagDefault();
+          }
+          setTimeout(() => {
+            ctx.goToHomeAfterReplace();
+          }, 300);
         }
       })
       .catch((err) => {
@@ -491,7 +494,7 @@ export const getUserAddresses = (
         }
         if (stayOnWelcomePage) {
           ctx.props.history.push({
-            pathname: "/",
+            pathname: "/welcome",
             state: {
               isVerified: !apiResponse?.wallets ? true : false,
             },
@@ -1230,10 +1233,6 @@ export const VerifyEmail = (
         // Analytics
         let track = ctx.props.tracking;
         if (ctx.props.tracking === "Sign in button") {
-          SigninMenuEmailVerified({
-            session_id: getCurrentUser().id,
-            email_address: res.data.data.user?.email,
-          });
         } else if (ctx.props.tracking === "Whale watching") {
           WhalePopupEmailVerified({
             session_id: getCurrentUser().id,

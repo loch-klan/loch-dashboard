@@ -19,7 +19,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
-  openAddressInNewTab,
+  openAddressInSameTab,
   scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
@@ -42,6 +42,7 @@ import { createAnonymousUserSmartMoneyApi, getSmartMoney } from "./Api.js";
 import ConformSmartMoneyLeaveModal from "./ConformSmartMoneyLeaveModal.js";
 
 import {
+  CopyTradeWelcomeAddressAdded,
   SmartMoneyChangeLimit,
   SmartMoneyFAQClicked,
   SmartMoneyHowItWorksClicked,
@@ -91,6 +92,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      lochUserState: window.localStorage.getItem("lochToken"),
       mobilePopupModal: false,
       signInModalAnimation: true,
       signInModal: false,
@@ -702,6 +704,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     // this.createEmptyUser();
   };
   handleFollowUnfollow = (walletAddress, addItem, tagName) => {
+    if (!window.localStorage.getItem("lochToken")) {
+      return;
+    }
     let tempWatchListata = new URLSearchParams();
     if (addItem) {
       // TopAccountAddAccountToWatchList({
@@ -770,7 +775,14 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       wallet: slink,
     });
-    openAddressInNewTab(slink, this.props.setPageFlagDefault);
+    openAddressInSameTab(slink, this.props.setPageFlagDefault);
+  };
+  funAfterUserCreate = () => {
+    CopyTradeWelcomeAddressAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: "Smart money page",
+    });
   };
   render() {
     const tableData = this.state.accountList;
@@ -1171,6 +1183,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               <CheckboxCustomTable
                 handleOnClick={handleOnClick}
                 isChecked={rowData.following}
+                dontSelectIt={!this.state.lochUserState ? true : false}
               />
             );
           }
@@ -1181,12 +1194,22 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          isAddNewAddressLoggedIn={
+            !this.state.lochUserState || this.state.lochUserState === "jsk"
+          }
           handleShare={this.handleShare}
           hideFooter
           history={this.props.history}
           hideAddresses
+          hideShare
+          isAddNewAddress={
+            !this.state.lochUserState || this.state.lochUserState === "jsk"
+          }
+          goToPageAfterLogin="/home"
+          funAfterUserCreate={this.funAfterUserCreate}
         >
           <HomeSmartMoneyMobile
+            isNoUser={!this.state.lochUserState}
             goToAddress={this.goToAddress}
             accountList={this.state.accountList}
             currency={this.state.currency}
@@ -1227,6 +1250,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             >
               <div className="portfolio-section">
                 <WelcomeCard
+                  funAfterUserCreate={this.funAfterUserCreate}
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
                   connectedWalletevents={this.props.connectedWalletevents}
@@ -1239,6 +1263,15 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   // add wallet address modal
                   updateTimer={this.updateTimer}
                   handleAddModal={this.handleAddModal}
+                  isAddNewAddress={
+                    !this.state.lochUserState ||
+                    this.state.lochUserState === "jsk"
+                  }
+                  isAddNewAddressLoggedIn={
+                    !this.state.lochUserState ||
+                    this.state.lochUserState === "jsk"
+                  }
+                  goToPageAfterLogin="/home"
                 />
               </div>
             </div>
@@ -1399,7 +1432,11 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                         minimalPagination
                         noSubtitleBottomPadding
                         tableData={tableData}
-                        columnList={columnList}
+                        columnList={
+                          this.state.lochUserState
+                            ? columnList
+                            : columnList.slice(0, columnList.length - 1)
+                        }
                         message={"No accounts found"}
                         totalPage={this.state.totalPage}
                         history={this.props.history}

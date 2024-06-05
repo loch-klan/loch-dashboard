@@ -64,7 +64,7 @@ import {
   convertNtoNumber,
   mobileCheck,
   numToCurrency,
-  openAddressInNewTab,
+  openAddressInSameTab,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../../utils/ReusableFunctions";
@@ -1112,7 +1112,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
                   wallet: slink,
                 });
                 // window.open(shareLink, "_blank", "noreferrer");
-                openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                openAddressInSameTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -1377,7 +1377,7 @@ class EmulationTransactionsPage extends BaseReactComponent {
                   wallet: slink,
                 });
                 // window.open(shareLink, "_blank", "noreferrer");
-                openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                openAddressInSameTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (

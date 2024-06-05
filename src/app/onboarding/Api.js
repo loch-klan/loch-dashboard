@@ -709,7 +709,13 @@ export const detectNameTag = (
   };
 };
 
-export const signUpWelcome = (ctx, data, toggleAuthModal, stopBtnLoading) => {
+export const signUpWelcome = (
+  ctx,
+  data,
+  toggleAuthModal,
+  stopBtnLoading,
+  handleRedirection
+) => {
   return async function (dispatch, getState) {
     preLoginInstance
       .post("organisation/user/signup", data)
@@ -721,7 +727,9 @@ export const signUpWelcome = (ctx, data, toggleAuthModal, stopBtnLoading) => {
           toast.error(res.data.message || "Something Went Wrong");
         } else if (res.data.error === false) {
           if (res?.data?.data?.is_new_user) {
-            if (toggleAuthModal) {
+            if (handleRedirection) {
+              handleRedirection();
+            } else if (toggleAuthModal) {
               toggleAuthModal("redirect");
             }
           } else {
@@ -987,7 +995,10 @@ export const createAnonymousUserApi = (
   data,
   ctx,
   addWallet,
-  userFunction = null
+  userFunction = null,
+  goToPage = null,
+  funAfterUserCreate,
+  addressList = []
 ) => {
   return function (dispatch, getState) {
     // window.localStorage.setItem('currency',JSON.stringify({
@@ -1006,6 +1017,7 @@ export const createAnonymousUserApi = (
     if (!ctx.props.ishome) {
       if (!ctx.state?.podName) {
         !ctx.state?.id &&
+          !goToPage &&
           ctx.props?.history.push({
             pathname: ctx.state?.id ? ctx.state?.link : "/home",
             // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
@@ -1162,16 +1174,36 @@ export const createAnonymousUserApi = (
                 pathname: ctx.state?.link,
               });
             } else {
-              // console.log("replace")
-              ctx.props.history.replace({
-                pathname: ctx.state?.id ? ctx.state?.link : "/home",
-                state: {
-                  addWallet: ctx.state?.id ? addWallet : newAddWallet,
-                  noLoad: false,
-                  redirectPath: ctx.state?.redirectPath,
-                  hash: ctx?.state?.hash,
-                },
-              });
+              if (goToPage) {
+                setTimeout(() => {
+                  ctx.props.history.replace({
+                    pathname: ctx.state?.id ? ctx.state?.link : goToPage,
+                    state: {
+                      addWallet: ctx.state?.id ? addWallet : newAddWallet,
+                      noLoad: false,
+                      redirectPath: ctx.state?.redirectPath,
+                      hash: ctx?.state?.hash,
+                    },
+                  });
+                  if (funAfterUserCreate) {
+                    if (addressList && addressList.length > 0) {
+                      const tempItem = addressList[0];
+                      funAfterUserCreate(tempItem);
+                    }
+                  }
+                }, 1000);
+              } else {
+                // console.log("replace")
+                ctx.props.history.replace({
+                  pathname: ctx.state?.id ? ctx.state?.link : "/home",
+                  state: {
+                    addWallet: ctx.state?.id ? addWallet : newAddWallet,
+                    noLoad: false,
+                    redirectPath: ctx.state?.redirectPath,
+                    hash: ctx?.state?.hash,
+                  },
+                });
+              }
             }
           }
 

@@ -128,7 +128,9 @@ class smartMoneyMobileBlock extends BaseReactComponent {
                     this.props.mapData.following && !this.props.smartMoneyBlur
                   }
                   noMargin
-                  dontSelectIt={this.props.smartMoneyBlur}
+                  dontSelectIt={
+                    this.props.smartMoneyBlur || this.props.isNoUser
+                  }
                 />
               </div>
             </div>

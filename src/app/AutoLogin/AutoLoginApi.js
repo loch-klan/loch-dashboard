@@ -8,10 +8,12 @@ export const autoLoginApi = (ctx, redirectTo) => {
       .post("organisation/user/get-user-portfolio")
       .then((res) => {
         if (!res.data.error) {
-          window.localStorage.setItem(
-            "lochUser",
-            JSON.stringify(res.data.data.user)
-          );
+          if (res.data.data.user) {
+            window.localStorage.setItem(
+              "lochUser",
+              JSON.stringify(res.data.data.user)
+            );
+          }
           let plan = {
             defi_enabled: true,
             export_address_limit: -1,
@@ -110,9 +112,10 @@ export const autoLoginApi = (ctx, redirectTo) => {
               : false;
             addWallet.push(obj);
           }
-
-          window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
-          addLocalWalletList(JSON.stringify(addWallet));
+          if (addWallet) {
+            window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
+            addLocalWalletList(JSON.stringify(addWallet));
+          }
           window.localStorage.setItem("stop_redirect", true);
           if (ctx && ctx.props?.setPageFlagDefault) {
             ctx.props.setPageFlagDefault();

@@ -16,6 +16,7 @@ import {
   detectCoin,
   getAllCoins,
   getAllParentChains,
+  signUpWelcome,
 } from "../onboarding//Api";
 import CustomTextControl from "./../../utils/form/CustomTextControl";
 // import EditBtnImage from "../../assets/images/icons/EditBtnImage.svg";
@@ -40,6 +41,7 @@ import DeleteIcon from "../../assets/images/icons/trashIcon.svg";
 import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import {
   CopyTradeSignUpPopupEmailAdded,
+  EmailAddressAddedSignUp,
   ExportDataDownlaod,
   ExportDateSelected,
   HomeSignUpGetReferralCode,
@@ -633,6 +635,26 @@ class ExitOverlay extends BaseReactComponent {
       if (this.props.updateTimer) {
         this.props.updateTimer();
       }
+    } else {
+      const data = new URLSearchParams();
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
+      data.append("signed_up_from", "welcome");
+      data.append("referral_code", this.state.referralCode);
+      EmailAddressAddedSignUp({
+        email_address: this.state.emailSignup,
+        session_id: "",
+      });
+
+      this.props.signUpWelcome(
+        this,
+        data,
+        this.toggleAuthModal,
+        this.stopReferallButtonLoading,
+        this.handleRedirection
+      );
     }
   };
   handleRedirection = () => {
@@ -2115,6 +2137,7 @@ const mapDispatchToProps = {
   getAllParentChains,
   updateUser,
   checkReferallCodeValid,
+  signUpWelcome,
 };
 
 ExitOverlay.propTypes = {};

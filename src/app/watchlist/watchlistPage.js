@@ -58,7 +58,7 @@ import {
 import {
   TruncateText,
   mobileCheck,
-  openAddressInNewTab,
+  openAddressInSameTab,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
@@ -297,6 +297,9 @@ class WatchListPage extends BaseReactComponent {
           totalPage: totalItems ? totalItems : 0,
         });
       }
+    }
+    if (this.props.commonState !== prevProps.commonState) {
+      this.refetchList();
     }
   }
 
@@ -572,7 +575,7 @@ class WatchListPage extends BaseReactComponent {
                     }
                   }
                   // window.open(shareLink, "_blank", "noreferrer");
-                  openAddressInNewTab(slink, this.props.setPageFlagDefault);
+                  openAddressInSameTab(slink, this.props.setPageFlagDefault);
 
                   // this.updateWatchListAnalyzed(
                   //   rowData.nameTag,
@@ -961,6 +964,7 @@ class WatchListPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   WatchListState: state.WatchListState,
   WatchListLoadingState: state.WatchListLoadingState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   setPageFlagDefault,

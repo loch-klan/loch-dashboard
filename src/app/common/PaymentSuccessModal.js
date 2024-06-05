@@ -114,7 +114,9 @@ class PaymentSuccessModal extends BaseReactComponent {
                       this.props.isMobile ? "f-s-16" : "f-s-16"
                     }`}
                   >
-                    Start exploring the platform now
+                    {this.props.subText
+                      ? this.props.subText
+                      : "Start exploring the platform now"}
                   </p>
                   <div
                     onClick={this.hideModal}

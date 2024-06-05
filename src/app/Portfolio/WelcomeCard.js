@@ -123,6 +123,10 @@ export default function WelcomeCard(props) {
   if (props.isMobileRender) {
     return (
       <TopWalletExchangeBar
+        shouldGoToHomeAfterReplace={props.shouldGoToHomeAfterReplace}
+        isAddNewAddressLoggedIn={props.isAddNewAddressLoggedIn}
+        goToPageAfterLogin={props.goToPageAfterLogin}
+        funAfterUserCreate={props.funAfterUserCreate}
         connectedWalletAddress={props.connectedWalletAddress}
         connectedWalletevents={props.connectedWalletevents}
         changeWalletList={props.changeWalletList}
@@ -330,6 +334,11 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              shouldGoToHomeAfterReplace={props.shouldGoToHomeAfterReplace}
+              goToPageAfterLogin={props.goToPageAfterLogin}
+              funAfterUserCreate={props.funAfterUserCreate}
+              isAddNewAddress={props.isAddNewAddress}
+              isAddNewAddressLoggedIn={props.isAddNewAddressLoggedIn}
               hideFocusedInput={props.hideFocusedInput}
               focusOriginalInputBar={props.focusOriginalInputBar}
               isBlurred={props.isBlurred}

@@ -33,7 +33,13 @@ import NewWelcome from "./app/home/NewWelcome";
 import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import PublicRoute from "./utils/PublicRoute";
+import CopyTradeWelcome from "./app/CopyTradeWelcome/CopyTradeWelcome";
 import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
+import CryptoSuccessPage from "./app/CryptoSuccessPage/CryptoSuccessPage";
+import PublicSidebarRoute from "./utils/PublicSidebarRoute";
+import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
+import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
+import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
 const routes = [
   {
     path: "/",
@@ -139,6 +145,36 @@ const routes = [
     type: PrivateRoute,
     component: InsightsPage,
   },
+  {
+    path: "/copy-trade-welcome",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: CopyTradeWelcome,
+  },
+  {
+    path: "/wallet-viewer-add-address",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: AddAddressWalletViewer,
+  },
+  {
+    path: "/profile-add-address",
+    name: "Profile Add Address",
+    type: PublicSidebarRoute,
+    component: AddAddressProfile,
+  },
+  {
+    path: "/following-add-address",
+    name: "Following Add Address",
+    type: PublicSidebarRoute,
+    component: AddAddressFollowing,
+  },
+  {
+    path: "/profile-add-address",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: AddAddressProfile,
+  },
 
   {
     path: "/leaderboard",
@@ -149,7 +185,7 @@ const routes = [
   {
     path: "/home-leaderboard",
     name: "Home Leaderboard",
-    type: PrivateRoute,
+    type: PublicSidebarRoute,
     component: HomeSmartMoneyPage,
   },
   {
@@ -222,6 +258,12 @@ const routes = [
     component: StripeSuccessPage,
   },
   {
+    path: "/crypto-success",
+    name: "Crypto Success",
+    type: PrivateRoute,
+    component: CryptoSuccessPage,
+  },
+  {
     path: "/stripe-cancel",
     name: "Stripe Error",
     type: PrivateRoute,
@@ -230,7 +272,7 @@ const routes = [
   {
     path: "/replace-address",
     name: "Stripe Error",
-    type: PrivateRoute,
+    type: PublicSidebarRoute,
     component: ReplaceAddressPage,
   },
 ];

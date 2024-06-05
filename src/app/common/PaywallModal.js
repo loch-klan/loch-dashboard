@@ -28,6 +28,7 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import PaywallOptionsModal from "./PaywallOptionsModal";
 import "./_paywallModal.scss";
 import { createUserPayment } from "./Api";
+import { COINBASE_SECRET_KEY } from "../../utils/Constant";
 
 class PaywallModal extends BaseReactComponent {
   constructor(props) {
@@ -140,7 +141,7 @@ class PaywallModal extends BaseReactComponent {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "X-CC-Api-Key": "03c1c210-ace2-4b5e-bc66-de26a70b283e",
+        "X-CC-Api-Key": COINBASE_SECRET_KEY,
       },
       body: JSON.stringify(requestBody),
     };
@@ -235,9 +236,11 @@ class PaywallModal extends BaseReactComponent {
         {this.state.isPayWallOptions ? (
           <PaywallOptionsModal
             show={this.state.isPayWallOptions}
+            isCreditBtnLoading={this.state.isCreditBtnLoading}
             onHide={this.props.onHide}
             redirectLink={this.props.redirectLink}
             goBackToPayWall={this.goBackToPayWall}
+            payWithStripe={this.payWithStripe}
             isMobile={this.props.isMobile}
             description={this.props.description}
           />
@@ -535,8 +538,8 @@ class PaywallModal extends BaseReactComponent {
                     </div>
                   </div>
                   <div
-                    // onClick={this.goToPayWallOptions}
-                    onClick={this.payWithStripe}
+                    onClick={this.goToPayWallOptions}
+                    // onClick={this.payWithStripe}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-button ${
                       this.state.isCreditBtnLoading
                         ? "ctpb-plan-button-loading"
