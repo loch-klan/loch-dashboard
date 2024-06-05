@@ -15,3 +15,5 @@ export { default as PaywallSuccessLochLogoImage } from "./PaywallSuccessLochLogo
 export { default as PaywallSuccessLochLogoMobileImage } from "./PaywallSuccessLochLogoMobile.png";
 export { default as DummyHomePageImage } from "./DummyHomePage.png";
 export { default as DummyProfilePageImage } from "./DummyProfilePage.png";
+export { default as ExpertsGlobeImage } from "./expertsGlobe.png";
+export { default as ExpertsPageHeadphoneImage } from "./expertsPageHeadphone.png";
