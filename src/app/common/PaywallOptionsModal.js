@@ -517,24 +517,7 @@ class PaywallOptionsModal extends BaseReactComponent {
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
-                        Can apply to join Loch{" "}
-                        {this.props.isMobile ? "" : "Platinum"}
-                      </div>
-                      <div
-                        style={{
-                          padding: this.props.isMobile ? "0.25rem" : "",
-                        }}
-                        className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
-                      >
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
-                        {this.props.isMobile ? (
-                          <span>Platinum Telegram channel</span>
-                        ) : (
-                          <span>Telegram channel</span>
-                        )}
+                        Apply to join Platinum Telegram
                       </div>
                       <div
                         style={{
