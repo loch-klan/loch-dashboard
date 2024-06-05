@@ -522,7 +522,7 @@ class PaywallOptionsModal extends BaseReactComponent {
                       </div>
                       <div
                         style={{
-                          marginTop: this.props.isMobile ? "0rem" : "",
+                          padding: this.props.isMobile ? "0.25rem" : "",
                         }}
                         className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
                       >
@@ -531,13 +531,52 @@ class PaywallOptionsModal extends BaseReactComponent {
                           src={PurpleCheckIcon}
                         />
                         {this.props.isMobile ? (
-                          <span>
-                            Platinum Telegram
-                            <br /> channel
-                          </span>
+                          <span>Platinum Telegram channel</span>
                         ) : (
                           <span>Telegram channel</span>
                         )}
+                      </div>
+                      <div
+                        style={{
+                          marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                        }}
+                        className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                      >
+                        <Image
+                          className="ctpb-plan-purple-button-icon"
+                          src={PurpleCheckIcon}
+                        />
+                        <div className="ctpb-plan-purple-button-bullet" />
+
+                        <span>Over $100m liquid onchain AUM</span>
+                      </div>
+                      <div
+                        style={{
+                          marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                        }}
+                        className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                      >
+                        <Image
+                          className="ctpb-plan-purple-button-icon"
+                          src={PurpleCheckIcon}
+                        />
+                        <div className="ctpb-plan-purple-button-bullet" />
+
+                        <span>Over 500k twitter followers</span>
+                      </div>
+                      <div
+                        style={{
+                          marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                        }}
+                        className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                      >
+                        <Image
+                          className="ctpb-plan-purple-button-icon"
+                          src={PurpleCheckIcon}
+                        />
+                        <div className="ctpb-plan-purple-button-bullet" />
+
+                        <span>Daily trade ideas</span>
                       </div>
                     </div>
                   </div>
