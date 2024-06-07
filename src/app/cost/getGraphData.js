@@ -341,6 +341,17 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
   GraphLogoImage.src = GraphLogo;
   const options = {
     responsive: true,
+    onHover: function (e) {
+      const points = this.getElementsAtEventForMode(
+        e,
+        "index",
+        { axis: "x", intersect: true },
+        false
+      );
+
+      if (points.length) e.native.target.style.cursor = "pointer";
+      else e.native.target.style.cursor = "default";
+    },
     maintainAspectRatio: false,
     layout: {
       padding: {
@@ -374,8 +385,8 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
         callbacks: {
           title: function () {}, //REMOVE TITLE
           label: (ctx) => {
-            // console.log('ctx',ctx);
             let label00 = ctx.label;
+            let labelClick = "Click to open";
             let label0 =
               "Fees: " +
               CurrencyType(false) +
@@ -405,6 +416,9 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
                   parentCtx.counterpartyVolumeOverTimeOn();
                 }, 2000);
               }
+            }
+            if (ctx.dataset.clickAbleAddress[ctx.dataIndex]) {
+              return [label00, label1, label0, labelClick];
             }
             return [label00, label1, label0];
           },
@@ -621,6 +635,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
         borderSkipped: false,
         barThickness: 48,
         totalFees: arr?.map((e) => e.total_fees * currency?.rate),
+        clickAbleAddress: arr?.map((e) => e.clickable_address),
         // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
         totalVolume: arr?.map((e) => e.total_volume),
         defaultAssetCode: arr?.map((e) => e?.chain?.default_asset_code),
