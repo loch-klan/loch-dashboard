@@ -150,7 +150,7 @@
         padding: 1.5rem 1.8rem;
         border: 0.15rem solid var(--sidebarSectionalBOrder);
         border-radius: 10px;
-        width: 33rem;
+        width: 35rem;
         box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem rgba(24, 39, 75, 0.05),
           0rem 0.63099rem 0.63099rem -0.31549rem rgba(24, 39, 75, 0.05);
         .ctpb-plan-header {
@@ -248,6 +248,13 @@
               margin-right: 0.5rem;
               min-height: 1rem;
               height: 1rem;
+            }
+            .ctpb-plan-purple-button-bullet {
+              height: 0.7rem;
+              width: 0.7rem;
+              border-radius: 50%;
+              background-color: var(--payModalPurpleText);
+              margin: 0rem 0.5rem;
             }
           }
           .ctpb-plan-purple-button-child-extra-text {
