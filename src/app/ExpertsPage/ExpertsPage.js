@@ -1,33 +1,21 @@
 import { Component } from "react";
 
-import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
-import {
-  ExpertsGlobeImage,
-  ExpertsPageHeadphoneImage,
-} from "../../assets/images";
-import {
-  ExpertsHeadphonesBlockIcon,
-  GlobeShareBlockIcon,
-} from "../../assets/images/icons";
-import {
-  CurrencyType,
-  TruncateText,
-  mobileCheck,
-  numToCurrency,
-} from "../../utils/ReusableFunctions";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { getUser } from "../common/Api";
 import MobileLayout from "../layout/MobileLayout";
+import ExpertsPageContent from "./ExpertsPageContent";
 import ExpertsPageMobile from "./ExpertsPageMobile";
 import "./_expertsPage.scss";
-import ExpertsPageContent from "./ExpertsPageContent";
 
 class ExpertsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isMobile: mobileCheck(),
+      disableLeftArrow: true,
+      disableRightArrow: false,
       expertsList: [
         {
           address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
@@ -101,7 +89,72 @@ class ExpertsPage extends Component {
     window.scrollTo(0, 0);
   }
   becomeAnExpert = () => {
-    this.props.history.push("/become-an-expert");
+    if (!mobileCheck()) {
+      this.props.history.push("/become-an-expert");
+    }
+  };
+  scrollLeft = () => {
+    var myElement = document.getElementById("topExpertsScrollBody");
+    var myElementWidth = document.getElementById(
+      "topExpertsScrollBody"
+    )?.clientWidth;
+    var myElementCurrentScrollPos = document.getElementById(
+      "topExpertsScrollBody"
+    )?.scrollLeft;
+
+    const newPos = myElementCurrentScrollPos - myElementWidth;
+    myElement.scroll({
+      left: newPos,
+      behavior: "smooth",
+    });
+    this.scrollCalAlgo();
+  };
+  scrollRight = () => {
+    var myElement = document.getElementById("topExpertsScrollBody");
+    var myElementWidth = document.getElementById(
+      "topExpertsScrollBody"
+    )?.clientWidth;
+    var myElementCurrentScrollPos = document.getElementById(
+      "topExpertsScrollBody"
+    )?.scrollLeft;
+
+    const newPos = myElementCurrentScrollPos + myElementWidth;
+    myElement.scroll({
+      left: newPos,
+      behavior: "smooth",
+    });
+    this.scrollCalAlgo();
+  };
+  handleTopExpertsScroll = () => {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      this.scrollCalAlgo();
+    }, 150);
+  };
+  scrollCalAlgo = () => {
+    var newPos = document.getElementById("topExpertsScrollBody")?.scrollLeft;
+    var myDiv = document.getElementById("topExpertsScrollBody");
+
+    if (newPos === 0) {
+      this.setState({
+        disableLeftArrow: true,
+      });
+    } else {
+      this.setState({
+        disableLeftArrow: false,
+      });
+    }
+    if (myDiv.offsetWidth + myDiv.scrollLeft >= myDiv.scrollWidth) {
+      this.setState({
+        disableRightArrow: true,
+      });
+    } else {
+      this.setState({
+        disableRightArrow: false,
+      });
+    }
   };
   render() {
     if (this.state.isMobile) {
@@ -147,6 +200,11 @@ class ExpertsPage extends Component {
             history={this.props.history}
             becomeAnExpert={this.becomeAnExpert}
             expertsList={this.state.expertsList}
+            disableLeftArrow={this.state.disableLeftArrow}
+            disableRightArrow={this.state.disableRightArrow}
+            handleTopExpertsScroll={this.handleTopExpertsScroll}
+            scrollLeft={this.scrollLeft}
+            scrollRight={this.scrollRight}
           />
         </div>
       </div>

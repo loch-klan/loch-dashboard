@@ -2,7 +2,7 @@
   margin-top: 9rem;
   padding: 9rem;
   padding-top: 0;
-  padding-bottom: rem;
+  padding-bottom: 7rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -181,13 +181,14 @@
       max-width: 120rem;
       overflow-x: scroll;
       gap: 1.5rem;
+      padding-bottom: 1rem;
 
       &::-webkit-scrollbar {
         height: 0rem;
       }
       .ep-te-expert-block {
         background-color: var(--cardBackgroud);
-        box-shadow: var(--boxShadowMd);
+        box-shadow: 2px 4px 12px -6px var(--topExperctsBoxShadowColor);
         align-self: stretch;
         border-radius: 1.5rem;
         display: flex;
@@ -236,6 +237,48 @@
           }
         }
       }
+    }
+  }
+}
+.expert-person-page-mobile {
+  width: 100%;
+  overflow: hidden;
+  margin-top: -2rem;
+  .expert-person-page {
+    margin-top: 0rem;
+    padding: 0rem;
+    padding-bottom: 0rem;
+    min-width: unset;
+    .ep-expert-info {
+      flex-direction: column;
+      padding: 3rem 2rem;
+      gap: 4rem;
+      margin-bottom: 1rem;
+      border-bottom: none;
+      .ep-ei-data {
+        width: 100%;
+        .ep-ei-data-image {
+          height: 8rem;
+          width: 8rem;
+        }
+      }
+      .ep-ei-btn {
+        width: 100%;
+        padding-top: 1.8rem;
+        padding-bottom: 1.8rem;
+      }
+    }
+    .ep-about-expert {
+      padding: 0rem 2rem;
+      margin-bottom: 4rem;
+      .ep-about-expert-data {
+        overflow: hidden;
+        flex-wrap: wrap;
+      }
+    }
+    .ep-top-experts {
+      padding: 2rem;
+      padding-top: 0rem;
     }
   }
 }

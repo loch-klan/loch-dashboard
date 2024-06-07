@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import { connect } from "react-redux";
 import PaymentSuccessModal from "../common/PaymentSuccessModal";
+import ExpertPersonContent from "./ExpertPersonContent";
 
 class ExpertsPageMobile extends Component {
   constructor(props) {
@@ -11,10 +12,11 @@ class ExpertsPageMobile extends Component {
 
   render() {
     return (
-      <div className="insightsPageContainer">
-        <div className="portfolio-page-section ">
-          <PaymentSuccessModal onHide={this.props.onHide} isMobile />
-        </div>
+      <div className="expert-person-page-mobile">
+        <ExpertPersonContent
+          expertsList={this.props.expertsList}
+          goToScheduleACall={this.props.goToScheduleACall}
+        />
       </div>
     );
   }

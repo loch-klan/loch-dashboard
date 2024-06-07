@@ -14,7 +14,8 @@
     z-index: 1;
     // min-width: 120rem;
     width: 100%;
-    max-width: 120rem;
+    max-width: 122rem;
+    padding-left: 2rem;
     .ep-heading-title {
       font-size: 32px;
       line-height: 120%;
@@ -51,8 +52,9 @@
     z-index: 2;
     width: 100%;
     // min-width: 120rem;
-    max-width: 120rem;
+    max-width: 122rem;
     .ep-top-experts-heading {
+      padding-left: 2rem;
       display: flex;
       align-items: center;
       margin-bottom: 2rem;
@@ -66,6 +68,14 @@
         font-size: 20px;
       }
     }
+    .ep-te-scroll-container {
+      padding: 0rem 2rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .ep-te-scroll {
       background-color: var(--primaryBackgroud);
       display: flex;
@@ -74,12 +84,47 @@
       max-width: 120rem;
       overflow-x: scroll;
       gap: 1.5rem;
+      padding-bottom: 1rem;
+
+      .ep-te-scroll-btn {
+        background-color: var(--cardBackgroud);
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 4.2rem;
+        width: 4.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1.2rem;
+        box-shadow: 2px 4px 12px -2px var(--topExperctsBoxShadowColor);
+        cursor: pointer;
+        .ep-te-scroll-btn-image {
+          transform: rotate(180deg);
+          height: 1.2rem;
+          filter: var(--invertColor);
+        }
+        &:hover {
+          background-color: var(--primaryTextColor);
+          .ep-te-scroll-btn-image {
+            filter: var(--invertColorHover);
+          }
+        }
+      }
+      .ep-te-scroll-btn-left {
+        left: 0;
+        .ep-te-scroll-btn-image {
+          transform: rotate(0deg);
+        }
+      }
 
       &::-webkit-scrollbar {
         height: 0rem;
       }
       .ep-te-expert-block {
         background-color: var(--cardBackgroud);
+        box-shadow: 2px 4px 12px -6px var(--topExperctsBoxShadowColor);
         align-self: stretch;
         border-radius: 1.5rem;
         display: flex;
@@ -137,7 +182,8 @@
     margin-top: 4rem;
     // min-width: 120rem;
     width: 100%;
-    max-width: 120rem;
+    max-width: 122rem;
+    padding-left: 2rem;
     padding-bottom: 4rem;
     background: radial-gradient(
         71.94% 131.12% at 48.88% 181.12%,
@@ -148,6 +194,8 @@
       /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
 
     .ep-te-be-expert-images {
+      display: flex;
+      align-items: center;
       .ep-te-be-expert-image1 {
         height: 20rem;
       }

@@ -1,4 +1,4 @@
-.schedule-a-call-complete-page-page {
+.schedule-a-call-complete-page {
   margin-top: 9rem;
   padding: 9rem;
   padding-top: 0rem;
@@ -62,6 +62,24 @@
         background-color: var(--primaryTextColor);
         color: var(--cardBackgroud);
       }
+    }
+  }
+}
+.schedule-a-call-complete-page-mobile {
+  width: 100%;
+  overflow: hidden;
+  margin-top: -2rem;
+  .schedule-a-call-complete-page {
+    margin-top: 0rem;
+    padding: 0rem;
+    padding-bottom: 0rem;
+    min-width: unset;
+    .becomne-an-expert-page-block-top-gradient {
+      top: 5rem;
+    }
+    .becomne-an-expert-page-block {
+      height: calc(100vh - 15rem);
+      padding-top: 0;
     }
   }
 }

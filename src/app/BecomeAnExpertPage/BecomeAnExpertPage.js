@@ -17,6 +17,7 @@ import CheckboxCustomTable from "../common/customCheckboxTable";
 import MobileLayout from "../layout/MobileLayout";
 import BecomeAnExpertPageMobile from "./BecomeAnExpertPageMobile";
 import "./_becomeAnExpertPage.scss";
+import BecomeAnExpertContent from "./BecomeAnExpertContent";
 
 class BecomeAnExpertPage extends Component {
   constructor(props) {
@@ -180,20 +181,49 @@ class BecomeAnExpertPage extends Component {
     }
   };
   render() {
-    if (this.state.isMobile) {
-      return (
-        <MobileLayout
-          handleShare={() => null}
-          isSidebarClosed={this.props.isSidebarClosed}
-          history={this.props.history}
-          currentPage={"stripe-success-page"}
-          hideFooter
-          hideAddresses
-        >
-          <BecomeAnExpertPageMobile onHide={this.onHide} />
-        </MobileLayout>
-      );
-    }
+    // if (this.state.isMobile) {
+    //   return (
+    //     <MobileLayout
+    //       hideShare
+    //       hideFooter
+    //       hideAddresses
+    //       history={this.props.history}
+    //       currentPage={"become-an-expert-page"}
+    //       customeHomeClassName="mpcHomePageNoSidePadding"
+    //     >
+    //       <BecomeAnExpertPageMobile
+    //         curStep={this.state.curStep}
+    //         userEmail={this.state.userEmail}
+    //         userName={this.state.userName}
+    //         userSocialAccount={this.state.userSocialAccount}
+    //         isNextDisabled={this.state.isNextDisabled}
+    //         userExpertise={this.state.userExpertise}
+    //         userHourlyRate={this.state.userHourlyRate}
+    //         userExperience={this.state.userExperience}
+    //         isEmailChecked={this.state.isEmailChecked}
+    //         isTelegramChecked={this.state.isTelegramChecked}
+    //         userTelegramHandle={this.state.userTelegramHandle}
+    //         isDoneDisabled={this.state.isDoneDisabled}
+    //         // Function
+    //         goBack={this.goBack}
+    //         onUserEmailChange={this.onUserEmailChange}
+    //         stepOneOnKeyDown={this.stepOneOnKeyDown}
+    //         onUserNameChange={this.onUserNameChange}
+    //         onUserSocialAccountChange={this.onUserSocialAccountChange}
+    //         goToSecondStep={this.goToSecondStep}
+    //         onUserExpertiseChange={this.onUserExpertiseChange}
+    //         onUserHourlyRateChange={this.onUserHourlyRateChange}
+    //         stepTwoOnKeyDown={this.stepTwoOnKeyDown}
+    //         toggleEmailCheckBox={this.toggleEmailCheckBox}
+    //         toggleTelegramCheckBox={this.toggleTelegramCheckBox}
+    //         onUserTelegramHandleChange={this.onUserTelegramHandleChange}
+    //         goToFirstStep={this.goToFirstStep}
+    //         goToBecomeAnExpertCompletePage={this.goToBecomeAnExpertCompletePage}
+    //         onUserExperienceChange={this.onUserExperienceChange}
+    //       />
+    //     </MobileLayout>
+    //   );
+    // }
     return (
       <div className="insightsPageContainer">
         {/* topbar */}
@@ -214,254 +244,36 @@ class BecomeAnExpertPage extends Component {
               />
             </div>
           </div>
-          <div className="becomne-an-expert-page inter-display-medium">
-            <div className="becomne-an-expert-page-block-top-gradient" />
-            <div className="becomne-an-expert-page-block">
-              <div className="bae-info">
-                <div className="bae-info-steps">
-                  <div className="bae-is-step-visual">
-                    <div
-                      className={`bae-is-step ${
-                        this.state.curStep === 1 ? "bae-is-step-active" : ""
-                      }`}
-                    />
-                    <div
-                      className={`bae-is-step ${
-                        this.state.curStep === 2 ? "bae-is-step-active" : ""
-                      }`}
-                    />
-                  </div>
-                  <div className="bae-is-step-text">
-                    Step {this.state.curStep} of 2
-                  </div>
-                </div>
-                <div className="bae-info-explain">
-                  <Image
-                    className="bae-ie-icon"
-                    src={BecomingAnExpertSunglassesIcon}
-                  />
-                  <div className="bae-ie-title">Becoming an Expert</div>
-                  <div className="bae-ie-desc">
-                    Tell us a little about yourself. We'll use
-                    <br />
-                    this to review your application
-                  </div>
-                </div>
-              </div>
-              <div className="bae-data">
-                {this.state.curStep === 1 ? (
-                  <>
-                    <div className="bae-data-block">
-                      <div className="bae-db-title">The Basics</div>
-                      <div className="bae-db-desc">Connect wallets</div>
-                      <div className="bae-db-wallet-btn">
-                        <Image
-                          className="bae-db-wallet-icon"
-                          src={BecomingAnExpertWalletIcon}
-                        />
-                        <span>Connect wallet</span>
-                      </div>
-                      <div className="bae-input-block">
-                        <div className="bae-ib-title">Email</div>
-                        <div className="bae-ib-input-container">
-                          <input
-                            value={this.state.userEmail}
-                            onChange={this.onUserEmailChange}
-                            onKeyDown={this.stepOneOnKeyDown}
-                            className="inter-display-medium bae-ib-input"
-                            placeholder="Enter here"
-                          />
-                        </div>
-                      </div>
-                      <div className="bae-input-block">
-                        <div className="bae-ib-title">Name (optional)</div>
-                        <div className="bae-ib-input-container">
-                          <input
-                            value={this.state.userName}
-                            onChange={this.onUserNameChange}
-                            onKeyDown={this.stepOneOnKeyDown}
-                            className="inter-display-medium bae-ib-input"
-                            placeholder="Name"
-                          />
-                        </div>
-                      </div>
-                      <div className="bae-input-block">
-                        <div className="bae-ib-title">
-                          Social account (optional)
-                        </div>
-                        <div className="bae-ib-input-container">
-                          <input
-                            value={this.state.userSocialAccount}
-                            onChange={this.onUserSocialAccountChange}
-                            onKeyDown={this.stepOneOnKeyDown}
-                            className="inter-display-medium bae-ib-input"
-                            placeholder="Twitter, youtube, twitch, Linked In"
-                          />
-                        </div>
-                      </div>
-                      <div className="bae-input-block">
-                        <div className="bae-ib-title">
-                          Profile Image (optional)
-                        </div>
-                        <div className="bae-ib-btn-container">
-                          <Image
-                            className="bae-ib-btn"
-                            src={BecomingAnExpertUploadIcon}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="bae-data-btns">
-                      <button
-                        onClick={this.goBack}
-                        className="bae-db-btn bae-db-backbtn inter-display-medium"
-                      >
-                        <Image
-                          className="bae-db-backbtn-icon"
-                          src={BackArrowSmartMoneyIcon}
-                        />
-                        <div>Go back</div>
-                      </button>
-                      <button
-                        className={`bae-db-btn bae-db-nextbtn inter-display-medium ${
-                          this.state.isNextDisabled ? "bae-db-btn-disabled" : ""
-                        }`}
-                        onClick={this.goToSecondStep}
-                      >
-                        <span>Next</span>
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="bae-data-block">
-                      <div className="bae-db-title">More about you</div>
-                      <div className="bae-input-block">
-                        <div className="bae-ib-title">
-                          Describe your expertise (optional)
-                        </div>
-                        <div className="bae-ib-input-container">
-                          <textarea
-                            value={this.state.userExpertise}
-                            onChange={this.onUserExpertiseChange}
-                            className="inter-display-medium bae-ib-input bae-ib-text-area"
-                            placeholder="Twitter, youtube, twitch, Linked In"
-                          />
-                        </div>
-                      </div>
-                      <div className="bae-input-block">
-                        <div className="bae-ib-title">
-                          What’s your hourly rate?
-                        </div>
-                        <div className="bae-ib-input-container">
-                          <input
-                            value={this.state.userHourlyRate}
-                            onChange={this.onUserHourlyRateChange}
-                            onKeyDown={this.stepTwoOnKeyDown}
-                            className="inter-display-medium bae-ib-input"
-                            placeholder="$100"
-                          />
-                        </div>
-                      </div>
-                      <div className="bae-input-block">
-                        <div className="bae-ib-title">
-                          What’s your experience? Why do people want to talk to
-                          you?
-                        </div>
-                        <div className="bae-ib-input-container">
-                          <textarea
-                            value={this.state.userExperience}
-                            onChange={this.onUserExperienceChange}
-                            className="inter-display-medium bae-ib-input bae-ib-text-area"
-                            placeholder="Twitter, youtube, twitch, Linked In"
-                          />
-                        </div>
-                      </div>
-                      <div className="bae-input-block">
-                        <div className="bae-ib-title">
-                          How should we contact you if someone is interested?
-                        </div>
-                        <div
-                          style={{
-                            marginTop: "2rem",
-                          }}
-                          className="bae-ib-check-container"
-                        >
-                          <div className="bae-ib-check">
-                            <CheckboxCustomTable
-                              handleOnClick={this.toggleEmailCheckBox}
-                              isChecked={this.state.isEmailChecked}
-                              passedClass="bae-ib-check-box"
-                              passedClassChecked="bae-ib-check-box-checked"
-                            />
-                            <Image
-                              className="bae-ib-check-image"
-                              src={BecomeAnExpertEmailIcon}
-                            />
-                            <div className="bae-ib-check-text">Email</div>
-                          </div>
-                        </div>
-                        <div className="bae-ib-check-container">
-                          <div className="bae-ib-check">
-                            <CheckboxCustomTable
-                              handleOnClick={this.toggleTelegramCheckBox}
-                              isChecked={this.state.isTelegramChecked}
-                              passedClass="bae-ib-check-box"
-                              passedClassChecked="bae-ib-check-box-checked"
-                            />
-                            <Image
-                              className="bae-ib-check-image"
-                              src={BecomeAnExpertTelegramIcon}
-                            />
-                            <div className="bae-ib-check-text">Telegram</div>
-                          </div>
-                          <div
-                            className={`bae-ib-check-input-container ${
-                              this.state.isTelegramChecked
-                                ? ""
-                                : "bae-ib-check-input-container-disable"
-                            }`}
-                          >
-                            <input
-                              value={this.state.userTelegramHandle}
-                              onChange={this.onUserTelegramHandleChange}
-                              onKeyDown={this.stepTwoOnKeyDown}
-                              className="inter-display-medium bae-ib-input"
-                              placeholder="Enter your handle here"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="bae-data-btns">
-                      <button
-                        onClick={this.goToFirstStep}
-                        className="bae-db-btn bae-db-backbtn inter-display-medium"
-                      >
-                        <Image
-                          className="bae-db-backbtn-icon"
-                          src={BackArrowSmartMoneyIcon}
-                        />
-                        <div>Go back</div>
-                      </button>
-                      <button
-                        className={`bae-db-btn bae-db-nextbtn inter-display-medium 
-                         ${
-                           this.state.isDoneDisabled
-                             ? "bae-db-btn-disabled"
-                             : ""
-                         }
-                          `}
-                        onClick={this.goToBecomeAnExpertCompletePage}
-                      >
-                        <span>Done</span>
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
+          <BecomeAnExpertContent
+            curStep={this.state.curStep}
+            userEmail={this.state.userEmail}
+            userName={this.state.userName}
+            userSocialAccount={this.state.userSocialAccount}
+            isNextDisabled={this.state.isNextDisabled}
+            userExpertise={this.state.userExpertise}
+            userHourlyRate={this.state.userHourlyRate}
+            userExperience={this.state.userExperience}
+            isEmailChecked={this.state.isEmailChecked}
+            isTelegramChecked={this.state.isTelegramChecked}
+            userTelegramHandle={this.state.userTelegramHandle}
+            isDoneDisabled={this.state.isDoneDisabled}
+            // Function
+            goBack={this.goBack}
+            onUserEmailChange={this.onUserEmailChange}
+            stepOneOnKeyDown={this.stepOneOnKeyDown}
+            onUserNameChange={this.onUserNameChange}
+            onUserSocialAccountChange={this.onUserSocialAccountChange}
+            goToSecondStep={this.goToSecondStep}
+            onUserExpertiseChange={this.onUserExpertiseChange}
+            onUserHourlyRateChange={this.onUserHourlyRateChange}
+            stepTwoOnKeyDown={this.stepTwoOnKeyDown}
+            toggleEmailCheckBox={this.toggleEmailCheckBox}
+            toggleTelegramCheckBox={this.toggleTelegramCheckBox}
+            onUserTelegramHandleChange={this.onUserTelegramHandleChange}
+            goToFirstStep={this.goToFirstStep}
+            goToBecomeAnExpertCompletePage={this.goToBecomeAnExpertCompletePage}
+            onUserExperienceChange={this.onUserExperienceChange}
+          />
         </div>
       </div>
     );

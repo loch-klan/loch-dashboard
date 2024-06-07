@@ -1,4 +1,4 @@
-.schedule-a-call-page-page {
+.schedule-a-call-page {
   margin-top: 9rem;
   padding: 9rem;
   padding-top: 0rem;
@@ -155,6 +155,9 @@
             }
           }
         }
+        .bae-ie-person-title {
+          margin-top: 2rem;
+        }
         .bae-ie-duration-block {
           display: flex;
           flex-wrap: wrap;
@@ -167,7 +170,7 @@
             font-size: 13px;
             cursor: pointer;
             border: 1px solid var(--cardSeperator);
-            box-shadow: var(--sidebarHoverShadow);
+            box-shadow: var(--boxShadowColorMd);
             font-size: 16px;
             &:hover {
               border-color: var(--primaryTextColor);
@@ -443,6 +446,85 @@
           border-color: var(--cardBorder) !important;
           pointer-events: none;
         }
+      }
+    }
+  }
+}
+.schedule-a-call-page-mobile {
+  width: 100%;
+  overflow: hidden;
+  margin-top: -2rem;
+  .schedule-a-call-page {
+    margin-top: 0rem;
+    padding: 0rem;
+    padding-bottom: 0rem;
+    min-width: unset;
+    .becomne-an-expert-page-block-top-gradient {
+      top: 5rem;
+    }
+    .becomne-an-expert-page-block {
+      flex-direction: column;
+      padding: 2rem;
+      .bae-info {
+        width: 100%;
+        .bae-info-explain {
+          .bae-ie-title {
+            font-size: 20px;
+          }
+          .bae-ie-desc {
+            font-size: 13px;
+            margin-top: 0.5rem;
+          }
+          .bae-ie-person-block-container {
+            .bae-ie-person-block {
+              .bae-ie-person-image {
+                height: 8rem;
+                width: 8rem;
+              }
+              .bae-ie-person-details {
+                .ep-ei-dd-nametag {
+                  font-size: 16px;
+                }
+                .ep-ei-dd-acccount-amount {
+                  .ep-ei-dd-amount {
+                    font-size: 13px;
+                  }
+                  .ep-ei-dd-acccount {
+                    font-size: 13px;
+                  }
+                }
+                .ep-ei-dd-desc {
+                  font-size: 13px;
+                  margin-top: 0.5rem;
+                }
+              }
+            }
+          }
+          .bae-ie-duration-block {
+            width: 100%;
+            display: grid;
+            overflow: hidden;
+            grid-template-columns: repeat(2, 1fr);
+            padding-bottom: 2rem;
+            gap: 1.5rem;
+            // white-space: nowrap;
+            .bae-ie-duration-item {
+              align-self: stretch;
+              padding-left: 0;
+              padding-right: 0;
+              white-space: nowrap;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 15px;
+            }
+          }
+        }
+      }
+      .bae-data {
+        width: 100%;
+        padding: 0rem;
+        margin-top: 2rem;
       }
     }
   }

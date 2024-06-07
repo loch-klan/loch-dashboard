@@ -1,7 +1,7 @@
 import { Component } from "react";
 
 import { connect } from "react-redux";
-import PaymentSuccessModal from "../common/PaymentSuccessModal";
+import BecomeAnExpertCompleteContent from "./BecomeAnExpertCompleteContent";
 
 class BecomeAnExpertCompletePageMobile extends Component {
   constructor(props) {
@@ -11,10 +11,10 @@ class BecomeAnExpertCompletePageMobile extends Component {
 
   render() {
     return (
-      <div className="insightsPageContainer">
-        <div className="portfolio-page-section ">
-          <PaymentSuccessModal onHide={this.props.onHide} isMobile />
-        </div>
+      <div className="schedule-a-call-complete-page-mobile">
+        <BecomeAnExpertCompleteContent
+          goToExpertsPage={this.props.goToExpertsPage}
+        />
       </div>
     );
   }

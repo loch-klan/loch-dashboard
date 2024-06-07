@@ -9,6 +9,7 @@ import BecomeAnExpertCompletePageMobile from "./BecomeAnExpertCompletePageMobile
 import "./_becomeAnExpertCompletePage.scss";
 import { Image } from "react-bootstrap";
 import { BecomeAnExpertCompleteHourGlassIcon } from "../../assets/images/icons";
+import BecomeAnExpertCompleteContent from "./BecomeAnExpertCompleteContent";
 
 class BecomeAnExpertCompletePage extends Component {
   constructor(props) {
@@ -25,14 +26,17 @@ class BecomeAnExpertCompletePage extends Component {
     if (this.state.isMobile) {
       return (
         <MobileLayout
-          handleShare={() => null}
-          isSidebarClosed={this.props.isSidebarClosed}
-          history={this.props.history}
-          currentPage={"stripe-success-page"}
+          hideShare
           hideFooter
           hideAddresses
+          history={this.props.history}
+          currentPage={"become-an-expert-complete-page"}
+          customeHomeClassName="mpcHomePageNoSidePadding"
         >
-          <BecomeAnExpertCompletePageMobile onHide={this.onHide} />
+          <BecomeAnExpertCompletePageMobile
+            goToExpertsPage={this.goToExpertsPage}
+            onHide={this.onHide}
+          />
         </MobileLayout>
       );
     }
@@ -56,27 +60,9 @@ class BecomeAnExpertCompletePage extends Component {
               />
             </div>
           </div>
-          <div className="schedule-a-call-complete-page-page inter-display-medium">
-            <div className="becomne-an-expert-page-block-top-gradient" />
-            <div className="becomne-an-expert-page-block">
-              <Image
-                src={BecomeAnExpertCompleteHourGlassIcon}
-                className="bae-pb-image"
-              />
-              <div className="bae-pb-title">Application in review..</div>
-              <div className="bae-pb-desc">
-                While we review, you can start browse
-                <br />
-                Loch and check out other experts
-              </div>
-              <button
-                onClick={this.goToExpertsPage}
-                className="bae-pb-btn inter-display-medium"
-              >
-                Browse other experts
-              </button>
-            </div>
-          </div>
+          <BecomeAnExpertCompleteContent
+            goToExpertsPage={this.goToExpertsPage}
+          />
         </div>
       </div>
     );
