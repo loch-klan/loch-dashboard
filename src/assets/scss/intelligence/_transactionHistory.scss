@@ -365,7 +365,7 @@
   }
 }
 .transaction-table-loading-wrapper-smaller {
-  height: 32rem;
+  height: 35rem;
   .animation-wrapper {
     height: 100%;
   }
@@ -375,6 +375,7 @@
 }
 .transaction-history-table {
   min-width: 85rem;
+  min-height: 40rem !important;
   .loadingSizeContainer {
     height: 50vh;
     display: flex;
@@ -389,16 +390,25 @@
 }
 
 .transaction-table-section {
+  position: relative;
+  .not-found-mini-wrapper-floating {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+  }
   .table-wrapper {
     flex: 1;
     .not-found-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 42rem;
+      height: 45rem;
     }
     .not-found-mini-wrapper {
       height: 42rem;
+      padding: 5rem;
     }
   }
 }

@@ -20,6 +20,7 @@ import {
   mobileCheck,
   noExponents,
   numToCurrency,
+  openAddressInSameTab,
   scrollToBottomAfterPageChange,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
@@ -42,6 +43,7 @@ import { createAnonymousUserSmartMoneyApi, getSmartMoney } from "./Api.js";
 import ConformSmartMoneyLeaveModal from "./ConformSmartMoneyLeaveModal.js";
 
 import {
+  CopyTradeWelcomeAddressAdded,
   SmartMoneyChangeLimit,
   SmartMoneyFAQClicked,
   SmartMoneyHowItWorksClicked,
@@ -96,6 +98,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     this.state = {
       addressToNotify: "",
       showNotifyOnTransactionModal: false,
+      lochUserState: window.localStorage.getItem("lochToken"),
       mobilePopupModal: false,
       signInModalAnimation: true,
       signInModal: false,
@@ -107,7 +110,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       blurTable: true,
       addSmartMoneyAddressModal: false,
       pageLimit: 1,
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -147,14 +150,14 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       ],
       showDust: false,
       // add new wallet
-      // userWalletList: window.sessionStorage.getItem("addWallet")
-      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      // userWalletList: window.localStorage.getItem("addWallet")
+      //   ? JSON.parse(window.localStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -165,9 +168,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
       // this is used in chain detect api to check it call from top accout or not
       topAccountPage: true,
-      walletInput: [
-        JSON.parse(window.sessionStorage.getItem("previewAddress")),
-      ],
+      walletInput: [JSON.parse(window.localStorage.getItem("previewAddress"))],
       goToBottom: false,
 
       showClickSignInText: false,
@@ -215,7 +216,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -279,8 +280,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       }
     }
     getAllCurrencyRatesApi();
-    let token = window.sessionStorage.getItem("lochToken");
-    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let token = window.localStorage.getItem("lochToken");
+    let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
 
     if (token && lochUser && lochUser.email) {
       this.setState({
@@ -304,7 +305,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         });
       }
     }
-    // window.sessionStorage.setItem("previewAddress", "");
+    // window.localStorage.setItem("previewAddress", "");
     this.props.history.replace({
       search: `?p=${this.state.currentPage}`,
     });
@@ -318,18 +319,18 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     this.updateTimer(true);
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "smartMoneyPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkSmartMoneyTimer);
-    window.sessionStorage.removeItem("smartMoneyPageExpiryTime");
+    window.localStorage.removeItem("smartMoneyPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -342,7 +343,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "smartMoneyPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -350,7 +351,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "smartMoneyPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -400,9 +401,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       this.callApi(this.state.currentPage || START_INDEX);
     }
     if (!this.props.commonState.smart_money) {
-      let token = window.sessionStorage.getItem("lochToken");
+      let token = window.localStorage.getItem("lochToken");
       this.props.updateWalletListFlag("smart_money", true);
-      let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
       if (token && lochUser && lochUser.email) {
         this.setState({
           blurTable: false,
@@ -435,9 +436,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-    if (!this.state.currency && window.sessionStorage.getItem("currency")) {
+    if (!this.state.currency && window.localStorage.getItem("currency")) {
       this.setState({
-        currency: JSON.parse(window.sessionStorage.getItem("currency")),
+        currency: JSON.parse(window.localStorage.getItem("currency")),
       });
     }
     if (
@@ -725,6 +726,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     // this.createEmptyUser();
   };
   handleFollowUnfollow = (walletAddress, addItem, tagName) => {
+    if (!window.localStorage.getItem("lochToken")) {
+      return;
+    }
     let tempWatchListata = new URLSearchParams();
     if (addItem) {
       // TopAccountAddAccountToWatchList({
@@ -738,11 +742,11 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       tempWatchListata.append("remarks", "");
       tempWatchListata.append("name_tag", tagName);
       this.props.updateAddToWatchList(tempWatchListata);
-      const tempIsModalPopuRemoved = window.sessionStorage.getItem(
+      const tempIsModalPopuRemoved = window.localStorage.getItem(
         "smartMoneyMobilePopupModal"
       );
       if (!tempIsModalPopuRemoved) {
-        window.sessionStorage.setItem("smartMoneyMobilePopupModal", "true");
+        window.localStorage.setItem("smartMoneyMobilePopupModal", "true");
         this.setState({
           mobilePopupModal: true,
         });
@@ -784,7 +788,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
       isMobile: true,
     });
-    let shareLink = BASE_URL_S3 + "leaderboard";
+    let shareLink = BASE_URL_S3 + "home-leaderboard";
     this.copyTextToClipboard(shareLink);
   };
   openNotifyOnTransactionModal = (passedAddress) => {
@@ -826,6 +830,21 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
   };
+  goToAddress = (slink) => {
+    SmartMoneyWalletClicked({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      wallet: slink,
+    });
+    openAddressInSameTab(slink, this.props.setPageFlagDefault);
+  };
+  funAfterUserCreate = () => {
+    CopyTradeWelcomeAddressAdded({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      page: "Smart money page",
+    });
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -837,9 +856,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Rank
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Rank</span>
             {/* <Image
           src={sortByIcon}
           className={
@@ -880,9 +897,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="Accounts"
             // onClick={() => this.handleSort(this.state.tableSortOpt[0].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Wallet
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Wallet</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -900,16 +915,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             return (
               <span
                 onClick={() => {
-                  let slink = rowData.account;
-                  let shareLink =
-                    BASE_URL_S3 + "home/" + slink + "?noPopup=true";
-
-                  SmartMoneyWalletClicked({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    wallet: slink,
-                  });
-                  window.open(shareLink, "_blank", "noreferrer");
+                  this.goToAddress(rowData.account);
                 }}
                 className="top-account-address table-data-font"
               >
@@ -926,9 +932,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="tagName"
             // onClick={() => this.handleSort(this.state.tableSortOpt[5].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Nametag
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Nametag</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -978,7 +982,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="networth"
             // onClick={() => this.handleSort(this.state.tableSortOpt[1].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Net worth
             </span>
             {/* <Image
@@ -1038,7 +1042,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       {
         labelName: (
           <div className=" history-table-header-col no-hover" id="netflows">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Net flows (1 year)
             </span>
           </div>
@@ -1124,7 +1128,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Unrealized PnL
             </span>
             {/* <Image
@@ -1214,9 +1218,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Follow
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Follow</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -1242,6 +1244,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               <CheckboxCustomTable
                 handleOnClick={handleOnClick}
                 isChecked={rowData.following}
+                dontSelectIt={!this.state.lochUserState ? true : false}
               />
             );
           }
@@ -1280,7 +1283,21 @@ class HomeSmartMoneyPage extends BaseReactComponent {
 
     if (mobileCheck()) {
       return (
-        <MobileLayout hideFooter history={this.props.history}>
+        <MobileLayout
+          isAddNewAddressLoggedIn={
+            !this.state.lochUserState || this.state.lochUserState === "jsk"
+          }
+          handleShare={this.handleShare}
+          hideFooter
+          history={this.props.history}
+          hideAddresses
+          hideShare
+          isAddNewAddress={
+            !this.state.lochUserState || this.state.lochUserState === "jsk"
+          }
+          goToPageAfterLogin="/home"
+          funAfterUserCreate={this.funAfterUserCreate}
+        >
           {this.state.showNotifyOnTransactionModal ? (
             <NotifyOnTransactionSizeModal
               show={this.state.showNotifyOnTransactionModal}
@@ -1291,6 +1308,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             />
           ) : null}
           <HomeSmartMoneyMobile
+            isNoUser={!this.state.lochUserState}
+            goToAddress={this.goToAddress}
             accountList={this.state.accountList}
             currency={this.state.currency}
             openNotifyOnTransactionModal={this.openNotifyOnTransactionModal}
@@ -1331,6 +1350,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             >
               <div className="portfolio-section">
                 <WelcomeCard
+                  funAfterUserCreate={this.funAfterUserCreate}
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
                   connectedWalletevents={this.props.connectedWalletevents}
@@ -1343,6 +1363,15 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   // add wallet address modal
                   updateTimer={this.updateTimer}
                   handleAddModal={this.handleAddModal}
+                  isAddNewAddress={
+                    !this.state.lochUserState ||
+                    this.state.lochUserState === "jsk"
+                  }
+                  isAddNewAddressLoggedIn={
+                    !this.state.lochUserState ||
+                    this.state.lochUserState === "jsk"
+                  }
+                  goToPageAfterLogin="/home"
                 />
               </div>
             </div>
@@ -1450,7 +1479,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   show={this.state.upgradeModal}
                   onHide={this.upgradeModal}
                   history={this.props.history}
-                  isShare={window.sessionStorage.getItem("share_id")}
+                  isShare={window.localStorage.getItem("share_id")}
                   isStatic={this.state.isStatic}
                   triggerId={this.state.triggerId}
                   pname="treansaction history"
@@ -1511,7 +1540,11 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                         minimalPagination
                         noSubtitleBottomPadding
                         tableData={tableData}
-                        columnList={columnList}
+                        columnList={
+                          this.state.lochUserState
+                            ? columnList
+                            : columnList.slice(0, columnList.length - 1)
+                        }
                         message={"No accounts found"}
                         totalPage={this.state.totalPage}
                         history={this.props.history}

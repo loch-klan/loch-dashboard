@@ -23,7 +23,7 @@
       &:hover {
         filter: brightness(0.9);
       }
-      .smartMoneyPaginationArrow{
+      .smartMoneyPaginationArrow {
         filter: var(--invertColor);
       }
     }
@@ -78,6 +78,20 @@
     input[type="number"]::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0;
+    }
+    .smartMoneyPaginationContainerInput {
+      background-color: transparent !important;
+      border: 0.1rem solid #d4d4d4;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04),
+        0px 1px 1px rgba(0, 0, 0, 0.04);
+      border-radius: 0.8rem;
+      height: 4rem;
+      width: 3.5rem;
+      text-align: center;
+      color: var(--primaryTextColor);
+      &:focus-visible {
+        outline: none;
+      }
     }
   }
 }
@@ -217,7 +231,7 @@
       text-align: center;
       display: flex;
       align-items: center;
-
+      gap: 1rem;
       .smartMoneyPaginationOfTxt {
         margin: 0rem 1rem;
         color: #b0b1b3;
@@ -232,7 +246,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        .smartMoneyPaginationArrow{
+        .smartMoneyPaginationArrow {
           filter: var(--invertColor);
         }
         &:hover {
@@ -243,7 +257,7 @@
         cursor: default;
         filter: opacity(0.5);
         &:hover {
-          filter:opacity(0.5);
+          filter: opacity(0.5);
         }
         .smartMoneyPaginationArrow {
           height: 1rem;

@@ -1,5 +1,17 @@
+export { default as GreekOne } from "./GreekOne.png";
+export { default as GreekTwo } from "./GreekTwo.png";
+export { default as GreekTwoShadow } from "./GreekTwoShadow.png";
+export { default as GreekThree } from "./GreekThree.png";
+export { default as WhaleTail } from "./WhaleTail.png";
+export { default as LochBigLogoCopyTradeWelcome } from "./LochBigLogoCopyTradeWelcome.png";
 export { default as EditIcon } from "./EditIcon.svg";
 export { default as SmartMoneyAboutMobileImage } from "./SmartMoneyAboutMobile.png";
 export { default as SmartMoneyAboutImage } from "./SmartMoneyAbout.png";
 export { default as CopyClipboardIcon } from "./CopyClipboardIcon.svg";
 export { default as SmartMoneyAboutDarkImage } from "./SmartMoneyAboutDark.png";
+export { default as LochPremiumTooltipImage } from "./loch-premium-tooltip.png";
+export { default as LochPremiumTooltipDarkImage } from "./loch-premium-tooltip-dark.png";
+export { default as PaywallSuccessLochLogoImage } from "./PaywallSuccessLochLogo.png";
+export { default as PaywallSuccessLochLogoMobileImage } from "./PaywallSuccessLochLogoMobile.png";
+export { default as DummyHomePageImage } from "./DummyHomePage.png";
+export { default as DummyProfilePageImage } from "./DummyProfilePage.png";

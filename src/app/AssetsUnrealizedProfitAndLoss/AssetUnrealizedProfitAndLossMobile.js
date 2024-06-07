@@ -19,7 +19,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
           }}
           className="mobile-header-container"
         >
-          <h4>Assets</h4>
+          <h4>Tokens</h4>
           <p>Understand your unrealized profit and loss per token</p>
         </div>
         <div
@@ -71,7 +71,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               noSubtitleBottomPadding
               disableOnLoading
               isMiniversion
-              message="No assets found"
+              message="No tokens found"
               tableData={this.props.tableData}
               columnList={this.props.columnData}
               headerHeight={60}

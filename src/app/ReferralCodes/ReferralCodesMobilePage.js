@@ -67,7 +67,7 @@ class ReferralCodesPage extends BaseReactComponent {
                       >
                         Twitter
                       </span>
-                      ,{" "}
+                      <span> or </span>
                       <span
                         onClick={() => {
                           this.props.getMoreReferralCodes("telegram");
@@ -75,15 +75,6 @@ class ReferralCodesPage extends BaseReactComponent {
                         className="psrcb-text-btn"
                       >
                         Telegram
-                      </span>
-                      , or email at{" "}
-                      <span
-                        onClick={() => {
-                          this.props.getMoreReferralCodes("email");
-                        }}
-                        className="psrcb-text-btn"
-                      >
-                        prithvir@loch.one
                       </span>
                     </div>
                   </div>

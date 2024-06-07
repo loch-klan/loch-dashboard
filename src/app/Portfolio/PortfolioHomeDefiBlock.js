@@ -70,7 +70,7 @@ class PortfolioHomeDefiBlock extends Component {
     this.setState({
       defiLoader: true,
     });
-    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let UserWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     if (UserWallet?.length !== 0) {
       const allAddresses = [];
       UserWallet?.forEach((e) => {
@@ -515,7 +515,7 @@ class PortfolioHomeDefiBlock extends Component {
                                 <Col md={3}>
                                   <div className="header-col">
                                     <span className="inter-display-medium f-s-12 lh-15 secondaryDarkText secondaryDarkText-nohover">
-                                      Asset
+                                      Token
                                     </span>
                                   </div>
                                 </Col>
@@ -704,7 +704,7 @@ class PortfolioHomeDefiBlock extends Component {
               <div
                 style={{
                   textAlign: "center",
-                  height: "23rem",
+                  height: "26rem",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",

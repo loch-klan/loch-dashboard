@@ -72,10 +72,10 @@ export default function WelcomeCard(props) {
       }
     }, 200);
   };
-  let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+  let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
   const [popupModal, setpopupModal] = React.useState(false);
   const handlePopup = () => {
-    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
       setTimeout(() => {
@@ -98,7 +98,7 @@ export default function WelcomeCard(props) {
     props?.assetTotal && ((difference / props?.assetTotal) * 100).toFixed(2);
   const changeCurrentAccount = () => {
     const temp = JSON.parse(
-      window.sessionStorage.getItem("previewAddressGoToWhaleWatch")
+      window.localStorage.getItem("previewAddressGoToWhaleWatch")
     );
     if (temp && temp.goToWhaleWatch) {
       props?.history.push("/whale-watch");
@@ -123,6 +123,10 @@ export default function WelcomeCard(props) {
   if (props.isMobileRender) {
     return (
       <TopWalletExchangeBar
+        shouldGoToHomeAfterReplace={props.shouldGoToHomeAfterReplace}
+        isAddNewAddressLoggedIn={props.isAddNewAddressLoggedIn}
+        goToPageAfterLogin={props.goToPageAfterLogin}
+        funAfterUserCreate={props.funAfterUserCreate}
         connectedWalletAddress={props.connectedWalletAddress}
         connectedWalletevents={props.connectedWalletevents}
         changeWalletList={props.changeWalletList}
@@ -257,14 +261,20 @@ export default function WelcomeCard(props) {
     //     ""
     //   )}
     // </div>
-    <div className="welcome-card-section-topbar">
+    <div
+      className={`welcome-card-section-topbar ${
+        props.isBlurred ? "welcome-card-section-topbar-blurred" : ""
+      }`}
+    >
       <div
         className={`welcome-card-topbar ${
           props.isSidebarClosed ? "welcome-card-topbar-closed" : ""
-        }`}
+        } ${props.isBlurred ? "welcome-card-topbar-blurred" : ""}`}
       >
         <div
-          className="row-div"
+          className={`row-div ${
+            props.isBlurred ? "welcome-card-topbar-input-blurred" : ""
+          }`}
           style={{
             display: "flex",
             flex: 1,
@@ -295,19 +305,18 @@ export default function WelcomeCard(props) {
                 <div className="accounNameId">
                   <span className="account-name grey-313">
                     {TruncateText(
-                      JSON.parse(
-                        window.sessionStorage.getItem("previewAddress")
-                      )?.address
+                      JSON.parse(window.localStorage.getItem("previewAddress"))
+                        ?.address
                     )}
                   </span>
-                  {JSON.parse(window.sessionStorage.getItem("previewAddress"))
+                  {JSON.parse(window.localStorage.getItem("previewAddress"))
                     ?.nameTag ? (
                     <span className="grey-313">
                       {" "}
                       (
                       {
                         JSON.parse(
-                          window.sessionStorage.getItem("previewAddress")
+                          window.localStorage.getItem("previewAddress")
                         )?.nameTag
                       }
                       )
@@ -325,6 +334,14 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              shouldGoToHomeAfterReplace={props.shouldGoToHomeAfterReplace}
+              goToPageAfterLogin={props.goToPageAfterLogin}
+              funAfterUserCreate={props.funAfterUserCreate}
+              isAddNewAddress={props.isAddNewAddress}
+              isAddNewAddressLoggedIn={props.isAddNewAddressLoggedIn}
+              hideFocusedInput={props.hideFocusedInput}
+              focusOriginalInputBar={props.focusOriginalInputBar}
+              isBlurred={props.isBlurred}
               connectedWalletAddress={props.connectedWalletAddress}
               connectedWalletevents={props.connectedWalletevents}
               updateOnFollow={props.updateOnFollow}

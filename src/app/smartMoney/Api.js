@@ -209,7 +209,7 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
           let isOptValid = res.data.data.otp_verified;
           let token = res.data.data.token;
 
-          //  window.sessionStorage.setItem(
+          //  window.localStorage.setItem(
           //    "currentPlan",
           //    JSON.stringify(res.data.data?.current_plan)
           //  );
@@ -244,7 +244,7 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
             influencer_pod_limit: -1,
           };
           // free pricing
-          window.sessionStorage.setItem(
+          window.localStorage.setItem(
             "currentPlan",
             JSON.stringify({
               ...plan,
@@ -252,13 +252,13 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
             })
           );
 
-          window.sessionStorage.setItem("lochToken", token);
+          window.localStorage.setItem("lochToken", token);
           setTimeout(() => {
             ctx.props.setPageFlagDefault && ctx.props.setPageFlagDefault();
           }, 500);
 
-          window.sessionStorage.removeItem("lochDummyUser");
-          let obj = JSON.parse(window.sessionStorage.getItem("lochUser"));
+          window.localStorage.removeItem("lochDummyUser");
+          let obj = JSON.parse(window.localStorage.getItem("lochUser"));
           obj = {
             ...obj,
             first_name: res.data.data.user?.first_name,
@@ -269,7 +269,7 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
             referred_by: res.data.data.user?.referred_by,
           };
 
-          window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+          window.localStorage.setItem("lochUser", JSON.stringify(obj));
 
           if (isOptValid) {
             if (ctx.emailIsVerified) {
@@ -303,19 +303,16 @@ export const VerifySmartMoneyEmailOtp = (data, ctx, passedEmail, isMobile) => {
 };
 export const createAnonymousUserSmartMoneyApi = (data) => {
   return function (dispatch, getState) {
-    window.sessionStorage.setItem("stopClick", false);
+    window.localStorage.setItem("stopClick", false);
 
-    window.sessionStorage.setItem("lochToken", "jsk");
+    window.localStorage.setItem("lochToken", "jsk");
 
     postLoginInstance
       .post("organisation/user/create-user", data)
       .then((res) => {
         if (!res.data.error) {
-          window.sessionStorage.setItem(
-            "lochDummyUser",
-            res.data.data.user.link
-          );
-          window.sessionStorage.setItem("lochToken", res.data.data.token);
+          window.localStorage.setItem("lochDummyUser", res.data.data.user.link);
+          window.localStorage.setItem("lochToken", res.data.data.token);
 
           let plan = {
             defi_enabled: true,
@@ -347,7 +344,7 @@ export const createAnonymousUserSmartMoneyApi = (data) => {
             influencer_pod_limit: -1,
           };
           // free pricing
-          window.sessionStorage.setItem(
+          window.localStorage.setItem(
             "currentPlan",
             JSON.stringify({
               ...plan,
@@ -355,7 +352,7 @@ export const createAnonymousUserSmartMoneyApi = (data) => {
             })
           );
 
-          window.sessionStorage.setItem("stopClick", true);
+          window.localStorage.setItem("stopClick", true);
         } else {
           // toast.error(res.data.message || "Something Went Wrong");
         }
@@ -367,8 +364,8 @@ export const verifyEmailLinkApi = (ctx, data) => {
     .post("organisation/user/verify-email", data)
     .then((res) => {
       if (!res.data.error) {
-        window.sessionStorage.setItem("lochToken", res.data?.data?.token);
-        window.sessionStorage.setItem("stopClick", true);
+        window.localStorage.setItem("lochToken", res.data?.data?.token);
+        window.localStorage.setItem("stopClick", true);
         let plan = {
           defi_enabled: true,
           export_address_limit: -1,
@@ -398,7 +395,7 @@ export const verifyEmailLinkApi = (ctx, data) => {
           whale_pod_limit: -1,
           influencer_pod_limit: -1,
         };
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "currentPlan",
           JSON.stringify({
             ...plan,
@@ -415,7 +412,7 @@ export const verifyEmailLinkApi = (ctx, data) => {
           referred_by: res.data.data.user?.referred_by,
         };
 
-        window.sessionStorage.setItem("lochUser", JSON.stringify(obj));
+        window.localStorage.setItem("lochUser", JSON.stringify(obj));
 
         setLocalStoraage();
 

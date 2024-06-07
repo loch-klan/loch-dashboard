@@ -55,9 +55,9 @@ import USDT_ABI from "./USDT_ABI.json";
 class UpgradeModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    const Plans = JSON.parse(window.sessionStorage.getItem("Plans"));
+    const dummyUser = window.localStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    const Plans = JSON.parse(window.localStorage.getItem("Plans"));
 
     let AllPlan = Plans?.map((plan) => {
       let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
@@ -246,7 +246,7 @@ class UpgradeModal extends BaseReactComponent {
       hideUpgradeModal: false,
       RegisterModal: false,
       price_id: 0,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")) || {
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")) || {
         price: 0,
         price_id: "",
         name: "Free",
@@ -285,7 +285,7 @@ class UpgradeModal extends BaseReactComponent {
           },
         ],
       },
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
       selectedPlan: selectedPlan || "",
 
       //
@@ -322,7 +322,10 @@ class UpgradeModal extends BaseReactComponent {
   handleAccountCreate = () => {
     //   console.log("create email", this.state.email);
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     SendOtp(data, this);
 
     // WhaleCreateAccountEmailSaved({
@@ -364,14 +367,14 @@ class UpgradeModal extends BaseReactComponent {
 
   AddEmailModal = () => {
     // console.log("handle emailc close");
-    const isDummy = window.sessionStorage.getItem("lochDummyUser");
-    const islochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isDummy = window.localStorage.getItem("lochDummyUser");
+    const islochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (islochUser) {
       this.setState(
         {
           RegisterModal: false,
           email: islochUser?.email || "",
-          isLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+          isLochUser: JSON.parse(window.localStorage.getItem("lochUser")),
         },
         () => {
           this.checkoutModal();
@@ -392,7 +395,7 @@ class UpgradeModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
     if (this.props.selectedId) {
       this.AddEmailModal();
     }
@@ -412,14 +415,14 @@ class UpgradeModal extends BaseReactComponent {
 
     if (!this.state.isLochUser) {
       this.setState({
-        isLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+        isLochUser: JSON.parse(window.localStorage.getItem("lochUser")),
       });
     }
   }
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
 
   componentDidUpdate(prevProps, prevState) {}
@@ -448,7 +451,7 @@ class UpgradeModal extends BaseReactComponent {
       {
         signinModal: !this.state.signinModal,
         hideModal: true,
-        isLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+        isLochUser: JSON.parse(window.localStorage.getItem("lochUser")),
       },
       () => {
         if (this.state.signinModal)
@@ -463,7 +466,7 @@ class UpgradeModal extends BaseReactComponent {
   };
 
   handleAskEmail = (emailUpdated = false) => {
-    let user = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let user = JSON.parse(window.localStorage.getItem("lochUser"));
     // console.log("user",user)
     if (!user?.email || emailUpdated) {
       // console.log("user", user?.email);
@@ -540,9 +543,7 @@ class UpgradeModal extends BaseReactComponent {
   getAmount = async () => {
     const exchangeRates = await this.getExchangeRates();
     // eth rate
-    let ethRateList = JSON.parse(
-      window.sessionStorage.getItem("currencyRates")
-    );
+    let ethRateList = JSON.parse(window.localStorage.getItem("currencyRates"));
 
     // usd to eth
     let ethPrice = ethRateList.rates.ETH * this.state.selectedPlan?.price;
@@ -774,7 +775,7 @@ class UpgradeModal extends BaseReactComponent {
       {
         RegisterModal: false,
         btnloader: false,
-        isLochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+        isLochUser: JSON.parse(window.localStorage.getItem("lochUser")),
       },
       () => {
         this.checkoutModal();
@@ -805,15 +806,15 @@ class UpgradeModal extends BaseReactComponent {
   // Signin wit wallet
   SigninWallet = () => {
     // get device id
-    const deviceId = window.sessionStorage.getItem("deviceId") || uuidv4();
+    const deviceId = window.localStorage.getItem("deviceId") || uuidv4();
 
-    if (!window.sessionStorage.getItem("deviceId")) {
+    if (!window.localStorage.getItem("deviceId")) {
       // console.log("no device id");
-      window.sessionStorage.setItem("deviceId", deviceId);
+      window.localStorage.setItem("deviceId", deviceId);
     }
 
-    if (!window.sessionStorage.getItem("connectWalletAddress")) {
-      window.sessionStorage.setItem(
+    if (!window.localStorage.getItem("connectWalletAddress")) {
+      window.localStorage.setItem(
         "connectWalletAddress",
         this.state.MetaAddress
       );

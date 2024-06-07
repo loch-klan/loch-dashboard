@@ -116,7 +116,7 @@
       justify-content: center;
       .msmpModalSignOutBlock {
         max-width: 70vw;
-        background-color: white;
+        background-color: var(--cardBackgroud);
         padding: 3rem;
         border-radius: 2rem;
         .msmModalBtnContainer {
@@ -129,9 +129,9 @@
             width: 100%;
             border-radius: 1rem;
             padding: 1.5rem 2rem;
-            background-color: var(--black191);
-            border-color: var(--black191);
-            color: white;
+            background-color: var(--primaryTextColor);
+            border-color: var(--primaryTextColor);
+            color: var(--cardBackgroud);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -243,15 +243,16 @@
         }
         .msmpModalHowItWorks {
           width: 100%;
-          height: 28rem;
+          height: 25rem;
           position: absolute;
           object-fit: cover;
           object-position: bottom;
-          z-index: 1;
+          // z-index: 0;
           top: 0;
           left: 0;
-          border-top-left-radius: 2rem;
-          border-top-right-radius: 2rem;
+          border-top-left-radius: 1.1rem;
+          border-top-right-radius: 1.1rem;
+          content: var(--abountSmartMoneyIamge);
         }
         // .msmpBigIcon {
         //   height: 3.5rem;
@@ -286,13 +287,16 @@
             padding: 1.3rem;
             top: 0;
             right: 0;
-            background-color: rgba(229, 229, 230, 0.5);
+            background-color: var(--greyCardBackgroud);
             border-radius: 5rem;
             cursor: pointer;
             transition: all 0.4s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            img {
+              filter: var(--invertColor);
+            }
           }
         }
         .msmpModalMainIconDirectImage {
@@ -337,7 +341,7 @@
             padding: 1rem;
             border-radius: 0.5rem;
             margin-top: 1rem;
-            background-color: var(--cardBackgroud);
+            background-color: var(--leaderboardFaqBlocksMobile);
           }
         }
         .msmpModalAboutHeading {
@@ -350,13 +354,17 @@
           transform: translateY(-10rem);
           padding: 4rem 0rem;
           .msmpModalAboutContentBlock {
-            border: 0.1rem solid #e5e5e6;
+            border: 0.1rem solid var(--abountSmartMoneyTextBlockBorder);
             width: 100%;
             height: 100%;
             border-radius: 2rem;
-            overflow: scroll;
             padding: 2rem;
             max-height: 35vh;
+            background-color: var(--abountSmartMoneyTextBlock);
+            .msmpModalAboutContentBlockChild {
+              max-height: 30vh;
+              overflow-y: scroll;
+            }
             .smartMoneyHowItWorksTextLine {
               margin-top: 2rem;
             }

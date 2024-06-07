@@ -32,15 +32,15 @@ function App(props) {
     };
   }, []);
   useEffect(() => {
-    const isRendered = window.sessionStorage.getItem("isRendered");
+    const isRendered = window.localStorage.getItem("isRendered");
     if (!isRendered) {
       setTimeout(() => {
-        window.sessionStorage.setItem("isRendered", true);
+        window.localStorage.setItem("isRendered", true);
         window.location.reload(true);
       }, 1000);
     }
     return () => {
-      window.sessionStorage.removeItem("isRendered");
+      window.localStorage.removeItem("isRendered");
     };
   }, []);
   useEffect(() => {
@@ -96,7 +96,7 @@ function App(props) {
         newestOnTop={false}
         // closeOnClick
         closeButton={false}
-        rtl={false}
+        rtl
         pauseOnFocusLoss
         draggable
         pauseOnHover

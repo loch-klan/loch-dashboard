@@ -12,6 +12,7 @@ import {
   TransactionHistoryHover,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { openSignInModalFromAnywhere } from "../../utils/ReusableFunctions";
 export const GraphHeader = (props) => {
   const handleClickPass = () => {
     if (props.disableOnLoading) {
@@ -22,6 +23,16 @@ export const GraphHeader = (props) => {
       if (props.handleClick) {
         props.handleClick();
       }
+    }
+  };
+  const exprotPassThrough = () => {
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (isLochUser && isLochUser.email) {
+      if (props.handleExportModal) {
+        props.handleExportModal();
+      }
+    } else {
+      openSignInModalFromAnywhere();
     }
   };
   return (
@@ -96,7 +107,7 @@ export const GraphHeader = (props) => {
             </div>
             {props.ExportBtn ? (
               <div
-                onClick={props.handleExportModal}
+                onClick={exprotPassThrough}
                 className="pageHeaderShareContainer"
                 style={{
                   marginRight: props.ShareBtn ? "0.5rem" : "",

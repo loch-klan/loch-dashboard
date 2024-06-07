@@ -34,8 +34,8 @@ import { VerifySmartMoneyEmailOtp } from "./Api.js";
 class AuthSmartMoneyModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const dummyUser = window.localStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.state = {
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
@@ -65,14 +65,14 @@ class AuthSmartMoneyModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
     // this.props.getAllCoins();
     // this.props.getAllParentChains();
   }
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -95,7 +95,10 @@ class AuthSmartMoneyModal extends BaseReactComponent {
   handleAccountCreate = () => {
     //   console.log("create email", this.state.email);
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     SendOtp(data, this);
   };
 
@@ -141,15 +144,15 @@ class AuthSmartMoneyModal extends BaseReactComponent {
   // Signin wit wallet
   SigninWallet = () => {
     // get device id
-    const deviceId = window.sessionStorage.getItem("deviceId") || uuidv4();
+    const deviceId = window.localStorage.getItem("deviceId") || uuidv4();
 
-    if (!window.sessionStorage.getItem("deviceId")) {
+    if (!window.localStorage.getItem("deviceId")) {
       // console.log("no device id");
-      window.sessionStorage.setItem("deviceId", deviceId);
+      window.localStorage.setItem("deviceId", deviceId);
     }
 
-    if (!window.sessionStorage.getItem("connectWalletAddress")) {
-      window.sessionStorage.setItem(
+    if (!window.localStorage.getItem("connectWalletAddress")) {
+      window.localStorage.setItem(
         "connectWalletAddress",
         this.state.MetaAddress
       );

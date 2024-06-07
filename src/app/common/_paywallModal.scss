@@ -11,14 +11,103 @@
         width: 3rem !important;
       }
     }
+    .api-modal-header-mobile {
+      padding: 1.2rem !important;
+      border-radius: 1.5rem !important;
+      img {
+        height: 2.8rem !important;
+        width: 2.8rem !important;
+      }
+    }
   }
   .modal-content {
     width: 100rem !important;
+    position: relative;
+    overflow: hidden;
+
+    .modal-purple-top-gradient {
+      z-index: 0;
+      width: 75%;
+      height: 25%;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      filter: blur(60px);
+      transform: translateX(-50%) translateY(-50%);
+      background: linear-gradient(
+        90deg,
+        #7b44da 0%,
+        #6e19ff 11%,
+        #ac96c8 30%,
+        #7c97d4 40.5%,
+        #be99fd 61%,
+        #976edd 80.5%,
+        #7738e4 90.5%
+      );
+      opacity: 0.6;
+    }
+    .modal-header {
+      z-index: 1;
+      .popup-main-icon-with-border {
+        background-color: var(--cardBackgroud) !important;
+      }
+    }
   }
 }
 .pay-wall-options-modal {
   .modal-content {
     width: 90rem !important;
+  }
+}
+.pay-wall-success-modal {
+  .modal-content {
+    height: 60rem !important;
+    .modal-header {
+      padding-top: 0rem !important;
+      padding-bottom: 0rem !important;
+      .paywall-success-modal-header-icon {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .paywall-success-modal-header-image {
+          height: 18rem;
+        }
+      }
+      .paywall-success-modal-header-icon-mobile {
+        position: absolute;
+        top: 0;
+        left: 0;
+        .paywall-success-modal-header-image {
+          height: unset;
+          width: 90%;
+        }
+      }
+    }
+    .paywall-body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      .paywall-body-padding {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .paywall-success-modal-body-btn {
+          background-color: var(--purpleHighlight);
+          color: var(--primaryBackgroud);
+          padding: 1.4rem 11rem;
+          border-radius: 0.8rem;
+          margin-top: 3rem;
+          font-size: 16px;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+    }
   }
 }
 .pay-wall-modal {
@@ -30,7 +119,7 @@
       padding: 0rem 2.8rem;
     }
     .ctpb-sub-text {
-      color: var(--grey5b5b);
+      color: var(--payModalDescText);
     }
     .ctpb-banner {
       display: flex;
@@ -56,12 +145,12 @@
       align-items: flex-start;
       justify-content: center;
       column-gap: 2rem;
-      margin-top: 3rem;
+      margin: 3rem 0rem;
       .ctpb-plan {
         padding: 1.5rem 1.8rem;
         border: 0.15rem solid var(--sidebarSectionalBOrder);
         border-radius: 10px;
-        width: 33rem;
+        width: 35rem;
         box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem rgba(24, 39, 75, 0.05),
           0rem 0.63099rem 0.63099rem -0.31549rem rgba(24, 39, 75, 0.05);
         .ctpb-plan-header {
@@ -141,18 +230,38 @@
           }
         }
         .ctpb-plan-purple-button {
-          background-color: var(--swapContainer);
-          color: var(--purpleHighlight);
+          background-color: var(--payModalBg);
+          color: var(--payModalPurpleText);
           margin-bottom: 1.5rem;
           font-weight: 500;
-          .ctpb-plan-purple-button-icon {
-            margin-right: 0.5rem;
-            height: 20px;
+          flex-direction: column;
+          .ctpb-plan-purple-button-child {
+            opacity: var(--payModalBgOpacity);
+            width: 100%;
             display: flex;
             align-items: center;
-            justify-content: center;
-            svg {
-              height: 100%;
+            justify-content: flex-start;
+            font-size: 1.5rem;
+            padding: 0.5rem 0rem;
+
+            .ctpb-plan-purple-button-icon {
+              margin-right: 0.5rem;
+              min-height: 1rem;
+              height: 1rem;
+            }
+            .ctpb-plan-purple-button-bullet {
+              height: 0.7rem;
+              width: 0.7rem;
+              border-radius: 50%;
+              background-color: var(--payModalPurpleText);
+              margin: 0rem 0.5rem;
+            }
+          }
+          .ctpb-plan-purple-button-child-extra-text {
+            padding: 0rem;
+            margin-top: -0.5rem;
+            .ctpb-plan-purple-button-icon {
+              opacity: 0;
             }
           }
         }
@@ -175,6 +284,9 @@
       }
       .ctpb-plan-selected {
         border-color: var(--black191);
+      }
+      .ctpb-plan-selected-shadow {
+        box-shadow: 0px 0px 35px 0px rgba(123, 68, 150, 0.35);
       }
     }
     .ctpb-plans-payment-container {
@@ -210,7 +322,20 @@
             }
           }
         }
+        .ctpb-plan-payment-button-grey {
+          background-color: var(--referallUsedBtn);
+          border-color: var(--referallUsedBtn);
+        }
+        .ctpb-plan-payment-button-multiple-months {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-color: var(--grey969);
+        }
         .ctpb-plan-payment-button-loading {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           cursor: default;
           background-color: var(--primaryTextColor);
           .spinner-chip-container {
@@ -222,14 +347,7 @@
           }
         }
         .ctpb-plan-payment-button-disabled {
-          cursor: default;
-          &:hover {
-            background-color: transparent;
-            color: var(--primaryTextColor);
-            .ctpb-plan-payment-button-icons {
-              filter: var(--invertColor);
-            }
-          }
+          pointer-events: none;
         }
       }
     }
@@ -293,12 +411,13 @@
 }
 .pay-wall-modal-mobile {
   .modal-content {
-    min-width: 90vw !important;
-    width: 90vw !important;
+    min-width: 100vw !important;
+    width: 100vw !important;
     .modal-header {
       border-bottom: 0.15rem var(--sidebarSectionalBOrder) solid !important;
       padding: 2rem !important;
       padding-bottom: 1.7rem !important;
+
       .mobile-copy-trader-popup-header {
         width: 100%;
         display: flex;
@@ -329,6 +448,10 @@
           img {
             filter: var(--invertColor);
           }
+        }
+        .mobile-solid-close-icon {
+          background-color: var(--cardBackgroud);
+          opacity: 0.75;
         }
       }
     }
@@ -374,10 +497,6 @@
 
           .ctpb-plan-disable-button {
             font-size: 14px !important;
-            .ctpb-plan-purple-button-icon {
-              height: 16px;
-              margin-right: 0.1rem;
-            }
           }
           .ctpb-plan-button {
             font-size: 14px !important;
@@ -414,5 +533,11 @@
         margin-top: 3rem;
       }
     }
+  }
+}
+.bottom-modal {
+  align-items: flex-end !important;
+  .modal-content {
+    min-height: 80vh;
   }
 }

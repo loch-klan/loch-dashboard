@@ -5,7 +5,10 @@ import {
   Form,
   FormElement,
 } from "../../utils/form";
-import { TruncateText } from "../../utils/ReusableFunctions";
+import {
+  TruncateText,
+  openAddressInSameTab,
+} from "../../utils/ReusableFunctions";
 import { getCurrentUser, resetPreviewAddress } from "../../utils/ManageToken";
 import {
   WatchlistClickedAccount,
@@ -35,12 +38,10 @@ class WatchListPageMobile extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col goToCenter no-hover"
+            className="cp history-table-header-col goToCenter table-header-font no-hover"
             id="Accounts"
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Account
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Account</span>
           </div>
         ),
         dataKey: "account",
@@ -73,14 +74,16 @@ class WatchListPageMobile extends BaseReactComponent {
                     BASE_URL_S3 + "home/" + slink + "?redirect=home";
                   if (lochUser) {
                     const alreadyPassed =
-                      window.sessionStorage.getItem("PassedRefrenceId");
+                      window.localStorage.getItem("PassedRefrenceId");
                     if (alreadyPassed) {
                       shareLink = shareLink + "&refrenceId=" + alreadyPassed;
                     } else {
                       shareLink = shareLink + "&refrenceId=" + lochUser;
                     }
                   }
-                  window.open(shareLink, "_blank", "noreferrer");
+                  // window.open(shareLink, "_blank", "noreferrer");
+                  openAddressInSameTab(slink, this.props.setPageFlagDefault);
+
                   // this.updateWatchListAnalyzed(
                   //   rowData.nameTag,
                   //   rowData.address,
@@ -97,9 +100,9 @@ class WatchListPageMobile extends BaseReactComponent {
                   //   });
                   //   this.updateTimer();
                   //   let obj = JSON.parse(
-                  //     window.sessionStorage.getItem("previewAddress")
+                  //     window.localStorage.getItem("previewAddress")
                   //   );
-                  //   window.sessionStorage.setItem(
+                  //   window.localStorage.setItem(
                   //     "previewAddress",
                   //     JSON.stringify({
                   //       ...obj,
@@ -107,7 +110,7 @@ class WatchListPageMobile extends BaseReactComponent {
                   //       nameTag: rowData.nameTag ? rowData.nameTag : "",
                   //     })
                   //   );
-                  //   window.sessionStorage.setItem(
+                  //   window.localStorage.setItem(
                   //     "previewAddressGoToWhaleWatch",
                   //     JSON.stringify({
                   //       goToWhaleWatch: false,
@@ -128,7 +131,7 @@ class WatchListPageMobile extends BaseReactComponent {
       {
         labelName: (
           <div
-            className={`cp history-table-header-col goToCenter ${
+            className={`cp history-table-header-col goToCenter table-header-font ${
               this.props.tableData.length === 0 ? "no-hover" : ""
             }`}
             id="Accounts"
@@ -138,9 +141,7 @@ class WatchListPageMobile extends BaseReactComponent {
               }
             }}
           >
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Nametag
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16">Nametag</span>
             <Image
               src={sortByIcon}
               className={
@@ -169,7 +170,6 @@ class WatchListPageMobile extends BaseReactComponent {
                       email_address: getCurrentUser().email,
                       hover: rowData.nameTag,
                     });
-                    this.updateTimer();
                   }}
                   className="dotDotText text-center table-data-font"
                 >

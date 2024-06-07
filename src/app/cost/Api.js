@@ -268,7 +268,7 @@ export const getAvgCostBasis = (ctx) => {
             ? res?.data.data?.total_gain
             : 0;
 
-          let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+          let currency = JSON.parse(window.localStorage.getItem("currency"));
 
           let AssetsList = [];
           let totalCostBasis = 0;
@@ -327,7 +327,7 @@ export const getAvgCostBasis = (ctx) => {
               total_gain: totalGain,
             },
           });
-          if (window.sessionStorage.getItem("lochToken")) {
+          if (window.localStorage.getItem("lochToken")) {
             postLoginInstance
               .post("wallet/user-wallet/add-yield-pools")
               .then((res) => {
@@ -348,7 +348,7 @@ export const getAvgCostBasis = (ctx) => {
               });
           }
           const shouldRecallApis =
-            window.sessionStorage.getItem("shouldRecallApis");
+            window.localStorage.getItem("shouldRecallApis");
           if (!shouldRecallApis || shouldRecallApis === "false") {
             ctx.setState(
               {

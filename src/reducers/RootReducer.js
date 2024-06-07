@@ -13,6 +13,7 @@ import PortfolioReducer from "../app/Portfolio/PortfolioReducer";
 import {
   AddLocalAddWalletReducer,
   CommonReducer,
+  UserPaymentReducer,
 } from "../app/common/CommonReducer";
 import { HomeReducer } from "../app/home";
 import {
@@ -36,6 +37,7 @@ import YieldOpportunitiesReducer from "../app/yieldOpportunities/YieldOpportunit
 import YieldPoolReducer from "../app/yieldOpportunities/YieldPoolReducer";
 import DarkModeReducer from "../app/intelligence/darkMode";
 import { NFTReducer } from "../app/nft/NftReducer";
+import { EmulationsReducer } from "../app/Emulations/EmulationsReducer";
 import { ReferralCodesReducer } from "../app/ReferralCodes/ReferralCodesReducer";
 
 export default combineReducers({
@@ -49,6 +51,7 @@ export default combineReducers({
   YieldOpportunitiesState: YieldOpportunitiesReducer,
   YieldPoolState: YieldPoolReducer,
   CommonState: CommonReducer,
+  UserPaymentState: UserPaymentReducer,
   LochUserState: LochUserReducer,
   HomeState: HomeReducer,
   OnboardingState: OnboardingReducer,
@@ -65,6 +68,7 @@ export default combineReducers({
 
   WatchListState: WatchListReducer,
   NFTState: NFTReducer,
+  EmulationsState: EmulationsReducer,
   ReferralCodesState: ReferralCodesReducer,
   TopAccountsInWatchListState: TopAccountsInWatchListReducer,
   WatchListLoadingState: WatchListLoadingReducer,

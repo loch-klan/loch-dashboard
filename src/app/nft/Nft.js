@@ -159,16 +159,16 @@ class NFT extends BaseReactComponent {
   };
   updateTimer = (first) => {
     const tempExistingExpiryTime =
-      window.sessionStorage.getItem("nftPageExpiryTime");
+      window.localStorage.getItem("nftPageExpiryTime");
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("nftPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("nftPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkWatchlistTimer);
-    window.sessionStorage.removeItem("nftPageExpiryTime");
+    window.localStorage.removeItem("nftPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -181,13 +181,13 @@ class NFT extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem("nftPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("nftPageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem("nftPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("nftPageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -198,7 +198,7 @@ class NFT extends BaseReactComponent {
       isLoading: true,
     });
 
-    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     let arr = [];
     let addressList = [];
 
@@ -356,7 +356,7 @@ class NFT extends BaseReactComponent {
   };
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -376,9 +376,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Holdings
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Holdings</span>
             {/* <Image
               onClick={() =>
                 this.handleTableSort(this.state.tableSortOpt[0].title)
@@ -407,7 +405,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
+            <span className="inter-display-medium f-s-13 lh-16 ">
               Collection
             </span>
 
@@ -441,9 +439,7 @@ class NFT extends BaseReactComponent {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
-            <span className="inter-display-medium f-s-13 lh-16 table-header-font">
-              Image
-            </span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Image</span>
           </div>
         ),
         dataKey: "imgs",
@@ -498,6 +494,7 @@ class NFT extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           showpath
           currentPage={"nft"}
           hideFooter

@@ -31,6 +31,7 @@ import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import DropDown from "./DropDown";
 import Loading from "./Loading";
+import { CustomOverlayUgradeToPremium } from "../../utils/commonComponent";
 
 HC_rounded(Highcharts);
 
@@ -101,6 +102,10 @@ class BarGraphSection extends Component {
   }
 
   handleFooter = (event) => {
+    if (this.props.isBlurred) {
+      this.goToPayModalPass();
+      return null;
+    }
     this.setState({
       activeFooter: event.target.id,
       activeBadge: [{ name: "All", id: "" }],
@@ -110,10 +115,14 @@ class BarGraphSection extends Component {
     this.props.timeFunction(event.target.id, this.state.activeBadgeList);
   };
   handleFunction = (badge) => {
-    // console.log("badge",badge)
     let activeFooter = this.props.showFooterDropdown
       ? this.props.activeDropdown
       : this.state.activeFooter;
+    if (this.props.isBlurred) {
+      this.props.goToPayModal();
+      return null;
+    }
+
     if (badge?.[0].name === "All") {
       this.setState(
         {
@@ -207,6 +216,14 @@ class BarGraphSection extends Component {
       switchselected: !this.state.switchselected,
     });
   };
+  goToPayModalPass = () => {
+    if (this.props.isPremiumUser) {
+      return null;
+    }
+    if (this.props.goToPayModal) {
+      this.props.goToPayModal();
+    }
+  };
   render() {
     const {
       data,
@@ -279,6 +296,8 @@ class BarGraphSection extends Component {
     return (
       <div
         className={`bar-graph-section ${
+          this.props.isBlurred ? "bar-graph-section-blurred " : ""
+        } ${
           this.props.floatingWatermark && !this.props.isLoading && data
             ? this.props.isCounterPartyGasFeesPage
               ? "tableWatermarkOverlayCounterParty"
@@ -555,7 +574,7 @@ class BarGraphSection extends Component {
                         </div>
                         <div className="intelligenceRealisedRightItems intelligenceRealisedRightItemsMobile">
                           <CustomDropdown
-                            filtername="All assets"
+                            filtername="All tokens"
                             options={this.props.assetList}
                             selectedTokens={this.props.selectedAssets}
                             action={null}
@@ -602,7 +621,7 @@ class BarGraphSection extends Component {
                           // }}
                         >
                           <CustomDropdown
-                            filtername="All assets"
+                            filtername="All tokens"
                             options={this.props.assetList}
                             selectedTokens={this.props.selectedAssets}
                             action={null}
@@ -821,7 +840,7 @@ class BarGraphSection extends Component {
                         }}
                       >
                         <CustomDropdown
-                          filtername="All assets selected"
+                          filtername="All tokens selected"
                           options={this.props.assetList}
                           action={null}
                           handleClick={this.props.handleAssetSelected}
@@ -875,183 +894,197 @@ class BarGraphSection extends Component {
                 ""
               )}
               {/* Graph Section */}
-              <div className={className} style={{ display: "flex" }}>
-                {options2 != undefined &&
-                isScroll &&
-                (this.props.isFromHome
-                  ? data.labels.length > 3
-                  : data.labels.length > 8) ? (
-                  <div style={{ width: `${digit}rem` }}>
-                    <Bar options={options2} data={data} />
-                  </div>
-                ) : (
-                  ""
-                )}
+              <CustomOverlayUgradeToPremium
+                position="top"
+                disabled={
+                  this.props.isPremiumUser || !this.props.showPremiumHover
+                }
+              >
+                <div className={className} style={{ display: "flex" }}>
+                  {options2 != undefined &&
+                  isScroll &&
+                  (this.props.isFromHome
+                    ? data.labels.length > 3
+                    : data.labels.length > 8) ? (
+                    <div
+                      className={this.props.isBlurred ? "blurred-elements" : ""}
+                      style={{ width: `${digit}rem` }}
+                      onClick={this.goToPayModalPass}
+                    >
+                      <Bar options={options2} data={data} />
+                    </div>
+                  ) : (
+                    ""
+                  )}
 
-                <div
-                  className={
-                    options2 != undefined &&
-                    isScroll &&
-                    (this.props.isFromHome
-                      ? data.labels.length > 3
-                      : data.labels.length > 8)
-                      ? "ScrollArea"
-                      : "ChartAreaWrapper"
-                  }
-                  style={{
-                    width: `${
+                  <div
+                    className={
                       options2 != undefined &&
                       isScroll &&
                       (this.props.isFromHome
                         ? data.labels.length > 3
                         : data.labels.length > 8)
-                        ? "calc(100 % - " + digit + "rem)"
-                        : "100%"
-                    }`,
-                  }}
-                >
-                  {this.props.isGraphLoading ? (
-                    <div
-                      style={{
-                        height: this?.props?.loaderHeight
-                          ? this?.props?.loaderHeight + "rem"
-                          : "30rem",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Loading />
-                    </div>
-                  ) : this.props.oldBar ? (
-                    <div
-                      className={`chartArea ${
-                        this.props.newHomeSetup ? "chartAreaOldBar" : ""
-                      }`}
-                      style={
+                        ? "ScrollArea"
+                        : "ChartAreaWrapper"
+                    }
+                    style={{
+                      width: `${
+                        options2 != undefined &&
+                        isScroll &&
                         (this.props.isFromHome
                           ? data.labels.length > 3
-                          : data.labels.length > 8) && isScroll
-                          ? ScrollStyle
-                          : NormalStyle
-                      }
-                    >
-                      <Bar options={options} data={data} />
-                    </div>
-                  ) : (
-                    <>
-                      {!this.state.switchselected ? (
-                        <div
-                          className="chartArea"
-                          style={
-                            showSwitch && !showPercentage
-                              ? {
-                                  maxHeight: "35.55rem",
-                                  overflow: "hidden",
-                                }
-                              : {
-                                  overflow: "hidden",
-                                }
-                          }
-                        >
+                          : data.labels.length > 8)
+                          ? "calc(100 % - " + digit + "rem)"
+                          : "100%"
+                      }`,
+                    }}
+                    onClick={this.goToPayModalPass}
+                  >
+                    {this.props.isGraphLoading ? (
+                      <div
+                        style={{
+                          height: this?.props?.loaderHeight
+                            ? this?.props?.loaderHeight + "rem"
+                            : "30rem",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Loading />
+                      </div>
+                    ) : this.props.oldBar ? (
+                      <div
+                        className={`chartArea ${
+                          this.props.newHomeSetup ? "chartAreaOldBar" : ""
+                        }`}
+                        style={
+                          (this.props.isFromHome
+                            ? data.labels.length > 3
+                            : data.labels.length > 8) && isScroll
+                            ? ScrollStyle
+                            : NormalStyle
+                        }
+                      >
+                        <Bar options={options} data={data} />
+                      </div>
+                    ) : (
+                      <>
+                        {!this.state.switchselected ? (
                           <div
-                            style={{
-                              position: "absolute",
-                              opacity: 0,
-                            }}
+                            className="chartArea"
+                            style={
+                              showSwitch && !showPercentage
+                                ? {
+                                    maxHeight: "35.55rem",
+                                    overflow: "hidden",
+                                  }
+                                : {
+                                    overflow: "hidden",
+                                  }
+                            }
                           >
-                            Loch
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                              }}
+                            >
+                              Loch
+                            </div>
+                            <HighchartsReact
+                              highcharts={Highcharts}
+                              options={options}
+                              // constructorType={"stockChart"}
+                              // allowChartUpdate={true}
+                              // updateArgs={[true]}
+                              containerProps={{
+                                style: {
+                                  height: this.props.noSubtitleBottomPadding
+                                    ? "110%"
+                                    : "",
+                                },
+                              }}
+                            />
                           </div>
-                          <HighchartsReact
-                            highcharts={Highcharts}
-                            options={options}
-                            // constructorType={"stockChart"}
-                            // allowChartUpdate={true}
-                            // updateArgs={[true]}
-                            containerProps={{
-                              style: {
-                                height: this.props.noSubtitleBottomPadding
-                                  ? "110%"
-                                  : "",
-                              },
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <div
-                          className="chartArea"
-                          style={
-                            showSwitch && !showPercentage
-                              ? {
-                                  maxHeight: "35.55rem",
-                                  overflow: "hidden",
-                                }
-                              : {
-                                  overflow: "hidden",
-                                }
-                          }
-                        >
+                        ) : (
                           <div
-                            style={{
-                              position: "absolute",
-                              opacity: 0,
-                            }}
+                            className="chartArea"
+                            style={
+                              showSwitch && !showPercentage
+                                ? {
+                                    maxHeight: "35.55rem",
+                                    overflow: "hidden",
+                                    cursor: "pointer",
+                                  }
+                                : {
+                                    overflow: "hidden",
+                                    cursor: "pointer",
+                                  }
+                            }
+                            onClick={this.goToPayModalPass}
                           >
-                            Loch
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                              }}
+                            >
+                              Loch
+                            </div>
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                              }}
+                            >
+                              Loch
+                            </div>
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                              }}
+                            >
+                              Loch
+                            </div>
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                              }}
+                            >
+                              Loch
+                            </div>
+                            <div
+                              style={{
+                                position: "absolute",
+                                opacity: 0,
+                              }}
+                            >
+                              Loch
+                            </div>
+                            <HighchartsReact
+                              highcharts={Highcharts}
+                              options={this.props?.ProfitLossAsset}
+                              // constructorType={"stockChart"}
+                              // allowChartUpdate={true}
+                              // updateArgs={[true]}
+                              containerProps={{
+                                style: {
+                                  height: this.props.noSubtitleBottomPadding
+                                    ? "110%"
+                                    : "",
+                                },
+                              }}
+                            />
                           </div>
-                          <div
-                            style={{
-                              position: "absolute",
-                              opacity: 0,
-                            }}
-                          >
-                            Loch
-                          </div>
-                          <div
-                            style={{
-                              position: "absolute",
-                              opacity: 0,
-                            }}
-                          >
-                            Loch
-                          </div>
-                          <div
-                            style={{
-                              position: "absolute",
-                              opacity: 0,
-                            }}
-                          >
-                            Loch
-                          </div>
-                          <div
-                            style={{
-                              position: "absolute",
-                              opacity: 0,
-                            }}
-                          >
-                            Loch
-                          </div>
-                          <HighchartsReact
-                            highcharts={Highcharts}
-                            options={this.props?.ProfitLossAsset}
-                            // constructorType={"stockChart"}
-                            // allowChartUpdate={true}
-                            // updateArgs={[true]}
-                            containerProps={{
-                              style: {
-                                height: this.props.noSubtitleBottomPadding
-                                  ? "110%"
-                                  : "",
-                              },
-                            }}
-                          />
-                        </div>
-                      )}
-                    </>
-                  )}
+                        )}
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
-
+              </CustomOverlayUgradeToPremium>
               {/* Grapgh Section End */}
 
               {showFooterDropdown ? (
@@ -1087,7 +1120,7 @@ class BarGraphSection extends Component {
                       ? this.props.customGraphLoadingHeight
                       : this.props.isMobileGraph
                       ? "44rem"
-                      : "32rem",
+                      : "35rem",
                   }
                 : {
                     flex: 1,
