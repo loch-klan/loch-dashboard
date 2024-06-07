@@ -104,6 +104,7 @@ class ReplaceAddressPage extends Component {
           currentPage={"stripe-success-page"}
           hideFooter
           hideAddresses
+          hideShare
         >
           <StripeSuccessPageMobile onHide={this.onHide} />
         </MobileLayout>
