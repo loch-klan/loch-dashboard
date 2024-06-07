@@ -7,9 +7,9 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import { Form, Image } from "react-bootstrap";
-import { Bar } from "react-chartjs-2";
+import { Bar, getElementAtEvent } from "react-chartjs-2";
 import { connect } from "react-redux";
 import { BarGraphFooter } from "./BarGraphFooter";
 import { GraphHeader } from "./GraphHeader";
@@ -26,12 +26,15 @@ import {
   ThickCheckMarkIcon,
 } from "../../assets/images/icons";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import { CurrencyType } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  openAddressInSameTab,
+} from "../../utils/ReusableFunctions";
+import { CustomOverlayUgradeToPremium } from "../../utils/commonComponent";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import DropDown from "./DropDown";
 import Loading from "./Loading";
-import { CustomOverlayUgradeToPremium } from "../../utils/commonComponent";
 
 HC_rounded(Highcharts);
 
@@ -48,6 +51,7 @@ ChartJS.register(
 class BarGraphSection extends Component {
   constructor(props) {
     super(props);
+    this.chartRef = createRef();
     this.state = {
       headerTitle: props.headerTitle,
       headerSubTitle: props.headerSubTitle,
@@ -966,7 +970,34 @@ class BarGraphSection extends Component {
                             : NormalStyle
                         }
                       >
-                        <Bar options={options} data={data} />
+                        <Bar
+                          onClick={(event) => {
+                            let curIndex = getElementAtEvent(
+                              this.chartRef.current,
+                              event
+                            );
+                            let passedData = this.props.data;
+                            if (
+                              passedData &&
+                              passedData.datasets &&
+                              passedData.datasets.length > 0 &&
+                              passedData.datasets[0].clickAbleAddress
+                            ) {
+                              passedData =
+                                passedData.datasets[0].clickAbleAddress;
+                            }
+                            if (curIndex && curIndex.length > 0 && passedData) {
+                              curIndex = curIndex[0].index;
+                              const wallet = passedData[curIndex];
+                              if (wallet) {
+                                openAddressInSameTab(wallet);
+                              }
+                            }
+                          }}
+                          options={options}
+                          data={data}
+                          ref={this.chartRef}
+                        />
                       </div>
                     ) : (
                       <>
