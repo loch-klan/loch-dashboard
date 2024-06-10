@@ -181,49 +181,49 @@ class BecomeAnExpertPage extends Component {
     }
   };
   render() {
-    // if (this.state.isMobile) {
-    //   return (
-    //     <MobileLayout
-    //       hideShare
-    //       hideFooter
-    //       hideAddresses
-    //       history={this.props.history}
-    //       currentPage={"become-an-expert-page"}
-    //       customeHomeClassName="mpcHomePageNoSidePadding"
-    //     >
-    //       <BecomeAnExpertPageMobile
-    //         curStep={this.state.curStep}
-    //         userEmail={this.state.userEmail}
-    //         userName={this.state.userName}
-    //         userSocialAccount={this.state.userSocialAccount}
-    //         isNextDisabled={this.state.isNextDisabled}
-    //         userExpertise={this.state.userExpertise}
-    //         userHourlyRate={this.state.userHourlyRate}
-    //         userExperience={this.state.userExperience}
-    //         isEmailChecked={this.state.isEmailChecked}
-    //         isTelegramChecked={this.state.isTelegramChecked}
-    //         userTelegramHandle={this.state.userTelegramHandle}
-    //         isDoneDisabled={this.state.isDoneDisabled}
-    //         // Function
-    //         goBack={this.goBack}
-    //         onUserEmailChange={this.onUserEmailChange}
-    //         stepOneOnKeyDown={this.stepOneOnKeyDown}
-    //         onUserNameChange={this.onUserNameChange}
-    //         onUserSocialAccountChange={this.onUserSocialAccountChange}
-    //         goToSecondStep={this.goToSecondStep}
-    //         onUserExpertiseChange={this.onUserExpertiseChange}
-    //         onUserHourlyRateChange={this.onUserHourlyRateChange}
-    //         stepTwoOnKeyDown={this.stepTwoOnKeyDown}
-    //         toggleEmailCheckBox={this.toggleEmailCheckBox}
-    //         toggleTelegramCheckBox={this.toggleTelegramCheckBox}
-    //         onUserTelegramHandleChange={this.onUserTelegramHandleChange}
-    //         goToFirstStep={this.goToFirstStep}
-    //         goToBecomeAnExpertCompletePage={this.goToBecomeAnExpertCompletePage}
-    //         onUserExperienceChange={this.onUserExperienceChange}
-    //       />
-    //     </MobileLayout>
-    //   );
-    // }
+    if (this.state.isMobile) {
+      return (
+        <MobileLayout
+          hideShare
+          hideFooter
+          hideAddresses
+          history={this.props.history}
+          currentPage={"become-an-expert-page"}
+          customeHomeClassName="mpcHomePageNoSidePadding"
+        >
+          <BecomeAnExpertPageMobile
+            curStep={this.state.curStep}
+            userEmail={this.state.userEmail}
+            userName={this.state.userName}
+            userSocialAccount={this.state.userSocialAccount}
+            isNextDisabled={this.state.isNextDisabled}
+            userExpertise={this.state.userExpertise}
+            userHourlyRate={this.state.userHourlyRate}
+            userExperience={this.state.userExperience}
+            isEmailChecked={this.state.isEmailChecked}
+            isTelegramChecked={this.state.isTelegramChecked}
+            userTelegramHandle={this.state.userTelegramHandle}
+            isDoneDisabled={this.state.isDoneDisabled}
+            // Function
+            goBack={this.goBack}
+            onUserEmailChange={this.onUserEmailChange}
+            stepOneOnKeyDown={this.stepOneOnKeyDown}
+            onUserNameChange={this.onUserNameChange}
+            onUserSocialAccountChange={this.onUserSocialAccountChange}
+            goToSecondStep={this.goToSecondStep}
+            onUserExpertiseChange={this.onUserExpertiseChange}
+            onUserHourlyRateChange={this.onUserHourlyRateChange}
+            stepTwoOnKeyDown={this.stepTwoOnKeyDown}
+            toggleEmailCheckBox={this.toggleEmailCheckBox}
+            toggleTelegramCheckBox={this.toggleTelegramCheckBox}
+            onUserTelegramHandleChange={this.onUserTelegramHandleChange}
+            goToFirstStep={this.goToFirstStep}
+            goToBecomeAnExpertCompletePage={this.goToBecomeAnExpertCompletePage}
+            onUserExperienceChange={this.onUserExperienceChange}
+          />
+        </MobileLayout>
+      );
+    }
     return (
       <div className="insightsPageContainer">
         {/* topbar */}

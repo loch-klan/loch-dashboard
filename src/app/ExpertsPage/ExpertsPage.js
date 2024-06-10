@@ -89,9 +89,7 @@ class ExpertsPage extends Component {
     window.scrollTo(0, 0);
   }
   becomeAnExpert = () => {
-    if (!mobileCheck()) {
-      this.props.history.push("/become-an-expert");
-    }
+    this.props.history.push("/become-an-expert");
   };
   scrollLeft = () => {
     var myElement = document.getElementById("topExpertsScrollBody");
