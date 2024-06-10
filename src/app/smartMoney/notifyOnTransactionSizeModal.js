@@ -82,21 +82,30 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
   }
 
   setTooltipPos = () => {
-    const xAndYMax = document
-      .getElementsByClassName("rc-slider-handle-1")[0]
-      .getBoundingClientRect();
+    let xAndYMax = "";
+    if (document.getElementsByClassName("rc-slider-handle-1")[0]) {
+      xAndYMax = document
+        .getElementsByClassName("rc-slider-handle-1")[0]
+        .getBoundingClientRect();
+    }
 
     const sliderMin = document.getElementById("smbSliderMinBox");
-    sliderMin.style.left = xAndYMax.x + "px";
-    sliderMin.style.top = xAndYMax.y - 50 + "px";
-
-    const xAndYMin = document
-      .getElementsByClassName("rc-slider-handle-2")[0]
-      .getBoundingClientRect();
+    if (sliderMin) {
+      sliderMin.style.left = xAndYMax.x + "px";
+      sliderMin.style.top = xAndYMax.y - 50 + "px";
+    }
+    let xAndYMin = "";
+    if (document.getElementsByClassName("rc-slider-handle-2")[0]) {
+      xAndYMin = document
+        .getElementsByClassName("rc-slider-handle-2")[0]
+        .getBoundingClientRect();
+    }
 
     const sliderMax = document.getElementById("smbSliderMaxBox");
-    sliderMax.style.left = xAndYMin.x + "px";
-    sliderMax.style.top = xAndYMin.y - 50 + "px";
+    if (sliderMax) {
+      sliderMax.style.left = xAndYMin.x + "px";
+      sliderMax.style.top = xAndYMin.y - 50 + "px";
+    }
   };
   componentDidMount() {
     this.setTooltipPos();
@@ -104,15 +113,17 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     this.setMinInput();
     this.assetList();
     this.convertMinMaxToSlider();
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.setState({
       userDetailsState: userDetails,
     });
     const allEle = document.getElementsByClassName("exit-overlay-form");
     const myEle = allEle[0];
-    myEle.addEventListener("scroll", () => {
-      this.setTooltipPos();
-    });
+    if (myEle) {
+      myEle.addEventListener("scroll", () => {
+        this.setTooltipPos();
+      });
+    }
   }
   convertMinMaxToSlider = () => {
     this.setState(
@@ -405,7 +416,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
 
     if (parentCoinList && value) {
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
       const tempWalletAddress = [value];
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(tempWalletAddress));

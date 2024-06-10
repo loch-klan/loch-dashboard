@@ -87,7 +87,7 @@ export const getCopyTradeWalletShareLink = (walletList) => {
   return "";
 };
 export const openLoginPopUp = () => {
-  window.sessionStorage.setItem("dontOpenLoginPopup", true);
+  window.localStorage.setItem("dontOpenLoginPopup", true);
   if (document.getElementById("sidebar-open-sign-in-btn")) {
     document.getElementById("sidebar-open-sign-in-btn").click();
   } else if (document.getElementById("sidebar-closed-sign-in-btn")) {

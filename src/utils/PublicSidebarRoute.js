@@ -15,11 +15,11 @@ const PublicSidebarRoute = ({ component: Component, ...rest }) => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
   const [isMobile] = useState(mobileCheck());
   const toggleSideBar = () => {
-    window.sessionStorage.setItem("isSidebarClosed", !isSidebarClosed);
+    window.localStorage.setItem("isSidebarClosed", !isSidebarClosed);
     setIsSidebarClosed(!isSidebarClosed);
   };
   useEffect(() => {
-    const isSidebarClosed = window.sessionStorage.getItem("isSidebarClosed");
+    const isSidebarClosed = window.localStorage.getItem("isSidebarClosed");
     if (isSidebarClosed === "true") {
       setIsSidebarClosed(true);
     } else {
@@ -33,7 +33,7 @@ const PublicSidebarRoute = ({ component: Component, ...rest }) => {
 
       if (isSmall && isSmall.matches) {
         setIsSidebarClosed(true);
-        window.sessionStorage.setItem("isSidebarClosed", true);
+        window.localStorage.setItem("isSidebarClosed", true);
       } else {
         // setIsSidebarClosed(false);
       }

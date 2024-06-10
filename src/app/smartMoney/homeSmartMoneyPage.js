@@ -263,15 +263,15 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     // if (mobileCheck()) {
     //   this.props.history.push("/home");
     // }
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
-      const shouldOpenNoficationModal = window.sessionStorage.getItem(
+      const shouldOpenNoficationModal = window.localStorage.getItem(
         "openSmartMoneyNoficationModal"
       );
       if (shouldOpenNoficationModal) {
         setTimeout(() => {
-          window.sessionStorage.removeItem("openSmartMoneyNoficationModal");
-          window.sessionStorage.removeItem("openFollowingNoficationModal");
+          window.localStorage.removeItem("openSmartMoneyNoficationModal");
+          window.localStorage.removeItem("openFollowingNoficationModal");
           this.setState({
             showNotifyOnTransactionModal: true,
             addressToNotify: shouldOpenNoficationModal,
@@ -792,21 +792,21 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     this.copyTextToClipboard(shareLink);
   };
   openNotifyOnTransactionModal = (passedAddress) => {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     if (userDetails && userDetails.email) {
       this.setState(
         {
           addressToNotify: passedAddress,
         },
         () => {
-          window.sessionStorage.setItem("dontOpenLoginPopup", "true");
+          window.localStorage.setItem("dontOpenLoginPopup", "true");
           this.setState({
             showNotifyOnTransactionModal: true,
           });
         }
       );
     } else {
-      window.sessionStorage.setItem(
+      window.localStorage.setItem(
         "openSmartMoneyNoficationModal",
         passedAddress
       );
@@ -820,7 +820,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     }
   };
   hideNotifyOnTransactionModal = () => {
-    window.sessionStorage.removeItem("dontOpenLoginPopup");
+    window.localStorage.removeItem("dontOpenLoginPopup");
     this.setState({
       showNotifyOnTransactionModal: false,
       addressToNotify: "",
