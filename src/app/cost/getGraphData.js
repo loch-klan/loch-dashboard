@@ -7,6 +7,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
+  TruncateText,
   amountFormat,
   noExponents,
   numToCurrency,
@@ -386,6 +387,15 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
           title: function () {}, //REMOVE TITLE
           label: (ctx) => {
             let label00 = ctx.label;
+            if (ctx.label) {
+              const testCharacter = ctx.label.charAt(0);
+              if (
+                !isNaN(testCharacter) ||
+                testCharacter !== testCharacter.toUpperCase()
+              ) {
+                label00 = TruncateText(ctx.label);
+              }
+            }
             let labelClick = "Click to open";
             let label0 =
               "Fees: " +
@@ -417,7 +427,11 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
                 }, 2000);
               }
             }
-            if (ctx.dataset.clickAbleAddress[ctx.dataIndex]) {
+            if (
+              ctx.dataset.clickAbleAddress &&
+              ctx.dataset.clickAbleAddress[ctx.dataIndex] &&
+              ctx.raw * currency.rate > 0
+            ) {
               return [label00, label1, label0, labelClick];
             }
             return [label00, label1, label0];
