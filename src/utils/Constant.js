@@ -10,6 +10,7 @@ export const DEFAULT_COLOR = "#2c2c2c";
 // export const BASE_URL_S3 = "http://staging.loch.com.s3-website.ap-south-1.amazonaws.com/"
 export const BASE_URL_S3 = process.env.REACT_APP_BASE_URL_S3;
 export const STRIPE_SECRET_KEY = process.env.REACT_APP_STRIPE_SECRET_KEY;
+export const COINBASE_SECRET_KEY = process.env.REACT_APP_COINBASE_SECRET_KEY;
 export const ARCX_API_KEY = process.env.REACT_APP_ARCX_API_KEY;
 export const BASE_GA_KEY = process.env.REACT_APP_GOOGLE_ANALYTICS_KEY;
 

@@ -35,6 +35,7 @@ import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import PublicRoute from "./utils/PublicRoute";
 import CopyTradeWelcome from "./app/CopyTradeWelcome/CopyTradeWelcome";
 import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
+import CryptoSuccessPage from "./app/CryptoSuccessPage/CryptoSuccessPage";
 import PublicSidebarRoute from "./utils/PublicSidebarRoute";
 import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
 import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
@@ -261,6 +262,12 @@ const routes = [
     name: "Stripe Success",
     type: PrivateRoute,
     component: StripeSuccessPage,
+  },
+  {
+    path: "/crypto-success",
+    name: "Crypto Success",
+    type: PrivateRoute,
+    component: CryptoSuccessPage,
   },
   {
     path: "/stripe-cancel",

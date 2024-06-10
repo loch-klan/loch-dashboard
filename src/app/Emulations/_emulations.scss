@@ -679,7 +679,7 @@
         overflow: hidden;
 
         .popular-copy-trades-data {
-          flex-wrap: wrap;
+          flex-wrap: nowrap;
           .popular-copy-trades-data-person-container {
             min-width: 2.2rem;
             min-height: 2.2rem;
@@ -929,14 +929,7 @@
           }
         }
         .ctpb-plan-payment-button-disabled {
-          cursor: default;
-          &:hover {
-            background-color: transparent;
-            color: var(--primaryTextColor);
-            .ctpb-plan-payment-button-icons {
-              filter: var(--invertColor);
-            }
-          }
+          pointer-events: none;
         }
       }
     }

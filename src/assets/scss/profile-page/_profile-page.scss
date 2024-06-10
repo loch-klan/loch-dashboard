@@ -68,6 +68,7 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
+
         .pslpl-icon {
           height: 20px;
         }
@@ -218,6 +219,7 @@
         justify-content: space-between;
       }
       .pslpl-heading {
+        margin-bottom: 2rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -271,6 +273,13 @@
           .pslpl-item-block-text {
             font-size: 14px;
             color: var(--referallUsedBtnText);
+          }
+          .pslpl-item-block-bullet-item {
+            height: 0.6rem;
+            width: 0.6rem;
+            border-radius: 50%;
+            background-color: var(--referallUsedBtnText);
+            margin-left: 0.5rem;
           }
         }
       }
