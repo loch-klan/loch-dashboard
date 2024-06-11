@@ -4,25 +4,20 @@ import { connect } from "react-redux";
 
 import { toast } from "react-toastify";
 import {
-  ChartDonutPaywallIcon,
-  ChartLinePaywallIcon,
   CloseIcon,
   CreditCardPaywallIcon,
-  CryptoWalletPaywallIcon,
-  LightBulbPaywallIcon,
   LochLogoWhiteIcon,
   NewModalBackArrowIcon,
-  PurpleCheckIcon,
 } from "../../assets/images/icons";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
 import {
-  PayModalPay,
   PayModalCrypto,
   PayModalCryptoBack,
   PayModalCryptoClose,
+  PayModalPay,
 } from "../../utils/AnalyticsFunctions";
-import { BASE_URL_S3, STRIPE_SECRET_KEY } from "../../utils/Constant";
+import { BASE_URL_S3, COINBASE_SECRET_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   loadingAnimation,
@@ -30,10 +25,8 @@ import {
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
-import { createUserPayment } from "./Api";
 import { copyTradePaid } from "../Emulations/EmulationsApi";
-
-const stripe = require("stripe")(STRIPE_SECRET_KEY);
+import { createUserPayment } from "./Api";
 
 class PaywallCyptoPlansModal extends BaseReactComponent {
   constructor(props) {
@@ -71,14 +64,13 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
   async createCharge(payPlan) {
     const url = "https://api.commerce.coinbase.com/charges";
 
-    let redirectLink = BASE_URL_S3 + "/crypto-success";
+    let redirectLink = BASE_URL_S3 + "crypto-success";
 
     let minAmount = 20;
-    console.log("payPlan is ", payPlan);
     if (payPlan === "quarterly") {
-      minAmount = 1;
+      minAmount = 55;
     } else if (payPlan === "yearly") {
-      minAmount = 2;
+      minAmount = 200;
     }
     const requestBody = {
       local_price: {
@@ -105,7 +97,7 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "X-CC-Api-Key": "03c1c210-ace2-4b5e-bc66-de26a70b283e",
+        "X-CC-Api-Key": COINBASE_SECRET_KEY,
       },
       body: JSON.stringify(requestBody),
     };
@@ -188,81 +180,7 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
       isCreditBtnLoading: false,
     });
   };
-  getCurrentUrl = async (passedId) => {
-    await stripe.paymentLinks
-      .create({
-        line_items: [
-          {
-            price: process.env.REACT_APP_STRIPE_PRICE_ID,
-            quantity: 1,
-          },
-        ],
-      })
-      .then((res) => {
-        const createUserData = new URLSearchParams();
-        createUserData.append(
-          "price_id",
-          process.env.REACT_APP_STRIPE_PRICE_ID
-        );
-        this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
-        setTimeout(() => {
-          window.open(res.url, "_blank");
-          this.state.onHide();
-        }, 500);
-      })
-      .catch(() => {
-        this.setState({
-          isCreditBtnLoading: false,
-        });
-        toast.error("Something went wrong");
-      });
-  };
-  payWithStripe = async () => {
-    if (this.state.isCryptoBtnOneLoading || this.state.isCryptoBtnTwoLoading) {
-      return;
-    }
-    // CopyTradePayCreditCardPayment({
-    //   session_id: getCurrentUser().id,
-    //   email_address: getCurrentUser().email,
-    // });
-    this.setState({
-      isCreditBtnLoading: true,
-    });
-    const path = whichSignUpMethod();
-    PayModalPay({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      path: path,
-      paymentMethod: "stripe",
-    });
-    const createUserData = new URLSearchParams();
-    createUserData.append("price_id", process.env.REACT_APP_STRIPE_PRICE_ID);
-    this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
-    setTimeout(() => {
-      // window.open(res.url, "_blank");
-      // this.state.onHide();
-    }, 500);
-    // await stripe.prices
-    //   .create({
-    //     currency: "usd",
-    //     unit_amount: 50,
-    //     recurring: {
-    //       interval: "month",
-    //     },
-    //     product_data: {
-    //       name: "Loch Premium",
-    //     },
-    //   })
-    //   .then((res) => {
-    //     this.getCurrentUrl(res.id);
-    //   })
-    //   .catch(() => {
-    //     this.setState({
-    //       isCreditBtnLoading: false,
-    //     });
-    //     toast.error("Something went wrong");
-    //   });
-  };
+
   payQuarterly = () => {
     this.setState({
       isCryptoBtnOneLoading: true,
@@ -399,6 +317,11 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
                       this.state.isCryptoBtnOneLoading
                         ? "ctpb-plan-payment-button-disabled ctpb-plan-payment-button-loading"
                         : ""
+                    } ${
+                      this.state.isCryptoBtnTwoLoading ||
+                      this.props.isCreditBtnLoading
+                        ? "ctpb-plan-payment-button-disabled"
+                        : ""
                     }`}
                   >
                     {this.state.isCryptoBtnOneLoading ? (
@@ -415,6 +338,11 @@ class PaywallCyptoPlansModal extends BaseReactComponent {
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-payment-button ctpb-plan-payment-button-multiple-months ${
                       this.state.isCryptoBtnTwoLoading
                         ? "ctpb-plan-payment-button-disabled ctpb-plan-payment-button-loading"
+                        : ""
+                    } ${
+                      this.state.isCryptoBtnOneLoading ||
+                      this.props.isCreditBtnLoading
+                        ? "ctpb-plan-payment-button-disabled"
                         : ""
                     }`}
                   >

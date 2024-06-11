@@ -156,7 +156,6 @@ export const updateUserWalletApi = (
     postLoginInstance
       .post("organisation/user/update-user-wallet", data)
       .then((res) => {
-        console.log("res.data ", res.data);
         if (!res.data.error) {
           if (ctx.hideTheTopBarHistoryItems) {
             ctx.hideTheTopBarHistoryItems();
@@ -290,7 +289,12 @@ export const updateUserWalletApi = (
           }
         }
         if (ctx.goToHomeAfterReplace) {
-          ctx.goToHomeAfterReplace();
+          if (ctx.props.setPageFlagDefault) {
+            ctx.props.setPageFlagDefault();
+          }
+          setTimeout(() => {
+            ctx.goToHomeAfterReplace();
+          }, 300);
         }
       })
       .catch((err) => {

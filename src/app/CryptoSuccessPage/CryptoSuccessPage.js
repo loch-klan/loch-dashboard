@@ -26,7 +26,7 @@ class StripeSuccessPage extends Component {
     PaymentSuccessfulMP({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
-      paymentMethod: "stripe",
+      paymentMethod: "crypto",
     });
   }
 
@@ -41,7 +41,7 @@ class StripeSuccessPage extends Component {
           hideAddresses
         >
           <StripeSuccessPageMobile
-            subText="It will take upto 30 min for your payment to be confirmed"
+            subText="It will take up to 30 minutes for your payment to be confirmed"
             onHide={this.onHide}
           />
         </MobileLayout>
@@ -68,7 +68,7 @@ class StripeSuccessPage extends Component {
             </div>
           </div>
           <PaymentSuccessModal
-            subText="It will take upto 30 min for your payment to be confirmed"
+            subText="It will take up to 30 minutes for your payment to be confirmed"
             show
             onHide={this.onHide}
           />

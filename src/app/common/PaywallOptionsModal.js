@@ -22,7 +22,7 @@ import {
   PayModalUpgradeBack,
   PayModalUpgradeClose,
 } from "../../utils/AnalyticsFunctions";
-import { STRIPE_SECRET_KEY } from "../../utils/Constant";
+import { COINBASE_SECRET_KEY, STRIPE_SECRET_KEY } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   loadingAnimation,
@@ -100,7 +100,7 @@ class PaywallOptionsModal extends BaseReactComponent {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "X-CC-Api-Key": "03c1c210-ace2-4b5e-bc66-de26a70b283e",
+        "X-CC-Api-Key": COINBASE_SECRET_KEY,
       },
       body: JSON.stringify(requestBody),
     };
@@ -422,8 +422,21 @@ class PaywallOptionsModal extends BaseReactComponent {
                     </div>
                     <div className="ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-purple-button">
                       {/* <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                        paddingTop: "0rem",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Notifications
+                    </div> */}
+                      <div
                         style={{
-                          paddingTop: "0rem",
+                          padding: this.props.isMobile ? "0.25rem" : "",
                         }}
                         className="ctpb-plan-purple-button-child"
                       >
@@ -431,63 +444,122 @@ class PaywallOptionsModal extends BaseReactComponent {
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
-                        Notifications
-                      </div> */}
-                      <div className="ctpb-plan-purple-button-child">
-                        <Image
-                          className="ctpb-plan-purple-button-icon"
-                          src={PurpleCheckIcon}
-                        />
                         PnL calculations
                       </div>
-                      <div className="ctpb-plan-purple-button-child">
+                      <div
+                        style={{
+                          padding: this.props.isMobile ? "0.25rem" : "",
+                        }}
+                        className="ctpb-plan-purple-button-child"
+                      >
                         <Image
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
                         Netflows
                       </div>
-                      {/* <div className="ctpb-plan-purple-button-child">
+                      <div
+                        style={{
+                          padding: this.props.isMobile ? "0.25rem" : "",
+                        }}
+                        className="ctpb-plan-purple-button-child"
+                      >
                         <Image
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
                         Copy trader
-                      </div> */}
-                      <div className="ctpb-plan-purple-button-child">
+                      </div>
+                      <div
+                        style={{
+                          padding: this.props.isMobile ? "0.25rem" : "",
+                        }}
+                        className="ctpb-plan-purple-button-child"
+                      >
                         <Image
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
                         Export data
                       </div>
-                      <div className="ctpb-plan-purple-button-child">
+                      <div
+                        style={{
+                          padding: this.props.isMobile ? "0.25rem" : "",
+                        }}
+                        className="ctpb-plan-purple-button-child"
+                      >
                         <Image
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
                         Earn 10 points each month
                       </div>
-                      <div className="ctpb-plan-purple-button-child">
+                      <div
+                        style={{
+                          padding: this.props.isMobile ? "0.25rem" : "",
+                        }}
+                        className="ctpb-plan-purple-button-child"
+                      >
                         <Image
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
                         Aggregate multiple wallets
                       </div>
-                      <div className="ctpb-plan-purple-button-child">
+
+                      <div
+                        style={{
+                          padding: this.props.isMobile ? "0.25rem" : "",
+                        }}
+                        className="ctpb-plan-purple-button-child"
+                      >
                         <Image
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
-                        Can apply to join Loch Platinum
+                        Apply to join Platinum Telegram
                       </div>
-                      <div className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text">
+                      <div
+                        style={{
+                          marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                        }}
+                        className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                      >
                         <Image
                           className="ctpb-plan-purple-button-icon"
                           src={PurpleCheckIcon}
                         />
-                        Telegram channel
+                        <div className="ctpb-plan-purple-button-bullet" />
+
+                        <span>Over $100m liquid onchain AUM</span>
+                      </div>
+                      <div
+                        style={{
+                          marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                        }}
+                        className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                      >
+                        <Image
+                          className="ctpb-plan-purple-button-icon"
+                          src={PurpleCheckIcon}
+                        />
+                        <div className="ctpb-plan-purple-button-bullet" />
+
+                        <span>Over 500k twitter followers</span>
+                      </div>
+                      <div
+                        style={{
+                          marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                        }}
+                        className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                      >
+                        <Image
+                          className="ctpb-plan-purple-button-icon"
+                          src={PurpleCheckIcon}
+                        />
+                        <div className="ctpb-plan-purple-button-bullet" />
+
+                        <span>Daily trade ideas</span>
                       </div>
                     </div>
                   </div>

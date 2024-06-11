@@ -28,6 +28,7 @@ import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import PaywallOptionsModal from "./PaywallOptionsModal";
 import "./_paywallModal.scss";
 import { createUserPayment } from "./Api";
+import { COINBASE_SECRET_KEY } from "../../utils/Constant";
 
 class PaywallModal extends BaseReactComponent {
   constructor(props) {
@@ -140,7 +141,7 @@ class PaywallModal extends BaseReactComponent {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "X-CC-Api-Key": "03c1c210-ace2-4b5e-bc66-de26a70b283e",
+        "X-CC-Api-Key": COINBASE_SECRET_KEY,
       },
       body: JSON.stringify(requestBody),
     };
@@ -513,12 +514,11 @@ class PaywallModal extends BaseReactComponent {
                         className="ctpb-plan-purple-button-icon"
                         src={PurpleCheckIcon}
                       />
-                      Can apply to join Loch{" "}
-                      {this.props.isMobile ? "" : "Platinum"}
+                      Apply to join Platinum Telegram
                     </div>
                     <div
                       style={{
-                        marginTop: this.props.isMobile ? "0rem" : "",
+                        marginTop: this.props.isMobile ? "0rem" : "0.5rem",
                       }}
                       className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
                     >
@@ -526,14 +526,37 @@ class PaywallModal extends BaseReactComponent {
                         className="ctpb-plan-purple-button-icon"
                         src={PurpleCheckIcon}
                       />
-                      {this.props.isMobile ? (
-                        <span>
-                          Platinum Telegram
-                          <br /> channel
-                        </span>
-                      ) : (
-                        <span>Telegram channel</span>
-                      )}
+                      <div className="ctpb-plan-purple-button-bullet" />
+
+                      <span>Over $100m liquid onchain AUM</span>
+                    </div>
+                    <div
+                      style={{
+                        marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                      }}
+                      className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      <div className="ctpb-plan-purple-button-bullet" />
+
+                      <span>Over 500k twitter followers</span>
+                    </div>
+                    <div
+                      style={{
+                        marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                      }}
+                      className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      <div className="ctpb-plan-purple-button-bullet" />
+
+                      <span>Daily trade ideas</span>
                     </div>
                   </div>
                   <div

@@ -42,7 +42,11 @@ import {
 import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser, isNewAddress } from "../Portfolio/Api";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
-import { detectNameTag, updateUserWalletApi } from "../common/Api";
+import {
+  detectNameTag,
+  setPageFlagDefault,
+  updateUserWalletApi,
+} from "../common/Api";
 import {
   createAnonymousUserApi,
   detectCoin,
@@ -1090,8 +1094,12 @@ class TopWalletExchangeBar extends Component {
       this.props.updateTimer();
     }
   };
+  goToHomeAfterReplace = () => {
+    if (this.props.shouldGoToHomeAfterReplace) {
+      this.props.history.push("/home");
+    }
+  };
   addAddingWalletFromHistory = (resAdd) => {
-    console.log("resAdd is ", resAdd);
     let result = "";
 
     if (resAdd[1] && resAdd[1].endsWith(".eth")) {
@@ -1879,8 +1887,10 @@ class TopWalletExchangeBar extends Component {
                     ) || this.state.disableAddBtn
                       ? null
                       : this.props.isAddNewAddressLoggedIn
-                      ? this.handleAddWallet(true)
-                      : this.handleAddWelcomeWallet
+                      ? this.handleAddWelcomeWallet
+                      : () => {
+                          this.handleAddWallet(true);
+                        }
                   }
                   style={{
                     pointerEvents: this.state.welcomeAddBtnLoading
@@ -2076,6 +2086,7 @@ const mapDispatchToProps = {
   detectNameTag,
   isNewAddress,
   createAnonymousUserApi,
+  setPageFlagDefault,
 };
 
 export default connect(

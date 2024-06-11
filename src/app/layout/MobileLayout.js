@@ -290,7 +290,9 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   goToHomeAfterReplace = () => {
-    this.props.history.push("/home");
+    if (this.props.shouldGoToHomeAfterReplace) {
+      this.props.history.push("/home");
+    }
   };
   handleAddWallet = (replaceAddresses) => {
     this.setState({
@@ -424,7 +426,7 @@ class MobileLayout extends BaseReactComponent {
     }
 
     if (this.props.isAddNewAddress) {
-      if (this.props.handleAddWelcomeWallet) {
+      if (this.props.isAddNewAddressLoggedIn) {
         const finalArr = [];
         this.props.createAnonymousUserApi(
           data,
@@ -436,7 +438,6 @@ class MobileLayout extends BaseReactComponent {
           addressList
         );
       } else {
-        console.log("this is here");
         const yieldData = new URLSearchParams();
         yieldData.append("wallet_addresses", JSON.stringify(addressList));
         this.props.updateUserWalletApi(data, this, yieldData, false);
