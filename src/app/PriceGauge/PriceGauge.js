@@ -657,6 +657,7 @@ class PriceGauge extends Component {
               style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
             >
               <InflowOutflowChart
+                showTopHolders
                 userWalletList={this.state.userWalletList}
                 apiResponse={this.state.apiResponse}
               />

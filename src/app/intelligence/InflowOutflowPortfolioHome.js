@@ -283,6 +283,8 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
             showDropdown={this.props.showDropdown}
             isMobileGraph={this.props.isMobileGraph}
             priceGuageExpandedMobile={this.props.priceGuageExpandedMobile}
+            showTopHolders={this.props.showTopHolders}
+            isMobile
           />
         </div>
       </div>
