@@ -1094,7 +1094,14 @@ class MobileLayout extends BaseReactComponent {
             <div style={{ paddingBottom: "64px" }}>
               <div className="mobilePortfolioContainer">
                 <div className="mpcHomeContainer">
-                  <div id="mobileLayoutScrollContainer" className="mpcHomePage">
+                  <div
+                    id="mobileLayoutScrollContainer"
+                    className={`mpcHomePage ${
+                      this.props.customeHomeClassName
+                        ? this.props.customeHomeClassName
+                        : ""
+                    }`}
+                  >
                     <Breadcrums
                       showpath={this.props.showpath}
                       currentPage={this.props.currentPage}

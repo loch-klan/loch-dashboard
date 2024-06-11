@@ -1,0 +1,531 @@
+.schedule-a-call-page {
+  margin-top: 9rem;
+  padding: 9rem;
+  padding-top: 0rem;
+  padding-bottom: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 85rem;
+  .becomne-an-expert-page-block-top-gradient {
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    top: 9rem;
+    left: 0;
+
+    background: radial-gradient(
+      81.61% 163.22% at 50% 163.22%,
+      rgba(95, 51, 255, 0.6) 0%,
+      rgba(13, 56, 209, 0.108) 68%,
+      rgba(95, 51, 255, 0) 100%
+    );
+
+    transform: rotate(180deg);
+    z-index: 1;
+  }
+
+  .becomne-an-expert-page-block {
+    max-width: 120rem;
+    padding-top: 7rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 2;
+
+    .bae-info {
+      z-index: 2;
+      width: calc(50% - 0.5rem);
+      .bae-info-steps {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .bae-is-step-visual {
+          display: flex;
+
+          gap: 1.5rem;
+          .bae-is-step {
+            width: 7rem;
+            height: 0.5rem;
+            background-color: var(--greyb0b);
+            border-radius: 0.5rem;
+          }
+          .bae-is-step-active {
+            background-color: var(--blockOneBtnBackground);
+          }
+        }
+        .bae-is-step-text {
+          color: var(--becomeExpertDesc);
+          font-size: 11px;
+          text-shadow: 0.2px 0 var(--becomeExpertDesc);
+          text-transform: uppercase;
+        }
+      }
+      .bae-info-explain {
+        margin-top: 3rem;
+        .bae-ie-icon {
+          height: 4rem;
+          margin-bottom: 1rem;
+          filter: var(--invertColor);
+        }
+        .bae-ie-title {
+          font-size: 31px;
+        }
+        .bae-ie-desc {
+          font-size: 16px;
+          color: var(--becomeExpertDesc);
+          margin-top: 1rem;
+        }
+        .bae-ie-person-title {
+          font-size: 13px;
+          margin-top: 3rem;
+          margin-bottom: 1rem;
+          color: var(--becomeExpertDesc);
+        }
+        .bae-ie-person-block-container {
+          background-color: var(--cardBackgroud);
+          padding: 2rem;
+          border-radius: 1.5rem;
+          .bae-db-final {
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .bae-db-final-title {
+              font-size: 19px;
+            }
+            .bae-db-final-desc {
+              color: var(--sidebarBottomOptions);
+              font-size: 13px;
+              margin-top: 0.2rem;
+            }
+            .bae-db-final-time {
+              color: var(--blockOneBtnBackground);
+              font-size: 15px;
+              margin-top: 0.3rem;
+            }
+            .bae-db-final-right {
+              text-align: right;
+            }
+          }
+          .bae-ie-person-block {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            .bae-ie-person-image {
+              height: 9rem;
+              width: 9rem;
+              border-radius: 50%;
+            }
+            .bae-ie-person-details {
+              align-self: stretch;
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              justify-content: flex-start;
+              .ep-ei-dd-nametag {
+                font-size: 20px;
+              }
+              .ep-ei-dd-acccount-amount {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-left: 0.3rem;
+                margin-top: 0.3rem;
+                .ep-ei-dd-acccount {
+                  color: var(--greyb0b);
+                  font-size: 13px;
+                  cursor: pointer;
+                  &:hover {
+                    color: var(--primaryTextColor);
+                  }
+                }
+                .ep-ei-dd-amount {
+                  color: var(--expertsNetWorth);
+                  font-size: 16px;
+                }
+              }
+              .ep-ei-dd-desc {
+                margin-left: 0.3rem;
+                margin-top: 1rem;
+                color: var(--referallUsedBtnText);
+                font-size: 13px;
+              }
+            }
+          }
+        }
+        .bae-ie-person-title {
+          margin-top: 2rem;
+        }
+        .bae-ie-duration-block {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          width: 70%;
+          .bae-ie-duration-item {
+            background-color: var(--cardBackgroud);
+            padding: 1.5rem 2rem;
+            border-radius: 1rem;
+            font-size: 13px;
+            cursor: pointer;
+            border: 1px solid var(--cardSeperator);
+            box-shadow: var(--boxShadowColorMd);
+            font-size: 16px;
+            &:hover {
+              border-color: var(--primaryTextColor);
+              background-color: var(--primaryTextColor);
+              color: var(--cardBackgroud);
+            }
+          }
+          .bae-ie-duration-item-selected {
+            background-color: var(--durationSelectedBack);
+            color: var(--blockOneBtnBackground);
+            border-color: var(--blockOneBtnBackground);
+            pointer-events: none;
+            &:hover {
+              background-color: var(--durationSelectedBack);
+              color: var(--blockOneBtnBackground);
+              border-color: var(--blockOneBtnBackground);
+            }
+          }
+        }
+      }
+    }
+    .bae-data {
+      width: calc(50% - 0.5rem);
+      padding: 0rem 2rem;
+      .bae-input-block {
+        margin-top: 2rem;
+        .bae-ib-title {
+          color: var(--referallUsedBtnText);
+          font-size: 13px;
+          margin-bottom: 1.25rem;
+        }
+        .bae-ib-check-container {
+          margin-top: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 2rem;
+          .bae-ib-check-input-container {
+            border: 1px solid var(--referallCopyBtn);
+            border-radius: 0.8rem;
+            flex: 1;
+            padding: 0.5rem;
+
+            .bae-ib-input {
+              border: none;
+              width: 100%;
+              padding: 0.5rem 1rem;
+              outline: none;
+              font-size: 15px;
+              box-shadow: none !important;
+              transition: none !important;
+              background-color: var(--cardBackgroud);
+              &::placeholder {
+                color: var(--modalInputPlaceholder);
+              }
+            }
+            .bae-ib-text-area {
+              height: 8rem;
+            }
+            &:hover {
+              border-color: var(--primaryTextColor);
+            }
+          }
+          .bae-ib-check {
+            display: flex;
+            align-items: center;
+            .bae-ib-check-box {
+              margin: 0 !important;
+              height: 14px !important;
+              width: 14px !important;
+              border-radius: 4px !important;
+              img {
+                height: 7px !important;
+              }
+            }
+            .bae-ib-check-box-checked {
+              border-color: transparent;
+            }
+
+            .bae-ib-check-image {
+              height: 15px;
+              margin-left: 1rem;
+              margin-right: 0.4rem;
+            }
+            .bae-ib-check-text {
+              font-size: 13px;
+            }
+          }
+        }
+        .bae-ib-input-container {
+          border: 1px solid var(--referallCopyBtn);
+          border-radius: 0.8rem;
+          width: 100%;
+          padding: 0.5rem;
+
+          .bae-ib-input {
+            border: none;
+            width: 100%;
+            padding: 0.5rem 1rem;
+            outline: none;
+            font-size: 15px;
+            box-shadow: none !important;
+            transition: none !important;
+            background-color: var(--cardBackgroud);
+            &::placeholder {
+              color: var(--modalInputPlaceholder);
+            }
+          }
+          .bae-ib-text-area {
+            height: 8rem;
+          }
+          &:hover {
+            border-color: var(--primaryTextColor);
+          }
+        }
+        .bae-ib-btn-container {
+          border: 1px solid var(--referallCopyBtn);
+          border-radius: 0.8rem;
+          height: 7.5rem;
+          width: 7.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          .bae-ib-btn {
+            height: 1.8rem;
+            filter: var(--invertColor);
+          }
+          &:hover {
+            background-color: var(--primaryTextColor);
+            border-color: var(--primaryTextColor);
+            .bae-ib-btn {
+              filter: var(--invertColorHover);
+            }
+          }
+        }
+      }
+      .bae-data-block {
+        background-color: var(--cardBackgroud);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        .bae-db-title {
+          font-size: 20px;
+        }
+        .bae-db-desc {
+          color: var(--referallUsedBtnText);
+          font-size: 13px;
+          margin-bottom: 1rem;
+        }
+        .bae-db-time-slot {
+          display: flex;
+          flex-direction: column;
+          gap: 3rem;
+          margin-top: 1rem;
+          margin-bottom: 2rem;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          border: 2px solid var(--cardSeperator);
+          .bae-db-time-slot-item {
+            width: 100%;
+            .bae-db-tsi-title {
+              font-size: 15px;
+              text-align: left;
+              color: var(--grey969);
+            }
+            .bae-db-tsi-time-container {
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+              flex-wrap: wrap;
+              margin-top: 1rem;
+
+              .bae-db-tsi-time {
+                font-size: 15px;
+                border-radius: 0.4rem;
+                padding: 1rem;
+                align-self: stretch;
+                box-shadow: var(--boxShadowMd);
+                background-color: var(--cardBackgroud);
+                cursor: pointer;
+                border: 1px solid var(--cardSeperator);
+                &:hover {
+                  border-color: var(--primaryTextColor);
+                  background-color: var(--primaryTextColor);
+                  color: var(--cardBackgroud);
+                }
+              }
+              .bae-db-tsi-time-selected {
+                background-color: var(--durationSelectedBack);
+                color: var(--blockOneBtnBackground);
+                border-color: var(--blockOneBtnBackground);
+                pointer-events: none;
+                &:hover {
+                  background-color: var(--durationSelectedBack);
+                  color: var(--blockOneBtnBackground);
+                  border-color: var(--blockOneBtnBackground);
+                }
+              }
+            }
+          }
+        }
+        .bae-db-final {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .bae-db-final-title {
+            font-size: 19px;
+          }
+          .bae-db-final-desc {
+            color: var(--sidebarBottomOptions);
+            font-size: 13px;
+            margin-top: 0.2rem;
+          }
+          .bae-db-final-time {
+            color: var(--blockOneBtnBackground);
+            font-size: 15px;
+            margin-top: 0.3rem;
+          }
+          .bae-db-final-right {
+            text-align: right;
+          }
+        }
+      }
+      .bae-data-block-min-height {
+        min-height: 56.7rem;
+      }
+      .bae-data-btns {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 2rem;
+        .bae-db-btn {
+          padding: 1rem;
+          border-radius: 1rem;
+          padding: 1.7rem 3.5rem;
+          font-size: 16px;
+        }
+
+        .bae-db-backbtn {
+          border: 2px solid var(--abountSmartMoneyTextBlockBorder);
+          background-color: var(--cardBackgroud);
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          box-shadow: var(--sidebarHoverShadow);
+          .bae-db-backbtn-icon {
+            height: 10px;
+            filter: var(--invertColor);
+          }
+          &:hover {
+            border-color: var(--primaryTextColor);
+            background-color: var(--primaryTextColor);
+            color: var(--cardBackgroud);
+            .bae-db-backbtn-icon {
+              filter: var(--invertColorHover);
+            }
+          }
+        }
+        .bae-db-nextbtn {
+          padding: 1.7rem 3rem;
+          background-color: var(--blockOneBtnBackground);
+          border: 1px solid var(--blockOneBtnBackground);
+          color: white;
+          &:hover {
+            border-color: var(--cardBackgroud);
+            background-color: var(--cardBackgroud);
+            color: var(--primaryTextColor);
+          }
+        }
+
+        .bae-db-btn-disabled {
+          background-color: var(--cardBorder) !important;
+          border-color: var(--cardBorder) !important;
+          pointer-events: none;
+        }
+      }
+    }
+  }
+}
+.schedule-a-call-page-mobile {
+  width: 100%;
+  overflow: hidden;
+  margin-top: -2rem;
+  .schedule-a-call-page {
+    margin-top: 0rem;
+    padding: 0rem;
+    padding-bottom: 0rem;
+    min-width: unset;
+    .becomne-an-expert-page-block-top-gradient {
+      top: 5rem;
+    }
+    .becomne-an-expert-page-block {
+      flex-direction: column;
+      padding: 2rem;
+      .bae-info {
+        width: 100%;
+        .bae-info-explain {
+          .bae-ie-title {
+            font-size: 20px;
+          }
+          .bae-ie-desc {
+            font-size: 13px;
+            margin-top: 0.5rem;
+          }
+          .bae-ie-person-block-container {
+            .bae-ie-person-block {
+              .bae-ie-person-image {
+                height: 8rem;
+                width: 8rem;
+              }
+              .bae-ie-person-details {
+                .ep-ei-dd-nametag {
+                  font-size: 16px;
+                }
+                .ep-ei-dd-acccount-amount {
+                  .ep-ei-dd-amount {
+                    font-size: 13px;
+                  }
+                  .ep-ei-dd-acccount {
+                    font-size: 13px;
+                  }
+                }
+                .ep-ei-dd-desc {
+                  font-size: 13px;
+                  margin-top: 0.5rem;
+                }
+              }
+            }
+          }
+          .bae-ie-duration-block {
+            width: 100%;
+            display: grid;
+            overflow: hidden;
+            grid-template-columns: repeat(2, 1fr);
+            padding-bottom: 2rem;
+            gap: 1.5rem;
+            // white-space: nowrap;
+            .bae-ie-duration-item {
+              align-self: stretch;
+              padding-left: 0;
+              padding-right: 0;
+              white-space: nowrap;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 15px;
+            }
+          }
+        }
+      }
+      .bae-data {
+        width: 100%;
+        padding: 0rem;
+        margin-top: 2rem;
+      }
+    }
+  }
+}
