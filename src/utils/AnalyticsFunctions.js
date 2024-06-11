@@ -6269,6 +6269,22 @@ export const SmartMoneyTimeSpent = ({
   };
   sendAmplitudeData(event_name, eventProperties);
 };
+export const SmartMoneyNotifyClick = ({ session_id, email_address }) => {
+  const event_name = "Smart money: notify checkbox clicked";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const SmartMoneyModalCloseClick = ({ session_id, email_address }) => {
+  const event_name = "Smart money: notify transaction: modal close";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const SmartMoneyShare = ({ session_id, email_address }) => {
   const event_name = "Smart money: share";
   const eventProperties = {

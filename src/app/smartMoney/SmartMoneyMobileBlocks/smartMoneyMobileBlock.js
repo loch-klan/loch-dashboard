@@ -11,7 +11,10 @@ import {
 import { Image } from "react-bootstrap";
 import { getCurrentUser } from "../../../utils/ManageToken.js";
 import { BASE_URL_S3 } from "../../../utils/Constant.js";
-import { SmartMoneyWalletClicked } from "../../../utils/AnalyticsFunctions.js";
+import {
+  SmartMoneyNotifyClick,
+  SmartMoneyWalletClicked,
+} from "../../../utils/AnalyticsFunctions.js";
 import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
@@ -23,6 +26,13 @@ class smartMoneyMobileBlock extends BaseReactComponent {
     super(props);
     this.state = {};
   }
+  handleOnNotifyClick = () => {
+    SmartMoneyNotifyClick({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+    this.props.openNotifyOnTransactionModal(this.props.mapData.account);
+  };
   handleOnClick = (addItem) => {
     if (!this.props.smartMoneyBlur && this.props.handleFollowUnfollow) {
       this.props.handleFollowUnfollow(
@@ -135,6 +145,17 @@ class smartMoneyMobileBlock extends BaseReactComponent {
               </div>
             </div>
           )}
+          <div className="msmbBodyItem">
+            <div className="inter-display-medium msmbBITitle">Notify</div>
+            <div className={`inter-display-medium msmbBIAmount`}>
+              <CheckboxCustomTable
+                handleOnClick={this.handleOnNotifyClick}
+                isChecked={false}
+                noMargin
+                dontSelectIt
+              />
+            </div>
+          </div>
         </div>
       </div>
     );

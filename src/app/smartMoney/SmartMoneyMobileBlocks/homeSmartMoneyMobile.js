@@ -191,6 +191,9 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
                       returns={returns}
                       mapData={mapData}
                       handleFollowUnfollow={this.props.handleFollowUnfollow}
+                      openNotifyOnTransactionModal={
+                        this.props.openNotifyOnTransactionModal
+                      }
                       openSignInOnclickModal={this.props.openSignInOnclickModal}
                     />
                   );

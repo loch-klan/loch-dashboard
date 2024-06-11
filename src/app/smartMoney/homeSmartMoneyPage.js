@@ -16,6 +16,7 @@ import {
   CurrencyType,
   TruncateText,
   amountFormat,
+  dontOpenLoginPopup,
   mobileCheck,
   noExponents,
   numToCurrency,
@@ -46,8 +47,10 @@ import {
   SmartMoneyChangeLimit,
   SmartMoneyFAQClicked,
   SmartMoneyHowItWorksClicked,
+  SmartMoneyModalCloseClick,
   SmartMoneyNameTagHover,
   SmartMoneyNetWorthHover,
+  SmartMoneyNotifyClick,
   SmartMoneyPageNext,
   SmartMoneyPagePrev,
   SmartMoneyPageSearch,
@@ -83,6 +86,7 @@ import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
 import "./_smartMoney.scss";
 import MobileLayout from "../layout/MobileLayout.js";
 import HomeSmartMoneyMobile from "./SmartMoneyMobileBlocks/homeSmartMoneyMobile.js";
+import NotifyOnTransactionSizeModal from "./notifyOnTransactionSizeModal.js";
 
 class HomeSmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -92,6 +96,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      addressToNotify: "",
+      showNotifyOnTransactionModal: false,
       lochUserState: window.localStorage.getItem("lochToken"),
       mobilePopupModal: false,
       signInModalAnimation: true,
@@ -257,6 +263,22 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     // if (mobileCheck()) {
     //   this.props.history.push("/home");
     // }
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.localStorage.getItem(
+        "openSmartMoneyNoficationModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          window.localStorage.removeItem("openSmartMoneyNoficationModal");
+          window.localStorage.removeItem("openFollowingNoficationModal");
+          this.setState({
+            showNotifyOnTransactionModal: true,
+            addressToNotify: shouldOpenNoficationModal,
+          });
+        }, 1000);
+      }
+    }
     getAllCurrencyRatesApi();
     let token = window.localStorage.getItem("lochToken");
     let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
@@ -769,6 +791,45 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     let shareLink = BASE_URL_S3 + "home-leaderboard";
     this.copyTextToClipboard(shareLink);
   };
+  openNotifyOnTransactionModal = (passedAddress) => {
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      this.setState(
+        {
+          addressToNotify: passedAddress,
+        },
+        () => {
+          window.localStorage.setItem("dontOpenLoginPopup", "true");
+          this.setState({
+            showNotifyOnTransactionModal: true,
+          });
+        }
+      );
+    } else {
+      window.localStorage.setItem(
+        "openSmartMoneyNoficationModal",
+        passedAddress
+      );
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hideNotifyOnTransactionModal = () => {
+    window.localStorage.removeItem("dontOpenLoginPopup");
+    this.setState({
+      showNotifyOnTransactionModal: false,
+      addressToNotify: "",
+    });
+    SmartMoneyModalCloseClick({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+    });
+  };
   goToAddress = (slink) => {
     SmartMoneyWalletClicked({
       session_id: getCurrentUser().id,
@@ -1189,6 +1250,35 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           }
         },
       },
+      {
+        labelName: (
+          <div className=" history-table-header-col no-hover" id="netflows">
+            <span className="inter-display-medium f-s-13 lh-16">Notify</span>
+          </div>
+        ),
+        dataKey: "following",
+
+        coumnWidth: 0.125,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "following") {
+            const handleOnClick = (addItem) => {
+              SmartMoneyNotifyClick({
+                session_id: getCurrentUser().id,
+                email_address: getCurrentUser().email,
+              });
+              this.openNotifyOnTransactionModal(rowData.account);
+            };
+            return (
+              <CheckboxCustomTable
+                handleOnClick={handleOnClick}
+                isChecked={false}
+                dontSelectIt
+              />
+            );
+          }
+        },
+      },
     ];
 
     if (mobileCheck()) {
@@ -1208,11 +1298,21 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           goToPageAfterLogin="/home"
           funAfterUserCreate={this.funAfterUserCreate}
         >
+          {this.state.showNotifyOnTransactionModal ? (
+            <NotifyOnTransactionSizeModal
+              show={this.state.showNotifyOnTransactionModal}
+              onHide={this.hideNotifyOnTransactionModal}
+              history={this.props.history}
+              selectedAddress={this.state.addressToNotify}
+              isMobile
+            />
+          ) : null}
           <HomeSmartMoneyMobile
             isNoUser={!this.state.lochUserState}
             goToAddress={this.goToAddress}
             accountList={this.state.accountList}
             currency={this.state.currency}
+            openNotifyOnTransactionModal={this.openNotifyOnTransactionModal}
             handleFollowUnfollow={this.handleFollowUnfollow}
             openSignInOnclickModal={this.openSignInOnclickModal}
             blurTable={this.state.blurTable}
@@ -1284,6 +1384,14 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   history={this.props.history}
                   handleClose={this.closeSignOutModal}
                   handleYes={this.signOutFun}
+                />
+              ) : null}
+              {this.state.showNotifyOnTransactionModal ? (
+                <NotifyOnTransactionSizeModal
+                  show={this.state.showNotifyOnTransactionModal}
+                  onHide={this.hideNotifyOnTransactionModal}
+                  history={this.props.history}
+                  selectedAddress={this.state.addressToNotify}
                 />
               ) : null}
               {this.state.faqModal ? (

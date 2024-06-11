@@ -45,6 +45,7 @@
   --popularAccountsHeaderBrightness: brightness(0.96);
   --brightenDarkModeColors: brightness(1);
   --referallCopyBtn: #e5e5e6;
+  --notificationTooltipHover: transparent;
   --referallUsedBtn: #e5e5e680;
   --referallUsedBtnText: #7c7d81;
   --referalCompletedTasks: #e5e5e6;
@@ -266,6 +267,11 @@
   --profileWalletDivider: rgba(229, 229, 230, 0.5);
   --profileWalletAddress: #b0b1b3;
 
+  //Slider
+  --addressText: #1a1a1a;
+
+  // Custom Transaction
+  --addedWalletItem: #e5e5e680;
   // Copy Trader Welcome
   --blockOneHeaderGradMain: #000000;
   --blockOneHeaderGradSecondary: #666666;
@@ -347,6 +353,7 @@
   --white191darke5ee6: #e5e5e6;
   --dropdownActiveSelected: #e5e5e6;
   --referallCopyBtn: #303030;
+  --notificationTooltipHover: #303030;
   --referallUsedBtn: rgba(229, 229, 230, 0.2);
   --referallUsedBtnText: #cacbcc;
 
@@ -558,6 +565,11 @@
   --profileWalletDivider: #313233;
   --profileWalletAddress: #636467;
 
+  //Slider
+  --addressText: #cacbcc;
+
+  // Custom Transaction
+  --addedWalletItem: #e5e5e680;
   // Copy Trader Welcome
   --blockOneHeaderGradMain: white;
   --blockOneHeaderGradSecondary: rgb(169, 169, 169);

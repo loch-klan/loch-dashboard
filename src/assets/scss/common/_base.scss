@@ -1410,6 +1410,9 @@ form {
     border: 1px solid $black-191 !important;
     background-color: $black-191 !important;
   }
+  &:disabled {
+    pointer-events: none;
+  }
 }
 
 .btn-primary.disabled {
@@ -3743,6 +3746,281 @@ input {
     display: block;
   }
 }
+.sliderModalBody {
+  .sliderModalBodyAddressBtn {
+    text-decoration: underline;
+    color: var(--addressText);
+    cursor: pointer;
+    font-size: 15px;
+    background-color: var(--greyCardBackgroud);
+    padding: 0.3rem 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    &:hover {
+      filter: var(--hoverBrightness);
+    }
+  }
+  .smbButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3rem 5rem;
+    padding-top: 4.5rem;
+  }
+  .smbWalletsContainer {
+    padding: 3rem 5rem;
+    border-bottom: 0.1rem solid var(--referallCopyBtn);
+    .smbwInputContainer {
+      box-shadow: 0px 0.2rem 0.5rem var(--primaryBoxShadowDarkerColor);
+      border-radius: 0.8rem;
+      border: 0.1rem solid var(--referallCopyBtn);
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        border: 0.1rem solid var(--primaryTextColor);
+      }
+      .smbwInput {
+        flex: 1;
+        border-radius: 0.8rem;
+        border: none;
+        padding: 1.5rem;
+        text-align: center;
+        outline: none;
+        font-size: 14px;
+      }
+    }
+    .smbwInputContainerDisabled {
+      border: 0.1rem solid var(--referallCopyBtn);
+    }
+    .smbwInputBtn {
+      font-size: 1.2rem;
+      padding: 0.7rem 1.75rem;
+      margin-right: 1rem;
+      border-radius: 0.6rem;
+    }
+    .smbwAddedWalletBlock {
+      .smbwAddedWalletContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-top: 1rem;
+        .smbwAddedWalletItem {
+          background-color: var(--addedWalletItem);
+          padding: 0.7rem 1rem;
+          border-radius: 0.75rem;
+          cursor: pointer;
+          -webkit-user-select: none; /* Safari */
+          -ms-user-select: none; /* IE 10 and IE 11 */
+          user-select: none; /* Standard syntax */
+
+          .smbwAddedWalletCross {
+            margin-left: 0.5rem;
+            filter: var(--invertColor);
+          }
+          &:hover {
+            .smbwAddedWalletCross {
+              filter: var(--hoverBrightness);
+            }
+          }
+        }
+      }
+    }
+  }
+  .smbSliderContainer {
+    .smbTitle {
+      font-size: 13px;
+      margin-bottom: 1rem;
+    }
+    .smbSlider {
+      padding: 3rem 5rem;
+      border-bottom: 0.1rem solid var(--referallCopyBtn);
+      .smbSliderMinMaxBox {
+        position: relative;
+        background-color: var(--cardBackgroud);
+        z-index: 1000;
+        padding: 1rem 1.5rem;
+        border-radius: 0.8rem;
+        box-shadow: 0px 6.18px 18.54px 0px var(--primaryBoxShadowColor);
+        border: 0.1rem solid var(--notificationTooltipHover);
+        transform: translateX(-50%);
+        font-size: 15px;
+        .smbSliderMinMaxBoxArrow {
+          height: 1rem;
+          width: 1rem;
+          background-color: var(--cardBackgroud);
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateY(30%) translateX(-30%) rotate(45deg);
+        }
+        .smbSliderMinMaxBoxInput {
+          border: none;
+          background-color: transparent;
+          outline: none;
+          text-align: center;
+          &:hover {
+            opacity: 0.4;
+            &:focus-visible {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+    .smbsAssetDropdownContainer {
+      position: relative;
+      padding: 3rem 5rem;
+      padding-bottom: 3.5rem;
+      z-index: 3;
+      border-bottom: 0.1rem solid var(--referallCopyBtn);
+    }
+    .smbsInputContainer {
+      padding: 3rem 5rem;
+      padding-bottom: 0rem;
+      .smbsInputBlock {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 1rem;
+        .smbsInputBlockInfo {
+          width: 28%;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-right: 5rem;
+          .smbsInputBlockInfoTitle {
+            font-size: 14px;
+          }
+          .smbsInputBlockInfoImage {
+            height: 16px;
+            filter: var(--invertColor);
+          }
+          .custom-checkbox {
+            margin: 0px !important;
+            height: 16px !important;
+            width: 16px !important;
+            border-radius: 4.5px !important;
+            img {
+              height: 8px !important;
+            }
+          }
+        }
+        .smbsInput {
+          width: 72%;
+          border: 0.1rem solid var(--referallCopyBtn);
+          border-radius: 0.8rem;
+          padding: 1rem 1.5rem;
+          text-align: left;
+          outline: none;
+          font-size: 14px;
+          &:hover {
+            border: 0.1rem solid var(--primaryTextColor);
+          }
+        }
+        .smbsInputDisabled {
+          opacity: 0.5;
+          &:hover {
+            border: 0.1rem solid var(--referallCopyBtn);
+          }
+        }
+      }
+    }
+    .smbSlidervalueContainer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      .smbSlidervalues {
+        color: var(--sidebarBottomOptions);
+      }
+    }
+    .rc-slider-handle {
+      background-color: var(--primaryTextColor);
+      border: none;
+      height: 1.5rem;
+      width: 0.5rem;
+      border-radius: 1.5rem;
+      margin-top: -1rem;
+      opacity: 1;
+    }
+    .rc-slider-handle-dragging {
+      box-shadow: none;
+    }
+    .rc-slider-rail {
+      background-color: var(--greyCardBackgroud);
+      height: 0.5rem;
+      opacity: 1;
+      z-index: 1;
+    }
+    .rc-slider-track {
+      z-index: 2;
+      position: relative;
+      background-color: var(--primaryTextColor);
+      height: 0.5rem;
+      border-top-left-radius: 1rem;
+      border-bottom-left-radius: 1rem;
+      opacity: 1 !important;
+    }
+  }
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+.transaction-notification-mobile {
+  .modal-content {
+    min-width: 90vw !important;
+    width: 90vw !important;
+    .modal-header {
+      padding: 2rem !important;
+      padding-bottom: 1.7rem !important;
+    }
+    .modal-body {
+      .sliderModalBody {
+        .exit-overlay-body {
+          padding: 0rem 2rem !important;
+        }
+        .smbWalletsContainer {
+          padding: 3rem 2rem !important;
+        }
+        .smbSliderContainer {
+          .smbSlider {
+            padding: 3rem 2rem !important;
+          }
+          .smbsAssetDropdownContainer {
+            padding: 3rem 2rem !important;
+          }
+          .smbsInputContainer {
+            padding: 3rem 2rem !important;
+            padding-bottom: 0rem !important;
+            .smbsInputBlock {
+              flex-direction: column;
+              align-items: flex-start;
+              .smbsInputBlockInfo {
+                width: 100%;
+              }
+              .smbsInput {
+                width: 100%;
+                margin-top: 1rem;
+              }
+            }
+          }
+        }
+        .smbButtonContainer {
+          padding: 3rem 2rem !important;
+          flex-direction: column-reverse;
+          gap: 2rem;
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+  }
 .blurred-elements {
   cursor: pointer;
   filter: blur(4px);
