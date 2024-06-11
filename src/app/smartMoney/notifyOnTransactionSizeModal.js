@@ -18,6 +18,7 @@ import {
   amountFormat,
   goToAddress,
   isSameDateAs,
+  openAddressInSameTab,
   sliderBillionToMillion,
 } from "../../utils/ReusableFunctions";
 import { BaseReactComponent, CustomButton } from "../../utils/form";
@@ -260,7 +261,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     }
   };
   goToWalletAddress = () => {
-    goToAddress(this.props.selectedAddress);
+    openAddressInSameTab(this.props.selectedAddress);
   };
   assetList = () => {
     let data = new URLSearchParams();
