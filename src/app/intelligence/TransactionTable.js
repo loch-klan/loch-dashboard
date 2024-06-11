@@ -12,7 +12,11 @@ function TransactionTable(props) {
         display: "flex",
         flexDirection: "column",
       }}
-      className="transaction-table-section h-100 "
+      className={`transaction-table-section h-100 ${
+        props.hideTransactionTableSectionClass
+          ? "transaction-table-section-unset"
+          : ""
+      }`}
     >
       {props.title ? (
         <GraphHeader

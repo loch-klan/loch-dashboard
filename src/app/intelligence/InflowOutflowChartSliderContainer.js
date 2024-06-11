@@ -5,9 +5,15 @@ import {
   AssetChartInflowIcon,
   AssetChartOutflowIcon,
   ChartSeeMoreArrowIcon,
+  TrophyIcon,
+  TrophyTopHoldersIcon,
 } from "../../assets/images/icons/index.js";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  amountFormat,
+  numToCurrency,
+} from "../../utils/ReusableFunctions";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import { BarGraphFooter } from "../common/BarGraphFooter";
 import { GraphHeader } from "../common/GraphHeader";
@@ -25,6 +31,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 import { CustomDropdownPrice } from "../../utils/form";
 import InflowOutflowChartSlider from "./InflowOutflowChartSlider";
+import TransactionTable from "./TransactionTable.js";
 
 require("highcharts/modules/annotations")(Highcharts);
 
@@ -32,6 +39,80 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      tableData: [
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+        {
+          address: "0x23",
+          labelName: "@‌smartestmoney",
+          amount: "100",
+          dollaramount: 34000000,
+          supplypercent: 3,
+          unrealizedgain: 11000000,
+          unrealizedreturn: 32,
+        },
+      ],
       inflowOutflowData: [],
       buySellList: [],
       plotLineHide: 0,
@@ -325,6 +406,173 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
     this.setState({ isChainSearchUsed: true });
   };
   render() {
+    const columnList = [
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">
+              Address / ENS
+            </span>
+          </div>
+        ),
+        dataKey: "addressens",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "addressens") {
+            return <div>{rowData.address}</div>;
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Label</span>
+          </div>
+        ),
+        dataKey: "label",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "label") {
+            return <div className="dotDotText">{rowData.labelName}</div>;
+          }
+        },
+      },
+
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Amount</span>
+          </div>
+        ),
+        dataKey: "amount",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "amount") {
+            return (
+              <div>{numToCurrency(rowData.amount).toLocaleString("en-US")}</div>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">$ Amount</span>
+          </div>
+        ),
+        dataKey: "dollaramount",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "dollaramount") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.dollaramount
+                    ? CurrencyType(false) +
+                      amountFormat(rowData.dollaramount, "en-US", "USD")
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.dollaramount
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.dollaramount.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Supply %</span>
+          </div>
+        ),
+        dataKey: "supplypercent",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "supplypercent") {
+            return <div>{rowData.supplypercent}%</div>;
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">
+              Unrealized gain
+            </span>
+          </div>
+        ),
+        dataKey: "unrealizedgain",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "unrealizedgain") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.unrealizedgain
+                    ? CurrencyType(false) +
+                      amountFormat(rowData.unrealizedgain, "en-US", "USD")
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.unrealizedgain
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.unrealizedgain.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">
+              Unrealized return %
+            </span>
+          </div>
+        ),
+        dataKey: "unrealizedreturn",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "unrealizedreturn") {
+            return <div>{rowData.unrealizedreturn}%</div>;
+          }
+        },
+      },
+    ];
     return (
       <div
         className="welcome-card-section lineChartSlider"
@@ -345,21 +593,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
           <div
             className="line-chart-section"
             style={{
-              padding: `0rem ${
-                this.props.hideTimeFilter
-                  ? this.props.isMobileGraph
-                    ? ""
-                    : "3.2rem"
-                  : "4.8rem"
-              }`,
               width: this.props.hideTimeFilter ? "100%" : "",
-              paddingTop: `${
-                this.props.priceGuageExpandedMobile
-                  ? "0rem"
-                  : this.props.hideTimeFilter
-                  ? "2.8rem"
-                  : ""
-              }`,
             }}
           >
             {!this.props.isPage && (
@@ -394,197 +628,124 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
               </div>
             ) : (
               <>
-                {(!this.props.hideTimeFilter ||
-                  this.props.priceGuageExpandedMobile) && (
-                  <>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: this.props.priceGuageExpandedMobile
-                          ? "1rem"
-                          : "2rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          width: "100%",
-                          padding: this.props.priceGuageExpandedMobile
-                            ? "0rem"
-                            : "",
-                        }}
-                      >
-                        <BarGraphFooter
-                          handleFooterClick={this.handleSelect}
-                          active={this.state.title}
-                          footerLabels={["Max", "1 Year", "1 Month", "1 Week"]}
-                          lineChart={true}
-                          divideInTwo={this.props.priceGuageExpandedMobile}
-                          priceGuageExpandedMobile={
-                            this.props.priceGuageExpandedMobile
-                          }
-                        />
-                      </div>
-                    </div>
-                  </>
-                )}
                 <div
-                  // className="chart-y-selection"
-
-                  className="inflowOutflowChartTopInfo"
                   style={{
-                    padding: this.props.hideTimeFilter ? "0rem" : "",
+                    padding: `0rem ${
+                      this.props.hideTimeFilter
+                        ? this.props.isMobileGraph
+                          ? ""
+                          : "3.2rem"
+                        : "4.8rem"
+                    }`,
+                    paddingTop: `${
+                      this.props.priceGuageExpandedMobile
+                        ? "0rem"
+                        : this.props.hideTimeFilter
+                        ? "2.8rem"
+                        : ""
+                    }`,
                   }}
                 >
-                  <div
-                    style={{
-                      whiteSpace: "nowrap",
-                      overflow:
-                        this.props.isHomepage ||
-                        this.props.priceGuageExpandedMobile
-                          ? "visible"
-                          : "hidden",
-                      textOverflow: "ellipsis",
-                      alignItems:
-                        this.props.hideTimeFilter && this.props.showDropdown
-                          ? "center"
-                          : this.props.hideTimeFilter
-                          ? "flex-start"
-                          : "centre",
-                      justifyContent: this.props.hideTimeFilter
-                        ? "space-between"
-                        : "",
-                      width: "100%",
-                    }}
-                    className="inflowOutflowChartTopInfoLeft"
-                  >
-                    {this.props.priceGuageExpandedMobile ? (
-                      <div className="priceGaugeMobileExpandedPriceDropdownContainer">
-                        <CustomDropdownPrice
-                          isHomepage={this.props.isHomepage}
-                          filtername="All chains selected"
-                          options={this.state.assetList}
-                          action={null}
-                          handleClick={this.handleAssetSelect}
-                          isChain={true}
-                          selectedTokens={[this.state.activeAssetTab]}
-                          selectedTokenName={this.state.activeAssetTabName}
-                          singleSelect
-                          searchIsUsed={this.chainSearchIsUsed}
-                        />
-                        <div
-                          style={{
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            fontSize: "18px",
-                            fontWeight: this.props.hideTimeFilter ? "500" : "",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "flex-start",
-                            marginTop: "2rem",
-                          }}
-                          className="ioPrice inter-display-medium"
-                        >
-                          <div
-                            style={{
-                              whiteSpace: "nowrap",
-                              overflow: "hidden",
-                              textOverflow: "ellipsis",
-                            }}
-                          >
-                            {this.props.showSelectedItem
-                              ? this.props.showSelectedItem + " "
-                              : this.props.showEth
-                              ? "Ethereum "
-                              : null}
-                            {this.props.hideTimeFilter &&
-                            this.state.activeAssetTabName
-                              ? ``
-                              : ""}
-                            Price
-                          </div>
-                          <div
-                            style={{
-                              marginLeft: "0.5rem",
-                              marginRight: "0.5rem",
-                            }}
-                          >
-                            {CurrencyType(false)}
-                            {this.state.currentPriceValue
-                              ? numToCurrency(this.state.currentPriceValue)
-                              : "0.00"}
-                          </div>
-                        </div>
-                        <div
-                          style={{
-                            opacity: this.state.currentPriceDate ? 1 : 0,
-                          }}
-                          className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
-                        >
-                          {this.state.currentPriceDate
-                            ? this.state.currentPriceDate
-                            : 0}
-                        </div>
-                      </div>
-                    ) : (
+                  {(!this.props.hideTimeFilter ||
+                    this.props.priceGuageExpandedMobile) && (
+                    <>
                       <div
                         style={{
                           display: "flex",
-                          whiteSpace: "nowrap",
-                          overflow:
-                            this.props.isHomepage ||
-                            this.props.priceGuageExpandedMobile
-                              ? "visible"
-                              : "hidden",
-                          textOverflow: "ellipsis",
                           justifyContent: "space-between",
-                          width: "100%",
-                          alignItems:
-                            this.props.hideTimeFilter && this.props.showDropdown
-                              ? "center"
-                              : this.props.hideTimeFilter
-                              ? "flex-start"
-                              : "centre",
-                        }}
-                      >
-                        {/* <div
-                        style={{
-                          display: "flex",
                           alignItems: "center",
+                          marginBottom: this.props.priceGuageExpandedMobile
+                            ? "1rem"
+                            : "2rem",
                         }}
-                        className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
                       >
-                        <div>{CurrencyType()}</div>
-                      </div> */}
                         <div
-                          onClick={this.changeThePriceTodefault}
-                          className="ioPriceContainer"
                           style={{
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            paddingLeft: this.props.hideTimeFilter
-                              ? "1.5rem"
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            width: "100%",
+                            padding: this.props.priceGuageExpandedMobile
+                              ? "0rem"
                               : "",
                           }}
                         >
+                          <BarGraphFooter
+                            handleFooterClick={this.handleSelect}
+                            active={this.state.title}
+                            footerLabels={[
+                              "Max",
+                              "1 Year",
+                              "1 Month",
+                              "1 Week",
+                            ]}
+                            lineChart={true}
+                            divideInTwo={this.props.priceGuageExpandedMobile}
+                            priceGuageExpandedMobile={
+                              this.props.priceGuageExpandedMobile
+                            }
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  <div
+                    // className="chart-y-selection"
+
+                    className="inflowOutflowChartTopInfo"
+                    style={{
+                      padding: this.props.hideTimeFilter ? "0rem" : "",
+                    }}
+                  >
+                    <div
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow:
+                          this.props.isHomepage ||
+                          this.props.priceGuageExpandedMobile
+                            ? "visible"
+                            : "hidden",
+                        textOverflow: "ellipsis",
+                        alignItems:
+                          this.props.hideTimeFilter && this.props.showDropdown
+                            ? "center"
+                            : this.props.hideTimeFilter
+                            ? "flex-start"
+                            : "centre",
+                        justifyContent: this.props.hideTimeFilter
+                          ? "space-between"
+                          : "",
+                        width: "100%",
+                      }}
+                      className="inflowOutflowChartTopInfoLeft"
+                    >
+                      {this.props.priceGuageExpandedMobile ? (
+                        <div className="priceGaugeMobileExpandedPriceDropdownContainer">
+                          <CustomDropdownPrice
+                            isHomepage={this.props.isHomepage}
+                            filtername="All chains selected"
+                            options={this.state.assetList}
+                            action={null}
+                            handleClick={this.handleAssetSelect}
+                            isChain={true}
+                            selectedTokens={[this.state.activeAssetTab]}
+                            selectedTokenName={this.state.activeAssetTabName}
+                            singleSelect
+                            searchIsUsed={this.chainSearchIsUsed}
+                          />
                           <div
                             style={{
                               whiteSpace: "nowrap",
                               overflow: "hidden",
                               textOverflow: "ellipsis",
-                              fontSize: this.props.hideTimeFilter ? "14px" : "",
+                              fontSize: "18px",
                               fontWeight: this.props.hideTimeFilter
                                 ? "500"
                                 : "",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "flex-start",
+                              marginTop: "2rem",
                             }}
                             className="ioPrice inter-display-medium"
                           >
@@ -617,36 +778,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                                 ? numToCurrency(this.state.currentPriceValue)
                                 : "0.00"}
                             </div>
-                            {!this.props.hideTimeFilter ||
-                            this.props.hideExplainer ? null : (
-                              <div
-                                style={{
-                                  display: "flex",
-                                }}
-                              >
-                                <CustomOverlay
-                                  position="top"
-                                  isIcon={false}
-                                  isInfo={true}
-                                  isText={true}
-                                  className={"fix-width"}
-                                  text={
-                                    "This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
-                                  }
-                                >
-                                  <Image
-                                    src={InfoIcon}
-                                    className="infoIcon"
-                                    style={{
-                                      cursor: "pointer",
-                                      height: "14px",
-                                    }}
-                                  />
-                                </CustomOverlay>
-                              </div>
-                            )}
                           </div>
-
                           <div
                             style={{
                               opacity: this.state.currentPriceDate ? 1 : 0,
@@ -658,111 +790,245 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               : 0}
                           </div>
                         </div>
-                        {this.props.showDropdown ? (
+                      ) : (
+                        <div
+                          style={{
+                            display: "flex",
+                            whiteSpace: "nowrap",
+                            overflow:
+                              this.props.isHomepage ||
+                              this.props.priceGuageExpandedMobile
+                                ? "visible"
+                                : "hidden",
+                            textOverflow: "ellipsis",
+                            justifyContent: "space-between",
+                            width: "100%",
+                            alignItems:
+                              this.props.hideTimeFilter &&
+                              this.props.showDropdown
+                                ? "center"
+                                : this.props.hideTimeFilter
+                                ? "flex-start"
+                                : "centre",
+                          }}
+                        >
+                          {/* <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
+                      >
+                        <div>{CurrencyType()}</div>
+                      </div> */}
                           <div
+                            onClick={this.changeThePriceTodefault}
+                            className="ioPriceContainer"
                             style={{
-                              zIndex: 4,
-                              paddingRight: "15px",
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              paddingLeft: this.props.hideTimeFilter
+                                ? "1.5rem"
+                                : "",
                             }}
                           >
-                            <CustomDropdownPrice
-                              isHomepage={this.props.isHomepage}
-                              filtername="All chains selected"
-                              options={this.state.assetList}
-                              action={null}
-                              handleClick={this.handleAssetSelect}
-                              isChain={true}
-                              selectedTokens={[this.state.activeAssetTab]}
-                              selectedTokenName={this.state.activeAssetTabName}
-                              singleSelect
-                              searchIsUsed={this.chainSearchIsUsed}
-                            />
+                            <div
+                              style={{
+                                whiteSpace: "nowrap",
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                fontSize: this.props.hideTimeFilter
+                                  ? "14px"
+                                  : "",
+                                fontWeight: this.props.hideTimeFilter
+                                  ? "500"
+                                  : "",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                              }}
+                              className="ioPrice inter-display-medium"
+                            >
+                              <div
+                                style={{
+                                  whiteSpace: "nowrap",
+                                  overflow: "hidden",
+                                  textOverflow: "ellipsis",
+                                }}
+                              >
+                                {this.props.showSelectedItem
+                                  ? this.props.showSelectedItem + " "
+                                  : this.props.showEth
+                                  ? "Ethereum "
+                                  : null}
+                                {this.props.hideTimeFilter &&
+                                this.state.activeAssetTabName
+                                  ? ``
+                                  : ""}
+                                Price
+                              </div>
+                              <div
+                                style={{
+                                  marginLeft: "0.5rem",
+                                  marginRight: "0.5rem",
+                                }}
+                              >
+                                {CurrencyType(false)}
+                                {this.state.currentPriceValue
+                                  ? numToCurrency(this.state.currentPriceValue)
+                                  : "0.00"}
+                              </div>
+                              {!this.props.hideTimeFilter ||
+                              this.props.hideExplainer ? null : (
+                                <div
+                                  style={{
+                                    display: "flex",
+                                  }}
+                                >
+                                  <CustomOverlay
+                                    position="top"
+                                    isIcon={false}
+                                    isInfo={true}
+                                    isText={true}
+                                    className={"fix-width"}
+                                    text={
+                                      "This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
+                                    }
+                                  >
+                                    <Image
+                                      src={InfoIcon}
+                                      className="infoIcon"
+                                      style={{
+                                        cursor: "pointer",
+                                        height: "14px",
+                                      }}
+                                    />
+                                  </CustomOverlay>
+                                </div>
+                              )}
+                            </div>
+
+                            <div
+                              style={{
+                                opacity: this.state.currentPriceDate ? 1 : 0,
+                              }}
+                              className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
+                            >
+                              {this.state.currentPriceDate
+                                ? this.state.currentPriceDate
+                                : 0}
+                            </div>
                           </div>
-                        ) : null}
-                      </div>
-                    )}
-                    {this.props.openChartPage ? (
+                          {this.props.showDropdown ? (
+                            <div
+                              style={{
+                                zIndex: 4,
+                                paddingRight: "15px",
+                              }}
+                            >
+                              <CustomDropdownPrice
+                                isHomepage={this.props.isHomepage}
+                                filtername="All chains selected"
+                                options={this.state.assetList}
+                                action={null}
+                                handleClick={this.handleAssetSelect}
+                                isChain={true}
+                                selectedTokens={[this.state.activeAssetTab]}
+                                selectedTokenName={
+                                  this.state.activeAssetTabName
+                                }
+                                singleSelect
+                                searchIsUsed={this.chainSearchIsUsed}
+                              />
+                            </div>
+                          ) : null}
+                        </div>
+                      )}
+                      {this.props.openChartPage ? (
+                        <div
+                          className="d-flex"
+                          style={{
+                            alignItems: "center",
+                            gap: "8px",
+                            marginTop: this.props.isMobileGraph ? "2px" : "",
+                          }}
+                        >
+                          <p
+                            onClick={this.props.openChartPage}
+                            class="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
+                          >
+                            <div className="seeMoreBtn cp f-s-10 grey-7C7">
+                              {this.props.isMobileGraph ? (
+                                <div>See more</div>
+                              ) : (
+                                <div>Click here to see more</div>
+                              )}
+
+                              <Image
+                                src={ChartSeeMoreArrowIcon}
+                                className="seeMoreBtnIcon"
+                              />
+                            </div>
+                          </p>
+                        </div>
+                      ) : null}
+                    </div>
+
+                    {!this.props.hideTimeFilter ? (
                       <div
-                        className="d-flex"
                         style={{
-                          alignItems: "center",
-                          gap: "8px",
-                          marginTop: this.props.isMobileGraph ? "2px" : "",
+                          zIndex: 4,
                         }}
                       >
-                        <p
-                          onClick={this.props.openChartPage}
-                          class="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
-                        >
-                          <div className="seeMoreBtn cp f-s-10 grey-7C7">
-                            {this.props.isMobileGraph ? (
-                              <div>See more</div>
-                            ) : (
-                              <div>Click here to see more</div>
-                            )}
-
-                            <Image
-                              src={ChartSeeMoreArrowIcon}
-                              className="seeMoreBtnIcon"
-                            />
-                          </div>
-                        </p>
+                        <CustomDropdownPrice
+                          isHomepage={this.props.isHomepage}
+                          filtername="All chains selected"
+                          options={this.state.assetList}
+                          action={null}
+                          handleClick={this.handleAssetSelect}
+                          isChain={true}
+                          selectedTokens={[this.state.activeAssetTab]}
+                          selectedTokenName={this.state.activeAssetTabName}
+                          singleSelect
+                          searchIsUsed={this.chainSearchIsUsed}
+                        />
                       </div>
                     ) : null}
-                  </div>
-
-                  {!this.props.hideTimeFilter ? (
-                    <div
-                      style={{
-                        zIndex: 4,
-                      }}
-                    >
-                      <CustomDropdownPrice
-                        isHomepage={this.props.isHomepage}
-                        filtername="All chains selected"
-                        options={this.state.assetList}
-                        action={null}
-                        handleClick={this.handleAssetSelect}
-                        isChain={true}
-                        selectedTokens={[this.state.activeAssetTab]}
-                        selectedTokenName={this.state.activeAssetTabName}
-                        singleSelect
-                        searchIsUsed={this.chainSearchIsUsed}
-                      />
-                    </div>
-                  ) : null}
-                  {!this.props.hideTimeFilter ? (
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <CustomOverlay
-                        position="bottom"
-                        isIcon={false}
-                        isInfo={true}
-                        isText={true}
-                        isLeftText
-                        className={"fix-width tool-tip-container-bottom-arrow"}
-                        heading="These are all the tokens ever owned by this wallet."
-                        subHeading="Red coordinates represent outflows / sells and green coordinates represent inflows / buys."
+                    {!this.props.hideTimeFilter ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
                       >
-                        <Image
-                          src={InfoIcon}
-                          className="infoIcon"
-                          style={{
-                            cursor: "pointer",
-                            height: "1.6rem",
-                            marginLeft: "1rem",
-                          }}
-                        />
-                      </CustomOverlay>
-                    </div>
-                  ) : null}
+                        <CustomOverlay
+                          position="bottom"
+                          isIcon={false}
+                          isInfo={true}
+                          isText={true}
+                          isLeftText
+                          className={
+                            "fix-width tool-tip-container-bottom-arrow"
+                          }
+                          heading="These are all the tokens ever owned by this wallet."
+                          subHeading="Red coordinates represent outflows / sells and green coordinates represent inflows / buys."
+                        >
+                          <Image
+                            src={InfoIcon}
+                            className="infoIcon"
+                            style={{
+                              cursor: "pointer",
+                              height: "1.6rem",
+                              marginLeft: "1rem",
+                            }}
+                          />
+                        </CustomOverlay>
+                      </div>
+                    ) : null}
 
-                  {/* <div className="dropdownWithImages">
+                    {/* <div className="dropdownWithImages">
                     <DropDownWithIcons
                       list={this.state.assetList}
                       onSelect={this.handleAssetSelect}
@@ -770,22 +1036,57 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       showChain
                     />
                   </div> */}
-                </div>
+                  </div>
 
-                <InflowOutflowChartSlider
-                  changeThePriceTodefault={this.changeThePriceTodefault}
-                  formattedPointList={this.state.formattedPointList}
-                  formattedXAxis={this.state.formattedXAxis}
-                  formattedOverallData={this.state.formattedOverallData}
-                  buySellList={this.state.buySellList}
-                  steps={this.state.steps}
-                  changeThePrice={this.changeThePrice}
-                  activeAssetTab={this.state.activeAssetTab}
-                  assetList={this.props.assetList}
-                  hideTimeFilter={this.props.hideTimeFilter}
-                  showDropdown={this.props.showDropdown}
-                  isMobileGraph={this.props.isMobileGraph}
-                />
+                  <InflowOutflowChartSlider
+                    changeThePriceTodefault={this.changeThePriceTodefault}
+                    formattedPointList={this.state.formattedPointList}
+                    formattedXAxis={this.state.formattedXAxis}
+                    formattedOverallData={this.state.formattedOverallData}
+                    buySellList={this.state.buySellList}
+                    steps={this.state.steps}
+                    changeThePrice={this.changeThePrice}
+                    activeAssetTab={this.state.activeAssetTab}
+                    assetList={this.props.assetList}
+                    hideTimeFilter={this.props.hideTimeFilter}
+                    showDropdown={this.props.showDropdown}
+                    isMobileGraph={this.props.isMobileGraph}
+                  />
+                </div>
+                {this.props.showTopHolders ? (
+                  <div
+                    className={`price-gauge-top-holder-container ${
+                      this.props.isMobile
+                        ? "price-gauge-top-holder-container-mobile"
+                        : ""
+                    }`}
+                  >
+                    <div className="pg-thc-title-container inter-display-medium">
+                      <Image
+                        className="pg-thc-title-image"
+                        src={TrophyTopHoldersIcon}
+                      />
+                      <div className="pg-thc-title">Top Holders</div>
+                    </div>
+                    <div className="pg-thc-table-container">
+                      <div className="freezeTheFirstColumn newHomeTableContainer  hide-scrollbar pg-thc-table">
+                        <TransactionTable
+                          isMiniversion={this.props.isMobile}
+                          showHeaderOnEmpty
+                          message={"No assets found"}
+                          tableData={this.state.tableData}
+                          columnList={columnList}
+                          hideTransactionTableSectionClass
+                          //
+                          fakeWatermark={this.props.isMobile}
+                          xAxisScrollable={this.props.isMobile}
+                          yAxisScrollable={this.props.isMobile}
+                          xAxisScrollableColumnWidth={3.5}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
               </>
             )}
           </div>
