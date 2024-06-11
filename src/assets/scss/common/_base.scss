@@ -3773,6 +3773,25 @@ input {
       border: 0.1rem solid var(--referallCopyBtn);
       display: flex;
       align-items: center;
+      position: relative;
+      .smbwInputContainerOverlay {
+        background-color: var(--cardBackgroud);
+        color: var(--referallUsedBtnText);
+        text-shadow: 0.2px 0 var(--referallUsedBtnText);
+        font-size: 15px;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        border-radius: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        cursor: text;
+        .smbwInputContainerOverlayImage {
+          height: 14px;
+        }
+      }
 
       &:hover {
         border: 0.1rem solid var(--primaryTextColor);
@@ -3871,21 +3890,27 @@ input {
       padding-bottom: 3.5rem;
       z-index: 3;
       border-bottom: 0.1rem solid var(--referallCopyBtn);
+      .custom-dropdown {
+        box-shadow: 0px 0.2rem 0.5rem var(--primaryBoxShadowDarkerColor);
+      }
     }
     .smbsInputContainer {
       padding: 3rem 5rem;
       padding-bottom: 0rem;
       .smbsInputBlock {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        // display: flex;
+        // align-items: center;
+        // justify-content: space-between;
+        display: grid;
+        grid-template-columns: fit-content(500px) 1fr;
+        row-gap: 1rem;
+        column-gap: 2rem;
         margin-top: 1rem;
         .smbsInputBlockInfo {
-          width: 28%;
           display: flex;
           align-items: center;
           gap: 1rem;
-          margin-right: 5rem;
+          // margin-right: 5rem;
           .smbsInputBlockInfoTitle {
             font-size: 14px;
           }
@@ -3904,7 +3929,6 @@ input {
           }
         }
         .smbsInput {
-          width: 72%;
           border: 0.1rem solid var(--referallCopyBtn);
           border-radius: 0.8rem;
           padding: 1rem 1.5rem;
@@ -3994,10 +4018,13 @@ input[type="range"] {
             padding: 3rem 2rem !important;
             padding-bottom: 0rem !important;
             .smbsInputBlock {
-              flex-direction: column;
-              align-items: flex-start;
+              grid-template-columns: 1fr;
+              row-gap: 0.5rem;
               .smbsInputBlockInfo {
                 width: 100%;
+              }
+              .smbsInputBlockInfoTwo {
+                margin-top: 1.5rem;
               }
               .smbsInput {
                 width: 100%;
@@ -4017,7 +4044,7 @@ input[type="range"] {
       }
     }
   }
-  }
+}
 .blurred-elements {
   cursor: pointer;
   filter: blur(4px);

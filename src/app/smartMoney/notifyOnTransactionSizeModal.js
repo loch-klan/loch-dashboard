@@ -11,6 +11,7 @@ import {
   CustomTransactionMailIcon,
   CustomTransactionTelegramIcon,
   RingingBellIcon,
+  TransactionNotificationSearchIcon,
 } from "../../assets/images/icons";
 import {
   TruncateText,
@@ -29,11 +30,13 @@ import CheckboxCustomTable from "../common/customCheckboxTable";
 import validator from "validator";
 import { isNewAddress } from "../Portfolio/Api";
 import { detectCoin } from "../onboarding/Api";
+import OutsideClickHandler from "react-outside-click-handler";
 
 class NotifyOnTransactionSizeModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isInputOverlay: true,
       loadAddBtn: false,
       disableAddBtn: false,
       walletInput: [
@@ -80,6 +83,23 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       isUserTelegramSelected: false,
     };
   }
+  showInputOverlay = () => {
+    this.setState({
+      isInputOverlay: true,
+    });
+  };
+  hideInputOverlay = () => {
+    this.setState(
+      {
+        isInputOverlay: false,
+      },
+      () => {
+        document
+          .getElementById("notificationTransactionSizeModalInput")
+          .focus();
+      }
+    );
+  };
 
   setTooltipPos = () => {
     let xAndYMax = "";
@@ -540,43 +560,57 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
           addedWallets: [...this.state.addedWallets, this.state.walletInput[0]],
         },
         () => {
-          this.setState({
-            walletInput: [
-              {
-                id: `wallet1`,
-                address: "",
-                coins: [],
-                displayAddress: "",
-                wallet_metadata: {},
-                nickname: "",
-                showAddress: true,
-                showNickname: true,
-                apiAddress: "",
-                showNameTag: true,
-                nameTag: "",
-              },
-            ],
-          });
+          this.setState(
+            {
+              walletInput: [
+                {
+                  id: `wallet1`,
+                  address: "",
+                  coins: [],
+                  displayAddress: "",
+                  wallet_metadata: {},
+                  nickname: "",
+                  showAddress: true,
+                  showNickname: true,
+                  apiAddress: "",
+                  showNameTag: true,
+                  nameTag: "",
+                },
+              ],
+            },
+            () => {
+              document
+                .getElementById("notificationTransactionSizeModalInput")
+                .focus();
+            }
+          );
         }
       );
     } else {
-      this.setState({
-        walletInput: [
-          {
-            id: `wallet1`,
-            address: "",
-            coins: [],
-            displayAddress: "",
-            wallet_metadata: {},
-            nickname: "",
-            showAddress: true,
-            showNickname: true,
-            apiAddress: "",
-            showNameTag: true,
-            nameTag: "",
-          },
-        ],
-      });
+      this.setState(
+        {
+          walletInput: [
+            {
+              id: `wallet1`,
+              address: "",
+              coins: [],
+              displayAddress: "",
+              wallet_metadata: {},
+              nickname: "",
+              showAddress: true,
+              showNickname: true,
+              apiAddress: "",
+              showNameTag: true,
+              nameTag: "",
+            },
+          ],
+        },
+        () => {
+          document
+            .getElementById("notificationTransactionSizeModalInput")
+            .focus();
+        }
+      );
     }
   };
   removeWallet = (removeThisIndex) => {
@@ -660,56 +694,71 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
               >
                 Wallets
               </div>
-              <div className="smbwInputContainer">
-                <input
-                  style={{
-                    textAlign:
-                      this.state.walletInput[0] &&
-                      this.state.walletInput[0].address
-                        ? "left"
-                        : "",
-                  }}
-                  placeholder="Add an address here"
-                  className={`inter-display-medium smbwInput`}
-                  value={
-                    (this.state.walletInput &&
-                      this.state.walletInput[0] &&
-                      this.state.walletInput[0].address) ||
-                    ""
-                  }
-                  title={
-                    (this.state.walletInput &&
-                      this.state.walletInput[0] &&
-                      this.state.walletInput[0].address) ||
-                    ""
-                  }
-                  onChange={(e) => this.handleOnLocalChange(e)}
-                  onKeyDown={this.handleTopBarInputKeyDown}
-                  name={`wallet${1}`}
-                  autoComplete="off"
-                />
-                {/* <div className="inter-display-medium smbwInputBtn">Add</div> */}
-                {this.state.walletInput &&
-                this.state.walletInput[0] &&
-                this.state.walletInput[0].address ? (
-                  <CustomButton
-                    className="primary-btn go-btn main-button-invert smbwInputBtn"
-                    type="submit"
-                    buttonText="Add"
-                    handleClick={this.addToAddedWallets}
-                    isLoading={
-                      (this.state.addButtonVisible
-                        ? this.isDisabledFun(true)
-                        : false) || this.state.loadAddBtn
+              <OutsideClickHandler onOutsideClick={this.showInputOverlay}>
+                <div className="smbwInputContainer">
+                  {this.state.isInputOverlay ? (
+                    <div
+                      onClick={this.hideInputOverlay}
+                      className="inter-display-medium smbwInputContainerOverlay"
+                    >
+                      <Image
+                        src={TransactionNotificationSearchIcon}
+                        className="smbwInputContainerOverlayImage"
+                      />
+                      <div>Add an address here</div>
+                    </div>
+                  ) : null}
+                  <input
+                    style={{
+                      textAlign:
+                        this.state.walletInput[0] &&
+                        this.state.walletInput[0].address
+                          ? "left"
+                          : "",
+                    }}
+                    id="notificationTransactionSizeModalInput"
+                    placeholder=""
+                    className={`inter-display-medium smbwInput`}
+                    value={
+                      (this.state.walletInput &&
+                        this.state.walletInput[0] &&
+                        this.state.walletInput[0].address) ||
+                      ""
                     }
-                    isDisabled={
-                      (this.state.addButtonVisible
-                        ? this.isDisabledFun()
-                        : true) || this.state.loadAddBtn
+                    title={
+                      (this.state.walletInput &&
+                        this.state.walletInput[0] &&
+                        this.state.walletInput[0].address) ||
+                      ""
                     }
+                    onChange={(e) => this.handleOnLocalChange(e)}
+                    onKeyDown={this.handleTopBarInputKeyDown}
+                    name={`wallet${1}`}
+                    autoComplete="off"
                   />
-                ) : null}
-              </div>
+                  {/* <div className="inter-display-medium smbwInputBtn">Add</div> */}
+                  {this.state.walletInput &&
+                  this.state.walletInput[0] &&
+                  this.state.walletInput[0].address ? (
+                    <CustomButton
+                      className="primary-btn go-btn main-button-invert smbwInputBtn"
+                      type="submit"
+                      buttonText="Add"
+                      handleClick={this.addToAddedWallets}
+                      isLoading={
+                        (this.state.addButtonVisible
+                          ? this.isDisabledFun(true)
+                          : false) || this.state.loadAddBtn
+                      }
+                      isDisabled={
+                        (this.state.addButtonVisible
+                          ? this.isDisabledFun()
+                          : true) || this.state.loadAddBtn
+                      }
+                    />
+                  ) : null}
+                </div>
+              </OutsideClickHandler>
               {this.state.addedWallets && this.state.addedWallets.length > 0 ? (
                 <div className="smbwAddedWalletBlock">
                   <div
@@ -897,9 +946,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                     value={this.state.userEmail}
                     onChange={this.userEmailChange}
                   />
-                </div>
-                <div className="smbsInputBlock">
-                  <div className="smbsInputBlockInfo">
+                  <div className="smbsInputBlockInfo smbsInputBlockInfoTwo">
                     <CheckboxCustomTable
                       dontSelectIt
                       handleOnClick={this.toggleTelegramSelection}
