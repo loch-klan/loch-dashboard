@@ -123,6 +123,7 @@ export default function WelcomeCard(props) {
   if (props.isMobileRender) {
     return (
       <TopWalletExchangeBar
+        showTopSearchBar={props.showTopSearchBar}
         shouldGoToHomeAfterReplace={props.shouldGoToHomeAfterReplace}
         isAddNewAddressLoggedIn={props.isAddNewAddressLoggedIn}
         goToPageAfterLogin={props.goToPageAfterLogin}
@@ -334,6 +335,7 @@ export default function WelcomeCard(props) {
             </div>
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
+              showTopSearchBar={props.showTopSearchBar}
               shouldGoToHomeAfterReplace={props.shouldGoToHomeAfterReplace}
               goToPageAfterLogin={props.goToPageAfterLogin}
               funAfterUserCreate={props.funAfterUserCreate}

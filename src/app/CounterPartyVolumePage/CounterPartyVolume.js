@@ -524,6 +524,7 @@ class CounterPartyVolume extends Component {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          showTopSearchBar
           handleShare={this.handleShare}
           history={this.props.history}
           CheckApiResponse={(e) => this.CheckApiResponse(e)}
@@ -550,6 +551,7 @@ class CounterPartyVolume extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}

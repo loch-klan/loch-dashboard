@@ -545,6 +545,7 @@ class InsightsPage extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
           handleShare={this.handleShare}
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
@@ -584,6 +585,7 @@ class InsightsPage extends Component {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  showTopSearchBar
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
                   connectedWalletevents={this.props.connectedWalletevents}

@@ -1276,6 +1276,7 @@ class Emulations extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
           handleShare={() => null}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
@@ -1406,6 +1407,7 @@ class Emulations extends Component {
           >
             <div className="portfolio-section">
               <WelcomeCard
+                showTopSearchBar
                 isSidebarClosed={this.props.isSidebarClosed}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 // history

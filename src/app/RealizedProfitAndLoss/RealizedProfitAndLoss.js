@@ -758,6 +758,7 @@ class RealizedProfitAndLoss extends Component {
           showpath
           currentPage={"realized-profit-and-loss"}
           goToPayModal={this.props.goToPayModal}
+          showTopSearchBar
         >
           {this.state.isLochPaymentModal ? (
             <PaywallModal
@@ -816,6 +817,7 @@ class RealizedProfitAndLoss extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}
