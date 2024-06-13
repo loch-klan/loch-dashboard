@@ -528,7 +528,7 @@ class PaywallModal extends BaseReactComponent {
                       />
                       <div className="ctpb-plan-purple-button-bullet" />
 
-                      <span>Over $100m liquid onchain AUM</span>
+                      <span>Over $400m liquid onchain AUM</span>
                     </div>
                     <div
                       style={{
