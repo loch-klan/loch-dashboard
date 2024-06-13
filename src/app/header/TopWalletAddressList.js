@@ -1501,7 +1501,7 @@ class TopWalletAddressList extends Component {
             ) : null}
             {this.props.showUpdatesJustNowBtn ? (
               <div
-                className="ml-2 topWalletAddressListFollowShareBtn"
+                className="ml-2 topWalletAddressListFollowShareBtn topWalletAddressListFollowShareBtnBig"
                 id="home-copy-trade-button"
                 onClick={this.goToCopyTrade}
               >

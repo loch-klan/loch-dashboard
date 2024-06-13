@@ -379,7 +379,7 @@
       justify-content: center;
       background-color: var(--mainButtonBg);
       height: 4.5rem;
-      width: 12rem;
+      width: 10rem;
       border-radius: 1rem;
       border: 0.1rem solid var(--topbarBackgroud);
       font-size: 13px;
@@ -403,6 +403,9 @@
           filter: var(--invertColor2);
         }
       }
+    }
+    .topWalletAddressListFollowShareBtnBig {
+      width: 12rem;
     }
   }
 }
