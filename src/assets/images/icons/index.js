@@ -172,3 +172,4 @@ export { default as WalletViewerSidebarIcon } from "./walletViewerSidebar.svg";
 export { default as CopyTradeSwapSidebarIcon } from "./copyTradeSwapSidebar.svg";
 export { default as TransactionNotificationSearchIcon } from "./transactionNotificationSearch.svg";
 export { default as BellTopBarIcon } from "./bellTopBar.svg";
+export { default as CopyTradeTopBarIcon } from "./copyTradeTopBar.svg";
