@@ -59,6 +59,7 @@ class AddAddressWalletViewer extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
           shouldGoToHomeAfterReplace
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
@@ -95,6 +96,7 @@ class AddAddressWalletViewer extends Component {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  showTopSearchBar
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
                   connectedWalletevents={this.props.connectedWalletevents}
@@ -128,6 +130,7 @@ class AddAddressWalletViewer extends Component {
                 <div className="portfolio-section">
                   {/* welcome card */}
                   <WelcomeCard
+                    showTopSearchBar
                     shouldGoToHomeAfterReplace
                     isBlurred
                     focusOriginalInputBar={this.focusOriginalInputBar}

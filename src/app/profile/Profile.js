@@ -420,6 +420,7 @@ class Profile extends Component {
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
           hideShare
+          hideAddresses
         >
           {this.state.isLochPaymentModal ? (
             <PaywallModal
@@ -517,10 +518,7 @@ class Profile extends Component {
                 from="profile"
               />
             )}
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              hideFollow
-            />
+
             <PageHeader
               title="Profile"
               subTitle="Manage your profile here"

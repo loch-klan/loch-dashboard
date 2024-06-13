@@ -108,6 +108,7 @@ class CopyTradeWelcome extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
           isAddNewAddressLoggedIn
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
@@ -136,6 +137,7 @@ class CopyTradeWelcome extends Component {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  showTopSearchBar
                   isAddNewAddressLoggedIn
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}

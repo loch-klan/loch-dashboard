@@ -300,6 +300,18 @@
             .topBarContainerRightBlockMultiple {
               flex: 1;
             }
+            pointer-events: none;
+            opacity: 0;
+            div {
+              pointer-events: none;
+            }
+          }
+          .topBarContainerVisible {
+            opacity: 1;
+            pointer-events: all;
+            div {
+              pointer-events: all;
+            }
           }
           .topBarContainerMultiple {
             justify-content: space-between;
