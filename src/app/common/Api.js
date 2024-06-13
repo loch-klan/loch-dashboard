@@ -9,16 +9,16 @@ import {
   Home_CE_OAuthCompleted,
   LP_CE_OAuthCompleted,
   LochPointsSignInPopupEmailVerified,
-  SignInModalEmailAdded,
   SignInModalOTPverified,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
-  WhaleCreateAccountEmailVerified,
   WhalePopupEmailVerified,
   signInUser,
   signUpProperties,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
+import { whichSignUpMethod } from "../../utils/ReusableFunctions";
+import { DARK_MODE } from "../intelligence/ActionTypes";
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import postLoginInstance from "./../../utils/PostLoginAxios";
 import {
@@ -28,11 +28,6 @@ import {
   TOP_SET_DEFAULT_VALUE,
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
-import { DARK_MODE } from "../intelligence/ActionTypes";
-import {
-  isPremiumUser,
-  whichSignUpMethod,
-} from "../../utils/ReusableFunctions";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance
@@ -682,6 +677,39 @@ export const sendWhopCode = (ctx, data) => {
     });
 };
 
+export const addUserNotification = (data, successFunCall, errorFunCall) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/add-user-notification", data)
+      .then((res) => {
+        if (!res.data.error) {
+          toast.success(
+            <div className="custom-toast-msg">
+              <div>Successfully added</div>
+              <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
+                Transaction notification
+              </div>
+            </div>
+          );
+
+          if (successFunCall) {
+            successFunCall();
+          }
+        } else {
+          toast.error("Something went wrong");
+          if (errorFunCall) {
+            errorFunCall();
+          }
+        }
+      })
+      .catch((err) => {
+        toast.error("Something went wrong");
+        if (errorFunCall) {
+          errorFunCall();
+        }
+      });
+  };
+};
 export const getDetectedChainsApi = (ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance

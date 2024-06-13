@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
+  BellTopBarIcon,
   CopyTradeSwapIcon,
-  EmultionSidebarIcon,
   FollowTopBarIcon,
   GlobeShareBlockIcon,
   ShareCopyBlockIcon,
@@ -26,6 +26,7 @@ import {
   TruncateText,
   getCopyTradeWalletShareLink,
   getShareLink,
+  openSignInModalFromAnywhere,
 } from "../../utils/ReusableFunctions";
 import {
   getExchangeBalances,
@@ -47,11 +48,12 @@ import {
 import TopBarDropDown from "./TopBarDropDown";
 import "./_topWalletAddressList.scss";
 
+import OutsideClickHandler from "react-outside-click-handler";
+import { toast } from "react-toastify";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import Breadcrums from "../common/Breadcrums";
-import { toast } from "react-toastify";
-import OutsideClickHandler from "react-outside-click-handler";
+import NotifyOnTransactionSizeModal from "../smartMoney/notifyOnTransactionSizeModal";
 
 class TopWalletAddressList extends Component {
   constructor(props) {
@@ -82,6 +84,8 @@ class TopWalletAddressList extends Component {
       isMobileWalletListExpanded: false,
       isFollowingAddress: false,
       showFollowingAddress: true,
+      addressToNotify: "",
+      showNotifyOnTransactionModal: false,
     };
   }
   showFollowOrNot = () => {
@@ -167,6 +171,45 @@ class TopWalletAddressList extends Component {
       this.props.handleShare();
     }
   };
+  openNotifyModal = () => {
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      let tempWalletAddress = "";
+
+      const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
+      if (listJson) {
+        const tempListOfAdd = listJson.map((resData) => {
+          return {
+            address: resData.apiAddress ? resData.apiAddress : resData.address,
+            nameTag: resData.nameTag,
+          };
+        });
+        if (tempListOfAdd && tempListOfAdd.length > 0) {
+          tempWalletAddress = tempListOfAdd[0].address
+            ? tempListOfAdd[0].address
+            : "";
+        }
+      }
+      this.setState(
+        {
+          addressToNotify: tempWalletAddress,
+        },
+        () => {
+          this.setState({
+            showNotifyOnTransactionModal: true,
+          });
+        }
+      );
+    } else {
+      openSignInModalFromAnywhere();
+    }
+  };
+  closeNotifyModal = () => {
+    this.setState({
+      showNotifyOnTransactionModal: false,
+    });
+  };
+
   addAddressToWatchListFun = () => {
     let tempToken = getToken();
     if (!tempToken || tempToken === "jsk") {
@@ -1067,6 +1110,15 @@ class TopWalletAddressList extends Component {
           }}
           className="topWalletAddressListMobile inter-display-medium"
         >
+          {this.state.showNotifyOnTransactionModal ? (
+            <NotifyOnTransactionSizeModal
+              show={this.state.showNotifyOnTransactionModal}
+              onHide={this.closeNotifyModal}
+              history={this.props.history}
+              selectedAddress={this.state.addressToNotify}
+              isMobile
+            />
+          ) : null}
           {this.props.showUpdatesJustNowBtn ? (
             <h2
               className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
@@ -1234,6 +1286,30 @@ class TopWalletAddressList extends Component {
               </div>
             ) : null}
           </div>
+          {this.props.showUpdatesJustNowBtn ? (
+            <div
+              style={{
+                marginTop: "1rem",
+              }}
+              className="twalFollowAndShareMobile"
+            >
+              <div
+                ref={this.props.buttonRef}
+                className="topWalletAddressListFollowShareBtn"
+                id="address-button"
+                onClick={this.openNotifyModal}
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={BellTopBarIcon}
+                />
+                <span className="dotDotText">Notify</span>
+              </div>
+            </div>
+          ) : null}
         </div>
       );
     }
@@ -1244,6 +1320,14 @@ class TopWalletAddressList extends Component {
           currentPage={this.props.currentPage}
           noHomeInPath={this.props.noHomeInPath}
         />
+        {this.state.showNotifyOnTransactionModal ? (
+          <NotifyOnTransactionSizeModal
+            show={this.state.showNotifyOnTransactionModal}
+            onHide={this.closeNotifyModal}
+            history={this.props.history}
+            selectedAddress={this.state.addressToNotify}
+          />
+        ) : null}
         {/* {this.props.showpath ? breadCrumb : ""} */}
         <div className="topWalletAddressList">
           {this.state.followSignupModal ? (
@@ -1444,6 +1528,18 @@ class TopWalletAddressList extends Component {
                 </OutsideClickHandler>
               </div>
             ) : null}
+            <div
+              ref={this.props.buttonRef}
+              className="ml-2 topWalletAddressListFollowShareBtn"
+              id="address-button"
+              onClick={this.openNotifyModal}
+            >
+              <Image
+                className="topWalletAddressListFollowShareBtnIcon"
+                src={BellTopBarIcon}
+              />
+              <span className="dotDotText">Notify</span>
+            </div>
           </div>
         </div>
       </>

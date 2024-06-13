@@ -3850,6 +3850,7 @@ input {
     }
     .smbSlider {
       padding: 3rem 5rem;
+      padding-top: 3rem;
       border-bottom: 0.1rem solid var(--referallCopyBtn);
       .smbSliderMinMaxBox {
         position: relative;
@@ -4157,4 +4158,9 @@ input[type="number"]::-webkit-outer-spin-button {
     height: 52px;
     width: 43px;
   }
+}
+.centerItemsInBlock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -35,7 +35,7 @@ export const updateUser = (data, ctx) => {
                 <div className="custom-toast-msg">
                   <div>Email updated</div>
                   <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-                    You’ve sucessfully updated your profile
+                    You’ve successfully updated your profile
                   </div>
                 </div>
               );
@@ -61,7 +61,7 @@ export const updateUser = (data, ctx) => {
                 <div className="custom-toast-msg">
                   <div>Profile updated</div>
                   <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-                    You’ve sucessfully updated your profile
+                    You’ve successfully updated your profile
                   </div>
                 </div>
               );

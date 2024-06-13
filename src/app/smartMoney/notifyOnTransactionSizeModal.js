@@ -1,37 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 
+import moment from "moment";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { Button, Image, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
+import validator from "validator";
 import {
   BackArrowSmartMoneyIcon,
   CrossSmartMoneyIcon,
-  CrossTransactionNotificationWalletIcon,
   CustomTransactionMailIcon,
-  CustomTransactionTelegramIcon,
   RingingBellIcon,
-  TransactionNotificationSearchIcon,
 } from "../../assets/images/icons";
+import { BASE_URL_S3 } from "../../utils/Constant";
+import { getCurrentUser } from "../../utils/ManageToken";
 import {
   TruncateText,
   amountFormat,
-  goToAddress,
   isSameDateAs,
   openAddressInSameTab,
   sliderBillionToMillion,
 } from "../../utils/ReusableFunctions";
 import { BaseReactComponent, CustomButton } from "../../utils/form";
-import CustomDropdown from "../../utils/form/CustomDropdownPrice";
-import moment from "moment";
-import { getTransactionAsset } from "../intelligence/Api";
-import { PaywallModal } from "../common";
-import { BASE_URL_S3 } from "../../utils/Constant";
-import CheckboxCustomTable from "../common/customCheckboxTable";
-import validator from "validator";
 import { isNewAddress } from "../Portfolio/Api";
+import { PaywallModal } from "../common";
+import { addUserNotification } from "../common/Api";
+import { getTransactionAsset } from "../intelligence/Api";
 import { detectCoin } from "../onboarding/Api";
-import OutsideClickHandler from "react-outside-click-handler";
 
 class NotifyOnTransactionSizeModal extends BaseReactComponent {
   constructor(props) {
@@ -80,7 +75,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       passedCTCopyTradeAmount: "",
       userEmail: "",
       userTelegram: "",
-      isUserEmailSelected: false,
+      isUserEmailSelected: true,
       isUserTelegramSelected: false,
     };
   }
@@ -143,6 +138,12 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     if (myEle) {
       myEle.addEventListener("scroll", () => {
         this.setTooltipPos();
+      });
+    }
+
+    if (getCurrentUser() && getCurrentUser()?.email) {
+      this.setState({
+        userEmail: getCurrentUser()?.email,
       });
     }
   }
@@ -622,8 +623,39 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       addedWallets: [...afterRemoved],
     });
   };
-  scrollTester = () => {
-    console.log("scroller");
+
+  confirmTransactionNotification = () => {
+    // if (isPremiumUser()) {
+    // send the address as "follow_address"
+    // amount as "amount"
+    // email as "email"
+    this.setState({
+      loadAddBtn: true,
+    });
+    const addUserNotiData = new URLSearchParams();
+    addUserNotiData.append("follow_address", this.props.selectedAddress);
+    addUserNotiData.append("email", this.state.userEmail);
+    addUserNotiData.append("min_amount", this.state.curMinSliderVal);
+    addUserNotiData.append("max_amount", this.state.curMaxSliderVal);
+    this.props.addUserNotification(
+      addUserNotiData,
+      this.onAddSuccess,
+      this.onAddError
+    );
+    // } else {
+    //   this.openPayModal();
+    // }
+  };
+  onAddSuccess = () => {
+    this.state.onHide();
+    this.setState({
+      loadAddBtn: false,
+    });
+  };
+  onAddError = () => {
+    this.setState({
+      loadAddBtn: false,
+    });
   };
   render() {
     return (
@@ -632,7 +664,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
         className={`exit-overlay-form ${
           this.props.isMobile ? "transaction-notification-mobile" : ""
         }`}
-        // onHide={this.state.onHide}
+        onHide={this.state.onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal"}
         centered
@@ -651,6 +683,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
             title="Get transaction alerts with Loch"
             description="Unlimited transaction alerts"
             onGoBackPayModal={this.onGoBackPayModal}
+            isMobile={this.props.isMobile}
           />
         ) : null}
         <Modal.Header>
@@ -686,7 +719,8 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                 {TruncateText(this.props.selectedAddress)}
               </div>
             </div>
-            <div className="smbWalletsContainer">
+            {/* For multiple Addresses */}
+            {/* <div className="smbWalletsContainer">
               <div
                 style={{
                   marginBottom: "1.5rem",
@@ -737,7 +771,6 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                     name={`wallet${1}`}
                     autoComplete="off"
                   />
-                  {/* <div className="inter-display-medium smbwInputBtn">Add</div> */}
                   {this.state.walletInput &&
                   this.state.walletInput[0] &&
                   this.state.walletInput[0].address ? (
@@ -790,7 +823,8 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                   </div>
                 </div>
               ) : null}
-            </div>
+            </div> */}
+            {/* For multiple Addresses */}
             <div className="smbSliderContainer">
               <div className="smbSlider">
                 <div
@@ -896,7 +930,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                   <div className="smbSlidervalues">$10B</div>
                 </div>
               </div>
-              <div className="smbsAssetDropdownContainer">
+              {/* <div className="smbsAssetDropdownContainer">
                 <div className="inter-display-medium smbTitle">Asset type</div>
                 <CustomDropdown
                   keepInCenter
@@ -913,23 +947,25 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
 
                   // selectedTokens={this.state.activeBadge}
                 />
-              </div>
+              </div> */}
               <div className="smbsInputContainer">
-                <div
+                {/* <div
                   style={{
                     marginBottom: "0rem",
                   }}
                   className="inter-display-medium smbTitle"
                 >
                   Notification type
-                </div>
+                </div> */}
                 <div className="smbsInputBlock">
                   <div className="smbsInputBlockInfo">
-                    <CheckboxCustomTable
+                    {/* For multiple Addresses */}
+                    {/* <CheckboxCustomTable
                       dontSelectIt
                       handleOnClick={this.toggleEmailSelection}
                       isChecked={this.state.isUserEmailSelected}
-                    />
+                    /> */}
+                    {/* For multiple Addresses */}
                     <Image
                       src={CustomTransactionMailIcon}
                       className="smbsInputBlockInfoImage"
@@ -947,7 +983,8 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                     value={this.state.userEmail}
                     onChange={this.userEmailChange}
                   />
-                  <div className="smbsInputBlockInfo smbsInputBlockInfoTwo">
+                  {/* For multiple Addresses */}
+                  {/* <div className="smbsInputBlockInfo smbsInputBlockInfoTwo">
                     <CheckboxCustomTable
                       dontSelectIt
                       handleOnClick={this.toggleTelegramSelection}
@@ -971,7 +1008,8 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                     }`}
                     value={this.state.userTelegram}
                     onChange={this.userTelegramChange}
-                  />
+                  /> */}
+                  {/* For multiple Addresses */}
                 </div>
               </div>
             </div>
@@ -983,11 +1021,12 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                 Cancel
               </Button>
               <CustomButton
-                className="primary-btn go-btn main-button-invert"
+                className="primary-btn go-btn main-button-invert centerItemsInBlock"
                 type="submit"
                 buttonText="Confirm"
-                handleClick={this.openPayModal}
-                isDisabled={this.state.isDisabled}
+                handleClick={this.confirmTransactionNotification}
+                isDisabled={this.state.isDisabled || this.state.loadAddBtn}
+                isLoading={this.state.loadAddBtn}
               />
             </div>
           </div>
@@ -1004,6 +1043,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   isNewAddress,
   detectCoin,
+  addUserNotification,
 };
 
 NotifyOnTransactionSizeModal.propTypes = {};

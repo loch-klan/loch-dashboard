@@ -171,3 +171,4 @@ export { default as PremiumBannerLochIcon } from "./premiumBannerLoch.svg";
 export { default as WalletViewerSidebarIcon } from "./walletViewerSidebar.svg";
 export { default as CopyTradeSwapSidebarIcon } from "./copyTradeSwapSidebar.svg";
 export { default as TransactionNotificationSearchIcon } from "./transactionNotificationSearch.svg";
+export { default as BellTopBarIcon } from "./bellTopBar.svg";

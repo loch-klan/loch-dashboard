@@ -861,7 +861,17 @@ class WatchListPage extends BaseReactComponent {
           hideAddresses
           hideShare
         >
+          {this.state.showNotifyOnTransactionModal ? (
+            <NotifyOnTransactionSizeModal
+              show={this.state.showNotifyOnTransactionModal}
+              onHide={this.hideNotifyOnTransactionModal}
+              history={this.props.history}
+              selectedAddress={this.state.addressToNotify}
+              isMobile
+            />
+          ) : null}
           <WalletListPageMobile
+            columnList={columnList}
             tableLoading={this.state.tableLoading}
             linkState={this.linkState}
             onChangeMethod={this.onChangeMethod}
