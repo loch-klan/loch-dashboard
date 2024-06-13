@@ -1528,18 +1528,20 @@ class TopWalletAddressList extends Component {
                 </OutsideClickHandler>
               </div>
             ) : null}
-            <div
-              ref={this.props.buttonRef}
-              className="ml-2 topWalletAddressListFollowShareBtn"
-              id="address-button"
-              onClick={this.openNotifyModal}
-            >
-              <Image
-                className="topWalletAddressListFollowShareBtnIcon"
-                src={BellTopBarIcon}
-              />
-              <span className="dotDotText">Notify</span>
-            </div>
+            {this.props.showUpdatesJustNowBtn ? (
+              <div
+                ref={this.props.buttonRef}
+                className="ml-2 topWalletAddressListFollowShareBtn"
+                id="address-button"
+                onClick={this.openNotifyModal}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={BellTopBarIcon}
+                />
+                <span className="dotDotText">Notify</span>
+              </div>
+            ) : null}
           </div>
         </div>
       </>
