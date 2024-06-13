@@ -1686,7 +1686,7 @@ class TopWalletExchangeBar extends Component {
           }}
           className={`topBarContainer ${
             this.state.walletList.length > 0 ? "topBarContainerMultiple" : ""
-          }`}
+          } ${this.props.showTopSearchBar ? "topBarContainerVisible" : ""}`}
         >
           {this.state.isLochPaymentModal ? (
             <PaywallModal

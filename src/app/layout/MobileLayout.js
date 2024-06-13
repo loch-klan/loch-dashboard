@@ -1038,7 +1038,11 @@ class MobileLayout extends BaseReactComponent {
         ) : null}
         <div className="portfolio-mobile-layout-wrapper">
           {/* Search Bar */}
-          <div className="mpcMobileSearch input-noshadow-dark">
+          <div
+            className={`mpcMobileSearch ${
+              this.props.showTopSearchBar ? "mpcMobileSearchVisible" : ""
+            } input-noshadow-dark`}
+          >
             <div className="mpcMobileSearchInput">
               <Image
                 style={{
@@ -1070,7 +1074,7 @@ class MobileLayout extends BaseReactComponent {
                 </div>
               ))}
             </div>
-            {!(this.state.walletInput && this.state.walletInput[0].address) &&
+            {/* {!(this.state.walletInput && this.state.walletInput[0].address) &&
             !this.props.hideAddresses &&
             !this.props.hideShare ? (
               <div className="mpcMobileShare" onClick={this.handleShare}>
@@ -1083,13 +1087,17 @@ class MobileLayout extends BaseReactComponent {
                   src={SharePortfolioIconWhite}
                 />
               </div>
-            ) : null}
+            ) : null} */}
           </div>
 
           {/* Children Holder */}
           <div
             id="portfolio-mobile-layout-children-id"
-            className="portfolio-mobile-layout-children"
+            className={`portfolio-mobile-layout-children ${
+              this.props.showTopSearchBar
+                ? "portfolio-mobile-layout-children-visible"
+                : ""
+            }`}
           >
             <div style={{ paddingBottom: "64px" }}>
               <div className="mobilePortfolioContainer">
