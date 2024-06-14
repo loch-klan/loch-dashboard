@@ -237,7 +237,7 @@ export const whichSignUpMethod = () => {
   }
 };
 export const sliderBillionToMillion = (passedValue) => {
-  const value = Number(passedValue);
+  const value = passedValue;
   const resultHoder = [
     100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000,
     10000000000,
@@ -506,8 +506,12 @@ export const compareDate = (dateTimeA, dateTimeB) => {
 export const numToCurrency = (
   num,
   noDefaultDecimals,
-  toFixedSmallerNumber = false
+  toFixedSmallerNumber = false,
+  returnWithoutDecimal
 ) => {
+  if (returnWithoutDecimal && num < 1000) {
+    return parseFloat(num).toFixed(0);
+  }
   if (num < 1000 && noDefaultDecimals) {
     if (toFixedSmallerNumber) {
       return parseFloat(num).toFixed(2);

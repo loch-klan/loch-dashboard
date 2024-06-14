@@ -15,9 +15,11 @@ import {
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
+  CurrencyType,
   TruncateText,
   amountFormat,
   isSameDateAs,
+  numToCurrency,
   openAddressInSameTab,
   sliderBillionToMillion,
 } from "../../utils/ReusableFunctions";
@@ -59,8 +61,9 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
       onHide: props.onHide,
       minSliderVal: null,
       maxSliderVal: null,
-      curMinSliderVal: "100",
-      curMaxSliderVal: "5000000000",
+      curMinSliderVal: 100,
+      curMaxSliderVal: 10000000000,
+      isSliderUsed: false,
       curMinSliderValConverted: "",
       curMaxSliderValConverted: "",
       isDisabled: false,
@@ -124,7 +127,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     }
   };
   componentDidMount() {
-    this.setTooltipPos();
+    // this.setTooltipPos();
     this.setMaxInput();
     this.setMinInput();
     this.assetList();
@@ -133,13 +136,13 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     this.setState({
       userDetailsState: userDetails,
     });
-    const allEle = document.getElementsByClassName("exit-overlay-form");
-    const myEle = allEle[0];
-    if (myEle) {
-      myEle.addEventListener("scroll", () => {
-        this.setTooltipPos();
-      });
-    }
+    // const allEle = document.getElementsByClassName("exit-overlay-form");
+    // const myEle = allEle[0];
+    // if (myEle) {
+    //   myEle.addEventListener("scroll", () => {
+    //     this.setTooltipPos();
+    //   });
+    // }
 
     if (getCurrentUser() && getCurrentUser()?.email) {
       this.setState({
@@ -158,18 +161,23 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
         ),
       },
       () => {
-        this.setTooltipPos();
+        // this.setTooltipPos();
       }
     );
   };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.addedWallets !== this.state.addedWallets) {
-      this.setTooltipPos();
+      // this.setTooltipPos();
     }
     if (
       prevState.curMinSliderVal !== this.state.curMinSliderVal ||
       prevState.curMaxSliderVal !== this.state.curMaxSliderVal
     ) {
+      if (!this.state.isSliderUsed) {
+        this.setState({
+          isSliderUsed: true,
+        });
+      }
       this.convertMinMaxToSlider();
     }
     if (
@@ -180,10 +188,9 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
     ) {
       let isDis = false;
       if (
-        Number(this.state.curMaxSliderVal) >
-          Number(this.state.curMinSliderVal) &&
-        Number(this.state.curMinSliderVal) >= 100 &&
-        Number(this.state.curMaxSliderVal) <= 10000000000
+        this.state.curMaxSliderVal > this.state.curMinSliderVal &&
+        this.state.curMinSliderVal >= 100 &&
+        this.state.curMaxSliderVal <= 10000000000
       ) {
         isDis = false;
       } else {
@@ -252,12 +259,12 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
 
     if (newMinVal <= newMaxVal) {
       this.setState({
-        curMinSliderVal: `${newMinVal}`,
+        curMinSliderVal: newMinVal,
       });
     }
     if (newMaxVal >= newMinVal) {
       this.setState({
-        curMaxSliderVal: `${newMaxVal}`,
+        curMaxSliderVal: newMaxVal,
       });
     }
   };
@@ -370,7 +377,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
           curMaxSliderVal: curVal,
         },
         () => {
-          this.setTooltipPos();
+          // this.setTooltipPos();
         }
       );
     }
@@ -387,7 +394,7 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
           curMinSliderVal: curVal,
         },
         () => {
-          this.setTooltipPos();
+          // this.setTooltipPos();
         }
       );
     }
@@ -829,13 +836,15 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
               <div className="smbSlider">
                 <div
                   style={{
-                    marginBottom: "6rem",
+                    // marginBottom: "6rem",
+                    marginBottom: "2rem",
+                    marginLeft: "-0.3rem",
                   }}
                   className="inter-display-medium smbTitle"
                 >
                   Range
                 </div>
-                <div
+                {/* <div
                   style={{
                     position: "fixed",
                   }}
@@ -855,26 +864,26 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                       : ""}
                   </span>
                   <div className="smbSliderMinMaxBoxArrow" />
-                  {/* 
-                  <input
-                    id="smbSliderMinBoxInput"
-                    className="smbSliderMinMaxBoxInput"
-                    value={
-                      this.state.curMinSliderVal &&
-                      this.state.curMinSliderVal.length > 0
-                        ? `$${amountFormat(
-                            this.state.curMinSliderVal,
-                            "en-US",
-                            "USD",
-                            0,
-                            0
-                          )}`
-                        : ""
-                    }
-                    onChange={this.minAmountChange}
-                  /> */}
-                </div>
-                <div
+                  // 
+                  // <input
+                  //   id="smbSliderMinBoxInput"
+                  //   className="smbSliderMinMaxBoxInput"
+                  //   value={
+                  //     this.state.curMinSliderVal &&
+                  //     this.state.curMinSliderVal.length > 0
+                  //       ? `$${amountFormat(
+                  //           this.state.curMinSliderVal,
+                  //           "en-US",
+                  //           "USD",
+                  //           0,
+                  //           0
+                  //         )}`
+                  //       : ""
+                  //   }
+                  //   onChange={this.minAmountChange}
+                  // /> 
+                </div> */}
+                {/* <div
                   style={{
                     position: "fixed",
                   }}
@@ -894,24 +903,24 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                       : ""}
                   </span>
                   <div className="smbSliderMinMaxBoxArrow" />
-                  {/* <input
-                    id="smbSliderMaxBoxInput"
-                    className="smbSliderMinMaxBoxInput"
-                    value={
-                      this.state.curMaxSliderVal &&
-                      this.state.curMaxSliderVal.length > 0
-                        ? `$${amountFormat(
-                            this.state.curMaxSliderVal,
-                            "en-US",
-                            "USD",
-                            0,
-                            0
-                          )}`
-                        : ""
-                    }
-                    onChange={this.maxAmountChange}
-                  /> */}
-                </div>
+                  //  <input
+                  //   id="smbSliderMaxBoxInput"
+                  //   className="smbSliderMinMaxBoxInput"
+                  //   value={
+                  //     this.state.curMaxSliderVal &&
+                  //     this.state.curMaxSliderVal.length > 0
+                  //       ? `$${amountFormat(
+                  //           this.state.curMaxSliderVal,
+                  //           "en-US",
+                  //           "USD",
+                  //           0,
+                  //           0
+                  //         )}`
+                  //       : ""
+                  //   }
+                  //   onChange={this.maxAmountChange}
+                  // /> 
+                </div> */}
                 <Slider
                   role="tooltip"
                   range
@@ -926,8 +935,47 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
                   onChange={this.changeMaxMinSlider}
                 />
                 <div className="smbSlidervalueContainer inter-display-medium">
-                  <div className="smbSlidervalues">$100</div>
-                  <div className="smbSlidervalues">$10B</div>
+                  {/* <div className="smbSlidervalues">$100</div> */}
+                  {/* rowData.CurrentValue ? CurrencyType(false) +
+                  amountFormat(rowData.CurrentValue, "en-US", "USD") :
+                  CurrencyType(false) + "0.00" */}
+                  {this.state.curMinSliderVal ? (
+                    <div
+                      className={`smbSlidervalues ${
+                        this.state.isSliderUsed ? "smbSlidervaluesUsed" : ""
+                      }`}
+                    >
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          this.state.curMinSliderVal.toFixed(2),
+                          false,
+                          false,
+                          true
+                        ).toLocaleString("en-US")}
+                    </div>
+                  ) : (
+                    <div className="smbSlidervalues">
+                      {CurrencyType(false) + "0.00"}
+                    </div>
+                  )}
+                  {this.state.curMaxSliderVal ? (
+                    <div
+                      className={`smbSlidervalues ${
+                        this.state.isSliderUsed ? "smbSlidervaluesUsed" : ""
+                      }`}
+                    >
+                      {CurrencyType(false) +
+                        numToCurrency(
+                          this.state.curMaxSliderVal.toFixed(2)
+                        ).toLocaleString("en-US")}
+                    </div>
+                  ) : (
+                    <div className="smbSlidervalues">
+                      {CurrencyType(false) + "0.00"}
+                    </div>
+                  )}
+                  {/* <div className="smbSlidervalues">$10B</div> */}
+                  {/* <div className="smbSlidervalues">$10B</div> */}
                 </div>
               </div>
               {/* <div className="smbsAssetDropdownContainer">

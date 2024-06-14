@@ -3956,6 +3956,9 @@ input {
       .smbSlidervalues {
         color: var(--sidebarBottomOptions);
       }
+      .smbSlidervaluesUsed {
+        color: var(--primaryTextColor);
+      }
     }
     .rc-slider-handle {
       background-color: var(--primaryTextColor);
