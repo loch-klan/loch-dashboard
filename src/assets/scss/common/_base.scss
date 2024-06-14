@@ -1226,10 +1226,18 @@ form {
     height: auto !important;
     background-color: var(--cardBackgroud);
     overflow: visible !important;
+    margin-bottom: 0.8rem !important;
+    &::-webkit-scrollbar {
+      width: 0rem !important;
+    }
+    &:hover {
+      &::-webkit-scrollbar {
+        width: 0.5rem !important;
+      }
+    }
 
     .ReactVirtualized__Grid__innerScrollContainer {
       overflow: visible !important;
-
       .ReactVirtualized__Table__row {
         border: none;
       }
