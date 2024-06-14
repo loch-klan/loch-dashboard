@@ -135,11 +135,18 @@
       height: 1.5rem;
       margin-right: 0.5rem;
     }
+    display: none;
   }
   .portfolio-mobile-layout-children {
     height: 100vh;
-    padding-top: 55px;
+    padding-top: 0px;
     padding-bottom: 84px;
+  }
+  .mpcMobileSearchVisible {
+    display: flex;
+  }
+  .portfolio-mobile-layout-children-visible {
+    padding-top: 55px;
   }
   .portfolio-mobile-layout-nav-footer {
     position: fixed;

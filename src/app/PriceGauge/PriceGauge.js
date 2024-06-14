@@ -578,6 +578,7 @@ class PriceGauge extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
           handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
@@ -604,6 +605,7 @@ class PriceGauge extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}
