@@ -1274,7 +1274,7 @@ class TopWalletAddressList extends Component {
               className="twalFollowAndShareMobile"
             >
               <div
-                className="ml-2 topWalletAddressListFollowShareBtn"
+                className="topWalletAddressListFollowShareBtn"
                 id="home-copy-trade-button"
                 onClick={this.goToCopyTrade}
                 style={{
