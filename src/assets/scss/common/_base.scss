@@ -1229,10 +1229,12 @@ form {
     margin-bottom: 0.8rem !important;
     &::-webkit-scrollbar {
       width: 0rem !important;
+      height: 0rem !important;
     }
     &:hover {
       &::-webkit-scrollbar {
         width: 0.5rem !important;
+        height: 0rem !important;
       }
     }
 
