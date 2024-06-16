@@ -54,7 +54,9 @@ class CheckboxCustomTable extends Component {
                 ? "1px solid #E0E0E0"
                 : "",
           }}
-          className="custom-checkbox"
+          className={`custom-checkbox ${this.props.passedClass} ${
+            this.state.isChecked ? this.props.passedClassChecked : ""
+          }`}
           onClick={this.handleChecked}
         >
           <Image
