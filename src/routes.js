@@ -40,6 +40,14 @@ import PublicSidebarRoute from "./utils/PublicSidebarRoute";
 import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
 import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
 import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
+import ExpertsPage from "./app/ExpertsPage/ExpertsPage";
+import ExpertPersonPage from "./app/ExpertPersonPage/ExpertPersonPage";
+import BecomeAnExpertPage from "./app/BecomeAnExpertPage/BecomeAnExpertPage";
+import ScheduleAcallPage from "./app/ScheduleAcall/ScheduleAcallPage";
+import BecomeAnExpertCompletePage from "./app/BecomeAnExpertCompletePage/BecomeAnExpertCompletePage";
+import ScheduleAcallCompletePage from "./app/ScheduleAcallCompletePage/ScheduleAcallCompletePage";
+import ExpertCallFinishedPage from "./app/ExpertCallFinishedPage/ExpertCallFinishedPage";
+
 const routes = [
   {
     path: "/",
@@ -274,6 +282,48 @@ const routes = [
     name: "Stripe Error",
     type: PublicSidebarRoute,
     component: ReplaceAddressPage,
+  },
+  {
+    path: "/experts",
+    name: "Experts",
+    type: PrivateRoute,
+    component: ExpertsPage,
+  },
+  {
+    path: "/become-an-expert",
+    name: "Become an Expert",
+    type: PrivateRoute,
+    component: BecomeAnExpertPage,
+  },
+  {
+    path: "/expert/:id",
+    name: "Expert Person",
+    type: PrivateRoute,
+    component: ExpertPersonPage,
+  },
+  {
+    path: "/expert-schedule-call/:id",
+    name: "Expert Schedule Call",
+    type: PrivateRoute,
+    component: ScheduleAcallPage,
+  },
+  {
+    path: "/expert-schedule-call-booked/:id",
+    name: "Expert Schedule Call Booked",
+    type: PrivateRoute,
+    component: ScheduleAcallCompletePage,
+  },
+  {
+    path: "/expert-call-finished/:id",
+    name: "Expert Schedule Call Booked",
+    type: PrivateRoute,
+    component: ExpertCallFinishedPage,
+  },
+  {
+    path: "/become-an-expert-complete",
+    name: "Expert Schedule Call Complete",
+    type: PrivateRoute,
+    component: BecomeAnExpertCompletePage,
   },
 ];
 export default routes;

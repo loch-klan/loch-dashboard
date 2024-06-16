@@ -1,0 +1,86 @@
+.becomne-an-expert-complete-page {
+  margin-top: 9rem;
+  padding: 9rem;
+  padding-top: 0rem;
+  padding-bottom: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 85rem;
+  .becomne-an-expert-page-block-top-gradient {
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    top: 9rem;
+    left: 0;
+
+    background: radial-gradient(
+      81.61% 163.22% at 50% 163.22%,
+      rgba(95, 51, 255, 0.6) 0%,
+      rgba(13, 56, 209, 0.108) 68%,
+      rgba(95, 51, 255, 0) 100%
+    );
+
+    transform: rotate(180deg);
+    z-index: 1;
+  }
+
+  .becomne-an-expert-page-block {
+    max-width: 120rem;
+    padding-top: 14rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    z-index: 2;
+    .bae-pb-image {
+      height: 30px;
+      filter: var(--invertColor);
+      margin-bottom: 1rem;
+    }
+    .bae-pb-title {
+      font-size: 24px;
+      text-align: center;
+      margin: 1rem 0rem;
+    }
+    .bae-pb-desc {
+      font-size: 16px;
+      color: var(--becomeExpertDesc);
+      text-align: center;
+    }
+    .bae-pb-btn {
+      font-size: 16px;
+      background-color: var(--cardBackgroud);
+      padding: 1.5rem 2.5rem;
+      border-radius: 0.8rem;
+      border: 2px solid var(--currenyConvertorBorder);
+      text-align: center;
+      margin-top: 3rem;
+      text-shadow: 0.2px 0 var(--becomeExpertDesc);
+      &:hover {
+        border-color: var(--primaryTextColor);
+        background-color: var(--primaryTextColor);
+        color: var(--cardBackgroud);
+      }
+    }
+  }
+}
+.becomne-an-expert-complete-page-mobile {
+  width: 100%;
+  overflow: hidden;
+  margin-top: -2rem;
+  .becomne-an-expert-complete-page {
+    margin-top: 0rem;
+    padding: 0rem;
+    padding-bottom: 0rem;
+    min-width: unset;
+    .becomne-an-expert-page-block-top-gradient {
+      top: 5rem;
+    }
+    .becomne-an-expert-page-block {
+      height: calc(100vh - 15rem);
+      padding-top: 0;
+    }
+  }
+}
