@@ -4920,6 +4920,7 @@ class Portfolio extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          showTopSearchBar
           handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
@@ -5033,6 +5034,8 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  history={this.props.history}
+                  showTopSearchBar
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
                   connectedWalletevents={this.props.connectedWalletevents}
@@ -5095,6 +5098,7 @@ class Portfolio extends BaseReactComponent {
               ></div>
 
               <TopWalletAddressList
+                history={this.props.history}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
                 passedFollowSigninModal={this.state.followSigninModal}

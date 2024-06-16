@@ -499,6 +499,7 @@ class NFT extends BaseReactComponent {
           currentPage={"nft"}
           hideFooter
           history={this.props.history}
+          showTopSearchBar
         >
           <NftMobile
             isLoading={this.state.isLoading}
@@ -521,6 +522,7 @@ class NFT extends BaseReactComponent {
           >
             <div className="portfolio-section">
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}

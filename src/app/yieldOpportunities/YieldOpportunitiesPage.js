@@ -1161,6 +1161,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          showTopSearchBar
           handleShare={this.handleShare}
           showpath
           currentPage={"yield-opportunities"}
@@ -1211,6 +1212,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}

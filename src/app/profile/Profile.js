@@ -420,6 +420,7 @@ class Profile extends Component {
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
           hideShare
+          hideAddresses
         >
           {this.state.isLochPaymentModal ? (
             <PaywallModal
@@ -517,10 +518,7 @@ class Profile extends Component {
                 from="profile"
               />
             )}
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              hideFollow
-            />
+
             <PageHeader
               title="Profile"
               subTitle="Manage your profile here"
@@ -616,7 +614,7 @@ class Profile extends Component {
                                 />
                                 <div className="pslpl-item-block-bullet-item" />
                                 <div className="inter-display-medium pslpl-item-block-text">
-                                  <span>Over $100m liquid onchain AUM</span>
+                                  <span>Over $400m liquid onchain AUM</span>
                                 </div>
                               </div>
                               <div
@@ -694,7 +692,7 @@ class Profile extends Component {
                                 />
                                 <div className="pslpl-item-block-bullet-item" />
                                 <div className="inter-display-medium pslpl-item-block-text">
-                                  <span>Over $100m liquid onchain AUM</span>
+                                  <span>Over $400m liquid onchain AUM</span>
                                 </div>
                               </div>
                               <div

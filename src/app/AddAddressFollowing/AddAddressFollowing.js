@@ -150,6 +150,7 @@ class AddAddressFollowing extends BaseReactComponent {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
           isAddNewAddressLoggedIn
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
@@ -181,6 +182,7 @@ class AddAddressFollowing extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  showTopSearchBar
                   isAddNewAddressLoggedIn
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
@@ -208,6 +210,7 @@ class AddAddressFollowing extends BaseReactComponent {
               >
                 <div className="portfolio-section">
                   <WelcomeCard
+                    showTopSearchBar
                     isAddNewAddressLoggedIn
                     isBlurred
                     focusOriginalInputBar={this.focusOriginalInputBar}

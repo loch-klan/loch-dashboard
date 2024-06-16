@@ -71,6 +71,7 @@ class AddAddressProfile extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
           isAddNewAddressLoggedIn
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
@@ -101,6 +102,7 @@ class AddAddressProfile extends Component {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  showTopSearchBar
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
                   connectedWalletevents={this.props.connectedWalletevents}
@@ -127,6 +129,7 @@ class AddAddressProfile extends Component {
                 <div className="portfolio-section">
                   {/* welcome card */}
                   <WelcomeCard
+                    showTopSearchBar
                     isAddNewAddressLoggedIn
                     isBlurred
                     focusOriginalInputBar={this.focusOriginalInputBar}
