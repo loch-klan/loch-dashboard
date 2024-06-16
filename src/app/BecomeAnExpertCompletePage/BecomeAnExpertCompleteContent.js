@@ -17,7 +17,7 @@ class BecomeAnExpertCompleteContent extends Component {
 
   render() {
     return (
-      <div className="schedule-a-call-complete-page inter-display-medium">
+      <div className="becomne-an-expert-complete-page inter-display-medium">
         <div className="becomne-an-expert-page-block-top-gradient" />
         <div className="becomne-an-expert-page-block">
           <Image

@@ -178,3 +178,6 @@ export { default as BecomingAnExpertUploadIcon } from "./becomingAnExpertUpload.
 export { default as BecomeAnExpertEmailIcon } from "./becomeAnExpertEmail.svg";
 export { default as BecomeAnExpertTelegramIcon } from "./becomeAnExpertTelegram.svg";
 export { default as BecomeAnExpertCompleteHourGlassIcon } from "./becomeAnExpertCompleteHourGlass.svg";
+export { default as ScheduleCallCheckIcon } from "./scheduleCallCheck.svg";
+export { default as ExpertCallFininsedStartIcon } from "./expertCallFininsedStart.svg";
+export { default as ExpertCallFininsedFilledStartIcon } from "./expertCallFininsedFilledStart.svg";

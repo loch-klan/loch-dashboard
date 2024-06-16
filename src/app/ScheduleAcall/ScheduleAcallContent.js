@@ -3,10 +3,15 @@ import { Component } from "react";
 import moment from "moment";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
-import { BackArrowSmartMoneyIcon } from "../../assets/images/icons";
+import {
+  BackArrowSmartMoneyIcon,
+  CreditCardPaywallIcon,
+  CryptoWalletPaywallIcon,
+} from "../../assets/images/icons";
 import {
   CurrencyType,
   TruncateText,
+  loadingAnimation,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import { getUser } from "../common/Api";
@@ -25,79 +30,108 @@ class ScheduleAcallContent extends Component {
         <div className="becomne-an-expert-page-block">
           <div className="bae-info">
             <div className="bae-info-steps">
-              <div className="bae-is-step-visual">
-                <div
-                  className={`bae-is-step ${
-                    this.props.curStep === 1 ? "bae-is-step-active" : ""
-                  }`}
-                />
-                <div
-                  className={`bae-is-step ${
-                    this.props.curStep === 2 ? "bae-is-step-active" : ""
-                  }`}
-                />
+              <div
+                className={`bae-is-step-visual ${
+                  this.props.isMobile ? "bae-is-step-visual-mobile" : ""
+                }`}
+              >
+                {[...Array(this.props.totalSteps)].map((_, index) => {
+                  return (
+                    <div
+                      className={`bae-is-step ${
+                        this.props.curStep === index + 1
+                          ? "bae-is-step-active"
+                          : ""
+                      }`}
+                    />
+                  );
+                })}
               </div>
               <div className="bae-is-step-text">
-                Step {this.props.curStep} of 2
+                Step {this.props.curStep} of {this.props.totalSteps}
               </div>
             </div>
             <div className="bae-info-explain">
-              <div className="bae-ie-title">Schedule a call </div>
-              <div className="bae-ie-desc">
-                Choose a time and duration that best
-                <br />
-                suits you and we’ll make it happen!
-              </div>
-              <div className="bae-ie-person-title">Your call with</div>
-              <div className="bae-ie-person-block-container">
-                <div className="bae-ie-person-block">
-                  <Image
-                    className="bae-ie-person-image"
-                    src={this.props.expertsList[0].user_image}
-                  />
-                  <div className="bae-ie-person-details">
-                    <div className="ep-ei-dd-nametag">
-                      {this.props.expertsList[0].name_tag}
-                    </div>
-                    <div className="ep-ei-dd-acccount-amount">
-                      <div className="ep-ei-dd-amount">
-                        {CurrencyType(false) +
-                          numToCurrency(this.props.expertsList[0].net_worth)}
+              {this.props.curStep === 1 ? (
+                <div className="bae-ie-title">Schedule a call </div>
+              ) : this.props.curStep === 2 ? (
+                <div className="bae-ie-title">Here’s your call details </div>
+              ) : this.props.curStep === 3 ? (
+                <div className="bae-ie-title">Pay for your booking </div>
+              ) : null}
+              {this.props.curStep === 1 ? (
+                <>
+                  <div className="bae-ie-desc">
+                    Choose a time and duration that best
+                    <br />
+                    suits you and we’ll make it happen!
+                  </div>
+                  <div className="bae-ie-person-title">Your call with</div>
+                </>
+              ) : (
+                <div
+                  style={{
+                    marginBottom: "2rem",
+                  }}
+                />
+              )}
+              {this.props.curStep === 3 && this.props.isMobile ? (
+                <div
+                  style={{
+                    marginTop: "-2.5rem",
+                  }}
+                />
+              ) : (
+                <div className="bae-ie-person-block-container">
+                  <div className="bae-ie-person-block">
+                    <Image
+                      className="bae-ie-person-image"
+                      src={this.props.expertsList[0].user_image}
+                    />
+                    <div className="bae-ie-person-details">
+                      <div className="ep-ei-dd-nametag">
+                        {this.props.expertsList[0].name_tag}
                       </div>
-                      <div className="ep-ei-dd-acccount">
-                        {TruncateText(this.props.expertsList[0].address)}
+                      <div className="ep-ei-dd-acccount-amount">
+                        <div className="ep-ei-dd-amount">
+                          {CurrencyType(false) +
+                            numToCurrency(this.props.expertsList[0].net_worth)}
+                        </div>
+                        <div className="ep-ei-dd-acccount">
+                          {TruncateText(this.props.expertsList[0].address)}
+                        </div>
                       </div>
-                    </div>
-                    <div className="ep-ei-dd-desc">
-                      #1 CoinM PnL & Story Teller on @binance leaderboard. 9
-                      figs challenge with receipts
+                      <div className="ep-ei-dd-desc">
+                        #1 CoinM PnL & Story Teller on @binance leaderboard. 9
+                        figs challenge with receipts
+                      </div>
                     </div>
                   </div>
+                  {this.props.curStep !== 1 ? (
+                    <div className="bae-db-final">
+                      <div className="bae-db-final-left">
+                        <div className="bae-db-final-title">
+                          {moment(this.props.curDateStartSelected).format(
+                            "dddd DD MMM"
+                          )}
+                        </div>
+                        <div className="bae-db-final-time">
+                          {`${moment(this.props.curDateStartSelected).format(
+                            "h:mm A"
+                          )} to ${moment(this.props.curDateEndSelected).format(
+                            "h:mm A"
+                          )}`}
+                          {/* to 5:45PM BST */}
+                        </div>
+                      </div>
+                      <div className="bae-db-final-right">
+                        <div className="bae-db-final-title">$300</div>
+                        <div className="bae-db-final-desc"> Per session</div>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
-                {this.props.curStep === 2 ? (
-                  <div className="bae-db-final">
-                    <div className="bae-db-final-left">
-                      <div className="bae-db-final-title">
-                        {moment(this.props.curDateStartSelected).format(
-                          "dddd DD MMM"
-                        )}
-                      </div>
-                      <div className="bae-db-final-time">
-                        {`${moment(this.props.curDateStartSelected).format(
-                          "h:mm A"
-                        )} to ${moment(this.props.curDateEndSelected).format(
-                          "h:mm A"
-                        )}`}
-                        {/* to 5:45PM BST */}
-                      </div>
-                    </div>
-                    <div className="bae-db-final-right">
-                      <div className="bae-db-final-title">$300</div>
-                      <div className="bae-db-final-desc"> Per session</div>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
+              )}
               {this.props.curStep === 1 ? (
                 <>
                   <div className="bae-ie-person-title">Select Duration</div>
@@ -195,7 +229,9 @@ class ScheduleAcallContent extends Component {
                 <div className="bae-data-btns">
                   <button
                     onClick={this.props.goBack}
-                    className="bae-db-btn bae-db-backbtn inter-display-medium"
+                    className={`bae-db-btn bae-db-backbtn inter-display-medium ${
+                      this.props.isMobile ? "bae-db-backbtn-mobile" : ""
+                    }`}
                   >
                     <Image
                       className="bae-db-backbtn-icon"
@@ -204,16 +240,22 @@ class ScheduleAcallContent extends Component {
                     <div>Go back</div>
                   </button>
                   <button
-                    className={`bae-db-btn bae-db-nextbtn inter-display-medium`}
+                    className={`bae-db-btn bae-db-nextbtn inter-display-medium ${
+                      this.props.isMobile ? "bae-db-nextbtn-mobile" : ""
+                    }`}
                     onClick={this.props.goToSecondStep}
                   >
                     <span>Next</span>
                   </button>
                 </div>
               </>
-            ) : (
+            ) : this.props.curStep === 2 ? (
               <>
-                <div className="bae-data-block bae-data-block-min-height">
+                <div
+                  className={`bae-data-block ${
+                    this.props.isMobile ? "" : "bae-data-block-min-height"
+                  }`}
+                >
                   <div className="bae-db-title">Your particulars</div>
                   <div className="bae-input-block">
                     <div className="bae-ib-title">Name (optional)</div>
@@ -252,7 +294,9 @@ class ScheduleAcallContent extends Component {
                 <div className="bae-data-btns">
                   <button
                     onClick={this.props.goToFirstStep}
-                    className="bae-db-btn bae-db-backbtn inter-display-medium"
+                    className={`bae-db-btn bae-db-backbtn inter-display-medium ${
+                      this.props.isMobile ? "bae-db-backbtn-mobile" : ""
+                    }`}
                   >
                     <Image
                       className="bae-db-backbtn-icon"
@@ -262,15 +306,120 @@ class ScheduleAcallContent extends Component {
                   </button>
                   <button
                     className={`bae-db-btn bae-db-nextbtn inter-display-medium bae-db-donebtn
-                   ${this.props.isDoneDisabled ? "bae-db-btn-disabled" : ""}
+                   ${this.props.isDoneDisabled ? "bae-db-btn-disabled" : ""} ${
+                      this.props.isMobile ? "bae-db-nextbtn-mobile" : ""
+                    }
                     `}
-                    onClick={this.props.goToSecondStep}
+                    onClick={this.props.goToThirdStep}
                   >
-                    <span>Done</span>
+                    <span>Book a call</span>
                   </button>
                 </div>
               </>
-            )}
+            ) : this.props.curStep === 3 ? (
+              <>
+                <div
+                  className={`bae-data-block ${
+                    this.props.isMobile ? "" : "bae-data-block-min-height"
+                  }`}
+                >
+                  <div className="bae-data-block-center">
+                    <div className="bae-db-center-desc">Cost of booking</div>
+                    <div className="bae-db-center-title">$300 USD</div>
+                    <div className="bae-db-payment">
+                      <div className="bae-db-payment-title">
+                        Choose your payment method
+                      </div>
+                      <div
+                        // onClick={this.props.payWithStripe}
+                        className={`inter-display-medium f-s-16 ctpb-plan-payment-button ${
+                          this.props.isCryptoBtnLoading
+                            ? "ctpb-plan-payment-button-disabled"
+                            : this.props.isCreditBtnLoading
+                            ? "ctpb-plan-payment-button-loading"
+                            : ""
+                        }`}
+                      >
+                        {this.props.isCreditBtnLoading ? (
+                          loadingAnimation()
+                        ) : (
+                          <>
+                            <Image
+                              className="ctpb-plan-payment-button-icons"
+                              src={CreditCardPaywallIcon}
+                            />
+                            <span>Credit Card</span>
+                          </>
+                        )}
+                      </div>
+                      <div
+                        // onClick={this.props.payWithStripe}
+                        className={`inter-display-medium f-s-16 ctpb-plan-payment-button ${
+                          this.props.isCryptoBtnLoading
+                            ? "ctpb-plan-payment-button-disabled"
+                            : this.props.isCreditBtnLoading
+                            ? "ctpb-plan-payment-button-loading"
+                            : ""
+                        }`}
+                      >
+                        {this.props.isCreditBtnLoading ? (
+                          loadingAnimation()
+                        ) : (
+                          <>
+                            <Image
+                              className="ctpb-plan-payment-button-icons"
+                              src={CryptoWalletPaywallIcon}
+                            />
+                            <span>Crypto</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bae-input-block bae-input-block-horizontal">
+                    <div className="bae-ib-input-container">
+                      <input
+                        value={this.props.userReferralPromoCode}
+                        onChange={this.props.onUserReferralPromoCodeChange}
+                        className="inter-display-medium bae-ib-input"
+                        placeholder="Referral / Promo code"
+                      />
+                    </div>
+                    <div className="bae-data-btns">
+                      <button
+                        className={`bae-db-btn bae-db-nextbtn inter-display-medium bae-db-donebtn
+                        ${
+                          !this.props.userReferralPromoCode
+                            ? "bae-db-btn-disabled"
+                            : ""
+                        } ${this.props.isMobile ? "bae-db-nextbtn-mobile" : ""}
+                    `}
+                        onClick={this.props.goToThirdStep}
+                      >
+                        <span>Add</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="bae-data-btns">
+                  <button
+                    onClick={this.props.goToSecondStep}
+                    className={`bae-db-btn bae-db-backbtn inter-display-medium ${
+                      this.props.isMobile
+                        ? "bae-db-btn-full bae-db-backbtn-mobile"
+                        : ""
+                    }`}
+                  >
+                    <Image
+                      className="bae-db-backbtn-icon"
+                      src={BackArrowSmartMoneyIcon}
+                    />
+                    <div>Go back</div>
+                  </button>
+                </div>
+              </>
+            ) : null}
           </div>
         </div>
       </div>

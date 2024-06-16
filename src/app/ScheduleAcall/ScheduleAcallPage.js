@@ -21,6 +21,8 @@ class ScheduleAcallPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      totalSteps: 3,
+      curStep: 1,
       expertsList: [
         {
           address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
@@ -46,9 +48,11 @@ class ScheduleAcallPage extends Component {
       userEmail: "",
       userContactNumber: "",
 
+      //Step 3
+      userReferralPromoCode: "",
       //OLD
       isMobile: mobileCheck(),
-      curStep: 1,
+
       isDoneDisabled: true,
     };
   }
@@ -156,6 +160,11 @@ class ScheduleAcallPage extends Component {
   goBack = () => {
     this.props.history.goBack();
   };
+  goToThirdStep = () => {
+    this.setState({
+      curStep: 3,
+    });
+  };
   goToSecondStep = () => {
     this.setState({
       curStep: 2,
@@ -183,6 +192,11 @@ class ScheduleAcallPage extends Component {
       userContactNumber: event.target.value,
     });
   };
+  onUserReferralPromoCodeChange = (event) => {
+    this.setState({
+      userReferralPromoCode: event.target.value,
+    });
+  };
   setTheCallDuration = (passedIndex) => {
     this.setState({
       selectedCallDuration: passedIndex,
@@ -201,6 +215,7 @@ class ScheduleAcallPage extends Component {
         >
           <ScheduleAcallPageMobile
             onHide={this.onHide}
+            totalSteps={this.state.totalSteps}
             curStep={this.state.curStep}
             curDateStartSelected={this.state.curDateStartSelected}
             curDateEndSelected={this.state.curDateEndSelected}
@@ -211,6 +226,7 @@ class ScheduleAcallPage extends Component {
             userName={this.state.userName}
             userEmail={this.state.userEmail}
             userContactNumber={this.state.userContactNumber}
+            userReferralPromoCode={this.state.userReferralPromoCode}
             isDoneDisabled={this.state.isDoneDisabled}
             selectedCallDuration={this.state.selectedCallDuration}
             // Functions
@@ -218,9 +234,11 @@ class ScheduleAcallPage extends Component {
             goBack={this.goBack}
             goToFirstStep={this.goToFirstStep}
             goToSecondStep={this.goToSecondStep}
+            goToThirdStep={this.goToThirdStep}
             onUserNameChange={this.onUserNameChange}
             onUserEmailChange={this.onUserEmailChange}
             onUserContactNumberChange={this.onUserContactNumberChange}
+            onUserReferralPromoCodeChange={this.onUserReferralPromoCodeChange}
             changeSelectedCallOption={this.changeSelectedCallOption}
           />
         </MobileLayout>
@@ -247,6 +265,7 @@ class ScheduleAcallPage extends Component {
             </div>
           </div>
           <ScheduleAcallContent
+            totalSteps={this.state.totalSteps}
             curStep={this.state.curStep}
             curDateStartSelected={this.state.curDateStartSelected}
             curDateEndSelected={this.state.curDateEndSelected}
@@ -257,6 +276,7 @@ class ScheduleAcallPage extends Component {
             userName={this.state.userName}
             userEmail={this.state.userEmail}
             userContactNumber={this.state.userContactNumber}
+            userReferralPromoCode={this.state.userReferralPromoCode}
             isDoneDisabled={this.state.isDoneDisabled}
             selectedCallDuration={this.state.selectedCallDuration}
             // Functions
@@ -264,9 +284,11 @@ class ScheduleAcallPage extends Component {
             goBack={this.goBack}
             goToFirstStep={this.goToFirstStep}
             goToSecondStep={this.goToSecondStep}
+            goToThirdStep={this.goToThirdStep}
             onUserNameChange={this.onUserNameChange}
             onUserEmailChange={this.onUserEmailChange}
             onUserContactNumberChange={this.onUserContactNumberChange}
+            onUserReferralPromoCodeChange={this.onUserReferralPromoCodeChange}
             changeSelectedCallOption={this.changeSelectedCallOption}
           />
         </div>

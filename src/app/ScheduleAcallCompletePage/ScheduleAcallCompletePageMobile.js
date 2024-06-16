@@ -1,9 +1,9 @@
 import { Component } from "react";
 
 import { connect } from "react-redux";
-import BecomeAnExpertCompleteContent from "./BecomeAnExpertCompleteContent";
+import ScheduleAcallCompleteContent from "./ScheduleAcallCompleteContent";
 
-class BecomeAnExpertCompletePageMobile extends Component {
+class ScheduleAcallCompletePageMobile extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -11,8 +11,9 @@ class BecomeAnExpertCompletePageMobile extends Component {
 
   render() {
     return (
-      <div className="becomne-an-expert-complete-page-mobile">
-        <BecomeAnExpertCompleteContent
+      <div className="schedule-a-call-complete-page-mobile">
+        <ScheduleAcallCompleteContent
+          isMobile
           goToExpertsPage={this.props.goToExpertsPage}
         />
       </div>
@@ -26,4 +27,4 @@ const mapDispatchToProps = {};
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BecomeAnExpertCompletePageMobile);
+)(ScheduleAcallCompletePageMobile);

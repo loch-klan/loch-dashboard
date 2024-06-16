@@ -55,6 +55,12 @@
             background-color: var(--blockOneBtnBackground);
           }
         }
+        .bae-is-step-visual-mobile {
+          gap: 1rem;
+          .bae-is-step {
+            width: 5rem;
+          }
+        }
         .bae-is-step-text {
           color: var(--becomeExpertDesc);
           font-size: 11px;
@@ -308,10 +314,84 @@
           }
         }
       }
+      .bae-input-block-horizontal {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        .bae-ib-input-container {
+          flex: 1;
+
+          .bae-ib-input {
+            padding: 1.2rem 1.5rem;
+          }
+        }
+        .bae-data-btns {
+          margin: 0rem;
+          padding: 0rem;
+        }
+      }
       .bae-data-block {
         background-color: var(--cardBackgroud);
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
         border-radius: 1rem;
+        .bae-data-block-center {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          .bae-db-center-title {
+            font-size: 20px;
+            color: var(--primaryTextColor);
+            text-shadow: 0.2px 0 var(--primaryTextColor);
+          }
+          .bae-db-center-desc {
+            font-size: 16px;
+            color: var(--referallUsedBtnText);
+            text-shadow: 0.2px 0 var(--referallUsedBtnText);
+            margin-bottom: 1rem;
+          }
+          .bae-db-payment {
+            margin-top: 2.5rem;
+            .bae-db-payment-title {
+              font-size: 16px;
+              color: var(--black191);
+            }
+            width: 100%;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            .ctpb-plan-payment-button {
+              background-color: var(--greyCardBackgroud);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              padding: 1.5rem 1rem;
+              border-radius: 0.8rem;
+              font-weight: 600;
+              margin-top: 2rem;
+              background-color: transparent;
+              color: var(--primaryTextColor);
+              border: 1.5px solid var(--primaryTextColor);
+              text-shadow: 0.2px 0 var(--primaryTextColor);
+              font-weight: 500;
+              width: 100%;
+              cursor: pointer;
+              .ctpb-plan-payment-button-icons {
+                height: 16px;
+                margin-right: 1rem;
+                filter: var(--invertColor);
+              }
+              &:hover {
+                background-color: var(--primaryTextColor);
+                color: var(--cardBackgroud);
+                .ctpb-plan-payment-button-icons {
+                  filter: var(--invertColor2);
+                }
+              }
+            }
+          }
+        }
         .bae-db-title {
           font-size: 20px;
         }
@@ -402,16 +482,24 @@
         align-items: center;
         justify-content: space-between;
         margin-top: 2rem;
+        padding-bottom: 3rem;
         .bae-db-btn {
           padding: 1rem;
           border-radius: 1rem;
           padding: 1.7rem 3.5rem;
           font-size: 16px;
         }
+        .bae-db-btn-full {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
 
         .bae-db-backbtn {
           border: 2px solid var(--abountSmartMoneyTextBlockBorder);
           background-color: var(--cardBackgroud);
+          color: var(--primaryTextColor);
           display: flex;
           align-items: center;
           gap: 1rem;
@@ -429,6 +517,16 @@
             }
           }
         }
+        .bae-db-backbtn-mobile {
+          &:hover {
+            border-color: var(--abountSmartMoneyTextBlockBorder) !important;
+            background-color: var(--cardBackgroud) !important;
+            color: var(--primaryTextColor) !important;
+            .bae-db-backbtn-icon {
+              filter: none !important;
+            }
+          }
+        }
         .bae-db-nextbtn {
           padding: 1.7rem 3rem;
           background-color: var(--blockOneBtnBackground);
@@ -438,7 +536,14 @@
             border-color: var(--cardBackgroud);
             background-color: var(--cardBackgroud);
             color: var(--primaryTextColor);
+            box-shadow: var(--sidebarHoverShadow);
           }
+        }
+        .bae-db-nextbtn-mobile {
+          background-color: var(--blockOneBtnBackground) !important;
+          border: 1px solid var(--blockOneBtnBackground) !important;
+          color: white !important;
+          box-shadow: none !important;
         }
 
         .bae-db-btn-disabled {

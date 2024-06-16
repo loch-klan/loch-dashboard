@@ -1,4 +1,4 @@
-.becomne-an-expert-complete-page {
+.schedule-a-call-complete-page {
   margin-top: 9rem;
   padding: 9rem;
   padding-top: 0rem;
@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
   min-width: 85rem;
-  .becomne-an-expert-page-block-top-gradient {
+  .schedule-a-call-page-block-top-gradient {
     width: 100%;
     height: 20%;
     position: absolute;
@@ -25,7 +25,7 @@
     z-index: 1;
   }
 
-  .becomne-an-expert-page-block {
+  .schedule-a-call-page-block {
     max-width: 120rem;
     padding-top: 14rem;
     display: flex;
@@ -49,38 +49,58 @@
       color: var(--becomeExpertDesc);
       text-align: center;
     }
-    .bae-pb-btn {
-      font-size: 16px;
+    .bae-pb-expert-block {
       background-color: var(--cardBackgroud);
-      padding: 1.5rem 2.5rem;
-      border-radius: 0.8rem;
-      border: 2px solid var(--currenyConvertorBorder);
+      box-shadow: var(--sidebarHoverShadow);
+      padding: 2rem;
+      margin-top: 2rem;
+      border-radius: 2rem;
+      min-width: 43rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
       text-align: center;
-      margin-top: 3rem;
-      text-shadow: 0.2px 0 var(--becomeExpertDesc);
-      &:hover {
-        border-color: var(--primaryTextColor);
-        background-color: var(--primaryTextColor);
-        color: var(--cardBackgroud);
+      .bae-pb-eb-image {
+        height: 6rem;
+        width: 6rem;
+        border-radius: 50%;
+      }
+      .bae-pb-eb-name {
+        font-size: 20px;
+        margin-top: 1rem;
+      }
+      .bae-pb-eb-date {
+        margin-top: 2rem;
+        font-size: 20px;
+      }
+      .bae-pb-eb-time {
+        font-size: 16px;
+        margin-top: 0.4rem;
+        color: var(--blockOneBtnBackground);
       }
     }
   }
 }
-.becomne-an-expert-complete-page-mobile {
+.schedule-a-call-complete-page-mobile {
   width: 100%;
   overflow: hidden;
   margin-top: -2rem;
-  .becomne-an-expert-complete-page {
+  .schedule-a-call-complete-page {
     margin-top: 0rem;
-    padding: 0rem;
+    padding: 1rem 2rem;
     padding-bottom: 0rem;
     min-width: unset;
-    .becomne-an-expert-page-block-top-gradient {
+    .schedule-a-call-page-block-top-gradient {
       top: 5rem;
     }
-    .becomne-an-expert-page-block {
+    .schedule-a-call-page-block {
       height: calc(100vh - 15rem);
       padding-top: 0;
+      .bae-pb-expert-block {
+        width: 100%;
+        min-width: unset;
+      }
     }
   }
 }

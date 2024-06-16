@@ -13,6 +13,8 @@ class ScheduleAcallMobile extends Component {
     return (
       <div className="schedule-a-call-page-mobile">
         <ScheduleAcallContent
+          isMobile
+          totalSteps={this.props.totalSteps}
           curStep={this.props.curStep}
           curDateStartSelected={this.props.curDateStartSelected}
           curDateEndSelected={this.props.curDateEndSelected}
@@ -23,6 +25,7 @@ class ScheduleAcallMobile extends Component {
           userName={this.props.userName}
           userEmail={this.props.userEmail}
           userContactNumber={this.props.userContactNumber}
+          userReferralPromoCode={this.props.userReferralPromoCode}
           isDoneDisabled={this.props.isDoneDisabled}
           selectedCallDuration={this.props.selectedCallDuration}
           // Functions
@@ -30,6 +33,10 @@ class ScheduleAcallMobile extends Component {
           goBack={this.props.goBack}
           goToFirstStep={this.props.goToFirstStep}
           goToSecondStep={this.props.goToSecondStep}
+          goToThirdStep={this.props.goToThirdStep}
+          onUserReferralPromoCodeChange={
+            this.props.onUserReferralPromoCodeChange
+          }
           onUserNameChange={this.props.onUserNameChange}
           onUserEmailChange={this.props.onUserEmailChange}
           onUserContactNumberChange={this.props.onUserContactNumberChange}
