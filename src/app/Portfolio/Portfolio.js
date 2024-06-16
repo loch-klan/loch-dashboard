@@ -5034,6 +5034,7 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  history={this.props.history}
                   showTopSearchBar
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
@@ -5097,6 +5098,7 @@ class Portfolio extends BaseReactComponent {
               ></div>
 
               <TopWalletAddressList
+                history={this.props.history}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
                 passedFollowSigninModal={this.state.followSigninModal}

@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import {
   BellTopBarIcon,
   CopyTradeSwapIcon,
+  CopyTradeTopBarIcon,
+  EmultionSidebarIcon,
   FollowTopBarIcon,
   GlobeShareBlockIcon,
   ShareCopyBlockIcon,
@@ -1101,6 +1103,37 @@ class TopWalletAddressList extends Component {
       "https://telegram.me/share/url?url=" + embeddedShareText;
     window.open(telegramLink, "_blank");
   };
+  goToCopyTrade = () => {
+    let tempToken = getToken();
+    if (!tempToken || tempToken === "jsk") {
+      return null;
+    }
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
+      });
+      if (tempListOfAdd && tempListOfAdd.length > 0) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        if (tempWalletAddress) {
+          window.localStorage.setItem(
+            "openCopyTradeModalFromLink",
+            tempWalletAddress
+          );
+          setTimeout(() => {
+            this.props.history.push("copy-trade");
+          }, 100);
+        }
+      }
+    }
+  };
   render() {
     if (this.props.isMobile) {
       return (
@@ -1294,7 +1327,14 @@ class TopWalletAddressList extends Component {
               className="twalFollowAndShareMobile"
             >
               <div
-                ref={this.props.buttonRef}
+                className="topWalletAddressListFollowShareBtn"
+                id="home-copy-trade-button"
+                onClick={this.goToCopyTrade}
+              >
+                <Image src={CopyTradeTopBarIcon} />
+                <span className="dotDotText">Copy Trade</span>
+              </div>
+              <div
                 className="topWalletAddressListFollowShareBtn"
                 id="address-button"
                 onClick={this.openNotifyModal}
@@ -1529,18 +1569,31 @@ class TopWalletAddressList extends Component {
               </div>
             ) : null}
             {this.props.showUpdatesJustNowBtn ? (
-              <div
-                ref={this.props.buttonRef}
-                className="ml-2 topWalletAddressListFollowShareBtn"
-                id="address-button"
-                onClick={this.openNotifyModal}
-              >
-                <Image
-                  className="topWalletAddressListFollowShareBtnIcon"
-                  src={BellTopBarIcon}
-                />
-                <span className="dotDotText">Notify</span>
-              </div>
+              <>
+                <div
+                  className="ml-2 topWalletAddressListFollowShareBtn topWalletAddressListFollowShareBtnBig"
+                  id="home-copy-trade-button"
+                  onClick={this.goToCopyTrade}
+                >
+                  <Image
+                    className="topWalletAddressListFollowShareBtnIcon"
+                    src={CopyTradeTopBarIcon}
+                  />
+                  <span className="dotDotText">Copy Trade</span>
+                </div>
+                <div
+                  ref={this.props.buttonRef}
+                  className="ml-2 topWalletAddressListFollowShareBtn"
+                  id="address-button"
+                  onClick={this.openNotifyModal}
+                >
+                  <Image
+                    className="topWalletAddressListFollowShareBtnIcon"
+                    src={BellTopBarIcon}
+                  />
+                  <span className="dotDotText">Notify</span>
+                </div>
+              </>
             ) : null}
           </div>
         </div>
