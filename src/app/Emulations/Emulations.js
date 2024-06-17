@@ -1319,10 +1319,6 @@ class Emulations extends Component {
           <EmulationsMobile
             title="Copy Trade"
             subTitle="Don’t be someone else’s exit liquidity. Use our copy trader to enter and exit safety"
-            hoverText="Loch’s copy trader will email you when the underlying
-            wallet makes a swap. We’ll calculate the equivalent swap amount
-            relative to your portfolio. Use your own judgment to decide
-            whether you want to execute the copy trade."
             copyPopularAddress={this.copyPopularAddress}
             addCopyTradeBtnClickedLocal={this.addCopyTradeBtnClickedLocal}
             userDetailsState={this.state.userDetailsState}
@@ -1521,7 +1517,8 @@ class Emulations extends Component {
             <PageHeader
               title="Copy Trade"
               subTitle="Don’t be someone else’s exit liquidity. Use our copy trader to enter and exit safety"
-              hoverText="Loch’s copy trader will email you when the underlying wallet makes a swap. We’ll calculate the equivalent swap amount relative to your portfolio. Use your own judgment to decide if you want to execute the copy trade or not."
+              hoverText="Loch’s copy trader will email you when the underlying wallet makes a swap. We’ll calculate the equivalent swap amount relative to your portfolio. Use your own judgment to decide whether you want to execute the copy trade."
+              copyTrade
               btnText="Add copy trade"
               mainThemeBtn
               currentPage={"copy-trade"}
