@@ -38,7 +38,7 @@ class ScheduleAcallPage extends Component {
         { title: "All Access - 60 Min", time: 60 },
       ],
       callOptions: [],
-      selectedCallOption: [0, 0],
+      selectedCallOption: [[0, 0]],
       selectedCallDuration: 0,
       curDateStartSelected: "",
       curDateEndSelected: "",
@@ -58,8 +58,26 @@ class ScheduleAcallPage extends Component {
   }
 
   changeSelectedCallOption = (optionIndex, timeSlotIndex) => {
+    let isInArray = false;
+    this.state.selectedCallOption.forEach((curItem) => {
+      if (curItem[0] === optionIndex && curItem[1] === timeSlotIndex) {
+        isInArray = true;
+      }
+    });
+    let newItem = [optionIndex, timeSlotIndex];
+    let newAns = [];
+    if (isInArray) {
+      newAns = this.state.selectedCallOption.filter((item) => {
+        if (item[0] === optionIndex && item[1] === timeSlotIndex) {
+          return false;
+        }
+        return true;
+      });
+    } else {
+      newAns = [...this.state.selectedCallOption, newItem];
+    }
     this.setState({
-      selectedCallOption: [optionIndex, timeSlotIndex],
+      selectedCallOption: newAns,
     });
   };
 
@@ -116,14 +134,14 @@ class ScheduleAcallPage extends Component {
     if (prevState.curStep !== this.state.curStep) {
       window.scrollTo(0, 0);
     }
-    if (prevState.selectedCallOption !== this.state.selectedCallOption) {
-      this.setState({
-        curDateStartSelected:
-          this.state.callOptions[this.state.selectedCallOption[0]].timeSlots[
-            this.state.selectedCallOption[1]
-          ],
-      });
-    }
+    // if (prevState.selectedCallOption !== this.state.selectedCallOption) {
+    //   this.setState({
+    //     curDateStartSelected:
+    //       this.state.callOptions[this.state.selectedCallOption[0]].timeSlots[
+    //         this.state.selectedCallOption[1]
+    //       ],
+    //   });
+    // }
     if (
       prevState.curDateStartSelected !== this.state.curDateStartSelected ||
       prevState.selectedCallDuration !== this.state.selectedCallDuration

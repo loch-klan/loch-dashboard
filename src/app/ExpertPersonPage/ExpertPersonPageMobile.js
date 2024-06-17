@@ -1,7 +1,6 @@
 import { Component } from "react";
 
 import { connect } from "react-redux";
-import PaymentSuccessModal from "../common/PaymentSuccessModal";
 import ExpertPersonContent from "./ExpertPersonContent";
 
 class ExpertsPageMobile extends Component {
@@ -14,6 +13,7 @@ class ExpertsPageMobile extends Component {
     return (
       <div className="expert-person-page-mobile">
         <ExpertPersonContent
+          socialMediaLinks={this.props.socialMediaLinks}
           expertsList={this.props.expertsList}
           goToScheduleACall={this.props.goToScheduleACall}
         />

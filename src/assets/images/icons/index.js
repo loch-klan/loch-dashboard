@@ -182,3 +182,8 @@ export { default as ScheduleCallCheckIcon } from "./scheduleCallCheck.svg";
 export { default as ExpertCallFininsedStartIcon } from "./expertCallFininsedStart.svg";
 export { default as ExpertCallFininsedFilledStartIcon } from "./expertCallFininsedFilledStart.svg";
 export { default as CopyTradeTopBarIcon } from "./copyTradeTopBar.svg";
+export { default as AboutExpertTwitterIcon } from "./aboutExpertTwitter.svg";
+export { default as AboutExpertLinkedInIcon } from "./aboutExpertLinkedIn.svg";
+export { default as AboutExpertYoutubeIcon } from "./aboutExpertYoutube.svg";
+export { default as AboutExpertInstagramIcon } from "./aboutExpertInstagram.svg";
+export { default as AboutExpertDiscordIcon } from "./aboutExpertDiscord.svg";

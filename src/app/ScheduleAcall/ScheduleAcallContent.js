@@ -22,7 +22,17 @@ class ScheduleAcallContent extends Component {
     super(props);
     this.state = {};
   }
-
+  isTimeSelected = (optionIndex, timeSlotIndex) => {
+    for (let i = 0; i < this.props.selectedCallOption.length; i++) {
+      if (
+        this.props.selectedCallOption[i][0] === optionIndex &&
+        this.props.selectedCallOption[i][1] === timeSlotIndex
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
   render() {
     return (
       <div className="schedule-a-call-page inter-display-medium">
@@ -107,7 +117,7 @@ class ScheduleAcallContent extends Component {
                       </div>
                     </div>
                   </div>
-                  {this.props.curStep !== 1 ? (
+                  {/* {this.props.curStep !== 1 ? (
                     <div className="bae-db-final">
                       <div className="bae-db-final-left">
                         <div className="bae-db-final-title">
@@ -121,7 +131,6 @@ class ScheduleAcallContent extends Component {
                           )} to ${moment(this.props.curDateEndSelected).format(
                             "h:mm A"
                           )}`}
-                          {/* to 5:45PM BST */}
                         </div>
                       </div>
                       <div className="bae-db-final-right">
@@ -129,7 +138,7 @@ class ScheduleAcallContent extends Component {
                         <div className="bae-db-final-desc"> Per session</div>
                       </div>
                     </div>
-                  ) : null}
+                  ) : null} */}
                 </div>
               )}
               {this.props.curStep === 1 ? (
@@ -186,10 +195,10 @@ class ScheduleAcallContent extends Component {
                               return (
                                 <div
                                   className={`bae-db-tsi-time ${
-                                    optionIndex ===
-                                      this.props.selectedCallOption[0] &&
-                                    timeSlotIndex ===
-                                      this.props.selectedCallOption[1]
+                                    this.isTimeSelected(
+                                      optionIndex,
+                                      timeSlotIndex
+                                    )
                                       ? "bae-db-tsi-time-selected"
                                       : ""
                                   }`}
@@ -204,7 +213,7 @@ class ScheduleAcallContent extends Component {
                       );
                     })}
                   </div>
-                  <div className="bae-db-final">
+                  {/* <div className="bae-db-final">
                     <div className="bae-db-final-left">
                       <div className="bae-db-final-title">
                         {moment(this.props.curDateStartSelected).format(
@@ -217,14 +226,14 @@ class ScheduleAcallContent extends Component {
                         )} to ${moment(this.props.curDateEndSelected).format(
                           "h:mm A"
                         )}`}
-                        {/* to 5:45PM BST */}
+
                       </div>
                     </div>
                     <div className="bae-db-final-right">
                       <div className="bae-db-final-title">$300</div>
                       <div className="bae-db-final-desc"> Per session</div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="bae-data-btns">
                   <button
@@ -242,8 +251,13 @@ class ScheduleAcallContent extends Component {
                   <button
                     className={`bae-db-btn bae-db-nextbtn inter-display-medium ${
                       this.props.isMobile ? "bae-db-nextbtn-mobile" : ""
+                    } ${
+                      this.props.selectedCallOption.length === 0
+                        ? "bae-db-btn-disabled"
+                        : ""
                     }`}
                     onClick={this.props.goToSecondStep}
+                    disabled={this.props.selectedCallOption.length === 0}
                   >
                     <span>Next</span>
                   </button>

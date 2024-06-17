@@ -83,6 +83,26 @@
           color: var(--referallUsedBtnText);
           font-size: 13px;
         }
+        .ep-expert-social {
+          width: 100%;
+          transform: translateY(1rem);
+
+          .ep-expert-social-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 2px;
+            .ep-expert-social-links-item {
+              cursor: pointer;
+              width: 2rem;
+              filter: var(--invertColor);
+
+              &:hover {
+                opacity: 0.5;
+              }
+            }
+          }
+        }
       }
     }
     .ep-ei-btn {
@@ -99,6 +119,7 @@
       }
     }
   }
+
   .ep-about-expert {
     width: 100%;
     max-width: 120rem;

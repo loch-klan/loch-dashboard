@@ -55,12 +55,25 @@ class ExpertPersonContent extends Component {
                 #1 CoinM PnL & Story Teller on @binance leaderboard. 9 figs
                 challenge with receipts
               </div>
+              <div className="ep-expert-social">
+                <div className="ep-expert-social-links">
+                  {this.props.socialMediaLinks.map((socialMediaItem) => {
+                    return (
+                      <Image
+                        src={socialMediaItem.icon}
+                        className="ep-expert-social-links-item"
+                      />
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
           <button onClick={this.props.goToScheduleACall} className="ep-ei-btn">
             Consult now
           </button>
         </div>
+
         <div className="ep-about-expert">
           <div className="ep-about-expert-heading">
             <div className="ep-aeh-title">About the expert</div>

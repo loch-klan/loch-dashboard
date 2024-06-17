@@ -7,6 +7,13 @@ import { getUser } from "../common/Api";
 import MobileLayout from "../layout/MobileLayout";
 import ExpertPersonContent from "./ExpertPersonContent";
 import ExpertPersonPageMobile from "./ExpertPersonPageMobile";
+import {
+  AboutExpertTwitterIcon,
+  AboutExpertLinkedInIcon,
+  AboutExpertYoutubeIcon,
+  AboutExpertInstagramIcon,
+  AboutExpertDiscordIcon,
+} from "../../assets/images/icons";
 import "./_expertPersonPage.scss";
 
 class ExpertPersonPage extends Component {
@@ -14,6 +21,28 @@ class ExpertPersonPage extends Component {
     super(props);
     this.state = {
       isMobile: mobileCheck(),
+      socialMediaLinks: [
+        {
+          link: "",
+          icon: AboutExpertTwitterIcon,
+        },
+        {
+          link: "",
+          icon: AboutExpertLinkedInIcon,
+        },
+        {
+          link: "",
+          icon: AboutExpertYoutubeIcon,
+        },
+        {
+          link: "",
+          icon: AboutExpertInstagramIcon,
+        },
+        {
+          link: "",
+          icon: AboutExpertDiscordIcon,
+        },
+      ],
       expertsList: [
         {
           address: "0xeB2993A4E44291DA4020102F6D2ed8D14b1Cca4c",
@@ -103,6 +132,7 @@ class ExpertPersonPage extends Component {
         >
           <ExpertPersonPageMobile
             expertsList={this.state.expertsList}
+            socialMediaLinks={this.state.socialMediaLinks}
             goToScheduleACall={this.goToScheduleACall}
             onHide={this.onHide}
           />
@@ -130,6 +160,7 @@ class ExpertPersonPage extends Component {
             </div>
           </div>
           <ExpertPersonContent
+            socialMediaLinks={this.state.socialMediaLinks}
             expertsList={this.state.expertsList}
             goToScheduleACall={this.goToScheduleACall}
           />

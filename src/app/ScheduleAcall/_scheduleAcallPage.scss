@@ -173,11 +173,11 @@
             background-color: var(--cardBackgroud);
             padding: 1.5rem 2rem;
             border-radius: 1rem;
-            font-size: 13px;
             cursor: pointer;
             border: 1px solid var(--cardSeperator);
             box-shadow: var(--boxShadowColorMd);
-            font-size: 16px;
+            font-size: 15px;
+            box-shadow: var(--boxShadowMd);
             &:hover {
               border-color: var(--primaryTextColor);
               background-color: var(--primaryTextColor);
@@ -405,7 +405,7 @@
           flex-direction: column;
           gap: 3rem;
           margin-top: 1rem;
-          margin-bottom: 2rem;
+          margin-bottom: 0rem;
           padding: 1rem;
           border-radius: 0.5rem;
           border: 2px solid var(--cardSeperator);
@@ -442,11 +442,12 @@
                 background-color: var(--durationSelectedBack);
                 color: var(--blockOneBtnBackground);
                 border-color: var(--blockOneBtnBackground);
-                pointer-events: none;
+                // pointer-events: none;
                 &:hover {
                   background-color: var(--durationSelectedBack);
                   color: var(--blockOneBtnBackground);
                   border-color: var(--blockOneBtnBackground);
+                  opacity: 0.7;
                 }
               }
             }
@@ -475,7 +476,7 @@
         }
       }
       .bae-data-block-min-height {
-        min-height: 56.7rem;
+        min-height: 50.5rem;
       }
       .bae-data-btns {
         display: flex;
@@ -539,13 +540,13 @@
             box-shadow: var(--sidebarHoverShadow);
           }
         }
+
         .bae-db-nextbtn-mobile {
           background-color: var(--blockOneBtnBackground) !important;
           border: 1px solid var(--blockOneBtnBackground) !important;
           color: white !important;
           box-shadow: none !important;
         }
-
         .bae-db-btn-disabled {
           background-color: var(--cardBorder) !important;
           border-color: var(--cardBorder) !important;
@@ -565,7 +566,7 @@
     padding-bottom: 0rem;
     min-width: unset;
     .becomne-an-expert-page-block-top-gradient {
-      top: 5rem;
+      top: 0rem;
     }
     .becomne-an-expert-page-block {
       flex-direction: column;
