@@ -111,8 +111,8 @@ function CustomOverlay({
                 <div>the underlying wallet makes a swap.</div>
                 <div>We’ll calculate the equivalent swap amount</div>
                 <div>relative to your portfolio. Use your own</div>
-                <div>judgment to decide whether you want to</div>
-                <div>execute the copy trade.</div>
+                <div>judgment to decide if you want to</div>
+                <div>execute the copy trade or not.</div>
               </div>
             </div>
           ) : heading ? (
