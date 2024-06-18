@@ -37,7 +37,7 @@ class Wallet extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       walletList: [],
       start: 0,
       sorts: [],
@@ -251,7 +251,7 @@ class Wallet extends Component {
   };
 
   render() {
-    const { walletList, totalWalletAmt } = this.props.walletState;
+    let { walletList, totalWalletAmt } = this.props.walletState;
     const { currency, isLoading } = this.state;
     return (
       <div className="wallet-page-section">
@@ -272,129 +272,128 @@ class Wallet extends Component {
             from="wallet"
           />
         )}
-        <div
-          className="wallet-section page"
-          style={
-            this.props.hidePageHeader
-              ? { marginTop: "0rem", marginBottom: "1rem" }
-              : {}
-          }
-        >
-          <PageHeader
-            title="Wallets"
-            subTitle="Manage all your wallets right here"
-            btnText={this.props.hidePageHeader ? false : "Add wallet"}
-            SecondaryBtn={this.props.hidePageHeader ? false : true}
-            handleBtn={this.handleAddModal}
-            handleUpdate={this.handleUpdateWallet}
-            // showData={totalWalletAmt}
-            // isLoading={isLoading}
-          />
-          {this.props.isMobileDevice ? null : (
-            <div
-              style={{
-                minWidth: "85rem",
-              }}
-            >
-              <CoinBadges
-                activeBadge={this.state.activeBadge}
-                chainList={this.props.OnboardingState.coinsList}
-                handleFunction={this.handleFunction}
-                hideDropdown
-              />
-            </div>
-          )}
-          {this.props.isMobileDevice ? null : (
-            <div className="m-b-16 sortby-section">
-              <div className="dropdown-section">
-                <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
-                  Sort by
-                </span>
-                {this.state.sortBy.map((e, index) => {
-                  return (
-                    <span
-                      className="sort-by-title"
-                      key={index}
-                      onClick={() => this.handleSort(e)}
-                    >
-                      <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
-                        {e.title}
-                      </span>{" "}
-                      {/* <Image src={sort} style={{ width: "1rem" }} /> */}
-                      <Image
-                        src={sortByIcon}
-                        // style={{ width: "1.6rem" }}
-                        className={e.down ? "rotateDown" : "rotateUp"}
-                      />
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-          {walletList.length > 0 && !isLoading ? (
-            <div className="net-worth-wrapper">
-              <div className="left">
-                <div className="net-worth-icon-container">
-                  <Image src={PieChartPorifleIcon} className="net-worth-icon" />
-                </div>
-                <h3 className="inter-display-medium f-s-20 lh-24 ">
-                  Total net worth
-                </h3>
-              </div>
-              <div className="right">
-                <h3 className="space-grotesk-medium f-s-24 lh-29">
-                  {CurrencyType(false)}
-                  {numToCurrency(totalWalletAmt)}{" "}
-                  <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA va-m">
-                    {CurrencyType(true)}
-                  </span>
-                </h3>
-              </div>
-            </div>
-          ) : null}
-
-          <div className="cards">
-            {isLoading === true ? (
-              <div className="loading-container">
-                <div className="animation-wrapper">
-                  <Loading />
-                </div>
-              </div>
-            ) : walletList.length > 0 ? (
-              walletList.map((wallet, index) => {
-                // console.log("walletlist", walletList)
-                return (
-                  <WalletCard
-                    isMobileDevice={this.props.isMobileDevice}
-                    key={index}
-                    createdOn={wallet.created_on}
-                    wallet_metadata={wallet.wallet_metadata}
-                    wallet_account_number={wallet.address}
-                    display_address={wallet.display_address}
-                    nameTag={wallet.tag}
-                    wallet_amount={wallet.total_value * currency?.rate}
-                    wallet_coins={wallet?.chains}
-                    makeApiCall={this.makeApiCall}
-                    handleUpdateWallet={this.handleUpdateWallet}
-                    history={this.props.history}
-                    nickname={wallet.nickname}
-                    protocol={wallet.protocol}
-                    // isLoading={this.state.isLoading}
-                  />
-                );
-              })
-            ) : (
-              <div style={{ textAlign: "center" }}>
-                {/* <Image src={noDataImage} className="no-data m-b-20" /> */}
-                <h3 className="inter-display-medium f-s-16 lh-19 grey-313 m-b-8">
-                  No data found
-                </h3>
+        {walletList.length > 0 ? (
+          <div
+            className="wallet-section page"
+            style={
+              this.props.hidePageHeader
+                ? { marginTop: "0rem", marginBottom: "1rem" }
+                : {}
+            }
+          >
+            <PageHeader
+              title="Wallets"
+              subTitle="Manage all your wallets right here"
+              btnText={this.props.hidePageHeader ? false : "Add wallet"}
+              SecondaryBtn={this.props.hidePageHeader ? false : true}
+              handleBtn={this.handleAddModal}
+              handleUpdate={this.handleUpdateWallet}
+              // showData={totalWalletAmt}
+              // isLoading={isLoading}
+            />
+            {this.props.isMobileDevice ? null : (
+              <div
+                style={{
+                  minWidth: "85rem",
+                }}
+              >
+                <CoinBadges
+                  activeBadge={this.state.activeBadge}
+                  chainList={this.props.OnboardingState.coinsList}
+                  handleFunction={this.handleFunction}
+                  hideDropdown
+                />
               </div>
             )}
+            {this.props.isMobileDevice ? null : (
+              <div className="m-b-16 sortby-section">
+                <div className="dropdown-section">
+                  <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-313 naming">
+                    Sort by
+                  </span>
+                  {this.state.sortBy.map((e, index) => {
+                    return (
+                      <span
+                        className="sort-by-title"
+                        key={index}
+                        onClick={() => this.handleSort(e)}
+                      >
+                        <span className="inter-display-medium f-s-13 lh-16 m-r-12 grey-7C7 ">
+                          {e.title}
+                        </span>{" "}
+                        {/* <Image src={sort} style={{ width: "1rem" }} /> */}
+                        <Image
+                          src={sortByIcon}
+                          // style={{ width: "1.6rem" }}
+                          className={e.down ? "rotateDown" : "rotateUp"}
+                        />
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {!isLoading ? (
+              <div className="net-worth-wrapper">
+                <div className="left">
+                  <div className="net-worth-icon-container">
+                    <Image
+                      src={PieChartPorifleIcon}
+                      className="net-worth-icon"
+                    />
+                  </div>
+                  <h3 className="inter-display-medium f-s-20 lh-24 ">
+                    Total net worth
+                  </h3>
+                </div>
+                <div className="right">
+                  <h3 className="space-grotesk-medium f-s-24 lh-29">
+                    {CurrencyType(false)}
+                    {numToCurrency(totalWalletAmt)}{" "}
+                    <span className="inter-display-semi-bold f-s-10 lh-12 grey-ADA va-m">
+                      {CurrencyType(true)}
+                    </span>
+                  </h3>
+                </div>
+              </div>
+            ) : null}
+
+            <div className="cards">
+              {isLoading === true ? (
+                <div className="loading-container">
+                  <div className="animation-wrapper">
+                    <Loading />
+                  </div>
+                </div>
+              ) : (
+                walletList.map((wallet, index) => {
+                  return (
+                    <WalletCard
+                      isMobileDevice={this.props.isMobileDevice}
+                      key={index}
+                      createdOn={wallet.created_on}
+                      wallet_metadata={wallet.wallet_metadata}
+                      wallet_account_number={wallet.address}
+                      display_address={wallet.display_address}
+                      nameTag={wallet.tag}
+                      wallet_amount={wallet.total_value * currency?.rate}
+                      wallet_coins={wallet?.chains}
+                      makeApiCall={this.makeApiCall}
+                      handleUpdateWallet={this.handleUpdateWallet}
+                      history={this.props.history}
+                      nickname={wallet.nickname}
+                      protocol={wallet.protocol}
+                      // isLoading={this.state.isLoading}
+                    />
+                  );
+                })
+              )}
+            </div>
+
+            {/* <FeedbackForm page={"Wallet Page"} /> */}
           </div>
-          {/* <FeedbackForm page={"Wallet Page"} /> */}
-        </div>
+        ) : null}
       </div>
     );
   }

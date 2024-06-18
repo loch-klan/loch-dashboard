@@ -38,8 +38,13 @@ import {
 
 import { toast } from "react-toastify";
 import {
+  dontOpenLoginPopup,
+  isPremiumUser,
   isSameDateAs,
   mobileCheck,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
   UpgradeTriggered,
 } from "../../utils/ReusableFunctions.js";
 import { GetAllPlan, getUser } from "../common/Api.js";
@@ -50,11 +55,14 @@ import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import RealizedProfitAndLossMobile from "./RealizedProfitAndLossMobile.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class RealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: isPremiumUser() ? true : false,
+      isLochPaymentModal: false,
       fromDateInitial: new Date(
         new Date().setFullYear(new Date().getFullYear() - 1)
       ),
@@ -82,8 +90,8 @@ class RealizedProfitAndLoss extends Component {
       LeftShow: true,
 
       // add new wallet
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -95,7 +103,7 @@ class RealizedProfitAndLoss extends Component {
       selectedActiveBadge: [],
 
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -151,7 +159,7 @@ class RealizedProfitAndLoss extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -185,9 +193,38 @@ class RealizedProfitAndLoss extends Component {
       ProfitLossAssetLocal: ProfitLossAssetPassed,
     });
   };
+  checkPremium = () => {
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUser: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUser: false,
+      });
+    }
+  };
   componentDidMount() {
+    this.checkPremium();
     // if (mobileCheck()) {
     //   this.props.history.push("/home");
+    // }
+    // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal = window.localStorage.getItem(
+    //     "openFlowsPaymentModal"
+    //   );
+    //   const isOpenForSearch = window.localStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //       });
+    //     }, 1000);
+    //   }
     // }
     this.startPageView();
     if (this.props.intelligenceState?.updatedInsightList) {
@@ -199,13 +236,13 @@ class RealizedProfitAndLoss extends Component {
         updatedInsightList: newTempHolder,
       });
     }
-    const tempLeftExplainerClosed = window.sessionStorage.getItem(
+    const tempLeftExplainerClosed = window.localStorage.getItem(
       "netFlowLeftExplainerClosed"
     );
     if (tempLeftExplainerClosed) {
       this.setState({ LeftShow: false });
     }
-    const tempRightExplainerClosed = window.sessionStorage.getItem(
+    const tempRightExplainerClosed = window.localStorage.getItem(
       "netFlowRightExplainerClosed"
     );
     if (tempRightExplainerClosed) {
@@ -306,7 +343,8 @@ class RealizedProfitAndLoss extends Component {
       moment.utc(this.state.toDate).add(1, "days").unix(),
       [],
       this.state.selectedAssets,
-      isDefault
+      isDefault,
+      this.state.isPremiumUser
     );
     // this.props.getProfitAndLossApi(
     //   this,
@@ -320,22 +358,27 @@ class RealizedProfitAndLoss extends Component {
     // add wallet
     // used for filter
     if (this.props.darkModeState !== prevProps.darkModeState) {
-      if (this.props.intelligenceState?.ProfitLossAssetData) {
-        this.props.updateAssetProfitLoss(
-          this.props.intelligenceState?.ProfitLossAssetData,
-          this
-        );
-      }
-      // Set all filters to initial
-      this.setState({
-        selectedActiveBadgeLocal: [],
-      });
-      // Set all filters to initial
+      this.checkPremium();
+      setTimeout(() => {
+        if (this.props.intelligenceState?.ProfitLossAssetData) {
+          this.props.updateAssetProfitLoss(
+            this.props.intelligenceState?.ProfitLossAssetData,
+            this,
+            this.state.isPremiumUser
+          );
+        }
+        // Set all filters to initial
+        this.setState({
+          selectedActiveBadgeLocal: [],
+        });
+        // Set all filters to initial
+      }, 500);
     }
     if (
       prevProps.intelligenceState?.ProfitLossAsset !==
       this.props.intelligenceState?.ProfitLossAsset
     ) {
+      this.checkPremium();
       this.setState({
         ProfitLossAssetLocal: this.props.intelligenceState?.ProfitLossAsset,
       });
@@ -425,18 +468,18 @@ class RealizedProfitAndLoss extends Component {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkIntelligenceTimer);
-    window.sessionStorage.removeItem("intelligencePageExpiryTime");
+    window.localStorage.removeItem("intelligencePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -448,7 +491,7 @@ class RealizedProfitAndLoss extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -456,7 +499,7 @@ class RealizedProfitAndLoss extends Component {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -470,6 +513,10 @@ class RealizedProfitAndLoss extends Component {
     getTransactionAsset(data, this, true);
   };
   changeFromDate = (passedDate) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return null;
+    }
     if (passedDate) {
       let toText = "";
       if (this.state.toDate) {
@@ -490,6 +537,10 @@ class RealizedProfitAndLoss extends Component {
     }
   };
   changeToDate = (passedDate) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return null;
+    }
     if (passedDate) {
       let fromText = "";
       if (this.state.fromDate) {
@@ -557,7 +608,8 @@ class RealizedProfitAndLoss extends Component {
       endDate,
       selectedChains,
       this.state.selectedAssets,
-      isDefault
+      isDefault,
+      this.state.isPremiumUser
     );
 
     const tempIsSearchUsed = this.state.isChainSearchUsed;
@@ -598,7 +650,7 @@ class RealizedProfitAndLoss extends Component {
   };
 
   RightClose = () => {
-    window.sessionStorage.setItem("netFlowRightExplainerClosed", true);
+    window.localStorage.setItem("netFlowRightExplainerClosed", true);
     this.setState({
       RightShow: false,
     });
@@ -610,7 +662,7 @@ class RealizedProfitAndLoss extends Component {
   };
 
   LeftClose = () => {
-    window.sessionStorage.setItem("netFlowLeftExplainerClosed", true);
+    window.localStorage.setItem("netFlowLeftExplainerClosed", true);
     this.setState({
       LeftShow: false,
     });
@@ -623,6 +675,11 @@ class RealizedProfitAndLoss extends Component {
   };
 
   handleAssetSelected = (arr) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      this.setState({ selectedAssets: [] });
+      return null;
+    }
     this.setState(
       {
         selectedAssets: arr[0].name === "All" ? [] : arr.map((e) => e?.id),
@@ -643,7 +700,7 @@ class RealizedProfitAndLoss extends Component {
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -659,16 +716,64 @@ class RealizedProfitAndLoss extends Component {
     });
     this.updateTimer();
   };
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.localStorage.setItem("blurredFlowsSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.localStorage.setItem("openFlowsPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   render() {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           showpath
           currentPage={"realized-profit-and-loss"}
+          goToPayModal={this.props.goToPayModal}
+          showTopSearchBar
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/realized-profit-and-loss"}
+              title="Net Flows with Loch"
+              description="Unlimited wallets net flows"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <RealizedProfitAndLossMobile
+            isPremiumUser={this.state.isPremiumUser}
+            goToPayModal={this.goToPayModal}
             showToCalendar={this.showToCalendar}
             hideToCalendar={this.hideToCalendar}
             hideFromCalendar={this.hideFromCalendar}
@@ -712,6 +817,7 @@ class RealizedProfitAndLoss extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}
@@ -736,12 +842,22 @@ class RealizedProfitAndLoss extends Component {
               showpath
               currentPage={"realized-profit-and-loss"}
             />
+            {this.state.isLochPaymentModal ? (
+              <PaywallModal
+                show={this.state.isLochPaymentModal}
+                onHide={this.hidePaymentModal}
+                redirectLink={BASE_URL_S3 + "/realized-profit-and-loss"}
+                title="Net Flows with Loch"
+                description="Unlimited wallets net flows"
+                hideBackBtn
+              />
+            ) : null}
             {this.state.upgradeModal && (
               <UpgradeModal
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
+                isShare={window.localStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="intelligence"
@@ -770,6 +886,10 @@ class RealizedProfitAndLoss extends Component {
               >
                 {!this.state.netFlowLoading ? (
                   <BarGraphSection
+                    showPremiumHover
+                    isPremiumUser={this.state.isPremiumUser}
+                    isBlurred={!this.state.isPremiumUser}
+                    goToPayModal={this.goToPayModal}
                     dontShowAssets
                     showToCalendar={this.showToCalendar}
                     hideToCalendar={this.hideToCalendar}

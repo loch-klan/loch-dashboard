@@ -212,7 +212,7 @@
             width: 100%;
             overflow-x: auto;
             margin-right: 2rem;
-            padding-bottom: 1rem;
+            height: 4.2rem;
             .coin-chip {
               margin-right: 1.2rem;
               img {
@@ -229,6 +229,9 @@
               img:hover {
                 filter: var(--hoverBrightnessValue);
               }
+            }
+            &::-webkit-scrollbar {
+              height: 0rem;
             }
             &:hover {
               &::-webkit-scrollbar {

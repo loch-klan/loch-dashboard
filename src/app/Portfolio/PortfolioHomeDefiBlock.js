@@ -70,7 +70,7 @@ class PortfolioHomeDefiBlock extends Component {
     this.setState({
       defiLoader: true,
     });
-    let UserWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let UserWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     if (UserWallet?.length !== 0) {
       const allAddresses = [];
       UserWallet?.forEach((e) => {

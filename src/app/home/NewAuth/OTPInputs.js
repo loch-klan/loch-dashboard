@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const OTPInputs = ({ numberOfDigits, handleChangeOTP, isMobile }) => {
+const OTPInputs = ({ numberOfDigits, handleChangeOTP, isMobile, onSubmit }) => {
   const [otp, setOtp] = useState(new Array(numberOfDigits).fill(""));
   const [otpError, setOtpError] = useState(null);
   const otpBoxReference = useRef([]);
@@ -56,6 +56,9 @@ const OTPInputs = ({ numberOfDigits, handleChangeOTP, isMobile }) => {
     }
     if (e.key === "Enter" && e.target.value && index < numberOfDigits - 1) {
       otpBoxReference.current[index + 1].focus();
+    }
+    if (e.key === "Enter" && onSubmit) {
+      onSubmit();
     }
   }
 

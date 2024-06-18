@@ -33,7 +33,15 @@ import { getAllCoins } from "../onboarding/Api.js";
 
 import { toast } from "react-toastify";
 import InsightImg from "../../assets/images/icons/insight-msg.svg";
-import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
+import {
+  dontOpenLoginPopup,
+  isPremiumUser,
+  mobileCheck,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
+  scrollToTop,
+} from "../../utils/ReusableFunctions";
 import WelcomeCard from "../Portfolio/WelcomeCard";
 import { setPageFlagDefault, updateWalletListFlag } from "../common/Api";
 import DropDown from "../common/DropDown";
@@ -44,11 +52,15 @@ import InsightsPageMobile from "./InsightsPageMobile.js";
 
 // Dark theme scss
 import "./intelligenceScss/_darkInsightPage.scss";
+import PaywallModal from "../common/PaywallModal.js";
+import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
 
 class InsightsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       // insightList: "",
       isLoading: false,
       updatedInsightList: [],
@@ -70,14 +82,14 @@ class InsightsPage extends Component {
       selectedFilter: 1,
 
       // add new wallet
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 9,
@@ -101,7 +113,7 @@ class InsightsPage extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -150,7 +162,36 @@ class InsightsPage extends Component {
       });
     }
   };
+  checkPremium = () => {
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUser: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUser: false,
+      });
+    }
+  };
   componentDidMount() {
+    this.checkPremium();
+    // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal = window.localStorage.getItem(
+    //     "openInsightsPaymentModal"
+    //   );
+    //   const isOpenForSearch = window.localStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //       });
+    //     }, 1000);
+    //   }
+    // }
     scrollToTop();
     if (
       !this.props.commonState.insight ||
@@ -192,18 +233,18 @@ class InsightsPage extends Component {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "insightsPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("insightsPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkInsightsTimer);
-    window.sessionStorage.removeItem("insightsPageExpiryTime");
+    window.localStorage.removeItem("insightsPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -215,7 +256,7 @@ class InsightsPage extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "insightsPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -223,7 +264,7 @@ class InsightsPage extends Component {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "insightsPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -239,6 +280,7 @@ class InsightsPage extends Component {
       prevProps.intelligenceState.updatedInsightList !==
       this.props.intelligenceState.updatedInsightList
     ) {
+      this.checkPremium();
       // insight_type: 30
       const newTempHolder =
         this.props.intelligenceState.updatedInsightList.filter(
@@ -305,7 +347,10 @@ class InsightsPage extends Component {
     // console.log("api respinse", value);
   };
   handleSelect = (value) => {
-    console.log("value", value);
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return;
+    }
     let insightList = this.props.intelligenceState?.updatedInsightList
       ? this.props.intelligenceState?.updatedInsightList
       : [];
@@ -353,7 +398,7 @@ class InsightsPage extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -373,6 +418,10 @@ class InsightsPage extends Component {
   };
 
   handleInsights = (e) => {
+    if (!this.state.isPremiumUser) {
+      this.goToPayModal();
+      return;
+    }
     let title = e.split(" ")[1];
     if (e.split(" ")[2] !== undefined) {
       title = title + " " + e.split(" ")[2];
@@ -460,20 +509,67 @@ class InsightsPage extends Component {
     });
     this.updateTimer();
   };
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.localStorage.setItem("blurredInsightsSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.localStorage.setItem("openInsightsPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   render() {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
+          handleShare={this.handleShare}
           history={this.props.history}
           isSidebarClosed={this.props.isSidebarClosed}
           showpath
           currentPage={"insights"}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+              title="Access Risk and Cost Reduction Insights"
+              description="Unlimited wallets insights"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <InsightsPageMobile
             updatedInsightList={this.state.updatedInsightList}
             handleMobileInsightSelect={this.handleMobileInsightSelect}
+            goToPayModal={this.goToPayModal}
             selectedFilter={this.state.selectedFilter}
             isLoading={this.state.isLoading}
+            isPremiumUser={this.state.isPremiumUser}
           />
         </MobileLayout>
       );
@@ -489,6 +585,7 @@ class InsightsPage extends Component {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  showTopSearchBar
                   openConnectWallet={this.props.openConnectWallet}
                   connectedWalletAddress={this.props.connectedWalletAddress}
                   connectedWalletevents={this.props.connectedWalletevents}
@@ -536,13 +633,23 @@ class InsightsPage extends Component {
                   show={this.state.upgradeModal}
                   onHide={this.upgradeModal}
                   history={this.props.history}
-                  isShare={window.sessionStorage.getItem("share_id")}
+                  isShare={window.localStorage.getItem("share_id")}
                   isStatic={this.state.isStatic}
                   triggerId={this.state.triggerId}
                   pname="insight-page"
                   updateTimer={this.updateTimer}
                 />
               )}
+              {this.state.isLochPaymentModal ? (
+                <PaywallModal
+                  show={this.state.isLochPaymentModal}
+                  onHide={this.hidePaymentModal}
+                  redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+                  title="Access Risk and Cost Reduction Insights"
+                  description="Unlimited wallets insights"
+                  hideBackBtn
+                />
+              ) : null}
 
               <PageHeader
                 title={"Insights"}
@@ -621,53 +728,69 @@ class InsightsPage extends Component {
                     this.state.updatedInsightList.length > 0 ? (
                     this.state.updatedInsightList?.map((insight, key) => {
                       return (
-                        <div
-                          style={{
-                            marginBottom:
-                              key === this.state.updatedInsightList.length - 1
-                                ? "3rem"
-                                : "",
-                          }}
-                          className="insights-card"
-                          key={key}
+                        <CustomOverlayUgradeToPremium
+                          position="top"
+                          disabled={this.state.isPremiumUser || key === 0}
                         >
-                          <Image
-                            src={
-                              insight.insight_type ===
-                              InsightType.COST_REDUCTION
-                                ? reduceCost
-                                : insight.insight_type ===
-                                  InsightType.RISK_REDUCTION
-                                ? reduceRisk
-                                : increaseYield
-                            }
-                            className="insight-icon"
-                          />
-                          <div className="insights-content">
-                            <div className="chips-wrapper">
-                              <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
-                                {InsightType.getText(insight.insight_type)}
-                              </h5>
-                              {insight?.sub_type && (
-                                <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
-                                  {InsightType.getRiskType(insight.sub_type)}
+                          <div
+                            style={{
+                              marginBottom:
+                                key === this.state.updatedInsightList.length - 1
+                                  ? "3rem"
+                                  : "",
+                            }}
+                            className={`insights-card ${
+                              key > 0
+                                ? this.state.isPremiumUser
+                                  ? ""
+                                  : "blurred-elements"
+                                : ""
+                            }`}
+                            key={key}
+                            onClick={() => {
+                              if (key > 0) {
+                                this.goToPayModal();
+                              }
+                            }}
+                          >
+                            <Image
+                              src={
+                                insight.insight_type ===
+                                InsightType.COST_REDUCTION
+                                  ? reduceCost
+                                  : insight.insight_type ===
+                                    InsightType.RISK_REDUCTION
+                                  ? reduceRisk
+                                  : increaseYield
+                              }
+                              className="insight-icon"
+                            />
+                            <div className="insights-content">
+                              <div className="chips-wrapper">
+                                <h5 className="inter-display-bold f-s-10 lh-12 title-chip">
+                                  {InsightType.getText(insight.insight_type)}
                                 </h5>
-                              )}
+                                {insight?.sub_type && (
+                                  <h5 className="inter-display-bold f-s-10 lh-12 risk-chip">
+                                    {InsightType.getRiskType(insight.sub_type)}
+                                  </h5>
+                                )}
+                              </div>
+                              <p
+                                className="inter-display-medium f-s-13 lh-16 grey-969"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.sub_title,
+                                }}
+                              ></p>
+                              <h4
+                                className="inter-display-medium f-s-16 lh-19 grey-313"
+                                dangerouslySetInnerHTML={{
+                                  __html: insight.title,
+                                }}
+                              ></h4>
                             </div>
-                            <p
-                              className="inter-display-medium f-s-13 lh-16 grey-969"
-                              dangerouslySetInnerHTML={{
-                                __html: insight.sub_title,
-                              }}
-                            ></p>
-                            <h4
-                              className="inter-display-medium f-s-16 lh-19 grey-313"
-                              dangerouslySetInnerHTML={{
-                                __html: insight.title,
-                              }}
-                            ></h4>
                           </div>
-                        </div>
+                        </CustomOverlayUgradeToPremium>
                       );
                     })
                   ) : (

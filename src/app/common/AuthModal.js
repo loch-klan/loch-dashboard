@@ -30,20 +30,23 @@ import { v4 as uuidv4 } from "uuid";
 import backIcon from "../../assets/images/icons/Icon-back.svg";
 import {
   ConnectExPopupEmailAdded,
+  CopyTradePopupEmailAdded,
   GeneralPopupEmailAdded,
   LochPointsSignInPopupEmailAdded,
+  SignInModalEmailAdded,
   SigninMenuEmailAdded,
   UpgradeSignInEmailVerified,
   WhaleCreateAccountPrivacyHover,
   WhalePopupEmailAdded,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { whichSignUpMethod } from "../../utils/ReusableFunctions.js";
 
 class AuthModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const dummyUser = window.localStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.state = {
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
@@ -74,14 +77,14 @@ class AuthModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
     // this.props.getAllCoins();
     // this.props.getAllParentChains();
   }
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -104,7 +107,18 @@ class AuthModal extends BaseReactComponent {
   handleAccountCreate = () => {
     //   console.log("create email", this.state.email);
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
+
+    const signUpMethod = whichSignUpMethod();
+    SignInModalEmailAdded({
+      session_id: getCurrentUser().id,
+      email_address: this.state.email,
+      signUpMethod: signUpMethod,
+    });
+
     SendOtp(data, this);
 
     if (this.props.tracking === "Sign in button") {
@@ -140,6 +154,11 @@ class AuthModal extends BaseReactComponent {
         email_address: this.state.email,
         from: this.props.tracking,
       });
+    } else if (this.props.tracking === "Copy trade") {
+      CopyTradePopupEmailAdded({
+        session_id: getCurrentUser().id,
+        email_address: this.state.email,
+      });
     }
 
     if (this.props?.popupType === "general_popup") {
@@ -173,7 +192,12 @@ class AuthModal extends BaseReactComponent {
         ? "generic pop up"
         : this.props.tracking
     );
-    VerifyEmail(data, this);
+    VerifyEmail(
+      data,
+      this,
+      false,
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
   };
 
   handleBack = () => {
@@ -197,15 +221,15 @@ class AuthModal extends BaseReactComponent {
   // Signin wit wallet
   SigninWallet = () => {
     // get device id
-    const deviceId = window.sessionStorage.getItem("deviceId") || uuidv4();
+    const deviceId = window.localStorage.getItem("deviceId") || uuidv4();
 
-    if (!window.sessionStorage.getItem("deviceId")) {
+    if (!window.localStorage.getItem("deviceId")) {
       // console.log("no device id");
-      window.sessionStorage.setItem("deviceId", deviceId);
+      window.localStorage.setItem("deviceId", deviceId);
     }
 
-    if (!window.sessionStorage.getItem("connectWalletAddress")) {
-      window.sessionStorage.setItem(
+    if (!window.localStorage.getItem("connectWalletAddress")) {
+      window.localStorage.setItem(
         "connectWalletAddress",
         this.state.MetaAddress
       );

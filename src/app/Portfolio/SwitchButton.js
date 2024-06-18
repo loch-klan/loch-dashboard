@@ -9,7 +9,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 const SwitchButton = (props) => {
-  let obj = JSON.parse(window.sessionStorage.getItem("assetValueLoader"));
+  let obj = JSON.parse(window.localStorage.getItem("assetValueLoader"));
   let isChecked = props?.isTopAccount ? obj.topaccount : obj.me;
   const handleToggle = () => {
     if (!isChecked) {

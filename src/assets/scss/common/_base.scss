@@ -144,6 +144,10 @@ body {
     padding-right: 8.5rem;
     overflow-x: hidden;
   }
+  .main-section-right-margin-handler-closed-ctw {
+    padding-left: 10.3rem;
+    padding-right: 0rem;
+  }
 }
 
 //Fonts
@@ -1222,10 +1226,20 @@ form {
     height: auto !important;
     background-color: var(--cardBackgroud);
     overflow: visible !important;
+    margin-bottom: 0.8rem !important;
+    &::-webkit-scrollbar {
+      width: 0rem !important;
+      height: 0rem !important;
+    }
+    &:hover {
+      &::-webkit-scrollbar {
+        width: 0.5rem !important;
+        height: 0rem !important;
+      }
+    }
 
     .ReactVirtualized__Grid__innerScrollContainer {
       overflow: visible !important;
-
       .ReactVirtualized__Table__row {
         border: none;
       }
@@ -1265,6 +1279,13 @@ form {
   .not-found-wrapper {
     text-align: center;
     padding: 10rem;
+  }
+  .not-found-wrapper-image {
+    height: 10rem;
+    margin-bottom: 2rem;
+  }
+  .not-found-wrapper-image-text {
+    color: #adadad;
   }
 }
 .section-table-mobile-scroll {
@@ -1811,6 +1832,61 @@ form {
     }
   }
 }
+.tool-tip-fremium-container {
+  position: relative;
+  .tooltip-inner {
+    background-color: var(--cardBackgroud) !important;
+    border-color: var(--greyCardBackgroud) !important;
+    min-height: 7.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    width: 21rem;
+    padding: 1.2rem !important;
+    border-radius: 1rem !important;
+    box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem var(--freemiumTooltipShadow),
+      0rem 0.63099rem 0.63099rem -0.31549rem var(--freemiumTooltipShadow);
+    .freemium-tooltip-header {
+      font-size: 13.5px !important;
+      color: var(--fremiumTooltipHeader) !important;
+      z-index: 2;
+    }
+    .freemium-tooltip-desc {
+      font-size: 13.5px !important;
+      color: var(--fremiumTooltipDescription) !important;
+      z-index: 2;
+      width: 70%;
+      margin-top: 0.45rem;
+    }
+    .freemium-tooltip-image {
+      position: absolute;
+      top: 50%;
+      right: 0.1rem;
+      transform: translateY(-55%);
+      height: 7rem;
+      z-index: 1;
+      content: var(--freemiumTooltip);
+    }
+  }
+  .arrow {
+    &::before {
+      background-color: var(--cardBackgroud) !important;
+      display: block !important;
+      width: 1rem !important;
+      height: 1rem !important;
+      border: none;
+      top: -4px;
+      transform: translateY(-50%) rotate(45deg);
+      border: 0rem solid var(--greyCardBackgroud);
+      border-bottom-width: 0.1rem;
+      border-right-width: 0.1rem;
+    }
+  }
+}
+.tool-tip-container-hidden {
+  display: none !important;
+}
 @media all and (max-width: 800px) {
   .Toastify__toast {
     .Toastify__toast-body {
@@ -1822,6 +1898,13 @@ form {
   .tool-tip-container {
     .arrow::before {
       top: -1px;
+    }
+  }
+  .Toastify__toast {
+    .Toastify__toast-body {
+      &::after {
+        margin-left: 10px;
+      }
     }
   }
 }
@@ -2822,6 +2905,9 @@ input {
   background-color: var(--cardBackground);
   color: var(--primaryTextColor);
 }
+.overlay-tool-tip-container-disabled {
+  cursor: default !important;
+}
 
 .main-button {
   background-color: var(--mainButtonBg) !important;
@@ -2857,10 +2943,13 @@ input {
   img {
     filter: var(--invertColor) !important;
   }
+  transition-duration: 0ms !important;
   &:hover {
     background-color: var(--mainButtonBg) !important;
     color: var(--primaryTextColor) !important;
-
+    border-color: var(--mainButtonBg) !important;
+    box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
+      0px 1rem 1rem rgba(0, 0, 0, 0.04) !important;
     div {
       color: var(--primaryTextColor) !important;
     }
@@ -3466,7 +3555,10 @@ input {
     filter: var(--hoverBrightnessValue);
   }
 }
-
+.buttonAttachedImageCutomBtn {
+  margin-left: 1rem;
+  transition-duration: 0ms;
+}
 .overflow-table-header-visible {
   .ReactVirtualized__Table__headerRow {
     overflow: visible !important;
@@ -3658,7 +3750,54 @@ input {
     display: block;
   }
 }
+.blurred-elements {
+  cursor: pointer;
+  filter: blur(4px);
+  opacity: 0.7;
+  padding: 0.2rem 0rem;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+.bar-graph-section-y-axis {
+  filter: blur(5px);
+  cursor: pointer;
+}
+.bar-graph-section-blurred {
+  .chartArea {
+    canvas {
+      filter: blur(5px) !important;
+      cursor: pointer !important;
+    }
+  }
+}
 
+.basicConfirmModalMobile {
+  .modal-content {
+    width: 90vw !important;
+    min-width: 90vw !important;
+    .modal-body {
+      padding: 3rem !important;
+      .leave-modal-btn-section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1rem;
+        .secondary-btn {
+          margin-right: 0rem !important;
+        }
+      }
+    }
+  }
+}
+.addCopyTradeInput {
+  &::placeholder {
+    color: var(--inputPlaceHolder) !important;
+  }
+}
+.zeroOpacity {
+  opacity: 0;
+}
 .blurredElement {
   background-color: var(--outOfFocusBody);
   position: fixed;
@@ -3666,7 +3805,17 @@ input {
   top: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1000;
+  z-index: 100000;
+}
+.blurredElementMobile {
+  margin-top: 5.5rem;
+}
+.blurredElementTopShadow {
+  height: 0.3rem;
+  width: 100%;
+  background-color: var(--mobileSearchInputShadow);
+  filter: blur(0.4rem);
+  transform: translateY(0.18rem);
 }
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
@@ -3674,4 +3823,43 @@ input[type="number"]::-webkit-outer-spin-button {
   -moz-appearance: none;
   appearance: none;
   margin: 0;
+}
+.custom-toast-msg {
+  display: flex !important;
+  flex-direction: column;
+}
+.onTop {
+  z-index: 1100;
+}
+.new-auth-content-input--otp-pills-holder {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+
+  .new-auth-content-input--otp-pills {
+    box-shadow: 0px 18px 88px -4px rgba(0, 0, 0, 0.2),
+      0px 8px 28px -6px rgba(0, 0, 0, 0.2) !important;
+    width: 52px;
+    height: 60px;
+    border-radius: 8px;
+    border: 1px solid var(--borderwhiteDarkLight);
+    text-align: center;
+    outline: none;
+
+    &:hover {
+      border: 1px solid var(--primaryTextColor);
+    }
+
+    &:focus {
+      outline: none;
+      border: 1px solid var(--primaryTextColor);
+      background: rgba(215, 215, 215, 0.197);
+    }
+  }
+
+  .new-auth-content-input--otp-pills-mobile {
+    height: 52px;
+    width: 43px;
+  }
 }

@@ -30,7 +30,15 @@ import { toast } from "react-toastify";
 import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions.js";
+import {
+  dontOpenLoginPopup,
+  isPremiumUser,
+  mobileCheck,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
+  scrollToTop,
+} from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -43,11 +51,14 @@ import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import GasFeesMobile from "./GasFeesMobile.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class GasFeesPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
+      isLochPaymentModal: false,
       selectedActiveBadgeLocal: [],
       graphfeeValueLocal: [],
       graphfeeDataLocal: {},
@@ -83,8 +94,8 @@ class GasFeesPage extends Component {
       GraphDigit: 3,
 
       // add new wallet
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -130,6 +141,9 @@ class GasFeesPage extends Component {
     );
   };
   setBlockChainFeesExportModal = () => {
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.localStorage.setItem("blurredGasFeesExportModal", true);
     CostBlockchainFeesExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -178,8 +192,68 @@ class GasFeesPage extends Component {
       this.checkForInactivity();
     }, 900000);
   };
+  goToPayModal = () => {
+    if (this.state.isPremiumUser) {
+      return null;
+    }
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.localStorage.setItem("blurredGasFeesSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.localStorage.setItem("openGasFeesModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
+  checkPremium = () => {
+    if (isPremiumUser()) {
+      this.setState({
+        isPremiumUser: true,
+      });
+    } else {
+      this.setState({
+        isPremiumUser: false,
+      });
+    }
+  };
   componentDidMount() {
+    this.checkPremium();
     scrollToTop();
+    // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    // if (userDetails && userDetails.email) {
+    //   const shouldOpenNoficationModal =
+    //     window.localStorage.getItem("openGasFeesModal");
+    //   const isOpenForSearch = window.localStorage.getItem(
+    //     "openSearchbarPaymentModal"
+    //   );
+    //   if (shouldOpenNoficationModal && !isOpenForSearch) {
+    //     setTimeout(() => {
+    //       removeOpenModalAfterLogin();
+    //       this.setState({
+    //         isLochPaymentModal: true,
+    //       });
+    //     }, 1000);
+    //   }
+    // }
     if (this.props.intelligenceState.graphfeeValue) {
       this.setState({
         graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,
@@ -241,6 +315,7 @@ class GasFeesPage extends Component {
       prevProps.intelligenceState.graphfeeValue !==
       this.props.intelligenceState.graphfeeValue
     ) {
+      this.checkPremium();
       this.setState({
         graphfeeValueLocal: this.props.intelligenceState.graphfeeValue,
       });
@@ -249,6 +324,7 @@ class GasFeesPage extends Component {
       prevProps.intelligenceState.GraphfeeData !==
       this.props.intelligenceState.GraphfeeData
     ) {
+      this.checkPremium();
       this.setState({
         graphfeeDataLocal: this.props.intelligenceState.GraphfeeData,
       });
@@ -259,6 +335,7 @@ class GasFeesPage extends Component {
       prevState.apiResponse !== this.state.apiResponse ||
       !this.props.commonState.gasFeesPage
     ) {
+      this.checkPremium();
       this.props.updateWalletListFlag("gasFeesPage", true);
       this.props.getAllCoins();
       this.getBlockchainFee(0);
@@ -366,16 +443,16 @@ class GasFeesPage extends Component {
 
   updateTimer = (first) => {
     const tempExistingExpiryTime =
-      window.sessionStorage.getItem("costPageExpiryTime");
+      window.localStorage.getItem("costPageExpiryTime");
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("costPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("costPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkCostTimer);
-    window.sessionStorage.removeItem("costPageExpiryTime");
+    window.localStorage.removeItem("costPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -387,13 +464,13 @@ class GasFeesPage extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -504,7 +581,7 @@ class GasFeesPage extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -524,12 +601,27 @@ class GasFeesPage extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           showpath
           currentPage={"gas-fees"}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/gas-fees"}
+              title="Understand Gas Fees with Loch"
+              description="Unlimited wallets gas costs"
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <GasFeesMobile
+            goToPayModal={this.goToPayModal}
+            isPremiumUser={this.state.isPremiumUser}
             counterGraphDigit={this.state.GraphDigit}
             counterPartyValueLocal={this.state.graphfeeValueLocal}
             counterGraphLoading={this.state.gasFeesGraphLoading}
@@ -555,6 +647,7 @@ class GasFeesPage extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}
@@ -572,6 +665,16 @@ class GasFeesPage extends Component {
           </div>
         </div>
         <div className="cost-page-section">
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/gas-fees"}
+              title="Understand Gas Fees with Loch"
+              description="Unlimited wallets gas costs"
+              hideBackBtn
+            />
+          ) : null}
           {this.state.connectModal ? (
             <ConnectModal
               show={this.state.connectModal}
@@ -644,6 +747,9 @@ class GasFeesPage extends Component {
               id="gasfeesspent"
             >
               <BarGraphSection
+                showPremiumHover={!this.state.isPremiumUser}
+                goToPayModal={this.goToPayModal}
+                isBlurred={!this.state.isPremiumUser}
                 data={
                   this.state.graphfeeValueLocal &&
                   this.state.graphfeeValueLocal[0]

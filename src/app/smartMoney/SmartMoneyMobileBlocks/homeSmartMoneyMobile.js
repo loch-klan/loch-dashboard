@@ -1,22 +1,20 @@
-import { connect } from "react-redux";
-import { BaseReactComponent } from "../../../utils/form";
-import Loading from "../../common/Loading";
-import SmartMoneyMobileBlock from "./smartMoneyMobileBlock";
-import SmartMoneyPagination from "../../../utils/commonComponent/SmartMoneyPagination";
-import SmartMoneyMobileModalContainer from "./smartMoneyMobileModalContainer";
-import SmartMoneyMobileSignInUp from "./smartMoneyMobileSignInUp";
-import SmartMoneyMobileAddAddressModal from "./smartMoneyMobileAddAddressModal";
-import SmartMoneyMobileHowItWorksModal from "./smartMoneyMobileHowItWorksModal";
-import SmartMoneyMobileFAQModal from "./smartMoneyMobileFAQModal";
-import SmartMoneyMobileSignOutModal from "./smartMoneyMobileSignOutModal";
 import { Image } from "react-bootstrap";
+import { connect } from "react-redux";
 import {
-  BlackManIcon,
   InfoCircleSmartMoneyIcon,
   PlusCircleSmartMoneyIcon,
   QuestionmarkCircleSmartMoneyIcon,
-  ShareProfileIcon,
 } from "../../../assets/images/icons";
+import SmartMoneyPagination from "../../../utils/commonComponent/SmartMoneyPagination";
+import { BaseReactComponent } from "../../../utils/form";
+import Loading from "../../common/Loading";
+import SmartMoneyMobileAddAddressModal from "./smartMoneyMobileAddAddressModal";
+import SmartMoneyMobileBlock from "./smartMoneyMobileBlock";
+import SmartMoneyMobileFAQModal from "./smartMoneyMobileFAQModal";
+import SmartMoneyMobileHowItWorksModal from "./smartMoneyMobileHowItWorksModal";
+import SmartMoneyMobileModalContainer from "./smartMoneyMobileModalContainer";
+import SmartMoneyMobileSignInUp from "./smartMoneyMobileSignInUp";
+import SmartMoneyMobileSignOutModal from "./smartMoneyMobileSignOutModal";
 
 class HomeSmartMoneyMobile extends BaseReactComponent {
   constructor(props) {
@@ -184,6 +182,9 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
                   let returns = tempReturns * tempCurrencyRate;
                   return (
                     <SmartMoneyMobileBlock
+                      hideFollow={this.props.isNoUser}
+                      isNoUser={this.props.isNoUser}
+                      goToAddress={this.props.goToAddress}
                       netWorth={netWorth}
                       netFlows={netFlows}
                       profits={profits}

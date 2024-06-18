@@ -13,22 +13,22 @@ import { toast } from "react-toastify";
 
 export default function HomeSmartMoneyHeader(props) {
   const [localLochUser, setLocalLochUser] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("lochUser"))
+    JSON.parse(window.localStorage.getItem("lochUser"))
   );
 
   useEffect(() => {
     if (!props.blurTable) {
-      setLocalLochUser(JSON.parse(window.sessionStorage.getItem("lochUser")));
+      setLocalLochUser(JSON.parse(window.localStorage.getItem("lochUser")));
     } else {
       setLocalLochUser(undefined);
     }
   }, [props.blurTable]);
 
   React.useEffect(() => {
-    let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+    let currency = JSON.parse(window.localStorage.getItem("currency"));
 
     if (!currency) {
-      window.sessionStorage.setItem(
+      window.localStorage.setItem(
         "currency",
         JSON.stringify({
           active: true,
@@ -43,7 +43,7 @@ export default function HomeSmartMoneyHeader(props) {
 
     setTimeout(() => {
       let currencyRates = JSON.parse(
-        window.sessionStorage.getItem("currencyRates")
+        window.localStorage.getItem("currencyRates")
       );
       !currencyRates && getAllCurrencyRatesApi();
     }, 1000);

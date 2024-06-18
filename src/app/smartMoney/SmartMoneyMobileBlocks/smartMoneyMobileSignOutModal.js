@@ -20,7 +20,8 @@ class smartMoneyMobileSignOutModal extends BaseReactComponent {
         <div className="msmpModalSignOutContainer">
           <div className="msmpModalSignOutBlock">
             <h6 className="inter-display-medium f-s-20 lh-24 m-b-10 text-center">
-              Are you sure you want to Sign out?
+              Are you sure you want to{" "}
+              {this.props.notSignedIn ? "Leave" : "Sign out"}?
             </h6>
             <div className="msmpModalBody">
               <div className="msmModalBtnContainer m-t-40">

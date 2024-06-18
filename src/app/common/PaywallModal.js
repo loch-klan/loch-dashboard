@@ -6,26 +6,36 @@ import {
   ChartDonutPaywallIcon,
   ChartLinePaywallIcon,
   CloseIcon,
-  CopyTradePayWallIllustrationIcon,
-  CopyTradeReviewStarIcon,
   LightBulbPaywallIcon,
   LochLogoWhiteIcon,
   NewModalBackArrowIcon,
+  PurpleCheckIcon,
 } from "../../assets/images/icons";
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import LockIcon from "../../assets/images/icons/lock-icon.svg";
-import { loadingAnimation } from "../../utils/ReusableFunctions";
+import {
+  PayModalClosed,
+  PayModalOpened,
+  PayModalPay,
+} from "../../utils/AnalyticsFunctions";
+import { getCurrentUser } from "../../utils/ManageToken";
+import {
+  loadingAnimation,
+  whichSignUpMethod,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
 import PaywallOptionsModal from "./PaywallOptionsModal";
 import "./_paywallModal.scss";
+import { createUserPayment } from "./Api";
+import { COINBASE_SECRET_KEY } from "../../utils/Constant";
 
 class PaywallModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
       isPayWallOptions: false,
-      isBtnLoading: false,
+      isCreditBtnLoading: false,
       show: props.show,
       onHide: this.props.onHide,
       userDetailsState: undefined,
@@ -83,10 +93,22 @@ class PaywallModal extends BaseReactComponent {
     };
   }
   componentDidMount() {
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.setState({
       userDetailsState: userDetails,
     });
+    if (this.props.openWithOptions) {
+      // this.goToPayWallOptions();
+    } else {
+      setTimeout(() => {
+        const path = whichSignUpMethod();
+        PayModalOpened({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          path: path,
+        });
+      }, 1000);
+    }
   }
   async createCharge() {
     const url = "https://api.commerce.coinbase.com/charges";
@@ -119,7 +141,7 @@ class PaywallModal extends BaseReactComponent {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "X-CC-Api-Key": "03c1c210-ace2-4b5e-bc66-de26a70b283e",
+        "X-CC-Api-Key": COINBASE_SECRET_KEY,
       },
       body: JSON.stringify(requestBody),
     };
@@ -145,6 +167,12 @@ class PaywallModal extends BaseReactComponent {
   };
 
   hideModal = () => {
+    const path = whichSignUpMethod();
+    PayModalClosed({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+    });
     this.state.onHide();
   };
   goToPayWallOptions = () => {
@@ -157,6 +185,34 @@ class PaywallModal extends BaseReactComponent {
       isPayWallOptions: false,
     });
   };
+
+  // Pay with string
+  payWithStripe = async () => {
+    if (this.state.isCreditBtnLoading) {
+      return;
+    }
+
+    this.setState({
+      isCreditBtnLoading: true,
+    });
+    const path = whichSignUpMethod();
+    PayModalPay({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      path: path,
+      paymentMethod: "stripe",
+    });
+    const createUserData = new URLSearchParams();
+    createUserData.append("price_id", process.env.REACT_APP_STRIPE_PRICE_ID);
+
+    this.props.createUserPayment(createUserData, this.stopCreditBtnLoading);
+  };
+  stopCreditBtnLoading = () => {
+    this.setState({
+      isCreditBtnLoading: false,
+    });
+  };
+  // Pay with string
   render() {
     return (
       <Modal
@@ -164,51 +220,75 @@ class PaywallModal extends BaseReactComponent {
         className={`exit-overlay-form pay-wall-modal ${
           this.props.isMobile ? "pay-wall-modal-mobile" : ""
         }`}
-        onHide={this.state.onHide}
+        onHide={this.hideModal}
         size="lg"
-        dialogClassName={"exit-overlay-modal"}
+        dialogClassName={`exit-overlay-modal ${
+          this.props.isMobile ? "bottom-modal" : ""
+        }`}
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
         animation={false}
         style={{
           opacity: this.state.isPayWallOptions ? 0 : 1,
-          zIndex: "10001",
         }}
       >
         {this.state.isPayWallOptions ? (
           <PaywallOptionsModal
             show={this.state.isPayWallOptions}
+            isCreditBtnLoading={this.state.isCreditBtnLoading}
             onHide={this.props.onHide}
             redirectLink={this.props.redirectLink}
             goBackToPayWall={this.goBackToPayWall}
+            payWithStripe={this.payWithStripe}
             isMobile={this.props.isMobile}
             description={this.props.description}
           />
         ) : null}
+        <div
+          style={{
+            width: this.props.isMobile ? "100%" : "",
+          }}
+          className="modal-purple-top-gradient"
+        />
         <Modal.Header>
           {this.props.isMobile ? (
-            <div className="mobile-copy-trader-popup-header">
-              {this.props.hideBackBtn ? null : (
+            <>
+              <div className="mobile-copy-trader-popup-header">
+                {this.props.hideBackBtn ? (
+                  <div
+                    className="mobile-copy-trader-popup-header-close-icon mobile-solid-close-icon"
+                    style={{
+                      opacity: 0,
+                    }}
+                  >
+                    <Image src={NewModalBackArrowIcon} />
+                  </div>
+                ) : (
+                  <div
+                    onClick={this.props.onGoBackPayModal}
+                    className="mobile-copy-trader-popup-header-close-icon mobile-solid-close-icon"
+                  >
+                    <Image src={NewModalBackArrowIcon} />
+                  </div>
+                )}
                 <div
-                  onClick={this.props.onGoBackPayModal}
-                  className="mobile-copy-trader-popup-header-close-icon"
+                  style={{
+                    transform: "translateY(0.8rem)",
+                  }}
+                  className="api-modal-header api-modal-header-mobile popup-main-icon-with-border"
                 >
-                  <Image src={NewModalBackArrowIcon} />
+                  <Image src={LochLogoWhiteIcon} className="imageDarker" />
                 </div>
-              )}
-              <h6 className="inter-display-medium f-s-20 mobile-copy-trader-popup-header-title">
-                Copy Trade with
-                <br />
-                Loch
-              </h6>
-              <div
-                onClick={this.hideModal}
-                className="mobile-copy-trader-popup-header-close-icon"
-              >
-                <Image src={CloseIcon} />
+
+                <div
+                  onClick={this.hideModal}
+                  className="mobile-copy-trader-popup-header-close-icon mobile-solid-close-icon"
+                >
+                  <Image src={CloseIcon} />
+                </div>
               </div>
-            </div>
+            </>
           ) : (
             <>
               {this.props.hideBackBtn ? null : (
@@ -237,66 +317,70 @@ class PaywallModal extends BaseReactComponent {
               <div
                 style={{
                   marginBottom: this.props.isMobile ? "2.3rem" : "3.3rem",
+                  marginTop: this.props.isMobile ? "1rem" : "",
+                  padding: this.props.isMobile ? "0.25rem" : "",
                 }}
                 className="exit-overlay-body"
               >
-                {this.props.isMobile ? null : (
-                  <>
-                    <h6 className="inter-display-medium f-s-25">
-                      {this.props.title}
-                    </h6>
-                    <p className="inter-display-medium f-s-16 ctpb-sub-text text-center">
-                      Upgrade your plan
-                    </p>
-                  </>
-                )}
+                <>
+                  <h6
+                    className={`text-center inter-display-medium ${
+                      this.props.isMobile ? "f-s-20" : "f-s-25"
+                    }`}
+                  >
+                    {this.props.isMobile ? (
+                      "Create, Track, and Protect your Onchain Fortune"
+                    ) : (
+                      <span>
+                        Create, Track, and Protect your
+                        <br />
+                        Onchain Fortune
+                      </span>
+                    )}
+                  </h6>
+                  <p
+                    className={`inter-display-medium ctpb-sub-text text-center ${
+                      this.props.isMobile ? "f-s-16" : "f-s-16"
+                    }`}
+                  >
+                    Upgrade your plan
+                  </p>
+                </>
               </div>
 
-              <div className="ctpb-banner">
-                <Image
-                  src={CopyTradePayWallIllustrationIcon}
-                  className="ctpb-banner-image"
-                />
-                <div className="ctpb-banner-text inter-display-medium f-s-20">
-                  The equivalent of a beer to{" "}
-                  <span className="ctpb-banner-text-highlited">track</span>,
-                  {this.props.isMobile ? null : <br />}
-                  <span className="ctpb-banner-text-highlited"> protect</span>,
-                  and <span className="ctpb-banner-text-highlited">create</span>{" "}
-                  your future?
-                </div>
-              </div>
               <div className="ctpb-plans-container">
-                <div className="ctpb-plan">
-                  <div className="ctpb-plan-header">
-                    <div className="inter-display-medium f-s-20">Loch</div>
-                    <div className="inter-display-medium grey-ADA f-s-20">
-                      Free
+                {this.props.isMobile ? null : (
+                  <div className="ctpb-plan">
+                    <div className="ctpb-plan-header">
+                      <div className="inter-display-medium f-s-20">Loch</div>
+                      <div className="inter-display-medium grey-ADA f-s-20">
+                        Free
+                      </div>
+                    </div>
+                    <div className="ctpb-plan-body">
+                      <div className="ctpb-plan-body-icons-container">
+                        <Image
+                          className="ctpb-plan-body-icon"
+                          src={ChartDonutPaywallIcon}
+                        />
+                        <Image
+                          className="ctpb-plan-body-icon"
+                          src={ChartLinePaywallIcon}
+                        />
+                        <Image
+                          className="ctpb-plan-body-icon"
+                          src={LightBulbPaywallIcon}
+                        />
+                      </div>
+                      <div className="inter-display-medium ctpb-plan-desc-text f-s-16">
+                        Access to all the essential Loch features
+                      </div>
+                    </div>
+                    <div className="ctpb-plan-disable-button inter-display-medium f-s-16">
+                      Current tier
                     </div>
                   </div>
-                  <div className="ctpb-plan-body">
-                    <div className="ctpb-plan-body-icons-container">
-                      <Image
-                        className="ctpb-plan-body-icon"
-                        src={ChartDonutPaywallIcon}
-                      />
-                      <Image
-                        className="ctpb-plan-body-icon"
-                        src={ChartLinePaywallIcon}
-                      />
-                      <Image
-                        className="ctpb-plan-body-icon"
-                        src={LightBulbPaywallIcon}
-                      />
-                    </div>
-                    <div className="inter-display-medium ctpb-plan-desc-text f-s-16">
-                      Access to all the limited Loch features
-                    </div>
-                  </div>
-                  <div className="ctpb-plan-disable-button inter-display-medium f-s-16">
-                    Current tier
-                  </div>
-                </div>
+                )}
                 <div className="ctpb-plan ctpb-plan-selected">
                   <div className="ctpb-plan-header">
                     <div className="ctpb-plan-header-title-container">
@@ -325,7 +409,7 @@ class PaywallModal extends BaseReactComponent {
                       />
                     </div>
                     <div className="inter-display-medium ctpb-plan-desc-text f-s-16">
-                      Access to all the limited Loch features
+                      Access to all the essential Loch features
                     </div>
                   </div>
                   <div className="ctpb-plan-plus-seperator">
@@ -334,117 +418,206 @@ class PaywallModal extends BaseReactComponent {
                     <div className="ctpb-plan-plus-seperator-stick" />
                   </div>
                   <div className="ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-purple-button">
-                    {/* <Image
-                      className="ctpb-plan-purple-button-icon"
-                      src={PurpleEyeIcon}
-                    /> */}
-                    <div className="ctpb-plan-purple-button-icon">
-                      <svg
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g clip-path="url(#clip0_10314_2925)">
-                          <path
-                            opacity="0.2"
-                            d="M12 5.25C4.5 5.25 1.5 12 1.5 12C1.5 12 4.5 18.75 12 18.75C19.5 18.75 22.5 12 22.5 12C22.5 12 19.5 5.25 12 5.25ZM12 15.75C11.2583 15.75 10.5333 15.5301 9.91661 15.118C9.29993 14.706 8.81928 14.1203 8.53545 13.4351C8.25162 12.7498 8.17736 11.9958 8.32205 11.2684C8.46675 10.541 8.8239 9.8728 9.34835 9.34835C9.8728 8.8239 10.541 8.46675 11.2684 8.32205C11.9958 8.17736 12.7498 8.25162 13.4351 8.53545C14.1203 8.81928 14.706 9.29993 15.118 9.91661C15.5301 10.5333 15.75 11.2583 15.75 12C15.75 12.9946 15.3549 13.9484 14.6517 14.6517C13.9484 15.3549 12.9946 15.75 12 15.75Z"
-                            fill="var(--purpleHighlight)"
-                          />
-                          <path
-                            d="M12 5.25C4.5 5.25 1.5 12 1.5 12C1.5 12 4.5 18.75 12 18.75C19.5 18.75 22.5 12 22.5 12C22.5 12 19.5 5.25 12 5.25Z"
-                            stroke="var(--purpleHighlight)"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M12 15.75C14.0711 15.75 15.75 14.0711 15.75 12C15.75 9.92893 14.0711 8.25 12 8.25C9.92893 8.25 8.25 9.92893 8.25 12C8.25 14.0711 9.92893 15.75 12 15.75Z"
-                            stroke="var(--purpleHighlight)"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_10314_2925">
-                            <rect width="24" height="24" fill="white" />
-                          </clipPath>
-                        </defs>
-                      </svg>
+                    {/* <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                        paddingTop: "0rem",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Notifications
+                    </div> */}
+                    <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      PnL calculations
                     </div>
-                    {this.props.description}
+                    <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Netflows
+                    </div>
+                    <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Copy trader
+                    </div>
+                    <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Export data
+                    </div>
+                    <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Earn 10 points each month
+                    </div>
+                    <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Aggregate multiple wallets
+                    </div>
+
+                    <div
+                      style={{
+                        padding: this.props.isMobile ? "0.25rem" : "",
+                      }}
+                      className="ctpb-plan-purple-button-child"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      Apply to join Platinum Telegram
+                    </div>
+                    <div
+                      style={{
+                        marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                      }}
+                      className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      <div className="ctpb-plan-purple-button-bullet" />
+
+                      <span>Over $400m liquid onchain AUM</span>
+                    </div>
+                    <div
+                      style={{
+                        marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                      }}
+                      className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      <div className="ctpb-plan-purple-button-bullet" />
+
+                      <span>Over 500k twitter followers</span>
+                    </div>
+                    <div
+                      style={{
+                        marginTop: this.props.isMobile ? "0rem" : "0.5rem",
+                      }}
+                      className="ctpb-plan-purple-button-child ctpb-plan-purple-button-child-extra-text"
+                    >
+                      <Image
+                        className="ctpb-plan-purple-button-icon"
+                        src={PurpleCheckIcon}
+                      />
+                      <div className="ctpb-plan-purple-button-bullet" />
+
+                      <span>Daily trade ideas</span>
+                    </div>
                   </div>
                   <div
                     onClick={this.goToPayWallOptions}
+                    // onClick={this.payWithStripe}
                     className={`ctpb-plan-disable-button inter-display-medium f-s-16 ctpb-plan-button ${
-                      this.state.isBtnLoading ? "ctpb-plan-button-loading" : ""
+                      this.state.isCreditBtnLoading
+                        ? "ctpb-plan-button-loading"
+                        : ""
                     }`}
                   >
-                    {this.state.isBtnLoading ? loadingAnimation() : "Upgrade"}
+                    {this.state.isCreditBtnLoading
+                      ? loadingAnimation()
+                      : "Upgrade"}
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="ctpb-user-reviews">
-              <div className="ctpb-user-reviews-title">
-                What our users have to say
-              </div>
-              <div className="ctpb-user-reviews-scroll-container">
-                {this.state.customerData.map((data, index) => (
-                  <div
-                    style={{
-                      marginRight:
-                        index === this.state.customerData.length - 1
-                          ? "0"
-                          : "1.5rem",
-                    }}
-                    className="ctpb-user-reviews-scroll-block"
-                  >
-                    <div className="ctpb-uscb-name inter-display-medium f-s-10">
-                      {data.name}
-                    </div>
-                    <div className="ctpb-uscb-twitter inter-display-medium f-s-10">
-                      {data.twitterHandle}
-                    </div>
-                    <div className="ctpb-uscb-rating">
-                      {[...Array(data.rating)].map((e, i) => (
-                        <Image
-                          key={i}
-                          src={CopyTradeReviewStarIcon}
-                          className="ctpb-uscb-rating-star"
-                        />
-                      ))}
-                    </div>
-                    <div className="ctpb-uscb-review inter-display-medium f-s-16">
-                      {data.review}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             <div className="ctpb-user-discalmier">
-              <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
-                Don't worry. All your information remains private and anonymous.
-                <CustomOverlay
-                  text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
-                  position="top"
-                  isIcon={true}
-                  IconImage={LockIcon}
-                  isInfo={true}
-                  className={"fix-width"}
-                >
-                  <Image
-                    src={InfoIcon}
-                    className="info-icon"
-                    onMouseEnter={this.privacymessage}
-                    style={{ cursor: "pointer" }}
-                  />
-                </CustomOverlay>
-              </p>
+              {this.props.isMobile ? (
+                <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
+                  Don't worry.{" "}
+                  <CustomOverlay
+                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                    position="top"
+                    isIcon={true}
+                    IconImage={LockIcon}
+                    isInfo={true}
+                    className={"fix-width"}
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="info-icon"
+                      onMouseEnter={this.privacymessage}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </CustomOverlay>
+                  <div>All your information remains private and anonymous.</div>
+                </p>
+              ) : (
+                <p className="inter-display-medium f-s-13 lh-16 grey-ADA">
+                  Don't worry. All your information remains private and
+                  anonymous.
+                  <CustomOverlay
+                    text="Your privacy is protected. No third party will know which wallet addresses(es) you added."
+                    position="top"
+                    isIcon={true}
+                    IconImage={LockIcon}
+                    isInfo={true}
+                    className={"fix-width"}
+                  >
+                    <Image
+                      src={InfoIcon}
+                      className="info-icon"
+                      onMouseEnter={this.privacymessage}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </CustomOverlay>
+                </p>
+              )}
             </div>
           </div>
         </Modal.Body>
@@ -456,7 +629,7 @@ class PaywallModal extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   OnboardingState: state.OnboardingState,
 });
-const mapDispatchToProps = {};
+const mapDispatchToProps = { createUserPayment };
 
 PaywallModal.propTypes = {};
 

@@ -122,6 +122,7 @@ class NewWelcome extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
       //Sign up referral
       isReferralCodeStep: false,
       referralCode: "",
@@ -133,7 +134,7 @@ class NewWelcome extends BaseReactComponent {
       isPrevAddressNew: true,
       confirmLeave: false,
       currentMetamaskWallet: {},
-      lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      lochUser: JSON.parse(window.localStorage.getItem("lochUser")),
       startTime: "",
       isDarkMode:
         document.querySelector("body").getAttribute("data-theme") &&
@@ -158,133 +159,133 @@ class NewWelcome extends BaseReactComponent {
       onboardingExchanges: null,
       onboardingConnectExchangeModal: false,
       trendingAddresses: [
-        {
-          address: "vitalik.eth",
-          worth: 1628747.784,
-          trimmedAddress: "vitalik.eth",
-          fullData: [
-            {
-              address: "vitalik.eth",
-              apiAddress: "vitalik.eth",
-              coinFound: [
-                {
-                  chain_detected: true,
-                  coinCode: "ETH",
-                  coinName: "Ethereum",
-                  coinSymbol: "https://media.loch.one/loch-ethereum.svg",
-                  coinColor: "#7B44DA",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "ARB",
-                  coinName: "Arbitrum",
-                  coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
-                  coinColor: "#2C374B",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "AVAX",
-                  coinName: "Avalanche",
-                  coinSymbol: "https://media.loch.one/loch-avalanche.svg",
-                  coinColor: "#E84042",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "BSC",
-                  coinName: "BSC",
-                  coinSymbol: "https://media.loch.one/loch-binance.svg",
-                  coinColor: "#F0B90B",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "CELO",
-                  coinName: "Celo",
-                  coinSymbol: "https://media.loch.one/loch-celo.svg",
-                  coinColor: "#F4CE6F",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "FTM",
-                  coinName: "Fantom",
-                  coinSymbol: "https://media.loch.one/loch-fantom.svg",
-                  coinColor: "#13B5EC",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "OP",
-                  coinName: "Optimism",
-                  coinSymbol: "https://media.loch.one/loch-optimism.svg",
-                  coinColor: "#FF0420",
-                },
-                {
-                  chain_detected: true,
-                  coinCode: "POLYGON",
-                  coinName: "Polygon",
-                  coinSymbol: "https://media.loch.one/loch-polygon.svg",
-                  coinColor: "#8247E5",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "LTC",
-                  coinName: "Litecoin",
-                  coinSymbol: "https://media.loch.one/loch-litecoin.svg",
-                  coinColor: "#345D9D",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "XLM",
-                  coinName: "Stellar",
-                  coinSymbol: "https://media.loch.one/loch-stellar.svg",
-                  coinColor: "#19191A",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "BTC",
-                  coinName: "Bitcoin",
-                  coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
-                  coinColor: "#F19938",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "SOL",
-                  coinName: "Solana",
-                  coinSymbol: "https://media.loch.one/loch-solana.svg",
-                  coinColor: "#5ADDA6",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "ADA",
-                  coinName: "Cardano",
-                  coinSymbol: "https://media.loch.one/loch-cardano.svg",
-                  coinColor: "#0033AD",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "ALGO",
-                  coinName: "Algorand",
-                  coinSymbol: "https://media.loch.one/loch-algorand.svg",
-                  coinColor: "#19191A",
-                },
-                {
-                  chain_detected: false,
-                  coinCode: "TRX",
-                  coinName: "Tron",
-                  coinSymbol: "https://media.loch.one/loch-tron.svg",
-                  coinColor: "#FF060A",
-                },
-              ],
-              displayAddress: "",
-              id: "wallet1",
-              loadingNameTag: false,
-              nameTag: "",
-              nickname: "",
-              showAddress: true,
-              showNameTag: false,
-              showNickname: false,
-              wallet_metadata: {},
-            },
-          ],
-        },
+        // {
+        //   address: "vitalik.eth",
+        //   worth: 1628747.784,
+        //   trimmedAddress: "vitalik.eth",
+        //   fullData: [
+        //     {
+        //       address: "vitalik.eth",
+        //       apiAddress: "vitalik.eth",
+        //       coinFound: [
+        //         {
+        //           chain_detected: true,
+        //           coinCode: "ETH",
+        //           coinName: "Ethereum",
+        //           coinSymbol: "https://media.loch.one/loch-ethereum.svg",
+        //           coinColor: "#7B44DA",
+        //         },
+        //         {
+        //           chain_detected: true,
+        //           coinCode: "ARB",
+        //           coinName: "Arbitrum",
+        //           coinSymbol: "https://media.loch.one/loch-arbitrum.svg",
+        //           coinColor: "#2C374B",
+        //         },
+        //         {
+        //           chain_detected: true,
+        //           coinCode: "AVAX",
+        //           coinName: "Avalanche",
+        //           coinSymbol: "https://media.loch.one/loch-avalanche.svg",
+        //           coinColor: "#E84042",
+        //         },
+        //         {
+        //           chain_detected: true,
+        //           coinCode: "BSC",
+        //           coinName: "BSC",
+        //           coinSymbol: "https://media.loch.one/loch-binance.svg",
+        //           coinColor: "#F0B90B",
+        //         },
+        //         {
+        //           chain_detected: true,
+        //           coinCode: "CELO",
+        //           coinName: "Celo",
+        //           coinSymbol: "https://media.loch.one/loch-celo.svg",
+        //           coinColor: "#F4CE6F",
+        //         },
+        //         {
+        //           chain_detected: true,
+        //           coinCode: "FTM",
+        //           coinName: "Fantom",
+        //           coinSymbol: "https://media.loch.one/loch-fantom.svg",
+        //           coinColor: "#13B5EC",
+        //         },
+        //         {
+        //           chain_detected: true,
+        //           coinCode: "OP",
+        //           coinName: "Optimism",
+        //           coinSymbol: "https://media.loch.one/loch-optimism.svg",
+        //           coinColor: "#FF0420",
+        //         },
+        //         {
+        //           chain_detected: true,
+        //           coinCode: "POLYGON",
+        //           coinName: "Polygon",
+        //           coinSymbol: "https://media.loch.one/loch-polygon.svg",
+        //           coinColor: "#8247E5",
+        //         },
+        //         {
+        //           chain_detected: false,
+        //           coinCode: "LTC",
+        //           coinName: "Litecoin",
+        //           coinSymbol: "https://media.loch.one/loch-litecoin.svg",
+        //           coinColor: "#345D9D",
+        //         },
+        //         {
+        //           chain_detected: false,
+        //           coinCode: "XLM",
+        //           coinName: "Stellar",
+        //           coinSymbol: "https://media.loch.one/loch-stellar.svg",
+        //           coinColor: "#19191A",
+        //         },
+        //         {
+        //           chain_detected: false,
+        //           coinCode: "BTC",
+        //           coinName: "Bitcoin",
+        //           coinSymbol: "https://media.loch.one/loch-bitcoin.svg",
+        //           coinColor: "#F19938",
+        //         },
+        //         {
+        //           chain_detected: false,
+        //           coinCode: "SOL",
+        //           coinName: "Solana",
+        //           coinSymbol: "https://media.loch.one/loch-solana.svg",
+        //           coinColor: "#5ADDA6",
+        //         },
+        //         {
+        //           chain_detected: false,
+        //           coinCode: "ADA",
+        //           coinName: "Cardano",
+        //           coinSymbol: "https://media.loch.one/loch-cardano.svg",
+        //           coinColor: "#0033AD",
+        //         },
+        //         {
+        //           chain_detected: false,
+        //           coinCode: "ALGO",
+        //           coinName: "Algorand",
+        //           coinSymbol: "https://media.loch.one/loch-algorand.svg",
+        //           coinColor: "#19191A",
+        //         },
+        //         {
+        //           chain_detected: false,
+        //           coinCode: "TRX",
+        //           coinName: "Tron",
+        //           coinSymbol: "https://media.loch.one/loch-tron.svg",
+        //           coinColor: "#FF060A",
+        //         },
+        //       ],
+        //       displayAddress: "",
+        //       id: "wallet1",
+        //       loadingNameTag: false,
+        //       nameTag: "",
+        //       nickname: "",
+        //       showAddress: true,
+        //       showNameTag: false,
+        //       showNickname: false,
+        //       wallet_metadata: {},
+        //     },
+        //   ],
+        // },
         {
           address: "0x26fCbD3AFEbbE28D0A8684F790C48368D21665b5",
           worth: 17723868.951,
@@ -666,9 +667,202 @@ class NewWelcome extends BaseReactComponent {
             },
           ],
         },
+        {
+          address: "0x6555e1cc97d3cba6eaddebbcd7ca51d75771e0b8",
+          worth: 13063071.304580584,
+          trimmedAddress: "0x655...0b8",
+          fullData: [
+            {
+              address: "0x6555e1cc97d3cba6eaddebbcd7ca51d75771e0b8",
+              apiAddress: "0x6555e1cc97d3cba6eaddebbcd7ca51d75771e0b8",
+              coinFound: [
+                {
+                  chain: {
+                    active: true,
+                    code: "ETH",
+                    color: "#7B44DA",
+                    created_on: "2022-09-27 20:01:48.928000+00:00",
+                    default_asset_code: "ETH",
+                    default_asset_id: "ethereum",
+                    id: "633356acb6afee98bcd4436b",
+                    is_evm: true,
+                    modified_on: "2022-12-19 12:35:33.439000+00:00",
+                    name: "Ethereum",
+                    parent: null,
+                    platform_code: "ETH",
+                    platform_id: "ethereum",
+                    symbol: "https://media.loch.one/loch-ethereum.svg",
+                  },
+                  value: 89730.52363307549,
+                },
+                {
+                  chain: {
+                    active: true,
+                    code: "OP",
+                    color: "#FF0420",
+                    created_on: "2022-09-27 20:01:48.937000+00:00",
+                    default_asset_code: "OP",
+                    default_asset_id: "optimism",
+                    id: "633356acb6afee98bcd44375",
+                    is_evm: true,
+                    modified_on: "2022-12-19 12:35:33.477000+00:00",
+                    name: "Optimism",
+                    parent: "633356acb6afee98bcd4436b",
+                    platform_code: "OPTIMISM",
+                    platform_id: "optimistic-ethereum",
+                    symbol: "https://media.loch.one/loch-optimism.svg",
+                  },
+                  value: 5.861565e-7,
+                },
+                {
+                  chain: {
+                    active: true,
+                    code: "ARB",
+                    color: "#2C374B",
+                    created_on: "2022-09-27 20:01:48.937000+00:00",
+                    default_asset_code: "ETH",
+                    default_asset_id: "ethereum",
+                    id: "633356acb6afee98bcd44376",
+                    is_evm: true,
+                    modified_on: "2022-12-19 12:35:33.479000+00:00",
+                    name: "Arbitrum",
+                    parent: "633356acb6afee98bcd4436b",
+                    platform_code: "ARBITRUM",
+                    platform_id: "arbitrum-one",
+                    symbol: "https://media.loch.one/loch-arbitrum.svg",
+                  },
+                  value: 0.0005861565,
+                },
+                {
+                  chain: {
+                    active: true,
+                    code: "CELO",
+                    color: "#F4CE6F",
+                    created_on: "2022-09-27 20:01:48.934000+00:00",
+                    default_asset_code: "CELO",
+                    default_asset_id: "celo",
+                    id: "633356acb6afee98bcd44372",
+                    is_evm: true,
+                    modified_on: "2022-12-19 12:35:33.461000+00:00",
+                    name: "Celo",
+                    parent: "633356acb6afee98bcd4436b",
+                    platform_code: "CELO",
+                    platform_id: "celo",
+                    symbol: "https://media.loch.one/loch-celo.svg",
+                  },
+                  value: 0,
+                },
+                {
+                  chain: {
+                    active: false,
+                    code: "AURORA",
+                    color: "#78D64B",
+                    created_on: "2022-09-27 20:01:48.940000+00:00",
+                    default_asset_code: "AUR",
+                    default_asset_id: "aurora",
+                    id: "633356acb6afee98bcd4437a",
+                    is_evm: true,
+                    modified_on: "2022-12-19 12:35:33.488000+00:00",
+                    name: "Aurora",
+                    parent: "633356acb6afee98bcd4436b",
+                    platform_code: "AURORA",
+                    platform_id: "aurora",
+                    symbol: "https://media.loch.one/loch-aurora.svg",
+                  },
+                  value: 0,
+                },
+                {
+                  chain: {
+                    active: true,
+                    code: "AVAX",
+                    color: "#E84042",
+                    created_on: "2022-09-27 20:01:48.932000+00:00",
+                    default_asset_code: "AVAX",
+                    default_asset_id: "avalanche-2",
+                    id: "633356acb6afee98bcd4436f",
+                    is_evm: true,
+                    modified_on: "2022-12-19 12:35:33.449000+00:00",
+                    name: "Avalanche",
+                    parent: "633356acb6afee98bcd4436b",
+                    platform_code: "AVALANCHE",
+                    platform_id: "avalanche",
+                    symbol: "https://media.loch.one/loch-avalanche.svg",
+                  },
+                  value: 0,
+                },
+                {
+                  chain: {
+                    active: true,
+                    code: "BSC",
+                    color: "#F0B90B",
+                    created_on: "2022-09-27 20:01:48.932000+00:00",
+                    default_asset_code: "BNB",
+                    default_asset_id: "binancecoin",
+                    id: "633356acb6afee98bcd4436e",
+                    is_evm: true,
+                    modified_on: "2022-12-19 12:35:33.447000+00:00",
+                    name: "BSC",
+                    parent: "633356acb6afee98bcd4436b",
+                    platform_code: "BSC",
+                    platform_id: "binance-smart-chain",
+                    symbol: "https://media.loch.one/loch-binance.svg",
+                  },
+                  value: 0.553348,
+                },
+                {
+                  chain: {
+                    active: true,
+                    code: "FTM",
+                    color: "#13B5EC",
+                    created_on: "2022-09-27 20:01:48.933000+00:00",
+                    default_asset_code: "FTM",
+                    default_asset_id: "fantom",
+                    id: "633356acb6afee98bcd44370",
+                    is_evm: true,
+                    modified_on: "2022-12-19 12:35:33.453000+00:00",
+                    name: "Fantom",
+                    parent: "633356acb6afee98bcd4436b",
+                    platform_code: "FANTOM",
+                    platform_id: "fantom",
+                    symbol: "https://media.loch.one/loch-fantom.svg",
+                  },
+                  value: 0.0812094,
+                },
+                {
+                  chain: {
+                    active: true,
+                    code: "POLYGON",
+                    color: "#8247E5",
+                    created_on: "2022-09-27 20:01:48.934000+00:00",
+                    default_asset_code: "MATIC",
+                    default_asset_id: "matic-network",
+                    id: "633356acb6afee98bcd44371",
+                    is_evm: true,
+                    modified_on: "2022-12-19 12:35:33.458000+00:00",
+                    name: "Polygon",
+                    parent: "633356acb6afee98bcd4436b",
+                    platform_code: "POLYGON",
+                    platform_id: "polygon-pos",
+                    symbol: "https://media.loch.one/loch-polygon.svg",
+                  },
+                  value: 0,
+                },
+              ],
+              displayAddress: "",
+              id: "wallet1",
+              loadingNameTag: false,
+              nameTag: "",
+              nickname: "",
+              showAddress: true,
+              showNameTag: false,
+              showNickname: false,
+              wallet_metadata: {},
+            },
+          ],
+        },
       ],
       addButtonVisible: false,
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       isTrendingAddresses: false,
       signInModalAnimation: true,
       signInModal: false,
@@ -1029,13 +1223,13 @@ class NewWelcome extends BaseReactComponent {
       }
     }
     if (creditIsAddress) {
-      window.sessionStorage.setItem("addAddressCreditOnce", true);
+      window.localStorage.setItem("addAddressCreditOnce", true);
       if (addWallet.length > 1) {
-        window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+        window.localStorage.setItem("addMultipleAddressCreditOnce", true);
       }
     }
     if (creditIsEns) {
-      window.sessionStorage.setItem("addEnsCreditOnce", true);
+      window.localStorage.setItem("addEnsCreditOnce", true);
     }
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
@@ -1052,9 +1246,9 @@ class NewWelcome extends BaseReactComponent {
   };
   addAdressesGo = () => {
     if (this.state.areNewAddresses) {
-      window.sessionStorage.setItem("shouldRecallApis", true);
+      window.localStorage.setItem("shouldRecallApis", true);
     } else {
-      window.sessionStorage.setItem("shouldRecallApis", false);
+      window.localStorage.setItem("shouldRecallApis", false);
     }
     let walletAddress = [];
     let addWallet = this.state.walletInput;
@@ -1124,13 +1318,13 @@ class NewWelcome extends BaseReactComponent {
       }
     }
     if (creditIsAddress) {
-      window.sessionStorage.setItem("addAddressCreditOnce", true);
+      window.localStorage.setItem("addAddressCreditOnce", true);
       if (addWallet.length > 1) {
-        window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+        window.localStorage.setItem("addMultipleAddressCreditOnce", true);
       }
     }
     if (creditIsEns) {
-      window.sessionStorage.setItem("addEnsCreditOnce", true);
+      window.localStorage.setItem("addEnsCreditOnce", true);
     }
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
@@ -1200,7 +1394,7 @@ class NewWelcome extends BaseReactComponent {
           ""
         );
       }
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
       const tempWalletAddress = [value];
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
@@ -1398,17 +1592,14 @@ class NewWelcome extends BaseReactComponent {
     }, 900000);
   };
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "mobileWelcomePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem(
-      "mobileWelcomePageExpiryTime",
-      tempExpiryTime
-    );
+    window.localStorage.setItem("mobileWelcomePageExpiryTime", tempExpiryTime);
   };
 
   onPageChange = (mobile = true) => {
@@ -1435,11 +1626,11 @@ class NewWelcome extends BaseReactComponent {
       tempWatchListata.append("remarks", "");
       tempWatchListata.append("name_tag", tagName);
       this.props.updateAddToWatchList(tempWatchListata);
-      const tempIsModalPopuRemoved = window.sessionStorage.getItem(
+      const tempIsModalPopuRemoved = window.localStorage.getItem(
         "smartMoneyMobilePopupModal"
       );
       if (!tempIsModalPopuRemoved) {
-        window.sessionStorage.setItem("smartMoneyMobilePopupModal", "true");
+        window.localStorage.setItem("smartMoneyMobilePopupModal", "true");
         this.setState({
           mobilePopupModal: true,
         });
@@ -1475,159 +1666,162 @@ class NewWelcome extends BaseReactComponent {
     });
   };
   componentDidMount() {
-    deleteAddWallet();
-    setTimeout(() => {
-      this.setState({
-        canCallConnectWalletFun: true,
-      });
-    }, 1500);
-    if (mobileCheck(true)) {
-      this.setState({
-        isMobileDevice: true,
-      });
-    }
-    scrollToTop();
-    this.props.setHeaderReducer([]);
-    this.setState({ startTime: new Date() * 1 });
-    let currencyRates = JSON.parse(
-      window.sessionStorage.getItem("currencyRates")
-    );
-    getAllCurrencyRatesApi();
-    if (getToken()) {
-      let isStopRedirect =
-        window.sessionStorage.getItem("stop_redirect") &&
-        JSON.parse(window.sessionStorage.getItem("stop_redirect"));
-      if (isStopRedirect) {
-        this.props.setPageFlagDefault();
+    this.props.history.push("/copy-trade-welcome");
+    // setTimeout(() => {
+    //   this.setState({
+    //     canCallConnectWalletFun: true,
+    //   });
+    // }, 1500);
+    // if (mobileCheck(true)) {
+    //   this.setState({
+    //     isMobileDevice: true,
+    //   });
+    // }
+    // scrollToTop();
+    // this.props.setHeaderReducer([]);
+    // this.setState({ startTime: new Date() * 1 });
+    // let currencyRates = JSON.parse(
+    //   window.localStorage.getItem("currencyRates")
+    // );
+    // getAllCurrencyRatesApi();
+    // if (getToken()) {
+    //   this.props.history.push("/home");
+    // }
+    // if (getToken()) {
+    //   let isStopRedirect =
+    //     window.localStorage.getItem("stop_redirect") &&
+    //     JSON.parse(window.localStorage.getItem("stop_redirect"));
+    //   if (isStopRedirect) {
+    //     this.props.setPageFlagDefault();
 
-        // if (!mobileCheck()) {
-        // deleteToken();
-        // }
-      } else {
-        // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
-        let user = window.sessionStorage.getItem("lochUser")
-          ? JSON.parse(window.sessionStorage.getItem("lochUser"))
-          : false;
-        if (user) {
-          // if (!mobileCheck()) {
-          // deleteToken();
-          // } else {
-          // this.props.history.push("/home");
-          // }
-        } else {
-          this.props.setPageFlagDefault();
-          // if (!mobileCheck()) {
-          // deleteToken();
-          // }
-          //  window.sessionStorage.setItem("defi_access", true);
-          //  window.sessionStorage.setItem("isPopup", true);
-          //  // window.sessionStorage.setItem("whalepodview", true);
-          //  window.sessionStorage.setItem(
-          //    "whalepodview",
-          //    JSON.stringify({ access: true, id: "" })
-          //  );
-          // window.sessionStorage.setItem(
-          //   "isSubmenu",
-          //   JSON.stringify({
-          //     me: false,
-          //     discover: false,
-          //     intelligence: false,
-          //   })
-          // );
-          setLocalStoraage();
-          let isRefresh = JSON.parse(window.sessionStorage.getItem("refresh"));
-          if (!isRefresh) {
-            window.sessionStorage.setItem("refresh", true);
-            window.location.reload(true);
-          }
-        }
-      }
-    } else {
-      this.props.setPageFlagDefault();
-      // if (!mobileCheck()) {
-      // deleteToken();
-      // }
-      // window.sessionStorage.setItem("defi_access", true);
-      // window.sessionStorage.setItem("isPopup", true);
-      // // window.sessionStorage.setItem("whalepodview", true);
-      // window.sessionStorage.setItem(
-      //   "whalepodview",
-      //   JSON.stringify({ access: true, id: "" })
-      // );
-      // // window.sessionStorage.setItem("isSubmenu", false);
-      //  window.sessionStorage.setItem(
-      //    "isSubmenu",
-      //    JSON.stringify({
-      //      me: false,
-      //      discover: false,
-      //      intelligence: false,
-      //    })
-      //  );
-      setLocalStoraage();
-      let isRefresh = JSON.parse(window.sessionStorage.getItem("refresh"));
-      if (!isRefresh) {
-        window.sessionStorage.setItem("refresh", true);
-        window.location.reload(true);
-      }
-    }
-    // For input
-    this.setState({
-      addButtonVisible: this.state.walletInput.some((wallet) =>
-        wallet.address ? true : false
-      ),
-    });
+    //     // if (!mobileCheck()) {
+    //     // deleteToken();
+    //     // }
+    //   } else {
+    //     // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
+    //     let user = window.localStorage.getItem("lochUser")
+    //       ? JSON.parse(window.localStorage.getItem("lochUser"))
+    //       : false;
+    //     if (user) {
+    //       // if (!mobileCheck()) {
+    //       // deleteToken();
+    //       // } else {
+    //       // this.props.history.push("/home");
+    //       // }
+    //     } else {
+    //       this.props.setPageFlagDefault();
+    //       // if (!mobileCheck()) {
+    //       // deleteToken();
+    //       // }
+    //       //  window.localStorage.setItem("defi_access", true);
+    //       //  window.localStorage.setItem("isPopup", true);
+    //       //  // window.localStorage.setItem("whalepodview", true);
+    //       //  window.localStorage.setItem(
+    //       //    "whalepodview",
+    //       //    JSON.stringify({ access: true, id: "" })
+    //       //  );
+    //       // window.localStorage.setItem(
+    //       //   "isSubmenu",
+    //       //   JSON.stringify({
+    //       //     me: false,
+    //       //     discover: false,
+    //       //     intelligence: false,
+    //       //   })
+    //       // );
+    //       setLocalStoraage();
+    //       let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
+    //       if (!isRefresh) {
+    //         window.localStorage.setItem("refresh", true);
+    //         window.location.reload(true);
+    //       }
+    //     }
+    //   }
+    // } else {
+    //   this.props.setPageFlagDefault();
+    //   // if (!mobileCheck()) {
+    //   // deleteToken();
+    //   // }
+    //   // window.localStorage.setItem("defi_access", true);
+    //   // window.localStorage.setItem("isPopup", true);
+    //   // // window.localStorage.setItem("whalepodview", true);
+    //   // window.localStorage.setItem(
+    //   //   "whalepodview",
+    //   //   JSON.stringify({ access: true, id: "" })
+    //   // );
+    //   // // window.localStorage.setItem("isSubmenu", false);
+    //   //  window.localStorage.setItem(
+    //   //    "isSubmenu",
+    //   //    JSON.stringify({
+    //   //      me: false,
+    //   //      discover: false,
+    //   //      intelligence: false,
+    //   //    })
+    //   //  );
+    //   setLocalStoraage();
+    //   let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
+    //   if (!isRefresh) {
+    //     window.localStorage.setItem("refresh", true);
+    //     window.location.reload(true);
+    //   }
+    // }
+    // // For input
+    // this.setState({
+    //   addButtonVisible: this.state.walletInput.some((wallet) =>
+    //     wallet.address ? true : false
+    //   ),
+    // });
 
-    this.props.getAllCoins();
-    this.props.getAllParentChains();
-    this.setState({
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
-    });
+    // this.props.getAllCoins();
+    // this.props.getAllParentChains();
+    // this.setState({
+    //   userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
+    // });
 
-    this.props.GetAllPlan();
+    // this.props.GetAllPlan();
 
-    // For smart money
+    // // For smart money
 
-    let token = window.sessionStorage.getItem("lochToken");
-    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    // let token = window.localStorage.getItem("lochToken");
+    // let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
 
-    if (token && lochUser && lochUser.email) {
-      this.setState({
-        blurTable: false,
-      });
-    } else {
-      this.setState({
-        blurTable: true,
-      });
-    }
+    // if (token && lochUser && lochUser.email) {
+    //   this.setState({
+    //     blurTable: false,
+    //   });
+    // } else {
+    //   this.setState({
+    //     blurTable: true,
+    //   });
+    // }
 
-    if (API_LIMIT) {
-      if (mobileCheck()) {
-        this.setState({
-          pageLimit: 5,
-        });
-      } else {
-        this.setState({
-          pageLimit: API_LIMIT,
-        });
-      }
-    }
-    // window.sessionStorage.setItem("previewAddress", "");
-    this.props.history.replace({
-      search: `?p=${this.state.currentPage || START_INDEX}`,
-    });
-    this.callApi(this.state.currentPage || START_INDEX);
+    // if (API_LIMIT) {
+    //   if (mobileCheck()) {
+    //     this.setState({
+    //       pageLimit: 5,
+    //     });
+    //   } else {
+    //     this.setState({
+    //       pageLimit: API_LIMIT,
+    //     });
+    //   }
+    // }
+    // // window.localStorage.setItem("previewAddress", "");
+    // this.props.history.replace({
+    //   search: `?p=${this.state.currentPage || START_INDEX}`,
+    // });
+    // this.callApi(this.state.currentPage || START_INDEX);
+
+    // // this.startPageView();
 
     // this.startPageView();
-
-    this.startPageView();
-    this.updateTimer(true);
-    return () => {
-      clearInterval(window.checkMobileWelcomeTimer);
-    };
+    // this.updateTimer(true);
+    // return () => {
+    //   clearInterval(window.checkMobileWelcomeTimer);
+    // };
   }
 
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "mobileWelcomePageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -1637,7 +1831,7 @@ class NewWelcome extends BaseReactComponent {
 
   endPageView = () => {
     clearInterval(window.checkMobileWelcomeTimer);
-    window.sessionStorage.removeItem("mobileWelcomePageExpiryTime");
+    window.localStorage.removeItem("mobileWelcomePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -1654,7 +1848,7 @@ class NewWelcome extends BaseReactComponent {
   };
 
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "mobileWelcomePageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -1663,8 +1857,8 @@ class NewWelcome extends BaseReactComponent {
   }
 
   checkUser = () => {
-    let token = window.sessionStorage.getItem("lochToken");
-    let lochUser = JSON?.parse(window.sessionStorage.getItem("lochUser"));
+    let token = window.localStorage.getItem("lochToken");
+    let lochUser = JSON?.parse(window.localStorage.getItem("lochUser"));
     if (token && lochUser && lochUser?.email) {
       return true;
     } else {
@@ -1675,7 +1869,10 @@ class NewWelcome extends BaseReactComponent {
   handleSubmitEmail = (val = false) => {
     if (this.state.email) {
       const data = new URLSearchParams();
-      data.append("email", this.state.email.toLowerCase());
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       EmailAddressAdded({ email_address: this.state.email, session_id: "" });
       signIn(this, data, true, val);
       // this.toggleAuthModal('verify');
@@ -1685,7 +1882,10 @@ class NewWelcome extends BaseReactComponent {
   handleSubmitEmailSignup = () => {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
-      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append(
+        "email",
+        this.state.email ? this.state.email.toLowerCase() : ""
+      );
       data.append("signed_up_from", "welcome");
       data.append("referral_code", this.state.referralCode);
       EmailAddressAddedSignUp({
@@ -1751,7 +1951,7 @@ class NewWelcome extends BaseReactComponent {
     // try {
     //   const tempRes = await provider.send("eth_requestAccounts", []);
     //   if (tempRes && tempRes.length > 0) {
-    //     window.sessionStorage.setItem("connectWalletCreditOnce", true);
+    //     window.localStorage.setItem("connectWalletCreditOnce", true);
     //     this.addToList(tempRes);
     //   }
     // } catch (error) {
@@ -1786,7 +1986,7 @@ class NewWelcome extends BaseReactComponent {
   getCoinBasedOnLocalWallet = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
       const tempWalletAddress = [];
       this.state.walletInput.forEach((e) => {
         if (e.id === name) {
@@ -1871,7 +2071,7 @@ class NewWelcome extends BaseReactComponent {
     );
   };
   callUpdateApi = (passedItem) => {
-    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -1912,7 +2112,7 @@ class NewWelcome extends BaseReactComponent {
         // });
 
         this.props.setMetamaskConnectedReducer(passedItem.address);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "setMetamaskConnectedSessionStorage",
           passedItem.address
         );
@@ -1997,7 +2197,7 @@ class NewWelcome extends BaseReactComponent {
             }
           }
         }
-        window.sessionStorage.setItem("connectWalletCreditOnce", true);
+        window.localStorage.setItem("connectWalletCreditOnce", true);
         ConnectedWalletWelcome({
           session_id: getCurrentUser ? getCurrentUser()?.id : "",
           email_address: getCurrentUser ? getCurrentUser()?.email : "",
@@ -2027,9 +2227,9 @@ class NewWelcome extends BaseReactComponent {
       this.isDisabled();
     }
     if (!this.props.commonState.smart_money) {
-      let token = window.sessionStorage.getItem("lochToken");
+      let token = window.localStorage.getItem("lochToken");
       this.props.updateWalletListFlag("smart_money", true);
-      let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
       if (token && lochUser && lochUser.email) {
         this.setState({
           blurTable: false,
@@ -2062,9 +2262,9 @@ class NewWelcome extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-    if (!this.state.currency && window.sessionStorage.getItem("currency")) {
+    if (!this.state.currency && window.localStorage.getItem("currency")) {
       this.setState({
-        currency: JSON.parse(window.sessionStorage.getItem("currency")),
+        currency: JSON.parse(window.localStorage.getItem("currency")),
       });
     }
     if (
@@ -3098,7 +3298,8 @@ class NewWelcome extends BaseReactComponent {
                   </div>
                 ) : null}
                 <div className="newHomeAddAnotherGoContainer inter-display-regular">
-                  {this.state.walletInput.length < 10 ? (
+                  {this.state.walletInput.length < 10 &&
+                  this.state.isPremiumUser ? (
                     <button
                       onClick={() => {
                         this.addInputField();

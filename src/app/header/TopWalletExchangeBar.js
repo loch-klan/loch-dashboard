@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import arrowUp from "../../assets/images/arrow-up.svg";
 import {
   EyeIcon,
+  LoaderIcon,
   SearchHistoryClockIcon,
   SearchHistoryDeleteIcon,
   TopBarSearchIcon,
@@ -25,17 +26,33 @@ import {
   SearchBarAddressAdded,
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
+import { ARCX_API_KEY, BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   CurrencyType,
   TruncateText,
+  dontOpenLoginPopup,
+  isPremiumUser,
+  loadingAnimation,
   numToCurrency,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
 } from "../../utils/ReusableFunctions";
 import { CustomCoin } from "../../utils/commonComponent";
 import { isFollowedByUser, isNewAddress } from "../Portfolio/Api";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
-import { detectNameTag, updateUserWalletApi } from "../common/Api";
-import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
+import {
+  detectNameTag,
+  setPageFlagDefault,
+  updateUserWalletApi,
+} from "../common/Api";
+import {
+  createAnonymousUserApi,
+  detectCoin,
+  getAllCoins,
+  getAllParentChains,
+} from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api";
 import {
   addAddressToWatchList,
@@ -46,10 +63,13 @@ import {
   setIsWalletConnectedReducer,
   setMetamaskConnectedReducer,
 } from "./HeaderAction";
+import { PaywallModal } from "../common";
 class TopWalletExchangeBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      welcomeAddBtnLoading: false,
+      isLochPaymentModal: false,
       canCallConnectWalletFun: false,
       showAmountsAtTop: false,
       topBarHistoryItems: [],
@@ -92,7 +112,7 @@ class TopWalletExchangeBar extends Component {
     };
   }
   showFollowOrNot = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson && listJson.length > 0) {
       if (listJson.length === 1) {
         this.isFollowedByUserFun();
@@ -109,7 +129,7 @@ class TopWalletExchangeBar extends Component {
     }
   };
   isFollowedByUserFun = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -135,7 +155,7 @@ class TopWalletExchangeBar extends Component {
       this.props.updateOnFollow();
     }
     this.setState({ isFollowingAddress: true });
-    window.sessionStorage.setItem("isFollowingAddress", true);
+    window.localStorage.setItem("isFollowingAddress", true);
     if (openModal) {
       this.afterAddressFollowed(passedAddress);
     }
@@ -158,7 +178,7 @@ class TopWalletExchangeBar extends Component {
       this.props.updateOnFollow();
     }
     this.setState({ isFollowingAddress: false });
-    window.sessionStorage.setItem("isFollowingAddress", false);
+    window.localStorage.setItem("isFollowingAddress", false);
   };
   toggleMobileWalletList = () => {
     this.setState({
@@ -166,7 +186,7 @@ class TopWalletExchangeBar extends Component {
     });
   };
   addAddressToWatchListFun = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -230,7 +250,11 @@ class TopWalletExchangeBar extends Component {
       this.state.walletInput[0].coins.length > 0 &&
       !this.state.disableAddBtn
     ) {
-      this.handleAddWallet(true);
+      if (this.props.isAddNewAddress) {
+        this.handleAddWelcomeWallet();
+      } else {
+        this.handleAddWallet(true);
+      }
     }
   };
   seeTheTopBarHistoryItems = () => {
@@ -261,6 +285,20 @@ class TopWalletExchangeBar extends Component {
     });
   };
   componentDidMount() {
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.localStorage.getItem(
+        "openSearchbarPaymentModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     setTimeout(() => {
       this.setState({
         canCallConnectWalletFun: true,
@@ -287,7 +325,7 @@ class TopWalletExchangeBar extends Component {
       }
     }
 
-    const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+    const whatIsIt = window.localStorage.getItem("isFollowingAddress");
 
     if (whatIsIt === "true") {
       this.setState({
@@ -313,7 +351,7 @@ class TopWalletExchangeBar extends Component {
 
     this.props.getAllCoins();
     this.props.getAllParentChains();
-    const ssItem = window.sessionStorage.getItem(
+    const ssItem = window.localStorage.getItem(
       "setMetamaskConnectedSessionStorage"
     );
     if (ssItem && ssItem !== null) {
@@ -361,7 +399,7 @@ class TopWalletExchangeBar extends Component {
     if (
       prevState.isAddressFollowedCount !== this.state.isAddressFollowedCount
     ) {
-      const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+      const whatIsIt = window.localStorage.getItem("isFollowingAddress");
 
       if (whatIsIt === "true") {
         this.setState({
@@ -380,7 +418,7 @@ class TopWalletExchangeBar extends Component {
       prevProps.MetamaskConnectedState !== this.props.MetamaskConnectedState
     ) {
       setTimeout(() => {
-        const ssItem = window.sessionStorage.getItem(
+        const ssItem = window.localStorage.getItem(
           "setMetamaskConnectedSessionStorage"
         );
         if (ssItem !== undefined && ssItem !== null) {
@@ -441,7 +479,7 @@ class TopWalletExchangeBar extends Component {
           false
         );
       }
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
       const tempWalletAddress = [value];
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
@@ -509,10 +547,10 @@ class TopWalletExchangeBar extends Component {
     });
   };
   applyLocalStorageWalletList = () => {
-    let tempWalletAdd = window.sessionStorage.getItem(
+    let tempWalletAdd = window.localStorage.getItem(
       "topBarLocalStorageWalletAddresses"
     );
-    let tempFullWalletAdd = window.sessionStorage.getItem(
+    let tempFullWalletAdd = window.localStorage.getItem(
       "topBarLocalStorageFullWalletAddresses"
     );
     if (tempWalletAdd) {
@@ -592,11 +630,11 @@ class TopWalletExchangeBar extends Component {
         tempFullWalletList.sort((a, b) => a[1] - b[1]).reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
         const tempWalletFullListLoaclPass = JSON.stringify(tempFullWalletList);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageFullWalletAddresses",
           tempWalletFullListLoaclPass
         );
@@ -672,11 +710,11 @@ class TopWalletExchangeBar extends Component {
         tempFullWalletList.sort((a, b) => a[1] - b[1]).reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
         const tempWalletFullListLoaclPass = JSON.stringify(tempFullWalletList);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageFullWalletAddresses",
           tempWalletFullListLoaclPass
         );
@@ -705,9 +743,174 @@ class TopWalletExchangeBar extends Component {
     });
     this.props.handleAddWalletClick();
   };
+  goToPayModal = () => {
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.localStorage.setItem("blurredAddMultipleAddressSignInModal", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.localStorage.setItem("openSearchbarPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
+  handleAddWelcomeWallet = () => {
+    this.setState({
+      welcomeAddBtnLoading: true,
+    });
+    window.localStorage.setItem("shouldRecallApis", true);
+
+    let walletAddress = [];
+    let addWallet = this.state.walletInput;
+    let addWalletTemp = this.state.walletInput;
+    addWalletTemp?.forEach((w, i) => {
+      w.id = `wallet${i + 1}`;
+    });
+    if (addWalletTemp && addWalletTemp.length > 0) {
+      var mySet = new Set();
+
+      const filteredAddWalletTemp = addWalletTemp.filter((filData) => {
+        if (filData?.address !== "") {
+          if (mySet.has(filData.address.toLowerCase())) {
+            return false;
+          } else {
+            mySet.add(filData.address.toLowerCase());
+            return true;
+          }
+        }
+        return false;
+      });
+      if (filteredAddWalletTemp) {
+        setTimeout(() => {
+          this.props.setHeaderReducer(filteredAddWalletTemp);
+        }, 500);
+      }
+    }
+    let finalArr = [];
+
+    let addressList = [];
+
+    let nicknameArr = {};
+
+    for (let i = 0; i < addWallet.length; i++) {
+      let curr = addWallet[i];
+      if (
+        !walletAddress.includes(curr.apiAddress?.trim()) &&
+        curr.address?.trim()
+      ) {
+        finalArr.push(curr);
+        walletAddress.push(curr.address?.trim());
+        walletAddress.push(curr.displayAddress?.trim());
+        walletAddress.push(curr.apiAddress?.trim());
+        let address = curr.address?.trim();
+        nicknameArr[address] = curr.nickname;
+        addressList.push(curr.address?.trim());
+      }
+    }
+
+    finalArr = finalArr?.map((item, index) => {
+      return {
+        ...item,
+        id: `wallet${index + 1}`,
+      };
+    });
+    let creditIsAddress = false;
+    let creditIsEns = false;
+    for (let i = 0; i < addressList.length; i++) {
+      const tempItem = addressList[i];
+      const endsWithEth = /\.eth$/i.test(tempItem);
+
+      if (endsWithEth) {
+        creditIsAddress = true;
+        creditIsEns = true;
+      } else {
+        creditIsAddress = true;
+      }
+    }
+    if (creditIsAddress) {
+      window.localStorage.setItem("addAddressCreditOnce", true);
+      if (addWallet.length > 1) {
+        window.localStorage.setItem("addMultipleAddressCreditOnce", true);
+      }
+    }
+    if (creditIsEns) {
+      window.localStorage.setItem("addEnsCreditOnce", true);
+    }
+    const data = new URLSearchParams();
+    data.append("wallet_addresses", JSON.stringify(addressList));
+    data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
+    // data.append("link", );
+    if (this.state.lochUser && this.state.lochUser.email) {
+      const yieldData = new URLSearchParams();
+      yieldData.append("wallet_addresses", JSON.stringify(addressList));
+
+      this.props.updateUserWalletApi(data, this, yieldData, false);
+    } else {
+      this.props.createAnonymousUserApi(
+        data,
+        this,
+        finalArr,
+        null,
+        this.props.goToPageAfterLogin,
+        this.props.funAfterUserCreate,
+        addressList
+      );
+    }
+
+    // const address = finalArr?.map((e) => e.address);
+
+    // const unrecog_address = finalArr
+    //   .filter((e) => !e.coinFound)
+    //   .map((e) => e.address);
+
+    // const blockchainDetected = [];
+    // const nicknames = [];
+    // finalArr
+    //   .filter((e) => e.coinFound)
+    //   .map((obj) => {
+    //     let coinName = obj.coins
+    //       .filter((e) => e.chain_detected)
+    //       .map((name) => name.coinName);
+    //     let address = obj.address;
+    //     let nickname = obj.nickname;
+    //     blockchainDetected.push({ address: address, names: coinName });
+    //     nicknames.push({ address: address, nickname: nickname });
+    //   });
+
+    // LPC_Go({
+    //   addresses: address,
+    //   ENS: address,
+    //   chains_detected_against_them: blockchainDetected,
+    //   unrecognized_addresses: unrecog_address,
+    //   unrecognized_ENS: unrecog_address,
+    //   nicknames: nicknames,
+    // });
+  };
   handleAddWallet = (replaceAddresses) => {
+    if (!replaceAddresses && !isPremiumUser()) {
+      this.goToPayModal();
+      return;
+    }
     this.hideTheTopBarHistoryItems();
-    if (this.props.isBlurred) {
+    if (this.props.isBlurred && this.props.hideFocusedInput) {
       this.props.hideFocusedInput();
     }
     if (this.state.walletInput[0]) {
@@ -722,7 +925,7 @@ class TopWalletExchangeBar extends Component {
     });
     let addWalletList = [];
     if (!replaceAddresses) {
-      addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
       if (addWalletList && addWalletList?.length > 0) {
         addWalletList = addWalletList?.map((e) => {
           return {
@@ -793,11 +996,11 @@ class TopWalletExchangeBar extends Component {
         w.id = `wallet${i + 1}`;
       }
     });
-    sessionStorage.setItem("replacedOrAddedAddress", true);
+    localStorage.setItem("replacedOrAddedAddress", true);
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     // data.append("wallet_addresses", JSON.stringify(arr));
@@ -891,8 +1094,12 @@ class TopWalletExchangeBar extends Component {
       this.props.updateTimer();
     }
   };
+  goToHomeAfterReplace = () => {
+    if (this.props.shouldGoToHomeAfterReplace) {
+      this.props.history.push("/home");
+    }
+  };
   addAddingWalletFromHistory = (resAdd) => {
-    console.log("resAdd is ", resAdd);
     let result = "";
 
     if (resAdd[1] && resAdd[1].endsWith(".eth")) {
@@ -1019,17 +1226,17 @@ class TopWalletExchangeBar extends Component {
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
-    const ssItem = window.sessionStorage.getItem(
+    const ssItem = window.localStorage.getItem(
       "setMetamaskConnectedSessionStorage"
     );
     this.removeFromList(ssItem);
     this.props.setMetamaskConnectedReducer("");
-    window.sessionStorage.setItem("setMetamaskConnectedSessionStorage", "");
+    window.localStorage.setItem("setMetamaskConnectedSessionStorage", "");
   };
   removeFromList = (removeThis) => {
     const curItem = removeThis;
 
-    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -1062,7 +1269,7 @@ class TopWalletExchangeBar extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -1212,7 +1419,7 @@ class TopWalletExchangeBar extends Component {
   getCoinBasedOnWalletAddress = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
       const tempWalletAddress = [value];
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
@@ -1262,7 +1469,7 @@ class TopWalletExchangeBar extends Component {
     }
   };
   callUpdateApi = (passedItem) => {
-    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -1302,7 +1509,7 @@ class TopWalletExchangeBar extends Component {
           address: passedItem.address,
         });
         this.props.setMetamaskConnectedReducer(passedItem.address);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "setMetamaskConnectedSessionStorage",
           passedItem.address
         );
@@ -1337,7 +1544,7 @@ class TopWalletExchangeBar extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -1425,8 +1632,7 @@ class TopWalletExchangeBar extends Component {
                   <span className="dotDotText">
                     {CurrencyType(false)}
                     {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                    {window.sessionStorage.getItem("shouldRecallApis") ===
-                    "true"
+                    {window.localStorage.getItem("shouldRecallApis") === "true"
                       ? "0.00"
                       : numToCurrency(this.getTotalAssetValue())}
                   </span>
@@ -1480,8 +1686,18 @@ class TopWalletExchangeBar extends Component {
           }}
           className={`topBarContainer ${
             this.state.walletList.length > 0 ? "topBarContainerMultiple" : ""
-          }`}
+          } ${this.props.showTopSearchBar ? "topBarContainerVisible" : ""}`}
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/"}
+              title="Aggregate Wallets with Loch"
+              description="Aggregate unlimited wallets"
+              hideBackBtn
+            />
+          ) : null}
           {this.state.topBarHistoryItems &&
           this.state.topBarHistoryItems.length > 0 &&
           this.state.showTopBarHistoryItems ? (
@@ -1652,54 +1868,94 @@ class TopWalletExchangeBar extends Component {
                   : ""
               }`}
             >
-              <div
-                ref={this.props.buttonRef}
-                className={`topbar-btn  ml-2 ${
-                  !(
-                    this.state.walletInput[0].coinFound &&
-                    this.state.walletInput[0].coins.length > 0
-                  ) || this.state.disableAddBtn
-                    ? "topbar-btn-light-disabled"
-                    : ""
-                }`}
-                id="address-button-two"
-                onClick={
-                  !(
-                    this.state.walletInput[0].coinFound &&
-                    this.state.walletInput[0].coins.length > 0
-                  ) || this.state.disableAddBtn
-                    ? null
-                    : () => {
-                        this.handleAddWallet(false);
-                      }
-                }
-              >
-                <span className="dotDotText">Add</span>
-              </div>
-              <div
-                ref={this.props.buttonRef}
-                className={`topbar-btn  ml-2 topbar-btn-dark ${
-                  !(
-                    this.state.walletInput[0].coinFound &&
-                    this.state.walletInput[0].coins.length > 0
-                  ) || this.state.disableAddBtn
-                    ? "topbar-btn-dark-disabled"
-                    : ""
-                }`}
-                id="address-button-two"
-                onClick={
-                  !(
-                    this.state.walletInput[0].coinFound &&
-                    this.state.walletInput[0].coins.length > 0
-                  ) || this.state.disableAddBtn
-                    ? null
-                    : () => {
-                        this.handleAddWallet(true);
-                      }
-                }
-              >
-                <span className="dotDotText">Replace</span>
-              </div>
+              {this.props.isAddNewAddress ? (
+                <div
+                  ref={this.props.buttonRef}
+                  className={`topbar-btn  ml-2 topbar-btn-dark ${
+                    !(
+                      this.state.walletInput[0].coinFound &&
+                      this.state.walletInput[0].coins.length > 0
+                    ) || this.state.disableAddBtn
+                      ? "topbar-btn-dark-disabled"
+                      : ""
+                  }`}
+                  id="address-button-two"
+                  onClick={
+                    !(
+                      this.state.walletInput[0].coinFound &&
+                      this.state.walletInput[0].coins.length > 0
+                    ) || this.state.disableAddBtn
+                      ? null
+                      : this.props.isAddNewAddressLoggedIn
+                      ? this.handleAddWelcomeWallet
+                      : () => {
+                          this.handleAddWallet(true);
+                        }
+                  }
+                  style={{
+                    pointerEvents: this.state.welcomeAddBtnLoading
+                      ? "none"
+                      : "",
+                  }}
+                >
+                  {this.state.welcomeAddBtnLoading ? (
+                    loadingAnimation()
+                  ) : (
+                    <span className="dotDotText">Add</span>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <div
+                    ref={this.props.buttonRef}
+                    className={`topbar-btn  ml-2 ${
+                      !(
+                        this.state.walletInput[0].coinFound &&
+                        this.state.walletInput[0].coins.length > 0
+                      ) || this.state.disableAddBtn
+                        ? "topbar-btn-light-disabled"
+                        : ""
+                    }`}
+                    id="address-button-two"
+                    onClick={
+                      !(
+                        this.state.walletInput[0].coinFound &&
+                        this.state.walletInput[0].coins.length > 0
+                      ) || this.state.disableAddBtn
+                        ? null
+                        : () => {
+                            this.handleAddWallet(false);
+                          }
+                    }
+                  >
+                    <span className="dotDotText">Add</span>
+                  </div>
+                  <div
+                    ref={this.props.buttonRef}
+                    className={`topbar-btn  ml-2 topbar-btn-dark ${
+                      !(
+                        this.state.walletInput[0].coinFound &&
+                        this.state.walletInput[0].coins.length > 0
+                      ) || this.state.disableAddBtn
+                        ? "topbar-btn-dark-disabled"
+                        : ""
+                    }`}
+                    id="address-button-two"
+                    onClick={
+                      !(
+                        this.state.walletInput[0].coinFound &&
+                        this.state.walletInput[0].coins.length > 0
+                      ) || this.state.disableAddBtn
+                        ? null
+                        : () => {
+                            this.handleAddWallet(true);
+                          }
+                    }
+                  >
+                    <span className="dotDotText">Replace</span>
+                  </div>
+                </>
+              )}
             </div>
           ) : (
             <div
@@ -1829,6 +2085,8 @@ const mapDispatchToProps = {
   addUserCredits,
   detectNameTag,
   isNewAddress,
+  createAnonymousUserApi,
+  setPageFlagDefault,
 };
 
 export default connect(

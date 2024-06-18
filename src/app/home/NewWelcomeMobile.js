@@ -99,6 +99,7 @@ class NewWelcomeMobile extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isPremiumUser: false,
       //Sign up referral
       isReferralCodeStep: false,
       referralCode: "",
@@ -109,7 +110,7 @@ class NewWelcomeMobile extends BaseReactComponent {
       isPrevAddressNew: true,
       confirmLeave: false,
       currentMetamaskWallet: {},
-      lochUser: JSON.parse(window.sessionStorage.getItem("lochUser")),
+      lochUser: JSON.parse(window.localStorage.getItem("lochUser")),
       onboardingWalletAddress: [
         {
           id: `wallet1`,
@@ -128,7 +129,7 @@ class NewWelcomeMobile extends BaseReactComponent {
       onboardingExchanges: null,
       onboardingConnectExchangeModal: false,
       addButtonVisible: false,
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       isTrendingAddresses: false,
       signInModalAnimation: true,
       signInModal: false,
@@ -427,13 +428,13 @@ class NewWelcomeMobile extends BaseReactComponent {
       }
     }
     if (creditIsAddress) {
-      window.sessionStorage.setItem("addAddressCreditOnce", true);
+      window.localStorage.setItem("addAddressCreditOnce", true);
       if (addWallet.length > 1) {
-        window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+        window.localStorage.setItem("addMultipleAddressCreditOnce", true);
       }
     }
     if (creditIsEns) {
-      window.sessionStorage.setItem("addEnsCreditOnce", true);
+      window.localStorage.setItem("addEnsCreditOnce", true);
     }
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
@@ -450,9 +451,9 @@ class NewWelcomeMobile extends BaseReactComponent {
   };
   addAdressesGo = () => {
     if (this.state.areNewAddresses) {
-      window.sessionStorage.setItem("shouldRecallApis", true);
+      window.localStorage.setItem("shouldRecallApis", true);
     } else {
-      window.sessionStorage.setItem("shouldRecallApis", false);
+      window.localStorage.setItem("shouldRecallApis", false);
     }
     let walletAddress = [];
     let addWallet = this.state.walletInput;
@@ -522,13 +523,13 @@ class NewWelcomeMobile extends BaseReactComponent {
       }
     }
     if (creditIsAddress) {
-      window.sessionStorage.setItem("addAddressCreditOnce", true);
+      window.localStorage.setItem("addAddressCreditOnce", true);
       if (addWallet.length > 1) {
-        window.sessionStorage.setItem("addMultipleAddressCreditOnce", true);
+        window.localStorage.setItem("addMultipleAddressCreditOnce", true);
       }
     }
     if (creditIsEns) {
-      window.sessionStorage.setItem("addEnsCreditOnce", true);
+      window.localStorage.setItem("addEnsCreditOnce", true);
     }
     const data = new URLSearchParams();
     data.append("wallet_addresses", JSON.stringify(addressList));
@@ -598,7 +599,7 @@ class NewWelcomeMobile extends BaseReactComponent {
           ""
         );
       }
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
       const tempWalletAddress = [value];
       const data = new URLSearchParams();
       data.append("wallet_addresses", JSON.stringify(tempWalletAddress));
@@ -784,14 +785,14 @@ class NewWelcomeMobile extends BaseReactComponent {
     );
   };
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "smartMoneyPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       // this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("smartMoneyPageExpiryTime", tempExpiryTime);
   };
 
   onPageChange = () => {
@@ -814,11 +815,11 @@ class NewWelcomeMobile extends BaseReactComponent {
       tempWatchListata.append("remarks", "");
       tempWatchListata.append("name_tag", tagName);
       this.props.updateAddToWatchList(tempWatchListata);
-      const tempIsModalPopuRemoved = window.sessionStorage.getItem(
+      const tempIsModalPopuRemoved = window.localStorage.getItem(
         "smartMoneyMobilePopupModal"
       );
       if (!tempIsModalPopuRemoved) {
-        window.sessionStorage.setItem("smartMoneyMobilePopupModal", "true");
+        window.localStorage.setItem("smartMoneyMobilePopupModal", "true");
         this.setState({
           mobilePopupModal: true,
         });
@@ -863,31 +864,31 @@ class NewWelcomeMobile extends BaseReactComponent {
     this.props.setHeaderReducer([]);
     this.setState({ startTime: new Date() * 1 });
     let currencyRates = JSON.parse(
-      window.sessionStorage.getItem("currencyRates")
+      window.localStorage.getItem("currencyRates")
     );
     if (getToken()) {
       let isStopRedirect =
-        window.sessionStorage.getItem("stop_redirect") &&
-        JSON.parse(window.sessionStorage.getItem("stop_redirect"));
+        window.localStorage.getItem("stop_redirect") &&
+        JSON.parse(window.localStorage.getItem("stop_redirect"));
       if (isStopRedirect) {
         this.props.setPageFlagDefault();
       } else {
         // check if user is signed in or not if yes reidrect them to home page if not delete tokens and redirect them to welcome page
-        let user = window.sessionStorage.getItem("lochUser")
-          ? JSON.parse(window.sessionStorage.getItem("lochUser"))
+        let user = window.localStorage.getItem("lochUser")
+          ? JSON.parse(window.localStorage.getItem("lochUser"))
           : false;
         if (user) {
         } else {
           this.props.setPageFlagDefault();
 
-          //  window.sessionStorage.setItem("defi_access", true);
-          //  window.sessionStorage.setItem("isPopup", true);
-          //  // window.sessionStorage.setItem("whalepodview", true);
-          //  window.sessionStorage.setItem(
+          //  window.localStorage.setItem("defi_access", true);
+          //  window.localStorage.setItem("isPopup", true);
+          //  // window.localStorage.setItem("whalepodview", true);
+          //  window.localStorage.setItem(
           //    "whalepodview",
           //    JSON.stringify({ access: true, id: "" })
           //  );
-          // window.sessionStorage.setItem(
+          // window.localStorage.setItem(
           //   "isSubmenu",
           //   JSON.stringify({
           //     me: false,
@@ -896,9 +897,9 @@ class NewWelcomeMobile extends BaseReactComponent {
           //   })
           // );
           setLocalStoraage();
-          let isRefresh = JSON.parse(window.sessionStorage.getItem("refresh"));
+          let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
           if (!isRefresh) {
-            window.sessionStorage.setItem("refresh", true);
+            window.localStorage.setItem("refresh", true);
             window.location.reload(true);
           }
         }
@@ -906,15 +907,15 @@ class NewWelcomeMobile extends BaseReactComponent {
     } else {
       this.props.setPageFlagDefault();
 
-      // window.sessionStorage.setItem("defi_access", true);
-      // window.sessionStorage.setItem("isPopup", true);
-      // // window.sessionStorage.setItem("whalepodview", true);
-      // window.sessionStorage.setItem(
+      // window.localStorage.setItem("defi_access", true);
+      // window.localStorage.setItem("isPopup", true);
+      // // window.localStorage.setItem("whalepodview", true);
+      // window.localStorage.setItem(
       //   "whalepodview",
       //   JSON.stringify({ access: true, id: "" })
       // );
-      // // window.sessionStorage.setItem("isSubmenu", false);
-      //  window.sessionStorage.setItem(
+      // // window.localStorage.setItem("isSubmenu", false);
+      //  window.localStorage.setItem(
       //    "isSubmenu",
       //    JSON.stringify({
       //      me: false,
@@ -923,9 +924,9 @@ class NewWelcomeMobile extends BaseReactComponent {
       //    })
       //  );
       setLocalStoraage();
-      let isRefresh = JSON.parse(window.sessionStorage.getItem("refresh"));
+      let isRefresh = JSON.parse(window.localStorage.getItem("refresh"));
       if (!isRefresh) {
-        window.sessionStorage.setItem("refresh", true);
+        window.localStorage.setItem("refresh", true);
         window.location.reload(true);
       }
     }
@@ -939,15 +940,15 @@ class NewWelcomeMobile extends BaseReactComponent {
     this.props.getAllCoins();
     this.props.getAllParentChains();
     this.setState({
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
 
     this.props.GetAllPlan();
 
     // For smart money
 
-    let token = window.sessionStorage.getItem("lochToken");
-    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let token = window.localStorage.getItem("lochToken");
+    let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
 
     if (token && lochUser && lochUser.email) {
       this.setState({
@@ -970,7 +971,7 @@ class NewWelcomeMobile extends BaseReactComponent {
         });
       }
     }
-    // window.sessionStorage.setItem("previewAddress", "");
+    // window.localStorage.setItem("previewAddress", "");
     this.props.history.replace({
       search: `?p=${this.state.currentPage || START_INDEX}`,
     });
@@ -981,8 +982,8 @@ class NewWelcomeMobile extends BaseReactComponent {
   }
 
   checkUser = () => {
-    let token = window.sessionStorage.getItem("lochToken");
-    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let token = window.localStorage.getItem("lochToken");
+    let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (token && lochUser && lochUser.email) {
       return true;
     } else {
@@ -1006,7 +1007,10 @@ class NewWelcomeMobile extends BaseReactComponent {
   handleSubmitEmailSignup = (val = false) => {
     if (this.state.emailSignup) {
       const data = new URLSearchParams();
-      data.append("email", this.state.emailSignup.toLowerCase());
+      data.append(
+        "email",
+        this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
+      );
       data.append("referral_code", this.state.referralCode);
       data.append("signed_up_from", "welcome");
       EmailAddressAddedSignUp({
@@ -1088,7 +1092,7 @@ class NewWelcomeMobile extends BaseReactComponent {
   getCoinBasedOnLocalWallet = (name, value) => {
     let parentCoinList = this.props.OnboardingState.parentCoinList;
     if (parentCoinList && value) {
-      window.sessionStorage.removeItem("shouldRecallApis");
+      window.localStorage.removeItem("shouldRecallApis");
       const tempWalletAddress = [];
       this.state.walletInput.forEach((e) => {
         if (e.id === name) {
@@ -1173,7 +1177,7 @@ class NewWelcomeMobile extends BaseReactComponent {
     );
   };
   callUpdateApi = (passedItem) => {
-    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -1214,7 +1218,7 @@ class NewWelcomeMobile extends BaseReactComponent {
         // });
 
         this.props.setMetamaskConnectedReducer(passedItem.address);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "setMetamaskConnectedSessionStorage",
           passedItem.address
         );
@@ -1296,9 +1300,9 @@ class NewWelcomeMobile extends BaseReactComponent {
       this.isDisabled();
     }
     if (!this.props.commonState.smart_money) {
-      let token = window.sessionStorage.getItem("lochToken");
+      let token = window.localStorage.getItem("lochToken");
       this.props.updateWalletListFlag("smart_money", true);
-      let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
       if (token && lochUser && lochUser.email) {
         this.setState({
           blurTable: false,
@@ -1331,9 +1335,9 @@ class NewWelcomeMobile extends BaseReactComponent {
 
     const params = new URLSearchParams(this.props.location.search);
     const page = parseInt(params.get("p") || START_INDEX, 10);
-    if (!this.state.currency && window.sessionStorage.getItem("currency")) {
+    if (!this.state.currency && window.localStorage.getItem("currency")) {
       this.setState({
-        currency: JSON.parse(window.sessionStorage.getItem("currency")),
+        currency: JSON.parse(window.localStorage.getItem("currency")),
       });
     }
     if (
@@ -1893,7 +1897,8 @@ class NewWelcomeMobile extends BaseReactComponent {
                 }}
               >
                 <div className="newHomeAddAnotherGoContainer newHomeAddAnotherGoContainer-mobile inter-display-regular">
-                  {this.state.walletInput.length < 10 ? (
+                  {this.state.walletInput.length < 10 &&
+                  this.state.isPremiumUser ? (
                     <button
                       onClick={this.addInputField}
                       className="newHomeAddAnotherGoBtns newHomeAddAnotherBtn"

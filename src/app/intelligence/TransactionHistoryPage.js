@@ -69,9 +69,15 @@ import {
   amountFormat,
   compareTwoArrayOfObjects,
   convertNtoNumber,
+  dontOpenLoginPopup,
   mobileCheck,
   noExponents,
   numToCurrency,
+  openAddressInSameTab,
+  openSignInModalFromAnywhere,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
@@ -109,6 +115,7 @@ import { isEqual } from "lodash";
 import MobileLayout from "../layout/MobileLayout.js";
 import TransactionHistoryPageMobile from "./TransactionHistoryPageMobile.js";
 import CheckboxCustomTable from "../common/customCheckboxTable.js";
+import PaywallModal from "../common/PaywallModal.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -116,7 +123,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     const search = props.location.search;
     const params = new URLSearchParams(search);
     const page = params.get("p");
-    const walletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const walletList = JSON.parse(window.localStorage.getItem("addWallet"));
     const address = walletList?.map((wallet) => {
       return wallet.address;
     });
@@ -128,6 +135,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
+      isLochPaymentModal: false,
       isMobileDevice: false,
       intelligenceStateLocal: {},
       minAmount: "1",
@@ -140,7 +148,7 @@ class TransactionHistoryPage extends BaseReactComponent {
       amountFilter: "Size",
       exportModal: false,
       goToBottom: false,
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -200,15 +208,15 @@ class TransactionHistoryPage extends BaseReactComponent {
       ],
       showDust: true,
       // add new wallet
-      // userWalletList: window.sessionStorage.getItem("addWallet")
-      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      // userWalletList: window.localStorage.getItem("addWallet")
+      //   ? JSON.parse(window.localStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -227,7 +235,19 @@ class TransactionHistoryPage extends BaseReactComponent {
     });
   };
   history = this.props;
+  exprotPassThrough = () => {
+    window.localStorage.setItem("blurredTransactionHistoryExportModal", true);
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (isLochUser && isLochUser.email) {
+      this.handleExportModal();
+    } else {
+      openSignInModalFromAnywhere();
+    }
+  };
   handleExportModal = () => {
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.localStorage.setItem("blurredTransactionHistoryExportModal", true);
     TransactionHistoryExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -248,7 +268,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
   startPageView = () => {
@@ -262,21 +282,60 @@ class TransactionHistoryPage extends BaseReactComponent {
       this.checkForInactivity();
     }, 900000);
   };
+  goToPayModal = () => {
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.localStorage.setItem("openTransactionExportModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
   componentDidMount() {
     if (mobileCheck()) {
       this.setState({
         isMobileDevice: true,
       });
     }
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.localStorage.getItem(
+        "openTransactionExportModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          this.setState({
+            isLochPaymentModal: true,
+          });
+        }, 1000);
+      }
+    }
     scrollToTop();
-    const transHistoryPageNumber = window.sessionStorage.getItem(
+    const transHistoryPageNumber = window.localStorage.getItem(
       "transHistoryPageNumber"
     );
-    const transHistoryConditions = window.sessionStorage.getItem(
+    const transHistoryConditions = window.localStorage.getItem(
       "transHistoryConditions"
     );
-    const transHistorySorts =
-      window.sessionStorage.getItem("transHistorySorts");
+    const transHistorySorts = window.localStorage.getItem("transHistorySorts");
 
     if (transHistoryPageNumber || transHistoryConditions || transHistorySorts) {
       this.setState(
@@ -293,7 +352,7 @@ class TransactionHistoryPage extends BaseReactComponent {
         },
         () => {
           if (transHistoryPageNumber) {
-            window.sessionStorage.removeItem("transHistoryPageNumber");
+            window.localStorage.removeItem("transHistoryPageNumber");
           }
           if (transHistoryConditions) {
             const tempHolder = JSON.parse(transHistoryConditions);
@@ -335,10 +394,10 @@ class TransactionHistoryPage extends BaseReactComponent {
                 }
               }
             }
-            window.sessionStorage.removeItem("transHistoryConditions");
+            window.localStorage.removeItem("transHistoryConditions");
           }
           if (transHistorySorts) {
-            window.sessionStorage.removeItem("transHistorySorts");
+            window.localStorage.removeItem("transHistorySorts");
           }
 
           this.props.history.replace({
@@ -437,21 +496,21 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "transactionHistoryPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       "transactionHistoryPageExpiryTime",
       tempExpiryTime
     );
   };
   endPageView = () => {
     clearInterval(window.checkTransactionHistoryTimer);
-    window.sessionStorage.removeItem("transactionHistoryPageExpiryTime");
+    window.localStorage.removeItem("transactionHistoryPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -463,7 +522,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "transactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -471,7 +530,7 @@ class TransactionHistoryPage extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "transactionHistoryPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -486,11 +545,11 @@ class TransactionHistoryPage extends BaseReactComponent {
         tempCond.push(tempEle);
       }
     });
-    const arr = window.sessionStorage.getItem("addWallet")
-      ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+    const arr = window.localStorage.getItem("addWallet")
+      ? JSON.parse(window.localStorage.getItem("addWallet"))
       : [];
     this.setState({
-      walletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+      walletList: JSON.parse(window.localStorage.getItem("addWallet")),
     });
     let address = arr?.map((wallet) => {
       return wallet.address;
@@ -908,7 +967,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -931,7 +990,7 @@ class TransactionHistoryPage extends BaseReactComponent {
   handleSpecificShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -1222,7 +1281,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                   email_address: getCurrentUser().email,
                   wallet: slink,
                 });
-                window.open(shareLink, "_blank", "noreferrer");
+                // window.open(shareLink, "_blank", "noreferrer");
+                openAddressInSameTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -1532,7 +1592,8 @@ class TransactionHistoryPage extends BaseReactComponent {
                   email_address: getCurrentUser().email,
                   wallet: slink,
                 });
-                window.open(shareLink, "_blank", "noreferrer");
+                // window.open(shareLink, "_blank", "noreferrer");
+                openAddressInSameTab(slink, this.props.setPageFlagDefault);
               }
             };
             return (
@@ -2212,6 +2273,8 @@ class TransactionHistoryPage extends BaseReactComponent {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           CheckApiResponse={this.CheckApiResponse}
@@ -2262,6 +2325,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}
@@ -2320,13 +2384,23 @@ class TransactionHistoryPage extends BaseReactComponent {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
+                isShare={window.localStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"
                 updateTimer={this.updateTimer}
               />
             )}
+            {this.state.isLochPaymentModal ? (
+              <PaywallModal
+                show={this.state.isLochPaymentModal}
+                onHide={this.hidePaymentModal}
+                redirectLink={BASE_URL_S3 + "/"}
+                title="Export Valuable Data with Loch"
+                description="Export unlimited data"
+                hideBackBtn
+              />
+            ) : null}
             <PageHeader
               title={"Transactions"}
               subTitle={
@@ -2470,7 +2544,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                   <div sm={1}>
                     {/* <button className="transaction-new-export"> */}
                     <div
-                      onClick={this.handleExportModal}
+                      onClick={this.exprotPassThrough}
                       className="pageHeaderShareContainer new-export-button"
                     >
                       <Image className="pageHeaderShareImg" src={ExportIcon} />

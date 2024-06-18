@@ -48,13 +48,13 @@ class EditWalletModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
     getAllWalletApi(this);
   }
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
 
   onValidSubmit = () => {

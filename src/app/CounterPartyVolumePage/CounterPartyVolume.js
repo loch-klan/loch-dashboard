@@ -33,7 +33,12 @@ import { toast } from "react-toastify";
 import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
-import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions.js";
+import {
+  mobileCheck,
+  removeBlurMethods,
+  removeSignUpMethods,
+  scrollToTop,
+} from "../../utils/ReusableFunctions.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -86,8 +91,8 @@ class CounterPartyVolume extends Component {
       GraphDigit: 3,
 
       // add new wallet
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -151,6 +156,9 @@ class CounterPartyVolume extends Component {
     );
   };
   setCounterpartyVolumeExportModal = () => {
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.localStorage.setItem("blurredCounterPartyExportModal", true);
     CostCounterpartyFeesExport({
       session_id: getCurrentUser().id,
       email_address: getCurrentUser().email,
@@ -381,16 +389,16 @@ class CounterPartyVolume extends Component {
   }
   updateTimer = (first) => {
     const tempExistingExpiryTime =
-      window.sessionStorage.getItem("costPageExpiryTime");
+      window.localStorage.getItem("costPageExpiryTime");
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("costPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("costPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkCostTimer);
-    window.sessionStorage.removeItem("costPageExpiryTime");
+    window.localStorage.removeItem("costPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -402,13 +410,13 @@ class CounterPartyVolume extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem("costPageExpiryTime");
+    const tempExpiryTime = window.localStorage.getItem("costPageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -495,7 +503,7 @@ class CounterPartyVolume extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -516,6 +524,8 @@ class CounterPartyVolume extends Component {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          showTopSearchBar
+          handleShare={this.handleShare}
           history={this.props.history}
           CheckApiResponse={(e) => this.CheckApiResponse(e)}
           showpath
@@ -541,6 +551,7 @@ class CounterPartyVolume extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}

@@ -36,6 +36,7 @@ import {
   CurrencyType,
   noExponents,
   numToCurrency,
+  openAddressInSameTab,
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import CustomDropdown from "../../utils/form/CustomDropdown";
@@ -47,8 +48,8 @@ class LineChartSlider extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
-      userWallet: JSON.parse(window.sessionStorage.getItem("addWallet")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
+      userWallet: JSON.parse(window.localStorage.getItem("addWallet")),
       assetValueData: props.assetValueData,
       activeBadge: [{ name: "All", id: "" }],
       activeBadgeList: [],
@@ -1044,7 +1045,7 @@ class LineChartSlider extends BaseReactComponent {
 
         formatter: function () {
           let walletAddress = JSON.parse(
-            window.sessionStorage.getItem("addWallet")
+            window.localStorage.getItem("addWallet")
           )?.map((e) => e.address);
 
           let tooltipData = [];
@@ -1597,7 +1598,11 @@ backdrop-filter: blur(15px);">
                                 email_address: getCurrentUser().email,
                                 wallet: slink,
                               });
-                              window.open(shareLink, "_blank", "noreferrer");
+                              // window.open(shareLink, "_blank", "noreferrer");
+                              openAddressInSameTab(
+                                slink,
+                                this.props.setPageFlagDefault
+                              );
                             }
                           };
                           let count =
@@ -1708,7 +1713,11 @@ backdrop-filter: blur(15px);">
                                 email_address: getCurrentUser().email,
                                 wallet: slink,
                               });
-                              window.open(shareLink, "_blank", "noreferrer");
+                              // window.open(shareLink, "_blank", "noreferrer");
+                              openAddressInSameTab(
+                                slink,
+                                this.props.setPageFlagDefault
+                              );
                             }
                           };
                           return (

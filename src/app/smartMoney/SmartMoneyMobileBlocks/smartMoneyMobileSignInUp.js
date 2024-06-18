@@ -148,7 +148,10 @@ class SmartMoneyMobileSignInUp extends BaseReactComponent {
   };
   handleAccountCreate = () => {
     let data = new URLSearchParams();
-    data.append("email", this.state.signInEmail);
+    data.append(
+      "email",
+      this.state.signInEmail ? this.state.signInEmail.toLowerCase() : ""
+    );
     SendOtp(data, this, true);
   };
   handleOtp = () => {

@@ -14,6 +14,10 @@ class GasFeesMobile extends Component {
     };
   }
   handleFooter = (event) => {
+    if (!this.props.isPremiumUser) {
+      this.props.goToPayModal();
+      return null;
+    }
     this.setState({
       activeFooter: event.target.id,
       activeBadge: [{ name: "All", id: "" }],
@@ -83,6 +87,8 @@ class GasFeesMobile extends Component {
                     </div>
                   )}
                   <BarGraphSection
+                    goToPayModal={this.props.goToPayModal}
+                    isBlurred={!this.props.isPremiumUser}
                     digit={this.props.counterGraphDigit}
                     isFromHome
                     data={

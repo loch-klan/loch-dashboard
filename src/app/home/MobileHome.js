@@ -104,21 +104,18 @@ class MobileHome extends BaseReactComponent {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "mobileWelcomePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem(
-      "mobileWelcomePageExpiryTime",
-      tempExpiryTime
-    );
+    window.localStorage.setItem("mobileWelcomePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkMobileWelcomeTimer);
-    window.sessionStorage.removeItem("mobileWelcomePageExpiryTime");
+    window.localStorage.removeItem("mobileWelcomePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -128,7 +125,7 @@ class MobileHome extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "mobileWelcomePageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -136,7 +133,7 @@ class MobileHome extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "mobileWelcomePageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -309,23 +306,23 @@ class MobileHome extends BaseReactComponent {
     }
     let passingData = new URLSearchParams();
     passingData.append("user_account", JSON.stringify(theExchangeData));
-    const islochUser = window.sessionStorage.getItem("lochDummyUser");
+    const islochUser = window.localStorage.getItem("lochDummyUser");
     if (islochUser) {
-      window.sessionStorage.removeItem("lochToken");
-      window.sessionStorage.removeItem("addWallet");
-      window.sessionStorage.removeItem("lochUser");
-      window.sessionStorage.removeItem("lochDummyUser");
-      window.sessionStorage.removeItem("currencyRates");
-      window.sessionStorage.removeItem("currency");
-      window.sessionStorage.removeItem("currentPlan");
-      window.sessionStorage.removeItem("share_id");
-      window.sessionStorage.removeItem("Plans");
-      window.sessionStorage.removeItem("stopClick");
-      window.sessionStorage.removeItem("defi_access");
-      window.sessionStorage.removeItem("isPopup");
-      window.sessionStorage.removeItem("stop_redirect");
-      window.sessionStorage.removeItem("connectWalletAddress");
-      window.sessionStorage.removeItem("gotShareProtfolio");
+      window.localStorage.removeItem("lochToken");
+      window.localStorage.removeItem("addWallet");
+      window.localStorage.removeItem("lochUser");
+      window.localStorage.removeItem("lochDummyUser");
+      window.localStorage.removeItem("currencyRates");
+      window.localStorage.removeItem("currency");
+      window.localStorage.removeItem("currentPlan");
+      window.localStorage.removeItem("share_id");
+      window.localStorage.removeItem("Plans");
+      window.localStorage.removeItem("stopClick");
+      window.localStorage.removeItem("defi_access");
+      window.localStorage.removeItem("isPopup");
+      window.localStorage.removeItem("stop_redirect");
+      window.localStorage.removeItem("connectWalletAddress");
+      window.localStorage.removeItem("gotShareProtfolio");
       setTimeout(() => {
         let walletAddress = [];
         let addWallet = this.state.addWalletList;

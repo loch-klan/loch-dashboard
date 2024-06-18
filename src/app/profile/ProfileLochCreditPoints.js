@@ -2,7 +2,9 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
+  CopyTradeSwapIcon,
   FeedbackCreditIcon,
+  LochLogoBlackThickIcon,
   UserCreditDiamondIcon,
   UserCreditLinkIcon,
   UserCreditMailIcon,
@@ -21,12 +23,25 @@ import { updateWalletListFlag } from "../common/Api.js";
 import Loading from "../common/Loading.js";
 import { addUserCredits, getUserCredits } from "./Api.js";
 import ProfileLochCreditPointsBlock from "./ProfileLochCreditPointsBlock.js";
-import { goToTelegram, mobileCheck } from "../../utils/ReusableFunctions.js";
+import {
+  dontOpenLoginPopup,
+  goToTelegram,
+  isPremiumUser,
+  mobileCheck,
+  removeBlurMethods,
+  removeOpenModalAfterLogin,
+  removeSignUpMethods,
+} from "../../utils/ReusableFunctions.js";
+import PaywallModal from "../common/PaywallModal.js";
+import { BASE_URL_S3 } from "../../utils/Constant.js";
 
 class ProfileLochCreditPoints extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isLochPaymentModal: false,
+      lochPremiumCredits: 10,
+      lochPremiumCreditMonths: 1,
       isMobile: false,
       greenLinePercentage: 0,
       loading: false,
@@ -44,30 +59,66 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         "joined_telegram",
         "feedbacks_added",
         "address_added",
+        "loch_premium",
+        "copy_trade",
         // "twitter_spaces",
         // "provide_feedback",
         // "use_referral_code",
       ],
     };
   }
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
+  showPaymentModal = () => {
+    if (isPremiumUser()) {
+      return null;
+    }
+    removeBlurMethods();
+    removeSignUpMethods();
+    window.localStorage.setItem("blurredSubscribeToPremiumLochPoint", true);
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      dontOpenLoginPopup();
+      this.setState({
+        isLochPaymentModal: true,
+      });
+    } else {
+      removeOpenModalAfterLogin();
+      setTimeout(() => {
+        window.localStorage.setItem("openInsightsPaymentModal", true);
+      }, 1000);
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+        dontOpenLoginPopup();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+        dontOpenLoginPopup();
+      }
+    }
+  };
   newPosBase = () => {
     return 12;
     // return this.state.tasksList.length;
   };
 
   componentDidMount() {
-    if (mobileCheck()) {
-      this.setState({
-        isMobile: true,
-      });
-    }
-    if (this.props.commonState.creditPointsBlock) {
-      this.callApi();
-    }
-    if (this.props.lochUser && this.props.lochUser.email) {
-      this.setState({
-        isLoggedIn: true,
-      });
+    if (!this.props.dontCallApis) {
+      if (mobileCheck()) {
+        this.setState({
+          isMobile: true,
+        });
+      }
+      if (this.props.commonState.creditPointsBlock) {
+        this.callApi();
+      }
+      if (this.props.lochUser && this.props.lochUser.email) {
+        this.setState({
+          isLoggedIn: true,
+        });
+      }
     }
   }
 
@@ -80,6 +131,20 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     //   });
     // }
     if (prevState.tasksDone !== this.state.tasksDone) {
+      if (this.state.tasksDone.length > 0) {
+        let curCredits = 0;
+        for (let i = 0; i < this.state.tasksDone.length; i++) {
+          if (this.state.tasksDone[i] === "loch_premium") {
+            curCredits = curCredits + 10;
+          }
+        }
+        if (curCredits >= 10) {
+          this.setState({
+            lochPremiumCredits: curCredits,
+            lochPremiumCreditMonths: curCredits / 10,
+          });
+        }
+      }
       if (this.state.tasksDone.length >= this.state.tasksList.length) {
         this.setState({
           greenLinePercentage: 100,
@@ -111,7 +176,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         }
       }
     }
-    if (!this.props.commonState.creditPointsBlock) {
+    if (!this.props.commonState.creditPointsBlock && !this.props.dontCallApis) {
       this.props.updateWalletListFlag("creditPointsBlock", true);
       this.callApi();
     }
@@ -131,11 +196,11 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     this.setState({
       loading: true,
     });
-    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     this.props.getUserCredits(this, isLochUser);
   }
   lochPointsLoginBtnClickedLocal = () => {
-    window.sessionStorage.setItem("lochPointsProfileLoginClicked", true);
+    window.localStorage.setItem("lochPointsProfileLoginClicked", true);
   };
   openLoginBlock = () => {
     LochPointsLoginModalOpen({
@@ -143,7 +208,7 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
 
-    window.sessionStorage.setItem("lochPointsSignInModal", true);
+    window.localStorage.setItem("lochPointsSignInModal", true);
     if (
       document.getElementById("sidebar-open-sign-in-btn-loch-points-profile")
     ) {
@@ -214,6 +279,18 @@ class ProfileLochCreditPoints extends BaseReactComponent {
       }
     };
 
+    const goClickGoToCopyTrade = () => {
+      if (this.props.lochUser && this.props.lochUser.email) {
+        UserCreditGoClickedMP({
+          session_id: getCurrentUser ? getCurrentUser()?.id : "",
+          email_address: getCurrentUser ? getCurrentUser()?.email : "",
+          task: "Added one copy trade",
+        });
+        this.props.history.push("/copy-trade");
+      } else {
+        this.openLoginBlock();
+      }
+    };
     const goClickAddAddress = () => {
       if (this.props.lochUser && this.props.lochUser.email) {
         UserCreditGoClickedMP({
@@ -257,6 +334,14 @@ class ProfileLochCreditPoints extends BaseReactComponent {
         task: "Verified email",
       });
       this.openLoginBlock();
+    };
+    const goClickSubscribPremium = () => {
+      UserCreditGoClickedMP({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+        task: "Subscribe to loch premium",
+      });
+      this.showPaymentModal();
     };
     const goClickConnectWallet = () => {
       if (this.props.lochUser && this.props.lochUser.email) {
@@ -359,6 +444,19 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           onClick={goClickAddAddress}
         />
       );
+    } else if (whichBlock === "copy_trade") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title={
+            isTheTaskDone(true) ? "Added one copy trade" : "Add one copy trade"
+          }
+          earnPoints={5}
+          imageIcon={CopyTradeSwapIcon}
+          isDone={isTheTaskDone(true)}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={goClickGoToCopyTrade}
+        />
+      );
     } else if (whichBlock === "ens_added") {
       return (
         <ProfileLochCreditPointsBlock
@@ -379,6 +477,23 @@ class ProfileLochCreditPoints extends BaseReactComponent {
           isDone={isTheTaskDone()}
           lastEle={whichBlockIndex === this.state.tasksList.length - 1}
           onClick={goClickAddEmail}
+        />
+      );
+    } else if (whichBlock === "loch_premium") {
+      return (
+        <ProfileLochCreditPointsBlock
+          title={
+            isTheTaskDone()
+              ? `Premium: ${this.state.lochPremiumCreditMonths} month${
+                  this.state.lochPremiumCreditMonths > 1 ? "s" : ""
+                }`
+              : `Premium: 1 month`
+          }
+          earnPoints={this.state.lochPremiumCredits}
+          imageIcon={LochLogoBlackThickIcon}
+          isDone={isTheTaskDone()}
+          lastEle={whichBlockIndex === this.state.tasksList.length - 1}
+          onClick={goClickSubscribPremium}
         />
       );
     } else if (whichBlock === "wallet_connected") {
@@ -507,6 +622,15 @@ class ProfileLochCreditPoints extends BaseReactComponent {
     }
     return (
       <div className="profileCreditPointsContainer">
+        {this.state.isLochPaymentModal ? (
+          <PaywallModal
+            show={this.state.isLochPaymentModal}
+            onHide={this.hidePaymentModal}
+            redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+            hideBackBtn
+            isMobile={this.state.isMobile}
+          />
+        ) : null}
         <div className="profileCreditPointsHeader">
           <div className="profileCreditPointsHeaderLeft">
             <Image

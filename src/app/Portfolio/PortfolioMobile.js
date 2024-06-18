@@ -154,7 +154,7 @@ class PortfolioMobile extends BaseReactComponent {
       ],
       nftTableData: [],
       isLoadingNft: false,
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
     };
   }
 
@@ -176,7 +176,7 @@ class PortfolioMobile extends BaseReactComponent {
     });
   };
   hideThePopupModal = () => {
-    window.sessionStorage.setItem("mobileHomePagePopupModalHidden", true);
+    window.localStorage.setItem("mobileHomePagePopupModalHidden", true);
     this.setState({
       showPopupModal: false,
     });
@@ -212,7 +212,7 @@ class PortfolioMobile extends BaseReactComponent {
       // this.callNftApi();
     }
 
-    const tempIsModalPopuRemoved = window.sessionStorage.getItem(
+    const tempIsModalPopuRemoved = window.localStorage.getItem(
       "mobileHomePagePopupModalHidden"
     );
     if (tempIsModalPopuRemoved) {
@@ -229,19 +229,19 @@ class PortfolioMobile extends BaseReactComponent {
     };
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "mobileHomePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("mobileHomePageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("mobileHomePageExpiryTime", tempExpiryTime);
   };
 
   endPageView = () => {
     clearInterval(window.checkMobileHomeTimer);
-    window.sessionStorage.removeItem("mobileHomePageExpiryTime");
+    window.localStorage.removeItem("mobileHomePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -254,7 +254,7 @@ class PortfolioMobile extends BaseReactComponent {
   };
 
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "mobileHomePageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -262,7 +262,7 @@ class PortfolioMobile extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "mobileHomePageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -276,7 +276,7 @@ class PortfolioMobile extends BaseReactComponent {
       email_address: getCurrentUser().email,
     });
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -469,7 +469,7 @@ class PortfolioMobile extends BaseReactComponent {
     let addWalletList = [];
 
     if (!replaceAddresses) {
-      addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
       if (addWalletList && addWalletList?.length > 0) {
         addWalletList = addWalletList?.map((e) => {
           return {
@@ -544,7 +544,7 @@ class PortfolioMobile extends BaseReactComponent {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     // data.append("wallet_addresses", JSON.stringify(arr));
@@ -644,7 +644,7 @@ class PortfolioMobile extends BaseReactComponent {
       isLoadingNft: true,
     });
 
-    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     let arr = [];
     let addressList = [];
     if (addWalletList && addWalletList.length > 0) {
@@ -805,7 +805,7 @@ class PortfolioMobile extends BaseReactComponent {
                         noSubtitleBottomPadding
                         disableOnLoading
                         isMiniversion
-                        message="No assets found"
+                        message="No tokens found"
                         tableData={
                           this.props.tableDataCostBasis
                             ? this.props.tableDataCostBasis.slice(0, 10)
@@ -1002,6 +1002,8 @@ class PortfolioMobile extends BaseReactComponent {
                   <div className="profit-chart profit-chart-mobile">
                     {this.props.blockTwoSelectedItem === 1 ? (
                       <BarGraphSection
+                        isPremiumUser={this.props.isPremiumUser}
+                        goToPayModal={this.props.showBlurredFlows}
                         openChartPage={this.props.goToRealizedGainsPage}
                         newHomeSetup
                         disableOnLoading
@@ -1046,6 +1048,9 @@ class PortfolioMobile extends BaseReactComponent {
                           Loch
                         </div>
                         <BarGraphSection
+                          isPremiumUser={this.props.isPremiumUser}
+                          goToPayModal={this.props.showBlurredGasFees}
+                          isBlurred={!this.props.isPremiumUser}
                           digit={this.props.GraphDigit}
                           isFromHome
                           // openChartPage={() => {}}
@@ -1238,6 +1243,8 @@ class PortfolioMobile extends BaseReactComponent {
                       updatedInsightList={this.props.updatedInsightList}
                       insightsBlockLoading={this.props.insightsBlockLoading}
                       isMobile
+                      showBlurredInsights={this.props.showBlurredInsights}
+                      isPremiumUser={this.props.isPremiumUser}
                     />
                   </div>
                 ) : null}

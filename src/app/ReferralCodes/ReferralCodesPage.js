@@ -69,7 +69,7 @@ class ReferralCodesPage extends BaseReactComponent {
     }, 900000);
   };
   componentDidMount() {
-    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (!(isLochUser && isLochUser.email)) {
       this.props.history.push("/profile");
     }
@@ -87,21 +87,18 @@ class ReferralCodesPage extends BaseReactComponent {
     this.getOtherData();
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "referralCodesPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem(
-      "referralCodesPageExpiryTime",
-      tempExpiryTime
-    );
+    window.localStorage.setItem("referralCodesPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkReferralCodesTimer);
-    window.sessionStorage.removeItem("referralCodesPageExpiryTime");
+    window.localStorage.removeItem("referralCodesPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -113,7 +110,7 @@ class ReferralCodesPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "referralCodesPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -121,7 +118,7 @@ class ReferralCodesPage extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "referralCodesPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -204,6 +201,7 @@ class ReferralCodesPage extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={() => null}
           showpath
           noHomeInPath
           currentPage={"referral-codes"}

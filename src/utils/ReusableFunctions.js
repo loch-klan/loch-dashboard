@@ -1,10 +1,11 @@
 import React from "react";
 import { Image } from "react-bootstrap";
-import { API_LIMIT } from "./Constant";
+import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import moment from "moment";
 import { DARK_MODE } from "../app/intelligence/ActionTypes";
 import { SwitchDarkMode } from "../app/common/Api";
 import { toast } from "react-toastify";
+import { getCurrentUser } from "./ManageToken";
 
 export const scrollToBottomAfterPageChange = () => {
   if (mobileCheck()) {
@@ -17,19 +18,281 @@ export const scrollToBottomAfterPageChange = () => {
     window.scroll(0, document.body.scrollHeight);
   }
 };
+export const openAddressInSameTab = (address, setPageFlagDefault) => {
+  const shareLink = BASE_URL_S3 + "replace-address?address=" + address;
+  // const shareLink =
+  //   "http://localhost:3000/" + "replace-address?address=" + address;
 
-export const whichSignUpMethod = () => {
-  if (window.sessionStorage.getItem("lochPointsSignInModal")) {
-    return "Loch points";
-  } else if (window.sessionStorage.getItem("referralCodesSignInModal")) {
-    return "Referral code";
-  } else if (window.sessionStorage.getItem("fifteenSecSignInModal")) {
-    return "15 sec";
-  } else {
-    return "Sidebar";
+  window.open(shareLink, "_self").focus();
+  if (setPageFlagDefault) {
+    setTimeout(() => {
+      setPageFlagDefault();
+    }, 3000);
+    setTimeout(() => {
+      setPageFlagDefault();
+    }, 4000);
+    setTimeout(() => {
+      setPageFlagDefault();
+    }, 5000);
   }
 };
+export const isPremiumUser = () => {
+  const currentUserPaymentPlan = window.localStorage.getItem(
+    "currentUserPaymentPlan"
+  );
+  if (currentUserPaymentPlan === "Loch Premium") {
+    return true;
+  }
+  return false;
+};
+export const getShareLink = () => {
+  let pathName = window.location.pathname;
+  if (pathName.substring(0, 1) === "/") {
+    pathName = pathName.substring(1, pathName.length);
+  }
+  let lochUser = getCurrentUser().id;
+  if (lochUser) {
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
+    let slink =
+      userWallet?.length === 1
+        ? userWallet[0].displayAddress || userWallet[0].address
+        : lochUser;
+    let shareLink = BASE_URL_S3 + "home/" + slink + "?redirect=" + pathName;
 
+    return shareLink;
+  }
+  return "";
+};
+export const getCopyTradeWalletShareLink = (walletList) => {
+  let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
+  let firstWallet = "";
+  if (userWallet && userWallet.length > 0) {
+    firstWallet = userWallet[0].displayAddress || userWallet[0].address;
+  }
+  if (walletList && walletList.length > 0) {
+    if (walletList[0][1] && walletList[0][1].endsWith("eth")) {
+      firstWallet = walletList[0][1];
+    } else {
+      firstWallet = walletList[0][0];
+    }
+  }
+  let lochUser = getCurrentUser().id;
+  if (lochUser) {
+    let slink = firstWallet ? firstWallet : "";
+    let shareLink =
+      BASE_URL_S3 + "home/" + slink + "?redirect=copy-trade-share";
+
+    return shareLink;
+  }
+  return "";
+};
+export const openLoginPopUp = () => {
+  window.sessionStorage.setItem("dontOpenLoginPopup", true);
+  if (document.getElementById("sidebar-open-sign-in-btn")) {
+    document.getElementById("sidebar-open-sign-in-btn").click();
+  } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+    document.getElementById("sidebar-closed-sign-in-btn").click();
+  }
+};
+export const openSignInModalFromAnywhere = () => {
+  if (document.getElementById("sidebar-open-sign-in-btn")) {
+    document.getElementById("sidebar-open-sign-in-btn").click();
+    dontOpenLoginPopup();
+  } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+    document.getElementById("sidebar-closed-sign-in-btn").click();
+    dontOpenLoginPopup();
+  }
+};
+export const dontOpenLoginPopup = () => {
+  window.localStorage.setItem("dontOpenLoginPopup", true);
+};
+export const whichBlurMethod = () => {
+  if (window.localStorage.getItem("copyTradeWelcome")) {
+    return "Copy Trade Welcome";
+  }
+  if (window.localStorage.getItem("blurredHomeAssetSignInModal")) {
+    return "Home Assets Block";
+  }
+  if (window.localStorage.getItem("blurredHomeFlowsSignInModal")) {
+    return "Home Flows Block";
+  }
+  if (window.localStorage.getItem("blurredHomeYieldOppSignInModal")) {
+    return "Home Yield Opp Block";
+  }
+  if (window.localStorage.getItem("blurredHomeInsightsSignInModal")) {
+    return "Home Insights Block";
+  }
+  if (window.localStorage.getItem("blurredHomeGasFeesSignInModal")) {
+    return "Home Gas Fees Block";
+  }
+  if (window.localStorage.getItem("blurredAssetSignInModal")) {
+    return "Assets Page";
+  }
+  if (window.localStorage.getItem("blurredFlowsSignInModal")) {
+    return "Flows Page";
+  }
+  if (window.localStorage.getItem("blurredYieldOppSignInModal")) {
+    return "Yield Opp Page";
+  }
+  if (window.localStorage.getItem("blurredInsightsSignInModal")) {
+    return "Insights Page";
+  }
+  if (window.localStorage.getItem("blurredGasFeesSignInModal")) {
+    return "Gas Fees Page";
+  }
+
+  if (window.localStorage.getItem("blurredAddMultipleAddressSignInModal")) {
+    return "Multiple Wallet Connect";
+  }
+  if (window.localStorage.getItem("blurredAssetExportModal")) {
+    return "Tokens Export";
+  }
+  if (window.localStorage.getItem("blurredGasFeesExportModal")) {
+    return "Gas Fees Export";
+  }
+  if (window.localStorage.getItem("blurredCounterPartyExportModal")) {
+    return "Counterparty Export";
+  }
+  if (window.localStorage.getItem("blurredTransactionHistoryExportModal")) {
+    return "Transaction History Export";
+  }
+  if (window.localStorage.getItem("blurredCopyTradeAddModal")) {
+    return "Add Copy Trade";
+  }
+  if (window.localStorage.getItem("blurredSubscribeToPremiumLochPoint")) {
+    return "Subscribe To Premium Loch Point";
+  }
+  if (window.localStorage.getItem("upgradePremiumProfileBannerSignInModal")) {
+    return "Profile loch premium banner";
+  }
+
+  return "";
+};
+export const removeBlurMethods = () => {
+  window.localStorage.removeItem("blurredHomeAssetSignInModal");
+  window.localStorage.removeItem("blurredHomeFlowsSignInModal");
+  window.localStorage.removeItem("blurredHomeYieldOppSignInModal");
+  window.localStorage.removeItem("blurredHomeInsightsSignInModal");
+  window.localStorage.removeItem("blurredHomeGasFeesSignInModal");
+  window.localStorage.removeItem("blurredAssetSignInModal");
+  window.localStorage.removeItem("blurredFlowsSignInModal");
+  window.localStorage.removeItem("blurredYieldOppSignInModal");
+  window.localStorage.removeItem("blurredInsightsSignInModal");
+  window.localStorage.removeItem("blurredGasFeesSignInModal");
+  window.localStorage.removeItem("blurredAddMultipleAddressSignInModal");
+  window.localStorage.removeItem("blurredAssetExportModal");
+  window.localStorage.removeItem("blurredGasFeesExportModal");
+  window.localStorage.removeItem("blurredCounterPartyExportModal");
+  window.localStorage.removeItem("blurredTransactionHistoryExportModal");
+  window.localStorage.removeItem("blurredCopyTradeAddModal");
+  window.localStorage.removeItem("blurredSubscribeToPremiumLochPoint");
+  window.localStorage.removeItem("upgradePremiumProfileBannerSignInModal");
+  window.localStorage.removeItem("copyTradeWelcome");
+};
+export const whichSignUpMethod = () => {
+  if (window.localStorage.getItem("copyTradeWelcome")) {
+    return "Copy Trade Welcome";
+  }
+  if (window.localStorage.getItem("lochPointsSignInModal")) {
+    return "Loch points";
+  }
+  if (window.localStorage.getItem("referralCodesSignInModal")) {
+    return "Referral code";
+  }
+  if (window.localStorage.getItem("upgradePremiumProfileBannerSignInModal")) {
+    return "Profile loch premium banner";
+  }
+  if (window.localStorage.getItem("blurredHomeAssetSignInModal")) {
+    return "Home Assets Block";
+  }
+  if (window.localStorage.getItem("blurredHomeFlowsSignInModal")) {
+    return "Home Flows Block";
+  }
+  if (window.localStorage.getItem("blurredHomeYieldOppSignInModal")) {
+    return "Home Yield Opp Block";
+  }
+  if (window.localStorage.getItem("blurredHomeInsightsSignInModal")) {
+    return "Home Insights Block";
+  }
+  if (window.localStorage.getItem("blurredHomeGasFeesSignInModal")) {
+    return "Home Gas Fees Block";
+  }
+  if (window.localStorage.getItem("blurredAssetSignInModal")) {
+    return "Assets Page";
+  }
+  if (window.localStorage.getItem("blurredFlowsSignInModal")) {
+    return "Flows Page";
+  }
+  if (window.localStorage.getItem("blurredYieldOppSignInModal")) {
+    return "Yield Opp Page";
+  }
+  if (window.localStorage.getItem("blurredInsightsSignInModal")) {
+    return "Insights Page";
+  }
+  if (window.localStorage.getItem("blurredGasFeesSignInModal")) {
+    return "Gas Fees Page";
+  }
+  if (window.localStorage.getItem("fifteenSecSignInModal")) {
+    return "15 sec";
+  }
+  if (window.localStorage.getItem("blurredAddMultipleAddressSignInModal")) {
+    return "Multiple Wallet Connect";
+  }
+  if (window.localStorage.getItem("blurredAssetExportModal")) {
+    return "Tokens Export";
+  }
+  if (window.localStorage.getItem("blurredGasFeesExportModal")) {
+    return "Gas Fees Export";
+  }
+  if (window.localStorage.getItem("blurredCounterPartyExportModal")) {
+    return "Counterparty Export";
+  }
+  if (window.localStorage.getItem("blurredTransactionHistoryExportModal")) {
+    return "Transaction History Export";
+  }
+  if (window.localStorage.getItem("blurredCopyTradeAddModal")) {
+    return "Add Copy Trade";
+  }
+  if (window.localStorage.getItem("blurredSubscribeToPremiumLochPoint")) {
+    return "Subscribe To Premium Loch Point";
+  }
+
+  return "Sidebar";
+};
+export const removeSignUpMethods = () => {
+  window.localStorage.removeItem("fifteenSecSignInModal");
+  window.localStorage.removeItem("referralCodesSignInModal");
+  window.localStorage.removeItem("upgradePremiumProfileBannerSignInModal");
+  window.localStorage.removeItem("lochPointsSignInModal");
+  window.localStorage.removeItem("blurredHomeAssetSignInModal");
+  window.localStorage.removeItem("blurredHomeFlowsSignInModal");
+  window.localStorage.removeItem("blurredHomeYieldOppSignInModal");
+  window.localStorage.removeItem("blurredHomeInsightsSignInModal");
+  window.localStorage.removeItem("blurredHomeGasFeesSignInModal");
+  window.localStorage.removeItem("blurredAssetSignInModal");
+  window.localStorage.removeItem("blurredFlowsSignInModal");
+  window.localStorage.removeItem("blurredYieldOppSignInModal");
+  window.localStorage.removeItem("blurredInsightsSignInModal");
+  window.localStorage.removeItem("blurredGasFeesSignInModal");
+  window.localStorage.removeItem("blurredAddMultipleAddressSignInModal");
+  window.localStorage.removeItem("blurredAssetExportModal");
+  window.localStorage.removeItem("blurredGasFeesExportModal");
+  window.localStorage.removeItem("blurredCounterPartyExportModal");
+  window.localStorage.removeItem("blurredTransactionHistoryExportModal");
+  window.localStorage.removeItem("blurredCopyTradeAddModal");
+  window.localStorage.removeItem("blurredSubscribeToPremiumLochPoint");
+  window.localStorage.removeItem("copyTradeWelcome");
+};
+export const removeOpenModalAfterLogin = () => {
+  window.localStorage.removeItem("openHomePaymentModal");
+  window.localStorage.removeItem("openAssetPaymentModal");
+  window.localStorage.removeItem("openFlowsPaymentModal");
+  window.localStorage.removeItem("openYieldOppPaymentModal");
+  window.localStorage.removeItem("openInsightsPaymentModal");
+  window.localStorage.removeItem("openSearchbarPaymentModal");
+  window.localStorage.removeItem("openExportPaymentModal");
+  window.localStorage.removeItem("openGasFeesModal");
+};
 export const goToTelegram = () => {
   window.open("https://t.me/loch_chain", "_blank");
 };
@@ -271,6 +534,9 @@ export const numToCurrency = (
 };
 
 export const lightenDarkenColor = (hex, lum) => {
+  if (hex === undefined || hex === "xxxxx") {
+    hex = "#ffffff";
+  }
   // var num = parseInt(col, 16);
   // var r = (num >> 16) + amt;
   // var b = ((num >> 8) & 0x00FF) + amt;
@@ -363,7 +629,7 @@ export const noExponents = (value) => {
 };
 
 export const CurrencyType = (code = "both") => {
-  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+  let currency = JSON.parse(window.localStorage.getItem("currency"));
   if (code === "both") {
     return currency?.symbol + " " + currency?.code;
   } else if (code) {
@@ -376,11 +642,11 @@ export const CurrencyType = (code = "both") => {
 };
 
 export const UpgradeTriggered = () => {
-  let userPlan = JSON.parse(window.sessionStorage.getItem("currentPlan"));
+  let userPlan = JSON.parse(window.localStorage.getItem("currentPlan"));
   let id = 0;
   let trigger = false;
 
-  let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+  let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
   // console.log("wal", walletAddress?.length, userPlan?.wallet_address_limit);
 
   if (

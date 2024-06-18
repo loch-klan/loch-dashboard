@@ -1,0 +1,14 @@
+.add-address-following-page-container {
+  overflow: hidden;
+  .add-address-wv-page {
+    height: calc(100vh - 9rem);
+    width: 100%;
+    margin-top: 9rem;
+    .add-address-wv-bg {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      content: var(--dummyProfileBackground);
+    }
+  }
+}

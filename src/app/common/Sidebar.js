@@ -12,16 +12,20 @@ import { connect, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   ActiveSmartMoneySidebarIcon,
+  EmultionSidebarIcon,
   FollowingSidebarIcon,
-  HomeSidebarIcon,
+  WalletViewerSidebarIcon,
   InactiveSmartMoneySidebarIcon,
   LeaderboardSidebarIcon,
+  LochLogoWhiteIcon,
   PersonRoundedSigninIcon,
   ProfileSidebarIcon,
+  ShareCopyTraderImage,
   SidebarLeftArrowIcon,
   XFormallyTwitterLogoIcon,
   darkModeIcon,
   lightModeIcon,
+  CopyTradeSwapSidebarIcon,
 } from "../../assets/images/icons";
 import { default as SignInIcon } from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
@@ -80,7 +84,9 @@ import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
+  isPremiumUser,
   numToCurrency,
+  removeSignUpMethods,
   switchToDarkMode,
   switchToLightMode,
 } from "../../utils/ReusableFunctions.js";
@@ -97,11 +103,15 @@ function Sidebar(props) {
 
   // console.log("active", activeTab);
   const history = useHistory();
+  const [lochUserState, setLochUserState] = useState(
+    window.localStorage.getItem("lochToken")
+  );
   const [showAmountsAtTop, setShowAmountsAtTop] = useState(false);
   const [dragPosition, setDragPosition] = React.useState({
     x: 0,
     y: -(window.innerHeight / 2 - 90),
   });
+  const [isCurPremiumUser, setIsCurPremiumUser] = useState(isPremiumUser());
   const [leave, setLeave] = React.useState(false);
   const [apiModal, setApiModal] = React.useState(false);
   const [exportModal, setExportModal] = React.useState(false);
@@ -122,17 +132,28 @@ function Sidebar(props) {
   const [userFeedbackModal, setUserFeedbackModal] = useState(false);
   const [comingDirectly, setComingDirectly] = useState(true);
   const [selectedCurrency, setCurrency] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("currency"))
+    JSON.parse(window.localStorage.getItem("currency"))
   );
-  let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+  useEffect(() => {
+    setTimeout(() => {
+      setIsCurPremiumUser(isPremiumUser());
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    setIsCurPremiumUser(isPremiumUser());
+    setLochUserState(window.localStorage.getItem("lochToken"));
+  }, [props.userPaymentState]);
+
+  let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
   if (lochUser) {
     // if loch user remove share id to prevent opening upgrade modal
-    window.sessionStorage.removeItem("share_id");
+    window.localStorage.removeItem("share_id");
   }
   const [Upgrade, setUpgradeModal] = React.useState(false);
   const [connectModal, setconnectModal] = React.useState(false);
   const [isWallet, setWallet] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("addWallet")) ? true : false
+    JSON.parse(window.localStorage.getItem("addWallet")) ? true : false
   );
   const [signinPopup, setSigninPopup] = React.useState(false);
   let triggerId = 6;
@@ -140,8 +161,8 @@ function Sidebar(props) {
   // submenu
 
   const [isSubmenu, setSubmenu] = React.useState(
-    window.sessionStorage.getItem("isSubmenu")
-      ? JSON.parse(window.sessionStorage.getItem("isSubmenu"))
+    window.localStorage.getItem("isSubmenu")
+      ? JSON.parse(window.localStorage.getItem("isSubmenu"))
       : {
           me: true,
           discover: false,
@@ -154,7 +175,7 @@ function Sidebar(props) {
 
   // preview address
   const [previewAddress, setPreviewAddress] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("previewAddress"))
+    JSON.parse(window.localStorage.getItem("previewAddress"))
   );
 
   // Dark mode
@@ -182,7 +203,7 @@ function Sidebar(props) {
 
     // update previewaddress from localstorage
     setPreviewAddress(
-      JSON.parse(window.sessionStorage.getItem("previewAddress"))
+      JSON.parse(window.localStorage.getItem("previewAddress"))
     );
 
     // Me section
@@ -204,10 +225,10 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
       resetPreviewAddress();
       setPreviewAddress(
-        JSON.parse(window.sessionStorage.getItem("previewAddress"))
+        JSON.parse(window.localStorage.getItem("previewAddress"))
       );
     }
     // Me section with intelligence
@@ -224,7 +245,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else if (
       [
         "/intelligence",
@@ -246,7 +267,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
     // Discover section
     else if (
@@ -263,7 +284,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else if (
       [
         "/top-accounts",
@@ -281,7 +302,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else if (
       [
         "/top-accounts/intelligence/transaction-history",
@@ -304,7 +325,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     } else {
       let obj = {
         me: true,
@@ -316,7 +337,7 @@ function Sidebar(props) {
       };
       setSubmenu(obj);
 
-      window.sessionStorage.setItem("isSubmenu", JSON.stringify(obj));
+      window.localStorage.setItem("isSubmenu", JSON.stringify(obj));
     }
   }, []);
 
@@ -331,7 +352,7 @@ function Sidebar(props) {
   }, []);
 
   const getWalletFunction = () => {
-    let status = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let status = JSON.parse(window.localStorage.getItem("addWallet"));
     if (status) {
       setWallet(true);
       // console.log("wallet", isWallet);
@@ -353,12 +374,19 @@ function Sidebar(props) {
     });
     setConfirmLeave(!confirmLeave);
   };
-  const handleGoToProfile = () => {
+  const handleGoToProfile = (e) => {
     let tempToken = getToken();
     if (!tempToken || tempToken === "jsk") {
+      e.preventDefault();
+      props.history.push("/profile-add-address");
       return null;
+    } else {
+      ProfileMenu({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      props.history.push("/profile");
     }
-    props.history.push("/profile");
   };
   const handleApiModal = () => {
     setApiModal(!apiModal);
@@ -408,9 +436,7 @@ function Sidebar(props) {
   };
   useEffect(() => {
     if (!signupModal && !signinModal) {
-      window.sessionStorage.removeItem("fifteenSecSignInModal");
-      window.sessionStorage.removeItem("referralCodesSignInModal");
-      window.sessionStorage.removeItem("lochPointsSignInModal");
+      removeSignUpMethods();
     }
   }, [signupModal, signinModal]);
   const openSigninModal = (fromWhichPage) => {
@@ -421,10 +447,10 @@ function Sidebar(props) {
       setIsLochPointsProfilePopUpModal(true);
     }
 
-    let tempToken = getToken();
-    if (!tempToken || tempToken === "jsk") {
-      return null;
-    }
+    // let tempToken = getToken();
+    // if (!tempToken || tempToken === "jsk") {
+    //   return null;
+    // }
     setComingDirectly(false);
     setSignUpModalAnimation(false);
     setSignupModal(false);
@@ -443,11 +469,11 @@ function Sidebar(props) {
     setSignInModalAnimation(true);
     setSigninModal(false);
     setSignupModal(false);
-    const isLochPointsTabOpen = window.sessionStorage.getItem(
+    const isLochPointsTabOpen = window.localStorage.getItem(
       "lochPointsProfileLoginClicked"
     );
     if (isLochPointsTabOpen) {
-      window.sessionStorage.removeItem("lochPointsProfileLoginClicked");
+      window.localStorage.removeItem("lochPointsProfileLoginClicked");
     }
   };
 
@@ -505,8 +531,8 @@ function Sidebar(props) {
     props.updateWalletListFlag("creditPointsBlock", false);
   };
   const handleShare = () => {
-    const user = JSON.parse(window.sessionStorage.getItem("lochUser"));
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const user = JSON.parse(window.localStorage.getItem("lochUser"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -543,10 +569,10 @@ function Sidebar(props) {
     }
   };
   React.useEffect(() => {
-    let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+    let currency = JSON.parse(window.localStorage.getItem("currency"));
 
     if (!currency) {
-      window.sessionStorage.setItem(
+      window.localStorage.setItem(
         "currency",
         JSON.stringify({
           active: true,
@@ -558,13 +584,13 @@ function Sidebar(props) {
         })
       );
 
-      setCurrency(JSON.parse(window.sessionStorage.getItem("currency")));
+      setCurrency(JSON.parse(window.localStorage.getItem("currency")));
     }
 
     setTimeout(() => {
       //  console.log("curr", currency);
       let currencyRates = JSON.parse(
-        window.sessionStorage.getItem("currencyRates")
+        window.localStorage.getItem("currencyRates")
       );
       // console.log("currency", currencyRates);
       getAllCurrencyApi(setAllCurrencyList);
@@ -579,27 +605,27 @@ function Sidebar(props) {
 
   // function to call popup timer
   const SiginModal = () => {
-    let isPopup = JSON.parse(window.sessionStorage.getItem("isPopup"));
+    let isPopup = JSON.parse(window.localStorage.getItem("isPopup"));
 
     setTimeout(() => {
       const isCopyTradeModalOpen =
-        window.sessionStorage.getItem("copyTradeModalOpen");
-      const lochPointsProfileModalOpen = window.sessionStorage.getItem(
+        window.localStorage.getItem("copyTradeModalOpen");
+      const lochPointsProfileModalOpen = window.localStorage.getItem(
         "lochPointsProfileLoginClicked"
       );
       const dontOpenLoginPopup =
-        window.sessionStorage.getItem("dontOpenLoginPopup");
+        window.localStorage.getItem("dontOpenLoginPopup");
       if (
         !isCopyTradeModalOpen &&
         !lochPointsProfileModalOpen &&
         !dontOpenLoginPopup
       ) {
-        window.sessionStorage.setItem("fifteenSecSignInModal", true);
+        window.localStorage.setItem("fifteenSecSignInModal", true);
         // if isPopupActive = true then do not open this popup bcoz any other popup still open
         let isPopupActive = JSON.parse(
-          window.sessionStorage.getItem("isPopupActive")
+          window.localStorage.getItem("isPopupActive")
         );
-        lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+        lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
         if (!isPopupActive) {
           // console.log("inactive popup", isPopupActive);
           if (!lochUser) {
@@ -608,10 +634,10 @@ function Sidebar(props) {
             //   from: history.location.pathname.substring(1),
             // });
             // isPopup && handleSiginPopup();
-            // window.sessionStorage.setItem("isPopup", false);
+            // window.localStorage.setItem("isPopup", false);
             if (isPopup) {
               handleSiginPopup();
-              window.sessionStorage.setItem("isPopup", false);
+              window.localStorage.setItem("isPopup", false);
               GeneralPopup({
                 session_id: getCurrentUser().id,
                 from: history.location.pathname.substring(1),
@@ -629,7 +655,7 @@ function Sidebar(props) {
 
   const handleFunction = (currency) => {
     let currencyRates = JSON.parse(
-      window.sessionStorage.getItem("currencyRates")
+      window.localStorage.getItem("currencyRates")
     );
     for (const [key, value] of Object.entries(currencyRates.rates)) {
       // console.log(`${key}: ${value}`);
@@ -648,7 +674,7 @@ function Sidebar(props) {
     });
     setTimeout(() => {
       setCurrency(currency);
-      window.sessionStorage.setItem("currency", JSON.stringify(currency));
+      window.localStorage.setItem("currency", JSON.stringify(currency));
       window.location.reload();
     }, 200);
   };
@@ -696,14 +722,14 @@ function Sidebar(props) {
     if (data) {
       setDragPosition({ x: data.x, y: data.y });
 
-      // window.sessionStorage.setItem(
+      // window.localStorage.setItem(
       //   "floatingModalPosition",
       //   JSON.stringify({ x: data.x, y: data.y })
       // );
     }
   };
   // useEffect(() => {
-  //   let floatingModalPosition = window.sessionStorage.getItem(
+  //   let floatingModalPosition = window.localStorage.getItem(
   //     "floatingModalPosition"
   //   );
   //   if (floatingModalPosition) {
@@ -814,7 +840,7 @@ function Sidebar(props) {
                 style={{ cursor: "pointer" }}
                 onClick={(e) => {
                   let tempToken = getToken();
-                  if (tempToken === "jsk") {
+                  if (!tempToken || tempToken === "jsk") {
                     return null;
                   }
                   if (!isWallet) {
@@ -879,20 +905,90 @@ function Sidebar(props) {
                             isIcon={false}
                             isInfo={true}
                             isText={true}
-                            text={"Home"}
+                            text={"Copy Trade"}
                           >
                             <NavLink
-                              exact={true}
-                              className="nav-link nav-link-closed"
-                              to={activeTab === "/home" ? "#" : "/home"}
+                              className={`nav-link nav-link-closed`}
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/copy-trade-welcome"
+                                  : "/copy-trade"
+                              }
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+
+                                  props.history.push("/copy-trade-welcome");
+
                                   return null;
                                 }
-                                if (!isWallet) {
+
+                                MenuCopyTradelist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }}
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade" ||
+                                  activeTab === "/copy-trade-welcome"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                            </NavLink>
+                          </CustomOverlay>
+                        </li>
+                        <li>
+                          <CustomOverlay
+                            position="top"
+                            isIcon={false}
+                            isInfo={true}
+                            isText={true}
+                            text={"Wallet Viewer"}
+                          >
+                            <NavLink
+                              exact={true}
+                              className="nav-link nav-link-closed"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/wallet-viewer-add-address"
+                                  : activeTab === "/home"
+                                  ? "#"
+                                  : "/home"
+                              }
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                const userWalletList =
+                                  window.localStorage.getItem("addWallet")
+                                    ? JSON.parse(
+                                        window.localStorage.getItem("addWallet")
+                                      )
+                                    : [];
+                                console.log(
+                                  "userWalletList cur ",
+                                  userWalletList
+                                );
+                                if (
+                                  !tempToken ||
+                                  tempToken === "jsk" ||
+                                  !userWalletList ||
+                                  userWalletList.length === 0
+                                ) {
                                   e.preventDefault();
+
+                                  props.history.push(
+                                    "/wallet-viewer-add-address"
+                                  );
+
+                                  return null;
                                 } else {
                                   HomeMenu({
                                     session_id: getCurrentUser().id,
@@ -903,9 +999,10 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={HomeSidebarIcon}
+                                src={WalletViewerSidebarIcon}
                                 style={
-                                  activeTab === "/home"
+                                  activeTab === "/home" ||
+                                  activeTab === "/wallet-viewer-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
@@ -915,7 +1012,6 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-
                         <li>
                           <CustomOverlay
                             position="top"
@@ -926,15 +1022,19 @@ function Sidebar(props) {
                           >
                             <NavLink
                               className={`nav-link nav-link-closed`}
-                              to="/watchlist"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/following-add-address"
+                                  : "/watchlist"
+                              }
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+
+                                  props.history.push("/following-add-address");
+
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuWatchlist({
                                     session_id: getCurrentUser().id,
@@ -947,7 +1047,8 @@ function Sidebar(props) {
                               <Image
                                 src={FollowingSidebarIcon}
                                 style={
-                                  activeTab === "/watchlist"
+                                  activeTab === "/watchlist" ||
+                                  activeTab === "/following-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
@@ -971,19 +1072,16 @@ function Sidebar(props) {
                               className={`nav-link nav-link-closed`}
                               to="/home-leaderboard"
                               onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  MenuLeaderboard({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
+                                // let tempToken = getToken();
+                                // if (!tempToken || tempToken === "jsk") {
+                                //   e.preventDefault();
+                                //   return null;
+                                // } else {
+                                MenuLeaderboard({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                // }
                               }}
                               activeclassname="active"
                             >
@@ -1002,22 +1100,12 @@ function Sidebar(props) {
                           >
                             <NavLink
                               className={`nav-link nav-link-closed`}
-                              to="/profile"
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/profile-add-address"
+                                  : "/profile"
+                              }
+                              onClick={handleGoToProfile}
                               activeclassname="active"
                             >
                               <Image
@@ -1027,28 +1115,31 @@ function Sidebar(props) {
                             </NavLink>
                           </CustomOverlay>
                         </li>
-                        <li>
-                          <CustomOverlay
-                            position="top"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"Feedback"}
-                          >
-                            <div
-                              className={`nav-link nav-link-closed`}
-                              style={{ backround: "transparent" }}
-                              id="sidebar-feedback-btn"
-                              onClick={handleUserFeedbackModal}
-                              // activeclassname="active"
+
+                        {!lochUserState || lochUserState === "jsk" ? null : (
+                          <li>
+                            <CustomOverlay
+                              position="top"
+                              isIcon={false}
+                              isInfo={true}
+                              isText={true}
+                              text={"Feedback"}
                             >
-                              <Image
-                                src={feedbackIcon}
-                                // className="followingImg"
-                              />
-                            </div>
-                          </CustomOverlay>
-                        </li>
+                              <div
+                                className={`nav-link nav-link-closed`}
+                                style={{ backround: "transparent" }}
+                                id="sidebar-feedback-btn"
+                                onClick={handleUserFeedbackModal}
+                                // activeclassname="active"
+                              >
+                                <Image
+                                  src={feedbackIcon}
+                                  // className="followingImg"
+                                />
+                              </div>
+                            </CustomOverlay>
+                          </li>
+                        )}
                       </ul>
                     </nav>
                   </div>
@@ -1065,7 +1156,7 @@ function Sidebar(props) {
                           isText={true}
                           text={
                             CurrencyType(false) +
-                            (window.sessionStorage.getItem(
+                            (window.localStorage.getItem(
                               "shouldRecallApis"
                             ) === "true"
                               ? "0.00"
@@ -1084,7 +1175,7 @@ function Sidebar(props) {
                         >
                           {CurrencyType(false)}
                           {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                          {window.sessionStorage.getItem("shouldRecallApis") ===
+                          {window.localStorage.getItem("shouldRecallApis") ===
                           "true"
                             ? "0.00"
                             : numToCurrency(getTotalAssetValue())}
@@ -1100,16 +1191,76 @@ function Sidebar(props) {
                           <li>
                             <NavLink
                               exact={true}
-                              className="nav-link"
-                              to={activeTab === "/home" ? "#" : "/home"}
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+
+                                  props.history.push("/copy-trade-welcome");
+
                                   return null;
                                 }
-                                if (!isWallet) {
+                                MenuCopyTradelist({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                              }}
+                              className="nav-link"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/copy-trade-welcome"
+                                  : "/copy-trade"
+                              }
+                              activeclassname="active"
+                            >
+                              <Image
+                                src={EmultionSidebarIcon}
+                                style={
+                                  activeTab === "/copy-trade" ||
+                                  activeTab === "/copy-trade-welcome"
+                                    ? {
+                                        filter: "brightness(0)",
+                                      }
+                                    : {}
+                                }
+                                className="followingImg"
+                              />
+                              Copy Trade
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              exact={true}
+                              className="nav-link"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/wallet-viewer-add-address"
+                                  : activeTab === "/home"
+                                  ? "#"
+                                  : "/home"
+                              }
+                              onClick={(e) => {
+                                let tempToken = getToken();
+                                const userWalletList =
+                                  window.localStorage.getItem("addWallet")
+                                    ? JSON.parse(
+                                        window.localStorage.getItem("addWallet")
+                                      )
+                                    : [];
+
+                                if (
+                                  !tempToken ||
+                                  tempToken === "jsk" ||
+                                  !userWalletList ||
+                                  userWalletList.length === 0
+                                ) {
                                   e.preventDefault();
+
+                                  props.history.push(
+                                    "/wallet-viewer-add-address"
+                                  );
+
+                                  return null;
                                 } else {
                                   HomeMenu({
                                     session_id: getCurrentUser().id,
@@ -1120,31 +1271,35 @@ function Sidebar(props) {
                               activeclassname="active"
                             >
                               <Image
-                                src={HomeSidebarIcon}
+                                src={WalletViewerSidebarIcon}
                                 style={
-                                  activeTab === "/home"
+                                  activeTab === "/home" ||
+                                  activeTab === "/wallet-viewer-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
                                     : {}
                                 }
                               />
-                              Home
+                              Wallet Viewer
                             </NavLink>
                           </li>
-
                           <li>
                             <NavLink
                               className={`nav-link`}
-                              to="/watchlist"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/following-add-address"
+                                  : "/watchlist"
+                              }
                               onClick={(e) => {
                                 let tempToken = getToken();
                                 if (!tempToken || tempToken === "jsk") {
                                   e.preventDefault();
+
+                                  props.history.push("/following-add-address");
+
                                   return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
                                 } else {
                                   MenuWatchlist({
                                     session_id: getCurrentUser().id,
@@ -1157,7 +1312,8 @@ function Sidebar(props) {
                               <Image
                                 src={FollowingSidebarIcon}
                                 style={
-                                  activeTab === "/watchlist"
+                                  activeTab === "/watchlist" ||
+                                  activeTab === "/following-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
@@ -1172,19 +1328,16 @@ function Sidebar(props) {
                             <NavLink
                               exact={true}
                               onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
-                                  return null;
-                                }
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  MenuLeaderboard({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
+                                // let tempToken = getToken();
+                                // if (!tempToken || tempToken === "jsk") {
+                                //   e.preventDefault();
+                                //   return null;
+                                // } else {
+                                MenuLeaderboard({
+                                  session_id: getCurrentUser().id,
+                                  email_address: getCurrentUser().email,
+                                });
+                                // }
                               }}
                               className="nav-link"
                               to="/home-leaderboard"
@@ -1206,24 +1359,20 @@ function Sidebar(props) {
 
                           <li>
                             <NavLink
-                              onClick={(e) => {
-                                if (!isWallet) {
-                                  e.preventDefault();
-                                } else {
-                                  ProfileMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
+                              onClick={handleGoToProfile}
                               className="nav-link"
-                              to="/profile"
+                              to={
+                                !lochUserState || lochUserState === "jsk"
+                                  ? "/profile-add-address"
+                                  : "/profile"
+                              }
                               activeclassname="active"
                             >
                               <Image
                                 src={ProfileSidebarIcon}
                                 style={
-                                  activeTab === "/profile"
+                                  activeTab === "/profile" ||
+                                  activeTab === "/profile-add-address"
                                     ? {
                                         filter: "var(--sidebarActiveIcon)",
                                       }
@@ -1236,22 +1385,24 @@ function Sidebar(props) {
                           </li>
                         </>
                       )}
-                      <li>
-                        <NavLink
-                          exact={true}
-                          onClick={handleUserFeedbackModal}
-                          className="nav-link none"
-                          to="#"
-                          activeclassname="none"
-                          id="sidebar-feedback-btn-full"
-                        >
-                          <Image
-                            src={feedbackIcon}
-                            // style={{ filter: "opacity(0.6)" }}
-                          />
-                          Feedback
-                        </NavLink>
-                      </li>
+                      {!lochUserState || lochUserState === "jsk" ? null : (
+                        <li>
+                          <NavLink
+                            exact={true}
+                            onClick={handleUserFeedbackModal}
+                            className="nav-link none"
+                            to="#"
+                            activeclassname="none"
+                            id="sidebar-feedback-btn-full"
+                          >
+                            <Image
+                              src={feedbackIcon}
+                              // style={{ filter: "opacity(0.6)" }}
+                            />
+                            Feedback
+                          </NavLink>
+                        </li>
+                      )}
                       {/* <li>
                         <NavLink
                           exact={true}s
@@ -1298,10 +1449,7 @@ function Sidebar(props) {
                   <div className="sidebar-footer-content-closed">
                     {isSubmenu && !isSubmenu.discover && (
                       <ul>
-                        {lochUser &&
-                        (lochUser.email ||
-                          lochUser.first_name ||
-                          lochUser.last_name) ? (
+                        {lochUser && lochUser.email ? (
                           <CustomOverlay
                             position="top"
                             isIcon={false}
@@ -1311,7 +1459,11 @@ function Sidebar(props) {
                           >
                             <div
                               onClick={handleGoToProfile}
-                              className=" sideBarFooterSignInIconContainerClosed inter-display-medium f-s-13 lh-19 "
+                              className={`sideBarFooterSignInIconContainerClosed ${
+                                isCurPremiumUser
+                                  ? "sideBarFooterSignInIconContainerClosedPremium"
+                                  : ""
+                              } inter-display-medium f-s-13 lh-19`}
                             >
                               <Image
                                 className="sideBarFooterSignInIcon"
@@ -1373,7 +1525,6 @@ function Sidebar(props) {
                       <div
                         onClick={openLochTwitter}
                         className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedForTwitter inter-display-medium f-s-13 lh-19 "
-                        id="sidebar-closed-sign-in-btn"
                       >
                         <Image
                           className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter"
@@ -1403,10 +1554,7 @@ function Sidebar(props) {
                   <div className="sidebar-footer-content">
                     {isSubmenu && !isSubmenu.discover && (
                       <ul>
-                        {lochUser &&
-                        (lochUser.email ||
-                          lochUser.first_name ||
-                          lochUser.last_name) ? (
+                        {lochUser && lochUser.email ? (
                           <div
                             onClick={handleGoToProfile}
                             className="sideBarFooterSignInContainer sideBarFooterSignedInContainer inter-display-medium f-s-13 lh-19"
@@ -1431,7 +1579,13 @@ function Sidebar(props) {
                                     }`
                                   : "Signed In"}
                               </div>
+                              {isCurPremiumUser ? (
+                                <div className="sideabr-premium-banner">
+                                  Premium
+                                </div>
+                              ) : null}
                             </div>
+
                             <span
                               onClick={handleLeaveChild}
                               onMouseOver={(e) =>
@@ -1444,9 +1598,6 @@ function Sidebar(props) {
                               className="sideBarFooterSignedInLeaveContainer inter-display-medium f-s-13"
                             >
                               <Image src={LeaveIcon} />
-                              <Button className="inter-display-medium f-s-13 lh-19 navbar-button">
-                                Leave
-                              </Button>
                             </span>
                           </div>
                         ) : (
@@ -1494,7 +1645,6 @@ function Sidebar(props) {
                     <div
                       onClick={openLochTwitter}
                       className="sideBarFooterSignInContainer sideBarFooterSignInContainerForTwitter inter-display-medium f-s-13 lh-19 navbar-button"
-                      id="sidebar-open-sign-in-btn"
                     >
                       <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerForTwitter">
                         <Image
@@ -1621,7 +1771,7 @@ function Sidebar(props) {
           show={Upgrade}
           onHide={upgradeModal}
           history={history}
-          isShare={window.sessionStorage.getItem("share_id")}
+          isShare={window.localStorage.getItem("share_id")}
           // isStatic={isStatic}
           triggerId={triggerId}
           pname="sidebar"
@@ -1763,6 +1913,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   portfolioState: state.PortfolioState,
   defiState: state.DefiState,
+  userPaymentState: state.UserPaymentState,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

@@ -1,5 +1,123 @@
 @import "../../../src/assets/scss/common/_variables.scss";
+.topWalletAddressListFollowShareBtnContainer {
+  position: relative;
+  .topWalletAddressListFollowShareBtnPopUpContainer {
+    background-color: var(--cardBackgroud);
+    border: 0.15rem solid var(--currenyConvertorBorder);
+    border-radius: 1rem;
+    box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem var(--freemiumTooltipShadow),
+      0rem 0.63099rem 0.63099rem -0.31549rem var(--freemiumTooltipShadow);
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    transform: translateY(calc(100% + 1rem));
+    z-index: 1001;
+    .topWalletAddressListFollowShareBtnPopUp {
+      padding: 1rem;
+      position: relative;
+      flex-wrap: nowrap;
+      .topWalletAddressListFollowShareBtnPopUpArrow {
+        background-color: var(--cardBackgroud);
+        border: 0.15rem solid var(--currenyConvertorBorder);
+        border-right-width: 0rem;
+        border-bottom-width: 0rem;
+        height: 0.6rem;
+        width: 0.6rem;
+        position: absolute;
+        top: 0;
+        right: 4rem;
+        transform: translateX(-50%) translateY(-60%) rotate(45deg);
+      }
 
+      .TWALSFBPopUpCopyBlock {
+        border-radius: 0.6rem;
+        padding: 1rem;
+        .TWALSFBPopUpHeading {
+          white-space: nowrap;
+          overflow: hidden;
+          font-size: 13px;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          .TWALSFBPopUpHeadingIcon {
+            margin-right: 0.5rem;
+            height: 12px;
+            filter: var(--invertColor);
+          }
+        }
+      }
+      .TWALSFBPopUpCopyTradeBlock {
+        background-color: var(--payModalBg);
+      }
+      .TWALSFBPopUpShareBlock {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 1.2rem;
+        .TWALSFBPopUpShareDirect {
+          margin-bottom: 0.3rem;
+          display: flex;
+          align-items: center;
+          color: var(--sidebarBottomOptions);
+          text-shadow: 0.2px 0px 0px var(--sidebarBottomOptions);
+          font-size: 13px;
+          font-weight: 500;
+
+          .TWALSFBPopUpShareDirectIcon {
+            height: 10px;
+            margin-right: 0.5rem;
+          }
+        }
+        .TWALSFBPopUpShareBlockFlex {
+          display: flex;
+          align-items: center;
+          gap: 0.8rem;
+        }
+      }
+      .TWALSFBPopUpCopy {
+        display: flex;
+        align-items: center;
+        margin-top: 0.5rem;
+        gap: 0.5rem;
+        font: 13px;
+        .TWALSFBPopUpCopyLink {
+          background-color: var(--cardBackgroud);
+          padding: 0.7rem 1rem;
+          border-radius: 0.7rem;
+          color: var(--grey969);
+          width: 22rem;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          border: 0.15rem solid var(--currenyConvertorBorder);
+        }
+        .TWALSFBPopUpCopyBtn {
+          background-color: var(--cardBackgroud);
+          padding: 0.7rem 1.3rem;
+          border-radius: 0.7rem;
+          border: 0.15rem solid var(--currenyConvertorBorder);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .TWALSFBPopUpCopyBtnIcon {
+            height: 12px;
+            margin-left: 0.8rem;
+            filter: var(--invertColor);
+          }
+          &:hover {
+            background-color: var(--backColor);
+            border-color: var(--backColor);
+            color: var(--cardBackgroud);
+            .TWALSFBPopUpCopyBtnIcon {
+              filter: var(--invertColor2);
+            }
+          }
+        }
+      }
+    }
+  }
+}
 .topWalletAddressList {
   display: flex;
   align-items: center;
@@ -284,6 +402,56 @@
         .topWalletAddressListFollowShareBtnIcon {
           filter: var(--invertColor2);
         }
+      }
+    }
+    .topWalletAddressListFollowShareBtnBig {
+      width: 12rem;
+    }
+  }
+}
+.topWalletAddressListMobile {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.3rem;
+
+  .refresh-btn {
+    display: flex;
+    align-items: center;
+    user-select: none;
+    width: max-content;
+    margin-bottom: 1.3rem;
+    img {
+      position: relative;
+      margin-right: 0.6rem;
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+  }
+  .twalFollowAndShareMobile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    .topWalletAddressListFollowShareBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--mainButtonBg);
+      height: 4rem;
+      border-radius: 0.8rem;
+      border: 0.1rem solid var(--topbarBackgroud);
+      font-size: 13px;
+      color: var(--white191darke5ee6);
+      box-shadow: var(--boxShadowMd);
+      .topWalletAddressListFollowShareBtnIcon {
+        height: 13px;
+        margin-right: 1rem;
+      }
+      cursor: pointer;
+      .topWalletAddressListFollowShareBtnIcon {
+        filter: var(--invertColor);
       }
     }
   }

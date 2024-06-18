@@ -14,8 +14,8 @@ const INITIAL_STATE = {
   coinRateList: [],
   chainWallet: [],
   walletTotal: 0,
-  currency: window.sessionStorage.getItem("currency")
-    ? JSON.parse(window.sessionStorage.getItem("currency"))
+  currency: window.localStorage.getItem("currency")
+    ? JSON.parse(window.localStorage.getItem("currency"))
     : {},
 
   // yesterday balance

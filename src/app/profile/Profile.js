@@ -2,13 +2,17 @@ import React, { Component } from "react";
 // import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 // import Sidebar from '../common/Sidebar';
-import { ProfilePage, TimeSpentProfile } from "../../utils/AnalyticsFunctions";
+import {
+  ProfilePage,
+  TimeSpentProfile,
+  UpgradeBannerClicked,
+} from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
 import PageHeader from "./../common/PageHeader";
 import ProfileForm from "./ProfileForm";
 
 // add wallet
-import { Col, Row, Image } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
   GetAllPlan,
@@ -19,6 +23,18 @@ import {
 import FixAddModal from "../common/FixAddModal";
 
 // Upgrade
+import {
+  PasswordPurpleIcon,
+  PremiumBannerCheckCircleIcon,
+  PremiumBannerDiamondIcon,
+  PremiumBannerDownloadIcon,
+  PremiumBannerLayersIcon,
+  PremiumBannerLochIcon,
+  PremiumBannerSwapIcon,
+  PremiumBannerTelegramIcon,
+  PremiumBannerWalletIcon,
+  UserCreditScrollRightArrowIcon,
+} from "../../assets/images/icons";
 import insight from "../../assets/images/icons/InactiveIntelligenceIcon.svg";
 import DefiIcon from "../../assets/images/icons/upgrade-defi.svg";
 import ExportIcon from "../../assets/images/icons/upgrade-export.svg";
@@ -28,31 +44,30 @@ import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
 import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
+import { BASE_URL_S3 } from "../../utils/Constant";
+import {
+  isPremiumUser,
+  mobileCheck,
+  scrollToTop,
+} from "../../utils/ReusableFunctions";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import { getReferallCodes } from "../ReferralCodes/ReferralCodesApi";
+import { PaywallModal } from "../common";
 import UpgradeModal from "../common/upgradeModal";
+import TopWalletAddressList from "../header/TopWalletAddressList";
+import MobileLayout from "../layout/MobileLayout";
 import Wallet from "../wallet/Wallet";
 import { ManageLink } from "./Api";
 import ProfileLochCreditPoints from "./ProfileLochCreditPoints";
-import { mobileCheck, scrollToTop } from "../../utils/ReusableFunctions";
-import TopWalletAddressList from "../header/TopWalletAddressList";
-import {
-  ArrowUpRightSmallIcon,
-  PasswordIcon,
-  PasswordPurpleIcon,
-  UserCreditRightArrowIcon,
-  UserCreditScrollRightArrowIcon,
-} from "../../assets/images/icons";
-import MobileLayout from "../layout/MobileLayout";
 import ProfileMobile from "./ProfileMobile";
-import { getReferallCodes } from "../ReferralCodes/ReferralCodesApi";
 
 class Profile extends Component {
   constructor(props) {
     super(props);
-    const Plans = JSON.parse(window.sessionStorage.getItem("Plans"));
+    const Plans = JSON.parse(window.localStorage.getItem("Plans"));
     let selectedPlan = {};
     let userPlan =
-      JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free";
+      JSON.parse(window.localStorage.getItem("currentPlan")) || "Free";
     Plans?.map((plan) => {
       if (plan.name === userPlan.name) {
         let price = plan.prices ? plan.prices[0]?.unit_amount / 100 : 0;
@@ -129,11 +144,13 @@ class Profile extends Component {
 
     this.state = {
       // add new wallet
+      isLochPaymentModal: false,
+      isPremium: isPremiumUser(),
       isInputFocused: false,
       isMobileDevice: false,
       codesLeftToUse: false,
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -144,6 +161,22 @@ class Profile extends Component {
       startTime: "",
       followFlag: false,
       lochUser: undefined,
+      premiumBannerItems: [
+        { icon: PremiumBannerSwapIcon, text: "Unlimited Copy trades" },
+        { icon: PremiumBannerWalletIcon, text: "Analyze wallets PnL" },
+        // { icon: PremiumBannerBellIcon, text: "Unlimited Notifications" },
+        { icon: PremiumBannerLayersIcon, text: "Analyze gas fees" },
+        { icon: PremiumBannerDownloadIcon, text: "Unlimited data exports" },
+        { icon: PremiumBannerLochIcon, text: "10 points each month" },
+        {
+          icon: PremiumBannerWalletIcon,
+          text: "Unlimited wallets aggregation",
+        },
+        {
+          icon: PremiumBannerTelegramIcon,
+          text: "Platinum telegram channel",
+        },
+      ],
     };
   }
 
@@ -167,13 +200,18 @@ class Profile extends Component {
   };
   componentDidMount() {
     scrollToTop();
+    setTimeout(() => {
+      this.setState({
+        isPremium: isPremiumUser(),
+      });
+    }, 1000);
     if (mobileCheck()) {
       // this.props.history.push("/home");
       this.setState({
         isMobileDevice: true,
       });
     }
-    const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (isLochUser) {
       this.setState({
         lochUser: isLochUser,
@@ -202,17 +240,18 @@ class Profile extends Component {
   };
   componentDidUpdate(prevProps) {
     if (!this.props.commonState.profilePage) {
+      this.setState({
+        isPremium: isPremiumUser(),
+      });
       this.props.updateWalletListFlag("profilePage", true);
       this.props.GetAllPlan();
       this.props.getUser();
-      const isLochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+      const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
       if (isLochUser && isLochUser.email) {
         this.props.getReferallCodes();
       }
       setTimeout(() => {
-        const isLochUser = JSON.parse(
-          window.sessionStorage.getItem("lochUser")
-        );
+        const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
         if (isLochUser) {
           this.setState({
             lochUser: isLochUser,
@@ -233,18 +272,18 @@ class Profile extends Component {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "profilePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("profilePageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("profilePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkProfileTimer);
-    window.sessionStorage.removeItem("profilePageExpiryTime");
+    window.localStorage.removeItem("profilePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -256,17 +295,13 @@ class Profile extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
-      "profilePageExpiryTime"
-    );
+    const tempExpiryTime = window.localStorage.getItem("profilePageExpiryTime");
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
       this.endPageView();
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
-      "profilePageExpiryTime"
-    );
+    const tempExpiryTime = window.localStorage.getItem("profilePageExpiryTime");
     if (tempExpiryTime) {
       this.endPageView();
     }
@@ -274,7 +309,7 @@ class Profile extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -305,7 +340,7 @@ class Profile extends Component {
     if (this.state.lochUser && this.state.lochUser.email) {
       this.props.history.push("/profile/referral-codes");
     } else {
-      window.sessionStorage.setItem("referralCodesSignInModal", true);
+      window.localStorage.setItem("referralCodesSignInModal", true);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
         document.getElementById("sidebar-open-sign-in-btn").click();
         this.dontOpenLoginPopup();
@@ -316,7 +351,7 @@ class Profile extends Component {
     }
   };
   dontOpenLoginPopup = () => {
-    window.sessionStorage.setItem("dontOpenLoginPopup", true);
+    window.localStorage.setItem("dontOpenLoginPopup", true);
   };
   showFocusedInput = () => {
     this.setState({
@@ -335,7 +370,7 @@ class Profile extends Component {
     ) {
       document.getElementById("topBarContainerInputBlockInputId").focus();
     }
-    if (this.state.isMobile) {
+    if (this.state.isMobileDevice) {
       if (
         document.getElementById("newWelcomeWallet-1") &&
         document.getElementById("newWelcomeWallet-1").focus
@@ -344,23 +379,67 @@ class Profile extends Component {
       }
     }
   };
+  hidePaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: false,
+    });
+  };
+  showPaymentModal = () => {
+    this.setState({
+      isLochPaymentModal: true,
+    });
+  };
+  upgradeNowBtnClick = () => {
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (isLochUser && isLochUser.email) {
+      UpgradeBannerClicked({
+        session_id: getCurrentUser ? getCurrentUser()?.id : "",
+        email_address: getCurrentUser ? getCurrentUser()?.email : "",
+      });
+      this.showPaymentModal();
+    } else {
+      window.localStorage.setItem(
+        "upgradePremiumProfileBannerSignInModal",
+        true
+      );
+      if (document.getElementById("sidebar-open-sign-in-btn")) {
+        document.getElementById("sidebar-open-sign-in-btn").click();
+      } else if (document.getElementById("sidebar-closed-sign-in-btn")) {
+        document.getElementById("sidebar-closed-sign-in-btn").click();
+      }
+    }
+  };
   render() {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
+          handleShare={() => null}
           currentPage={"profile"}
           hideFooter
           history={this.props.history}
           isUpdate={this.state.isUpdate}
           updateTimer={this.updateTimer}
           hideShare
+          hideAddresses
         >
+          {this.state.isLochPaymentModal ? (
+            <PaywallModal
+              show={this.state.isLochPaymentModal}
+              onHide={this.hidePaymentModal}
+              redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+              hideBackBtn
+              isMobile
+            />
+          ) : null}
           <ProfileMobile
             goToMyReferralCodes={this.goToMyReferralCodes}
+            upgradeNowBtnClick={this.upgradeNowBtnClick}
             followFlag={this.state.followFlag}
             isUpdate={this.state.isUpdate}
             lochUser={this.state.lochUser}
             codesLeftToUse={this.state.codesLeftToUse}
+            premiumBannerItems={this.state.premiumBannerItems}
+            isPremium={this.state.isPremium}
             history={this.props.history}
           />
         </MobileLayout>
@@ -388,7 +467,6 @@ class Profile extends Component {
                 // add wallet address modal
                 handleAddModal={this.handleAddModal}
                 handleUpdate={this.handleUpdateWallet}
-                hideShare
               />
             </div>
           </div>
@@ -417,7 +495,6 @@ class Profile extends Component {
                     // add wallet address modal
                     handleAddModal={this.handleAddModal}
                     handleUpdate={this.handleUpdateWallet}
-                    hideShare
                   />
                 </div>
               </div>
@@ -441,11 +518,7 @@ class Profile extends Component {
                 from="profile"
               />
             )}
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              hideShare
-              hideFollow
-            />
+
             <PageHeader
               title="Profile"
               subTitle="Manage your profile here"
@@ -467,6 +540,224 @@ class Profile extends Component {
                   />
                 </Col>
               </Row>
+            </div>
+            {this.state.isLochPaymentModal ? (
+              <PaywallModal
+                show={this.state.isLochPaymentModal}
+                onHide={this.hidePaymentModal}
+                redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+                hideBackBtn
+              />
+            ) : null}
+            <div className="profile-section-loch-premium-banner">
+              <div className="pslpl-heading">
+                <Image className="pslpl-icon" src={PremiumBannerDiamondIcon} />
+                <div className="inter-display-medium pslpl-text">
+                  Loch Premium
+                </div>
+              </div>
+              {this.state.isPremium ? (
+                <div
+                  style={{
+                    marginTop: "3rem",
+                  }}
+                  className="profile-section-loch-premium"
+                >
+                  <div className="pslp-left">
+                    <div
+                      style={{
+                        transform: "translateY(-5rem)",
+                      }}
+                      className="pslpl-banner"
+                    >
+                      <div className="inter-display-medium pslpl-banner-des">
+                        Exclusive benefits
+                      </div>
+                      <div className="pslpl-banner-heading">
+                        <Image
+                          src={PremiumBannerCheckCircleIcon}
+                          className="pslpl-banner-heading-image"
+                        />
+                        <div className="inter-display-medium pslpl-banner-heading-text">
+                          Activated
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pslp-right">
+                    <div className="pslpl-conent">
+                      {this.state.premiumBannerItems.map((itemBlock, index) => (
+                        <div>
+                          <div key={index} className="pslpl-item-block">
+                            <Image
+                              className="pslpl-item-block-icon"
+                              src={itemBlock.icon}
+                            />
+                            <div className="inter-display-medium pslpl-item-block-text">
+                              {itemBlock.text}
+                            </div>
+                          </div>
+                          {itemBlock.text === "Platinum telegram channel" ? (
+                            <>
+                              <div
+                                style={{
+                                  marginTop: "0.5rem",
+                                }}
+                                className="pslpl-item-block"
+                              >
+                                <Image
+                                  className="pslpl-item-block-icon"
+                                  src={itemBlock.icon}
+                                  style={{
+                                    opacity: "0",
+                                  }}
+                                />
+                                <div className="pslpl-item-block-bullet-item" />
+                                <div className="inter-display-medium pslpl-item-block-text">
+                                  <span>Over $400m liquid onchain AUM</span>
+                                </div>
+                              </div>
+                              <div
+                                style={{
+                                  marginTop: "0.5rem",
+                                }}
+                                className="pslpl-item-block"
+                              >
+                                <Image
+                                  className="pslpl-item-block-icon"
+                                  src={itemBlock.icon}
+                                  style={{
+                                    opacity: "0",
+                                  }}
+                                />
+                                <div className="pslpl-item-block-bullet-item" />
+                                <div className="inter-display-medium pslpl-item-block-text">
+                                  <span>Over 500k twitter followers</span>
+                                </div>
+                              </div>
+                              <div
+                                style={{
+                                  marginTop: "0.5rem",
+                                }}
+                                className="pslpl-item-block"
+                              >
+                                <Image
+                                  className="pslpl-item-block-icon"
+                                  src={itemBlock.icon}
+                                  style={{
+                                    opacity: "0",
+                                  }}
+                                />
+                                <div className="pslpl-item-block-bullet-item" />
+                                <div className="inter-display-medium pslpl-item-block-text">
+                                  <span>Daily trade ideas</span>
+                                </div>
+                              </div>
+                            </>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="profile-section-loch-premium">
+                  <div className="pslp-left">
+                    <div className="pslpl-conent">
+                      {this.state.premiumBannerItems.map((itemBlock, index) => (
+                        <div>
+                          <div key={index} className="pslpl-item-block">
+                            <Image
+                              className="pslpl-item-block-icon"
+                              src={itemBlock.icon}
+                            />
+                            <div className="inter-display-medium pslpl-item-block-text">
+                              {itemBlock.text}
+                            </div>
+                          </div>
+                          {itemBlock.text === "Platinum telegram channel" ? (
+                            <>
+                              <div
+                                style={{
+                                  marginTop: "0.5rem",
+                                }}
+                                className="pslpl-item-block"
+                              >
+                                <Image
+                                  className="pslpl-item-block-icon"
+                                  src={itemBlock.icon}
+                                  style={{
+                                    opacity: "0",
+                                  }}
+                                />
+                                <div className="pslpl-item-block-bullet-item" />
+                                <div className="inter-display-medium pslpl-item-block-text">
+                                  <span>Over $400m liquid onchain AUM</span>
+                                </div>
+                              </div>
+                              <div
+                                style={{
+                                  marginTop: "0.5rem",
+                                }}
+                                className="pslpl-item-block"
+                              >
+                                <Image
+                                  className="pslpl-item-block-icon"
+                                  src={itemBlock.icon}
+                                  style={{
+                                    opacity: "0",
+                                  }}
+                                />
+                                <div className="pslpl-item-block-bullet-item" />
+                                <div className="inter-display-medium pslpl-item-block-text">
+                                  <span>Over 500k twitter followers</span>
+                                </div>
+                              </div>
+                              <div
+                                style={{
+                                  marginTop: "0.5rem",
+                                }}
+                                className="pslpl-item-block"
+                              >
+                                <Image
+                                  className="pslpl-item-block-icon"
+                                  src={itemBlock.icon}
+                                  style={{
+                                    opacity: "0",
+                                  }}
+                                />
+                                <div className="pslpl-item-block-bullet-item" />
+                                <div className="inter-display-medium pslpl-item-block-text">
+                                  <span>Daily trade ideas</span>
+                                </div>
+                              </div>
+                            </>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      transform: "translateY(-4rem)",
+                    }}
+                    className="pslp-right"
+                  >
+                    <div className="pslpr-desc">Not a member yet</div>
+                    <div className="pslpr-heading">
+                      Join Loch Premium and enjoy
+                      <br />
+                      exclusive benefits
+                    </div>
+                    <button
+                      onClick={this.upgradeNowBtnClick}
+                      className="pslpr-btn"
+                    >
+                      Upgrade now
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
             <div
               onClick={this.goToMyReferralCodes}
@@ -523,7 +814,7 @@ class Profile extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
+                isShare={window.localStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={0}
                 pname="profile"

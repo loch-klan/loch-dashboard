@@ -11,7 +11,7 @@ import Loading from "./Loading";
 class Login extends BaseReactComponent {
   constructor(props) {
     super(props);
-    let redirect = JSON.parse(window.sessionStorage.getItem("ShareRedirect"));
+    let redirect = JSON.parse(window.localStorage.getItem("ShareRedirect"));
     this.state = {
       link: props.location?.state?.from?.pathname || "",
       id: props.location?.state?.params?.id || "",
@@ -41,16 +41,16 @@ class Login extends BaseReactComponent {
     // }
     // DELETE TOKEN AND OTHER DETAILS ON COMPONENT LOAD.
     // deleteToken();
-    // window.sessionStorage.setItem("defi_access", true);
-    // window.sessionStorage.setItem("isPopup", true);
-    // // window.sessionStorage.setItem("whalepodview", true);
-    // window.sessionStorage.setItem(
+    // window.localStorage.setItem("defi_access", true);
+    // window.localStorage.setItem("isPopup", true);
+    // // window.localStorage.setItem("whalepodview", true);
+    // window.localStorage.setItem(
     //   "whalepodview",
     //   JSON.stringify({ access: true, id: "" })
     // );
     setLocalStoraage();
 
-    window.sessionStorage.setItem(
+    window.localStorage.setItem(
       "currency",
       JSON.stringify({
         active: true,
@@ -62,7 +62,7 @@ class Login extends BaseReactComponent {
       })
     );
 
-    let userPlan = JSON.parse(window.sessionStorage.getItem("currentPlan"));
+    let userPlan = JSON.parse(window.localStorage.getItem("currentPlan"));
     if (!userPlan) {
       GetDefaultPlan();
     }
@@ -82,7 +82,7 @@ class Login extends BaseReactComponent {
   onValidSubmit = () => {
     const data = new URLSearchParams();
     data.append("password", this.state.password);
-    window.sessionStorage.setItem("baseToken", this.state.password);
+    window.localStorage.setItem("baseToken", this.state.password);
     loginApi(this, data);
   };
 
@@ -100,7 +100,7 @@ class Login extends BaseReactComponent {
       // data.append("link", this.state.id);
       this.props.createAnonymousUserApi(data, this, [], null);
     } else {
-      let addWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      let addWallet = JSON.parse(window.localStorage.getItem("addWallet"));
       // console.log('Heyyyy',addWallet);
       let walletAddress = [];
       let AddressList = [];

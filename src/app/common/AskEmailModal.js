@@ -19,17 +19,15 @@ import { updateUser } from "../profile/Api";
 class AskEmailModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const dummyUser = window.localStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.state = {
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
       email: userDetails?.email || "",
       mobileNumber: userDetails?.mobile || "",
       link:
-        userDetails?.link ||
-        window.sessionStorage.getItem("lochDummyUser") ||
-        "",
+        userDetails?.link || window.localStorage.getItem("lochDummyUser") || "",
       show: props.show,
       onHide: props.onHide,
       modalType: "Email",
@@ -38,19 +36,22 @@ class AskEmailModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
   }
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
   componentDidUpdate() {}
 
   handleUpdateEmail = () => {
     const data = new URLSearchParams();
 
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     data.append("signed_up_from", "Email added after metamask connect");
 
     this.props.updateUser(data, this);

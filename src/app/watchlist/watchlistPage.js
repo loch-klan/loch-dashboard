@@ -58,6 +58,7 @@ import {
 import {
   TruncateText,
   mobileCheck,
+  openAddressInSameTab,
   scrollToBottomAfterPageChange,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
@@ -85,7 +86,7 @@ class WatchListPage extends BaseReactComponent {
       goToBottom: false,
       initialList: false,
       showAddWatchListAddress: false,
-      currency: JSON.parse(window.sessionStorage.getItem("currency")),
+      currency: JSON.parse(window.localStorage.getItem("currency")),
       year: "",
       search: "",
       method: "",
@@ -116,15 +117,15 @@ class WatchListPage extends BaseReactComponent {
       ],
       showDust: false,
       // add new wallet
-      // userWalletList: window.sessionStorage.getItem("addWallet")
-      //   ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      // userWalletList: window.localStorage.getItem("addWallet")
+      //   ? JSON.parse(window.localStorage.getItem("addWallet"))
       //   : [],
       addModal: false,
       isUpdate: 0,
       apiResponse: false,
 
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -140,7 +141,7 @@ class WatchListPage extends BaseReactComponent {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
   startPageView = () => {
@@ -170,18 +171,18 @@ class WatchListPage extends BaseReactComponent {
     this.updateTimer(true);
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "watchlistPageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("watchlistPageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("watchlistPageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkWatchlistTimer);
-    window.sessionStorage.removeItem("watchlistPageExpiryTime");
+    window.localStorage.removeItem("watchlistPageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -193,7 +194,7 @@ class WatchListPage extends BaseReactComponent {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "watchlistPageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -201,7 +202,7 @@ class WatchListPage extends BaseReactComponent {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "watchlistPageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -296,6 +297,9 @@ class WatchListPage extends BaseReactComponent {
           totalPage: totalItems ? totalItems : 0,
         });
       }
+    }
+    if (this.props.commonState !== prevProps.commonState) {
+      this.refetchList();
     }
   }
 
@@ -452,7 +456,7 @@ class WatchListPage extends BaseReactComponent {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -563,14 +567,16 @@ class WatchListPage extends BaseReactComponent {
                     BASE_URL_S3 + "home/" + slink + "?redirect=home";
                   if (lochUser) {
                     const alreadyPassed =
-                      window.sessionStorage.getItem("PassedRefrenceId");
+                      window.localStorage.getItem("PassedRefrenceId");
                     if (alreadyPassed) {
                       shareLink = shareLink + "&refrenceId=" + alreadyPassed;
                     } else {
                       shareLink = shareLink + "&refrenceId=" + lochUser;
                     }
                   }
-                  window.open(shareLink, "_blank", "noreferrer");
+                  // window.open(shareLink, "_blank", "noreferrer");
+                  openAddressInSameTab(slink, this.props.setPageFlagDefault);
+
                   // this.updateWatchListAnalyzed(
                   //   rowData.nameTag,
                   //   rowData.address,
@@ -587,9 +593,9 @@ class WatchListPage extends BaseReactComponent {
                   //   });
                   //   this.updateTimer();
                   //   let obj = JSON.parse(
-                  //     window.sessionStorage.getItem("previewAddress")
+                  //     window.localStorage.getItem("previewAddress")
                   //   );
-                  //   window.sessionStorage.setItem(
+                  //   window.localStorage.setItem(
                   //     "previewAddress",
                   //     JSON.stringify({
                   //       ...obj,
@@ -597,7 +603,7 @@ class WatchListPage extends BaseReactComponent {
                   //       nameTag: rowData.nameTag ? rowData.nameTag : "",
                   //     })
                   //   );
-                  //   window.sessionStorage.setItem(
+                  //   window.localStorage.setItem(
                   //     "previewAddressGoToWhaleWatch",
                   //     JSON.stringify({
                   //       goToWhaleWatch: false,
@@ -758,9 +764,11 @@ class WatchListPage extends BaseReactComponent {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           hideFooter
+          hideAddresses
           hideShare
         >
           <WalletListPageMobile
@@ -844,7 +852,7 @@ class WatchListPage extends BaseReactComponent {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
+                isShare={window.localStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="treansaction history"
@@ -956,6 +964,7 @@ class WatchListPage extends BaseReactComponent {
 const mapStateToProps = (state) => ({
   WatchListState: state.WatchListState,
   WatchListLoadingState: state.WatchListLoadingState,
+  commonState: state.CommonState,
 });
 const mapDispatchToProps = {
   setPageFlagDefault,

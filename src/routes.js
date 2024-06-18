@@ -6,7 +6,6 @@ import PrivateRoute from "./utils/PrivateRoute";
 import Sandbox from "./utils/form/Sandbox";
 
 import VerifyEmail from "./app/common/VerifyEmail";
-import Defi from "./app/defi/Defi";
 import InsightsPage from "./app/intelligence/InsightsPage";
 import TransactionHistoryPage from "./app/intelligence/TransactionHistoryPage";
 import VerifySmartMoneyEmailLink from "./app/smartMoney/VerifySmartMoneyEmailLink";
@@ -24,18 +23,35 @@ import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
+import AutoLogin from "./app/AutoLogin/AutoLogin";
+import Emulations from "./app/Emulations/Emulations";
+import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
+import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
+import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
 import NewWelcome from "./app/home/NewWelcome";
 import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
-import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
 import PublicRoute from "./utils/PublicRoute";
+import CopyTradeWelcome from "./app/CopyTradeWelcome/CopyTradeWelcome";
+import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
+import CryptoSuccessPage from "./app/CryptoSuccessPage/CryptoSuccessPage";
+import PublicSidebarRoute from "./utils/PublicSidebarRoute";
+import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
+import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
+import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
 const routes = [
   {
     path: "/",
     name: "Login",
     type: Route,
     component: Login,
+  },
+  {
+    path: "/auto-login",
+    name: "Auto Login",
+    type: Route,
+    component: AutoLogin,
   },
 
   {
@@ -94,6 +110,18 @@ const routes = [
     component: AssetsUnrealizedProfitAndLoss,
   },
   {
+    path: "/copy-trade",
+    name: "Emulations",
+    type: PrivateRoute,
+    component: Emulations,
+  },
+  // {
+  //   path: "/copy-trade/transactions",
+  //   name: "Emulations Transactions",
+  //   type: PrivateRoute,
+  //   component: EmulationTransactionsPage,
+  // },
+  {
     path: "/nft",
     name: "NFT",
     type: PrivateRoute,
@@ -117,6 +145,36 @@ const routes = [
     type: PrivateRoute,
     component: InsightsPage,
   },
+  {
+    path: "/copy-trade-welcome",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: CopyTradeWelcome,
+  },
+  {
+    path: "/wallet-viewer-add-address",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: AddAddressWalletViewer,
+  },
+  {
+    path: "/profile-add-address",
+    name: "Profile Add Address",
+    type: PublicSidebarRoute,
+    component: AddAddressProfile,
+  },
+  {
+    path: "/following-add-address",
+    name: "Following Add Address",
+    type: PublicSidebarRoute,
+    component: AddAddressFollowing,
+  },
+  {
+    path: "/profile-add-address",
+    name: "Copy Trade Welcome",
+    type: PublicSidebarRoute,
+    component: AddAddressProfile,
+  },
 
   {
     path: "/leaderboard",
@@ -127,7 +185,7 @@ const routes = [
   {
     path: "/home-leaderboard",
     name: "Home Leaderboard",
-    type: PrivateRoute,
+    type: PublicSidebarRoute,
     component: HomeSmartMoneyPage,
   },
   {
@@ -192,6 +250,30 @@ const routes = [
     name: "Sandox",
     type: Route,
     component: Sandbox,
+  },
+  {
+    path: "/stripe-success",
+    name: "Stripe Success",
+    type: PrivateRoute,
+    component: StripeSuccessPage,
+  },
+  {
+    path: "/crypto-success",
+    name: "Crypto Success",
+    type: PrivateRoute,
+    component: CryptoSuccessPage,
+  },
+  {
+    path: "/stripe-cancel",
+    name: "Stripe Error",
+    type: PrivateRoute,
+    component: StripeErrorPage,
+  },
+  {
+    path: "/replace-address",
+    name: "Stripe Error",
+    type: PublicSidebarRoute,
+    component: ReplaceAddressPage,
   },
 ];
 export default routes;

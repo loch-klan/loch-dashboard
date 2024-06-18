@@ -29,9 +29,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
   }
   componentDidMount() {
     let addressList = [];
-    const userWalletList = JSON.parse(
-      window.sessionStorage.getItem("addWallet")
-    );
+    const userWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     userWalletList?.map((wallet) => addressList.push(wallet.address));
     const tempAdd = JSON.stringify(addressList);
     let data = new URLSearchParams();
@@ -66,7 +64,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     ) {
       let addressList = [];
       const userWalletList = JSON.parse(
-        window.sessionStorage.getItem("addWallet")
+        window.localStorage.getItem("addWallet")
       );
       userWalletList?.map((wallet) => addressList.push(wallet.address));
       const tempAdd = JSON.stringify(addressList);
@@ -100,8 +98,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     if (
       prevProps.InflowOutflowChartState !== this.props.InflowOutflowChartState
     ) {
-      const shouldRecallApis =
-        window.sessionStorage.getItem("shouldRecallApis");
+      const shouldRecallApis = window.localStorage.getItem("shouldRecallApis");
       if (!shouldRecallApis || shouldRecallApis === "false") {
         this.setState({
           graphLoading: false,
@@ -121,7 +118,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     ) {
       let addressList = [];
       const userWalletList = JSON.parse(
-        window.sessionStorage.getItem("addWallet")
+        window.localStorage.getItem("addWallet")
       );
       userWalletList?.map((wallet) => addressList.push(wallet.address));
       const tempAdd = JSON.stringify(addressList);
@@ -146,7 +143,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     ) {
       let addressList = [];
       const userWalletList = JSON.parse(
-        window.sessionStorage.getItem("addWallet")
+        window.localStorage.getItem("addWallet")
       );
       userWalletList?.map((wallet) => addressList.push(wallet.address));
       const tempAdd = JSON.stringify(addressList);
@@ -207,9 +204,7 @@ class InflowOutflowPortfolioHome extends BaseReactComponent {
     data.append("dust_value", this.state.isDust);
 
     let addressList = [];
-    const userWalletList = JSON.parse(
-      window.sessionStorage.getItem("addWallet")
-    );
+    const userWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     userWalletList?.map((wallet) => addressList.push(wallet.address));
     data.append("wallet_addresses", JSON.stringify(addressList));
     this.props.getInflowsAndOutflowsGraphDataApi(data, this);

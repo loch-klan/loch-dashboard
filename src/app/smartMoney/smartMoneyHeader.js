@@ -18,26 +18,26 @@ import { getCurrentUser } from "../../utils/ManageToken";
 
 export default function SmartMoneyHeader(props) {
   const [selectedCurrency, setCurrency] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("currency"))
+    JSON.parse(window.localStorage.getItem("currency"))
   );
   const [currencyList, setAllCurrencyList] = React.useState([]);
   const [localLochUser, setLocalLochUser] = React.useState(
-    JSON.parse(window.sessionStorage.getItem("lochUser"))
+    JSON.parse(window.localStorage.getItem("lochUser"))
   );
 
   useEffect(() => {
     if (!props.blurTable) {
-      setLocalLochUser(JSON.parse(window.sessionStorage.getItem("lochUser")));
+      setLocalLochUser(JSON.parse(window.localStorage.getItem("lochUser")));
     } else {
       setLocalLochUser(undefined);
     }
   }, [props.blurTable]);
 
   React.useEffect(() => {
-    let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+    let currency = JSON.parse(window.localStorage.getItem("currency"));
 
     if (!currency) {
-      window.sessionStorage.setItem(
+      window.localStorage.setItem(
         "currency",
         JSON.stringify({
           active: true,
@@ -49,13 +49,13 @@ export default function SmartMoneyHeader(props) {
         })
       );
 
-      setCurrency(JSON.parse(window.sessionStorage.getItem("currency")));
+      setCurrency(JSON.parse(window.localStorage.getItem("currency")));
     }
 
     setTimeout(() => {
       //  console.log("curr", currency);
       let currencyRates = JSON.parse(
-        window.sessionStorage.getItem("currencyRates")
+        window.localStorage.getItem("currencyRates")
       );
       // console.log("currency", currencyRates);
       getAllCurrencyApi(setAllCurrencyList);
@@ -64,7 +64,7 @@ export default function SmartMoneyHeader(props) {
   }, []); // <-- Have to pass in [] here!
   const handleFunction = (currency) => {
     let currencyRates = JSON.parse(
-      window.sessionStorage.getItem("currencyRates")
+      window.localStorage.getItem("currencyRates")
     );
     for (const [key, value] of Object.entries(currencyRates.rates)) {
       // console.log(`${key}: ${value}`);
@@ -83,7 +83,7 @@ export default function SmartMoneyHeader(props) {
     // });
     setTimeout(() => {
       setCurrency(currency);
-      window.sessionStorage.setItem("currency", JSON.stringify(currency));
+      window.localStorage.setItem("currency", JSON.stringify(currency));
       window.location.reload();
     }, 200);
   };

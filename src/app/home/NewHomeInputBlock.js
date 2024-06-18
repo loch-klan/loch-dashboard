@@ -2,12 +2,15 @@ import { connect } from "react-redux";
 import { CustomCoin } from "../../utils/commonComponent";
 import { BaseReactComponent } from "../../utils/form";
 import React from "react";
+import { loadingAnimation } from "../../utils/ReusableFunctions";
 
 class NewHomeInputBlock extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.inputRefCustom = React.createRef(null);
-    this.state = {};
+    this.state = {
+      welcomeAddBtnLoading: false,
+    };
   }
 
   focusInputfield = () => {
@@ -100,36 +103,69 @@ class NewHomeInputBlock extends BaseReactComponent {
                               if (e.coinFound && e.coins.length > 0) {
                                 if (this.props.onGoBtnClick) {
                                   // return null;
-                                  return (
-                                    <div className="addToAddressListMobileBtnContainer">
-                                      <div
-                                        className={`addToAddressListMobileBtn ${
-                                          this.props.goBtnDisabled
-                                            ? "disableAddToAddressListMobileBtn"
-                                            : ""
-                                        }`}
-                                        onClick={() => {
-                                          this.props.onGoBtnClick(false);
-                                        }}
-                                      >
-                                        Add
+                                  if (this.props.isAddNewAddress) {
+                                    return (
+                                      <div className="addToAddressListMobileBtnContainer">
+                                        <div
+                                          className={`replaceAddressListMobileBtn ${
+                                            this.props.goBtnDisabled
+                                              ? "disableAddToAddressListMobileBtn"
+                                              : ""
+                                          }`}
+                                          onClick={() => {
+                                            if (this.props.onGoBtnClick) {
+                                              this.props.onGoBtnClick(true);
+                                            }
+                                          }}
+                                          style={{
+                                            pointerEvents: this.state
+                                              .welcomeAddBtnLoading
+                                              ? "none"
+                                              : "",
+                                          }}
+                                        >
+                                          {this.props.welcomeAddBtnLoading ? (
+                                            loadingAnimation()
+                                          ) : (
+                                            <span className="dotDotText">
+                                              Add
+                                            </span>
+                                          )}
+                                        </div>
                                       </div>
-                                      <div
-                                        className={`replaceAddressListMobileBtn ${
-                                          this.props.goBtnDisabled
-                                            ? "disableAddToAddressListMobileBtn"
-                                            : ""
-                                        }`}
-                                        onClick={() => {
-                                          if (this.props.onGoBtnClick) {
-                                            this.props.onGoBtnClick(true);
-                                          }
-                                        }}
-                                      >
-                                        Replace
+                                    );
+                                  } else {
+                                    return (
+                                      <div className="addToAddressListMobileBtnContainer">
+                                        <div
+                                          className={`addToAddressListMobileBtn ${
+                                            this.props.goBtnDisabled
+                                              ? "disableAddToAddressListMobileBtn"
+                                              : ""
+                                          }`}
+                                          onClick={() => {
+                                            this.props.onGoBtnClick(false);
+                                          }}
+                                        >
+                                          Add
+                                        </div>
+                                        <div
+                                          className={`replaceAddressListMobileBtn ${
+                                            this.props.goBtnDisabled
+                                              ? "disableAddToAddressListMobileBtn"
+                                              : ""
+                                          }`}
+                                          onClick={() => {
+                                            if (this.props.onGoBtnClick) {
+                                              this.props.onGoBtnClick(true);
+                                            }
+                                          }}
+                                        >
+                                          Replace
+                                        </div>
                                       </div>
-                                    </div>
-                                  );
+                                    );
+                                  }
                                 }
                                 return (
                                   <CustomCoin
@@ -152,7 +188,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                                       isStatic
                                       coins={null}
                                       key={i}
-                                      isLoaded={true}
+                                      isLoaded={false}
                                       hideMore={this.props.hideMore}
                                     />
                                   );
@@ -382,6 +418,7 @@ class NewHomeInputBlock extends BaseReactComponent {
                         ) {
                           // if (e.coins && e.coins.length === this.props.OnboardingState.coinsList.length) {
                           if (e.coinFound && e.coins.length > 0) {
+                            console.log("e.coins ", e.coins);
                             return (
                               <CustomCoin
                                 isStatic

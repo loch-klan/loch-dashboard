@@ -49,7 +49,7 @@ import UpgradeModal from "./upgradeModal";
 class FixAddModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     addWalletList =
       addWalletList && addWalletList?.length > 0
         ? addWalletList?.map((e) => {
@@ -98,7 +98,7 @@ class FixAddModal extends BaseReactComponent {
       deletedAddress: [],
       recievedResponse: false,
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -294,7 +294,7 @@ class FixAddModal extends BaseReactComponent {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
       hidePrevModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
       // reset all
       isIndexed: false,
       fileName: null,
@@ -551,7 +551,7 @@ class FixAddModal extends BaseReactComponent {
   }
 
   componentDidMount() {
-    const ssItem = window.sessionStorage.getItem(
+    const ssItem = window.localStorage.getItem(
       "setMetamaskConnectedSessionStorage"
     );
     if (ssItem && ssItem !== null) {
@@ -561,7 +561,7 @@ class FixAddModal extends BaseReactComponent {
     }
 
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
 
     this.props.getAllCoins();
     this.props.getAllParentChains();
@@ -569,7 +569,7 @@ class FixAddModal extends BaseReactComponent {
     getAllWalletApi(this);
     this.props.getDetectedChainsApi(this);
     const fixWallet = [];
-    JSON.parse(window.sessionStorage.getItem("addWallet"))?.map((e) => {
+    JSON.parse(window.localStorage.getItem("addWallet"))?.map((e) => {
       // console.log("e fix wallet", e);
       if (e.coinFound !== true) {
         fixWallet.push({
@@ -588,7 +588,7 @@ class FixAddModal extends BaseReactComponent {
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
     this.props.getAllCoins();
     this.props.getAllParentChains();
     // //  this.makeApiCall();
@@ -791,7 +791,7 @@ class FixAddModal extends BaseReactComponent {
           if (addWallet) {
             this.props.setHeaderReducer(addWallet);
           }
-          window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+          window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
           const data = new URLSearchParams();
           const yieldData = new URLSearchParams();
           // data.append("wallet_addresses", JSON.stringify(arr));
@@ -1061,7 +1061,7 @@ class FixAddModal extends BaseReactComponent {
 
     clearTimeout(this.delayTimer);
     this.delayTimer = setTimeout(() => {
-      let wallets = JSON.parse(window.sessionStorage.getItem("addWallet"));
+      let wallets = JSON.parse(window.localStorage.getItem("addWallet"));
       // console.log('wallet',wallets);
       let localArr = [];
       for (let i = 0; i < wallets.length; i++) {
@@ -1107,7 +1107,7 @@ class FixAddModal extends BaseReactComponent {
       if (walletList) {
         this.props.setHeaderReducer(walletList);
       }
-      window.sessionStorage.setItem("addWallet", JSON.stringify(walletList));
+      window.localStorage.setItem("addWallet", JSON.stringify(walletList));
       this.state.onHide();
       // console.log("new array", newArr);
       this.state.changeList && this.state.changeList(walletList);
@@ -1853,7 +1853,7 @@ class FixAddModal extends BaseReactComponent {
             show={this.state.upgradeModal}
             onHide={this.upgradeModal}
             history={this.props.history}
-            isShare={window.sessionStorage.getItem("share_id")}
+            isShare={window.localStorage.getItem("share_id")}
             isStatic={this.state.isStatic}
             triggerId={this.state.triggerId}
             pname="fixAddModal"

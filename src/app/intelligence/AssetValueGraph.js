@@ -41,7 +41,7 @@ class AssetValueGraph extends Component {
     this.state = {
       graphLoading: false,
       // externalEvents: [],
-      userWalletList: JSON.parse(window.sessionStorage.getItem("addWallet")),
+      userWalletList: JSON.parse(window.localStorage.getItem("addWallet")),
       // add new wallet
 
       addModal: false,
@@ -160,18 +160,18 @@ class AssetValueGraph extends Component {
   }
 
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "assetValuePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("assetValuePageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("assetValuePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkAssetValueTimer);
-    window.sessionStorage.removeItem("assetValuePageExpiryTime");
+    window.localStorage.removeItem("assetValuePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -183,7 +183,7 @@ class AssetValueGraph extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "assetValuePageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -191,7 +191,7 @@ class AssetValueGraph extends Component {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "assetValuePageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -265,7 +265,7 @@ class AssetValueGraph extends Component {
   handleShare = () => {
     let lochUser = getCurrentUser().id;
     // let shareLink = BASE_URL_S3 + "home/" + lochUser.link;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address

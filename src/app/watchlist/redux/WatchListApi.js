@@ -93,6 +93,9 @@ export const addAddressToWatchList = (
         if (!res.data.error && ctx.showAddressesAdded) {
           ctx.showAddressesAdded(passedAddress, passedNameTag, true);
         }
+        if (ctx.addressAddedFun) {
+          ctx.addressAddedFun();
+        }
       })
       .catch((err) => {
         if (ctx.hideModal) {
@@ -101,7 +104,7 @@ export const addAddressToWatchList = (
         if (ctx.refetchList) {
           ctx.refetchList();
         }
-        console.log("addAddressToWatchList error", err);
+        console.log("Something went wrong");
       });
   };
 };

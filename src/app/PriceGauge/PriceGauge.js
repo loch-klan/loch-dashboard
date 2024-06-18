@@ -76,8 +76,8 @@ class PriceGauge extends Component {
       LeftShow: true,
 
       // add new wallet
-      userWalletList: window.sessionStorage.getItem("addWallet")
-        ? JSON.parse(window.sessionStorage.getItem("addWallet"))
+      userWalletList: window.localStorage.getItem("addWallet")
+        ? JSON.parse(window.localStorage.getItem("addWallet"))
         : [],
       addModal: false,
       isUpdate: 0,
@@ -89,7 +89,7 @@ class PriceGauge extends Component {
       selectedActiveBadge: [],
 
       userPlan:
-        JSON.parse(window.sessionStorage.getItem("currentPlan")) || "Free",
+        JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       upgradeModal: false,
       isStatic: false,
       triggerId: 0,
@@ -100,7 +100,7 @@ class PriceGauge extends Component {
       waitForMixpannelCall: false,
       isFromCalendar: false,
       isToCalendar: false,
-      lochToken: JSON.parse(window.sessionStorage.getItem("stopClick")),
+      lochToken: JSON.parse(window.localStorage.getItem("stopClick")),
     };
   }
   showFromCalendar = () => {
@@ -146,7 +146,7 @@ class PriceGauge extends Component {
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
-      userPlan: JSON.parse(window.sessionStorage.getItem("currentPlan")),
+      userPlan: JSON.parse(window.localStorage.getItem("currentPlan")),
     });
   };
 
@@ -187,13 +187,13 @@ class PriceGauge extends Component {
         updatedInsightList: newTempHolder,
       });
     }
-    const tempLeftExplainerClosed = window.sessionStorage.getItem(
+    const tempLeftExplainerClosed = window.localStorage.getItem(
       "netFlowLeftExplainerClosed"
     );
     if (tempLeftExplainerClosed) {
       this.setState({ LeftShow: false });
     }
-    const tempRightExplainerClosed = window.sessionStorage.getItem(
+    const tempRightExplainerClosed = window.localStorage.getItem(
       "netFlowRightExplainerClosed"
     );
     if (tempRightExplainerClosed) {
@@ -356,18 +356,18 @@ class PriceGauge extends Component {
     }
   }
   updateTimer = (first) => {
-    const tempExistingExpiryTime = window.sessionStorage.getItem(
+    const tempExistingExpiryTime = window.localStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (!tempExistingExpiryTime && !first) {
       this.startPageView();
     }
     const tempExpiryTime = Date.now() + 1800000;
-    window.sessionStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
+    window.localStorage.setItem("intelligencePageExpiryTime", tempExpiryTime);
   };
   endPageView = () => {
     clearInterval(window.checkIntelligenceTimer);
-    window.sessionStorage.removeItem("intelligencePageExpiryTime");
+    window.localStorage.removeItem("intelligencePageExpiryTime");
     if (this.state.startTime) {
       let endTime = new Date() * 1;
       let TimeSpent = (endTime - this.state.startTime) / 1000; //in seconds
@@ -379,7 +379,7 @@ class PriceGauge extends Component {
     }
   };
   checkForInactivity = () => {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (tempExpiryTime && tempExpiryTime < Date.now()) {
@@ -387,7 +387,7 @@ class PriceGauge extends Component {
     }
   };
   componentWillUnmount() {
-    const tempExpiryTime = window.sessionStorage.getItem(
+    const tempExpiryTime = window.localStorage.getItem(
       "intelligencePageExpiryTime"
     );
     if (tempExpiryTime) {
@@ -514,7 +514,7 @@ class PriceGauge extends Component {
   };
 
   RightClose = () => {
-    window.sessionStorage.setItem("netFlowRightExplainerClosed", true);
+    window.localStorage.setItem("netFlowRightExplainerClosed", true);
     this.setState({
       RightShow: false,
     });
@@ -526,7 +526,7 @@ class PriceGauge extends Component {
   };
 
   LeftClose = () => {
-    window.sessionStorage.setItem("netFlowLeftExplainerClosed", true);
+    window.localStorage.setItem("netFlowLeftExplainerClosed", true);
     this.setState({
       LeftShow: false,
     });
@@ -559,7 +559,7 @@ class PriceGauge extends Component {
 
   handleShare = () => {
     let lochUser = getCurrentUser().id;
-    let userWallet = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let userWallet = JSON.parse(window.localStorage.getItem("addWallet"));
     let slink =
       userWallet?.length === 1
         ? userWallet[0].displayAddress || userWallet[0].address
@@ -578,6 +578,8 @@ class PriceGauge extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          showTopSearchBar
+          handleShare={this.handleShare}
           isSidebarClosed={this.props.isSidebarClosed}
           history={this.props.history}
           CheckApiResponse={(e) => this.CheckApiResponse(e)}
@@ -603,6 +605,7 @@ class PriceGauge extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}
@@ -632,7 +635,7 @@ class PriceGauge extends Component {
                 show={this.state.upgradeModal}
                 onHide={this.upgradeModal}
                 history={this.props.history}
-                isShare={window.sessionStorage.getItem("share_id")}
+                isShare={window.localStorage.getItem("share_id")}
                 isStatic={this.state.isStatic}
                 triggerId={this.state.triggerId}
                 pname="intelligence"

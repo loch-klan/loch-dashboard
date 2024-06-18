@@ -2,7 +2,17 @@
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
-import { FollowTopBarIcon, ShareTopBarIcon } from "../../assets/images/icons";
+import {
+  CopyTradeSwapIcon,
+  CopyTradeTopBarIcon,
+  EmultionSidebarIcon,
+  FollowTopBarIcon,
+  GlobeShareBlockIcon,
+  ShareCopyBlockIcon,
+  ShareTopBarIcon,
+  UserCreditTelegramIcon,
+  XFormallyTwitterLogoIcon,
+} from "../../assets/images/icons";
 import {
   AddConnectExchangeModalOpen,
   ConnectWalletButtonClicked,
@@ -13,7 +23,11 @@ import {
   TopBarMetamaskWalletConnected,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
-import { TruncateText } from "../../utils/ReusableFunctions";
+import {
+  TruncateText,
+  getCopyTradeWalletShareLink,
+  getShareLink,
+} from "../../utils/ReusableFunctions";
 import {
   getExchangeBalances,
   getUserWallet,
@@ -37,11 +51,16 @@ import "./_topWalletAddressList.scss";
 import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import Breadcrums from "../common/Breadcrums";
+import { toast } from "react-toastify";
+import OutsideClickHandler from "react-outside-click-handler";
 
 class TopWalletAddressList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      shareUrl: getShareLink(),
+      copyTradeShareUrl: getCopyTradeWalletShareLink(),
+      shareModal: false,
       timeNumber: null,
       timeUnit: "",
       followSignInModalAnimation: true,
@@ -67,7 +86,7 @@ class TopWalletAddressList extends Component {
     };
   }
   showFollowOrNot = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson && listJson.length > 0) {
       if (listJson.length === 1) {
         this.isFollowedByUserFun();
@@ -84,7 +103,7 @@ class TopWalletAddressList extends Component {
     }
   };
   isFollowedByUserFun = () => {
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -110,7 +129,7 @@ class TopWalletAddressList extends Component {
       this.props.updateOnFollow();
     }
     this.setState({ isFollowingAddress: true });
-    window.sessionStorage.setItem("isFollowingAddress", true);
+    window.localStorage.setItem("isFollowingAddress", true);
     if (openModal) {
       this.afterAddressFollowed(passedAddress);
     }
@@ -133,7 +152,7 @@ class TopWalletAddressList extends Component {
       this.props.updateOnFollow();
     }
     this.setState({ isFollowingAddress: false });
-    window.sessionStorage.setItem("isFollowingAddress", false);
+    window.localStorage.setItem("isFollowingAddress", false);
   };
   toggleMobileWalletList = () => {
     this.setState({
@@ -154,7 +173,7 @@ class TopWalletAddressList extends Component {
     if (!tempToken || tempToken === "jsk") {
       return null;
     }
-    const listJson = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson) {
       const tempListOfAdd = listJson.map((resData) => {
         return {
@@ -210,6 +229,14 @@ class TopWalletAddressList extends Component {
     }
   };
   componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        shareUrl: getShareLink(),
+        copyTradeShareUrl: getCopyTradeWalletShareLink(
+          this.state.fullWalletList
+        ),
+      });
+    }, 1000);
     this.getCurrentTime();
     this.checkIsFollowed();
     const userWalletData =
@@ -227,7 +254,7 @@ class TopWalletAddressList extends Component {
 
     this.props.getAllCoins();
     this.props.getAllParentChains();
-    const ssItem = window.sessionStorage.getItem(
+    const ssItem = window.localStorage.getItem(
       "setMetamaskConnectedSessionStorage"
     );
     if (ssItem && ssItem !== null) {
@@ -244,7 +271,7 @@ class TopWalletAddressList extends Component {
     }
   }
   checkIsFollowed = () => {
-    const whatIsIt = window.sessionStorage.getItem("isFollowingAddress");
+    const whatIsIt = window.localStorage.getItem("isFollowingAddress");
 
     if (whatIsIt === "true") {
       this.setState({
@@ -257,6 +284,14 @@ class TopWalletAddressList extends Component {
     }
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.shareModal !== this.state.shareModal) {
+      this.setState({
+        shareUrl: getShareLink(),
+        copyTradeShareUrl: getCopyTradeWalletShareLink(
+          this.state.fullWalletList
+        ),
+      });
+    }
     if (prevProps.getCurrentTimeUpdater !== this.props.getCurrentTimeUpdater) {
       this.getCurrentTime();
     }
@@ -282,7 +317,7 @@ class TopWalletAddressList extends Component {
       prevProps.MetamaskConnectedState !== this.props.MetamaskConnectedState
     ) {
       setTimeout(() => {
-        const ssItem = window.sessionStorage.getItem(
+        const ssItem = window.localStorage.getItem(
           "setMetamaskConnectedSessionStorage"
         );
         if (ssItem !== undefined && ssItem !== null) {
@@ -302,10 +337,10 @@ class TopWalletAddressList extends Component {
     }
   }
   applyLocalStorageWalletList = () => {
-    let tempWalletAdd = window.sessionStorage.getItem(
+    let tempWalletAdd = window.localStorage.getItem(
       "topBarLocalStorageWalletAddresses"
     );
-    let tempFullWalletAdd = window.sessionStorage.getItem(
+    let tempFullWalletAdd = window.localStorage.getItem(
       "topBarLocalStorageFullWalletAddresses"
     );
     if (tempWalletAdd) {
@@ -404,11 +439,11 @@ class TopWalletAddressList extends Component {
           .reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
         const tempWalletFullListLoaclPass = JSON.stringify(tempFullWalletList);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageFullWalletAddresses",
           tempWalletFullListLoaclPass
         );
@@ -506,11 +541,11 @@ class TopWalletAddressList extends Component {
           .reverse();
         const tempWalletListLoaclPass = JSON.stringify(tempWalletList);
         const tempWalletFullListLoaclPass = JSON.stringify(tempFullWalletList);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageWalletAddresses",
           tempWalletListLoaclPass
         );
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "topBarLocalStorageFullWalletAddresses",
           tempWalletFullListLoaclPass
         );
@@ -546,17 +581,17 @@ class TopWalletAddressList extends Component {
       session_id: getCurrentUser ? getCurrentUser()?.id : "",
       email_address: getCurrentUser ? getCurrentUser()?.email : "",
     });
-    const ssItem = window.sessionStorage.getItem(
+    const ssItem = window.localStorage.getItem(
       "setMetamaskConnectedSessionStorage"
     );
     this.removeFromList(ssItem);
     this.props.setMetamaskConnectedReducer("");
-    window.sessionStorage.setItem("setMetamaskConnectedSessionStorage", "");
+    window.localStorage.setItem("setMetamaskConnectedSessionStorage", "");
   };
   removeFromList = (removeThis) => {
     const curItem = removeThis;
 
-    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -589,7 +624,7 @@ class TopWalletAddressList extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -726,7 +761,7 @@ class TopWalletAddressList extends Component {
     }
   };
   callUpdateApi = (passedItem) => {
-    let walletAddress = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let walletAddress = JSON.parse(window.localStorage.getItem("addWallet"));
     let addressList = [];
     let nicknameArr = {};
     let walletList = [];
@@ -766,7 +801,7 @@ class TopWalletAddressList extends Component {
           address: passedItem.address,
         });
         this.props.setMetamaskConnectedReducer(passedItem.address);
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "setMetamaskConnectedSessionStorage",
           passedItem.address
         );
@@ -801,7 +836,7 @@ class TopWalletAddressList extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -830,7 +865,7 @@ class TopWalletAddressList extends Component {
     });
   };
   deleteTheAddress = (passedAdd) => {
-    let addWalletList = JSON.parse(window.sessionStorage.getItem("addWallet"));
+    let addWalletList = JSON.parse(window.localStorage.getItem("addWallet"));
     if (addWalletList && addWalletList?.length > 0) {
       addWalletList = addWalletList?.map((e) => {
         return {
@@ -903,7 +938,7 @@ class TopWalletAddressList extends Component {
     if (addWallet) {
       this.props.setHeaderReducer(addWallet);
     }
-    window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+    window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
     const data = new URLSearchParams();
     const yieldData = new URLSearchParams();
     data.append("wallet_address_nicknames", JSON.stringify(nicknameArr));
@@ -915,7 +950,7 @@ class TopWalletAddressList extends Component {
   getCurrentTime = () => {
     let currentTime = new Date().getTime();
 
-    let prevTime = JSON.parse(window.sessionStorage.getItem("refreshApiTime"));
+    let prevTime = JSON.parse(window.localStorage.getItem("refreshApiTime"));
     // calculate the time difference since the last click
     let timeDiff = prevTime ? currentTime - prevTime : currentTime;
     // console.log(
@@ -969,7 +1004,7 @@ class TopWalletAddressList extends Component {
     if (!tempToken || tempToken === "jsk") {
       return null;
     }
-    window.sessionStorage.setItem("callTheUpdateAPI", true);
+    window.localStorage.setItem("callTheUpdateAPI", true);
     HomeRefreshButton({
       email_address: getCurrentUser().email,
       session_id: getCurrentUser().id,
@@ -986,7 +1021,277 @@ class TopWalletAddressList extends Component {
 
     this.props.setPageFlagDefault();
   };
+  copyPublicUrl = () => {
+    navigator.clipboard.writeText(this.state.shareUrl);
+    toast.success("Link copied");
+  };
+  copyCopyTradeUrl = () => {
+    navigator.clipboard.writeText(this.state.copyTradeShareUrl);
+    toast.success("Link copied");
+  };
+  toggleShareModal = () => {
+    this.setState({
+      shareModal: !this.state.shareModal,
+    });
+  };
+  hideShareModal = () => {
+    if (this.state.shareModal) {
+      this.setState({
+        shareModal: false,
+      });
+    }
+  };
+  shareOnTwitter = () => {
+    var embeddedShareText = encodeURIComponent(
+      "You can now copy trade this wallet permissionlessly onchain using loch.one. Click this link to get started!\n\n\n\n" +
+        this.state.copyTradeShareUrl
+    );
+    const twitterLink =
+      "https://twitter.com/intent/tweet?text=" + embeddedShareText;
+    window.open(twitterLink, "_blank");
+  };
+  shareOnTelegram = () => {
+    var embeddedShareText = encodeURIComponent(
+      "You can now copy trade this wallet permissionlessly onchain using loch.one. Click this link to get started!\n\n\n\n" +
+        this.state.copyTradeShareUrl
+    );
+    const telegramLink =
+      "https://telegram.me/share/url?url=" + embeddedShareText;
+    window.open(telegramLink, "_blank");
+  };
+  goToCopyTrade = () => {
+    let tempToken = getToken();
+    if (!tempToken || tempToken === "jsk") {
+      return null;
+    }
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
+      });
+      if (tempListOfAdd && tempListOfAdd.length > 0) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        if (tempWalletAddress) {
+          window.localStorage.setItem(
+            "openCopyTradeModalFromLink",
+            tempWalletAddress
+          );
+          setTimeout(() => {
+            this.props.history.push("copy-trade");
+          }, 100);
+        }
+      }
+    }
+  };
   render() {
+    if (this.props.isMobile) {
+      return (
+        <div
+          style={{
+            marginTop: !this.props.hideAddresses ? "-1rem" : "",
+          }}
+          className="topWalletAddressListMobile inter-display-medium"
+        >
+          {this.props.showUpdatesJustNowBtn ? (
+            <h2
+              className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
+              onClick={this.RefreshButton}
+              style={{
+                whiteSpace: "nowrap",
+              }}
+            >
+              <Image src={refreshIcon} />
+              Updated{" "}
+              <span
+                style={{ marginLeft: "3px" }}
+                className="inter-display-bold f-s-13 lh-15 grey-B0B"
+              >
+                {this.state.timeNumber === null
+                  ? "3"
+                  : this.state.timeNumber === 0
+                  ? " just now"
+                  : this.state.timeNumber}
+              </span>
+              <span>
+                {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                  ? this.state.timeUnit
+                  : this.state.timeNumber === 0
+                  ? ""
+                  : "h ago"}
+              </span>
+            </h2>
+          ) : null}
+          {/* Share and Follow */}
+          <div className="twalFollowAndShareMobile">
+            {this.state.showFollowingAddress && !this.props.hideShare ? (
+              <div
+                ref={this.props.buttonRef}
+                className="topWalletAddressListFollowShareBtn"
+                id="address-button"
+                onClick={this.addAddressToWatchListFun}
+                style={{
+                  width: "calc(50% - 0.5rem)",
+                }}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={FollowTopBarIcon}
+                />
+                <span className="dotDotText">
+                  {this.state.isFollowingAddress ? "Following" : "Follow"}
+                </span>
+              </div>
+            ) : null}
+            {!this.props.hideShare ? (
+              <div
+                style={{
+                  width:
+                    this.state.showFollowingAddress && !this.props.hideShare
+                      ? "calc(50% - 0.5rem)"
+                      : "100%",
+                }}
+                className="topWalletAddressListFollowShareBtnContainer"
+              >
+                <OutsideClickHandler onOutsideClick={this.hideShareModal}>
+                  {this.state.shareModal ? (
+                    <div className="topWalletAddressListFollowShareBtnPopUpContainer">
+                      <div className="topWalletAddressListFollowShareBtnPopUp">
+                        <div className="topWalletAddressListFollowShareBtnPopUpArrow" />
+                        <div className="TWALSFBPopUpCopyBlock TWALSFBPopUpCopyTradeBlock">
+                          <div className="TWALSFBPopUpHeading">
+                            <Image
+                              className="TWALSFBPopUpHeadingIcon"
+                              src={CopyTradeSwapIcon}
+                            />
+                            <div className="inter-display-medium">
+                              Link to copy trade this wallet
+                            </div>
+                          </div>
+                          <div className="TWALSFBPopUpCopy">
+                            <div className="TWALSFBPopUpCopyLink inter-display-medium">
+                              {this.state.copyTradeShareUrl}
+                            </div>
+                            <div
+                              onClick={this.copyCopyTradeUrl}
+                              className="TWALSFBPopUpCopyBtn inter-display-medium"
+                            >
+                              Copy
+                            </div>
+                          </div>
+                        </div>
+                        <div className="TWALSFBPopUpCopyBlock">
+                          <div className="TWALSFBPopUpHeading">
+                            <Image
+                              className="TWALSFBPopUpHeadingIcon"
+                              src={GlobeShareBlockIcon}
+                            />
+                            <div className="inter-display-medium">
+                              Public link to this wallet
+                            </div>
+                          </div>
+                          <div className="TWALSFBPopUpCopy">
+                            <div className="TWALSFBPopUpCopyLink inter-display-medium">
+                              {this.state.shareUrl}
+                            </div>
+                            <div
+                              onClick={this.copyPublicUrl}
+                              className="TWALSFBPopUpCopyBtn inter-display-medium"
+                            >
+                              Copy
+                            </div>
+                          </div>
+                        </div>
+                        <div className="TWALSFBPopUpShareBlock">
+                          <div className="TWALSFBPopUpShareDirect">
+                            <Image
+                              className="TWALSFBPopUpShareDirectIcon"
+                              src={ShareCopyBlockIcon}
+                            />
+                            <div>Or share directly</div>
+                          </div>
+                          <div className="TWALSFBPopUpShareBlockFlex">
+                            <div className="TWALSFBPopUpCopy">
+                              <div
+                                onClick={this.shareOnTwitter}
+                                className="TWALSFBPopUpCopyBtn inter-display-medium"
+                              >
+                                <div>Share on</div>
+
+                                <Image
+                                  className="TWALSFBPopUpCopyBtnIcon"
+                                  src={XFormallyTwitterLogoIcon}
+                                />
+                              </div>
+                            </div>
+                            <div className="TWALSFBPopUpCopy">
+                              <div
+                                onClick={this.shareOnTelegram}
+                                className="TWALSFBPopUpCopyBtn inter-display-medium"
+                              >
+                                <div>Share on Telegram</div>
+
+                                <Image
+                                  className="TWALSFBPopUpCopyBtnIcon"
+                                  src={UserCreditTelegramIcon}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <div
+                    ref={this.props.buttonRef}
+                    className="topWalletAddressListFollowShareBtn ml-2"
+                    id="address-button"
+                    // onClick={this.toggleShareModal}
+                    onClick={this.handleSharePassFun}
+                  >
+                    <Image
+                      className="topWalletAddressListFollowShareBtnIcon"
+                      src={ShareTopBarIcon}
+                    />
+                    <span className="dotDotText">Share</span>
+                  </div>
+                </OutsideClickHandler>
+              </div>
+            ) : null}
+          </div>
+          {this.props.showUpdatesJustNowBtn ? (
+            <div
+              style={{
+                marginTop: "1rem",
+              }}
+              className="twalFollowAndShareMobile"
+            >
+              <div
+                className="topWalletAddressListFollowShareBtn"
+                id="home-copy-trade-button"
+                onClick={this.goToCopyTrade}
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={CopyTradeTopBarIcon}
+                />
+                <span className="dotDotText">Copy Trade</span>
+              </div>
+            </div>
+          ) : null}
+        </div>
+      );
+    }
     return (
       <>
         <Breadcrums
@@ -1037,69 +1342,177 @@ class TopWalletAddressList extends Component {
           ) : (
             <div />
           )}
-          {this.props.isMobile ? null : (
-            <div className="topWalletAddressListFollowShareContainer inter-display-medium">
-              {this.props.showUpdatesJustNowBtn ? (
-                <h2
-                  className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
-                  onClick={this.RefreshButton}
-                  style={{
-                    whiteSpace: "nowrap",
-                  }}
+
+          <div
+            className={`topWalletAddressListFollowShareContainer inter-display-medium`}
+          >
+            {this.props.showUpdatesJustNowBtn ? (
+              <h2
+                className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
+                onClick={this.RefreshButton}
+                style={{
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <Image src={refreshIcon} />
+                Updated{" "}
+                <span
+                  style={{ marginLeft: "3px" }}
+                  className="inter-display-bold f-s-13 lh-15 grey-B0B"
                 >
-                  <Image src={refreshIcon} />
-                  Updated{" "}
-                  <span
-                    style={{ marginLeft: "3px" }}
-                    className="inter-display-bold f-s-13 lh-15 grey-B0B"
+                  {this.state.timeNumber === null
+                    ? "3"
+                    : this.state.timeNumber === 0
+                    ? " just now"
+                    : this.state.timeNumber}
+                </span>
+                <span>
+                  {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                    ? this.state.timeUnit
+                    : this.state.timeNumber === 0
+                    ? ""
+                    : "h ago"}
+                </span>
+              </h2>
+            ) : null}
+            {this.state.showFollowingAddress && !this.props.hideShare ? (
+              <div
+                ref={this.props.buttonRef}
+                className="ml-3 topWalletAddressListFollowShareBtn"
+                id="address-button"
+                onClick={this.addAddressToWatchListFun}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={FollowTopBarIcon}
+                />
+                <span className="dotDotText">
+                  {this.state.isFollowingAddress ? "Following" : "Follow"}
+                </span>
+              </div>
+            ) : null}
+            {!this.props.hideShare ? (
+              <div className="topWalletAddressListFollowShareBtnContainer">
+                <OutsideClickHandler onOutsideClick={this.hideShareModal}>
+                  {this.state.shareModal ? (
+                    <div className="topWalletAddressListFollowShareBtnPopUpContainer">
+                      <div className="topWalletAddressListFollowShareBtnPopUp">
+                        <div className="topWalletAddressListFollowShareBtnPopUpArrow" />
+                        <div className="TWALSFBPopUpCopyBlock TWALSFBPopUpCopyTradeBlock">
+                          <div className="TWALSFBPopUpHeading">
+                            <Image
+                              className="TWALSFBPopUpHeadingIcon"
+                              src={CopyTradeSwapIcon}
+                            />
+                            <div className="inter-display-medium">
+                              Link to copy trade this wallet
+                            </div>
+                          </div>
+                          <div className="TWALSFBPopUpCopy">
+                            <div className="TWALSFBPopUpCopyLink inter-display-medium">
+                              {this.state.copyTradeShareUrl}
+                            </div>
+                            <div
+                              onClick={this.copyCopyTradeUrl}
+                              className="TWALSFBPopUpCopyBtn inter-display-medium"
+                            >
+                              Copy
+                            </div>
+                          </div>
+                        </div>
+                        <div className="TWALSFBPopUpCopyBlock">
+                          <div className="TWALSFBPopUpHeading">
+                            <Image
+                              className="TWALSFBPopUpHeadingIcon"
+                              src={GlobeShareBlockIcon}
+                            />
+                            <div className="inter-display-medium">
+                              Public link to this wallet
+                            </div>
+                          </div>
+                          <div className="TWALSFBPopUpCopy">
+                            <div className="TWALSFBPopUpCopyLink inter-display-medium">
+                              {this.state.shareUrl}
+                            </div>
+                            <div
+                              onClick={this.copyPublicUrl}
+                              className="TWALSFBPopUpCopyBtn inter-display-medium"
+                            >
+                              Copy
+                            </div>
+                          </div>
+                        </div>
+                        <div className="TWALSFBPopUpShareBlock">
+                          <div className="TWALSFBPopUpShareDirect">
+                            <Image
+                              className="TWALSFBPopUpShareDirectIcon"
+                              src={ShareCopyBlockIcon}
+                            />
+                            <div>Or share directly</div>
+                          </div>
+                          <div className="TWALSFBPopUpShareBlockFlex">
+                            <div className="TWALSFBPopUpCopy">
+                              <div
+                                onClick={this.shareOnTwitter}
+                                className="TWALSFBPopUpCopyBtn inter-display-medium"
+                              >
+                                <div>Share on</div>
+
+                                <Image
+                                  className="TWALSFBPopUpCopyBtnIcon"
+                                  src={XFormallyTwitterLogoIcon}
+                                />
+                              </div>
+                            </div>
+                            <div className="TWALSFBPopUpCopy">
+                              <div
+                                onClick={this.shareOnTelegram}
+                                className="TWALSFBPopUpCopyBtn inter-display-medium"
+                              >
+                                <div>Share on Telegram</div>
+
+                                <Image
+                                  className="TWALSFBPopUpCopyBtnIcon"
+                                  src={UserCreditTelegramIcon}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+
+                  <div
+                    ref={this.props.buttonRef}
+                    className="topWalletAddressListFollowShareBtn ml-2"
+                    id="address-button"
+                    // onClick={this.toggleShareModal}
+                    onClick={this.handleSharePassFun}
                   >
-                    {this.state.timeNumber === null
-                      ? "3"
-                      : this.state.timeNumber === 0
-                      ? " just now"
-                      : this.state.timeNumber}
-                  </span>
-                  <span>
-                    {this.state.timeUnit !== "" && this.state.timeNumber !== 0
-                      ? this.state.timeUnit
-                      : this.state.timeNumber === 0
-                      ? ""
-                      : "h ago"}
-                  </span>
-                </h2>
-              ) : null}
-              {this.state.showFollowingAddress && !this.props.hideFollow ? (
-                <div
-                  ref={this.props.buttonRef}
-                  className="ml-3 topWalletAddressListFollowShareBtn"
-                  id="address-button"
-                  onClick={this.addAddressToWatchListFun}
-                >
-                  <Image
-                    className="topWalletAddressListFollowShareBtnIcon"
-                    src={FollowTopBarIcon}
-                  />
-                  <span className="dotDotText">
-                    {this.state.isFollowingAddress ? "Following" : "Follow"}
-                  </span>
-                </div>
-              ) : null}
-              {!this.props.hideShare ? (
-                <div
-                  ref={this.props.buttonRef}
-                  className="topWalletAddressListFollowShareBtn ml-2"
-                  id="address-button"
-                  onClick={this.handleSharePassFun}
-                >
-                  <Image
-                    className="topWalletAddressListFollowShareBtnIcon"
-                    src={ShareTopBarIcon}
-                  />
-                  <span className="dotDotText">Share</span>
-                </div>
-              ) : null}
-            </div>
-          )}
+                    <Image
+                      className="topWalletAddressListFollowShareBtnIcon"
+                      src={ShareTopBarIcon}
+                    />
+                    <span className="dotDotText">Share</span>
+                  </div>
+                </OutsideClickHandler>
+              </div>
+            ) : null}
+            {this.props.showUpdatesJustNowBtn ? (
+              <div
+                className="ml-2 topWalletAddressListFollowShareBtn topWalletAddressListFollowShareBtnBig"
+                id="home-copy-trade-button"
+                onClick={this.goToCopyTrade}
+              >
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={CopyTradeTopBarIcon}
+                />
+                <span className="dotDotText">Copy Trade</span>
+              </div>
+            ) : null}
+          </div>
         </div>
       </>
     );

@@ -24,8 +24,8 @@ import AuthModal from "./AuthModal";
 class CheckoutModal extends BaseReactComponent {
   constructor(props) {
     super(props);
-    const dummyUser = window.sessionStorage.getItem("lochDummyUser");
-    const userDetails = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const dummyUser = window.localStorage.getItem("lochDummyUser");
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.state = {
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
@@ -118,8 +118,8 @@ class CheckoutModal extends BaseReactComponent {
 
   AddEmailModal = () => {
     // console.log("handle emailc close");
-    const isDummy = window.sessionStorage.getItem("lochDummyUser");
-    const islochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    const isDummy = window.localStorage.getItem("lochDummyUser");
+    const islochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (islochUser) {
       this.setState({
         RegisterModal: false,
@@ -135,7 +135,10 @@ class CheckoutModal extends BaseReactComponent {
   handleAccountCreate = () => {
     //   console.log("create email", this.state.email);
     let data = new URLSearchParams();
-    data.append("email", this.state.email);
+    data.append(
+      "email",
+      this.state.email ? this.state.email.toLowerCase() : ""
+    );
     SendOtp(data, this);
 
     WhaleCreateAccountEmailSaved({

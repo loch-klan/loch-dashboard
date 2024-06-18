@@ -7,6 +7,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
+  TruncateText,
   amountFormat,
   noExponents,
   numToCurrency,
@@ -16,7 +17,7 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
   let arr = apidata?.gas_fee_overtime;
   let assetPrices = apidata?.asset_prices;
   // console.log(apidata);
-  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+  let currency = JSON.parse(window.localStorage.getItem("currency"));
   // const digit = numToCurrency(
   //   Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   // ).length;
@@ -330,7 +331,7 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
 };
 
 export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
-  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+  let currency = JSON.parse(window.localStorage.getItem("currency"));
   //  const digit = numToCurrency(
   //    Math.round(Math.max(...arr.map((e) => e.total_fees * currency?.rate)))
   //  ).length;
@@ -341,6 +342,17 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
   GraphLogoImage.src = GraphLogo;
   const options = {
     responsive: true,
+    onHover: function (e) {
+      const points = this.getElementsAtEventForMode(
+        e,
+        "index",
+        { axis: "x", intersect: true },
+        false
+      );
+
+      if (points.length) e.native.target.style.cursor = "pointer";
+      else e.native.target.style.cursor = "default";
+    },
     maintainAspectRatio: false,
     layout: {
       padding: {
@@ -374,8 +386,17 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
         callbacks: {
           title: function () {}, //REMOVE TITLE
           label: (ctx) => {
-            // console.log('ctx',ctx);
             let label00 = ctx.label;
+            if (ctx.label) {
+              const testCharacter = ctx.label.charAt(0);
+              if (
+                !isNaN(testCharacter) ||
+                testCharacter !== testCharacter.toUpperCase()
+              ) {
+                label00 = TruncateText(ctx.label);
+              }
+            }
+            let labelClick = "Click to open";
             let label0 =
               "Fees: " +
               CurrencyType(false) +
@@ -405,6 +426,13 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
                   parentCtx.counterpartyVolumeOverTimeOn();
                 }, 2000);
               }
+            }
+            if (
+              ctx.dataset.clickAbleAddress &&
+              ctx.dataset.clickAbleAddress[ctx.dataIndex] &&
+              ctx.raw * currency.rate > 0
+            ) {
+              return [label00, label1, label0, labelClick];
             }
             return [label00, label1, label0];
           },
@@ -621,6 +649,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
         borderSkipped: false,
         barThickness: 48,
         totalFees: arr?.map((e) => e.total_fees * currency?.rate),
+        clickAbleAddress: arr?.map((e) => e.clickable_address),
         // totalAmount: arr.map((e) => e.total_amount * currency?.rate),
         totalVolume: arr?.map((e) => e.total_volume),
         defaultAssetCode: arr?.map((e) => e?.chain?.default_asset_code),

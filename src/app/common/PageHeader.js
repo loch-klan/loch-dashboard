@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Image } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { ExportIcon } from "../../assets/images/icons";
@@ -9,19 +9,46 @@ import {
   ConnectExPopup,
   WalletConnectExchange,
 } from "../../utils/AnalyticsFunctions";
+import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { CurrencyType, numToCurrency } from "../../utils/ReusableFunctions";
+import {
+  CurrencyType,
+  numToCurrency,
+  openSignInModalFromAnywhere,
+  removeOpenModalAfterLogin,
+} from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import Breadcrums from "./Breadcrums";
 import ConnectModal from "./ConnectModal";
+import PaywallModal from "./PaywallModal";
 
 export default function PageHeader(props) {
   const [connectModal, setconnectModal] = React.useState(false);
   const history = useHistory();
 
   const [popupModal, setpopupModal] = React.useState(false);
+  const [isLochPaymentModal, setIsLochPaymentModal] = useState(false);
+
+  useEffect(() => {
+    const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (userDetails && userDetails.email) {
+      const shouldOpenNoficationModal = window.localStorage.getItem(
+        "openExportPaymentModal"
+      );
+      if (shouldOpenNoficationModal) {
+        setTimeout(() => {
+          removeOpenModalAfterLogin();
+          setIsLochPaymentModal(true);
+        }, 1000);
+      }
+    }
+  }, []);
+
+  const hidePaymentModal = () => {
+    setIsLochPaymentModal(false);
+  };
   const handlePopup = () => {
-    let lochUser = JSON.parse(window.sessionStorage.getItem("lochUser"));
+    let lochUser = JSON.parse(window.localStorage.getItem("lochUser"));
     if (!lochUser) {
       setpopupModal(!popupModal);
 
@@ -54,7 +81,23 @@ export default function PageHeader(props) {
       }
     }, 200);
   };
-
+  const exprotPassThrough = () => {
+    if (props.currentPage === "assets") {
+      window.localStorage.setItem("blurredAssetExportModal", true);
+    } else if (props.currentPage === "gas-fees") {
+      window.localStorage.setItem("blurredGasFeesExportModal", true);
+    } else if (props.currentPage === "counterparty-volume") {
+      window.localStorage.setItem("blurredCounterPartyExportModal", true);
+    }
+    const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
+    if (isLochUser && isLochUser.email) {
+      if (props.handleExportModal) {
+        props.handleExportModal();
+      }
+    } else {
+      openSignInModalFromAnywhere();
+    }
+  };
   return (
     <div
       className={`page-header ${
@@ -71,7 +114,16 @@ export default function PageHeader(props) {
         showpath={props.showpath}
         currentPage={props.currentPage}
       />
-
+      {isLochPaymentModal ? (
+        <PaywallModal
+          show={isLochPaymentModal}
+          onHide={hidePaymentModal}
+          redirectLink={BASE_URL_S3 + "/"}
+          title="Export Valuable Data with Loch"
+          description="Export unlimited data"
+          hideBackBtn
+        />
+      ) : null}
       <div className="header">
         <div className="header-left">
           {props.showImg ? (
@@ -247,7 +299,7 @@ export default function PageHeader(props) {
               ) : null}
               {props.ExportBtn && (
                 <div
-                  onClick={props.handleExportModal}
+                  onClick={exprotPassThrough}
                   className="pageHeaderShareContainer"
                   style={{ marginRight: props.ShareBtn ? "0.5rem" : "" }}
                 >

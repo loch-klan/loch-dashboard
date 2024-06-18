@@ -10,7 +10,7 @@ import GraphLogo from "../../assets/images/graph-logo.svg";
 export const getProfitAndLossData = (arr, parentctx) => {
   // console.log("array", arr);
 
-  let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+  let currency = JSON.parse(window.localStorage.getItem("currency"));
   let inflows = Number(noExponents(arr.inflows));
   let outflows = Number(noExponents(arr.outflows));
   let currencyRate = currency?.rate || 1;

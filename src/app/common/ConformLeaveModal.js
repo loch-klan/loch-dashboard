@@ -15,12 +15,12 @@ class ConfirmLeaveModal extends BaseReactComponent {
 
   componentDidMount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", true);
+    window.localStorage.setItem("isPopupActive", true);
   }
 
   componentWillUnmount() {
     // set popup active
-    window.sessionStorage.setItem("isPopupActive", false);
+    window.localStorage.setItem("isPopupActive", false);
   }
 
   render() {
@@ -49,7 +49,7 @@ class ConfirmLeaveModal extends BaseReactComponent {
                     this.props.handleSignOutWelcome();
                   } else {
                     resetUser();
-                    window.sessionStorage.setItem("refresh", false);
+                    window.localStorage.setItem("refresh", false);
                     this.props.history.push("/welcome");
                   }
                 }}

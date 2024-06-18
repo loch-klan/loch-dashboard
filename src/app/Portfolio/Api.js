@@ -21,17 +21,17 @@ export const isNewAddress = (data, multipleRecall) => {
           if (multipleRecall) {
             multipleRecall(res.data.data.result);
           } else {
-            window.sessionStorage.setItem(
+            window.localStorage.setItem(
               "shouldRecallApis",
               res.data.data.result
             );
           }
         } else {
-          window.sessionStorage.setItem("shouldRecallApis", false);
+          window.localStorage.setItem("shouldRecallApis", false);
         }
       })
       .catch((err) => {
-        window.sessionStorage.setItem("shouldRecallApis", false);
+        window.localStorage.setItem("shouldRecallApis", false);
       });
   };
 };
@@ -83,6 +83,7 @@ export const getCoinRate = () => {
 export const getUserWallet = (wallet, ctx, isRefresh, index) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
+    console.log("chains ++", wallet.coinCode);
     data.append("chain", wallet.coinCode);
     data.append("wallet_address", wallet.address);
 
@@ -111,7 +112,7 @@ export const getUserWallet = (wallet, ctx, isRefresh, index) => {
         // );
         // if (isRefresh) {
 
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "refreshApiTime",
           moment(res.data?.data.user_wallet?.modified_on).valueOf()
         );
@@ -178,7 +179,7 @@ export const getExchangeBalance = (exchangeName, ctx) => {
           res.data.data.user_wallet.active
             ? res.data.data.user_wallet
             : [];
-        // window.sessionStorage.setItem(
+        // window.localStorage.setItem(
         //   "refreshApiTime",
         //   moment(res.data?.data.user_wallet?.modified_on).valueOf()
         // );
@@ -225,7 +226,7 @@ export const getExchangeBalances = (ctx, isRefresh = false) => {
             ? res.data.data.user_wallets
             : [];
 
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
           "refreshApiTime",
           moment(res.data?.data.user_wallet?.modified_on).valueOf()
         );
@@ -353,9 +354,9 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
               : false;
           }
           // console.log('addWallet',addWallet);
-          window.sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+          window.localStorage.setItem("addWallet", JSON.stringify(addWallet));
           addLocalWalletList(JSON.stringify(addWallet));
-          // sessionStorage.setItem("addWallet", JSON.stringify(addWallet));
+          // localStorage.setItem("addWallet", JSON.stringify(addWallet));
           ctx.setState({
             // isLoading: false,
             userWalletList: addWallet,
@@ -363,9 +364,7 @@ export const getDetailsByLinkApi = (link, ctx = null) => {
 
           // ctx.handleResponse && ctx.handleResponse();
           // console.log("add",addWallet.length)
-          let userPlan = JSON.parse(
-            window.sessionStorage.getItem("currentPlan")
-          );
+          let userPlan = JSON.parse(window.localStorage.getItem("currentPlan"));
 
           if (
             addWallet.length > userPlan?.wallet_address_limit &&
@@ -446,10 +445,10 @@ export const getAssetGraphDataApi = (data, ctx, ActionType) => {
           } else {
             ctx.setState({ assetValueDataLoaded: true });
             let obj = JSON.parse(
-              window.sessionStorage.getItem("assetValueLoader")
+              window.localStorage.getItem("assetValueLoader")
             );
             if (obj) {
-              window.sessionStorage.setItem(
+              window.localStorage.setItem(
                 "assetValueLoader",
                 JSON.stringify({
                   me: !ctx?.state?.isTopAccountPage ? false : obj?.me,
@@ -500,8 +499,8 @@ export const getYesterdaysBalanceApi = (ctx) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
     if (ctx?.state?.isTopAccountPage) {
-      let addressObj = window.sessionStorage.getItem("previewAddress")
-        ? [JSON.parse(window.sessionStorage.getItem("previewAddress"))]
+      let addressObj = window.localStorage.getItem("previewAddress")
+        ? [JSON.parse(window.localStorage.getItem("previewAddress"))]
         : [];
       let address = addressObj?.map((e) => e?.address);
       data.append("wallet_address", JSON.stringify(address));
@@ -510,7 +509,7 @@ export const getYesterdaysBalanceApi = (ctx) => {
       .post("wallet/user-wallet/get-yesterday-portfolio-balance", data)
       .then((res) => {
         if (!res.data.error) {
-          let currency = JSON.parse(window.sessionStorage.getItem("currency"));
+          let currency = JSON.parse(window.localStorage.getItem("currency"));
           let balance = res.data.data.balance * currency?.rate;
           dispatch({
             type: YESTERDAY_BALANCE,
@@ -899,8 +898,8 @@ export const AssetValueEmail = (data, ctx) => {
     .post("wallet/user-wallet/notify-asset-value-chart", data)
     .then((res) => {
       if (!res.data.error) {
-        let obj = JSON.parse(window.sessionStorage.getItem("assetValueLoader"));
-        window.sessionStorage.setItem(
+        let obj = JSON.parse(window.localStorage.getItem("assetValueLoader"));
+        window.localStorage.setItem(
           "assetValueLoader",
           JSON.stringify({
             me: ctx?.props.from === "me" ? true : obj?.me,
