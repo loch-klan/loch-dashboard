@@ -27,11 +27,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
     this.state = {};
   }
   handleOnNotifyClick = () => {
-    SmartMoneyNotifyClick({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-    });
-    this.props.openNotifyOnTransactionModal(this.props.mapData.account);
+    this.props.onNotifyClick(this.props.mapData);
   };
   handleOnClick = (addItem) => {
     if (!this.props.smartMoneyBlur && this.props.handleFollowUnfollow) {
@@ -150,7 +146,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
             <div className={`inter-display-medium msmbBIAmount`}>
               <CheckboxCustomTable
                 handleOnClick={this.handleOnNotifyClick}
-                isChecked={false}
+                isChecked={this.props.mapData.notify}
                 noMargin
                 dontSelectIt
               />

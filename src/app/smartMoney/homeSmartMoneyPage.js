@@ -30,6 +30,7 @@ import {
   GetAllPlan,
   TopsetPageFlagDefault,
   getAllCurrencyRatesApi,
+  removeAddressFromNotify,
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api.js";
@@ -87,6 +88,7 @@ import "./_smartMoney.scss";
 import MobileLayout from "../layout/MobileLayout.js";
 import HomeSmartMoneyMobile from "./SmartMoneyMobileBlocks/homeSmartMoneyMobile.js";
 import NotifyOnTransactionSizeModal from "./notifyOnTransactionSizeModal.js";
+import BasicConfirmModal from "../common/BasicConfirmModal.js";
 
 class HomeSmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -96,6 +98,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      isConfirmRemoveNotifyModal: false,
+      selectedAddressItem: null,
       addressToNotify: "",
       showNotifyOnTransactionModal: false,
       lochUserState: window.localStorage.getItem("lochToken"),
@@ -175,6 +179,34 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     };
     this.delayTimer = 0;
   }
+  closeConfirmModals = () => {
+    this.setState({
+      isConfirmRemoveNotifyModal: false,
+      selectedAddressItem: null,
+    });
+  };
+
+  showConfirmRemoveNotifyModal = (rowData) => {
+    this.setState({
+      selectedAddressItem: rowData,
+      isConfirmRemoveNotifyModal: true,
+    });
+  };
+  cancelTransactionNotificationFun = () => {
+    this.closeConfirmModals();
+    let cancelTransactionNotification = new URLSearchParams();
+    cancelTransactionNotification.append(
+      "address",
+      this.state.selectedAddressItem.account
+        ? this.state.selectedAddressItem.account
+        : ""
+    );
+
+    this.props.removeAddressFromNotify(
+      cancelTransactionNotification,
+      this.callCurrentPageApi
+    );
+  };
   hideTheMobilePopupModal = () => {
     this.setState({
       mobilePopupModal: false,
@@ -359,6 +391,9 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     }
   }
 
+  callCurrentPageApi = () => {
+    this.callApi(this.state.currentPage || START_INDEX);
+  };
   callApi = (page = START_INDEX) => {
     this.setState({ tableLoading: true });
     setTimeout(() => {
@@ -845,6 +880,17 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       page: "Smart money page",
     });
   };
+  onNotifyClick = (rowData) => {
+    if (rowData.notify) {
+      this.showConfirmRemoveNotifyModal(rowData);
+    } else {
+      SmartMoneyNotifyClick({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+      });
+      this.openNotifyOnTransactionModal(rowData.account);
+    }
+  };
   render() {
     const tableData = this.state.accountList;
 
@@ -1256,23 +1302,19 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             <span className="inter-display-medium f-s-13 lh-16">Notify</span>
           </div>
         ),
-        dataKey: "following",
+        dataKey: "notify",
 
         coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "following") {
+          if (dataKey === "notify") {
             const handleOnClick = (addItem) => {
-              SmartMoneyNotifyClick({
-                session_id: getCurrentUser().id,
-                email_address: getCurrentUser().email,
-              });
-              this.openNotifyOnTransactionModal(rowData.account);
+              this.onNotifyClick(rowData);
             };
             return (
               <CheckboxCustomTable
                 handleOnClick={handleOnClick}
-                isChecked={false}
+                isChecked={rowData.notify}
                 dontSelectIt
               />
             );
@@ -1298,8 +1340,19 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           goToPageAfterLogin="/home"
           funAfterUserCreate={this.funAfterUserCreate}
         >
+          {this.state.isConfirmRemoveNotifyModal ? (
+            <BasicConfirmModal
+              show
+              history={this.props.history}
+              handleClose={this.closeConfirmModals}
+              handleYes={this.cancelTransactionNotificationFun}
+              title="Are you sure you want to stop receiving notification about this address"
+              isMobile
+            />
+          ) : null}
           {this.state.showNotifyOnTransactionModal ? (
             <NotifyOnTransactionSizeModal
+              callApiAfterSuccess={this.callCurrentPageApi}
               show={this.state.showNotifyOnTransactionModal}
               onHide={this.hideNotifyOnTransactionModal}
               history={this.props.history}
@@ -1308,6 +1361,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             />
           ) : null}
           <HomeSmartMoneyMobile
+            onNotifyClick={this.onNotifyClick}
             isNoUser={!this.state.lochUserState}
             goToAddress={this.goToAddress}
             accountList={this.state.accountList}
@@ -1378,6 +1432,15 @@ class HomeSmartMoneyPage extends BaseReactComponent {
           </div>
           <div className="history-table-section m-t-80">
             <div className="history-table homeSmartMoneyPage page">
+              {this.state.isConfirmRemoveNotifyModal ? (
+                <BasicConfirmModal
+                  show
+                  history={this.props.history}
+                  handleClose={this.closeConfirmModals}
+                  handleYes={this.cancelTransactionNotificationFun}
+                  title="Are you sure you want to stop receiving notification about this address"
+                />
+              ) : null}
               {this.state.showSignOutModal ? (
                 <ConformSmartMoneyLeaveModal
                   show={this.state.showSignOutModal}
@@ -1388,6 +1451,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               ) : null}
               {this.state.showNotifyOnTransactionModal ? (
                 <NotifyOnTransactionSizeModal
+                  callApiAfterSuccess={this.callCurrentPageApi}
                   show={this.state.showNotifyOnTransactionModal}
                   onHide={this.hideNotifyOnTransactionModal}
                   history={this.props.history}
@@ -1602,6 +1666,7 @@ const mapDispatchToProps = {
   updateAddToWatchList,
   createAnonymousUserSmartMoneyApi,
   GetAllPlan,
+  removeAddressFromNotify,
 };
 
 HomeSmartMoneyPage.propTypes = {};

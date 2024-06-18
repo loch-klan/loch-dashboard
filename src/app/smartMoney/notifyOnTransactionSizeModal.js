@@ -655,6 +655,9 @@ class NotifyOnTransactionSizeModal extends BaseReactComponent {
   };
   onAddSuccess = () => {
     this.state.onHide();
+    if (this.props.callApiAfterSuccess) {
+      this.props.callApiAfterSuccess();
+    }
     this.setState({
       loadAddBtn: false,
     });

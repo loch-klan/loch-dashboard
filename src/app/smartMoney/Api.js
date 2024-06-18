@@ -30,6 +30,7 @@ export const getSmartMoney = (data, ctx, apiLimit) => {
             returns: e?.returns,
             rank: e?.rank,
             following: e?.following,
+            notify: e?.notify,
           }));
           ctx.setState({
             accountList: tableData,

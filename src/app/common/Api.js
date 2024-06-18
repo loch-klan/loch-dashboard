@@ -93,6 +93,24 @@ export const SwitchDarkMode = (passedData) => {
     });
   };
 };
+
+export const removeAddressFromNotify = (passedData, funCall) => {
+  return async function (dispatch, getState) {
+    postLoginInstance
+      .post("wallet/user-wallet/cancel-user-notification", passedData)
+      .then((res) => {
+        if (res.data && !res.data.error) {
+          toast.success("Notification removed successfully");
+          if (funCall) {
+            funCall();
+          }
+        }
+      })
+      .catch(() => {
+        toast.error("Something went wrong");
+      });
+  };
+};
 export const createUserPayment = (passedData, stopCreditBtnLoading) => {
   return async function (dispatch, getState) {
     postLoginInstance

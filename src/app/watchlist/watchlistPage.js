@@ -35,6 +35,7 @@ import {
   GetAllPlan,
   TopsetPageFlagDefault,
   getUser,
+  removeAddressFromNotify,
   setPageFlagDefault,
 } from "../common/Api";
 import UpgradeModal from "../common/upgradeModal";
@@ -65,7 +66,12 @@ import {
 } from "../../utils/ReusableFunctions";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import WelcomeCard from "../Portfolio/WelcomeCard";
+import BasicConfirmModal from "../common/BasicConfirmModal";
+import CheckboxCustomTable from "../common/customCheckboxTable";
 import RemarkInput from "../discover/remarkInput";
+import MobileLayout from "../layout/MobileLayout";
+import NotifyOnTransactionSizeModal from "../smartMoney/notifyOnTransactionSizeModal";
+import WalletListPageMobile from "./WatchListPageMobile";
 import AddWatchListAddressModal from "./addWatchListAddressModal";
 import {
   getWatchList,
@@ -73,10 +79,6 @@ import {
   removeAddressFromWatchList,
   updateAddToWatchList,
 } from "./redux/WatchListApi";
-import MobileLayout from "../layout/MobileLayout";
-import WalletListPageMobile from "./WatchListPageMobile";
-import CheckboxCustomTable from "../common/customCheckboxTable";
-import NotifyOnTransactionSizeModal from "../smartMoney/notifyOnTransactionSizeModal";
 
 class WatchListPage extends BaseReactComponent {
   constructor(props) {
@@ -86,6 +88,9 @@ class WatchListPage extends BaseReactComponent {
     const page = params.get("p");
 
     this.state = {
+      isConfirmDeleteModal: false,
+      isConfirmRemoveNotifyModal: false,
+      selectedAddressItem: null,
       addressToNotify: "",
       showNotifyOnTransactionModal: false,
       goToBottom: false,
@@ -142,7 +147,50 @@ class WatchListPage extends BaseReactComponent {
     };
     this.delayTimer = 0;
   }
-
+  closeConfirmModals = () => {
+    this.setState({
+      isConfirmDeleteModal: false,
+      isConfirmRemoveNotifyModal: false,
+      selectedAddressItem: null,
+    });
+  };
+  showConfirmDeleteModal = (rowData) => {
+    this.setState({
+      selectedAddressItem: rowData,
+      isConfirmDeleteModal: true,
+    });
+  };
+  showConfirmRemoveNotifyModal = (rowData) => {
+    this.setState({
+      selectedAddressItem: rowData,
+      isConfirmRemoveNotifyModal: true,
+    });
+  };
+  cancelTransactionNotificationFun = () => {
+    this.closeConfirmModals();
+    let cancelTransactionNotification = new URLSearchParams();
+    cancelTransactionNotification.append(
+      "address",
+      this.state.selectedAddressItem.address
+        ? this.state.selectedAddressItem.address
+        : ""
+    );
+    this.props.removeAddressFromNotify(
+      cancelTransactionNotification,
+      this.callApi
+    );
+  };
+  deleteSelectedAddress = () => {
+    this.closeConfirmModals();
+    const data = new URLSearchParams();
+    data.append("address", this.state.selectedAddressItem.address);
+    this.props.removeAddressFromWatchList(
+      data,
+      this,
+      this.state.selectedAddressItem.address,
+      this.state.selectedAddressItem.nameTag
+    );
+  };
   upgradeModal = () => {
     this.setState({
       upgradeModal: !this.state.upgradeModal,
@@ -305,6 +353,7 @@ class WatchListPage extends BaseReactComponent {
             remark: watchListWalletAdd.remarks,
             address: watchListWalletAdd.address,
             nameTag: watchListWalletAdd.name_tag,
+            notify: watchListWalletAdd.notify,
           };
           tempWatchListArr.push(tempSingleWatchList);
         });
@@ -790,16 +839,8 @@ class WatchListPage extends BaseReactComponent {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "deleteCol") {
-            const deleteThisAddress = (isChecked) => {
-              const data = new URLSearchParams();
-              data.append("address", rowData.address);
-
-              this.props.removeAddressFromWatchList(
-                data,
-                this,
-                rowData.address,
-                rowData.nameTag
-              );
+            const deleteThisAddress = () => {
+              this.showConfirmDeleteModal(rowData);
             };
             return (
               <div
@@ -827,23 +868,28 @@ class WatchListPage extends BaseReactComponent {
             </span>
           </div>
         ),
-        dataKey: "following",
+        dataKey: "notify",
 
         coumnWidth: 0.125,
         isCell: true,
         cell: (rowData, dataKey) => {
-          if (dataKey === "following") {
+          if (dataKey === "notify") {
             const handleOnClick = (addItem) => {
               // SmartMoneyNotifyClick({
               //   session_id: getCurrentUser().id,
               //   email_address: getCurrentUser().email,
               // });
-              this.openNotifyOnTransactionModal(rowData.address);
+
+              if (rowData.notify) {
+                this.showConfirmRemoveNotifyModal();
+              } else {
+                this.openNotifyOnTransactionModal(rowData.address);
+              }
             };
             return (
               <CheckboxCustomTable
                 handleOnClick={handleOnClick}
-                isChecked={false}
+                isChecked={rowData.notify}
                 dontSelectIt
               />
             );
@@ -861,8 +907,29 @@ class WatchListPage extends BaseReactComponent {
           hideAddresses
           hideShare
         >
+          {this.state.isConfirmDeleteModal ? (
+            <BasicConfirmModal
+              show
+              history={this.props.history}
+              handleClose={this.closeConfirmModals}
+              handleYes={this.deleteSelectedAddress}
+              title="Are you sure you want to delete this address"
+              isMobile
+            />
+          ) : null}
+          {this.state.isConfirmRemoveNotifyModal ? (
+            <BasicConfirmModal
+              show
+              history={this.props.history}
+              handleClose={this.closeConfirmModals}
+              handleYes={this.cancelTransactionNotificationFun}
+              title="Are you sure you want to stop receiving notification about this address"
+              isMobile
+            />
+          ) : null}
           {this.state.showNotifyOnTransactionModal ? (
             <NotifyOnTransactionSizeModal
+              callApiAfterSuccess={this.callApi}
               show={this.state.showNotifyOnTransactionModal}
               onHide={this.hideNotifyOnTransactionModal}
               history={this.props.history}
@@ -933,6 +1000,7 @@ class WatchListPage extends BaseReactComponent {
             ) : null}
             {this.state.showNotifyOnTransactionModal ? (
               <NotifyOnTransactionSizeModal
+                callApiAfterSuccess={this.callApi}
                 show={this.state.showNotifyOnTransactionModal}
                 onHide={this.hideNotifyOnTransactionModal}
                 history={this.props.history}
@@ -955,6 +1023,24 @@ class WatchListPage extends BaseReactComponent {
                 from="transaction history"
               />
             )}
+            {this.state.isConfirmDeleteModal ? (
+              <BasicConfirmModal
+                show
+                history={this.props.history}
+                handleClose={this.closeConfirmModals}
+                handleYes={this.deleteSelectedAddress}
+                title="Are you sure you want to delete this address"
+              />
+            ) : null}
+            {this.state.isConfirmRemoveNotifyModal ? (
+              <BasicConfirmModal
+                show
+                history={this.props.history}
+                handleClose={this.closeConfirmModals}
+                handleYes={this.cancelTransactionNotificationFun}
+                title="Are you sure you want to stop receiving notification about this address"
+              />
+            ) : null}
             {this.state.upgradeModal && (
               <UpgradeModal
                 show={this.state.upgradeModal}
@@ -1083,6 +1169,7 @@ const mapDispatchToProps = {
   GetAllPlan,
   getUser,
   removeAddressFromWatchList,
+  removeAddressFromNotify,
 };
 
 WatchListPage.propTypes = {};
