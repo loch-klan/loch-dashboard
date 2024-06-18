@@ -19,6 +19,8 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import { isPremiumUser } from "../../utils/ReusableFunctions";
 import AddEmulationsSignInUpModal from "./AddEmulationsSignInUpModal";
 import { addCopyTrade } from "./EmulationsApi";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import InfoIcon from "../../assets/images/icons/info-icon.svg";
 
 class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {
@@ -495,6 +497,29 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                     <div className="add-ct-heading">Copy trade</div>
                     <div className="add-ct-desc">
                       Follow the smart-money. Copy trade anyone on-chain.
+                      <span>
+                        {" "}
+                        <CustomOverlay
+                          position="bottom"
+                          isIcon={false}
+                          isInfo={true}
+                          isText={true}
+                          copyTrade
+                          className={
+                            "fix-width tool-tip-container-bottom-arrow"
+                          }
+                        >
+                          <Image
+                            src={InfoIcon}
+                            className="info-icon"
+                            style={{
+                              width: "1.6rem",
+                              marginTop: "-3px",
+                              cursor: "pointer",
+                            }}
+                          />
+                        </CustomOverlay>
+                      </span>
                     </div>
                   </div>
                 ) : (
@@ -502,6 +527,29 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                     <h6 className="inter-display-medium f-s-25">Copy Trade</h6>
                     <p className="inter-display-medium f-s-16 grey-969 text-center">
                       Follow the smart-money. Copy trade anyone on-chain.
+                      <span>
+                        {" "}
+                        <CustomOverlay
+                          position="bottom"
+                          isIcon={false}
+                          isInfo={true}
+                          isText={true}
+                          text="Loch’s copy trader will email you when the underlying wallet makes a swap. We’ll calculate the equivalent swap amount relative to your portfolio. Use your own judgment to decide whether you want to execute the copy trade."
+                          className={
+                            "fix-width tool-tip-container-bottom-arrow"
+                          }
+                        >
+                          <Image
+                            src={InfoIcon}
+                            className="info-icon"
+                            style={{
+                              width: "1.6rem",
+                              marginTop: "-3px",
+                              cursor: "pointer",
+                            }}
+                          />
+                        </CustomOverlay>
+                      </span>
                     </p>
                   </>
                 )}
