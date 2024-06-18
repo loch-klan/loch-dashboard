@@ -1251,7 +1251,11 @@ class TopWalletAddressList extends Component {
 
                   <div
                     ref={this.props.buttonRef}
-                    className="topWalletAddressListFollowShareBtn ml-2"
+                    className={`topWalletAddressListFollowShareBtn ${
+                      this.state.showFollowingAddress && !this.props.hideShare
+                        ? "ml-2"
+                        : ""
+                    }`}
                     id="address-button"
                     // onClick={this.toggleShareModal}
                     onClick={this.handleSharePassFun}
