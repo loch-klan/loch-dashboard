@@ -5067,7 +5067,6 @@ class Portfolio extends BaseReactComponent {
                   //       this.props.defiState.totalDebt
                   // }
                   // history
-                  history={this.props.history}
                   // add wallet address modal
                   handleAddModal={this.handleAddModal}
                   // net worth total
@@ -5604,7 +5603,7 @@ class Portfolio extends BaseReactComponent {
                             {/* 
                             Things remaining Add Loading conditions */}
                             <div
-                              className={`newHomeTableContainer freezeTheFirstColumn ${
+                              className={`newHomeTableContainer newHomeTableContainerNoXScroll  ${
                                 this.state.localNftData?.length < 1
                                   ? ""
                                   : "tableWatermarkOverlay"

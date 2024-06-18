@@ -1427,6 +1427,11 @@
           }
         }
       }
+      .newHomeTableContainerNoXScroll {
+        .table-wrapper-mobile-y-scroll {
+          overflow-x: hidden;
+        }
+      }
       .transaction-table-section {
         .graph-header {
           h4 {
