@@ -1276,6 +1276,7 @@ class Emulations extends Component {
     if (mobileCheck()) {
       return (
         <MobileLayout
+          shouldGoToHomeAfterReplace
           showTopSearchBar
           handleShare={() => null}
           isSidebarClosed={this.props.isSidebarClosed}
