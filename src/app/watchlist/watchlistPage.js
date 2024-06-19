@@ -881,7 +881,7 @@ class WatchListPage extends BaseReactComponent {
               // });
 
               if (rowData.notify) {
-                this.showConfirmRemoveNotifyModal();
+                this.showConfirmRemoveNotifyModal(rowData);
               } else {
                 this.openNotifyOnTransactionModal(rowData.address);
               }
