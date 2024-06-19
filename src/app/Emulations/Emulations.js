@@ -308,7 +308,7 @@ class Emulations extends Component {
             this.showAddCopyTradeAddress();
           }
         );
-      }, 1500);
+      }, 500);
     }
 
     const search = this.props.location.search;

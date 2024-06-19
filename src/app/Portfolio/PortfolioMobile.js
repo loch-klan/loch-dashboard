@@ -1081,7 +1081,7 @@ class PortfolioMobile extends BaseReactComponent {
                     ) : this.props.blockTwoSelectedItem === 3 ? (
                       <div>
                         <div
-                          className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
+                          className={`newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
                             this.props.NFTData?.length < 1
                               ? ""
                               : "tableWatermarkOverlay"

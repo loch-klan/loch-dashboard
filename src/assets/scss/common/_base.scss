@@ -1226,7 +1226,7 @@ form {
     height: auto !important;
     background-color: var(--cardBackgroud);
     overflow: visible !important;
-    margin-bottom: 0.8rem !important;
+    // margin-bottom: 0.8rem !important;
     &::-webkit-scrollbar {
       width: 0rem !important;
       height: 0rem !important;
@@ -3505,11 +3505,12 @@ input {
           .ReactVirtualized__Grid__innerScrollContainer {
             .ReactVirtualized__Table__row {
               .ReactVirtualized__Table__rowColumn:first-child {
+                box-shadow: 8px 4px 7px var(--tableFirstRowShadow);
                 position: sticky;
                 position: -webkit-sticky;
                 left: 0;
                 top: 0;
-                height: calc(100% - 0.5rem);
+                height: 100%;
                 width: 100%;
                 display: flex;
                 align-items: center;

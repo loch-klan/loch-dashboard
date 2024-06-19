@@ -1423,7 +1423,7 @@ class TopWalletAddressList extends Component {
 
                   <div
                     ref={this.props.buttonRef}
-                    className="topWalletAddressListFollowShareBtn ml-2"
+                    className={`topWalletAddressListFollowShareBtn`}
                     id="address-button"
                     // onClick={this.toggleShareModal}
                     onClick={this.handleSharePassFun}
@@ -1449,17 +1449,25 @@ class TopWalletAddressList extends Component {
                 className="topWalletAddressListFollowShareBtn"
                 id="home-copy-trade-button"
                 onClick={this.goToCopyTrade}
+                style={{
+                  width: this.state.showFollowingAddress
+                    ? "calc(50% - 0.5rem)"
+                    : "100%",
+                }}
               >
-                <Image src={CopyTradeTopBarIcon} />
+                <Image
+                  className="topWalletAddressListFollowShareBtnIcon"
+                  src={CopyTradeTopBarIcon}
+                />
                 <span className="dotDotText">Copy Trade</span>
               </div>
               {this.state.showFollowingAddress ? (
                 <div
                   className="topWalletAddressListFollowShareBtn"
-                  id="address-button"
+                  id="home-notify-mobile-button"
                   onClick={this.notifyAction}
                   style={{
-                    width: "100%",
+                    width: "calc(50% - 0.5rem)",
                   }}
                 >
                   <Image
@@ -1718,7 +1726,7 @@ class TopWalletAddressList extends Component {
                   <div
                     ref={this.props.buttonRef}
                     className="ml-2 topWalletAddressListFollowShareBtn"
-                    id="address-button"
+                    id="home-notify-button"
                     onClick={this.notifyAction}
                   >
                     <Image

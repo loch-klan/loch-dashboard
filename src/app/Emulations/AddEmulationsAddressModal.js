@@ -506,7 +506,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                           isText={true}
                           copyTrade
                           className={
-                            "fix-width tool-tip-container-bottom-arrow"
+                            "fix-width tool-tip-container-bottom-arrow tool-tip-container-copy-trade-modal"
                           }
                         >
                           <Image
