@@ -34,8 +34,13 @@ import {
   getExchangeBalances,
   getUserWallet,
   isFollowedByUser,
+  isNotifiedByUser,
 } from "../Portfolio/Api";
-import { setPageFlagDefault, updateUserWalletApi } from "../common/Api";
+import {
+  removeAddressFromNotify,
+  setPageFlagDefault,
+  updateUserWalletApi,
+} from "../common/Api";
 import { detectCoin, getAllCoins, getAllParentChains } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api";
 import {
@@ -56,6 +61,7 @@ import refreshIcon from "../../assets/images/icons/refresh-ccw.svg";
 import FollowExitOverlay from "../Portfolio/FollowModals/FollowExitOverlay";
 import Breadcrums from "../common/Breadcrums";
 import NotifyOnTransactionSizeModal from "../smartMoney/notifyOnTransactionSizeModal";
+import BasicConfirmModal from "../common/BasicConfirmModal";
 
 class TopWalletAddressList extends Component {
   constructor(props) {
@@ -85,11 +91,64 @@ class TopWalletAddressList extends Component {
       changeList: props.changeWalletList,
       isMobileWalletListExpanded: false,
       isFollowingAddress: false,
+      isNotifyingAddress: false,
+      isConfirmRemoveNotifyModal: false,
       showFollowingAddress: true,
       addressToNotify: "",
       showNotifyOnTransactionModal: false,
     };
   }
+  checkIsNotified = () => {
+    const whatIsIt = window.localStorage.getItem("isNotifyingAddress");
+    console.log("6");
+    if (whatIsIt === "true") {
+      console.log("7");
+      this.setState({
+        isNotifyingAddress: true,
+      });
+    } else {
+      console.log("8");
+
+      this.setState({
+        isNotifyingAddress: false,
+      });
+    }
+  };
+  callIsNotifiedApi = () => {
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
+      });
+      if (tempListOfAdd && tempListOfAdd.length === 1) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+        const isNotifiedByUserData = new URLSearchParams();
+        isNotifiedByUserData.append("wallet_address", tempWalletAddress);
+        this.props.isNotifiedByUser(isNotifiedByUserData, this.checkIsNotified);
+      }
+    }
+  };
+  callIsNotifyAfterSuccess = () => {
+    window.localStorage.setItem("isNotifyingAddress", true);
+    setTimeout(() => {
+      this.checkIsNotified();
+      this.callIsNotifiedApi();
+    }, 300);
+  };
+  callIsNotifyAfterRemoving = () => {
+    window.localStorage.removeItem("isNotifyingAddress");
+    setTimeout(() => {
+      this.checkIsNotified();
+      this.callIsNotifiedApi();
+    }, 300);
+  };
   showFollowOrNot = () => {
     const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
     if (listJson && listJson.length > 0) {
@@ -171,6 +230,52 @@ class TopWalletAddressList extends Component {
     }
     if (this.props.handleShare) {
       this.props.handleShare();
+    }
+  };
+  notifyAction = () => {
+    if (this.state.isNotifyingAddress) {
+      this.showConfirmRemoveNotifyModal();
+    } else {
+      this.openNotifyModal();
+    }
+  };
+  showConfirmRemoveNotifyModal = () => {
+    this.setState({
+      isConfirmRemoveNotifyModal: true,
+    });
+  };
+  closeConfirmModals = () => {
+    this.setState({
+      isConfirmRemoveNotifyModal: false,
+    });
+  };
+  cancelTransactionNotificationFun = () => {
+    const listJson = JSON.parse(window.localStorage.getItem("addWallet"));
+    if (listJson) {
+      const tempListOfAdd = listJson.map((resData) => {
+        return {
+          address: resData.displayAddress
+            ? resData.displayAddress
+            : resData.address,
+          nameTag: resData.nameTag,
+        };
+      });
+      if (tempListOfAdd && tempListOfAdd.length === 1) {
+        const tempWalletAddress = tempListOfAdd[0].address
+          ? tempListOfAdd[0].address
+          : "";
+
+        this.closeConfirmModals();
+        let cancelTransactionNotification = new URLSearchParams();
+        cancelTransactionNotification.append(
+          "address",
+          tempWalletAddress ? tempWalletAddress : ""
+        );
+        this.props.removeAddressFromNotify(
+          cancelTransactionNotification,
+          this.callIsNotifyAfterRemoving
+        );
+      }
     }
   };
   openNotifyModal = () => {
@@ -283,6 +388,8 @@ class TopWalletAddressList extends Component {
     }, 1000);
     this.getCurrentTime();
     this.checkIsFollowed();
+    this.callIsNotifiedApi();
+    this.checkIsNotified(true);
     const userWalletData =
       this.props.portfolioState &&
       this.props.portfolioState.chainWallet &&
@@ -355,6 +462,7 @@ class TopWalletAddressList extends Component {
       this.checkIsFollowed();
     }
     if (prevProps?.HeaderState !== this.props.HeaderState) {
+      this.callIsNotifiedApi();
       this.showFollowOrNot();
     }
     if (
@@ -1143,8 +1251,19 @@ class TopWalletAddressList extends Component {
           }}
           className="topWalletAddressListMobile inter-display-medium"
         >
+          {this.state.isConfirmRemoveNotifyModal ? (
+            <BasicConfirmModal
+              show
+              history={this.props.history}
+              handleClose={this.closeConfirmModals}
+              handleYes={this.cancelTransactionNotificationFun}
+              title="Are you sure you want to stop receiving notification about this address"
+              isMobile={this.props.isMobile}
+            />
+          ) : null}
           {this.state.showNotifyOnTransactionModal ? (
             <NotifyOnTransactionSizeModal
+              callApiAfterSuccess={this.callIsNotifyAfterSuccess}
               show={this.state.showNotifyOnTransactionModal}
               onHide={this.closeNotifyModal}
               history={this.props.history}
@@ -1334,20 +1453,24 @@ class TopWalletAddressList extends Component {
                 <Image src={CopyTradeTopBarIcon} />
                 <span className="dotDotText">Copy Trade</span>
               </div>
-              <div
-                className="topWalletAddressListFollowShareBtn"
-                id="address-button"
-                onClick={this.openNotifyModal}
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Image
-                  className="topWalletAddressListFollowShareBtnIcon"
-                  src={BellTopBarIcon}
-                />
-                <span className="dotDotText">Notify</span>
-              </div>
+              {this.state.showFollowingAddress ? (
+                <div
+                  className="topWalletAddressListFollowShareBtn"
+                  id="address-button"
+                  onClick={this.notifyAction}
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  <Image
+                    className="topWalletAddressListFollowShareBtnIcon"
+                    src={BellTopBarIcon}
+                  />
+                  <span className="dotDotText">
+                    {this.state.isNotifyingAddress ? "Notifying" : "Notify"}
+                  </span>
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -1362,6 +1485,7 @@ class TopWalletAddressList extends Component {
         />
         {this.state.showNotifyOnTransactionModal ? (
           <NotifyOnTransactionSizeModal
+            callApiAfterSuccess={this.callIsNotifyAfterSuccess}
             show={this.state.showNotifyOnTransactionModal}
             onHide={this.closeNotifyModal}
             history={this.props.history}
@@ -1370,6 +1494,15 @@ class TopWalletAddressList extends Component {
         ) : null}
         {/* {this.props.showpath ? breadCrumb : ""} */}
         <div className="topWalletAddressList">
+          {this.state.isConfirmRemoveNotifyModal ? (
+            <BasicConfirmModal
+              show
+              history={this.props.history}
+              handleClose={this.closeConfirmModals}
+              handleYes={this.cancelTransactionNotificationFun}
+              title="Are you sure you want to stop receiving notification about this address"
+            />
+          ) : null}
           {this.state.followSignupModal ? (
             <FollowExitOverlay
               followedAddress={this.state.followedAddress}
@@ -1581,18 +1714,22 @@ class TopWalletAddressList extends Component {
                   />
                   <span className="dotDotText">Copy Trade</span>
                 </div>
-                <div
-                  ref={this.props.buttonRef}
-                  className="ml-2 topWalletAddressListFollowShareBtn"
-                  id="address-button"
-                  onClick={this.openNotifyModal}
-                >
-                  <Image
-                    className="topWalletAddressListFollowShareBtnIcon"
-                    src={BellTopBarIcon}
-                  />
-                  <span className="dotDotText">Notify</span>
-                </div>
+                {this.state.showFollowingAddress ? (
+                  <div
+                    ref={this.props.buttonRef}
+                    className="ml-2 topWalletAddressListFollowShareBtn"
+                    id="address-button"
+                    onClick={this.notifyAction}
+                  >
+                    <Image
+                      className="topWalletAddressListFollowShareBtnIcon"
+                      src={BellTopBarIcon}
+                    />
+                    <span className="dotDotText">
+                      {this.state.isNotifyingAddress ? "Notifying" : "Notify"}
+                    </span>
+                  </div>
+                ) : null}
               </>
             ) : null}
           </div>
@@ -1626,6 +1763,8 @@ const mapDispatchToProps = {
   getUserWallet,
   getExchangeBalances,
   setPageFlagDefault,
+  isNotifiedByUser,
+  removeAddressFromNotify,
 };
 
 export default connect(

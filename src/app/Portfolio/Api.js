@@ -35,6 +35,34 @@ export const isNewAddress = (data, multipleRecall) => {
       });
   };
 };
+// api/wallet/user-wallet/notify_user
+
+// ismein "wallet_address"  pass karo
+export const isNotifiedByUser = (data, checkNotify) => {
+  return async function () {
+    postLoginInstance
+      .post("wallet/user-wallet/notify-user", data)
+      .then((res) => {
+        console.log("1");
+        if (!res.data?.error) {
+          console.log("2");
+          if (res.data?.data.notify) {
+            console.log("3");
+            window.localStorage.setItem("isNotifyingAddress", true);
+          } else {
+            console.log("4");
+            window.localStorage.removeItem("isNotifyingAddress");
+          }
+          console.log("?????");
+          setTimeout(() => {
+            console.log("5");
+            checkNotify();
+          }, 300);
+        }
+      })
+      .catch((err) => {});
+  };
+};
 export const isFollowedByUser = (data, ctx) => {
   return async function () {
     postLoginInstance
@@ -83,7 +111,7 @@ export const getCoinRate = () => {
 export const getUserWallet = (wallet, ctx, isRefresh, index) => {
   return async function (dispatch, getState) {
     let data = new URLSearchParams();
-    console.log("chains ++", wallet.coinCode);
+
     data.append("chain", wallet.coinCode);
     data.append("wallet_address", wallet.address);
 
