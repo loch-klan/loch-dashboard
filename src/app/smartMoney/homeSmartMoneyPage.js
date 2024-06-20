@@ -1447,7 +1447,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                         pageLimit={this.state.pageLimit}
                         changePageLimit={this.changePageLimit}
                         addWatermark
-                        className={this.state.blurTable ? "noScroll" : ""}
+                        className=""
                         onBlurSignInClick={this.showSignInModal}
                       />
                       {/* <div className="ShowDust">

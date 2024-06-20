@@ -1144,6 +1144,7 @@ class MobileLayout extends BaseReactComponent {
                     </MobileDarkModeWrapper>
                     {!this.props.hideShare ? (
                       <TopWalletAddressList
+                        history={this.props.history}
                         apiResponse={() => null}
                         handleShare={this.props.handleShare}
                         showpath={false}
