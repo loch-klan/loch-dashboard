@@ -1192,6 +1192,40 @@ class HomeSmartMoneyPage extends BaseReactComponent {
     ];
 
     if (mobileCheck()) {
+      if (this.props.justShowTable) {
+        return (
+          <HomeSmartMoneyMobile
+            justShowTable
+            isNoUser={!this.state.lochUserState}
+            goToAddress={this.goToAddress}
+            accountList={this.state.accountList}
+            currency={this.state.currency}
+            handleFollowUnfollow={this.handleFollowUnfollow}
+            openSignInOnclickModal={this.openSignInOnclickModal}
+            blurTable={this.state.blurTable}
+            history={this.props.history}
+            location={this.props.location}
+            currentPage={this.state.currentPage}
+            pageLimit={this.state.pageLimit}
+            totalPage={this.state.totalPage}
+            changePageLimit={this.changePageLimit}
+            onPageChange={this.onPageChange}
+            smartMoneyBlur={this.state.blurTable}
+            signInModal={this.state.signInModal}
+            hideAllModals={this.hideAllModals} //Not present
+            showClickSignInText={this.state.showClickSignInText}
+            addAddressModal={this.state.addSmartMoneyAddressModal}
+            howItWorksModal={this.state.howItWorksModal}
+            faqModal={this.state.faqModal}
+            signOutModal={this.state.showSignOutModal}
+            signOutFun={this.openSignOutModal} //not present]
+            showFaqModal={this.showFaqModal}
+            showHowItWorksModal={this.showHowItWorksModal}
+            showAddAddressModal={this.showAddSmartMoneyAddresses}
+            isLoading={this.state.tableLoading}
+          />
+        );
+      }
       return (
         <MobileLayout
           isAddNewAddressLoggedIn={
@@ -1243,40 +1277,48 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       return (
         <>
           {/* topbar */}
-          <div className="portfolio-page-section">
-            <div
-              className="portfolio-container page"
-              style={{ overflow: "visible" }}
-            >
-              <div className="portfolio-section">
-                <WelcomeCard
-                  funAfterUserCreate={this.funAfterUserCreate}
-                  openConnectWallet={this.props.openConnectWallet}
-                  connectedWalletAddress={this.props.connectedWalletAddress}
-                  connectedWalletevents={this.props.connectedWalletevents}
-                  disconnectWallet={this.props.disconnectWallet}
-                  handleShare={this.handleShare}
-                  isSidebarClosed={this.props.isSidebarClosed}
-                  apiResponse={(e) => this.CheckApiResponse(e)}
-                  // history
-                  history={this.props.history}
-                  // add wallet address modal
-                  updateTimer={this.updateTimer}
-                  handleAddModal={this.handleAddModal}
-                  isAddNewAddress={
-                    !this.state.lochUserState ||
-                    this.state.lochUserState === "jsk"
-                  }
-                  isAddNewAddressLoggedIn={
-                    !this.state.lochUserState ||
-                    this.state.lochUserState === "jsk"
-                  }
-                  goToPageAfterLogin="/home"
-                />
+          {this.props.justShowTable ? null : (
+            <div className="portfolio-page-section">
+              <div
+                className="portfolio-container page"
+                style={{ overflow: "visible" }}
+              >
+                <div className="portfolio-section">
+                  <WelcomeCard
+                    funAfterUserCreate={this.funAfterUserCreate}
+                    openConnectWallet={this.props.openConnectWallet}
+                    connectedWalletAddress={this.props.connectedWalletAddress}
+                    connectedWalletevents={this.props.connectedWalletevents}
+                    disconnectWallet={this.props.disconnectWallet}
+                    handleShare={this.handleShare}
+                    isSidebarClosed={this.props.isSidebarClosed}
+                    apiResponse={(e) => this.CheckApiResponse(e)}
+                    // history
+                    history={this.props.history}
+                    // add wallet address modal
+                    updateTimer={this.updateTimer}
+                    handleAddModal={this.handleAddModal}
+                    isAddNewAddress={
+                      !this.state.lochUserState ||
+                      this.state.lochUserState === "jsk"
+                    }
+                    isAddNewAddressLoggedIn={
+                      !this.state.lochUserState ||
+                      this.state.lochUserState === "jsk"
+                    }
+                    goToPageAfterLogin="/home"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className="history-table-section m-t-80">
+          )}
+          <div
+            className={
+              this.props.justShowTable
+                ? "history-table-section-full"
+                : `history-table-section m-t-80`
+            }
+          >
             <div className="history-table homeSmartMoneyPage page">
               {this.state.showSignOutModal ? (
                 <ConformSmartMoneyLeaveModal
@@ -1349,7 +1391,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                 />
               ) : null}
               {/* <Button onClick={this.loginFunction}>Login</Button>
-            <Button onClick={this.signUpFunction}>Sign up</Button> */}
+              <Button onClick={this.signUpFunction}>Sign up</Button> */}
               {this.state.addModal && (
                 <FixAddModal
                   show={this.state.addModal}
@@ -1377,40 +1419,42 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   pname="treansaction history"
                 />
               )}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  minWidth: "85rem",
-                }}
-              >
+              {this.props.justShowTable ? null : (
                 <div
                   style={{
-                    minWidth: "0",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    minWidth: "85rem",
                   }}
                 >
-                  <PageHeader
-                    title="Loch’s Leaderboard"
-                    subTitle="Sorted by net worth, pnl, and flows"
-                    currentPage={"home-leaderboard"}
-                    updateTimer={this.updateTimer}
+                  <div
+                    style={{
+                      minWidth: "0",
+                    }}
+                  >
+                    <PageHeader
+                      title="Loch’s Leaderboard"
+                      subTitle="Sorted by net worth, pnl, and flows"
+                      currentPage={"home-leaderboard"}
+                      updateTimer={this.updateTimer}
+                    />
+                  </div>
+                  <HomeSmartMoneyHeader
+                    openAddAddressModal={this.showAddSmartMoneyAddresses}
+                    apiResponse={(e) => this.CheckApiResponse(e)}
+                    // history
+                    history={this.props.history}
+                    // add wallet address modal
+                    handleAddModal={this.handleAddModal}
+                    hideButton={true}
+                    onSignInClick={this.showSignInModal}
+                    blurTable={this.state.blurTable}
+                    signOutFun={this.openSignOutModal}
+                    showFaqModal={this.showFaqModal}
+                    showHowItWorksModal={this.showHowItWorksModal}
                   />
                 </div>
-                <HomeSmartMoneyHeader
-                  openAddAddressModal={this.showAddSmartMoneyAddresses}
-                  apiResponse={(e) => this.CheckApiResponse(e)}
-                  // history
-                  history={this.props.history}
-                  // add wallet address modal
-                  handleAddModal={this.handleAddModal}
-                  hideButton={true}
-                  onSignInClick={this.showSignInModal}
-                  blurTable={this.state.blurTable}
-                  signOutFun={this.openSignOutModal}
-                  showFaqModal={this.showFaqModal}
-                  showHowItWorksModal={this.showHowItWorksModal}
-                />
-              </div>
+              )}
               <div style={{ paddingBottom: "2rem" }}>
                 <div className="transaction-history-table">
                   {this.state.tableLoading ? (
@@ -1425,7 +1469,11 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                       <Loading />
                     </div>
                   ) : (
-                    <div className="smartMoneyTable">
+                    <div
+                      className={`smartMoneyTable ${
+                        this.props.justShowTable ? null : "smartMoneyJustTable"
+                      }`}
+                    >
                       <TransactionTable
                         openSignInOnclickModal={this.openSignInOnclickModal}
                         blurButtonClick={this.showAddSmartMoneyAddresses}

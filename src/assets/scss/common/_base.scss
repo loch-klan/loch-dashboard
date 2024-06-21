@@ -2119,7 +2119,7 @@ form {
           }
           &:hover {
             span {
-              color: var(--primaryTextColor);
+              color: var(--primaryTextColor) !important;
             }
             // img {
             //   filter: var(--hoverBrightnessValue);
