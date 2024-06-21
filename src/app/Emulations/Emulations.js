@@ -435,7 +435,11 @@ class Emulations extends Component {
           });
         }
       }
-
+      if (tempEmulationsLocal && tempEmulationsLocal.length > 0) {
+        this.setState({
+          isMyCopiedWalletBlockOpen: true,
+        });
+      }
       this.setState({
         emulationsLoading: false,
         copyTradesLocal: tempEmulationsLocal,
