@@ -16,21 +16,8 @@ import {
 } from "./utils/ReusableFunctions";
 
 function App(props) {
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 480px)");
-    setIsMobile(mediaQuery.matches);
-
-    function handleResize() {
-      setIsMobile(mediaQuery.matches);
-    }
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const [isMobile] = useState(mobileCheck());
+  useEffect(() => {}, []);
   useEffect(() => {
     const isRendered = window.localStorage.getItem("isRendered");
     if (!isRendered) {
@@ -72,7 +59,7 @@ function App(props) {
   //   <MobileDevice />
   // ) : (
   return (
-    <div>
+    <div className={isMobile ? "" : "zoomedElements"}>
       <BrowserRouter>
         <Switch>
           {routes.map((prop, key) => {
