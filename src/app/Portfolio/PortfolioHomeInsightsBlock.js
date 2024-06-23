@@ -198,7 +198,11 @@ class PortfolioHomeInsightsBlock extends Component {
                           background: "var(--cardBackgroud)",
                         }}
                         className={`insights-card ${
-                          key > 0 ? "blurred-elements" : ""
+                          key > 0
+                            ? this.props.isPremiumUser
+                              ? ""
+                              : "blurred-elements"
+                            : ""
                         }`}
                         key={key}
                         onClick={() => {
