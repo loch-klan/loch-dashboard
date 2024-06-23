@@ -20,6 +20,8 @@
 
     .fillter_tabs_section {
       min-width: 85rem;
+      max-width: 100rem;
+      width: 100rem;
       // display: flex;
       // align-items: center;
       padding: 1.2rem;
@@ -375,6 +377,8 @@
 }
 .transaction-history-table {
   min-width: 85rem;
+  max-width: 100rem;
+  width: 100rem;
   min-height: 40rem !important;
   .loadingSizeContainer {
     height: 50vh;

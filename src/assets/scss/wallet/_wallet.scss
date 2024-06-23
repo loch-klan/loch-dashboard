@@ -4,6 +4,8 @@
   .wallet-section {
     margin-top: 5rem;
     min-width: 85rem; //solve overflow issue
+    max-width: 100rem;
+    width: 100rem;
     // overflow: hidden; //solve overflow issue
     // sortby section begin
     padding: 0rem;
@@ -58,6 +60,8 @@
 
     .net-worth-wrapper {
       min-width: 85rem;
+      max-width: 100rem;
+      width: 100rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -92,6 +96,8 @@
     // walletcard section begin
     .cards {
       min-width: 85rem;
+      max-width: 100rem;
+      width: 100rem;
       .walletcard {
         padding: 2.4rem 2.4rem 1.4rem;
         background-color: var(--cardBackgroud);

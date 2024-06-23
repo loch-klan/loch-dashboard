@@ -40,6 +40,8 @@ class Footer extends Component {
             marginTop: "3rem",
             marginBottom: "2.6rem",
             minWidth: this.state.isMobileDevice ? "" : "85rem",
+            maxWidth: this.state.isMobileDevice ? "" : "100rem",
+            width: this.state.isMobileDevice ? "" : "100rem",
           }}
           className="footerLine"
         />
@@ -50,6 +52,8 @@ class Footer extends Component {
             justifyContent: "space-between",
             alignItems: "center",
             minWidth: this.state.isMobileDevice ? "" : "85rem",
+            maxWidth: this.state.isMobileDevice ? "" : "100rem",
+            width: this.state.isMobileDevice ? "" : "100rem",
           }}
         >
           <div style={{ width: "50%" }}>
@@ -118,6 +122,8 @@ class Footer extends Component {
           <p
             style={{
               minWidth: this.state.isMobileDevice ? "" : "85rem",
+              maxWidth: this.state.isMobileDevice ? "" : "100rem",
+              width: this.state.isMobileDevice ? "" : "100rem",
             }}
             className=" secondaryText inter-display-medium f-s-13 lh-16 m-b-40 footerText "
           >

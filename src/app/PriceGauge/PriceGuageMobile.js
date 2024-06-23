@@ -27,6 +27,7 @@ class PriceGuageMobile extends Component {
             }}
           >
             <InflowOutflowPortfolioHome
+              isHome
               hideExplainer
               showEth
               userWalletList={this.props.userWalletList}

@@ -1425,6 +1425,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                     display: "flex",
                     justifyContent: "space-between",
                     minWidth: "85rem",
+                    maxWidth: "100rem",
+                    width: "100rem",
                   }}
                 >
                   <div

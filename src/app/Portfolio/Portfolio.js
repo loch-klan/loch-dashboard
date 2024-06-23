@@ -5092,6 +5092,7 @@ class Portfolio extends BaseReactComponent {
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
+                  maxWidth: "100rem",width: "100rem",
                   marginTop: "11rem",
                 }}
               ></div>
@@ -6055,6 +6056,7 @@ class Portfolio extends BaseReactComponent {
 
                       {this.state.blockFourSelectedItem === 1 ? (
                         <InflowOutflowPortfolioHome
+                          isHome
                           switchPriceGaugeLoader={
                             this.state.switchPriceGaugeLoader
                           }
