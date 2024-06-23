@@ -14,6 +14,7 @@
 }
 
 .watchListTableContainer {
+  min-height: unset !important;
   .no-hover {
     cursor: default;
   }

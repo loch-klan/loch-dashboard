@@ -921,7 +921,12 @@ class WatchListPage extends BaseReactComponent {
               </Form>
             </div>
 
-            <div className="transaction-history-table watchListTableContainer">
+            <div
+              style={{
+                minHeight: "unset !important",
+              }}
+              className="transaction-history-table watchListTableContainer"
+            >
               {this.state.tableLoading ? (
                 <div
                   style={{
