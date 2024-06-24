@@ -1219,6 +1219,9 @@ form {
   .ReactVirtualized__Table__rowColumn {
     margin-left: 3rem;
     margin-right: 3rem;
+    .blurred-elements {
+      filter: blur(12px);
+    }
   }
 
   .ReactVirtualized__Table__Grid {
