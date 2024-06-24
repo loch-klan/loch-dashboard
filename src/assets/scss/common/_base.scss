@@ -1219,6 +1219,9 @@ form {
   .ReactVirtualized__Table__rowColumn {
     margin-left: 3rem;
     margin-right: 3rem;
+    .blurred-elements {
+      filter: blur(12px);
+    }
   }
 
   .ReactVirtualized__Table__Grid {
@@ -3753,9 +3756,9 @@ input {
 }
 .blurred-elements {
   cursor: pointer;
-  filter: blur(4px);
+  filter: blur(8px);
   opacity: 0.7;
-  padding: 0.2rem 0rem;
+  padding: 1rem 0rem;
   user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -3767,7 +3770,8 @@ input {
 .bar-graph-section-blurred {
   .chartArea {
     canvas {
-      filter: blur(5px) !important;
+      padding: 0.5rem !important;
+      filter: blur(7px) !important;
       cursor: pointer !important;
     }
   }
