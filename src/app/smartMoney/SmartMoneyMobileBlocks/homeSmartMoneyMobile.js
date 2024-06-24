@@ -59,95 +59,100 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
           />
         ) : null}
 
-        <div className="mobile-header-container">
-          <h4>Loch’s Leaderboard</h4>
-          <p>Sorted by net worth, pnl, and flows</p>
-        </div>
+        {this.props.justShowTable ? null : (
+          <div className="mobile-header-container">
+            <h4>Loch’s Leaderboard</h4>
+            <p>Sorted by net worth, pnl, and flows</p>
+          </div>
+        )}
 
-        <div className="mobileSmartMoneyBtnsContainer">
-          <>
-            <div className="mobileSmartMoneyBtnSignInBottomBtns">
-              <div
-                onClick={this.props.showFaqModal}
-                className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
-              >
-                <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
-                  <Image
-                    className="mobileSmartMoneyBtnSignInIcon"
-                    src={QuestionmarkCircleSmartMoneyIcon}
-                    onLoad={() => {
-                      this.setState({
-                        QuestionmarkCircleSmartMoneyIconLoaded: true,
-                      });
-                    }}
-                    style={{
-                      opacity: this.state.QuestionmarkCircleSmartMoneyIconLoaded
-                        ? 1
-                        : 0,
-                    }}
-                  />
-                </div>
-                <div className="mobileSmartMoneyBtnSignInJustText">FAQ</div>
-              </div>
-              <div
-                onClick={this.props.showHowItWorksModal}
-                className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
-                style={{
-                  margin: "0rem 1rem",
-                }}
-              >
-                <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
-                  <Image
-                    className="mobileSmartMoneyBtnSignInIcon"
-                    src={InfoCircleSmartMoneyIcon}
-                    onLoad={() => {
-                      this.setState({
-                        InfoCircleSmartMoneyIconLoaded: true,
-                      });
-                    }}
-                    style={{
-                      opacity: this.state.InfoCircleSmartMoneyIconLoaded
-                        ? 1
-                        : 0,
-                    }}
-                  />
-                </div>
-                <div className="mobileSmartMoneyBtnSignInJustText">
-                  How it works
-                </div>
-              </div>
-              {this.state.localLochUser &&
-              (this.state.localLochUser.email ||
-                this.state.localLochUser.first_name ||
-                this.state.localLochUser.last_name) ? (
+        {this.props.justShowTable ? null : (
+          <div className="mobileSmartMoneyBtnsContainer">
+            <>
+              <div className="mobileSmartMoneyBtnSignInBottomBtns">
                 <div
-                  onClick={this.props.showAddAddressModal}
+                  onClick={this.props.showFaqModal}
                   className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
                 >
                   <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
                     <Image
                       className="mobileSmartMoneyBtnSignInIcon"
-                      src={PlusCircleSmartMoneyIcon}
+                      src={QuestionmarkCircleSmartMoneyIcon}
                       onLoad={() => {
                         this.setState({
-                          PlusCircleSmartMoneyIconLoaded: true,
+                          QuestionmarkCircleSmartMoneyIconLoaded: true,
                         });
                       }}
                       style={{
-                        opacity: this.state.PlusCircleSmartMoneyIconLoaded
+                        opacity: this.state
+                          .QuestionmarkCircleSmartMoneyIconLoaded
+                          ? 1
+                          : 0,
+                      }}
+                    />
+                  </div>
+                  <div className="mobileSmartMoneyBtnSignInJustText">FAQ</div>
+                </div>
+                <div
+                  onClick={this.props.showHowItWorksModal}
+                  className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                  style={{
+                    margin: "0rem 1rem",
+                  }}
+                >
+                  <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                    <Image
+                      className="mobileSmartMoneyBtnSignInIcon"
+                      src={InfoCircleSmartMoneyIcon}
+                      onLoad={() => {
+                        this.setState({
+                          InfoCircleSmartMoneyIconLoaded: true,
+                        });
+                      }}
+                      style={{
+                        opacity: this.state.InfoCircleSmartMoneyIconLoaded
                           ? 1
                           : 0,
                       }}
                     />
                   </div>
                   <div className="mobileSmartMoneyBtnSignInJustText">
-                    Add address
+                    How it works
                   </div>
                 </div>
-              ) : null}
-            </div>
-          </>
-        </div>
+                {this.state.localLochUser &&
+                (this.state.localLochUser.email ||
+                  this.state.localLochUser.first_name ||
+                  this.state.localLochUser.last_name) ? (
+                  <div
+                    onClick={this.props.showAddAddressModal}
+                    className="mobileSmartMoneyBtnSignInContainer mobileSmartMoneyBtnFaqContainer inter-display-medium f-s-13 lh-19 navbar-button"
+                  >
+                    <div className="mobileSmartMoneyBtnSignInIconContainer mobileSmartMoneyBtnSignInIconNoColor">
+                      <Image
+                        className="mobileSmartMoneyBtnSignInIcon"
+                        src={PlusCircleSmartMoneyIcon}
+                        onLoad={() => {
+                          this.setState({
+                            PlusCircleSmartMoneyIconLoaded: true,
+                          });
+                        }}
+                        style={{
+                          opacity: this.state.PlusCircleSmartMoneyIconLoaded
+                            ? 1
+                            : 0,
+                        }}
+                      />
+                    </div>
+                    <div className="mobileSmartMoneyBtnSignInJustText">
+                      Add address
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </>
+          </div>
+        )}
         {this.props.isLoading ? (
           <div
             style={{
@@ -165,7 +170,13 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
         ) : (
           <>
             {this.props.accountList && this.props.accountList.length > 0 ? (
-              <div className="mobileSmartMoneyListContainer">
+              <div
+                style={{
+                  marginTop: this.props.justShowTable ? "0rem" : "",
+                  paddingTop: this.props.justShowTable ? "0rem" : "",
+                }}
+                className="mobileSmartMoneyListContainer"
+              >
                 {this.props.accountList.map((mapData) => {
                   let tempCurrencyRate = this.props.currency?.rate
                     ? this.props.currency.rate
@@ -182,6 +193,7 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
                   let returns = tempReturns * tempCurrencyRate;
                   return (
                     <SmartMoneyMobileBlock
+                      justShowTable={this.props.justShowTable}
                       hideFollow={this.props.isNoUser}
                       isNoUser={this.props.isNoUser}
                       goToAddress={this.props.goToAddress}

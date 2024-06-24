@@ -118,7 +118,9 @@ a:hover,
 a:focus {
   text-decoration: none;
 }
-
+.zoomedElements {
+  zoom: 0.85;
+}
 body {
   // background-color: $primary;
 }
@@ -140,8 +142,8 @@ body {
     overflow-x: hidden;
   }
   .main-section-right-margin-handler-closed {
-    padding-left: 18.7rem;
-    padding-right: 8.5rem;
+    padding-left: 17.5rem;
+    padding-right: 7.5rem;
     overflow-x: hidden;
   }
   .main-section-right-margin-handler-closed-ctw {
@@ -1976,8 +1978,13 @@ form {
 }
 
 .page {
-  padding: 0 5rem;
+  padding-left: 4.6rem;
+  padding-right: 4.6rem;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
 }
 // @media all and (max-width: 1300px) {
 //   .page {
@@ -2122,7 +2129,7 @@ form {
           }
           &:hover {
             span {
-              color: var(--primaryTextColor);
+              color: var(--primaryTextColor) !important;
             }
             // img {
             //   filter: var(--hoverBrightnessValue);
@@ -3645,6 +3652,8 @@ input {
 
 .breadcrumsBlock {
   min-width: 85rem;
+  max-width: 120rem;
+  width: 120rem;
   nav {
     ol {
       align-items: center;
@@ -3808,8 +3817,8 @@ input {
   position: fixed;
   left: 0;
   top: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 120vw;
+  height: 120vh;
   z-index: 100000;
 }
 .blurredElementMobile {

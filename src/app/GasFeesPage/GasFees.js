@@ -743,6 +743,8 @@ class GasFeesPage extends Component {
                 position: "relative",
                 // minHeight: "66.25rem",
                 minWidth: "85rem",
+                maxWidth: "120rem",
+                width: "120rem",
               }}
               id="gasfeesspent"
             >

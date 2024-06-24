@@ -661,7 +661,14 @@ class InsightsPage extends Component {
                 handleShare={this.handleShare}
                 // history={this.props.history}updateTimer={this.updateTimer}
               />
-              <div style={{ position: "relative", minWidth: "85rem" }}>
+              <div
+                style={{
+                  position: "relative",
+                  minWidth: "85rem",
+                  maxWidth: "120rem",
+                  width: "120rem",
+                }}
+              >
                 {
                   // this.state.insightList && this.state.insightList.length > 0 &&
                   <div className="insights-filter">

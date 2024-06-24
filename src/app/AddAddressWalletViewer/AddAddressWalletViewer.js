@@ -118,6 +118,8 @@ class AddAddressWalletViewer extends Component {
             className="portfolio-section"
             style={{
               minWidth: "85rem",
+              maxWidth: "120rem",
+              width: "120rem",
               marginTop: "11rem",
             }}
           ></div>

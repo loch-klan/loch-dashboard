@@ -327,7 +327,9 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
   render() {
     return (
       <div
-        className="welcome-card-section lineChartSlider"
+        className={`welcome-card-section ${
+          this.props.isHome ? "welcome-card-section-home" : ""
+        } lineChartSlider`}
         style={{
           boxShadow: this.props.hideTimeFilter ? "none" : "",
           paddingTop: this.props.hideTimeFilter ? "1rem" : "",

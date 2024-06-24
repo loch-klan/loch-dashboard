@@ -280,6 +280,8 @@ export default function WelcomeCard(props) {
             display: "flex",
             flex: 1,
             minWidth: "85rem",
+            maxWidth: props.isWideScreen ? "" : "120rem",
+            width: props.isWideScreen ? "" : "120rem",
             // marginRight: "1.7rem",
             // width: "calc(60% - 3rem)",
             // position: "absolute",
