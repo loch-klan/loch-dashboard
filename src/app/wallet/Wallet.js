@@ -295,8 +295,8 @@ class Wallet extends Component {
               <div
                 style={{
                   minWidth: "85rem",
-                  maxWidth: "100rem",
-                  width: "100rem",
+                  maxWidth: "120rem",
+                  width: "120rem",
                 }}
               >
                 <CoinBadges

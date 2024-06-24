@@ -5034,6 +5034,7 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  isWideScreen
                   history={this.props.history}
                   showTopSearchBar
                   openConnectWallet={this.props.openConnectWallet}
@@ -5092,12 +5093,14 @@ class Portfolio extends BaseReactComponent {
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
-                  maxWidth: "100rem",width: "100rem",
+                  maxWidth: "120rem",
+                  width: "120rem",
                   marginTop: "11rem",
                 }}
               ></div>
 
               <TopWalletAddressList
+                isWideScreen
                 history={this.props.history}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
@@ -6138,7 +6141,7 @@ class Portfolio extends BaseReactComponent {
               </div>
 
               {/* footer  */}
-              <Footer />
+              <Footer isWideScreen />
             </div>
           </div>
         )}

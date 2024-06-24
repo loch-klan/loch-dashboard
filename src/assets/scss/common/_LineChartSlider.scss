@@ -1,7 +1,7 @@
 .welcome-card-section {
   min-width: 85rem; //solve overflow issue
-  max-width: 100rem;
-  width: 100rem;
+  max-width: 120rem;
+  width: 120rem;
   overflow: hidden; //solve overflow issue
   margin: 5rem 0 1rem;
   padding: 4rem 4.8rem;
@@ -445,7 +445,7 @@
 }
 
 .welcome-card-section-home {
-  max-width: 100rem;
+  max-width: 120rem;
   width: unset;
 }
 .highcharts-data-label-box {

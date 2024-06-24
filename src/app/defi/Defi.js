@@ -593,8 +593,8 @@ class Defi extends Component {
             <div
               style={{
                 minWidth: "85rem",
-                maxWidth: "100rem",
-                width: "100rem",
+                maxWidth: "120rem",
+                width: "120rem",
               }}
               className="balance-sheet-card"
             >
@@ -806,8 +806,8 @@ class Defi extends Component {
               style={{
                 marginBottom: "1.6rem",
                 minWidth: "85rem",
-                maxWidth: "100rem",
-                width: "100rem",
+                maxWidth: "120rem",
+                width: "120rem",
               }}
               className="sortby-section"
             >
@@ -854,8 +854,8 @@ class Defi extends Component {
                     className="defi-card-wrapper"
                     style={{
                       minWidth: "85rem",
-                      maxWidth: "100rem",
-                      width: "100rem",
+                      maxWidth: "120rem",
+                      width: "120rem",
                     }}
                   >
                     <div className="top-title-wrapper">
@@ -1072,8 +1072,8 @@ class Defi extends Component {
                   padding: "3rem",
                   textAlign: "center",
                   minWidth: "85rem",
-                  maxWidth: "100rem",
-                  width: "100rem",
+                  maxWidth: "120rem",
+                  width: "120rem",
                 }}
               >
                 <h3 className="inter-display-medium f-s-16 lh-19 grey-313">
@@ -1085,8 +1085,8 @@ class Defi extends Component {
               <div
                 style={{
                   minWidth: "85rem",
-                  maxWidth: "100rem",
-                  width: "100rem",
+                  maxWidth: "120rem",
+                  width: "120rem",
                 }}
                 className="defi animation-wrapper"
               >

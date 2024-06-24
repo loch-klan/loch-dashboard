@@ -1425,8 +1425,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                     display: "flex",
                     justifyContent: "space-between",
                     minWidth: "85rem",
-                    maxWidth: "100rem",
-                    width: "100rem",
+                    width: "100%",
                   }}
                 >
                   <div
@@ -1457,8 +1456,8 @@ class HomeSmartMoneyPage extends BaseReactComponent {
                   />
                 </div>
               )}
-              <div style={{ paddingBottom: "2rem" }}>
-                <div className="transaction-history-table">
+              <div style={{ paddingBottom: "2rem", width: "100%" }}>
+                <div className="transaction-history-table transaction-history-table-wide">
                   {this.state.tableLoading ? (
                     <div
                       style={{
