@@ -176,5 +176,7 @@
   }
   .rp-body-container-mobile {
     min-width: 100%;
+    max-width: unset;
+    width: unset;
   }
 }
