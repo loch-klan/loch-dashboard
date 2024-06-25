@@ -34,7 +34,12 @@ import { ExportIconWhite } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
+  CurrencyType,
+  TruncateText,
+  amountFormat,
   mobileCheck,
+  numToCurrency,
+  openAddressInSameTab,
   removeBlurMethods,
   removeSignUpMethods,
   scrollToTop,
@@ -51,6 +56,8 @@ import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import CounterPartyVolumeMobile from "./CounterPartyVolumeMobile.js";
+import TransactionTable from "../intelligence/TransactionTable.js";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
 
 class CounterPartyVolume extends Component {
   constructor(props) {
@@ -276,9 +283,7 @@ class CounterPartyVolume extends Component {
     // add wallet
     if (
       this.props.intelligenceState.counterPartyData !==
-        prevProps.intelligenceState.counterPartyData ||
-      this.props.intelligenceState.counterPartyValue !==
-        prevProps.intelligenceState.counterPartyValue
+      prevProps.intelligenceState.counterPartyData
     ) {
       this.setState({
         counterPartyDataLocal: this.props.intelligenceState.counterPartyData,
@@ -521,6 +526,136 @@ class CounterPartyVolume extends Component {
   };
 
   render() {
+    console.log(
+      "this.props.intelligenceState.counterPartyData ",
+      this.props.intelligenceState.counterPartyData
+    );
+    const columnList = [
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Account</span>
+          </div>
+        ),
+        dataKey: "counterAddress",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "counterAddress") {
+            if (rowData.clickable_address) {
+              return (
+                <span
+                  onClick={() => {
+                    openAddressInSameTab(
+                      rowData.clickable_address,
+                      this.props.setPageFlagDefault
+                    );
+                  }}
+                  className="top-account-address table-data-font"
+                >
+                  {TruncateText(rowData.clickable_address)}
+                </span>
+              );
+            }
+            return (
+              <span
+                style={{
+                  textDecoration: "none",
+                  pointerEvents: "none",
+                }}
+                className="top-account-address table-data-font"
+              >
+                {rowData._id}
+              </span>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Volume</span>
+
+            {/* <Image
+              src={sortByIcon}
+              className={
+                this.state.tableSortOpt[1].up ? "rotateDown" : "rotateUp"
+              }
+            /> */}
+          </div>
+        ),
+        dataKey: "counterVolume",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "counterVolume") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.total_volume
+                    ? CurrencyType(false) +
+                      amountFormat(rowData.total_volume, "en-US", "USD")
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.total_volume
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.total_volume.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Fees</span>
+          </div>
+        ),
+        dataKey: "counterFees",
+
+        coumnWidth: 0.33,
+        isCell: true,
+        cell: (rowData, dataKey) => {
+          if (dataKey === "counterFees") {
+            return (
+              <CustomOverlay
+                position="top"
+                isIcon={false}
+                isInfo={true}
+                isText={true}
+                text={
+                  rowData.total_fees_amount
+                    ? CurrencyType(false) +
+                      amountFormat(rowData.total_fees_amount, "en-US", "USD")
+                    : CurrencyType(false) + "0.00"
+                }
+              >
+                <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                  {rowData.total_fees_amount
+                    ? CurrencyType(false) +
+                      numToCurrency(
+                        rowData.total_fees_amount.toFixed(2)
+                      ).toLocaleString("en-US")
+                    : CurrencyType(false) + "0.00"}
+                </span>
+              </CustomOverlay>
+            );
+          }
+        },
+      },
+    ];
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
@@ -532,6 +667,8 @@ class CounterPartyVolume extends Component {
           currentPage={"counterparty-volume"}
         >
           <CounterPartyVolumeMobile
+            tableData={this.state.counterPartyDataLocal}
+            columnData={columnList}
             counterGraphDigit={this.state.counterGraphDigit}
             counterPartyValueLocal={this.state.counterPartyValueLocal}
             counterGraphLoading={this.state.counterGraphLoading}
@@ -631,8 +768,25 @@ class CounterPartyVolume extends Component {
               handleShare={this.handleShare}
               updateTimer={this.updateTimer}
             />
-
             <div
+              style={{ marginBottom: "2.8rem" }}
+              className="cost-table-section"
+            >
+              <div style={{ position: "relative" }}>
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  tableData={this.state.counterPartyDataLocal}
+                  columnList={columnList}
+                  message={"No counterparties found"}
+                  history={this.props.history}
+                  location={this.props.location}
+                  page={this.state.currentPage}
+                  isLoading={this.state.counterGraphLoading}
+                  addWatermark
+                />
+              </div>
+            </div>
+            {/* <div
               style={{
                 position: "relative",
                 // minHeight: "66.5rem",
@@ -673,7 +827,7 @@ class CounterPartyVolume extends Component {
                 floatingWatermark
                 isCounterPartyGasFeesPage
               />
-            </div>
+            </div> */}
             <Footer />
           </div>
         </div>

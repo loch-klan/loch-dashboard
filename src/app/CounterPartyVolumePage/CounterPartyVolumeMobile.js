@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import BarGraphSection from "../common/BarGraphSection.js";
-import { BarGraphFooter } from "../common/BarGraphFooter.js";
+import TransactionTable from "../intelligence/TransactionTable.js";
 
 class CounterPartyVolume extends Component {
   constructor(props) {
@@ -31,6 +30,43 @@ class CounterPartyVolume extends Component {
           <p>Understand where you’ve exchanged the most value</p>
         </div>
         <div
+          style={{
+            backgroundColor: "var(--cardBackgroud",
+            borderRadius: "1.2rem",
+            padding: "0rem",
+            paddingBottom: "0.5rem",
+          }}
+          className="assets-expanded-mobile"
+        >
+          <div
+            style={{
+              overflowX: "scroll",
+              padding: "0rem 0.5rem",
+              paddingTop: "0.5rem",
+            }}
+            className={` newHomeTableContainer hide-scrollbar  ${
+              this.props.counterGraphLoading || this.props.tableData < 1
+                ? ""
+                : "tableWatermarkOverlay"
+            }`}
+          >
+            <TransactionTable
+              noSubtitleBottomPadding
+              disableOnLoading
+              isMiniversion
+              message="No counterparties found"
+              tableData={this.props.tableData}
+              columnList={this.props.columnData}
+              headerHeight={60}
+              isArrow={true}
+              isLoading={this.props.counterGraphLoading}
+              isAnalytics="counterparty page"
+              fakeWatermark
+              yAxisScrollable
+            />
+          </div>
+        </div>
+        {/* <div
           className="mobile-portfolio-blocks"
           style={{
             marginTop: "0rem",
@@ -96,7 +132,7 @@ class CounterPartyVolume extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </>
     );
   }
