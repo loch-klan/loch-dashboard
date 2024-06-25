@@ -21,6 +21,8 @@ class PortfolioHomeInsightsBlock extends Component {
     });
   };
   render() {
+    console.log("isPremiumUser ", this.props.isPremiumUser);
+
     if (this.props.insightsBlockLoading) {
       return (
         <div

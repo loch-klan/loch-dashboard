@@ -66,7 +66,7 @@
       .welcome-card-topbar {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         height: 100%;
         width: calc(100% - 26rem);
         background-color: var(--cardBackgroud);
@@ -564,8 +564,8 @@
         }
       }
       .welcome-card-topbar-closed {
-        padding-left: 6rem;
-        padding-right: 13.5rem;
+        padding-left: 1.5rem;
+        padding-right: 17.5rem;
         background-color: var(--cardBackgroud);
       }
       .welcome-card-topbar-blurred {
@@ -1046,6 +1046,8 @@
 
   .graph-table-section {
     min-width: 85rem;
+    // max-width: 120rem;
+    width: 100%;
     // display: flex;
     .row {
       margin: 0rem;

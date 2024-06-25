@@ -5,7 +5,8 @@
     margin-top: 3rem;
     min-width: 85rem; //solve overflow issue
     // overflow: hidden; //solve overflow issue
-
+    max-width: 120rem;
+    width: 120rem;
     .animation-wrapper {
       box-shadow: 0px 0.4rem 1rem rgba(0, 0, 0, 0.04),
         0px 0.1rem 0.1rem rgba(0, 0, 0, 0.04);

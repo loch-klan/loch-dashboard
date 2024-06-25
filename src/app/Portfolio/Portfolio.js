@@ -5034,6 +5034,7 @@ class Portfolio extends BaseReactComponent {
               <div className="portfolio-section">
                 {/* welcome card */}
                 <WelcomeCard
+                  isWideScreen
                   history={this.props.history}
                   showTopSearchBar
                   openConnectWallet={this.props.openConnectWallet}
@@ -5092,11 +5093,14 @@ class Portfolio extends BaseReactComponent {
                 className="portfolio-section"
                 style={{
                   minWidth: "85rem",
+                  maxWidth: "120rem",
+                  width: "120rem",
                   marginTop: "11rem",
                 }}
               ></div>
 
               <TopWalletAddressList
+                isWideScreen
                 history={this.props.history}
                 apiResponse={(e) => this.CheckApiResponse(e)}
                 handleShare={this.handleShare}
@@ -5566,6 +5570,7 @@ class Portfolio extends BaseReactComponent {
                             </div>
 
                             <BarGraphSection
+                              customGraphHeight="27rem"
                               // showPremiumHover={!this.state.isPremiumUser}
                               // isPremiumUser={this.state.isPremiumUser}
                               isPremiumUser={this.state.isPremiumUser}
@@ -5821,6 +5826,7 @@ class Portfolio extends BaseReactComponent {
                               <div>Loch</div>
                             </div>
                             <BarGraphSection
+                              customGraphHeight="27rem"
                               isFromHome
                               openChartPage={this.goToCounterPartyVolumePage}
                               data={
@@ -6055,6 +6061,7 @@ class Portfolio extends BaseReactComponent {
 
                       {this.state.blockFourSelectedItem === 1 ? (
                         <InflowOutflowPortfolioHome
+                          isHome
                           switchPriceGaugeLoader={
                             this.state.switchPriceGaugeLoader
                           }
@@ -6136,7 +6143,7 @@ class Portfolio extends BaseReactComponent {
               </div>
 
               {/* footer  */}
-              <Footer />
+              <Footer isWideScreen />
             </div>
           </div>
         )}

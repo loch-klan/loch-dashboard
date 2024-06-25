@@ -38,7 +38,11 @@ class smartMoneyMobileBlock extends BaseReactComponent {
   };
   render() {
     return (
-      <div className="mobileSmartMoneyBlock">
+      <div
+        className={`mobileSmartMoneyBlock ${
+          this.props.justShowTable ? "mobileSmartMoneyBlockCopyTrade" : ""
+        }`}
+      >
         <div className="msmbHeader">
           <div className="msmbHeaderLeft">
             {this.props.mapData.rank ? (

@@ -118,7 +118,9 @@ a:hover,
 a:focus {
   text-decoration: none;
 }
-
+.zoomedElements {
+  zoom: 0.85;
+}
 body {
   // background-color: $primary;
 }
@@ -140,8 +142,8 @@ body {
     overflow-x: hidden;
   }
   .main-section-right-margin-handler-closed {
-    padding-left: 18.7rem;
-    padding-right: 8.5rem;
+    padding-left: 17.5rem;
+    padding-right: 7.5rem;
     overflow-x: hidden;
   }
   .main-section-right-margin-handler-closed-ctw {
@@ -1663,6 +1665,13 @@ form {
 
 // START FROM HERE
 .tool-tip-container {
+  // top: 0 !important;
+  // left: 0 !important;
+  // height: fit-content !important;
+  // position: fixed !important;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
   .tooltip-inner {
     background-color: $secondary;
     max-width: max-content;
@@ -1801,7 +1810,10 @@ form {
   &.bs-tooltip-bottom {
     padding-top: 0.8rem;
   }
-
+  .arrow {
+    // transform: unset !important;
+    // left: unset !important;
+  }
   .arrow::before {
     border-top-color: var(--borderwhiteDarkLight);
     position: relative;
@@ -1886,6 +1898,26 @@ form {
 }
 .tool-tip-container-hidden {
   display: none !important;
+}
+.tool-tip-container-right-arrow {
+  .arrow {
+    display: none;
+  }
+}
+@media all and (min-width: 800px) {
+  .tool-tip-container {
+    top: 0 !important;
+    left: 0 !important;
+    height: fit-content !important;
+    position: fixed !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .arrow {
+      transform: unset !important;
+      left: unset !important;
+    }
+  }
 }
 @media all and (max-width: 800px) {
   .Toastify__toast {
@@ -1973,8 +2005,13 @@ form {
 }
 
 .page {
-  padding: 0 5rem;
+  padding-left: 4.6rem;
+  padding-right: 4.6rem;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
 }
 // @media all and (max-width: 1300px) {
 //   .page {
@@ -2119,7 +2156,7 @@ form {
           }
           &:hover {
             span {
-              color: var(--primaryTextColor);
+              color: var(--primaryTextColor) !important;
             }
             // img {
             //   filter: var(--hoverBrightnessValue);
@@ -3642,6 +3679,8 @@ input {
 
 .breadcrumsBlock {
   min-width: 85rem;
+  max-width: 120rem;
+  width: 120rem;
   nav {
     ol {
       align-items: center;
@@ -3804,8 +3843,8 @@ input {
   position: fixed;
   left: 0;
   top: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 120vw;
+  height: 120vh;
   z-index: 100000;
 }
 .blurredElementMobile {

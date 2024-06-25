@@ -1304,7 +1304,7 @@ class TopWalletAddressList extends Component {
           noHomeInPath={this.props.noHomeInPath}
         />
         {/* {this.props.showpath ? breadCrumb : ""} */}
-        <div className="topWalletAddressList">
+        <div className={`topWalletAddressList ${this.props.isWideScreen?"topWalletAddressListWide":""}`}>
           {this.state.followSignupModal ? (
             <FollowExitOverlay
               followedAddress={this.state.followedAddress}
