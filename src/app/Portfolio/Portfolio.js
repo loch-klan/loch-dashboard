@@ -5570,6 +5570,7 @@ class Portfolio extends BaseReactComponent {
                             </div>
 
                             <BarGraphSection
+                              customGraphHeight="27rem"
                               // showPremiumHover={!this.state.isPremiumUser}
                               // isPremiumUser={this.state.isPremiumUser}
                               isPremiumUser={this.state.isPremiumUser}
@@ -5825,6 +5826,7 @@ class Portfolio extends BaseReactComponent {
                               <div>Loch</div>
                             </div>
                             <BarGraphSection
+                              customGraphHeight="27rem"
                               isFromHome
                               openChartPage={this.goToCounterPartyVolumePage}
                               data={
