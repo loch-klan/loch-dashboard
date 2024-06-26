@@ -901,7 +901,8 @@ function Sidebar(props) {
                       <ul>
                         <li>
                           <CustomOverlay
-                            position="top"
+                            className="tool-tip-container-right-arrow"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -948,7 +949,8 @@ function Sidebar(props) {
                         </li>
                         <li>
                           <CustomOverlay
-                            position="top"
+                            className="tool-tip-container-right-arrow"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -1014,7 +1016,8 @@ function Sidebar(props) {
                         </li>
                         <li>
                           <CustomOverlay
-                            position="top"
+                            className="tool-tip-container-right-arrow"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -1062,7 +1065,8 @@ function Sidebar(props) {
 
                         <li>
                           <CustomOverlay
-                            position="top"
+                            className="tool-tip-container-right-arrow"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -1092,7 +1096,8 @@ function Sidebar(props) {
 
                         <li>
                           <CustomOverlay
-                            position="top"
+                            className="tool-tip-container-right-arrow"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -1119,7 +1124,8 @@ function Sidebar(props) {
                         {!lochUserState || lochUserState === "jsk" ? null : (
                           <li>
                             <CustomOverlay
-                              position="top"
+                              className="tool-tip-container-right-arrow"
+                              position="right"
                               isIcon={false}
                               isInfo={true}
                               isText={true}
@@ -1150,6 +1156,7 @@ function Sidebar(props) {
                     <div className="sideBarAmountsContainer">
                       <div className="sideBarAmountsNetworth">
                         {/* <CustomOverlay
+                        className="tool-tip-container-right-arrow"
                           position="bottom"
                           isIcon={false}
                           isInfo={true}
@@ -1451,7 +1458,8 @@ function Sidebar(props) {
                       <ul>
                         {lochUser && lochUser.email ? (
                           <CustomOverlay
-                            position="top"
+                            className="tool-tip-container-right-arrow"
+                            position="right"
                             isIcon={false}
                             isInfo={true}
                             isText={true}
@@ -1492,7 +1500,8 @@ function Sidebar(props) {
                               }}
                             />
                             <CustomOverlay
-                              position="top"
+                              className="tool-tip-container-right-arrow"
+                              position="right"
                               isIcon={false}
                               isInfo={true}
                               isText={true}
@@ -1516,7 +1525,8 @@ function Sidebar(props) {
                   </div>
                   <div className="sidebar-footer-content-closed sidebar-footer-content-closed-for-twitter">
                     <CustomOverlay
-                      position="top"
+                      className="tool-tip-container-right-arrow"
+                      position="right"
                       isIcon={false}
                       isInfo={true}
                       isText={true}

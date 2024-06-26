@@ -882,6 +882,8 @@ class RealizedProfitAndLoss extends Component {
                 style={{
                   position: "relative",
                   minWidth: "85rem",
+                  maxWidth: "120rem",
+                  width: "120rem",
                 }}
               >
                 {!this.state.netFlowLoading ? (

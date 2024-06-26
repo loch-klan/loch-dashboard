@@ -16,6 +16,7 @@ import {
 import { getCurrentUser } from "../../utils/ManageToken";
 import {
   CurrencyType,
+  mobileCheck,
   noExponents,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
@@ -767,10 +768,15 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       },
     };
     const minGraphVersion = {
-      style: { height: this.props.isMobileGraph ? "39rem" : "31rem" },
+      style: { height: this.props.isMobileGraph ? "39rem" : "26rem" },
     };
     return (
-      <div onMouseLeave={this.props.changeThePriceTodefault}>
+      <div
+        style={{
+          zoom: mobileCheck() ? "" : "1.176",
+        }}
+        onMouseLeave={this.props.changeThePriceTodefault}
+      >
         <HighchartsReact
           highcharts={Highcharts}
           options={options}

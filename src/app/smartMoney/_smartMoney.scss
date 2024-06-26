@@ -1541,6 +1541,19 @@
     }
   }
 }
+.history-table-section-full {
+  width: 100%;
+  .homeSmartMoneyPage {
+    padding: 0;
+    .table-wrapper {
+      .custom-table {
+        .ReactVirtualized__Table__Grid {
+          max-height: unset !important;
+        }
+      }
+    }
+  }
+}
 @media screen and (max-width: 1150px) {
   .smartMoneyFAQContainer {
     padding: 0 10rem;
@@ -1705,6 +1718,9 @@
           }
         }
       }
+    }
+    .mobileSmartMoneyBlockCopyTrade {
+      border: 1px solid var(--currenyConvertorBorder);
     }
   }
 }
