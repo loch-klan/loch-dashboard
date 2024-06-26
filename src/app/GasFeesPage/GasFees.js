@@ -68,7 +68,7 @@ class GasFeesPage extends Component {
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
       exportHeaderTitle: "Download all unrealized profit and loss",
-      exportHeaderSubTitle: "Export your unrealized profit and loss from Loch",
+      exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -129,8 +129,7 @@ class GasFeesPage extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download unrealized profit and loss",
-        exportHeaderSubTitle:
-          "Export your unrealized profit and loss from Loch",
+        exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
         exportSelectExportOption: 4,
       },
       () => {
@@ -151,7 +150,7 @@ class GasFeesPage extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download all gas fees",
-        exportHeaderSubTitle: "Export your gas fees over time from Loch",
+        exportHeaderSubTitle: "Export the gas fees over time from Loch",
         exportSelectExportOption: 2,
       },
       () => {
@@ -726,7 +725,7 @@ class GasFeesPage extends Component {
             )}
             <PageHeader
               title="Gas fees over time"
-              subTitle="Understand your gas costs"
+              subTitle="Understand the gas costs"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               currentPage={"gas-fees"}

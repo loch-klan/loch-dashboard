@@ -65,7 +65,7 @@ class CounterPartyVolume extends Component {
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
       exportHeaderTitle: "Download all unrealized profit and loss",
-      exportHeaderSubTitle: "Export your unrealized profit and loss from Loch",
+      exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -126,8 +126,7 @@ class CounterPartyVolume extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download unrealized profit and loss",
-        exportHeaderSubTitle:
-          "Export your unrealized profit and loss from Loch",
+        exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
         exportSelectExportOption: 4,
       },
       () => {
@@ -145,7 +144,7 @@ class CounterPartyVolume extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download all blockchain fees",
-        exportHeaderSubTitle: "Export your blockchain fees over time from Loch",
+        exportHeaderSubTitle: "Export the blockchain fees over time from Loch",
         exportSelectExportOption: 2,
       },
       () => {
@@ -167,7 +166,7 @@ class CounterPartyVolume extends Component {
       {
         exportHeaderTitle: "Download counterparty volume",
         exportHeaderSubTitle:
-          "Export your counterparty volume over time from Loch",
+          "Export the counterparty volume over time from Loch",
         exportSelectExportOption: 3,
       },
       () => {
@@ -620,7 +619,7 @@ class CounterPartyVolume extends Component {
             )}
             <PageHeader
               title="Counterparty volume over time"
-              subTitle="Understand where you’ve exchanged the most value"
+              subTitle="Understand where this portfolio has exchanged the most value"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               currentPage={"counterparty-volume"}

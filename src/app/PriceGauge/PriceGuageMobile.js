@@ -12,7 +12,7 @@ class PriceGuageMobile extends Component {
       <div className="realized-profit-and-loss-expanded-mobile price-gauge-expanded-mobile">
         <div className="mobile-header-container">
           <h4>Price gauge</h4>
-          <p>Understand when this token was bought and sold</p>
+          <p>Understand when these tokens were bought and sold</p>
         </div>
 
         <div

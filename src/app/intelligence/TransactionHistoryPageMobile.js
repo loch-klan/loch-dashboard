@@ -29,7 +29,7 @@ class TransactionHistoryPageMobile extends BaseReactComponent {
           className="mobile-header-container"
         >
           <h4>Transactions</h4>
-          <p>Sort, filter, and dissect all your transactions from one place</p>
+          <p>Sort, filter, and dissect all the transactions from one place</p>
         </div>
         <div
           style={{

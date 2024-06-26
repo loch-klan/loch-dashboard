@@ -62,7 +62,7 @@ class SmartMoneyHowItWorksModal extends BaseReactComponent {
                 About Loch Leaderboard
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 w-100 text-left">
-                The intelligent way to manage your portfolio
+                The intelligent way to manage a portfolio
               </p>
             </div>
             <div className="smartMoneyHowItWorksModalBodyScrollContainer">

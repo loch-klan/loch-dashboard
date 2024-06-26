@@ -653,7 +653,7 @@ class InsightsPage extends Component {
 
               <PageHeader
                 title={"Insights"}
-                subTitle={"Valuable insights based on your assets"}
+                subTitle={"Valuable insights based on the assets"}
                 currentPage={"insights"}
                 // btnText={"Add wallet"}
                 // handleBtn={this.handleAddModal}
@@ -846,7 +846,7 @@ class InsightsPage extends Component {
                               position: "relative",
                             }}
                           >
-                            Add all your wallets and exchanges to gain more
+                            Add all of the wallets and exchanges to gain more
                             insights
                           </h5>
                           <p

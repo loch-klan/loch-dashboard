@@ -98,7 +98,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
       exportHeaderTitle: "Download all unrealized profit and loss",
-      exportHeaderSubTitle: "Export your unrealized profit and loss from Loch",
+      exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -163,8 +163,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download unrealized profit and loss",
-        exportHeaderSubTitle:
-          "Export your unrealized profit and loss from Loch",
+        exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
         exportSelectExportOption: 4,
       },
       () => {
@@ -1435,7 +1434,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             )}
             <PageHeader
               title="Tokens"
-              subTitle="Understand your unrealized profit and loss per token"
+              subTitle="Understand the unrealized profit and loss per token"
               // btnText={"Add wallet"}
               // handleBtn={this.handleAddModal}
               currentPage={"assets"}

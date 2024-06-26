@@ -1918,7 +1918,7 @@ class ExitOverlay extends BaseReactComponent {
                           ? "Add your referral code here to create an account"
                           : this.props.customDesc
                           ? this.props.customDesc
-                          : "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"}
+                          : "Don’t let your hard work go to waste. Add your email so you can analyze this portfolio with superpowers"}
                         <p>
                           {this.state.showRedirection
                             ? "You can now close this tab."

@@ -1795,7 +1795,7 @@ function Sidebar(props) {
           show={exportModal}
           onHide={handleExportModal}
           history={history}
-          headerTitle={"Download all your data"}
+          headerTitle={"Download all the data"}
           modalType={"exportModal"}
           iconImage={ExportIconWhite}
         />
@@ -1846,7 +1846,7 @@ function Sidebar(props) {
               : isLochPointsProfilePopUpModal
               ? "Earn loch points and get rewarded"
               : isAutoPopUpModal
-              ? "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"
+              ? "Don’t let your hard work go to waste. Add your email so you can analyze this portfolio with superpowers"
               : "Get right back into your account"
           }
           stopUpdate={true}

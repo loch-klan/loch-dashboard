@@ -2356,7 +2356,7 @@ class TransactionHistoryPage extends BaseReactComponent {
                 onHide={this.handleExportModal}
                 history={this.history}
                 headerTitle={"Download all transactions"}
-                headerSubTitle={"Export your transaction history from Loch"}
+                headerSubTitle={"Export the transaction history from Loch"}
                 modalType={"exportModal"}
                 iconImage={ExportIconWhite}
                 selectExportOption={1}
@@ -2404,7 +2404,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             <PageHeader
               title={"Transactions"}
               subTitle={
-                "Sort, filter, and dissect all your transactions from one place"
+                "Sort, filter, and dissect all the transactions from one place"
               }
               currentPage={"transaction-history"}
               history={this.props.history}

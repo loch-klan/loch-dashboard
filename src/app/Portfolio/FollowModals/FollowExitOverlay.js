@@ -1692,7 +1692,7 @@ class FollowExitOverlay extends BaseReactComponent {
                       style={{ textAlign: "center" }}
                     >
                       Don’t let your hard work go to waste. Add your email so
-                      you can analyze your portfolio with superpowers
+                      you can analyze this portfolio with superpowers
                     </p>
                   )}
                   <div className="email-section">
