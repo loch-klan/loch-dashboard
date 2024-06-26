@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
-import { Image } from 'react-bootstrap'
-import logo from "./../../image/Loch.svg"
+import React, { useState } from "react";
+import { Image } from "react-bootstrap";
+import logo from "./../../image/Loch.svg";
 const NftMobileHeader = () => {
-    const [isLogoLoaded, setIsLogoLoaded] = useState(false)
-    const logoLoadingComplete = () => {
-        setIsLogoLoaded(true)
-    }
+  const [isLogoLoaded, setIsLogoLoaded] = useState(false);
+  const logoLoadingComplete = () => {
+    setIsLogoLoaded(true);
+  };
   return (
     <div className="smartMoneyMobileHeaderContainer">
       <div className="smheader">
@@ -19,7 +19,7 @@ const NftMobileHeader = () => {
         />
         <div className="smheaderText">
           <div className="smheaderTextHeading inter-display-medium">
-          NFT Collection
+            NFT Collection
           </div>
           <div
             style={{
@@ -27,12 +27,12 @@ const NftMobileHeader = () => {
             }}
             className="smheaderTextSubHeading inter-display-medium"
           >
-            Browse the NFTs held by this wallet
+            Browse the NFTs held by this portfolio
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NftMobileHeader
+export default NftMobileHeader;

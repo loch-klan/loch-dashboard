@@ -87,7 +87,7 @@ function RenderToolTip({
                 </div>
                 <div style={{ width: "65%" }}>
                   <p className="inter-display-medium f-s-12 lh-15 grey-969">
-                    Sum of all assets received by your portfolio
+                    Sum of all assets received by this portfolio
                   </p>
                 </div>
               </div>
@@ -106,7 +106,7 @@ function RenderToolTip({
                 </div>
                 <div style={{ width: "65%" }}>
                   <p className="inter-display-medium f-s-12 lh-15 grey-969">
-                    Sum of all assets and fees sent out by your portfolio
+                    Sum of all assets and fees sent out by this portfolio
                   </p>
                 </div>
               </div>

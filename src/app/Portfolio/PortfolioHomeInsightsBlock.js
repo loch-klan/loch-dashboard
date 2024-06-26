@@ -353,7 +353,7 @@ class PortfolioHomeInsightsBlock extends Component {
                 position: "relative",
               }}
             >
-              Add all your wallets and exchanges to gain more insights
+              Add all of the wallets and exchanges to gain more insights
             </h5>
             <p
               className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"

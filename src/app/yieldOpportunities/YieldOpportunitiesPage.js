@@ -1279,7 +1279,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             <PageHeader
               title={"Yield opportunities"}
               subTitle={
-                "Yield bearing opportunties personalized for your portfolio"
+                "Yield bearing opportunities personalized for this portfolio"
               }
               currentPage={"yield-opportunities"}
               history={this.props.history}
@@ -1344,7 +1344,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
             </div>
             <div className="yeildOppTitleContainer inter-display-medium f-s-13 lh-16 secondaryDarkTextColor">
               <div className="yeildOppTitleItems yeildOppTitleLeft">
-                Your portfolio
+                Current portfolio
               </div>
               <div className="yeildOppTitleItems yeildOppTitleRight">
                 Yield opportunities

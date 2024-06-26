@@ -39,7 +39,7 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           className="mobile-header-container"
         >
           <h4>Yield opportunities</h4>
-          <p>Yield bearing opportunties personalized for your portfolio</p>
+          <p>Yield bearing opportunities personalized for this portfolio</p>
         </div>
 
         <div

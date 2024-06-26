@@ -678,7 +678,7 @@ class BarGraphSection extends Component {
                               isInfo={true}
                               isText={true}
                               heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
-                              subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
+                              subHeading="This chart is most accurate when all the wallet addresses are added to Loch. This way we don't double count funds."
                               className={
                                 "fix-width tool-tip-container-bottom-arrow"
                               }

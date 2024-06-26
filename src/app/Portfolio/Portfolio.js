@@ -5143,7 +5143,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Understand your unrealized profit and loss per token"
+                                "Understand the unrealized profit and loss per token"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -5183,7 +5183,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Decipher all your DeFi positions from one place"
+                                "Decipher all of the DeFi positions from one place"
                               }
                             >
                               <Image
@@ -5220,7 +5220,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Sort, filter, and dissect all your transactions from one place"
+                                "Sort, filter, and dissect all the transactions from one place"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -5400,7 +5400,7 @@ class Portfolio extends BaseReactComponent {
                               isInfo={true}
                               isText={true}
                               className={"fix-width"}
-                              text={"Understand your portfolio's net flows"}
+                              text={"Understand this portfolio's net flows"}
                             >
                               {/* <div className="info-icon-i">
                                   i
@@ -5438,7 +5438,7 @@ class Portfolio extends BaseReactComponent {
                               isInfo={true}
                               isText={true}
                               className={"fix-width"}
-                              text={"Understand your gas costs"}
+                              text={"Understand the gas costs"}
                             >
                               {/* <div className="info-icon-i">
                                   i
@@ -5476,7 +5476,7 @@ class Portfolio extends BaseReactComponent {
                               isInfo={true}
                               isText={true}
                               className={"fix-width"}
-                              text={"Browse the NFTs held by this wallet"}
+                              text={"Browse the NFTs held by this portfolio"}
                             >
                               {/* <div className="info-icon-i">
                                   i
@@ -5512,7 +5512,7 @@ class Portfolio extends BaseReactComponent {
                             noSubtitleTopPadding
                             loaderHeight={15.5}
                             // headerTitle="Realized profit and loss"
-                            // headerSubTitle="Understand your portfolio's net flows"
+                            // headerSubTitle="Understand this portfolio's net flows"
                             isArrow={true}
                             handleClick={() => {
                               if (this.state.lochToken) {
@@ -5705,7 +5705,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Understand where you’ve exchanged the most value"
+                                "Understand where this portfolio has exchanged the most value"
                               }
                             >
                               <Image
@@ -5742,7 +5742,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Yield bearing opportunties personalized for your portfolio"
+                                "Yield bearing opportunities personalized for this portfolio"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -5780,7 +5780,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Understand where you’ve exchanged the most value"
+                                "Understand where this portfolio has exchanged the most value"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -5960,7 +5960,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Understand when this token was bought and sold"
+                                "Understand when these tokens were bought and sold"
                               }
                             >
                               {/* <div className="info-icon-i">
@@ -6000,7 +6000,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Sort, filter, and dissect all your transactions from one place"
+                                "Sort, filter, and dissect all the transactions from one place"
                               }
                             >
                               <Image
@@ -6037,7 +6037,7 @@ class Portfolio extends BaseReactComponent {
                               isInfo={true}
                               isText={true}
                               className={"fix-width"}
-                              text={"Valuable insights based on your assets"}
+                              text={"Valuable insights based on the assets"}
                             >
                               {/* <div className="info-icon-i">
                                   i
@@ -6152,8 +6152,8 @@ class Portfolio extends BaseReactComponent {
             show={this.state.fixModal}
             onHide={this.handleFixModal}
             //  modalIcon={AddWalletModalIcon}
-            title="Fix your wallet address"
-            subtitle="Add your wallet address to get started"
+            title="Fix this wallet address"
+            subtitle="Add a wallet address to get started"
             // fixWalletAddress={fixWalletAddress}
             btnText="Done"
             btnStatus={true}

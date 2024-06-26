@@ -283,7 +283,7 @@ class Wallet extends Component {
           >
             <PageHeader
               title="Wallets"
-              subTitle="Manage all your wallets right here"
+              subTitle="Manage all the wallets right here"
               btnText={this.props.hidePageHeader ? false : "Add wallet"}
               SecondaryBtn={this.props.hidePageHeader ? false : true}
               handleBtn={this.handleAddModal}
