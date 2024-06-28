@@ -35,6 +35,8 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        passedWrapperClass={props.passedWrapperClass}
+        passedWrapperId={props.passedWrapperId}
         isPremiumUser={props.isPremiumUser}
         shouldBlurElements={props.shouldBlurElements}
         showBlurredItem={props.showBlurredItem}

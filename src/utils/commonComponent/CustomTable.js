@@ -95,8 +95,11 @@ class CustomTable extends BaseReactComponent {
             this.props.xAxisScrollable ? "table-wrapper-mobile-x-scroll" : ""
           } ${
             this.props.yAxisScrollable ? "table-wrapper-mobile-y-scroll" : ""
+          } ${
+            this.props.passedWrapperClass ? this.props.passedWrapperClass : ""
           }`}
           style={wrapperStyle}
+          id={`${this.props.passedWrapperId ? this.props.passedWrapperId : ""}`}
         >
           {isLoading === true ? (
             <div
