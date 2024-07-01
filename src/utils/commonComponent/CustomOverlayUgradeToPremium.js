@@ -3,7 +3,6 @@ import CustomOverlayUgradeToPremiumTooltip from "./CustomOverlayUgradeToPremiumT
 import "./commonCoponentsStyles/_customOverlay.scss";
 
 function CustomOverlayUgradeToPremium(props) {
-  console.log("props ?props ", props);
   return (
     <OverlayTrigger
       placement={props.position}

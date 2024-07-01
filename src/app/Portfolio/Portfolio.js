@@ -836,12 +836,79 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+  setScrollBarSize = () => {
+    //TOKENS TAB
+    if (document.getElementById("homeTokenTableWrapper")) {
+      let clientWidth = document.getElementById(
+        "homeTokenTableWrapper"
+      ).clientWidth;
+      console.log("clientWidth is ", clientWidth);
+      const css =
+        "#homeTokenTableWrapper::-webkit-scrollbar-track{ margin-left: " +
+        clientWidth * (22.5 / 100) +
+        "px }";
+      const style = document.createElement("style");
+
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      document.getElementById("homeTokenTableWrapper").appendChild(style);
+    }
+    //TOKENS TAB
+    //TRANSACTION TAB
+    if (document.getElementById("homeTransactionTableWrapper")) {
+      const marginSize = this.state.isShowingAge ? 20.7 : 28.5;
+      let clientWidth = document.getElementById(
+        "homeTransactionTableWrapper"
+      ).clientWidth;
+      console.log("clientWidth is ", clientWidth);
+      const css =
+        "#homeTransactionTableWrapper::-webkit-scrollbar-track{ margin-left: " +
+        clientWidth * (marginSize / 100) +
+        "px }";
+      const style = document.createElement("style");
+
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      document.getElementById("homeTransactionTableWrapper").appendChild(style);
+    }
+    //TRANSACTION TAB
+    //YIELDOPP TAB
+    if (document.getElementById("homeYieldOppTableWrapper")) {
+      let clientWidth = document.getElementById(
+        "homeYieldOppTableWrapper"
+      ).clientWidth;
+      console.log("clientWidth is ", clientWidth);
+      const css =
+        "#homeYieldOppTableWrapper::-webkit-scrollbar-track{ margin-left: " +
+        clientWidth * (22.5 / 100) +
+        "px }";
+      const style = document.createElement("style");
+
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      document.getElementById("homeYieldOppTableWrapper").appendChild(style);
+    }
+    //YIELDOPP TAB
+  };
   componentDidMount() {
     setTimeout(() => {
       this.setState({
         isPremiumUser: isPremiumUser(),
       });
     }, 1000);
+    this.setScrollBarSize();
     const isBackFromPayment = window.localStorage.getItem(
       "openPaymentOptionsAgain"
     );
@@ -1155,6 +1222,16 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.isShowingAge !== this.state.isShowingAge) {
+      const tempElement = document.getElementById(
+        "homeTransactionTableWrapper"
+      );
+      tempElement.style.pointerEvents = "none";
+      setTimeout(() => {
+        tempElement.style.pointerEvents = "auto";
+      }, 100);
+      this.setScrollBarSize();
+    }
     if (
       prevProps.intelligenceState?.ProfitLossAsset !==
       this.props.intelligenceState?.ProfitLossAsset
@@ -1245,6 +1322,7 @@ class Portfolio extends BaseReactComponent {
       }
     }
     if (prevState.blockOneSelectedItem !== this.state.blockOneSelectedItem) {
+      this.setScrollBarSize();
       // Asssets avg cost basis
 
       if (
@@ -1351,6 +1429,7 @@ class Portfolio extends BaseReactComponent {
     if (
       prevState.blockThreeSelectedItem !== this.state.blockThreeSelectedItem
     ) {
+      this.setScrollBarSize();
       if (this.state.blockThreeSelectedItem === 1) {
         if (
           !(
@@ -5257,6 +5336,7 @@ class Portfolio extends BaseReactComponent {
                             }`}
                           >
                             <TransactionTable
+                              passedWrapperId="homeTokenTableWrapper"
                               noSubtitleBottomPadding
                               message="No tokens found"
                               disableOnLoading
@@ -5328,6 +5408,7 @@ class Portfolio extends BaseReactComponent {
                             }`}
                           >
                             <TransactionTable
+                              passedWrapperId="homeTransactionTableWrapper"
                               xAxisScrollable={
                                 !this.state.tableLoading &&
                                 tableData?.length > 0
@@ -5868,6 +5949,7 @@ class Portfolio extends BaseReactComponent {
                             }`}
                           >
                             <TransactionTable
+                              passedWrapperId="homeYieldOppTableWrapper"
                               message={"No yield opportunities found"}
                               xAxisScrollable={
                                 !this.state.yieldOpportunitiesTableLoading &&
