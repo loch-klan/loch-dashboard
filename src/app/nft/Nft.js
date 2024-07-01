@@ -545,7 +545,7 @@ class NFT extends BaseReactComponent {
             />
             <PageHeader
               title={"NFT Collection"}
-              subTitle={"Browse the NFTs held by this wallet"}
+              subTitle={"Browse the NFTs held by this portfolio"}
               currentPage={"nft"}
               history={this.props.history}
               ShareBtn={false}

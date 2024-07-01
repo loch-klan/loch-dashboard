@@ -645,12 +645,12 @@ class PriceGauge extends Component {
             <div className="m-b-32">
               <PageHeader
                 title="Price gauge"
-                subTitle="Understand when this token was bought and sold"
+                subTitle="Understand when these tokens were bought and sold"
                 currentPage="price-gauge"
                 ShareBtn={true}
                 handleShare={this.handleShare}
                 updateTimer={this.updateTimer}
-                hoverText={`This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high.`}
+                hoverText={`This chart reflects the price for any token held by this portfolio ever. Understand if this trader can buy low and sell high.`}
               />
             </div>
 

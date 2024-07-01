@@ -297,8 +297,8 @@ export default function WalletCard(props) {
               show={showFixModal}
               onHide={handleFixModal}
               //  modalIcon={AddWalletModalIcon}
-              title="Fix your wallet address"
-              subtitle="Add your wallet address to get started"
+              title="Fix this wallet address"
+              subtitle="Add a wallet address to get started"
               fixWalletAddress={[props.wallet_account_number]}
               btnText="Done"
               btnStatus={true}

@@ -44,7 +44,7 @@ class NFTMobile extends BaseReactComponent {
       <div className="nft-page-mobile">
         <div className="mobile-header-container">
           <h4>NFT Collection</h4>
-          <p>Browse the NFTs held by this wallet</p>
+          <p>Browse the NFTs held by this portfolio</p>
         </div>
         {this.props.isLoading ? (
           <div

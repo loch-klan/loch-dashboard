@@ -1275,7 +1275,7 @@ backdrop-filter: blur(15px);">
                 isLoading={this.props.graphLoading}
                 disableOnLoading={this.props.disableOnLoading}
                 title="Historic performance"
-                subtitle="Analyze your portfolio value over time"
+                subtitle="Analyze the portfolio value over time"
                 isArrow={true}
                 isAnalytics="Asset Value"
                 handleClick={this.props.handleClick}
