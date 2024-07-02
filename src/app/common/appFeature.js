@@ -9,6 +9,7 @@ import {
 
 import { deleteToken } from "../../utils/ManageToken.js";
 import { GetDefaultPlan } from "../common/Api";
+import { mobileCheck } from "../../utils/ReusableFunctions.js";
 
 class AppFeature extends Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class AppFeature extends Component {
       userPlan:
         JSON.parse(window.localStorage.getItem("currentPlan")) || "Free",
       PageName: PageName ? PageName : "",
+      isMobile: mobileCheck(),
     };
   }
 
@@ -92,6 +94,7 @@ class AppFeature extends Component {
           height: "100vh",
           width: "100vw",
           zIndex: 999,
+          zoom: this.state.isMobile ? "" : "1.176",
         }}
       >
         <Loading />
