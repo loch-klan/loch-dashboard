@@ -84,6 +84,7 @@ import { BASE_URL_S3 } from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
+  hasUserAddedAddressesFun,
   isPremiumUser,
   numToCurrency,
   removeSignUpMethods,
@@ -134,10 +135,18 @@ function Sidebar(props) {
   const [selectedCurrency, setCurrency] = React.useState(
     JSON.parse(window.localStorage.getItem("currency"))
   );
+  const [haveUserAddedAddress, setHaveUserAddedAddress] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       setIsCurPremiumUser(isPremiumUser());
     }, 1000);
+  }, []);
+  useEffect(() => {
+    if (hasUserAddedAddressesFun()) {
+      setHaveUserAddedAddress(true);
+    } else {
+      setHaveUserAddedAddress(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -899,121 +908,241 @@ function Sidebar(props) {
                   <div className="scroll-menu-wrapper-closed">
                     <nav>
                       <ul>
-                        <li>
-                          <CustomOverlay
-                            className="tool-tip-container-right-arrow"
-                            position="right"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"Copy Trade"}
-                          >
-                            <NavLink
-                              className={`nav-link nav-link-closed`}
-                              to={
-                                !lochUserState || lochUserState === "jsk"
-                                  ? "/copy-trade-welcome"
-                                  : "/copy-trade"
-                              }
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
+                        {haveUserAddedAddress ? (
+                          <>
+                            <li>
+                              <CustomOverlay
+                                className="tool-tip-container-right-arrow"
+                                position="right"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={"Wallet Viewer"}
+                              >
+                                <NavLink
+                                  exact={true}
+                                  className="nav-link nav-link-closed"
+                                  to={
+                                    !lochUserState || lochUserState === "jsk"
+                                      ? "/wallet-viewer-add-address"
+                                      : activeTab === "/home"
+                                      ? "#"
+                                      : "/home"
+                                  }
+                                  onClick={(e) => {
+                                    let tempToken = getToken();
+                                    const userWalletList =
+                                      window.localStorage.getItem("addWallet")
+                                        ? JSON.parse(
+                                            window.localStorage.getItem(
+                                              "addWallet"
+                                            )
+                                          )
+                                        : [];
 
-                                  props.history.push("/copy-trade-welcome");
+                                    if (
+                                      !tempToken ||
+                                      tempToken === "jsk" ||
+                                      !userWalletList ||
+                                      userWalletList.length === 0
+                                    ) {
+                                      e.preventDefault();
 
-                                  return null;
-                                }
+                                      props.history.push(
+                                        "/wallet-viewer-add-address"
+                                      );
 
-                                MenuCopyTradelist({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                              }}
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={EmultionSidebarIcon}
-                                style={
-                                  activeTab === "/copy-trade" ||
-                                  activeTab === "/copy-trade-welcome"
-                                    ? {
-                                        filter: "brightness(0)",
-                                      }
-                                    : {}
-                                }
-                                className="followingImg"
-                              />
-                            </NavLink>
-                          </CustomOverlay>
-                        </li>
-                        <li>
-                          <CustomOverlay
-                            className="tool-tip-container-right-arrow"
-                            position="right"
-                            isIcon={false}
-                            isInfo={true}
-                            isText={true}
-                            text={"Wallet Viewer"}
-                          >
-                            <NavLink
-                              exact={true}
-                              className="nav-link nav-link-closed"
-                              to={
-                                !lochUserState || lochUserState === "jsk"
-                                  ? "/wallet-viewer-add-address"
-                                  : activeTab === "/home"
-                                  ? "#"
-                                  : "/home"
-                              }
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                const userWalletList =
-                                  window.localStorage.getItem("addWallet")
-                                    ? JSON.parse(
-                                        window.localStorage.getItem("addWallet")
-                                      )
-                                    : [];
-                                console.log(
-                                  "userWalletList cur ",
-                                  userWalletList
-                                );
-                                if (
-                                  !tempToken ||
-                                  tempToken === "jsk" ||
-                                  !userWalletList ||
-                                  userWalletList.length === 0
-                                ) {
-                                  e.preventDefault();
+                                      return null;
+                                    } else {
+                                      HomeMenu({
+                                        session_id: getCurrentUser().id,
+                                        email_address: getCurrentUser().email,
+                                      });
+                                    }
+                                  }}
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={WalletViewerSidebarIcon}
+                                    style={
+                                      activeTab === "/home" ||
+                                      activeTab === "/wallet-viewer-add-address"
+                                        ? {
+                                            filter: "var(--sidebarActiveIcon)",
+                                          }
+                                        : {}
+                                    }
+                                  />
+                                </NavLink>
+                              </CustomOverlay>
+                            </li>
+                            <li>
+                              <CustomOverlay
+                                className="tool-tip-container-right-arrow"
+                                position="right"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={"Copy Trade"}
+                              >
+                                <NavLink
+                                  className={`nav-link nav-link-closed`}
+                                  to={
+                                    !lochUserState || lochUserState === "jsk"
+                                      ? "/copy-trade-welcome"
+                                      : "/copy-trade"
+                                  }
+                                  onClick={(e) => {
+                                    let tempToken = getToken();
+                                    if (!tempToken || tempToken === "jsk") {
+                                      e.preventDefault();
 
-                                  props.history.push(
-                                    "/wallet-viewer-add-address"
-                                  );
+                                      props.history.push("/copy-trade-welcome");
 
-                                  return null;
-                                } else {
-                                  HomeMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={WalletViewerSidebarIcon}
-                                style={
-                                  activeTab === "/home" ||
-                                  activeTab === "/wallet-viewer-add-address"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
-                              />
-                            </NavLink>
-                          </CustomOverlay>
-                        </li>
+                                      return null;
+                                    }
+
+                                    MenuCopyTradelist({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
+                                  }}
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={EmultionSidebarIcon}
+                                    style={
+                                      activeTab === "/copy-trade" ||
+                                      activeTab === "/copy-trade-welcome"
+                                        ? {
+                                            filter: "brightness(0)",
+                                          }
+                                        : {}
+                                    }
+                                    className="followingImg"
+                                  />
+                                </NavLink>
+                              </CustomOverlay>
+                            </li>
+                          </>
+                        ) : (
+                          <>
+                            <li>
+                              <CustomOverlay
+                                className="tool-tip-container-right-arrow"
+                                position="right"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={"Copy Trade"}
+                              >
+                                <NavLink
+                                  className={`nav-link nav-link-closed`}
+                                  to={
+                                    !lochUserState || lochUserState === "jsk"
+                                      ? "/copy-trade-welcome"
+                                      : "/copy-trade"
+                                  }
+                                  onClick={(e) => {
+                                    let tempToken = getToken();
+                                    if (!tempToken || tempToken === "jsk") {
+                                      e.preventDefault();
+
+                                      props.history.push("/copy-trade-welcome");
+
+                                      return null;
+                                    }
+
+                                    MenuCopyTradelist({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
+                                  }}
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={EmultionSidebarIcon}
+                                    style={
+                                      activeTab === "/copy-trade" ||
+                                      activeTab === "/copy-trade-welcome"
+                                        ? {
+                                            filter: "brightness(0)",
+                                          }
+                                        : {}
+                                    }
+                                    className="followingImg"
+                                  />
+                                </NavLink>
+                              </CustomOverlay>
+                            </li>
+                            <li>
+                              <CustomOverlay
+                                className="tool-tip-container-right-arrow"
+                                position="right"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={"Wallet Viewer"}
+                              >
+                                <NavLink
+                                  exact={true}
+                                  className="nav-link nav-link-closed"
+                                  to={
+                                    !lochUserState || lochUserState === "jsk"
+                                      ? "/wallet-viewer-add-address"
+                                      : activeTab === "/home"
+                                      ? "#"
+                                      : "/home"
+                                  }
+                                  onClick={(e) => {
+                                    let tempToken = getToken();
+                                    const userWalletList =
+                                      window.localStorage.getItem("addWallet")
+                                        ? JSON.parse(
+                                            window.localStorage.getItem(
+                                              "addWallet"
+                                            )
+                                          )
+                                        : [];
+
+                                    if (
+                                      !tempToken ||
+                                      tempToken === "jsk" ||
+                                      !userWalletList ||
+                                      userWalletList.length === 0
+                                    ) {
+                                      e.preventDefault();
+
+                                      props.history.push(
+                                        "/wallet-viewer-add-address"
+                                      );
+
+                                      return null;
+                                    } else {
+                                      HomeMenu({
+                                        session_id: getCurrentUser().id,
+                                        email_address: getCurrentUser().email,
+                                      });
+                                    }
+                                  }}
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={WalletViewerSidebarIcon}
+                                    style={
+                                      activeTab === "/home" ||
+                                      activeTab === "/wallet-viewer-add-address"
+                                        ? {
+                                            filter: "var(--sidebarActiveIcon)",
+                                          }
+                                        : {}
+                                    }
+                                  />
+                                </NavLink>
+                              </CustomOverlay>
+                            </li>
+                          </>
+                        )}
                         <li>
                           <CustomOverlay
                             className="tool-tip-container-right-arrow"
@@ -1195,102 +1324,209 @@ function Sidebar(props) {
                     <ul>
                       {isSubmenu && isSubmenu.me && (
                         <>
-                          <li>
-                            <NavLink
-                              exact={true}
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                if (!tempToken || tempToken === "jsk") {
-                                  e.preventDefault();
+                          {haveUserAddedAddress ? (
+                            <>
+                              <li>
+                                <NavLink
+                                  exact={true}
+                                  className="nav-link"
+                                  to={
+                                    !lochUserState || lochUserState === "jsk"
+                                      ? "/wallet-viewer-add-address"
+                                      : activeTab === "/home"
+                                      ? "#"
+                                      : "/home"
+                                  }
+                                  onClick={(e) => {
+                                    let tempToken = getToken();
+                                    const userWalletList =
+                                      window.localStorage.getItem("addWallet")
+                                        ? JSON.parse(
+                                            window.localStorage.getItem(
+                                              "addWallet"
+                                            )
+                                          )
+                                        : [];
 
-                                  props.history.push("/copy-trade-welcome");
+                                    if (
+                                      !tempToken ||
+                                      tempToken === "jsk" ||
+                                      !userWalletList ||
+                                      userWalletList.length === 0
+                                    ) {
+                                      e.preventDefault();
 
-                                  return null;
-                                }
-                                MenuCopyTradelist({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                              }}
-                              className="nav-link"
-                              to={
-                                !lochUserState || lochUserState === "jsk"
-                                  ? "/copy-trade-welcome"
-                                  : "/copy-trade"
-                              }
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={EmultionSidebarIcon}
-                                style={
-                                  activeTab === "/copy-trade" ||
-                                  activeTab === "/copy-trade-welcome"
-                                    ? {
-                                        filter: "brightness(0)",
-                                      }
-                                    : {}
-                                }
-                                className="followingImg"
-                              />
-                              Copy Trade
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              exact={true}
-                              className="nav-link"
-                              to={
-                                !lochUserState || lochUserState === "jsk"
-                                  ? "/wallet-viewer-add-address"
-                                  : activeTab === "/home"
-                                  ? "#"
-                                  : "/home"
-                              }
-                              onClick={(e) => {
-                                let tempToken = getToken();
-                                const userWalletList =
-                                  window.localStorage.getItem("addWallet")
-                                    ? JSON.parse(
-                                        window.localStorage.getItem("addWallet")
-                                      )
-                                    : [];
+                                      props.history.push(
+                                        "/wallet-viewer-add-address"
+                                      );
 
-                                if (
-                                  !tempToken ||
-                                  tempToken === "jsk" ||
-                                  !userWalletList ||
-                                  userWalletList.length === 0
-                                ) {
-                                  e.preventDefault();
+                                      return null;
+                                    } else {
+                                      HomeMenu({
+                                        session_id: getCurrentUser().id,
+                                        email_address: getCurrentUser().email,
+                                      });
+                                    }
+                                  }}
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={WalletViewerSidebarIcon}
+                                    style={
+                                      activeTab === "/home" ||
+                                      activeTab === "/wallet-viewer-add-address"
+                                        ? {
+                                            filter: "var(--sidebarActiveIcon)",
+                                          }
+                                        : {}
+                                    }
+                                  />
+                                  Wallet Viewer
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink
+                                  exact={true}
+                                  onClick={(e) => {
+                                    let tempToken = getToken();
+                                    if (!tempToken || tempToken === "jsk") {
+                                      e.preventDefault();
 
-                                  props.history.push(
-                                    "/wallet-viewer-add-address"
-                                  );
+                                      props.history.push("/copy-trade-welcome");
 
-                                  return null;
-                                } else {
-                                  HomeMenu({
-                                    session_id: getCurrentUser().id,
-                                    email_address: getCurrentUser().email,
-                                  });
-                                }
-                              }}
-                              activeclassname="active"
-                            >
-                              <Image
-                                src={WalletViewerSidebarIcon}
-                                style={
-                                  activeTab === "/home" ||
-                                  activeTab === "/wallet-viewer-add-address"
-                                    ? {
-                                        filter: "var(--sidebarActiveIcon)",
-                                      }
-                                    : {}
-                                }
-                              />
-                              Wallet Viewer
-                            </NavLink>
-                          </li>
+                                      return null;
+                                    }
+                                    MenuCopyTradelist({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
+                                  }}
+                                  className="nav-link"
+                                  to={
+                                    !lochUserState || lochUserState === "jsk"
+                                      ? "/copy-trade-welcome"
+                                      : "/copy-trade"
+                                  }
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={EmultionSidebarIcon}
+                                    style={
+                                      activeTab === "/copy-trade" ||
+                                      activeTab === "/copy-trade-welcome"
+                                        ? {
+                                            filter: "brightness(0)",
+                                          }
+                                        : {}
+                                    }
+                                    className="followingImg"
+                                  />
+                                  Copy Trade
+                                </NavLink>
+                              </li>
+                            </>
+                          ) : (
+                            <>
+                              <li>
+                                <NavLink
+                                  exact={true}
+                                  onClick={(e) => {
+                                    let tempToken = getToken();
+                                    if (!tempToken || tempToken === "jsk") {
+                                      e.preventDefault();
+
+                                      props.history.push("/copy-trade-welcome");
+
+                                      return null;
+                                    }
+                                    MenuCopyTradelist({
+                                      session_id: getCurrentUser().id,
+                                      email_address: getCurrentUser().email,
+                                    });
+                                  }}
+                                  className="nav-link"
+                                  to={
+                                    !lochUserState || lochUserState === "jsk"
+                                      ? "/copy-trade-welcome"
+                                      : "/copy-trade"
+                                  }
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={EmultionSidebarIcon}
+                                    style={
+                                      activeTab === "/copy-trade" ||
+                                      activeTab === "/copy-trade-welcome"
+                                        ? {
+                                            filter: "brightness(0)",
+                                          }
+                                        : {}
+                                    }
+                                    className="followingImg"
+                                  />
+                                  Copy Trade
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink
+                                  exact={true}
+                                  className="nav-link"
+                                  to={
+                                    !lochUserState || lochUserState === "jsk"
+                                      ? "/wallet-viewer-add-address"
+                                      : activeTab === "/home"
+                                      ? "#"
+                                      : "/home"
+                                  }
+                                  onClick={(e) => {
+                                    let tempToken = getToken();
+                                    const userWalletList =
+                                      window.localStorage.getItem("addWallet")
+                                        ? JSON.parse(
+                                            window.localStorage.getItem(
+                                              "addWallet"
+                                            )
+                                          )
+                                        : [];
+
+                                    if (
+                                      !tempToken ||
+                                      tempToken === "jsk" ||
+                                      !userWalletList ||
+                                      userWalletList.length === 0
+                                    ) {
+                                      e.preventDefault();
+
+                                      props.history.push(
+                                        "/wallet-viewer-add-address"
+                                      );
+
+                                      return null;
+                                    } else {
+                                      HomeMenu({
+                                        session_id: getCurrentUser().id,
+                                        email_address: getCurrentUser().email,
+                                      });
+                                    }
+                                  }}
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={WalletViewerSidebarIcon}
+                                    style={
+                                      activeTab === "/home" ||
+                                      activeTab === "/wallet-viewer-add-address"
+                                        ? {
+                                            filter: "var(--sidebarActiveIcon)",
+                                          }
+                                        : {}
+                                    }
+                                  />
+                                  Wallet Viewer
+                                </NavLink>
+                              </li>
+                            </>
+                          )}
                           <li>
                             <NavLink
                               className={`nav-link`}
