@@ -44,13 +44,11 @@ function RenderToolTip({
         transform: `translate(calc(${curPos[0]}px - 50%), calc(${curPos[1]}px + 1rem))`,
       };
     } else if (position === "top") {
-      console.log("xAxis ", curPos[0]);
       passedProps.style = {
         ...passedProps.style,
         transform: `translate(calc(${curPos[0]}px - 50%), calc(${curPos[1]}px - 100% - 0.5rem))`,
       };
     } else if (position === "right") {
-      console.log("xAxis ", curPos[0]);
       passedProps.style = {
         ...passedProps.style,
         transform: `translate(calc(${curPos[0]}px + 1rem), calc(${curPos[1]}px - 1rem))`,
