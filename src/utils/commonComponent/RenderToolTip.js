@@ -79,12 +79,12 @@ function RenderToolTip({
                 }}
               >
                 <div style={{ width: "22%" }}>
-                  <h3 className="inter-display-medium f-s-12 lh-15 black-191">
+                  <h3 className="inter-display-medium f-s-11 lh-15 black-191">
                     Inflows
                   </h3>
                 </div>
                 <div style={{ width: "65%" }}>
-                  <p className="inter-display-medium f-s-12 lh-15 grey-969">
+                  <p className="inter-display-medium f-s-11 lh-15 grey-969">
                     Sum of all assets received by this portfolio
                   </p>
                 </div>
@@ -98,12 +98,12 @@ function RenderToolTip({
                 }}
               >
                 <div style={{ width: "22%" }}>
-                  <h3 className="inter-display-medium f-s-12 lh-15 black-191">
+                  <h3 className="inter-display-medium f-s-11 lh-15 black-191">
                     Outflows
                   </h3>
                 </div>
                 <div style={{ width: "65%" }}>
-                  <p className="inter-display-medium f-s-12 lh-15 grey-969">
+                  <p className="inter-display-medium f-s-11 lh-15 grey-969">
                     Sum of all assets and fees sent out by this portfolio
                   </p>
                 </div>
@@ -117,12 +117,12 @@ function RenderToolTip({
                 }}
               >
                 <div style={{ width: "22%" }}>
-                  <h3 className="inter-display-medium f-s-12 lh-15 black-191">
+                  <h3 className="inter-display-medium f-s-11 lh-15 black-191">
                     Net
                   </h3>
                 </div>
                 <div style={{ width: "65%" }}>
-                  <p className="inter-display-medium f-s-12 lh-15 grey-969">
+                  <p className="inter-display-medium f-s-11 lh-15 grey-969">
                     Outflows - Inflows
                   </p>
                 </div>
@@ -136,7 +136,7 @@ function RenderToolTip({
               style={{ display: "flex", flexDirection: "column" }}
             >
               <div
-                className={`w-100 inter-display-semi-bold f-s-12 lh-16 black-191 ${
+                className={`w-100 inter-display-semi-bold f-s-11 lh-16 black-191 ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
@@ -156,14 +156,14 @@ function RenderToolTip({
               style={{ display: "flex", flexDirection: "column" }}
             >
               <div
-                className={`w-100 inter-display-semi-bold f-s-12 lh-16 mb-4 black-191 ${
+                className={`w-100 inter-display-semi-bold f-s-11 lh-16 mb-4 black-191 ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
                 {heading}
               </div>
               <div
-                className={`w-100 text-tooltip-subheading f-s-12 lh-16 inter-display-medium  ${
+                className={`w-100 text-tooltip-subheading f-s-11 lh-16 inter-display-medium  ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
@@ -179,7 +179,7 @@ function RenderToolTip({
               {isIcon ? <Image src={IconImage} /> : null}
               {isName ? (
                 <span
-                  className={`inter-display-medium f-s-12 lh-16 m-r-8`}
+                  className={`inter-display-medium f-s-11 lh-16 m-r-8`}
                   style={{ color: colorCode ? colorCode : "#19191A" }}
                 >
                   {isName}
@@ -188,7 +188,7 @@ function RenderToolTip({
                 ""
               )}
               <span
-                className={`inter-display-medium f-s-12 lh-16 ${
+                className={`inter-display-medium f-s-11 lh-16 ${
                   isCaptialised ? "text-capitalize" : ""
                 }`}
               >
@@ -219,7 +219,7 @@ function RenderToolTip({
                   }
                 />
                 <span
-                  className="inter-display-medium f-s-12 grey-313 lh-16"
+                  className="inter-display-medium f-s-11 grey-313 lh-16"
                   style={{
                     width: "100%",
                     backgroundColor: "var(--primaryFilter)",
