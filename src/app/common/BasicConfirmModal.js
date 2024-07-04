@@ -9,7 +9,7 @@ class ConfirmLeaveModal extends BaseReactComponent {
       <Modal
         show={this.props.show}
         className={`confirm-leave-modal ${
-          this.props.isMobile ? "basicConfirmModalMobile" : ""
+          this.props.isMobile ? "basicConfirmModalMobile" : "zoomedElements"
         }`}
         // backdrop="static"
         onHide={this.props.handleClose}

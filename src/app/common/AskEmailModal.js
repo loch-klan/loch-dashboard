@@ -15,6 +15,7 @@ import {
 
 import LochIcon from "../../assets/images/icons/loch-icon.svg";
 import { updateUser } from "../profile/Api";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class AskEmailModal extends BaseReactComponent {
   constructor(props) {
@@ -22,6 +23,7 @@ class AskEmailModal extends BaseReactComponent {
     const dummyUser = window.localStorage.getItem("lochDummyUser");
     const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.state = {
+      isMobile: mobileCheck(),
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
       email: userDetails?.email || "",
@@ -61,7 +63,9 @@ class AskEmailModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         // backdrop="static"
         onHide={this.state.onHide}
         size="lg"

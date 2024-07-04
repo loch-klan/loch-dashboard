@@ -216,7 +216,9 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
         show={this.state.show}
         className={`exit-overlay-form onTop copy-trade-sing-in-up-modal ${
           this.props.hiddenModal ? "zeroOpacity" : ""
-        } ${this.props.isMobile ? "mobile-add-copy-trade-modal" : ""}`}
+        } ${
+          this.props.isMobile ? "mobile-add-copy-trade-modal" : "zoomedElements"
+        }`}
         onHide={this.hideModal}
         size="lg"
         dialogClassName={`exit-overlay-modal ${

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Image, Modal } from "react-bootstrap";
 import backIcon from "../../image/back-icon.svg";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 const OnboardingModal = ({
   show,
@@ -14,6 +15,7 @@ const OnboardingModal = ({
   modalClass = null,
   modalAnimation,
 }) => {
+  const [isMobile] = useState(mobileCheck());
   return (
     <Modal
       show={show}
@@ -25,6 +27,7 @@ const OnboardingModal = ({
       centered
       aria-labelledby="contained-modal-title-vcenter"
       animation={modalAnimation !== undefined ? modalAnimation : true}
+      className={`${isMobile ? "" : "zoomedElements"}`}
     >
       {title && (
         <Modal.Header>

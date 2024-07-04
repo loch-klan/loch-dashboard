@@ -218,7 +218,7 @@ class PaywallModal extends BaseReactComponent {
       <Modal
         show={this.state.show}
         className={`exit-overlay-form pay-wall-modal ${
-          this.props.isMobile ? "pay-wall-modal-mobile" : ""
+          this.props.isMobile ? "pay-wall-modal-mobile" : "zoomedElements"
         }`}
         onHide={this.hideModal}
         size="lg"

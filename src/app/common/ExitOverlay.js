@@ -70,6 +70,7 @@ import {
   goToTelegram,
   isPremiumUser,
   loadingAnimation,
+  mobileCheck,
   removeOpenModalAfterLogin,
   whichSignUpMethod,
 } from "../../utils/ReusableFunctions";
@@ -100,6 +101,7 @@ class ExitOverlay extends BaseReactComponent {
         : getCurrentUser().id;
 
     this.state = {
+      isMobile: mobileCheck(),
       isLochPaymentModal: false,
       isReferralCodeStep: false,
       referralCode: "",
@@ -964,7 +966,9 @@ class ExitOverlay extends BaseReactComponent {
         {!this.state.hidePrevModal && (
           <Modal
             show={this.state.show}
-            className="exit-overlay-form"
+            className={`exit-overlay-form ${
+              this.state.isMobile ? "" : "zoomedElements"
+            }`}
             // backdrop="static"
             onHide={this.onHidePassThrough}
             size="lg"
