@@ -16,7 +16,7 @@ import { detectNameTag } from "../common/Api";
 import validator from "validator";
 import { CopyTradeAdded } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { isPremiumUser } from "../../utils/ReusableFunctions";
+import { isPremiumUser, mobileCheck } from "../../utils/ReusableFunctions";
 import AddEmulationsSignInUpModal from "./AddEmulationsSignInUpModal";
 import { addCopyTrade } from "./EmulationsApi";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -26,6 +26,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       show: props.show,
       onHide: this.props.onHide,
       loadAddBtn: false,
@@ -437,7 +438,11 @@ class AddEmulationsAddressModal extends BaseReactComponent {
           show={this.state.show && !this.state.signInSignUpModal}
           className={`exit-overlay-form ${
             this.props.hiddenModal ? "zeroOpacity" : ""
-          } ${this.props.isMobile ? "mobile-add-copy-trade-modal" : ""}`}
+          } ${
+            this.props.isMobile
+              ? "mobile-add-copy-trade-modal"
+              : "zoomedElements"
+          }`}
           onHide={this.state.onHide}
           size="lg"
           dialogClassName={`exit-overlay-modal ${

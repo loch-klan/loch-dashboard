@@ -20,12 +20,14 @@ import {
   TopAssetValueEmailNotify,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class AssetValueEmailModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.state = {
+      isMobile: mobileCheck(),
       email: "",
       link:
         userDetails?.link || window.localStorage.getItem("lochDummyUser") || "",
@@ -79,7 +81,9 @@ class AssetValueEmailModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         // backdrop="static"
         onHide={this.state.onHide}
         size="lg"

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Image, Modal } from "react-bootstrap";
 import alertIcon from "../../assets/images/icons/alert-icon.svg";
 import successIcon from "../../assets/images/icons/success-icon.svg";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 // import closeIcon from "../../assets/images/close.png";
 
 const InformationModal = ({
@@ -18,8 +19,14 @@ const InformationModal = ({
     success: 1,
     warning: 2,
   };
+  const [isMobile] = useState(mobileCheck());
   return (
-    <Modal show={show} onHide={handleClose} dialogClassName="info-modal">
+    <Modal
+      show={show}
+      onHide={handleClose}
+      dialogClassName={`info-modal`}
+      className={`${isMobile ? "" : "zoomedElements"}`}
+    >
       <Modal.Body>
         <div className="info-modal-wrap">
           <div className="icon">

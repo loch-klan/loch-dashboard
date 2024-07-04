@@ -20,6 +20,7 @@ import {
 } from "../onboarding//Api";
 import { CreatePyment, SendOtp, fixWalletApi } from "./Api.js";
 import AuthModal from "./AuthModal";
+import { mobileCheck } from "../../utils/ReusableFunctions.js";
 
 class CheckoutModal extends BaseReactComponent {
   constructor(props) {
@@ -27,6 +28,7 @@ class CheckoutModal extends BaseReactComponent {
     const dummyUser = window.localStorage.getItem("lochDummyUser");
     const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.state = {
+      isMobile: mobileCheck(),
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
       mobileNumber: userDetails?.mobile || "",
@@ -158,7 +160,9 @@ class CheckoutModal extends BaseReactComponent {
       <>
         <Modal
           show={this.state.show}
-          className="exit-overlay-form"
+          className={`exit-overlay-form ${
+            this.state.isMobile ? "" : "zoomedElements"
+          }`}
           onHide={this.state.onHide}
           size="lg"
           dialogClassName={"exit-overlay-modal"}
