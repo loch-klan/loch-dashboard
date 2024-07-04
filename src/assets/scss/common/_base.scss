@@ -3907,3 +3907,9 @@ input[type="number"]::-webkit-outer-spin-button {
     width: 43px;
   }
 }
+.spinner-chip-container {
+  pointer-events: none !important;
+  div {
+    pointer-events: none !important;
+  }
+}

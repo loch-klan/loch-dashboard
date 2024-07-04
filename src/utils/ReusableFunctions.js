@@ -5,7 +5,7 @@ import moment from "moment";
 import { DARK_MODE } from "../app/intelligence/ActionTypes";
 import { SwitchDarkMode } from "../app/common/Api";
 import { toast } from "react-toastify";
-import { getCurrentUser } from "./ManageToken";
+import { getCurrentUser, getToken } from "./ManageToken";
 
 export const scrollToBottomAfterPageChange = () => {
   if (mobileCheck()) {
@@ -17,6 +17,19 @@ export const scrollToBottomAfterPageChange = () => {
   } else {
     window.scroll(0, document.body.scrollHeight);
   }
+};
+
+export const hasUserAddedAddressesFun = () => {
+  let tempToken = getToken();
+  if (tempToken && tempToken !== "jsk") {
+    const userWalletList = window.localStorage.getItem("addWallet")
+      ? JSON.parse(window.localStorage.getItem("addWallet"))
+      : [];
+    if (userWalletList && userWalletList.length > 0) {
+      return true;
+    }
+  }
+  return false;
 };
 export const openAddressInSameTab = (address, setPageFlagDefault) => {
   const shareLink = BASE_URL_S3 + "replace-address?address=" + address;
