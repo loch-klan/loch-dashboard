@@ -1802,6 +1802,9 @@ class Emulations extends Component {
                             id="copyTradeLeaderboardScrollBody"
                             className="actpacc-no-scroll-body"
                             onScroll={this.handleAvailableTradeScroll}
+                            style={{
+                              paddingBottom: "2rem",
+                            }}
                           >
                             <HomeSmartMoneyPage
                               justShowTable
