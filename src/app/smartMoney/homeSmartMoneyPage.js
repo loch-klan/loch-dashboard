@@ -1207,6 +1207,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
       if (this.props.justShowTable) {
         return (
           <HomeSmartMoneyMobile
+            passedActionFun={this.props.passedActionFun}
             justShowTable
             isNoUser={!this.state.lochUserState}
             goToAddress={this.goToAddress}

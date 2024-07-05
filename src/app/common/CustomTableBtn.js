@@ -16,7 +16,12 @@ class CustomTableBtn extends Component {
   };
   render() {
     return (
-      <button className="custom-table-button" onClick={this.handleOnClickPass}>
+      <button
+        className={`custom-table-button ${
+          this.props.isMobile ? "custom-table-button-mobile" : ""
+        }`}
+        onClick={this.handleOnClickPass}
+      >
         {this.state.isChecked
           ? this.props.checkedText
           : this.props.uncheckedText}
