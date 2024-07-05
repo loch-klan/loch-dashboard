@@ -1326,7 +1326,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
               }}
               className="history-table homeSmartMoneyPage page-scroll"
             >
-              <div className="page-scroll-child page-scroll-child-full-width">
+              <div className="page-scroll-child ">
                 {this.state.showSignOutModal ? (
                   <ConformSmartMoneyLeaveModal
                     show={this.state.showSignOutModal}
