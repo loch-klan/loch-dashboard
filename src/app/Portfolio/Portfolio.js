@@ -5192,10 +5192,10 @@ class Portfolio extends BaseReactComponent {
                       <div
                         className="m-r-16 section-table"
                         style={{
-                          height: "41rem",
+                          height: "43rem",
                           display: "flex",
                           flexDirection: "column",
-                          minHeight: "41rem",
+                          minHeight: "43rem",
                           marginBottom: 0,
                         }}
                       >
@@ -5452,10 +5452,10 @@ class Portfolio extends BaseReactComponent {
                       <div
                         className="section-table"
                         style={{
-                          height: "41rem",
+                          height: "43rem",
                           display: "flex",
                           flexDirection: "column",
-                          minHeight: "41rem",
+                          minHeight: "43rem",
                           marginBottom: 0,
                         }}
                       >
@@ -5650,7 +5650,7 @@ class Portfolio extends BaseReactComponent {
                               </div>
 
                               <BarGraphSection
-                                customGraphHeight="27rem"
+                                customGraphHeight="28.5rem"
                                 // showPremiumHover={!this.state.isPremiumUser}
                                 // isPremiumUser={this.state.isPremiumUser}
                                 isPremiumUser={this.state.isPremiumUser}
@@ -5760,8 +5760,8 @@ class Portfolio extends BaseReactComponent {
                         style={{
                           display: "flex",
                           flexDirection: "column",
-                          minHeight: "41rem",
-                          height: "41rem",
+                          minHeight: "43rem",
+                          height: "43rem",
                           marginBottom: 0,
                         }}
                       >
@@ -5908,7 +5908,7 @@ class Portfolio extends BaseReactComponent {
                                 <div>Loch</div>
                               </div>
                               <BarGraphSection
-                                customGraphHeight="27rem"
+                                customGraphHeight="28.5rem"
                                 isFromHome
                                 openChartPage={this.goToCounterPartyVolumePage}
                                 data={
@@ -6017,10 +6017,10 @@ class Portfolio extends BaseReactComponent {
                       <div
                         className="section-table"
                         style={{
-                          height: "41rem",
+                          height: "43rem",
                           display: "flex",
                           flexDirection: "column",
-                          minHeight: "41rem",
+                          minHeight: "43rem",
                           marginBottom: 0,
                         }}
                       >
