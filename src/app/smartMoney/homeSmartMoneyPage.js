@@ -1322,7 +1322,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             <div
               style={{
                 marginTop: this.props.justShowTable ? "0rem" : "",
-                height: this.props.justShowTable ? "77rem" : "",
+                height: this.props.justShowTable ? "74rem" : "",
               }}
               className="history-table homeSmartMoneyPage page-scroll"
             >
