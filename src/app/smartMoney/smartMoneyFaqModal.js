@@ -7,11 +7,13 @@ import {
   SmartMoneyFaqModalIcon,
 } from "../../assets/images/icons";
 import { BaseReactComponent } from "../../utils/form";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class SmartMoneyFaqModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       show: props.show,
       onHide: props.onHide,
       questionAnswers: [
@@ -69,7 +71,9 @@ class SmartMoneyFaqModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         onHide={this.state.onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal"}

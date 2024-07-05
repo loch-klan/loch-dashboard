@@ -39,6 +39,7 @@ import { getCurrentUser } from "../../../utils/ManageToken";
 import {
   CurrencyType,
   loadingAnimation,
+  mobileCheck,
 } from "../../../utils/ReusableFunctions";
 import CustomChip from "../../../utils/commonComponent/CustomChip";
 import CustomOverlay from "../../../utils/commonComponent/CustomOverlay";
@@ -78,6 +79,7 @@ class FollowExitOverlay extends BaseReactComponent {
         : getCurrentUser().id;
 
     this.state = {
+      isMobile: mobileCheck(),
       // create account for cohort
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
@@ -818,7 +820,9 @@ class FollowExitOverlay extends BaseReactComponent {
         {!this.state.hidePrevModal && (
           <Modal
             show={this.state.show}
-            className="exit-overlay-form"
+            className={`exit-overlay-form ${
+              this.state.isMobile ? "" : "zoomedElements"
+            }`}
             // backdrop="static"
             onHide={this.state.onHide}
             size="lg"

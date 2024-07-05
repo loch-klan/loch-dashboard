@@ -2,11 +2,13 @@ import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class ConformSmartMoneyLeaveModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       show: props.show,
       handleClose: props.handleClose,
       handleYes: props.handleYes,
@@ -27,7 +29,9 @@ class ConformSmartMoneyLeaveModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="confirm-leave-modal"
+        className={`confirm-leave-modal ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         // backdrop="static"
         onHide={this.state.handleClose}
         centered

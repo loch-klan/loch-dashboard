@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Modal } from "react-bootstrap";
 import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
@@ -8,6 +8,7 @@ import {
   CrossSmartMoneyIcon,
   NewWelcomeLoginCrossIcon,
 } from "../../../assets/images/icons";
+import { mobileCheck } from "../../../utils/ReusableFunctions";
 
 const Login = ({
   show,
@@ -31,11 +32,13 @@ const Login = ({
       document.removeEventListener("keydown", listener);
     };
   }, []);
-
+  const [isMobile] = useState(mobileCheck());
   return (
     <Modal
       size="lg"
-      className="exit-overlay-form newWelcomePageTranlucentModal"
+      className={`exit-overlay-form newWelcomePageTranlucentModal ${
+        isMobile ? "" : "zoomedElements"
+      }`}
       dialogClassName={
         "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"
       }
