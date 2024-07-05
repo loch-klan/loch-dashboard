@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { resetUser } from "../../utils/AnalyticsFunctions";
 import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 import { mobileCheck } from "../../utils/ReusableFunctions";
+import { reserWalletList } from "../wallet/Api";
 
 class ConfirmLeaveModal extends BaseReactComponent {
   constructor(props) {
@@ -49,9 +50,11 @@ class ConfirmLeaveModal extends BaseReactComponent {
                 className="secondary-btn m-r-24 main-button btn-bg-white-outline-black"
                 onClick={() => {
                   if (this.props.handleSignOutWelcome) {
+                    this.props.reserWalletList();
                     resetUser(true);
                     this.props.handleSignOutWelcome();
                   } else {
+                    this.props.reserWalletList();
                     resetUser();
                     window.localStorage.setItem("refresh", false);
                     this.props.history.push("/welcome");
@@ -72,6 +75,6 @@ class ConfirmLeaveModal extends BaseReactComponent {
 }
 
 const mapStateToProps = (state) => ({});
-const mapDispatchToProps = {};
+const mapDispatchToProps = { reserWalletList };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmLeaveModal);
