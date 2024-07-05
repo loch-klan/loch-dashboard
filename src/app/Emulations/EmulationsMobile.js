@@ -466,6 +466,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                         }}
                       >
                         <HomeSmartMoneyPage
+                          passedActionFun={this.props.passedActionFun}
                           justShowTable
                           history={this.props.history}
                           location={this.props.location}
