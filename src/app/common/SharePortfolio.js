@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import CopyLink from "../../assets/images/icons/CopyLink.svg";
@@ -10,6 +10,7 @@ import { ShareLinkCopy } from "../../utils/AnalyticsFunctions";
 import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser } from "../../utils/ManageToken";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 function SharePortfolio(props) {
   let lochUser = getCurrentUser().id;
@@ -28,11 +29,12 @@ function SharePortfolio(props) {
       window.localStorage.setItem("isPopupActive", false);
     };
   }, []);
+  const [isMobile] = useState(mobileCheck());
   return (
     <div>
       <Modal
         show={props.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${isMobile ? "" : "zoomedElements"}`}
         // backdrop="static"
         onHide={props.onHide}
         size="lg"

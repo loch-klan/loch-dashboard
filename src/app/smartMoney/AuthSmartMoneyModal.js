@@ -30,6 +30,7 @@ import { WhaleCreateAccountPrivacyHover } from "../../utils/AnalyticsFunctions.j
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { VerifySmartMoneyEmailOtp } from "./Api.js";
+import { mobileCheck } from "../../utils/ReusableFunctions.js";
 
 class AuthSmartMoneyModal extends BaseReactComponent {
   constructor(props) {
@@ -37,6 +38,7 @@ class AuthSmartMoneyModal extends BaseReactComponent {
     const dummyUser = window.localStorage.getItem("lochDummyUser");
     const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.state = {
+      isMobile: mobileCheck(),
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
       mobileNumber: userDetails?.mobile || "",
@@ -173,7 +175,9 @@ class AuthSmartMoneyModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         // backdrop="static"
         onHide={this.state.onHide}
         size="lg"

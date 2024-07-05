@@ -11,6 +11,7 @@ import "./_newAuth.scss";
 import {
   goToTelegram,
   loadingAnimation,
+  mobileCheck,
 } from "../../../utils/ReusableFunctions";
 import {
   WelcomeSignUpGetReferralCode,
@@ -82,10 +83,13 @@ const SignUp = ({
       setShowEmailError(true);
     }
   };
+  const [isMobile] = useState(mobileCheck());
   return (
     <Modal
       size="lg"
-      className="exit-overlay-form newWelcomePageTranlucentModal"
+      className={`exit-overlay-form newWelcomePageTranlucentModal ${
+        isMobile ? "" : "zoomedElements"
+      }`}
       dialogClassName={
         "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"
       }
