@@ -29,7 +29,7 @@ class PaymentSuccessModal extends BaseReactComponent {
       <Modal
         show
         className={`exit-overlay-form pay-wall-modal pay-wall-options-modal pay-wall-success-modal ${
-          this.props.isMobile ? "pay-wall-modal-mobile" : ""
+          this.props.isMobile ? "pay-wall-modal-mobile" : "zoomedElements"
         }`}
         onHide={this.hideModal}
         size="lg"

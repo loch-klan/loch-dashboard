@@ -17,7 +17,11 @@ import {
 
 function App(props) {
   const [isMobile] = useState(mobileCheck());
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!mobileCheck()) {
+      // document;
+    }
+  }, []);
   useEffect(() => {
     const isRendered = window.localStorage.getItem("isRendered");
     if (!isRendered) {

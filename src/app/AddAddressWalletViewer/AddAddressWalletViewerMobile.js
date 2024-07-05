@@ -84,7 +84,7 @@ class AddAddressWalletViewerMobile extends Component {
             }}
             className="inter-display-medium"
           >
-            Understand your unrealized profit and loss per token
+            Understand the unrealized profit and loss per token
           </div>
         </div>
         <div className="mobile-portfolio-blocks">
@@ -140,7 +140,7 @@ class AddAddressWalletViewerMobile extends Component {
             }}
             className="inter-display-medium"
           >
-            Understand your portfolio's net flows
+            Understand this portfolio's net flows
           </div>
         </div>
 
@@ -202,7 +202,7 @@ class AddAddressWalletViewerMobile extends Component {
             }}
             className="inter-display-medium"
           >
-            Understand when this token was bought and sold
+            Understand when these tokens were bought and sold
           </div>
         </div>
       </>

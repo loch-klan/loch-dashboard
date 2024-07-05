@@ -5,6 +5,7 @@ import { BaseReactComponent } from "../../utils/form";
 import { getAllCoins, getAllParentChains } from "../onboarding/Api";
 import { verifyEmailApi } from "./Api";
 import Loading from "./Loading";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 // import { loginApi } from './Api';
 
 class VerifyEmail extends BaseReactComponent {
@@ -18,6 +19,7 @@ class VerifyEmail extends BaseReactComponent {
       forgotPassword: false,
       token: token ? token : "",
       error: false,
+      isMobile: mobileCheck(),
     };
   }
 
@@ -57,6 +59,7 @@ class VerifyEmail extends BaseReactComponent {
           justifyContent: "center",
           height: "100vh",
           width: "100vw",
+          zoom: this.state.isMobile ? "" : "1.176",
         }}
       >
         <Loading />

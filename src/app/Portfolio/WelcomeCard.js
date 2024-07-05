@@ -282,6 +282,7 @@ export default function WelcomeCard(props) {
             minWidth: "85rem",
             maxWidth: props.isWideScreen ? "" : "120rem",
             width: props.isWideScreen ? "" : "120rem",
+            margin: "auto",
             // marginRight: "1.7rem",
             // width: "calc(60% - 3rem)",
             // position: "absolute",

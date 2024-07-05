@@ -22,11 +22,13 @@ import {
 import { setPageFlagDefault } from "../common/Api";
 import { toast } from "react-toastify";
 import validator from "validator";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class AddSmartMoneyAddressesModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       verificationOtp: "",
       showVerifyEmail: false,
       loadingVerificationOtpBtn: false,
@@ -457,7 +459,9 @@ class AddSmartMoneyAddressesModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         onHide={this.state.onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal"}

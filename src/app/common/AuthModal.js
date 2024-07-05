@@ -40,7 +40,10 @@ import {
   WhalePopupEmailAdded,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { whichSignUpMethod } from "../../utils/ReusableFunctions.js";
+import {
+  mobileCheck,
+  whichSignUpMethod,
+} from "../../utils/ReusableFunctions.js";
 
 class AuthModal extends BaseReactComponent {
   constructor(props) {
@@ -48,6 +51,7 @@ class AuthModal extends BaseReactComponent {
     const dummyUser = window.localStorage.getItem("lochDummyUser");
     const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.state = {
+      isMobile: mobileCheck(),
       firstName: userDetails?.first_name || "",
       lastName: userDetails?.last_name || "",
       mobileNumber: userDetails?.mobile || "",
@@ -246,7 +250,9 @@ class AuthModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         // backdrop="static"
         onHide={this.state.onHide}
         size="lg"

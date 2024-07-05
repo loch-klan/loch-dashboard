@@ -28,7 +28,7 @@ class CounterPartyVolume extends Component {
       <>
         <div className="mobile-header-container">
           <h4>Counterparty volume over time</h4>
-          <p>Understand where you’ve exchanged the most value</p>
+          <p>Understand where this portfolio has exchanged the most value</p>
         </div>
         <div
           className="mobile-portfolio-blocks"

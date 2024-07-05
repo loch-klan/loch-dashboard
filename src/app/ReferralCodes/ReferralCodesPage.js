@@ -70,9 +70,9 @@ class ReferralCodesPage extends BaseReactComponent {
   };
   componentDidMount() {
     const isLochUser = JSON.parse(window.localStorage.getItem("lochUser"));
-    if (!(isLochUser && isLochUser.email)) {
-      this.props.history.push("/profile");
-    }
+    // if (!(isLochUser && isLochUser.email)) {
+    //   this.props.history.push("/profile");
+    // }
     scrollToTop();
     if (mobileCheck()) {
       this.setState({
@@ -251,135 +251,139 @@ class ReferralCodesPage extends BaseReactComponent {
           </div>
         </div>
         <div className="history-table-section m-t-80">
-          <div className="history-table page">
-            <PageHeader
-              title={"Referral"}
-              currentPage="referral-codes"
-              subTitle={"Manage your referral codes here"}
-              history={this.props.history}
-              ShareBtn={false}
-              showpath
-              noHomeInPath
-            />
+          <div className="history-table page-scroll">
+            <div className="page-scroll-child">
+              <PageHeader
+                title={"Referral"}
+                currentPage="referral-codes"
+                subTitle={"Manage your referral codes here"}
+                history={this.props.history}
+                ShareBtn={false}
+                showpath
+                noHomeInPath
+              />
 
-            <div className="rp-body-container">
-              <div className="rpb-data">
-                <div className="rpbd-header">
-                  <div className="rpbdh-title-container">
-                    <Image className="rpbdh-title-icon" src={PasswordIcon} />
-                    <div className="inter-display-medium rpbdh-title">
-                      Referral Codes
-                    </div>
-                    {this.state.codesLeftToUse !== undefined &&
-                    this.state.codesLeftToUse !== null ? (
-                      <div className="inter-display-medium rpbdh-title-subtext">
-                        {this.state.codesLeftToUse} left
+              <div className="rp-body-container">
+                <div className="rpb-data">
+                  <div className="rpbd-header">
+                    <div className="rpbdh-title-container">
+                      <Image className="rpbdh-title-icon" src={PasswordIcon} />
+                      <div className="inter-display-medium rpbdh-title">
+                        Referral Codes
                       </div>
-                    ) : null}
-                  </div>
-                  {this.state.referralsLoading ? null : (
-                    <div
-                      onClick={this.copyAllTheCodes}
-                      className="inter-display-medium rpbdh-copy-button"
-                    >
-                      Copy all codes
+                      {this.state.codesLeftToUse !== undefined &&
+                      this.state.codesLeftToUse !== null ? (
+                        <div className="inter-display-medium rpbdh-title-subtext">
+                          {this.state.codesLeftToUse} left
+                        </div>
+                      ) : null}
                     </div>
-                  )}
-                </div>
-
-                {this.state.referralsLoading ? (
-                  <div className="rpbd-loader">
-                    <Loading />
+                    {this.state.referralsLoading ? null : (
+                      <div
+                        onClick={this.copyAllTheCodes}
+                        className="inter-display-medium rpbdh-copy-button"
+                      >
+                        Copy all codes
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <>
-                    <div
-                      onClick={() => {
-                        this.props.history.push("/profile/referral-codes");
-                      }}
-                      className="rpbd-referall"
-                    >
-                      <div className="psrcb-left">
-                        <div className="inter-display-medium psrcb-text">
-                          Want more referral codes? Reach out to us on{" "}
-                          <span
-                            onClick={() => {
-                              this.getMoreReferralCodes("twitter");
-                            }}
-                            className="psrcb-text-btn"
-                          >
-                            Twitter
-                          </span>
-                          <span> or </span>
-                          <span
-                            onClick={() => {
-                              this.getMoreReferralCodes("telegram");
-                            }}
-                            className="psrcb-text-btn"
-                          >
-                            Telegram
-                          </span>
+
+                  {this.state.referralsLoading ? (
+                    <div className="rpbd-loader">
+                      <Loading />
+                    </div>
+                  ) : (
+                    <>
+                      <div
+                        onClick={() => {
+                          this.props.history.push("/profile/referral-codes");
+                        }}
+                        className="rpbd-referall"
+                      >
+                        <div className="psrcb-left">
+                          <div className="inter-display-medium psrcb-text">
+                            Want more referral codes? Reach out to us on{" "}
+                            <span
+                              onClick={() => {
+                                this.getMoreReferralCodes("twitter");
+                              }}
+                              className="psrcb-text-btn"
+                            >
+                              Twitter
+                            </span>
+                            <span> or </span>
+                            <span
+                              onClick={() => {
+                                this.getMoreReferralCodes("telegram");
+                              }}
+                              className="psrcb-text-btn"
+                            >
+                              Telegram
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="rpbd-body-container">
-                      <div className="rpbd-body">
-                        {this.state.referralCodes &&
-                        this.state.referralCodes.length > 0 ? (
-                          this.state.referralCodes.map(
-                            (curReferralCode, curReferralCodeIndex) => (
-                              <div
-                                style={{
-                                  paddingTop:
-                                    curReferralCodeIndex === 0 ? "0px" : "",
-                                  paddingBottom:
-                                    curReferralCodeIndex ===
-                                    this.state.referralCodes.length - 1
-                                      ? "0px"
-                                      : "",
-                                  borderBottom:
-                                    curReferralCodeIndex ===
-                                    this.state.referralCodes.length - 1
-                                      ? "none"
-                                      : "",
-                                }}
-                                className="rpbdd-referral-block"
-                              >
+                      <div className="rpbd-body-container">
+                        <div className="rpbd-body">
+                          {this.state.referralCodes &&
+                          this.state.referralCodes.length > 0 ? (
+                            this.state.referralCodes.map(
+                              (curReferralCode, curReferralCodeIndex) => (
                                 <div
-                                  className={`inter-display-medium rpbddrb-code ${
-                                    curReferralCode.used
-                                      ? "rpbddrb-code-used"
-                                      : ""
-                                  }`}
+                                  style={{
+                                    paddingTop:
+                                      curReferralCodeIndex === 0 ? "0px" : "",
+                                    paddingBottom:
+                                      curReferralCodeIndex ===
+                                      this.state.referralCodes.length - 1
+                                        ? "0px"
+                                        : "",
+                                    borderBottom:
+                                      curReferralCodeIndex ===
+                                      this.state.referralCodes.length - 1
+                                        ? "none"
+                                        : "",
+                                  }}
+                                  className="rpbdd-referral-block"
                                 >
-                                  {curReferralCode.code}
+                                  <div
+                                    className={`inter-display-medium rpbddrb-code ${
+                                      curReferralCode.used
+                                        ? "rpbddrb-code-used"
+                                        : ""
+                                    }`}
+                                  >
+                                    {curReferralCode.code}
+                                  </div>
+                                  <div className="inter-display-medium rpbddrb-status">
+                                    {curReferralCode.used ? (
+                                      <span>Used</span>
+                                    ) : (
+                                      <Image
+                                        onClick={() => {
+                                          this.copyTextPass(
+                                            curReferralCode.code
+                                          );
+                                        }}
+                                        className="rpbddrbs-icon"
+                                        src={CopyClipboardIcon}
+                                      />
+                                    )}
+                                  </div>
                                 </div>
-                                <div className="inter-display-medium rpbddrb-status">
-                                  {curReferralCode.used ? (
-                                    <span>Used</span>
-                                  ) : (
-                                    <Image
-                                      onClick={() => {
-                                        this.copyTextPass(curReferralCode.code);
-                                      }}
-                                      className="rpbddrbs-icon"
-                                      src={CopyClipboardIcon}
-                                    />
-                                  )}
-                                </div>
-                              </div>
+                              )
                             )
-                          )
-                        ) : (
-                          <div className="inter-display-medium rpbd-no-data">
-                            No referral codes
-                          </div>
-                        )}
+                          ) : (
+                            <div className="inter-display-medium rpbd-no-data">
+                              No referral codes
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>

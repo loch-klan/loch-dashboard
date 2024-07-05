@@ -142,8 +142,8 @@ body {
     overflow-x: hidden;
   }
   .main-section-right-margin-handler-closed {
-    padding-left: 17.5rem;
-    padding-right: 7.5rem;
+    padding-left: 11rem;
+    padding-right: 0rem;
     overflow-x: hidden;
   }
   .main-section-right-margin-handler-closed-ctw {
@@ -1668,6 +1668,13 @@ form {
 
 // START FROM HERE
 .tool-tip-container {
+  // top: 0 !important;
+  // left: 0 !important;
+  // height: fit-content !important;
+  // position: fixed !important;
+  // display: flex;
+  // flex-direction: column;
+  // align-items: center;
   .tooltip-inner {
     background-color: $secondary;
     max-width: max-content;
@@ -1806,7 +1813,10 @@ form {
   &.bs-tooltip-bottom {
     padding-top: 0.8rem;
   }
-
+  .arrow {
+    // transform: unset !important;
+    // left: unset !important;
+  }
   .arrow::before {
     border-top-color: var(--borderwhiteDarkLight);
     position: relative;
@@ -1853,12 +1863,12 @@ form {
     box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem var(--freemiumTooltipShadow),
       0rem 0.63099rem 0.63099rem -0.31549rem var(--freemiumTooltipShadow);
     .freemium-tooltip-header {
-      font-size: 13.5px !important;
+      font-size: 12px !important;
       color: var(--fremiumTooltipHeader) !important;
       z-index: 2;
     }
     .freemium-tooltip-desc {
-      font-size: 13.5px !important;
+      font-size: 11.5px !important;
       color: var(--fremiumTooltipDescription) !important;
       z-index: 2;
       width: 70%;
@@ -1869,7 +1879,7 @@ form {
       top: 50%;
       right: 0.1rem;
       transform: translateY(-55%);
-      height: 7rem;
+      height: 6rem;
       z-index: 1;
       content: var(--freemiumTooltip);
     }
@@ -1891,6 +1901,26 @@ form {
 }
 .tool-tip-container-hidden {
   display: none !important;
+}
+.tool-tip-container-right-arrow {
+  .arrow {
+    display: none;
+  }
+}
+@media all and (min-width: 800px) {
+  .tool-tip-container {
+    top: 0 !important;
+    left: 0 !important;
+    height: fit-content !important;
+    position: fixed !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .arrow {
+      transform: unset !important;
+      left: unset !important;
+    }
+  }
 }
 @media all and (max-width: 800px) {
   .Toastify__toast {
@@ -1976,7 +2006,35 @@ form {
 .modal-backdrop.show {
   opacity: 0 !important;
 }
-
+.page-scroll {
+  padding: 0rem 1rem;
+  padding-right: 2rem;
+  margin-top: 9.5rem;
+  padding-top: 1rem;
+  width: 100%;
+  height: calc(118vh - 12rem);
+  display: flex;
+  align-items: center;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0rem;
+    height: 0rem;
+  }
+  .page-scroll-child {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 120rem;
+    width: 120rem;
+    height: 100%;
+  }
+  .page-scroll-child-full-width {
+    width: 100%;
+    padding: 0rem 3.5rem;
+    min-width: 120rem;
+  }
+}
 .page {
   padding-left: 4.6rem;
   padding-right: 4.6rem;
@@ -2129,7 +2187,7 @@ form {
           }
           &:hover {
             span {
-              color: var(--primaryTextColor) !important;
+              // color: var(--primaryTextColor) !important;
             }
             // img {
             //   filter: var(--hoverBrightnessValue);
@@ -3875,5 +3933,11 @@ input[type="number"]::-webkit-outer-spin-button {
   .new-auth-content-input--otp-pills-mobile {
     height: 52px;
     width: 43px;
+  }
+}
+.spinner-chip-container {
+  pointer-events: none !important;
+  div {
+    pointer-events: none !important;
   }
 }

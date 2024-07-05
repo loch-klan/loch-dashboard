@@ -2343,93 +2343,94 @@ class TransactionHistoryPage extends BaseReactComponent {
           </div>
         </div>
         <div className="history-table-section m-t-80">
-          <div className="history-table page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-              showpath
-              currentPage={"transaction-history"}
-            />
-            {this.state.exportModal ? (
-              <ExitOverlay
-                show={this.state.exportModal}
-                onHide={this.handleExportModal}
-                history={this.history}
-                headerTitle={"Download all transactions"}
-                headerSubTitle={"Export your transaction history from Loch"}
-                modalType={"exportModal"}
-                iconImage={ExportIconWhite}
-                selectExportOption={1}
-              />
-            ) : null}
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
+          <div className="history-table page-scroll">
+            <div className="page-scroll-child">
+              <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
-                updateTimer={this.updateTimer}
-                from="transaction history"
+                handleShare={this.handleShare}
+                showpath
+                currentPage={"transaction-history"}
               />
-            )}
-            {this.state.upgradeModal && (
-              <UpgradeModal
-                show={this.state.upgradeModal}
-                onHide={this.upgradeModal}
+              {this.state.exportModal ? (
+                <ExitOverlay
+                  show={this.state.exportModal}
+                  onHide={this.handleExportModal}
+                  history={this.history}
+                  headerTitle={"Download all transactions"}
+                  headerSubTitle={"Export the transaction history from Loch"}
+                  modalType={"exportModal"}
+                  iconImage={ExportIconWhite}
+                  selectExportOption={1}
+                />
+              ) : null}
+              {this.state.addModal && (
+                <FixAddModal
+                  show={this.state.addModal}
+                  onHide={this.handleAddModal}
+                  modalIcon={AddWalletModalIcon}
+                  title="Add wallet address"
+                  subtitle="Add more wallet address here"
+                  modalType="addwallet"
+                  btnStatus={false}
+                  btnText="Go"
+                  history={this.props.history}
+                  changeWalletList={this.handleChangeList}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  updateTimer={this.updateTimer}
+                  from="transaction history"
+                />
+              )}
+              {this.state.upgradeModal && (
+                <UpgradeModal
+                  show={this.state.upgradeModal}
+                  onHide={this.upgradeModal}
+                  history={this.props.history}
+                  isShare={window.localStorage.getItem("share_id")}
+                  isStatic={this.state.isStatic}
+                  triggerId={this.state.triggerId}
+                  pname="treansaction history"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+              {this.state.isLochPaymentModal ? (
+                <PaywallModal
+                  show={this.state.isLochPaymentModal}
+                  onHide={this.hidePaymentModal}
+                  redirectLink={BASE_URL_S3 + "/"}
+                  title="Export Valuable Data with Loch"
+                  description="Export unlimited data"
+                  hideBackBtn
+                />
+              ) : null}
+              <PageHeader
+                title={"Transactions"}
+                subTitle={
+                  "Sort, filter, and dissect all the transactions from one place"
+                }
+                currentPage={"transaction-history"}
                 history={this.props.history}
-                isShare={window.localStorage.getItem("share_id")}
-                isStatic={this.state.isStatic}
-                triggerId={this.state.triggerId}
-                pname="treansaction history"
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                ShareBtn={true}
+                // ExportBtn
+                exportBtnTxt="Click to export transactions"
+                handleExportModal={this.handleExportModal}
+                handleShare={this.handleSpecificShare}
                 updateTimer={this.updateTimer}
+                // showHideDust
+                showHideDustVal={this.state.showDust}
+                showHideDustFun={this.showDust}
               />
-            )}
-            {this.state.isLochPaymentModal ? (
-              <PaywallModal
-                show={this.state.isLochPaymentModal}
-                onHide={this.hidePaymentModal}
-                redirectLink={BASE_URL_S3 + "/"}
-                title="Export Valuable Data with Loch"
-                description="Export unlimited data"
-                hideBackBtn
-              />
-            ) : null}
-            <PageHeader
-              title={"Transactions"}
-              subTitle={
-                "Sort, filter, and dissect all your transactions from one place"
-              }
-              currentPage={"transaction-history"}
-              history={this.props.history}
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              ShareBtn={true}
-              // ExportBtn
-              exportBtnTxt="Click to export transactions"
-              handleExportModal={this.handleExportModal}
-              handleShare={this.handleSpecificShare}
-              updateTimer={this.updateTimer}
-              // showHideDust
-              showHideDustVal={this.state.showDust}
-              showHideDustFun={this.showDust}
-            />
 
-            <div className="fillter_tabs_section">
-              <Form onValidSubmit={this.onValidSubmit}>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                  }}
-                >
-                  {/* <Col className="transactionHistoryCol">
+              <div className="fillter_tabs_section">
+                <Form onValidSubmit={this.onValidSubmit}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "8px",
+                    }}
+                  >
+                    {/* <Col className="transactionHistoryCol">
                     <CustomMinMaxDropdown
                       filtername="Size"
                       handleClick={(min, max) => this.handleAmount(min, max)}
@@ -2490,97 +2491,102 @@ class TransactionHistoryPage extends BaseReactComponent {
                       transactionHistorySavedData
                     />
                   </Col> */}
-                  {/* {fillter_tabs} */}
-                  <div
-                    className="transactionHistoryCol input-noshadow-dark transaction-searchbar-full"
-                    style={{
-                      flexGrow: 1,
-                    }}
-                  >
-                    <div className="searchBar">
-                      <Image src={searchIcon} className="search-icon" />
-                      <FormElement
-                        valueLink={this.linkState(
-                          this,
-                          "search",
-                          this.onChangeMethod
-                        )}
-                        control={{
-                          type: CustomTextControl,
-                          settings: {
-                            placeholder: "Search address",
-                          },
-                        }}
-                        classes={{
-                          inputField: "search-input",
-                          prefix: "search-prefix",
-                          suffix: "search-suffix",
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    onClick={this.showDust}
-                    className="pageHeaderShareContainer new-dust-button"
-                  >
+                    {/* {fillter_tabs} */}
                     <div
-                      className={`smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn ${
-                        this.state.showDust ? "pageHeaderShareBtnSelected" : ""
-                      }`}
+                      className="transactionHistoryCol input-noshadow-dark transaction-searchbar-full"
+                      style={{
+                        flexGrow: 1,
+                      }}
                     >
-                      <CheckboxCustomTable
-                        handleOnClick={() => {}}
-                        noMargin
-                        isChecked={this.state.showDust}
-                        isDustCheckbox
-                      />
-                      <span>
-                        {this.state.showDust
-                          ? "Reveal dust (less than $1)"
-                          : "Hide dust (less than $1)"}
-                      </span>
-                    </div>
-                  </div>
-                  <div sm={1}>
-                    {/* <button className="transaction-new-export"> */}
-                    <div
-                      onClick={this.exprotPassThrough}
-                      className="pageHeaderShareContainer new-export-button"
-                    >
-                      <Image className="pageHeaderShareImg" src={ExportIcon} />
-                      <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
-                        Export
+                      <div className="searchBar">
+                        <Image src={searchIcon} className="search-icon" />
+                        <FormElement
+                          valueLink={this.linkState(
+                            this,
+                            "search",
+                            this.onChangeMethod
+                          )}
+                          control={{
+                            type: CustomTextControl,
+                            settings: {
+                              placeholder: "Search address",
+                            },
+                          }}
+                          classes={{
+                            inputField: "search-input",
+                            prefix: "search-prefix",
+                            suffix: "search-suffix",
+                          }}
+                        />
                       </div>
                     </div>
-                    {/* </button> */}
+                    <div
+                      onClick={this.showDust}
+                      className="pageHeaderShareContainer new-dust-button"
+                    >
+                      <div
+                        className={`smaller-toggle inter-display-medium f-s-13 pageHeaderShareBtn ${
+                          this.state.showDust
+                            ? "pageHeaderShareBtnSelected"
+                            : ""
+                        }`}
+                      >
+                        <CheckboxCustomTable
+                          handleOnClick={() => {}}
+                          noMargin
+                          isChecked={this.state.showDust}
+                          isDustCheckbox
+                        />
+                        <span>
+                          {this.state.showDust
+                            ? "Reveal dust (less than $1)"
+                            : "Hide dust (less than $1)"}
+                        </span>
+                      </div>
+                    </div>
+                    <div sm={1}>
+                      {/* <button className="transaction-new-export"> */}
+                      <div
+                        onClick={this.exprotPassThrough}
+                        className="pageHeaderShareContainer new-export-button"
+                      >
+                        <Image
+                          className="pageHeaderShareImg"
+                          src={ExportIcon}
+                        />
+                        <div className="inter-display-medium f-s-13 lh-19 pageHeaderShareBtn">
+                          Export
+                        </div>
+                      </div>
+                      {/* </button> */}
+                    </div>
                   </div>
-                </div>
-              </Form>
-            </div>
-            <div className="transaction-history-table overflow-table-header-visible">
-              {this.state.tableLoading ? (
-                <div className="loadingSizeContainer">
-                  <Loading />
-                </div>
-              ) : (
-                <>
-                  <TransactionTable
-                    noSubtitleBottomPadding
-                    tableData={tableData}
-                    showHeaderOnEmpty
-                    columnList={columnList}
-                    message={"No Transactions Found"}
-                    totalPage={totalPage}
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={currentPage}
-                    tableLoading={this.state.tableLoading}
-                    onPageChange={this.onPageChange}
-                    minimalPagination
-                    hidePaginationRecords
-                    addWatermark
-                  />
-                  {/* <div className="ShowDust">
+                </Form>
+              </div>
+              <div className="transaction-history-table overflow-table-header-visible">
+                {this.state.tableLoading ? (
+                  <div className="loadingSizeContainer">
+                    <Loading />
+                  </div>
+                ) : (
+                  <>
+                    <TransactionTable
+                      noSubtitleBottomPadding
+                      tableData={tableData}
+                      showHeaderOnEmpty
+                      columnList={columnList}
+                      message={"No Transactions Found"}
+                      totalPage={totalPage}
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={currentPage}
+                      tableLoading={this.state.tableLoading}
+                      onPageChange={this.onPageChange}
+                      minimalPagination
+                      hidePaginationRecords
+                      addWatermark
+                    />
+                    {/* <div className="ShowDust">
                     <p
                       onClick={this.showDust}
                       className="inter-display-medium f-s-16 lh-19 cp grey-ADA"
@@ -2590,10 +2596,11 @@ class TransactionHistoryPage extends BaseReactComponent {
                         : "Hide dust (less than $1)"}
                     </p>
                   </div> */}
-                </>
-              )}
+                  </>
+                )}
+              </div>
+              {/* <FeedbackForm page={"Transaction History Page"} /> */}
             </div>
-            {/* <FeedbackForm page={"Transaction History Page"} /> */}
           </div>
         </div>
       </>

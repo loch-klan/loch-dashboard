@@ -3,11 +3,13 @@ import { Button, Modal } from "react-bootstrap";
 import { connect } from "react-redux";
 import { resetUser } from "../../utils/AnalyticsFunctions";
 import BaseReactComponent from "./../../utils/form/BaseReactComponent";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class ConfirmLeaveModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       show: props.show,
       handleClose: props.handleClose,
     };
@@ -27,7 +29,9 @@ class ConfirmLeaveModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="confirm-leave-modal"
+        className={`confirm-leave-modal ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         // backdrop="static"
         onHide={this.state.handleClose}
         centered

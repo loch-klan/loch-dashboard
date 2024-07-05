@@ -10,7 +10,7 @@ import {
   EditSpecificWallet,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { lightenDarkenColor } from "../../utils/ReusableFunctions";
+import { lightenDarkenColor, mobileCheck } from "../../utils/ReusableFunctions";
 import {
   BaseReactComponent,
   CustomTextControl,
@@ -29,6 +29,7 @@ class EditWalletModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       createdOn: props.createdOn,
       walletAddress: props.walletAddress,
       displayAddress: props.displayAddress
@@ -172,7 +173,9 @@ class EditWalletModal extends BaseReactComponent {
       <Modal
         show={show}
         onClick={handleClose}
-        className="edit-wallet-form"
+        className={`edit-wallet-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         onHide={onHide}
         size="lg"
         dialogClassName={"edit-wallet-modal"}

@@ -222,7 +222,7 @@ export const getProfitLossAsset = (arr, parentCtx, isPremiumUser) => {
         return `<div class="top-section py-4" style="background-color:var(--cardBackgroud); border: 1px solid var(--cardBorder); border-radius:10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04), 0px 1px 1px rgba(0, 0, 0, 0.04);
 backdrop-filter: blur(15px);">
                                 <div class="line-chart-tooltip-section tooltip-section-blue w-100" style="background-color:#ffffff;">
-                                <div class="inter-display-medium f-s-12 w-100 text-center px-4" style="color:#7c7d81; display:flex; justify-content:space-between"><b>${
+                                <div class="inter-display-medium f-s-11 w-100 text-center px-4" style="color:#7c7d81; display:flex; justify-content:space-between"><b>${
                                   this.x
                                 }</b> <b class="inter-display-semi-bold m-l-10" style="color:${
           this.x === "Net" ? netColor : "#ffffff"
@@ -241,7 +241,7 @@ backdrop-filter: blur(15px);">
             .map((item) => {
               return `<div class="${
                 isPremiumUser ? "" : "blurred-elements"
-              } inter-display-medium f-s-13 w-100 pt-3 px-4">
+              } inter-display-medium f-s-11 w-100 pt-3 px-4">
                                     <span style='width:10px; height: 10px; border-radius: 50%; background-color:${
                                       item.color == modeCOlor ||
                                       ((item.color == "#16182B" ||

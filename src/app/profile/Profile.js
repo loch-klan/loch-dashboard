@@ -502,326 +502,337 @@ class Profile extends Component {
           </div>
         ) : null}
         <div className="profile-page-section m-t-80">
-          <div className="profile-section page">
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
-                from="profile"
-              />
-            )}
+          <div className="profile-section page-scroll">
+            <div className="page-scroll-child">
+              {this.state.addModal && (
+                <FixAddModal
+                  show={this.state.addModal}
+                  onHide={this.handleAddModal}
+                  modalIcon={AddWalletModalIcon}
+                  title="Add wallet address"
+                  subtitle="Add more wallet address here"
+                  modalType="addwallet"
+                  btnStatus={false}
+                  btnText="Go"
+                  history={this.props.history}
+                  changeWalletList={this.handleChangeList}
+                  from="profile"
+                />
+              )}
 
-            <PageHeader
-              title="Profile"
-              subTitle="Manage your profile here"
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              // // connect exchange btn
-              // SecondaryBtn={true}
-              // handleUpdate={this.handleUpdateWallet}
-            />
-            <div style={{ marginBottom: "3rem" }}>
-              <Row>
-                <Col md={12}>
-                  <ProfileLochCreditPoints
-                    followFlag={this.state.followFlag}
-                    isUpdate={this.state.isUpdate}
-                    history={this.props.history}
-                    lochUser={this.state.lochUser}
-                    showFocusedInput={this.showFocusedInput}
-                  />
-                </Col>
-              </Row>
-            </div>
-            {this.state.isLochPaymentModal ? (
-              <PaywallModal
-                show={this.state.isLochPaymentModal}
-                onHide={this.hidePaymentModal}
-                redirectLink={BASE_URL_S3 + "/intelligence/insights"}
-                hideBackBtn
+              <PageHeader
+                title="Profile"
+                subTitle="Manage your profile here"
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                // // connect exchange btn
+                // SecondaryBtn={true}
+                // handleUpdate={this.handleUpdateWallet}
               />
-            ) : null}
-            <div className="profile-section-loch-premium-banner">
-              <div className="pslpl-heading">
-                <Image className="pslpl-icon" src={PremiumBannerDiamondIcon} />
-                <div className="inter-display-medium pslpl-text">
-                  Loch Premium
-                </div>
+              <div style={{ marginBottom: "3rem" }}>
+                <Row>
+                  <Col md={12}>
+                    <ProfileLochCreditPoints
+                      followFlag={this.state.followFlag}
+                      isUpdate={this.state.isUpdate}
+                      history={this.props.history}
+                      lochUser={this.state.lochUser}
+                      showFocusedInput={this.showFocusedInput}
+                    />
+                  </Col>
+                </Row>
               </div>
-              {this.state.isPremium ? (
-                <div
-                  style={{
-                    marginTop: "3rem",
-                  }}
-                  className="profile-section-loch-premium"
-                >
-                  <div className="pslp-left">
-                    <div
-                      style={{
-                        transform: "translateY(-5rem)",
-                      }}
-                      className="pslpl-banner"
-                    >
-                      <div className="inter-display-medium pslpl-banner-des">
-                        Exclusive benefits
-                      </div>
-                      <div className="pslpl-banner-heading">
-                        <Image
-                          src={PremiumBannerCheckCircleIcon}
-                          className="pslpl-banner-heading-image"
-                        />
-                        <div className="inter-display-medium pslpl-banner-heading-text">
-                          Activated
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="pslp-right">
-                    <div className="pslpl-conent">
-                      {this.state.premiumBannerItems.map((itemBlock, index) => (
-                        <div>
-                          <div key={index} className="pslpl-item-block">
-                            <Image
-                              className="pslpl-item-block-icon"
-                              src={itemBlock.icon}
-                            />
-                            <div className="inter-display-medium pslpl-item-block-text">
-                              {itemBlock.text}
-                            </div>
-                          </div>
-                          {itemBlock.text === "Platinum telegram channel" ? (
-                            <>
-                              <div
-                                style={{
-                                  marginTop: "0.5rem",
-                                }}
-                                className="pslpl-item-block"
-                              >
-                                <Image
-                                  className="pslpl-item-block-icon"
-                                  src={itemBlock.icon}
-                                  style={{
-                                    opacity: "0",
-                                  }}
-                                />
-                                <div className="pslpl-item-block-bullet-item" />
-                                <div className="inter-display-medium pslpl-item-block-text">
-                                  <span>Over $400m liquid onchain AUM</span>
-                                </div>
-                              </div>
-                              <div
-                                style={{
-                                  marginTop: "0.5rem",
-                                }}
-                                className="pslpl-item-block"
-                              >
-                                <Image
-                                  className="pslpl-item-block-icon"
-                                  src={itemBlock.icon}
-                                  style={{
-                                    opacity: "0",
-                                  }}
-                                />
-                                <div className="pslpl-item-block-bullet-item" />
-                                <div className="inter-display-medium pslpl-item-block-text">
-                                  <span>Over 500k twitter followers</span>
-                                </div>
-                              </div>
-                              <div
-                                style={{
-                                  marginTop: "0.5rem",
-                                }}
-                                className="pslpl-item-block"
-                              >
-                                <Image
-                                  className="pslpl-item-block-icon"
-                                  src={itemBlock.icon}
-                                  style={{
-                                    opacity: "0",
-                                  }}
-                                />
-                                <div className="pslpl-item-block-bullet-item" />
-                                <div className="inter-display-medium pslpl-item-block-text">
-                                  <span>Daily trade ideas</span>
-                                </div>
-                              </div>
-                            </>
-                          ) : null}
-                        </div>
-                      ))}
-                    </div>
+              {this.state.isLochPaymentModal ? (
+                <PaywallModal
+                  show={this.state.isLochPaymentModal}
+                  onHide={this.hidePaymentModal}
+                  redirectLink={BASE_URL_S3 + "/intelligence/insights"}
+                  hideBackBtn
+                />
+              ) : null}
+              <div className="profile-section-loch-premium-banner">
+                <div className="pslpl-heading">
+                  <Image
+                    className="pslpl-icon"
+                    src={PremiumBannerDiamondIcon}
+                  />
+                  <div className="inter-display-medium pslpl-text">
+                    Loch Premium
                   </div>
                 </div>
-              ) : (
-                <div className="profile-section-loch-premium">
-                  <div className="pslp-left">
-                    <div className="pslpl-conent">
-                      {this.state.premiumBannerItems.map((itemBlock, index) => (
-                        <div>
-                          <div key={index} className="pslpl-item-block">
-                            <Image
-                              className="pslpl-item-block-icon"
-                              src={itemBlock.icon}
-                            />
-                            <div className="inter-display-medium pslpl-item-block-text">
-                              {itemBlock.text}
-                            </div>
-                          </div>
-                          {itemBlock.text === "Platinum telegram channel" ? (
-                            <>
-                              <div
-                                style={{
-                                  marginTop: "0.5rem",
-                                }}
-                                className="pslpl-item-block"
-                              >
-                                <Image
-                                  className="pslpl-item-block-icon"
-                                  src={itemBlock.icon}
-                                  style={{
-                                    opacity: "0",
-                                  }}
-                                />
-                                <div className="pslpl-item-block-bullet-item" />
-                                <div className="inter-display-medium pslpl-item-block-text">
-                                  <span>Over $400m liquid onchain AUM</span>
-                                </div>
-                              </div>
-                              <div
-                                style={{
-                                  marginTop: "0.5rem",
-                                }}
-                                className="pslpl-item-block"
-                              >
-                                <Image
-                                  className="pslpl-item-block-icon"
-                                  src={itemBlock.icon}
-                                  style={{
-                                    opacity: "0",
-                                  }}
-                                />
-                                <div className="pslpl-item-block-bullet-item" />
-                                <div className="inter-display-medium pslpl-item-block-text">
-                                  <span>Over 500k twitter followers</span>
-                                </div>
-                              </div>
-                              <div
-                                style={{
-                                  marginTop: "0.5rem",
-                                }}
-                                className="pslpl-item-block"
-                              >
-                                <Image
-                                  className="pslpl-item-block-icon"
-                                  src={itemBlock.icon}
-                                  style={{
-                                    opacity: "0",
-                                  }}
-                                />
-                                <div className="pslpl-item-block-bullet-item" />
-                                <div className="inter-display-medium pslpl-item-block-text">
-                                  <span>Daily trade ideas</span>
-                                </div>
-                              </div>
-                            </>
-                          ) : null}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                {this.state.isPremium ? (
                   <div
                     style={{
-                      transform: "translateY(-4rem)",
+                      marginTop: "3rem",
                     }}
-                    className="pslp-right"
+                    className="profile-section-loch-premium"
                   >
-                    <div className="pslpr-desc">Not a member yet</div>
-                    <div className="pslpr-heading">
-                      Join Loch Premium and enjoy
-                      <br />
-                      exclusive benefits
+                    <div className="pslp-left">
+                      <div
+                        style={{
+                          transform: "translateY(-5rem)",
+                        }}
+                        className="pslpl-banner"
+                      >
+                        <div className="inter-display-medium pslpl-banner-des">
+                          Exclusive benefits
+                        </div>
+                        <div className="pslpl-banner-heading">
+                          <Image
+                            src={PremiumBannerCheckCircleIcon}
+                            className="pslpl-banner-heading-image"
+                          />
+                          <div className="inter-display-medium pslpl-banner-heading-text">
+                            Activated
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <button
-                      onClick={this.upgradeNowBtnClick}
-                      className="pslpr-btn"
+                    <div className="pslp-right">
+                      <div className="pslpl-conent">
+                        {this.state.premiumBannerItems.map(
+                          (itemBlock, index) => (
+                            <div>
+                              <div key={index} className="pslpl-item-block">
+                                <Image
+                                  className="pslpl-item-block-icon"
+                                  src={itemBlock.icon}
+                                />
+                                <div className="inter-display-medium pslpl-item-block-text">
+                                  {itemBlock.text}
+                                </div>
+                              </div>
+                              {itemBlock.text ===
+                              "Platinum telegram channel" ? (
+                                <>
+                                  <div
+                                    style={{
+                                      marginTop: "0.5rem",
+                                    }}
+                                    className="pslpl-item-block"
+                                  >
+                                    <Image
+                                      className="pslpl-item-block-icon"
+                                      src={itemBlock.icon}
+                                      style={{
+                                        opacity: "0",
+                                      }}
+                                    />
+                                    <div className="pslpl-item-block-bullet-item" />
+                                    <div className="inter-display-medium pslpl-item-block-text">
+                                      <span>Over $400m liquid onchain AUM</span>
+                                    </div>
+                                  </div>
+                                  <div
+                                    style={{
+                                      marginTop: "0.5rem",
+                                    }}
+                                    className="pslpl-item-block"
+                                  >
+                                    <Image
+                                      className="pslpl-item-block-icon"
+                                      src={itemBlock.icon}
+                                      style={{
+                                        opacity: "0",
+                                      }}
+                                    />
+                                    <div className="pslpl-item-block-bullet-item" />
+                                    <div className="inter-display-medium pslpl-item-block-text">
+                                      <span>Over 500k twitter followers</span>
+                                    </div>
+                                  </div>
+                                  <div
+                                    style={{
+                                      marginTop: "0.5rem",
+                                    }}
+                                    className="pslpl-item-block"
+                                  >
+                                    <Image
+                                      className="pslpl-item-block-icon"
+                                      src={itemBlock.icon}
+                                      style={{
+                                        opacity: "0",
+                                      }}
+                                    />
+                                    <div className="pslpl-item-block-bullet-item" />
+                                    <div className="inter-display-medium pslpl-item-block-text">
+                                      <span>Daily trade ideas</span>
+                                    </div>
+                                  </div>
+                                </>
+                              ) : null}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="profile-section-loch-premium">
+                    <div className="pslp-left">
+                      <div className="pslpl-conent">
+                        {this.state.premiumBannerItems.map(
+                          (itemBlock, index) => (
+                            <div>
+                              <div key={index} className="pslpl-item-block">
+                                <Image
+                                  className="pslpl-item-block-icon"
+                                  src={itemBlock.icon}
+                                />
+                                <div className="inter-display-medium pslpl-item-block-text">
+                                  {itemBlock.text}
+                                </div>
+                              </div>
+                              {itemBlock.text ===
+                              "Platinum telegram channel" ? (
+                                <>
+                                  <div
+                                    style={{
+                                      marginTop: "0.5rem",
+                                    }}
+                                    className="pslpl-item-block"
+                                  >
+                                    <Image
+                                      className="pslpl-item-block-icon"
+                                      src={itemBlock.icon}
+                                      style={{
+                                        opacity: "0",
+                                      }}
+                                    />
+                                    <div className="pslpl-item-block-bullet-item" />
+                                    <div className="inter-display-medium pslpl-item-block-text">
+                                      <span>Over $400m liquid onchain AUM</span>
+                                    </div>
+                                  </div>
+                                  <div
+                                    style={{
+                                      marginTop: "0.5rem",
+                                    }}
+                                    className="pslpl-item-block"
+                                  >
+                                    <Image
+                                      className="pslpl-item-block-icon"
+                                      src={itemBlock.icon}
+                                      style={{
+                                        opacity: "0",
+                                      }}
+                                    />
+                                    <div className="pslpl-item-block-bullet-item" />
+                                    <div className="inter-display-medium pslpl-item-block-text">
+                                      <span>Over 500k twitter followers</span>
+                                    </div>
+                                  </div>
+                                  <div
+                                    style={{
+                                      marginTop: "0.5rem",
+                                    }}
+                                    className="pslpl-item-block"
+                                  >
+                                    <Image
+                                      className="pslpl-item-block-icon"
+                                      src={itemBlock.icon}
+                                      style={{
+                                        opacity: "0",
+                                      }}
+                                    />
+                                    <div className="pslpl-item-block-bullet-item" />
+                                    <div className="inter-display-medium pslpl-item-block-text">
+                                      <span>Daily trade ideas</span>
+                                    </div>
+                                  </div>
+                                </>
+                              ) : null}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        transform: "translateY(-4rem)",
+                      }}
+                      className="pslp-right"
                     >
-                      Upgrade now
-                    </button>
+                      <div className="pslpr-desc">Not a member yet</div>
+                      <div className="pslpr-heading">
+                        Join Loch Premium and enjoy
+                        <br />
+                        exclusive benefits
+                      </div>
+                      <button
+                        onClick={this.upgradeNowBtnClick}
+                        className="pslpr-btn"
+                      >
+                        Upgrade now
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div
+                onClick={this.goToMyReferralCodes}
+                className="profile-section-referall-code-btn"
+              >
+                <div className="psrcb-left">
+                  <Image className="psrcb-icon" src={PasswordPurpleIcon} />
+                  <div className="inter-display-medium psrcb-text">
+                    Referral codes
                   </div>
                 </div>
-              )}
-            </div>
-            <div
-              onClick={this.goToMyReferralCodes}
-              className="profile-section-referall-code-btn"
-            >
-              <div className="psrcb-left">
-                <Image className="psrcb-icon" src={PasswordPurpleIcon} />
-                <div className="inter-display-medium psrcb-text">
-                  Referral codes
+                <div className="psrcb-right">
+                  {this.state.codesLeftToUse ? (
+                    <div className="inter-display-medium psrcb-small-text">
+                      {this.state.codesLeftToUse} left
+                    </div>
+                  ) : null}
+                  <Image
+                    className="psrcb-arrow-icon"
+                    src={UserCreditScrollRightArrowIcon}
+                  />
                 </div>
               </div>
-              <div className="psrcb-right">
-                {this.state.codesLeftToUse ? (
-                  <div className="inter-display-medium psrcb-small-text">
-                    {this.state.codesLeftToUse} left
-                  </div>
-                ) : null}
-                <Image
-                  className="psrcb-arrow-icon"
-                  src={UserCreditScrollRightArrowIcon}
-                />
-              </div>
-            </div>
-            {/* wallet page component */}
-            <Wallet
-              hidePageHeader={true}
-              isUpdate={this.state.isUpdate}
-              updateTimer={this.updateTimer}
-            />
-
-            <PageHeader
-              title="Your details"
-              subTitle=""
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              // // connect exchange btn
-              // SecondaryBtn={true}
-              // handleUpdate={this.handleUpdateWallet}
-            />
-
-            <div
-              className="profile-form-section"
-              style={{ marginBottom: "4rem" }}
-            >
-              <Row>
-                <Col md={12}>
-                  <ProfileForm userDetails={this.state.lochUser} />
-                </Col>
-              </Row>
-            </div>
-
-            {this.state.upgradeModal && (
-              <UpgradeModal
-                show={this.state.upgradeModal}
-                onHide={this.upgradeModal}
-                history={this.props.history}
-                isShare={window.localStorage.getItem("share_id")}
-                isStatic={this.state.isStatic}
-                triggerId={0}
-                pname="profile"
+              {/* wallet page component */}
+              <Wallet
+                hidePageHeader={true}
+                isUpdate={this.state.isUpdate}
                 updateTimer={this.updateTimer}
               />
-            )}
-            {/* <FeedbackForm page={"Profile Page"} /> */}
+
+              <PageHeader
+                title="Your details"
+                subTitle=""
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                // // connect exchange btn
+                // SecondaryBtn={true}
+                // handleUpdate={this.handleUpdateWallet}
+              />
+
+              <div
+                className="profile-form-section"
+                style={{ marginBottom: "4rem" }}
+              >
+                <Row>
+                  <Col md={12}>
+                    <ProfileForm userDetails={this.state.lochUser} />
+                  </Col>
+                </Row>
+              </div>
+
+              {this.state.upgradeModal && (
+                <UpgradeModal
+                  show={this.state.upgradeModal}
+                  onHide={this.upgradeModal}
+                  history={this.props.history}
+                  isShare={window.localStorage.getItem("share_id")}
+                  isStatic={this.state.isStatic}
+                  triggerId={0}
+                  pname="profile"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+              {/* <FeedbackForm page={"Profile Page"} /> */}
+            </div>
           </div>
         </div>
       </>

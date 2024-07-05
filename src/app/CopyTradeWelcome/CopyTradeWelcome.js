@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
+  hasUserAddedAddressesFun,
   mobileCheck,
   openLoginPopUp,
   scrollToTop,
@@ -83,7 +84,11 @@ class CopyTradeWelcome extends Component {
     scrollToTop();
     let tempToken = getToken();
     if (tempToken && tempToken !== "jsk") {
-      this.props.history.push("/copy-trade");
+      if (hasUserAddedAddressesFun()) {
+        this.props.history.push("/home");
+      } else {
+        this.props.history.push("/copy-trade");
+      }
     } else {
       this.startPageView();
       this.updateTimer(true);

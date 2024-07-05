@@ -50,6 +50,7 @@ import {
 } from "../onboarding/Api";
 import { addUserCredits } from "../profile/Api";
 import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from "./Api";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -63,6 +64,7 @@ class ConnectModal extends BaseReactComponent {
       prevArrow: <Image src={prevIcon} />,
     };
     this.state = {
+      isMobile: mobileCheck(),
       settings,
       show: props.show,
       onHide: props.onHide,
@@ -1488,7 +1490,9 @@ class ConnectModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         // backdrop="static"
         onHide={this.state.onHide}
         size="lg"

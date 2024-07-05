@@ -83,6 +83,7 @@ export { default as WarningCircleIcon } from "./warningCircle.svg";
 export { default as XCircleIcon } from "./xCircle.svg";
 export { default as XCircleRedIcon } from "./xCircleRed.svg";
 export { default as XFormallyTwitterLogoIcon } from "./xFormallyTwitterLogo.svg";
+export { default as XFormallyTwitterLogoLightIcon } from "./xFormallyTwitterLogoLight.svg";
 // export { default as InactiveSmartMoneySidebarIcon } from "./InactiveSmartMoneySidebar.svg";
 // export { default as ActiveSmartMoneySidebarIcon } from "./ActiveSmartMoneySidebar.svg";
 export { default as CloseIconBlack } from "./close-icon-black.svg";
