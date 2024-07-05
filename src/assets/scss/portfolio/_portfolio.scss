@@ -1045,7 +1045,7 @@
   }
 
   .graph-table-section {
-    min-width: 85rem;
+    min-width: 93rem;
     // max-width: 120rem;
     width: 100%;
     // display: flex;
@@ -1355,7 +1355,7 @@
         }
       }
       .newHomeTableContainer {
-        min-height: 33rem;
+        min-height: 35rem;
         &::-webkit-scrollbar {
           width: 0rem;
           height: 0rem;
@@ -1392,7 +1392,7 @@
         }
         .table-wrapper-mobile-y-scroll {
           overflow-x: scroll;
-          max-height: 32.5rem;
+          max-height: 34.5rem;
           position: relative;
           display: flex;
           flex-direction: column;
@@ -1491,8 +1491,8 @@
     // min-height: 28rem;
 
     .bar-graph-section {
-      height: 35rem;
-      min-height: 35rem;
+      height: 37rem;
+      min-height: 37rem;
       margin-bottom: 0;
       width: 100%;
       box-shadow: none;
@@ -2302,4 +2302,15 @@
 
 .info-icon-home {
   filter: var(--infoBrightnessPortfolio);
+}
+@media screen and (max-width: 900px) {
+  .portfolio-page-section {
+    .portfolio-section {
+      .welcome-card-section-topbar {
+        .welcome-card-topbar {
+          display: none;
+        }
+      }
+    }
+  }
 }

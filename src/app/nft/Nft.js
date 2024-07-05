@@ -536,43 +536,45 @@ class NFT extends BaseReactComponent {
           </div>
         </div>
         <div className="history-table-section m-t-80">
-          <div className="history-table page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-              showpath
-              currentPage={"nft"}
-            />
-            <PageHeader
-              title={"NFT Collection"}
-              subTitle={"Browse the NFTs held by this portfolio"}
-              currentPage={"nft"}
-              history={this.props.history}
-              ShareBtn={false}
-              updateTimer={this.updateTimer}
-            />
-            <div
-              style={{
-                flex: 1,
-              }}
-              className="transaction-history-table"
-            >
-              <TransactionTable
-                noSubtitleBottomPadding
-                tableData={this.state.tableData}
-                columnList={columnList}
-                message={"No NFT found"}
-                totalPage={this.props.NFTState?.total_count}
-                history={this.props.history}
-                location={this.props.location}
-                page={this.state.currentPage}
-                isLoading={this.state.isLoading}
-                pageLimit={10}
-                onPageChange={this.onPageChange}
-                addWatermark
-                paginationNew
-                hidePaginationRecords
+          <div className="history-table page-scroll">
+            <div className="page-scroll-child">
+              <TopWalletAddressList
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                handleShare={this.handleShare}
+                showpath
+                currentPage={"nft"}
               />
+              <PageHeader
+                title={"NFT Collection"}
+                subTitle={"Browse the NFTs held by this portfolio"}
+                currentPage={"nft"}
+                history={this.props.history}
+                ShareBtn={false}
+                updateTimer={this.updateTimer}
+              />
+              <div
+                style={{
+                  flex: 1,
+                }}
+                className="transaction-history-table"
+              >
+                <TransactionTable
+                  noSubtitleBottomPadding
+                  tableData={this.state.tableData}
+                  columnList={columnList}
+                  message={"No NFT found"}
+                  totalPage={this.props.NFTState?.total_count}
+                  history={this.props.history}
+                  location={this.props.location}
+                  page={this.state.currentPage}
+                  isLoading={this.state.isLoading}
+                  pageLimit={10}
+                  onPageChange={this.onPageChange}
+                  addWatermark
+                  paginationNew
+                  hidePaginationRecords
+                />
+              </div>
             </div>
           </div>
         </div>

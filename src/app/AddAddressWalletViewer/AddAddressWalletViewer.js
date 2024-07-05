@@ -170,10 +170,10 @@ class AddAddressWalletViewer extends Component {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "41rem",
+                        height: "43rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "41rem",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -255,10 +255,10 @@ class AddAddressWalletViewer extends Component {
                     <div
                       className="section-table"
                       style={{
-                        height: "41rem",
+                        height: "43rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "41rem",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -376,8 +376,8 @@ class AddAddressWalletViewer extends Component {
                       style={{
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "41rem",
-                        height: "41rem",
+                        minHeight: "43rem",
+                        height: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -479,10 +479,10 @@ class AddAddressWalletViewer extends Component {
                     <div
                       className="section-table"
                       style={{
-                        height: "41rem",
+                        height: "43rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "41rem",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
