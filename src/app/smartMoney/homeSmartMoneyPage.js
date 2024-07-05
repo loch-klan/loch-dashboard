@@ -83,6 +83,7 @@ import SmartMoneyHowItWorksModal from "./smartMoneyHowItWorksModal.js";
 import "./_smartMoney.scss";
 import MobileLayout from "../layout/MobileLayout.js";
 import HomeSmartMoneyMobile from "./SmartMoneyMobileBlocks/homeSmartMoneyMobile.js";
+import CustomTableBtn from "../common/CustomTableBtn.js";
 
 class HomeSmartMoneyPage extends BaseReactComponent {
   constructor(props) {
@@ -1157,7 +1158,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             id="netflows"
             // onClick={() => this.handleSort(this.state.tableSortOpt[2].title)}
           >
-            <span className="inter-display-medium f-s-13 lh-16 ">Follow</span>
+            <span className="inter-display-medium f-s-13 lh-16 ">Action</span>
             {/* <Image
               src={sortByIcon}
               className={
@@ -1173,18 +1174,29 @@ class HomeSmartMoneyPage extends BaseReactComponent {
         cell: (rowData, dataKey) => {
           if (dataKey === "following") {
             const handleOnClick = (addItem) => {
-              this.handleFollowUnfollow(
-                rowData.account,
-                addItem,
-                rowData.tagName
-              );
+              if (this.props.justShowTable) {
+                this.props.passedActionFun(rowData.account);
+              } else {
+                this.handleFollowUnfollow(
+                  rowData.account,
+                  addItem,
+                  rowData.tagName
+                );
+              }
             };
             return (
-              <CheckboxCustomTable
-                handleOnClick={handleOnClick}
+              <CustomTableBtn
                 isChecked={rowData.following}
-                dontSelectIt={!this.state.lochUserState ? true : false}
+                handleOnClick={handleOnClick}
+                checkedText={this.props.justShowTable ? "Copy" : "Following"}
+                uncheckedText={this.props.justShowTable ? "Copy" : "Follow"}
               />
+
+              // <CheckboxCustomTable
+              //   handleOnClick={handleOnClick}
+              //   isChecked={rowData.following}
+              //   dontSelectIt={!this.state.lochUserState ? true : false}
+              // />
             );
           }
         },

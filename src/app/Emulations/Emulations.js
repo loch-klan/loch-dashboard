@@ -1805,6 +1805,7 @@ class Emulations extends Component {
                           >
                             <HomeSmartMoneyPage
                               justShowTable
+                              passedActionFun={this.copyPopularAddress}
                               history={this.props.history}
                               location={this.props.location}
                             />

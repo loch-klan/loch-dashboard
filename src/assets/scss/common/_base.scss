@@ -3941,3 +3941,15 @@ input[type="number"]::-webkit-outer-spin-button {
     pointer-events: none !important;
   }
 }
+.custom-table-button {
+  background-color: var(--cardBackgroud);
+  color: var(--primaryTextColor);
+  border: 1px solid var(--cardBorder);
+  padding: 0.9rem 1.4rem;
+  border-radius: 8px;
+  &:hover {
+    background-color: var(--primaryTextColor);
+    border-color: var(--primaryTextColor);
+    color: var(--cardBackgroud);
+  }
+}
