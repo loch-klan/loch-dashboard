@@ -581,101 +581,103 @@ class CounterPartyVolume extends Component {
           ) : (
             ""
           )}
-          <div className="cost-section page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-              showpath
-              currentPage={"counterparty-volume"}
-            />
-            {this.state.exportModal ? (
-              <ExitOverlay
-                show={this.state.exportModal}
-                onHide={this.handleExportModal}
-                history={this.history}
-                headerTitle={this.state.exportHeaderTitle}
-                headerSubTitle={this.state.exportHeaderSubTitle}
-                modalType={"exportModal"}
-                iconImage={ExportIconWhite}
-                selectExportOption={this.state.exportSelectExportOption}
-              />
-            ) : null}
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
+          <div className="cost-section page-scroll">
+            <div className="page-scroll-child">
+              <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
-                from="cost"
+                handleShare={this.handleShare}
+                showpath
+                currentPage={"counterparty-volume"}
+              />
+              {this.state.exportModal ? (
+                <ExitOverlay
+                  show={this.state.exportModal}
+                  onHide={this.handleExportModal}
+                  history={this.history}
+                  headerTitle={this.state.exportHeaderTitle}
+                  headerSubTitle={this.state.exportHeaderSubTitle}
+                  modalType={"exportModal"}
+                  iconImage={ExportIconWhite}
+                  selectExportOption={this.state.exportSelectExportOption}
+                />
+              ) : null}
+              {this.state.addModal && (
+                <FixAddModal
+                  show={this.state.addModal}
+                  onHide={this.handleAddModal}
+                  modalIcon={AddWalletModalIcon}
+                  title="Add wallet address"
+                  subtitle="Add more wallet address here"
+                  modalType="addwallet"
+                  btnStatus={false}
+                  btnText="Go"
+                  history={this.props.history}
+                  changeWalletList={this.handleChangeList}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  from="cost"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+              <PageHeader
+                title="Counterparty volume over time"
+                subTitle="Understand where this portfolio has exchanged the most value"
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                currentPage={"counterparty-volume"}
+                ShareBtn={true}
+                ExportBtn
+                exportBtnTxt="Click to export counterparty volume"
+                handleExportModal={this.setCounterpartyVolumeExportModal}
+                handleShare={this.handleShare}
                 updateTimer={this.updateTimer}
               />
-            )}
-            <PageHeader
-              title="Counterparty volume over time"
-              subTitle="Understand where this portfolio has exchanged the most value"
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              currentPage={"counterparty-volume"}
-              ShareBtn={true}
-              ExportBtn
-              exportBtnTxt="Click to export counterparty volume"
-              handleExportModal={this.setCounterpartyVolumeExportModal}
-              handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
-            />
 
-            <div
-              style={{
-                position: "relative",
-                // minHeight: "66.5rem",
-                minWidth: "85rem",
-                maxWidth: "120rem",
-                width: "120rem",
-              }}
-              id="counterpartyvolume"
-            >
-              <BarGraphSection
-                data={
-                  this.state.counterPartyValueLocal &&
-                  this.state.counterPartyValueLocal[0]
-                }
-                options={
-                  this.state.counterPartyValueLocal &&
-                  this.state.counterPartyValueLocal[1]
-                }
-                options2={
-                  this.state.counterPartyValueLocal &&
-                  this.state.counterPartyValueLocal[2]
-                }
-                digit={this.state.counterGraphDigit}
-                coinsList={this.props.OnboardingState.coinsList}
-                timeFunction={(e) => this.getCounterPartyFee(e)}
-                showFooter={true}
-                // showBadges={true}
-                isScrollVisible={false}
-                isScroll={true}
-                isLoading={this.state.counterGraphLoading}
-                // isLoading={true}
-                handleBadge={(activeBadgeList) =>
-                  this.handleBadge(activeBadgeList, 2)
-                }
-                // height={"400px"}
-                // width={"824px"}
-                // comingSoon={true}
-                chainSearchIsUsed={this.volumeChainSearchIsUsed}
-                oldBar
-                floatingWatermark
-                isCounterPartyGasFeesPage
-              />
+              <div
+                style={{
+                  position: "relative",
+                  // minHeight: "66.5rem",
+                  minWidth: "85rem",
+                  maxWidth: "120rem",
+                  width: "120rem",
+                }}
+                id="counterpartyvolume"
+              >
+                <BarGraphSection
+                  data={
+                    this.state.counterPartyValueLocal &&
+                    this.state.counterPartyValueLocal[0]
+                  }
+                  options={
+                    this.state.counterPartyValueLocal &&
+                    this.state.counterPartyValueLocal[1]
+                  }
+                  options2={
+                    this.state.counterPartyValueLocal &&
+                    this.state.counterPartyValueLocal[2]
+                  }
+                  digit={this.state.counterGraphDigit}
+                  coinsList={this.props.OnboardingState.coinsList}
+                  timeFunction={(e) => this.getCounterPartyFee(e)}
+                  showFooter={true}
+                  // showBadges={true}
+                  isScrollVisible={false}
+                  isScroll={true}
+                  isLoading={this.state.counterGraphLoading}
+                  // isLoading={true}
+                  handleBadge={(activeBadgeList) =>
+                    this.handleBadge(activeBadgeList, 2)
+                  }
+                  // height={"400px"}
+                  // width={"824px"}
+                  // comingSoon={true}
+                  chainSearchIsUsed={this.volumeChainSearchIsUsed}
+                  oldBar
+                  floatingWatermark
+                  isCounterPartyGasFeesPage
+                />
+              </div>
+              <Footer />
             </div>
-            <Footer />
           </div>
         </div>
       </>

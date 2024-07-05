@@ -1045,7 +1045,7 @@
   }
 
   .graph-table-section {
-    min-width: 85rem;
+    min-width: 93rem;
     // max-width: 120rem;
     width: 100%;
     // display: flex;
@@ -2302,4 +2302,15 @@
 
 .info-icon-home {
   filter: var(--infoBrightnessPortfolio);
+}
+@media screen and (max-width: 900px) {
+  .portfolio-page-section {
+    .portfolio-section {
+      .welcome-card-section-topbar {
+        .welcome-card-topbar {
+          display: none;
+        }
+      }
+    }
+  }
 }

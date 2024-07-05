@@ -42,16 +42,25 @@ function RenderToolTip({
       passedProps.style = {
         ...passedProps.style,
         transform: `translate(calc(${curPos[0]}px - 50%), calc(${curPos[1]}px + 1rem))`,
+        top: 0,
+        left: 0,
+        height: "fit-content",
       };
     } else if (position === "top") {
       passedProps.style = {
         ...passedProps.style,
         transform: `translate(calc(${curPos[0]}px - 50%), calc(${curPos[1]}px - 100% - 0.5rem))`,
+        top: 0,
+        left: 0,
+        height: "fit-content",
       };
     } else if (position === "right") {
       passedProps.style = {
         ...passedProps.style,
         transform: `translate(calc(${curPos[0]}px + 1rem), calc(${curPos[1]}px - 1rem))`,
+        top: 0,
+        left: 0,
+        height: "fit-content",
       };
     }
   }
