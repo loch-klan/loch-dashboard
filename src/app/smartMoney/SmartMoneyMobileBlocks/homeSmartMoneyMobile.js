@@ -193,6 +193,7 @@ class HomeSmartMoneyMobile extends BaseReactComponent {
                   let returns = tempReturns * tempCurrencyRate;
                   return (
                     <SmartMoneyMobileBlock
+                      passedActionFun={this.props.passedActionFun}
                       justShowTable={this.props.justShowTable}
                       hideFollow={this.props.isNoUser}
                       isNoUser={this.props.isNoUser}
