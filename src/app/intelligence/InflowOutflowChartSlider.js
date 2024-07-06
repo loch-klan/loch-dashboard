@@ -577,11 +577,11 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                       receivedVal !== 0 &&
                       sendVal !== 0 &&
                       receivedVal - sendVal >= 0
-                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4 ${
+                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-11 w-100 px-4 ${
                             sendVal > 0 ? "" : ""
                           }">
                             <div style="display:flex; align-items:center; justify-content:center;" >
-                              <img src=${AssetChartInflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
+                              <img src=${AssetChartInflowIcon} style='width:12px; height: 12px; display: inline-block; margin-right: 0.3rem'> </img>
                               <div class="black-191">Net Inflow</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0" >
@@ -602,9 +602,9 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                       receivedVal !== 0 &&
                       sendVal !== 0 &&
                       sendVal - receivedVal > 0
-                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4">
+                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-11 w-100 px-4">
                             <div style="display:flex; align-items:center; justify-content:center;" >
-                              <img src=${AssetChartOutflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
+                              <img src=${AssetChartOutflowIcon} style='width:12px; height: 12px; display: inline-block; margin-right: 0.3rem'> </img>
                               <div class="black-191">Net Outflow</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0">
@@ -633,9 +633,9 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                         receivedVal - sendVal >= 0
                       ) &&
                       sendVal > 0
-                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4">
+                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-11 w-100 px-4">
                             <div style="display:flex; align-items:center; justify-content:center;" >
-                              <img src=${AssetChartOutflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
+                              <img src=${AssetChartOutflowIcon} style='width:12px; height: 12px; display: inline-block; margin-right: 0.3rem'> </img>
                               <div class="black-191">Outflow</div>
                             </div>
                             <div style="width:2rem;height:0.1rem; opacity:0">
@@ -662,9 +662,9 @@ class InflowOutflowChartSlider extends BaseReactComponent {
                         receivedVal - sendVal >= 0
                       ) &&
                       receivedVal > 0
-                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-13 w-100 px-4 ">
+                        ? `<div style="display:flex; align-items:center; justify-content:space-between;" class="inter-display-medium f-s-11 w-100 px-4 ">
                           <div style="display:flex; align-items:center; justify-content:center;" >
-                            <img src=${AssetChartInflowIcon} style='width:15px; height: 15px; display: inline-block; margin-right: 0.3rem'> </img>
+                            <img src=${AssetChartInflowIcon} style='width:12px; height: 12px; display: inline-block; margin-right: 0.3rem'> </img>
                             <div class="black-191">Inflow</div>
                           </div>
                           <div style="width:2rem;height:0.1rem; opacity:0" >
@@ -768,7 +768,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
       },
     };
     const minGraphVersion = {
-      style: { height: this.props.isMobileGraph ? "39rem" : "26rem" },
+      style: { height: this.props.isMobileGraph ? "39rem" : "28rem" },
     };
     return (
       <div

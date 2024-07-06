@@ -26,6 +26,7 @@ import {
   darkModeIcon,
   lightModeIcon,
   CopyTradeSwapSidebarIcon,
+  XFormallyTwitterLogoLightIcon,
 } from "../../assets/images/icons";
 import { default as SignInIcon } from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
@@ -771,14 +772,14 @@ function Sidebar(props) {
     <>
       <div
         style={{
-          zIndex: "999",
+          zIndex: "0",
           // position: "relative",
         }}
         className={`sidebar-section hide-scrollbar ${
           props.isSidebarClosed ? "sidebar-section-closed" : ""
         }`}
       >
-        {isDarkMode ? (
+        {/* {isDarkMode ? (
           <span
             onClick={handleDarkMode}
             style={{
@@ -788,9 +789,7 @@ function Sidebar(props) {
             className="navbar-button-container-mode"
           >
             <Image src={lightModeIcon} />
-            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Light Mode
-            </Button> */}
+           
           </span>
         ) : (
           <span
@@ -803,11 +802,9 @@ function Sidebar(props) {
           >
             <Image src={darkModeIcon} />
             <span />
-            {/* <Button className="interDisplayMediumText f-s-13 lh-19 navbar-button">
-              Dark Mode
-            </Button> */}
+           
           </span>
-        )}
+        )} */}
         {/* {isDarkMode == "dark2" ? (
           <span
             onClick={() => handleDarkMode("light")}
@@ -1759,6 +1756,31 @@ function Sidebar(props) {
                       </ul>
                     )}
                   </div>
+                  <div
+                    style={{
+                      paddingBottom: "1rem",
+                    }}
+                    className="sidebar-footer-content-closed sidebar-footer-content-closed-for-twitter"
+                  >
+                    <CustomOverlay
+                      className="tool-tip-container-right-arrow"
+                      position="right"
+                      isIcon={false}
+                      isInfo={true}
+                      isText={true}
+                      text={isDarkMode ? "Light mode" : "Dark mode"}
+                    >
+                      <div
+                        onClick={handleDarkMode}
+                        className="sideBarFooterSignInIconContainerClosed sideBarFooterSignInIconContainerClosedForTwitter inter-display-medium f-s-13 lh-19 "
+                      >
+                        <Image
+                          className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter"
+                          src={isDarkMode ? lightModeIcon : darkModeIcon}
+                        />
+                      </div>
+                    </CustomOverlay>
+                  </div>
                   <div className="sidebar-footer-content-closed sidebar-footer-content-closed-for-twitter">
                     <CustomOverlay
                       className="tool-tip-container-right-arrow"
@@ -1774,7 +1796,7 @@ function Sidebar(props) {
                       >
                         <Image
                           className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter"
-                          src={XFormallyTwitterLogoIcon}
+                          src={XFormallyTwitterLogoLightIcon}
                         />
                       </div>
                     </CustomOverlay>
@@ -1889,13 +1911,25 @@ function Sidebar(props) {
                       </ul>
                     )}
                     <div
+                      onClick={handleDarkMode}
+                      className="sideBarFooterSignInContainer sideBarFooterSignInContainerForTwitter inter-display-medium f-s-13 lh-19 navbar-button"
+                    >
+                      <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerForTwitter">
+                        <Image
+                          className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter sideBarFooterSignInIconForDarkLightMode"
+                          src={isDarkMode ? lightModeIcon : darkModeIcon}
+                        />
+                      </div>
+                      <div>{isDarkMode ? "Light mode" : "Dark mode"}</div>
+                    </div>
+                    <div
                       onClick={openLochTwitter}
                       className="sideBarFooterSignInContainer sideBarFooterSignInContainerForTwitter inter-display-medium f-s-13 lh-19 navbar-button"
                     >
                       <div className="sideBarFooterSignInIconContainer sideBarFooterSignInIconContainerForTwitter">
                         <Image
                           className="sideBarFooterSignInIcon sideBarFooterSignInIconForTwitter"
-                          src={XFormallyTwitterLogoIcon}
+                          src={XFormallyTwitterLogoLightIcon}
                         />
                       </div>
                       <div>Follow us</div>

@@ -367,7 +367,7 @@
           0px 1px 1px rgba(0, 0, 0, 0.04);
         padding: 2rem 3.2rem;
         margin: 0 0 2rem;
-        z-index: 5;
+        z-index: 99;
         position: relative;
         min-height: 9rem;
         max-height: 9rem;
@@ -1014,6 +1014,9 @@
         box-shadow: none;
         .sideBarFooterSignInIconForTwitter {
           filter: var(--invertColor) !important;
+        }
+        .sideBarFooterSignInIconForDarkLightMode {
+          height: 15px !important;
         }
         &:hover {
           background-color: var(--twitterIconsBgHover);
