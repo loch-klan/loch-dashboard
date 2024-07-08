@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {
   AvailableCopyTradeCheckIcon,
   AvailableCopyTradeCrossIcon,
+  EmptyCopyTradeIllustrationIcon,
   EmultionSidebarIcon,
   FollowingSidebarIcon,
   LeaderboardSidebarIcon,
@@ -531,6 +532,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                             }`}
                           >
                             <TransactionTable
+                              showImageForEmpty={EmptyCopyTradeIllustrationIcon}
                               noSubtitleBottomPadding
                               disableOnLoading
                               isMiniversion

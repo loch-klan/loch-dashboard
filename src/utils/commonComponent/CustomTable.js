@@ -73,19 +73,40 @@ class CustomTable extends BaseReactComponent {
         !isLoading &&
         isMiniversion ? (
           <div className={`not-found-mini-wrapper-floating`}>
-            <p className="inter-display-medium f-s-16 lh-19 ">
-              {" "}
-              {moduleName ? "No " + moduleName + " Found" : message}
-            </p>
-            {isButton && (
-              <Button className="primary-btn" onClick={isButton}>
-                {buttonText}
-              </Button>
-            )}
-            {linkUrl && (
-              <Link className="primary-btn" to={linkUrl}>
-                {linkText}
-              </Link>
+            {this.props.showImageForEmpty ? (
+              <div>
+                <Image
+                  style={{
+                    height: "70px",
+                  }}
+                  src={this.props.showImageForEmpty}
+                />
+                <p
+                  style={{
+                    color: "var(--primarySubTextColor)",
+                  }}
+                  className="inter-display-medium f-s-16 lh-19 mt-4"
+                >
+                  {message}
+                </p>
+              </div>
+            ) : (
+              <>
+                <p className="inter-display-medium f-s-16 lh-19 ">
+                  {" "}
+                  {moduleName ? "No " + moduleName + " Found" : message}
+                </p>
+                {isButton && (
+                  <Button className="primary-btn" onClick={isButton}>
+                    {buttonText}
+                  </Button>
+                )}
+                {linkUrl && (
+                  <Link className="primary-btn" to={linkUrl}>
+                    {linkText}
+                  </Link>
+                )}
+              </>
             )}
           </div>
         ) : null}
