@@ -126,66 +126,63 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         }
         let redirect = JSON.parse(window.localStorage.getItem("ShareRedirect"));
 
-        if (!redirect) {
-          if (redirectPath) {
-            console.log("redirectPath ", redirectPath);
-            console.log("linkAddress ", linkAddress);
-            if (redirectPath === "copy-trade-share") {
-              redirectPath = "copy-trade";
-              window.localStorage.setItem(
-                "openCopyTradeModalFromLink",
-                linkAddress
-              );
-            }
+        // if (!redirect) {
+        if (redirectPath) {
+          console.log("redirectPath ", redirectPath);
+          console.log("linkAddress ", linkAddress);
+          if (redirectPath === "copy-trade-share") {
+            redirectPath = "copy-trade";
             window.localStorage.setItem(
-              "ShareRedirect",
-              JSON.stringify({
-                path: redirectPath,
-                hash: props?.location?.hash,
-              })
-            );
-            const noPopupFlagLastTime =
-              window.localStorage.getItem("noPopupFlag");
-            if (
-              followThisAddressInLink === "true" &&
-              linkAddress &&
-              noPopupFlag !== "true" &&
-              noPopupFlagLastTime !== "true"
-            ) {
-              console.log("Two here");
-              window.localStorage.setItem("followThisAddress", linkAddress);
-            }
-            if (passedRefrenceId) {
-              window.localStorage.setItem("PassedRefrenceId", passedRefrenceId);
-            }
-            if (transHistoryPageNumber) {
-              window.localStorage.setItem(
-                "transHistoryPageNumber",
-                transHistoryPageNumber
-              );
-            }
-            if (transHistoryConditions) {
-              window.localStorage.setItem(
-                "transHistoryConditions",
-                transHistoryConditions
-              );
-            }
-            if (transHistorySorts) {
-              window.localStorage.setItem(
-                "transHistorySorts",
-                transHistorySorts
-              );
-            }
-          } else {
-            window.localStorage.setItem(
-              "ShareRedirect",
-              JSON.stringify({
-                path: "home",
-                hash: props?.location?.hash,
-              })
+              "openCopyTradeModalFromLink",
+              linkAddress
             );
           }
+          window.localStorage.setItem(
+            "ShareRedirect",
+            JSON.stringify({
+              path: redirectPath,
+              hash: props?.location?.hash,
+            })
+          );
+          const noPopupFlagLastTime =
+            window.localStorage.getItem("noPopupFlag");
+          if (
+            followThisAddressInLink === "true" &&
+            linkAddress &&
+            noPopupFlag !== "true" &&
+            noPopupFlagLastTime !== "true"
+          ) {
+            console.log("Two here");
+            window.localStorage.setItem("followThisAddress", linkAddress);
+          }
+          if (passedRefrenceId) {
+            window.localStorage.setItem("PassedRefrenceId", passedRefrenceId);
+          }
+          if (transHistoryPageNumber) {
+            window.localStorage.setItem(
+              "transHistoryPageNumber",
+              transHistoryPageNumber
+            );
+          }
+          if (transHistoryConditions) {
+            window.localStorage.setItem(
+              "transHistoryConditions",
+              transHistoryConditions
+            );
+          }
+          if (transHistorySorts) {
+            window.localStorage.setItem("transHistorySorts", transHistorySorts);
+          }
+        } else {
+          window.localStorage.setItem(
+            "ShareRedirect",
+            JSON.stringify({
+              path: "home",
+              hash: props?.location?.hash,
+            })
+          );
         }
+        // }
         if (
           props.location.pathname &&
           props.location.pathname.includes("/leaderboard")
