@@ -33,6 +33,7 @@ import { BASE_URL_S3 } from "../../utils/Constant";
 import { getCurrentUser, getToken } from "../../utils/ManageToken";
 import {
   dontOpenLoginPopup,
+  hasUserAddedAddressesFun,
   isPremiumUser,
   removeBlurMethods,
   removeOpenModalAfterLogin,
@@ -202,6 +203,75 @@ class MobileLayout extends BaseReactComponent {
           });
         }, 1000);
       }
+    }
+    if (hasUserAddedAddressesFun()) {
+      this.setState({
+        navItems: [
+          {
+            pageIcon: MobileNavWalletViewer,
+            text: "Wallet",
+            path: "/home",
+            loggedOutPath: "/wallet-viewer-add-address",
+          },
+          {
+            pageIcon: MobileNavCopyTraderIcon,
+            text: "Copy",
+            path: "/copy-trade",
+            loggedOutPath: "/copy-trade-welcome",
+          },
+          {
+            pageIcon: MobileNavLeaderboard,
+            text: "Leaderboard",
+            path: "/home-leaderboard",
+          },
+          {
+            pageIcon: MobileNavFollow,
+            text: "Follow",
+            path: "/watchlist",
+            loggedOutPath: "/following-add-address",
+          },
+          {
+            pageIcon: MobileNavProfile,
+            text: "Profile",
+            path: "/profile",
+            loggedOutPath: "/profile-add-address",
+          },
+        ],
+      });
+    } else {
+      this.setState({
+        navItems: [
+          {
+            pageIcon: MobileNavCopyTraderIcon,
+            text: "Copy",
+            path: "/copy-trade",
+            loggedOutPath: "/copy-trade-welcome",
+          },
+          {
+            pageIcon: MobileNavWalletViewer,
+            text: "Wallet",
+            path: "/home",
+            loggedOutPath: "/wallet-viewer-add-address",
+          },
+          {
+            pageIcon: MobileNavLeaderboard,
+            text: "Leaderboard",
+            path: "/home-leaderboard",
+          },
+          {
+            pageIcon: MobileNavFollow,
+            text: "Follow",
+            path: "/watchlist",
+            loggedOutPath: "/following-add-address",
+          },
+          {
+            pageIcon: MobileNavProfile,
+            text: "Profile",
+            path: "/profile",
+            loggedOutPath: "/profile-add-address",
+          },
+        ],
+      });
     }
     // for chain detect
     let activeTab = window.location.pathname;

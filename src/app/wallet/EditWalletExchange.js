@@ -11,6 +11,7 @@ import {
   FormElement,
 } from "../../utils/form";
 import { deleteAccount, updateAccountName } from "./Api.js";
+import { mobileCheck } from "../../utils/ReusableFunctions.js";
 class EditWalletExchange extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -18,6 +19,7 @@ class EditWalletExchange extends BaseReactComponent {
       walletNickname: props.nickname ? props.nickname : "",
       prevNickname: props.nickname ? props.nickname : "",
       walletMetaData: props.walletMetaData ? props.walletMetaData : "",
+      isMobile: mobileCheck(),
     };
   }
 
@@ -102,7 +104,9 @@ class EditWalletExchange extends BaseReactComponent {
       <Modal
         show={show}
         onClick={handleClose}
-        className="edit-wallet-form"
+        className={`edit-wallet-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         onHide={onHide}
         size="lg"
         dialogClassName={"edit-wallet-modal"}

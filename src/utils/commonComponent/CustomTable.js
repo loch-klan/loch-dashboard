@@ -73,19 +73,40 @@ class CustomTable extends BaseReactComponent {
         !isLoading &&
         isMiniversion ? (
           <div className={`not-found-mini-wrapper-floating`}>
-            <p className="inter-display-medium f-s-16 lh-19 ">
-              {" "}
-              {moduleName ? "No " + moduleName + " Found" : message}
-            </p>
-            {isButton && (
-              <Button className="primary-btn" onClick={isButton}>
-                {buttonText}
-              </Button>
-            )}
-            {linkUrl && (
-              <Link className="primary-btn" to={linkUrl}>
-                {linkText}
-              </Link>
+            {this.props.showImageForEmpty ? (
+              <div>
+                <Image
+                  style={{
+                    height: "70px",
+                  }}
+                  src={this.props.showImageForEmpty}
+                />
+                <p
+                  style={{
+                    color: "var(--primarySubTextColor)",
+                  }}
+                  className="inter-display-medium f-s-16 lh-19 mt-4"
+                >
+                  {message}
+                </p>
+              </div>
+            ) : (
+              <>
+                <p className="inter-display-medium f-s-16 lh-19 ">
+                  {" "}
+                  {moduleName ? "No " + moduleName + " Found" : message}
+                </p>
+                {isButton && (
+                  <Button className="primary-btn" onClick={isButton}>
+                    {buttonText}
+                  </Button>
+                )}
+                {linkUrl && (
+                  <Link className="primary-btn" to={linkUrl}>
+                    {linkText}
+                  </Link>
+                )}
+              </>
             )}
           </div>
         ) : null}
@@ -95,8 +116,11 @@ class CustomTable extends BaseReactComponent {
             this.props.xAxisScrollable ? "table-wrapper-mobile-x-scroll" : ""
           } ${
             this.props.yAxisScrollable ? "table-wrapper-mobile-y-scroll" : ""
+          } ${
+            this.props.passedWrapperClass ? this.props.passedWrapperClass : ""
           }`}
           style={wrapperStyle}
+          id={`${this.props.passedWrapperId ? this.props.passedWrapperId : ""}`}
         >
           {isLoading === true ? (
             <div
@@ -359,6 +383,7 @@ class CustomTable extends BaseReactComponent {
                       )}
                     </AutoSizer>
                   ) : null}
+
                   <div
                     className={`not-found-wrapper ${
                       isMiniversion ? "not-found-mini-wrapper" : ""
@@ -368,20 +393,41 @@ class CustomTable extends BaseReactComponent {
                         this.props.showHeaderOnEmpty && isMiniversion ? 0 : 1,
                     }}
                   >
-                    {/* <Image src={notFoundImage} /> */}
-                    <p className="inter-display-medium f-s-16 lh-19 ">
-                      {" "}
-                      {moduleName ? "No " + moduleName + " Found" : message}
-                    </p>
-                    {isButton && (
-                      <Button className="primary-btn" onClick={isButton}>
-                        {buttonText}
-                      </Button>
-                    )}
-                    {linkUrl && (
-                      <Link className="primary-btn" to={linkUrl}>
-                        {linkText}
-                      </Link>
+                    {this.props.showImageForEmpty ? (
+                      <div>
+                        <Image
+                          style={{
+                            height: "80px",
+                          }}
+                          src={this.props.showImageForEmpty}
+                        />
+                        <p
+                          style={{
+                            color: "var(--primarySubTextColor)",
+                          }}
+                          className="inter-display-medium f-s-16 lh-19 mt-4"
+                        >
+                          {message}
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        {/* <Image src={notFoundImage} /> */}
+                        <p className="inter-display-medium f-s-16 lh-19 ">
+                          {" "}
+                          {moduleName ? "No " + moduleName + " Found" : message}
+                        </p>
+                        {isButton && (
+                          <Button className="primary-btn" onClick={isButton}>
+                            {buttonText}
+                          </Button>
+                        )}
+                        {linkUrl && (
+                          <Link className="primary-btn" to={linkUrl}>
+                            {linkText}
+                          </Link>
+                        )}
+                      </>
                     )}
                   </div>
                 </>

@@ -7,6 +7,7 @@ import { GetDefaultPlan, loginApi } from "./Api";
 import { getDetailsByLinkApi } from "../Portfolio/Api";
 import { createAnonymousUserApi, getAllCoins } from "../onboarding/Api";
 import Loading from "./Loading";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class Login extends BaseReactComponent {
   constructor(props) {
@@ -28,6 +29,7 @@ class Login extends BaseReactComponent {
       password: "",
       podName: props.location?.state?.params?.podName,
       forgotPassword: false,
+      isMobile: mobileCheck(),
     };
   }
 
@@ -166,6 +168,7 @@ class Login extends BaseReactComponent {
           justifyContent: "center",
           height: "100vh",
           width: "100vw",
+          zoom: this.state.isMobile ? "" : "1.176",
         }}
       >
         <Loading />

@@ -123,6 +123,8 @@
   align-items: center;
   justify-content: space-between;
   min-width: 85rem;
+  max-width: 120rem;
+  width: 120rem;
   margin-bottom: 1.5rem;
   //Left
   .topWalletAddressListDropdownContainer {
@@ -408,6 +410,10 @@
       width: 12rem;
     }
   }
+}
+.topWalletAddressListWide {
+  max-width: unset;
+  width: 100%;
 }
 .topWalletAddressListMobile {
   width: 100%;

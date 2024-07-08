@@ -98,7 +98,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
       exportHeaderTitle: "Download all unrealized profit and loss",
-      exportHeaderSubTitle: "Export your unrealized profit and loss from Loch",
+      exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -163,8 +163,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download unrealized profit and loss",
-        exportHeaderSubTitle:
-          "Export your unrealized profit and loss from Loch",
+        exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
         exportSelectExportOption: 4,
       },
       () => {
@@ -1387,108 +1386,112 @@ class AssetsUnrealizedProfitAndLoss extends Component {
           ) : (
             ""
           )}
-          <div className="cost-section page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-              currentPage={"assets"}
-              showpath
-            />
-            {this.state.isLochPaymentModal ? (
-              <PaywallModal
-                show={this.state.isLochPaymentModal}
-                onHide={this.hidePaymentModal}
-                redirectLink={BASE_URL_S3 + "/assets"}
-                title="Profit and Loss with Loch"
-                description="Unlimited wallets PnL"
-                hideBackBtn
-              />
-            ) : null}
-            {this.state.exportModal ? (
-              <ExitOverlay
-                show={this.state.exportModal}
-                onHide={this.handleExportModal}
-                history={this.history}
-                headerTitle={this.state.exportHeaderTitle}
-                headerSubTitle={this.state.exportHeaderSubTitle}
-                modalType={"exportModal"}
-                iconImage={ExportIconWhite}
-                selectExportOption={this.state.exportSelectExportOption}
-              />
-            ) : null}
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
+          <div className="cost-section page-scroll">
+            <div className="page-scroll-child">
+              <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
-                from="cost"
-                updateTimer={this.updateTimer}
+                handleShare={this.handleShare}
+                currentPage={"assets"}
+                showpath
               />
-            )}
-            <PageHeader
-              title="Tokens"
-              subTitle="Understand your unrealized profit and loss per token"
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              currentPage={"assets"}
-              ShareBtn={true}
-              ExportBtn
-              exportBtnTxt="Click to export costs"
-              handleExportModal={this.setAverageCostExportModal}
-              handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
-              // DUST
-              showHideDust
-              showHideDustVal={this.state.showDust}
-              showHideDustFun={this.handleDust}
-            />
-            <div
-              style={{ marginBottom: "2.8rem" }}
-              className="cost-table-section"
-            >
-              <div style={{ position: "relative" }}>
-                <TransactionTable
-                  isPremiumUser={this.state.isPremiumUser}
-                  shouldBlurElements={!this.state.isPremiumUser}
-                  showBlurredItem={this.showBlurredItem}
-                  message="No tokens found"
-                  bottomCombiedValues={
-                    this.state.Average_cost_basis_local.length > 0
-                      ? true
-                      : false
-                  }
-                  combinedCostBasis={this.state.combinedCostBasis}
-                  combinedCurrentValue={this.state.combinedCurrentValue}
-                  combinedUnrealizedGains={this.state.combinedUnrealizedGains}
-                  combinedReturn={this.state.combinedReturn}
-                  noSubtitleBottomPadding
-                  tableData={this.state.Average_cost_basis_local}
-                  columnList={columnData}
-                  headerHeight={64}
-                  comingSoon={false}
-                  isArrow={false}
-                  isLoading={this.state.AvgCostLoading}
-                  isGainLoss={true}
-                  ishideDust={true}
-                  totalPercentage={this.props.intelligenceState.totalPercentage}
-                  handleDust={this.handleDust}
-                  showDust={this.state.showDust}
-                  // handleExchange={this.handleConnectModal}
-                  isStickyHead={true}
-                  addWatermark
+              {this.state.isLochPaymentModal ? (
+                <PaywallModal
+                  show={this.state.isLochPaymentModal}
+                  onHide={this.hidePaymentModal}
+                  redirectLink={BASE_URL_S3 + "/assets"}
+                  title="Profit and Loss with Loch"
+                  description="Unlimited wallets PnL"
+                  hideBackBtn
                 />
+              ) : null}
+              {this.state.exportModal ? (
+                <ExitOverlay
+                  show={this.state.exportModal}
+                  onHide={this.handleExportModal}
+                  history={this.history}
+                  headerTitle={this.state.exportHeaderTitle}
+                  headerSubTitle={this.state.exportHeaderSubTitle}
+                  modalType={"exportModal"}
+                  iconImage={ExportIconWhite}
+                  selectExportOption={this.state.exportSelectExportOption}
+                />
+              ) : null}
+              {this.state.addModal && (
+                <FixAddModal
+                  show={this.state.addModal}
+                  onHide={this.handleAddModal}
+                  modalIcon={AddWalletModalIcon}
+                  title="Add wallet address"
+                  subtitle="Add more wallet address here"
+                  modalType="addwallet"
+                  btnStatus={false}
+                  btnText="Go"
+                  history={this.props.history}
+                  changeWalletList={this.handleChangeList}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  from="cost"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+              <PageHeader
+                title="Tokens"
+                subTitle="Understand the unrealized profit and loss per token"
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                currentPage={"assets"}
+                ShareBtn={true}
+                ExportBtn
+                exportBtnTxt="Click to export costs"
+                handleExportModal={this.setAverageCostExportModal}
+                handleShare={this.handleShare}
+                updateTimer={this.updateTimer}
+                // DUST
+                showHideDust
+                showHideDustVal={this.state.showDust}
+                showHideDustFun={this.handleDust}
+              />
+              <div
+                style={{ marginBottom: "2.8rem" }}
+                className="cost-table-section"
+              >
+                <div style={{ position: "relative" }}>
+                  <TransactionTable
+                    isPremiumUser={this.state.isPremiumUser}
+                    shouldBlurElements={!this.state.isPremiumUser}
+                    showBlurredItem={this.showBlurredItem}
+                    message="No tokens found"
+                    bottomCombiedValues={
+                      this.state.Average_cost_basis_local.length > 0
+                        ? true
+                        : false
+                    }
+                    combinedCostBasis={this.state.combinedCostBasis}
+                    combinedCurrentValue={this.state.combinedCurrentValue}
+                    combinedUnrealizedGains={this.state.combinedUnrealizedGains}
+                    combinedReturn={this.state.combinedReturn}
+                    noSubtitleBottomPadding
+                    tableData={this.state.Average_cost_basis_local}
+                    columnList={columnData}
+                    headerHeight={64}
+                    comingSoon={false}
+                    isArrow={false}
+                    isLoading={this.state.AvgCostLoading}
+                    isGainLoss={true}
+                    ishideDust={true}
+                    totalPercentage={
+                      this.props.intelligenceState.totalPercentage
+                    }
+                    handleDust={this.handleDust}
+                    showDust={this.state.showDust}
+                    // handleExchange={this.handleConnectModal}
+                    isStickyHead={true}
+                    addWatermark
+                  />
+                </div>
               </div>
-            </div>
 
-            <Footer />
+              <Footer />
+            </div>
           </div>
         </div>
       </>

@@ -33,7 +33,7 @@ class GasFeesMobile extends Component {
       <>
         <div className="mobile-header-container">
           <h4>Gas fees over time</h4>
-          <p>Understand your gas costs</p>
+          <p>Understand the gas costs</p>
         </div>
         {this.props.netFlowLoading ? (
           <div

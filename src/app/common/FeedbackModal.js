@@ -12,11 +12,13 @@ import {
 } from "./../../utils/form";
 import { sendFeedbackApi } from "./Api";
 import DropDown from "./DropDown";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class FeedbackModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       feedback: "",
       page: "Select Section",
       hoverStar: 0,
@@ -68,7 +70,9 @@ class FeedbackModal extends BaseReactComponent {
     return (
       <Modal
         show={show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         onHide={onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal feedback-modal"}

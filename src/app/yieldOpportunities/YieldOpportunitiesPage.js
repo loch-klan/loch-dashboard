@@ -1230,154 +1230,161 @@ class YieldOpportunitiesPage extends BaseReactComponent {
           </div>
         </div>
         <div className="history-table-section m-t-80">
-          <div className="history-table page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-              showpath
-              currentPage={"yield-opportunities"}
-            />
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
+          <div className="history-table page-scroll">
+            <div className="page-scroll-child">
+              <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
-                updateTimer={this.updateTimer}
-                from="transaction history"
+                handleShare={this.handleShare}
+                showpath
+                currentPage={"yield-opportunities"}
               />
-            )}
-            {this.state.upgradeModal && (
-              <UpgradeModal
-                show={this.state.upgradeModal}
-                onHide={this.upgradeModal}
-                history={this.props.history}
-                isShare={window.localStorage.getItem("share_id")}
-                isStatic={this.state.isStatic}
-                triggerId={this.state.triggerId}
-                pname="treansaction history"
-                updateTimer={this.updateTimer}
-              />
-            )}
-            {this.state.isLochPaymentModal ? (
-              <PaywallModal
-                show={this.state.isLochPaymentModal}
-                onHide={this.hidePaymentModal}
-                redirectLink={BASE_URL_S3 + "/yield-opportunities"}
-                title="Access Loch's Yield Opportunities"
-                description="Unlimited yield opportunities"
-                hideBackBtn
-              />
-            ) : null}
-            <PageHeader
-              title={"Yield opportunities"}
-              subTitle={
-                "Yield bearing opportunties personalized for your portfolio"
-              }
-              currentPage={"yield-opportunities"}
-              history={this.props.history}
-              ShareBtn={true}
-              handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
-            />
-
-            <div className="fillter_tabs_section">
-              <Form onValidSubmit={this.onValidSubmit}>
-                <Row>
-                  <Col md={4}>
-                    <CustomDropdown
-                      filtername="All networks"
-                      options={this.props.OnboardingState.coinsList}
-                      action={SEARCH_BY_CHAIN_IN}
-                      handleClick={this.handleFunction}
-                      searchIsUsed={this.networkSearchIsUsed}
-                      isCaptialised
-                      isGreyChain
-                    />
-                  </Col>
-
-                  <Col md={4}>
-                    <CustomDropdown
-                      filtername="All tokens"
-                      options={this.props.intelligenceState.assetFilter}
-                      action={SEARCH_BY_ASSETS_IN}
-                      handleClick={(key, value) =>
-                        this.addCondition(key, value)
-                      }
-                      searchIsUsed={this.assetSearchIsUsed}
-                    />
-                  </Col>
-
-                  {/* {fillter_tabs} */}
-                  <Col md={4}>
-                    <div className="searchBar input-noshadow-dark">
-                      <Image src={searchIcon} className="search-icon" />
-                      <FormElement
-                        valueLink={this.linkState(
-                          this,
-                          "search",
-                          this.onChangeMethod
-                        )}
-                        control={{
-                          type: CustomTextControl,
-                          settings: {
-                            placeholder: "Search",
-                          },
-                        }}
-                        classes={{
-                          inputField: "search-input",
-                          prefix: "search-prefix",
-                          suffix: "search-suffix",
-                        }}
-                      />
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            </div>
-            <div className="yeildOppTitleContainer inter-display-medium f-s-13 lh-16 secondaryDarkTextColor">
-              <div className="yeildOppTitleItems yeildOppTitleLeft">
-                Your portfolio
-              </div>
-              <div className="yeildOppTitleItems yeildOppTitleRight">
-                Yield opportunities
-              </div>
-            </div>
-            <div className="transaction-history-table transaction-history-table-yield-opportunity">
-              {this.state.tableLoading ? (
-                <div className="loadingSizeContainer">
-                  <Loading />
-                </div>
-              ) : (
-                <>
-                  <TransactionTable
-                    noSubtitleBottomPadding
-                    tableData={tableData}
-                    columnList={columnList}
-                    message={"No yield opportunities found"}
-                    totalPage={this.state.totalPage}
-                    history={this.props.history}
-                    location={this.props.location}
-                    page={this.state.currentPage ? this.state.currentPage : 0}
-                    tableLoading={this.state.tableLoading}
-                    onPageChange={this.onPageChange}
-                    addWatermark
-                    minimalPagination
-                    hidePaginationRecords
-                  />
-                  <Footer />
-                </>
+              {this.state.addModal && (
+                <FixAddModal
+                  show={this.state.addModal}
+                  onHide={this.handleAddModal}
+                  modalIcon={AddWalletModalIcon}
+                  title="Add wallet address"
+                  subtitle="Add more wallet address here"
+                  modalType="addwallet"
+                  btnStatus={false}
+                  btnText="Go"
+                  history={this.props.history}
+                  changeWalletList={this.handleChangeList}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  updateTimer={this.updateTimer}
+                  from="transaction history"
+                />
               )}
-            </div>
+              {this.state.upgradeModal && (
+                <UpgradeModal
+                  show={this.state.upgradeModal}
+                  onHide={this.upgradeModal}
+                  history={this.props.history}
+                  isShare={window.localStorage.getItem("share_id")}
+                  isStatic={this.state.isStatic}
+                  triggerId={this.state.triggerId}
+                  pname="treansaction history"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+              {this.state.isLochPaymentModal ? (
+                <PaywallModal
+                  show={this.state.isLochPaymentModal}
+                  onHide={this.hidePaymentModal}
+                  redirectLink={BASE_URL_S3 + "/yield-opportunities"}
+                  title="Access Loch's Yield Opportunities"
+                  description="Unlimited yield opportunities"
+                  hideBackBtn
+                />
+              ) : null}
+              <PageHeader
+                title={"Yield opportunities"}
+                subTitle={
+                  "Yield bearing opportunities personalized for this portfolio"
+                }
+                currentPage={"yield-opportunities"}
+                history={this.props.history}
+                ShareBtn={true}
+                handleShare={this.handleShare}
+                updateTimer={this.updateTimer}
+              />
 
-            {/* <FeedbackForm page={"Transaction History Page"} /> */}
+              <div className="fillter_tabs_section">
+                <Form onValidSubmit={this.onValidSubmit}>
+                  <Row>
+                    <Col style={{ width: "33.3%" }} md={4}>
+                      <CustomDropdown
+                        filtername="All networks"
+                        options={this.props.OnboardingState.coinsList}
+                        action={SEARCH_BY_CHAIN_IN}
+                        handleClick={this.handleFunction}
+                        searchIsUsed={this.networkSearchIsUsed}
+                        isCaptialised
+                        isGreyChain
+                      />
+                    </Col>
+
+                    <Col style={{ width: "33.3%" }} md={4}>
+                      <CustomDropdown
+                        filtername="All tokens"
+                        options={this.props.intelligenceState.assetFilter}
+                        action={SEARCH_BY_ASSETS_IN}
+                        handleClick={(key, value) =>
+                          this.addCondition(key, value)
+                        }
+                        searchIsUsed={this.assetSearchIsUsed}
+                      />
+                    </Col>
+
+                    {/* {fillter_tabs} */}
+                    <Col style={{ width: "33.3%" }} md={4}>
+                      <div className="searchBar input-noshadow-dark">
+                        <Image src={searchIcon} className="search-icon" />
+                        <FormElement
+                          valueLink={this.linkState(
+                            this,
+                            "search",
+                            this.onChangeMethod
+                          )}
+                          control={{
+                            type: CustomTextControl,
+                            settings: {
+                              placeholder: "Search",
+                            },
+                          }}
+                          classes={{
+                            inputField: "search-input",
+                            prefix: "search-prefix",
+                            suffix: "search-suffix",
+                          }}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </Form>
+              </div>
+              <div className="yeildOppTitleContainer inter-display-medium f-s-13 lh-16 secondaryDarkTextColor">
+                <div className="yeildOppTitleItems yeildOppTitleLeft">
+                  Current portfolio
+                </div>
+                <div className="yeildOppTitleItems yeildOppTitleRight">
+                  Yield opportunities
+                </div>
+              </div>
+              <div
+                style={{
+                  height: "unset",
+                }}
+                className="transaction-history-table transaction-history-table-yield-opportunity"
+              >
+                {this.state.tableLoading ? (
+                  <div className="loadingSizeContainer">
+                    <Loading />
+                  </div>
+                ) : (
+                  <>
+                    <TransactionTable
+                      noSubtitleBottomPadding
+                      tableData={tableData}
+                      columnList={columnList}
+                      message={"No yield opportunities found"}
+                      totalPage={this.state.totalPage}
+                      history={this.props.history}
+                      location={this.props.location}
+                      page={this.state.currentPage ? this.state.currentPage : 0}
+                      tableLoading={this.state.tableLoading}
+                      onPageChange={this.onPageChange}
+                      addWatermark
+                      minimalPagination
+                      hidePaginationRecords
+                    />
+                    <Footer />
+                  </>
+                )}
+              </div>
+
+              {/* <FeedbackForm page={"Transaction History Page"} /> */}
+            </div>
           </div>
         </div>
       </>

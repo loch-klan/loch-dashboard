@@ -656,6 +656,18 @@ class TopWalletExchangeBar extends Component {
         const passDataHeader = [...tempWalletListToPush];
         this.props.setHeaderReducer(passDataHeader);
       }
+    } else {
+      this.setState({
+        firstWallet: "",
+        firstFullWallet: "",
+        fullWalletList: "",
+        walletList: [],
+        exchangeList: [],
+        exchangeListImages: [],
+        firstExchange: "",
+        metamaskWalletConnected: "",
+        currentMetamaskWallet: {},
+      });
     }
   };
   applyTempWalletList = () => {

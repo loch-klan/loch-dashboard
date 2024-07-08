@@ -1014,21 +1014,21 @@ export const createAnonymousUserApi = (
 
     window.localStorage.setItem("lochToken", "jsk");
 
-    if (!ctx.props.ishome) {
-      if (!ctx.state?.podName) {
-        !ctx.state?.id &&
-          !goToPage &&
-          ctx.props?.history.push({
-            pathname: ctx.state?.id ? ctx.state?.link : "/home",
-            // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
-            state: {
-              noLoad: true,
-              redirectPath: ctx.state?.redirectPath,
-              hash: ctx?.state?.hash,
-            },
-          });
-      }
-    }
+    // if (!ctx.props.ishome) {
+    //   if (!ctx.state?.podName) {
+    //     !ctx.state?.id &&
+    //       !goToPage &&
+    //       ctx.props?.history.push({
+    //         pathname: ctx.state?.id ? ctx.state?.link : "/home",
+    //         // state: {addWallet: ctx.state.id ? addWallet : newAddWallet}
+    //         state: {
+    //           noLoad: true,
+    //           redirectPath: ctx.state?.redirectPath,
+    //           hash: ctx?.state?.hash,
+    //         },
+    //       });
+    //   }
+    // }
 
     postLoginInstance
       .post("organisation/user/create-user", data)

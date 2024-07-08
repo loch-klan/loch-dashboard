@@ -48,7 +48,7 @@ import UploadIcon from "../../assets/images/icons/upgrade-upload.svg";
 import WalletIcon from "../../assets/images/icons/upgrade-wallet.svg";
 import WhalePodAddressIcon from "../../assets/images/icons/upgrade-whale-pod-add.svg";
 import WhalePodIcon from "../../assets/images/icons/upgrade-whale-pod.svg";
-import { loadingAnimation } from "../../utils/ReusableFunctions";
+import { loadingAnimation, mobileCheck } from "../../utils/ReusableFunctions";
 import AskEmailModal from "./AskEmailModal";
 import USDT_ABI from "./USDT_ABI.json";
 
@@ -209,6 +209,7 @@ class UpgradeModal extends BaseReactComponent {
     });
 
     this.state = {
+      isMobile: mobileCheck(),
       // checkout
       payment_link: "",
 
@@ -856,7 +857,9 @@ class UpgradeModal extends BaseReactComponent {
         {!this.state.signinModal && !this.state.hideModal && (
           <Modal
             show={this.state.show}
-            className="exit-overlay-form"
+            className={`exit-overlay-form ${
+              this.state.isMobile ? "" : "zoomedElements"
+            }`}
             onHide={this.state.onHide}
             size="xl"
             dialogClassName={"upgrade"}

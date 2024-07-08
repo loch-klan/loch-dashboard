@@ -162,3 +162,12 @@
     }
   }
 }
+.tool-tip-container-copy-trade-modal {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100vw !important;
+  .tooltip-inner {
+    transform: translateX(-1rem) !important;
+  }
+}

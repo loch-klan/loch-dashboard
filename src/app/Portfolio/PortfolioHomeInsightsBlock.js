@@ -21,6 +21,8 @@ class PortfolioHomeInsightsBlock extends Component {
     });
   };
   render() {
+    console.log("isPremiumUser ", this.props.isPremiumUser);
+
     if (this.props.insightsBlockLoading) {
       return (
         <div
@@ -58,7 +60,7 @@ class PortfolioHomeInsightsBlock extends Component {
                 whiteSpace: "nowrap",
                 textOverflow: "ellipsis",
                 position: "relative",
-                height: this.props?.isMobile ? "40.5rem" : "33rem",
+                height: this.props?.isMobile ? "40.5rem" : "35rem",
                 padding: this.props?.isMobile
                   ? "0rem 0.5rem 0rem 0rem"
                   : "0rem 0.5rem",
@@ -198,7 +200,11 @@ class PortfolioHomeInsightsBlock extends Component {
                           background: "var(--cardBackgroud)",
                         }}
                         className={`insights-card ${
-                          key > 0 ? "blurred-elements" : ""
+                          key > 0
+                            ? this.props.isPremiumUser
+                              ? ""
+                              : "blurred-elements"
+                            : ""
                         }`}
                         key={key}
                         onClick={() => {
@@ -347,7 +353,7 @@ class PortfolioHomeInsightsBlock extends Component {
                 position: "relative",
               }}
             >
-              Add all your wallets and exchanges to gain more insights
+              Add all of the wallets and exchanges to gain more insights
             </h5>
             <p
               className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"

@@ -836,12 +836,79 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+  setScrollBarSize = () => {
+    //TOKENS TAB
+    if (document.getElementById("homeTokenTableWrapper")) {
+      let clientWidth = document.getElementById(
+        "homeTokenTableWrapper"
+      ).clientWidth;
+      console.log("clientWidth is ", clientWidth);
+      const css =
+        "#homeTokenTableWrapper::-webkit-scrollbar-track{ margin-left: " +
+        clientWidth * (22.5 / 100) +
+        "px }";
+      const style = document.createElement("style");
+
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      document.getElementById("homeTokenTableWrapper").appendChild(style);
+    }
+    //TOKENS TAB
+    //TRANSACTION TAB
+    if (document.getElementById("homeTransactionTableWrapper")) {
+      const marginSize = this.state.isShowingAge ? 20.7 : 28.5;
+      let clientWidth = document.getElementById(
+        "homeTransactionTableWrapper"
+      ).clientWidth;
+      console.log("clientWidth is ", clientWidth);
+      const css =
+        "#homeTransactionTableWrapper::-webkit-scrollbar-track{ margin-left: " +
+        clientWidth * (marginSize / 100) +
+        "px }";
+      const style = document.createElement("style");
+
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      document.getElementById("homeTransactionTableWrapper").appendChild(style);
+    }
+    //TRANSACTION TAB
+    //YIELDOPP TAB
+    if (document.getElementById("homeYieldOppTableWrapper")) {
+      let clientWidth = document.getElementById(
+        "homeYieldOppTableWrapper"
+      ).clientWidth;
+      console.log("clientWidth is ", clientWidth);
+      const css =
+        "#homeYieldOppTableWrapper::-webkit-scrollbar-track{ margin-left: " +
+        clientWidth * (22.5 / 100) +
+        "px }";
+      const style = document.createElement("style");
+
+      if (style.styleSheet) {
+        style.styleSheet.cssText = css;
+      } else {
+        style.appendChild(document.createTextNode(css));
+      }
+
+      document.getElementById("homeYieldOppTableWrapper").appendChild(style);
+    }
+    //YIELDOPP TAB
+  };
   componentDidMount() {
     setTimeout(() => {
       this.setState({
         isPremiumUser: isPremiumUser(),
       });
     }, 1000);
+    this.setScrollBarSize();
     const isBackFromPayment = window.localStorage.getItem(
       "openPaymentOptionsAgain"
     );
@@ -1155,6 +1222,16 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.isShowingAge !== this.state.isShowingAge) {
+      const tempElement = document.getElementById(
+        "homeTransactionTableWrapper"
+      );
+      tempElement.style.pointerEvents = "none";
+      setTimeout(() => {
+        tempElement.style.pointerEvents = "auto";
+      }, 100);
+      this.setScrollBarSize();
+    }
     if (
       prevProps.intelligenceState?.ProfitLossAsset !==
       this.props.intelligenceState?.ProfitLossAsset
@@ -1245,6 +1322,7 @@ class Portfolio extends BaseReactComponent {
       }
     }
     if (prevState.blockOneSelectedItem !== this.state.blockOneSelectedItem) {
+      this.setScrollBarSize();
       // Asssets avg cost basis
 
       if (
@@ -1351,6 +1429,7 @@ class Portfolio extends BaseReactComponent {
     if (
       prevState.blockThreeSelectedItem !== this.state.blockThreeSelectedItem
     ) {
+      this.setScrollBarSize();
       if (this.state.blockThreeSelectedItem === 1) {
         if (
           !(
@@ -5027,140 +5106,142 @@ class Portfolio extends BaseReactComponent {
           <Loading />
         ) : (
           <div className="portfolio-page-section">
-            <div
-              className="portfolio-container page"
-              style={{ overflow: "visible" }}
-            >
-              <div className="portfolio-section">
-                {/* welcome card */}
-                <WelcomeCard
-                  history={this.props.history}
-                  showTopSearchBar
-                  openConnectWallet={this.props.openConnectWallet}
-                  connectedWalletAddress={this.props.connectedWalletAddress}
-                  connectedWalletevents={this.props.connectedWalletevents}
-                  disconnectWallet={this.props.disconnectWallet}
-                  afterAddressFollowed={this.afterAddressFollowed}
-                  isAddressFollowedCount={this.state.isAddressFollowedCount}
-                  handleShare={this.handleShare}
-                  isSidebarClosed={this.props.isSidebarClosed}
-                  changeWalletList={this.handleChangeList}
-                  apiResponse={(e) => this.CheckApiResponse(e)}
-                  // showNetworth={true}
-                  // yesterday balance
-                  yesterdayBalance={this.props.portfolioState.yesterdayBalance}
-                  // toggleAddWallet={this.state.toggleAddWallet}
-                  // handleToggleAddWallet={this.handleToggleAddWallet}
+            <div className="portfolio-container page-scroll">
+              <div className="page-scroll-child page-scroll-child-full-width">
+                <div className="portfolio-section">
+                  {/* welcome card */}
+                  <WelcomeCard
+                    isWideScreen
+                    history={this.props.history}
+                    showTopSearchBar
+                    openConnectWallet={this.props.openConnectWallet}
+                    connectedWalletAddress={this.props.connectedWalletAddress}
+                    connectedWalletevents={this.props.connectedWalletevents}
+                    disconnectWallet={this.props.disconnectWallet}
+                    afterAddressFollowed={this.afterAddressFollowed}
+                    isAddressFollowedCount={this.state.isAddressFollowedCount}
+                    handleShare={this.handleShare}
+                    isSidebarClosed={this.props.isSidebarClosed}
+                    changeWalletList={this.handleChangeList}
+                    apiResponse={(e) => this.CheckApiResponse(e)}
+                    // showNetworth={true}
+                    // yesterday balance
+                    yesterdayBalance={
+                      this.props.portfolioState.yesterdayBalance
+                    }
+                    // toggleAddWallet={this.state.toggleAddWallet}
+                    // handleToggleAddWallet={this.handleToggleAddWallet}
 
-                  // decrement={true}
+                    // decrement={true}
 
-                  // total network and percentage calculate
-                  assetTotal={getTotalAssetValue()}
-                  // assetTotal={
-                  //   this.props.portfolioState &&
-                  //   this.props.portfolioState.walletTotal
-                  //     ? this.props.portfolioState.walletTotal +
-                  //       this.props.defiState.totalYield -
-                  //       this.props.defiState.totalDebt
-                  //     : 0 +
-                  //       this.props.defiState.totalYield -
-                  //       this.props.defiState.totalDebt
-                  // }
-                  // history
-                  history={this.props.history}
-                  // add wallet address modal
-                  handleAddModal={this.handleAddModal}
-                  // net worth total
-                  isLoading={this.state.isLoadingNet}
-                  // walletTotal={
-                  //   this.props.portfolioState.walletTotal +
-                  //   this.state.totalYield -
-                  //   this.state.totalDebt
-                  // }
+                    // total network and percentage calculate
+                    assetTotal={getTotalAssetValue()}
+                    // assetTotal={
+                    //   this.props.portfolioState &&
+                    //   this.props.portfolioState.walletTotal
+                    //     ? this.props.portfolioState.walletTotal +
+                    //       this.props.defiState.totalYield -
+                    //       this.props.defiState.totalDebt
+                    //     : 0 +
+                    //       this.props.defiState.totalYield -
+                    //       this.props.defiState.totalDebt
+                    // }
+                    // history
+                    // add wallet address modal
+                    handleAddModal={this.handleAddModal}
+                    // net worth total
+                    isLoading={this.state.isLoadingNet}
+                    // walletTotal={
+                    //   this.props.portfolioState.walletTotal +
+                    //   this.state.totalYield -
+                    //   this.state.totalDebt
+                    // }
 
-                  // manage wallet
-                  handleManage={() => {
-                    this.props.history.push("/wallets");
-                    ManageWallets({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                    });
+                    // manage wallet
+                    handleManage={() => {
+                      this.props.history.push("/wallets");
+                      ManageWallets({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                      });
+                    }}
+                  />
+                </div>
+
+                <div
+                  className="portfolio-section"
+                  style={{
+                    minWidth: "100rem",
+                    maxWidth: "120rem",
+                    width: "120rem",
                   }}
+                ></div>
+
+                <TopWalletAddressList
+                  isWideScreen
+                  history={this.props.history}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  handleShare={this.handleShare}
+                  passedFollowSigninModal={this.state.followSigninModal}
+                  showUpdatesJustNowBtn
+                  getCurrentTimeUpdater={this.state.getCurrentTimeUpdater}
                 />
-              </div>
-
-              <div
-                className="portfolio-section"
-                style={{
-                  minWidth: "85rem",
-                  marginTop: "11rem",
-                }}
-              ></div>
-
-              <TopWalletAddressList
-                history={this.props.history}
-                apiResponse={(e) => this.CheckApiResponse(e)}
-                handleShare={this.handleShare}
-                passedFollowSigninModal={this.state.followSigninModal}
-                showUpdatesJustNowBtn
-                getCurrentTimeUpdater={this.state.getCurrentTimeUpdater}
-              />
-              <div className="m-b-22 graph-table-section">
-                <Row>
-                  <Col md={6}>
-                    <div
-                      className="m-r-16 section-table"
-                      style={{
-                        height: "41rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        minHeight: "41rem",
-                        marginBottom: 0,
-                      }}
-                    >
-                      <div className="section-table-toggle-container">
-                        <div className="section-table-toggle">
-                          <div
-                            className={`inter-display-medium section-table-toggle-element mr-1 ${
-                              this.state.blockOneSelectedItem === 1
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              if (this.state.blockOneSelectedItem === 1)
-                                this.goToAssetsPage();
-                              else this.changeBlockOneItem(1);
-                            }}
-                          >
-                            Tokens
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Understand your unrealized profit and loss per token"
-                              }
+                <div className="m-b-22 graph-table-section">
+                  <Row>
+                    <Col style={{ width: "calc( 50% - 0rem )" }} md={6}>
+                      <div
+                        className="m-r-16 section-table"
+                        style={{
+                          height: "43rem",
+                          display: "flex",
+                          flexDirection: "column",
+                          minHeight: "43rem",
+                          marginBottom: 0,
+                        }}
+                      >
+                        <div className="section-table-toggle-container">
+                          <div className="section-table-toggle">
+                            <div
+                              className={`inter-display-medium section-table-toggle-element mr-1 ${
+                                this.state.blockOneSelectedItem === 1
+                                  ? "section-table-toggle-element-selected"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (this.state.blockOneSelectedItem === 1)
+                                  this.goToAssetsPage();
+                                else this.changeBlockOneItem(1);
+                              }}
                             >
-                              {/* <div className="info-icon-i">
+                              Tokens
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand the unrealized profit and loss per token"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
                                   i
                                 </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
                               <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
+                                className="homeTabArrowIcon"
+                                src={HomeTabArrowIcon}
                               />
-                            </CustomOverlay>
-                            <Image
-                              className="homeTabArrowIcon"
-                              src={HomeTabArrowIcon}
-                            />
-                          </div>
-                          {/* <div
+                            </div>
+                            {/* <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
                               this.state.blockOneSelectedItem === 2
                                 ? "section-table-toggle-element-selected"
@@ -5180,7 +5261,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Decipher all your DeFi positions from one place"
+                                "Decipher all of the DeFi positions from one place"
                               }
                             >
                               <Image
@@ -5197,454 +5278,106 @@ class Portfolio extends BaseReactComponent {
                               src={HomeTabArrowIcon}
                             />
                           </div> */}
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                              this.state.blockOneSelectedItem === 2
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              if (this.state.blockOneSelectedItem === 2)
-                                this.goToTransactionHistoryPage();
-                              else this.changeBlockOneItem(2);
-                            }}
-                          >
-                            Transactions
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Sort, filter, and dissect all your transactions from one place"
-                              }
-                            >
-                              {/* <div className="info-icon-i">
-                                  i
-                                </div> */}
-                              <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
-                              />
-                            </CustomOverlay>
-                            <Image
-                              className="homeTabArrowIcon"
-                              src={HomeTabArrowIcon}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      {this.state.blockOneSelectedItem === 1 ? (
-                        <div>
-                          <div
-                            className={`newHomeTableContainer freezeTheFirstColumn ${
-                              this.state.AvgCostLoading ||
-                              tableDataCostBasis?.length < 1
-                                ? ""
-                                : "tableWatermarkOverlay"
-                            } ${
-                              !this.state.AvgCostLoading
-                                ? "newHomeTableContainerLoading"
-                                : ""
-                            }`}
-                          >
-                            <TransactionTable
-                              noSubtitleBottomPadding
-                              message="No tokens found"
-                              disableOnLoading
-                              isMiniversion
-                              xAxisScrollable={
-                                !this.state.AvgCostLoading &&
-                                tableDataCostBasis?.length > 0
-                              }
-                              xAxisScrollableColumnWidth={4.4}
-                              tableData={
-                                tableDataCostBasis
-                                  ? tableDataCostBasis.slice(0, 10)
-                                  : []
-                              }
-                              columnList={CostBasisColumnData}
-                              headerHeight={60}
-                              isArrow={true}
-                              isLoading={this.state.AvgCostLoading}
-                              isAnalytics="average cost basis"
-                              // addWatermark
-                              fakeWatermark
-                              yAxisScrollable={!this.state.AvgCostLoading}
-                            />
-                          </div>
-                          {!this.state.AvgCostLoading ? (
-                            <div className="inter-display-medium bottomExtraInfo">
-                              <div
-                                onClick={this.goToAssetsPage}
-                                className="bottomExtraInfoText"
-                              >
-                                {this.props.intelligenceState
-                                  ?.Average_cost_basis
-                                  ? this.props.intelligenceState
-                                      .Average_cost_basis.length > 10
-                                    ? `Click here to see ${numToCurrency(
-                                        this.props.intelligenceState
-                                          .Average_cost_basis.length - 10,
-                                        true
-                                      ).toLocaleString("en-US")}+ asset${
-                                        this.props.intelligenceState
-                                          .Average_cost_basis.length -
-                                          10 >
-                                        1
-                                          ? "s"
-                                          : ""
-                                      }`
-                                    : "Click here to see more"
-                                  : "Click here to see more"}
-                              </div>
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : this.state.blockOneSelectedItem === 2 ? (
-                        // <PortfolioHomeDefiBlock
-                        //   lochToken={this.state.lochToken}
-                        //   history={this.props.history}
-                        //   userWalletList={this.state.userWalletList}
-                        // />
-                        <div>
-                          <div
-                            className={`newHomeTableContainer freezeTheFirstColumn ${
-                              this.state.tableLoading || tableData?.length < 1
-                                ? ""
-                                : "tableWatermarkOverlay"
-                            } ${
-                              this.state.tableLoading
-                                ? "newHomeTableContainerLoading"
-                                : ""
-                            }`}
-                          >
-                            <TransactionTable
-                              xAxisScrollable={
-                                !this.state.tableLoading &&
-                                tableData?.length > 0
-                              }
-                              xAxisScrollableColumnWidth={5.1}
-                              noSubtitleBottomPadding
-                              disableOnLoading
-                              isMiniversion
-                              tableData={tableData}
-                              columnList={columnList}
-                              headerHeight={60}
-                              isArrow={true}
-                              isLoading={this.state.tableLoading}
-                              watermarkOnTop
-                              // addWatermark
-                              fakeWatermark
-                              yAxisScrollable={!this.state.tableLoading}
-                            />
-                          </div>
-                          {!this.state.tableLoading ? (
-                            <div className="inter-display-medium bottomExtraInfo">
-                              <div
-                                onClick={this.goToTransactionHistoryPage}
-                                className="bottomExtraInfoText"
-                              >
-                                {totalCount && totalCount > 10
-                                  ? `Click here to see ${numToCurrency(
-                                      totalCount - 10,
-                                      true
-                                    ).toLocaleString("en-US")}+ transaction${
-                                      totalCount - 10 > 1 ? "s" : ""
-                                    }`
-                                  : "Click here to see more"}
-                              </div>
-                            </div>
-                          ) : null}
-                        </div>
-                      ) : null}
-                    </div>
-                  </Col>
-                  <Col md={6}>
-                    <div
-                      className="section-table"
-                      style={{
-                        height: "41rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        minHeight: "41rem",
-                        marginBottom: 0,
-                      }}
-                    >
-                      <div className="section-table-toggle-container">
-                        <div className="section-table-toggle">
-                          <div
-                            className={`inter-display-medium section-table-toggle-element mr-1 ${
-                              this.state.blockTwoSelectedItem === 1
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              if (this.state.blockTwoSelectedItem === 1)
-                                this.goToRealizedGainsPage();
-                              else this.changeBlockTwoItem(1);
-                            }}
-                          >
-                            Flows
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={"Understand your portfolio's net flows"}
-                            >
-                              {/* <div className="info-icon-i">
-                                  i
-                                </div> */}
-                              <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
-                              />
-                            </CustomOverlay>
-                            <Image
-                              className="homeTabArrowIcon"
-                              src={HomeTabArrowIcon}
-                            />
-                          </div>
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
-                              this.state.blockTwoSelectedItem === 2
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              if (this.state.blockTwoSelectedItem === 2)
-                                this.goToGasFeesSpentPage();
-                              else this.changeBlockTwoItem(2);
-                            }}
-                          >
-                            Gas fees
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={"Understand your gas costs"}
-                            >
-                              {/* <div className="info-icon-i">
-                                  i
-                                </div> */}
-                              <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
-                              />
-                            </CustomOverlay>
-                            <Image
-                              className="homeTabArrowIcon"
-                              src={HomeTabArrowIcon}
-                            />
-                          </div>
-                          <div
-                            className={`inter-display-medium section-table-toggle-element mr-1 ${
-                              this.state.blockTwoSelectedItem === 3
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              if (this.state.blockTwoSelectedItem === 3)
-                                this.goToNftPage();
-                              else this.changeBlockTwoItem(3);
-                            }}
-                          >
-                            NFTs
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={"Browse the NFTs held by this wallet"}
-                            >
-                              {/* <div className="info-icon-i">
-                                  i
-                                </div> */}
-                              <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
-                              />
-                            </CustomOverlay>
-                            <Image
-                              className="homeTabArrowIcon"
-                              src={HomeTabArrowIcon}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="profit-chart">
-                        {this.state.blockTwoSelectedItem === 1 ? (
-                          <BarGraphSection
-                            // showPremiumHover={!this.state.isPremiumUser}
-                            // isPremiumUser={this.state.isPremiumUser}
-                            isPremiumUser={this.state.isPremiumUser}
-                            showPremiumHover={!this.state.isPremiumUser}
-                            goToPayModal={this.showBlurredFlows}
-                            openChartPage={this.goToRealizedGainsPage}
-                            newHomeSetup
-                            disableOnLoading
-                            noSubtitleBottomPadding
-                            noSubtitleTopPadding
-                            loaderHeight={15.5}
-                            // headerTitle="Realized profit and loss"
-                            // headerSubTitle="Understand your portfolio's net flows"
-                            isArrow={true}
-                            handleClick={() => {
-                              if (this.state.lochToken) {
-                                ProfitLossEV({
-                                  session_id: getCurrentUser().id,
-                                  email_address: getCurrentUser().email,
-                                });
-                                this.props.history.push(
-                                  "/intelligence#netflow"
-                                );
-                              }
-                            }}
-                            isScrollVisible={false}
-                            data={
-                              this.props.intelligenceState?.graphValue &&
-                              this.props.intelligenceState?.graphValue[0]
-                            }
-                            options={
-                              this.props.intelligenceState?.graphValue &&
-                              this.props.intelligenceState?.graphValue[1]
-                            }
-                            coinsList={this.props.OnboardingState.coinsList}
-                            marginBottom="m-b-32"
-                            showFooter={false}
-                            showBadges={false}
-                            // showPercentage={
-                            //   this.props.intelligenceState.graphValue &&
-                            //   this.props.intelligenceState.graphValue[2]
-                            // }
-                            showSwitch={false}
-                            isLoading={this.state.netFlowLoading}
-                            className={"portfolio-profit-and-loss"}
-                            isMinichart={true}
-                            ProfitLossAsset={
-                              this.props.intelligenceState.ProfitLossAsset
-                            }
-                            isSwitch={this.state.isSwitch}
-                            setSwitch={this.setSwitch}
-                            isSmallerToggle
-                          />
-                        ) : this.state.blockTwoSelectedItem === 2 ? (
-                          <div
-                            style={{
-                              position: "relative",
-                            }}
-                            className="tableWatermarkOverlay"
-                          >
                             <div
-                              style={{
-                                position: "absolute",
-                                opacity: 0,
+                              className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                                this.state.blockOneSelectedItem === 2
+                                  ? "section-table-toggle-element-selected"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (this.state.blockOneSelectedItem === 2)
+                                  this.goToTransactionHistoryPage();
+                                else this.changeBlockOneItem(2);
                               }}
                             >
-                              Loch
+                              Transactions
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Sort, filter, and dissect all the transactions from one place"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
+                              <Image
+                                className="homeTabArrowIcon"
+                                src={HomeTabArrowIcon}
+                              />
                             </div>
-
-                            <BarGraphSection
-                              // showPremiumHover={!this.state.isPremiumUser}
-                              // isPremiumUser={this.state.isPremiumUser}
-                              isPremiumUser={this.state.isPremiumUser}
-                              showPremiumHover={!this.state.isPremiumUser}
-                              goToPayModal={this.showBlurredGasFees}
-                              // isBlurred={!this.state.isPremiumUser}
-                              isBlurred={!this.state.isPremiumUser}
-                              digit={this.state.GraphDigit}
-                              isFromHome
-                              openChartPage={this.goToGasFeesSpentPage}
-                              data={
-                                this.state.homeGraphFeesData &&
-                                this.state.homeGraphFeesData[0]
-                              }
-                              options={
-                                this.state.homeGraphFeesData &&
-                                this.state.homeGraphFeesData[1]
-                              }
-                              options2={
-                                this.state.homeGraphFeesData &&
-                                this.state.homeGraphFeesData[2]
-                              }
-                              isScrollVisible={false}
-                              isScroll={true}
-                              isLoading={this.state.gasFeesGraphLoading}
-                              oldBar
-                              noSubtitleBottomPadding
-                              newHomeSetup
-                              noSubtitleTopPadding
-                              floatingWatermark
-                            />
                           </div>
-                        ) : this.state.blockTwoSelectedItem === 3 ? (
+                        </div>
+                        {this.state.blockOneSelectedItem === 1 ? (
                           <div>
-                            {/* 
-                            Things remaining Add Loading conditions */}
                             <div
                               className={`newHomeTableContainer freezeTheFirstColumn ${
-                                this.state.localNftData?.length < 1
+                                this.state.AvgCostLoading ||
+                                tableDataCostBasis?.length < 1
                                   ? ""
                                   : "tableWatermarkOverlay"
                               } ${
-                                this.state.nftTableLoading
+                                !this.state.AvgCostLoading
                                   ? "newHomeTableContainerLoading"
                                   : ""
                               }`}
                             >
                               <TransactionTable
-                                message={"No NFT's found"}
-                                // xAxisScrollable
-                                // xAxisScrollableColumnWidth={3}
+                                passedWrapperId="homeTokenTableWrapper"
                                 noSubtitleBottomPadding
+                                message="No tokens found"
                                 disableOnLoading
                                 isMiniversion
-                                tableData={this.state.localNftData}
-                                showDataAtBottom
-                                columnList={NFTColumnData}
+                                xAxisScrollable={
+                                  !this.state.AvgCostLoading &&
+                                  tableDataCostBasis?.length > 0
+                                }
+                                xAxisScrollableColumnWidth={4.4}
+                                tableData={
+                                  tableDataCostBasis
+                                    ? tableDataCostBasis.slice(0, 10)
+                                    : []
+                                }
+                                columnList={CostBasisColumnData}
                                 headerHeight={60}
                                 isArrow={true}
-                                isLoading={this.state.nftTableLoading}
+                                isLoading={this.state.AvgCostLoading}
+                                isAnalytics="average cost basis"
+                                // addWatermark
                                 fakeWatermark
-                                yAxisScrollable={!this.state.nftTableLoading}
+                                yAxisScrollable={!this.state.AvgCostLoading}
                               />
                             </div>
-                            {/* Add Loading conditino here and add goto nft page */}
-                            {!this.state.nftTableLoading ? (
+                            {!this.state.AvgCostLoading ? (
                               <div className="inter-display-medium bottomExtraInfo">
                                 <div
-                                  onClick={this.goToNftPage}
+                                  onClick={this.goToAssetsPage}
                                   className="bottomExtraInfoText"
                                 >
-                                  {this.state.localNftData
-                                    ? this.state.localNftData?.length > 10
+                                  {this.props.intelligenceState
+                                    ?.Average_cost_basis
+                                    ? this.props.intelligenceState
+                                        .Average_cost_basis.length > 10
                                       ? `Click here to see ${numToCurrency(
-                                          this.state.localNftData?.length - 10,
+                                          this.props.intelligenceState
+                                            .Average_cost_basis.length - 10,
                                           true
-                                        ).toLocaleString("en-US")}+ NFT ${
-                                          this.state.localNftData?.length - 10 >
+                                        ).toLocaleString("en-US")}+ asset${
+                                          this.props.intelligenceState
+                                            .Average_cost_basis.length -
+                                            10 >
                                           1
                                             ? "s"
                                             : ""
@@ -5655,327 +5388,685 @@ class Portfolio extends BaseReactComponent {
                               </div>
                             ) : null}
                           </div>
+                        ) : this.state.blockOneSelectedItem === 2 ? (
+                          // <PortfolioHomeDefiBlock
+                          //   lochToken={this.state.lochToken}
+                          //   history={this.props.history}
+                          //   userWalletList={this.state.userWalletList}
+                          // />
+                          <div>
+                            <div
+                              className={`newHomeTableContainer freezeTheFirstColumn ${
+                                this.state.tableLoading || tableData?.length < 1
+                                  ? ""
+                                  : "tableWatermarkOverlay"
+                              } ${
+                                this.state.tableLoading
+                                  ? "newHomeTableContainerLoading"
+                                  : ""
+                              }`}
+                            >
+                              <TransactionTable
+                                passedWrapperId="homeTransactionTableWrapper"
+                                xAxisScrollable={
+                                  !this.state.tableLoading &&
+                                  tableData?.length > 0
+                                }
+                                xAxisScrollableColumnWidth={5.1}
+                                noSubtitleBottomPadding
+                                disableOnLoading
+                                isMiniversion
+                                tableData={tableData}
+                                columnList={columnList}
+                                headerHeight={60}
+                                isArrow={true}
+                                isLoading={this.state.tableLoading}
+                                watermarkOnTop
+                                // addWatermark
+                                fakeWatermark
+                                yAxisScrollable={!this.state.tableLoading}
+                              />
+                            </div>
+                            {!this.state.tableLoading ? (
+                              <div className="inter-display-medium bottomExtraInfo">
+                                <div
+                                  onClick={this.goToTransactionHistoryPage}
+                                  className="bottomExtraInfoText"
+                                >
+                                  {totalCount && totalCount > 10
+                                    ? `Click here to see ${numToCurrency(
+                                        totalCount - 10,
+                                        true
+                                      ).toLocaleString("en-US")}+ transaction${
+                                        totalCount - 10 > 1 ? "s" : ""
+                                      }`
+                                    : "Click here to see more"}
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
                         ) : null}
                       </div>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-              <div
-                style={{
-                  marginBottom: "-0.8rem",
-                }}
-                className="graph-table-section"
-              >
-                <Row>
-                  <Col md={6}>
-                    <div
-                      className="m-r-16 section-table"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        minHeight: "41rem",
-                        height: "41rem",
-                        marginBottom: 0,
-                      }}
-                    >
-                      <div className="section-table-toggle-container homepage-table-charts">
-                        <div className="section-table-toggle">
-                          <div
-                            className={`inter-display-medium section-table-toggle-element mr-1 ${
-                              this.state.blockThreeSelectedItem === 1
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              if (this.state.blockThreeSelectedItem === 1)
-                                this.goToCounterPartyVolumePage();
-                              else this.changeBlockThreeItem(1);
-                            }}
-                          >
-                            Counterparties
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Understand where you’ve exchanged the most value"
-                              }
+                    </Col>
+                    <Col style={{ width: "calc( 50% - 0rem )" }} md={6}>
+                      <div
+                        className="section-table"
+                        style={{
+                          height: "43rem",
+                          display: "flex",
+                          flexDirection: "column",
+                          minHeight: "43rem",
+                          marginBottom: 0,
+                        }}
+                      >
+                        <div className="section-table-toggle-container">
+                          <div className="section-table-toggle">
+                            <div
+                              className={`inter-display-medium section-table-toggle-element mr-1 ${
+                                this.state.blockTwoSelectedItem === 1
+                                  ? "section-table-toggle-element-selected"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (this.state.blockTwoSelectedItem === 1)
+                                  this.goToRealizedGainsPage();
+                                else this.changeBlockTwoItem(1);
+                              }}
                             >
-                              <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
-                              />
-                            </CustomOverlay>
-                            <Image
-                              className="homeTabArrowIcon"
-                              src={HomeTabArrowIcon}
-                            />
-                          </div>
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 ${
-                              this.state.blockThreeSelectedItem === 2
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              if (this.state.blockThreeSelectedItem === 2)
-                                this.goToYieldOppPage();
-                              else this.changeBlockThreeItem(2);
-                            }}
-                          >
-                            Yield opportunities
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Yield bearing opportunties personalized for your portfolio"
-                              }
-                            >
-                              {/* <div className="info-icon-i">
+                              Flows
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={"Understand this portfolio's net flows"}
+                              >
+                                {/* <div className="info-icon-i">
                                   i
                                 </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
                               <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
+                                className="homeTabArrowIcon"
+                                src={HomeTabArrowIcon}
                               />
-                            </CustomOverlay>
-                            <Image
-                              className="homeTabArrowIcon"
-                              src={HomeTabArrowIcon}
-                            />
-                          </div>
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 ${
-                              this.state.blockThreeSelectedItem === 3
-                                ? "section-table-toggle-element-selected section-table-toggle-element-selected-no-hover"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              this.changeBlockThreeItem(3);
-                            }}
-                          >
-                            Networks
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Understand where you’ve exchanged the most value"
-                              }
+                            </div>
+                            <div
+                              className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
+                                this.state.blockTwoSelectedItem === 2
+                                  ? "section-table-toggle-element-selected"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (this.state.blockTwoSelectedItem === 2)
+                                  this.goToGasFeesSpentPage();
+                                else this.changeBlockTwoItem(2);
+                              }}
                             >
-                              {/* <div className="info-icon-i">
+                              Gas fees
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={"Understand the gas costs"}
+                              >
+                                {/* <div className="info-icon-i">
                                   i
                                 </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
                               <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
+                                className="homeTabArrowIcon"
+                                src={HomeTabArrowIcon}
                               />
-                            </CustomOverlay>
+                            </div>
+                            <div
+                              className={`inter-display-medium section-table-toggle-element mr-1 ${
+                                this.state.blockTwoSelectedItem === 3
+                                  ? "section-table-toggle-element-selected"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (this.state.blockTwoSelectedItem === 3)
+                                  this.goToNftPage();
+                                else this.changeBlockTwoItem(3);
+                              }}
+                            >
+                              NFTs
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={"Browse the NFTs held by this portfolio"}
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
+                              <Image
+                                className="homeTabArrowIcon"
+                                src={HomeTabArrowIcon}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      {this.state.blockThreeSelectedItem === 1 ? (
                         <div className="profit-chart">
-                          <div
-                            style={{
-                              position: "relative",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <div
-                              style={{
-                                position: "absolute",
-                                opacity: 0,
-                                left: "5rem",
-                                top: "5rem",
-                              }}
-                            >
-                              <div>Loch</div>
-                            </div>
-                            <div
-                              style={{
-                                position: "absolute",
-                                opacity: 0,
-                                left: "5rem",
-                              }}
-                            >
-                              <div>Loch</div>
-                            </div>
+                          {this.state.blockTwoSelectedItem === 1 ? (
                             <BarGraphSection
-                              isFromHome
-                              openChartPage={this.goToCounterPartyVolumePage}
+                              // showPremiumHover={!this.state.isPremiumUser}
+                              // isPremiumUser={this.state.isPremiumUser}
+                              isPremiumUser={this.state.isPremiumUser}
+                              showPremiumHover={!this.state.isPremiumUser}
+                              goToPayModal={this.showBlurredFlows}
+                              openChartPage={this.goToRealizedGainsPage}
+                              newHomeSetup
+                              disableOnLoading
+                              noSubtitleBottomPadding
+                              noSubtitleTopPadding
+                              loaderHeight={15.5}
+                              // headerTitle="Realized profit and loss"
+                              // headerSubTitle="Understand this portfolio's net flows"
+                              isArrow={true}
+                              handleClick={() => {
+                                if (this.state.lochToken) {
+                                  ProfitLossEV({
+                                    session_id: getCurrentUser().id,
+                                    email_address: getCurrentUser().email,
+                                  });
+                                  this.props.history.push(
+                                    "/intelligence#netflow"
+                                  );
+                                }
+                              }}
+                              isScrollVisible={false}
                               data={
-                                this.state.homeCounterpartyVolumeData &&
-                                this.state.homeCounterpartyVolumeData[0]
+                                this.props.intelligenceState?.graphValue &&
+                                this.props.intelligenceState?.graphValue[0]
                               }
                               options={
-                                this.state.homeCounterpartyVolumeData &&
-                                this.state.homeCounterpartyVolumeData[1]
+                                this.props.intelligenceState?.graphValue &&
+                                this.props.intelligenceState?.graphValue[1]
                               }
-                              options2={
-                                this.state.homeCounterpartyVolumeData &&
-                                this.state.homeCounterpartyVolumeData[2]
+                              coinsList={this.props.OnboardingState.coinsList}
+                              marginBottom="m-b-32"
+                              showFooter={false}
+                              showBadges={false}
+                              // showPercentage={
+                              //   this.props.intelligenceState.graphValue &&
+                              //   this.props.intelligenceState.graphValue[2]
+                              // }
+                              showSwitch={false}
+                              isLoading={this.state.netFlowLoading}
+                              className={"portfolio-profit-and-loss"}
+                              isMinichart={true}
+                              ProfitLossAsset={
+                                this.props.intelligenceState.ProfitLossAsset
                               }
-                              digit={this.state.counterGraphDigit}
-                              isScrollVisible={false}
-                              isScroll={true}
-                              isLoading={this.state.counterGraphLoading}
-                              oldBar
-                              noSubtitleBottomPadding
-                              newHomeSetup
-                              noSubtitleTopPadding
-                              floatingWatermark
+                              isSwitch={this.state.isSwitch}
+                              setSwitch={this.setSwitch}
+                              isSmallerToggle
                             />
-                          </div>
-                        </div>
-                      ) : this.state.blockThreeSelectedItem === 2 ? (
-                        <div>
-                          <div
-                            className={`newHomeTableContainer freezeTheFirstColumn ${
-                              this.state.yieldOpportunitiesTableLoading ||
-                              yieldOpportunitiesListTemp?.length < 1
-                                ? ""
-                                : "tableWatermarkOverlay"
-                            } ${
-                              this.state.yieldOpportunitiesTableLoading
-                                ? "newHomeTableContainerLoading"
-                                : ""
-                            }`}
-                          >
-                            <TransactionTable
-                              message={"No yield opportunities found"}
-                              xAxisScrollable={
-                                !this.state.yieldOpportunitiesTableLoading &&
-                                yieldOpportunitiesListTemp?.length > 0
-                              }
-                              xAxisScrollableColumnWidth={4.3}
-                              noSubtitleBottomPadding
-                              disableOnLoading
-                              isMiniversion
-                              tableData={yieldOpportunitiesListTemp}
-                              showDataAtBottom
-                              columnList={YieldOppColumnData}
-                              headerHeight={60}
-                              isArrow={true}
-                              isLoading={
-                                this.state.yieldOpportunitiesTableLoading
-                              }
-                              fakeWatermark
-                              yAxisScrollable={
-                                !this.state.yieldOpportunitiesTableLoading
-                              }
-                            />
-                          </div>
-                          {!this.state.yieldOpportunitiesTableLoading ? (
-                            <div className="inter-display-medium bottomExtraInfo">
+                          ) : this.state.blockTwoSelectedItem === 2 ? (
+                            <div
+                              style={{
+                                position: "relative",
+                              }}
+                              className="tableWatermarkOverlay"
+                            >
                               <div
-                                onClick={this.goToYieldOppPage}
-                                className="bottomExtraInfoText"
+                                style={{
+                                  position: "absolute",
+                                  opacity: 0,
+                                }}
                               >
-                                {this.state.yieldOpportunitiesTotalCount
-                                  ? this.state.yieldOpportunitiesTotalCount > 10
-                                    ? `Click here to see ${numToCurrency(
-                                        this.state
-                                          .yieldOpportunitiesTotalCount - 10,
-                                        true
-                                      ).toLocaleString("en-US")}+ yield ${
-                                        this.state
-                                          .yieldOpportunitiesTotalCount -
-                                          10 >
-                                        1
-                                          ? "opportunities"
-                                          : "opportunity"
-                                      }`
-                                    : "Click here to see more"
-                                  : "Click here to see more"}
+                                Loch
                               </div>
+
+                              <BarGraphSection
+                                customGraphHeight="28.5rem"
+                                // showPremiumHover={!this.state.isPremiumUser}
+                                // isPremiumUser={this.state.isPremiumUser}
+                                isPremiumUser={this.state.isPremiumUser}
+                                showPremiumHover={!this.state.isPremiumUser}
+                                goToPayModal={this.showBlurredGasFees}
+                                // isBlurred={!this.state.isPremiumUser}
+                                isBlurred={!this.state.isPremiumUser}
+                                digit={this.state.GraphDigit}
+                                isFromHome
+                                openChartPage={this.goToGasFeesSpentPage}
+                                data={
+                                  this.state.homeGraphFeesData &&
+                                  this.state.homeGraphFeesData[0]
+                                }
+                                options={
+                                  this.state.homeGraphFeesData &&
+                                  this.state.homeGraphFeesData[1]
+                                }
+                                options2={
+                                  this.state.homeGraphFeesData &&
+                                  this.state.homeGraphFeesData[2]
+                                }
+                                isScrollVisible={false}
+                                isScroll={true}
+                                isLoading={this.state.gasFeesGraphLoading}
+                                oldBar
+                                noSubtitleBottomPadding
+                                newHomeSetup
+                                noSubtitleTopPadding
+                                floatingWatermark
+                              />
+                            </div>
+                          ) : this.state.blockTwoSelectedItem === 3 ? (
+                            <div>
+                              {/* 
+                            Things remaining Add Loading conditions */}
+                              <div
+                                className={`newHomeTableContainer newHomeTableContainerNoXScroll  ${
+                                  this.state.localNftData?.length < 1
+                                    ? ""
+                                    : "tableWatermarkOverlay"
+                                } ${
+                                  this.state.nftTableLoading
+                                    ? "newHomeTableContainerLoading"
+                                    : ""
+                                }`}
+                              >
+                                <TransactionTable
+                                  message={"No NFT's found"}
+                                  // xAxisScrollable
+                                  // xAxisScrollableColumnWidth={3}
+                                  noSubtitleBottomPadding
+                                  disableOnLoading
+                                  isMiniversion
+                                  tableData={this.state.localNftData}
+                                  showDataAtBottom
+                                  columnList={NFTColumnData}
+                                  headerHeight={60}
+                                  isArrow={true}
+                                  isLoading={this.state.nftTableLoading}
+                                  fakeWatermark
+                                  yAxisScrollable={!this.state.nftTableLoading}
+                                />
+                              </div>
+                              {/* Add Loading conditino here and add goto nft page */}
+                              {!this.state.nftTableLoading ? (
+                                <div className="inter-display-medium bottomExtraInfo">
+                                  <div
+                                    onClick={this.goToNftPage}
+                                    className="bottomExtraInfoText"
+                                  >
+                                    {this.state.localNftData
+                                      ? this.state.localNftData?.length > 10
+                                        ? `Click here to see ${numToCurrency(
+                                            this.state.localNftData?.length -
+                                              10,
+                                            true
+                                          ).toLocaleString("en-US")}+ NFT ${
+                                            this.state.localNftData?.length -
+                                              10 >
+                                            1
+                                              ? "s"
+                                              : ""
+                                          }`
+                                        : "Click here to see more"
+                                      : "Click here to see more"}
+                                  </div>
+                                </div>
+                              ) : null}
                             </div>
                           ) : null}
                         </div>
-                      ) : this.state.blockThreeSelectedItem === 3 ? (
-                        <PortfolioHomeNetworksBlock
-                          history={this.props.history}
-                          updatedInsightList={this.state.updatedInsightList}
-                          insightsBlockLoading={this.state.insightsBlockLoading}
-                          chainLoader={this.state.chainLoader}
-                        />
-                      ) : null}
-                    </div>
-                  </Col>
-                  <Col md={6}>
-                    <div
-                      className="section-table"
-                      style={{
-                        height: "41rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        minHeight: "41rem",
-                        marginBottom: 0,
-                      }}
-                    >
-                      <div className="section-table-toggle-container">
-                        <div className="section-table-toggle">
-                          <div
-                            className={`inter-display-medium section-table-toggle-element mr-1 ${
-                              this.state.blockFourSelectedItem === 1
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              if (this.state.blockFourSelectedItem === 1)
-                                this.goToPriceGaugePage();
-                              else this.changeBlockFourItem(1);
-                            }}
-                          >
-                            Price gauge
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={
-                                "Understand when this token was bought and sold"
-                              }
+                      </div>
+                    </Col>
+                  </Row>
+                </div>
+                <div
+                  style={{
+                    marginBottom: "-0.8rem",
+                  }}
+                  className="graph-table-section"
+                >
+                  <Row>
+                    <Col style={{ width: "calc( 50% - 0rem )" }} md={6}>
+                      <div
+                        className="m-r-16 section-table"
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          minHeight: "43rem",
+                          height: "43rem",
+                          marginBottom: 0,
+                        }}
+                      >
+                        <div className="section-table-toggle-container homepage-table-charts">
+                          <div className="section-table-toggle">
+                            <div
+                              className={`inter-display-medium section-table-toggle-element mr-1 ${
+                                this.state.blockThreeSelectedItem === 1
+                                  ? "section-table-toggle-element-selected"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (this.state.blockThreeSelectedItem === 1)
+                                  this.goToCounterPartyVolumePage();
+                                else this.changeBlockThreeItem(1);
+                              }}
                             >
-                              {/* <div className="info-icon-i">
+                              Counterparties
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand where this portfolio has exchanged the most value"
+                                }
+                              >
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
+                              <Image
+                                className="homeTabArrowIcon"
+                                src={HomeTabArrowIcon}
+                              />
+                            </div>
+                            <div
+                              className={`inter-display-medium section-table-toggle-element ml-1 ${
+                                this.state.blockThreeSelectedItem === 2
+                                  ? "section-table-toggle-element-selected"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (this.state.blockThreeSelectedItem === 2)
+                                  this.goToYieldOppPage();
+                                else this.changeBlockThreeItem(2);
+                              }}
+                            >
+                              Yield opportunities
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Yield bearing opportunities personalized for this portfolio"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
                                   i
                                 </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
                               <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
+                                className="homeTabArrowIcon"
+                                src={HomeTabArrowIcon}
                               />
-                            </CustomOverlay>
-                            <Image
-                              className="homeTabArrowIcon"
-                              src={HomeTabArrowIcon}
-                            />
+                            </div>
+                            <div
+                              className={`inter-display-medium section-table-toggle-element ml-1 ${
+                                this.state.blockThreeSelectedItem === 3
+                                  ? "section-table-toggle-element-selected section-table-toggle-element-selected-no-hover"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                this.changeBlockThreeItem(3);
+                              }}
+                            >
+                              Networks
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand where this portfolio has exchanged the most value"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
+                            </div>
                           </div>
-                          {/* <div
+                        </div>
+                        {this.state.blockThreeSelectedItem === 1 ? (
+                          <div className="profit-chart">
+                            <div
+                              style={{
+                                position: "relative",
+                                cursor: "pointer",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  opacity: 0,
+                                  left: "5rem",
+                                  top: "5rem",
+                                }}
+                              >
+                                <div>Loch</div>
+                              </div>
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  opacity: 0,
+                                  left: "5rem",
+                                }}
+                              >
+                                <div>Loch</div>
+                              </div>
+                              <BarGraphSection
+                                customGraphHeight="28.5rem"
+                                isFromHome
+                                openChartPage={this.goToCounterPartyVolumePage}
+                                data={
+                                  this.state.homeCounterpartyVolumeData &&
+                                  this.state.homeCounterpartyVolumeData[0]
+                                }
+                                options={
+                                  this.state.homeCounterpartyVolumeData &&
+                                  this.state.homeCounterpartyVolumeData[1]
+                                }
+                                options2={
+                                  this.state.homeCounterpartyVolumeData &&
+                                  this.state.homeCounterpartyVolumeData[2]
+                                }
+                                digit={this.state.counterGraphDigit}
+                                isScrollVisible={false}
+                                isScroll={true}
+                                isLoading={this.state.counterGraphLoading}
+                                oldBar
+                                noSubtitleBottomPadding
+                                newHomeSetup
+                                noSubtitleTopPadding
+                                floatingWatermark
+                              />
+                            </div>
+                          </div>
+                        ) : this.state.blockThreeSelectedItem === 2 ? (
+                          <div>
+                            <div
+                              className={`newHomeTableContainer freezeTheFirstColumn ${
+                                this.state.yieldOpportunitiesTableLoading ||
+                                yieldOpportunitiesListTemp?.length < 1
+                                  ? ""
+                                  : "tableWatermarkOverlay"
+                              } ${
+                                this.state.yieldOpportunitiesTableLoading
+                                  ? "newHomeTableContainerLoading"
+                                  : ""
+                              }`}
+                            >
+                              <TransactionTable
+                                passedWrapperId="homeYieldOppTableWrapper"
+                                message={"No yield opportunities found"}
+                                xAxisScrollable={
+                                  !this.state.yieldOpportunitiesTableLoading &&
+                                  yieldOpportunitiesListTemp?.length > 0
+                                }
+                                xAxisScrollableColumnWidth={4.3}
+                                noSubtitleBottomPadding
+                                disableOnLoading
+                                isMiniversion
+                                tableData={yieldOpportunitiesListTemp}
+                                showDataAtBottom
+                                columnList={YieldOppColumnData}
+                                headerHeight={60}
+                                isArrow={true}
+                                isLoading={
+                                  this.state.yieldOpportunitiesTableLoading
+                                }
+                                fakeWatermark
+                                yAxisScrollable={
+                                  !this.state.yieldOpportunitiesTableLoading
+                                }
+                              />
+                            </div>
+                            {!this.state.yieldOpportunitiesTableLoading ? (
+                              <div className="inter-display-medium bottomExtraInfo">
+                                <div
+                                  onClick={this.goToYieldOppPage}
+                                  className="bottomExtraInfoText"
+                                >
+                                  {this.state.yieldOpportunitiesTotalCount
+                                    ? this.state.yieldOpportunitiesTotalCount >
+                                      10
+                                      ? `Click here to see ${numToCurrency(
+                                          this.state
+                                            .yieldOpportunitiesTotalCount - 10,
+                                          true
+                                        ).toLocaleString("en-US")}+ yield ${
+                                          this.state
+                                            .yieldOpportunitiesTotalCount -
+                                            10 >
+                                          1
+                                            ? "opportunities"
+                                            : "opportunity"
+                                        }`
+                                      : "Click here to see more"
+                                    : "Click here to see more"}
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                        ) : this.state.blockThreeSelectedItem === 3 ? (
+                          <PortfolioHomeNetworksBlock
+                            history={this.props.history}
+                            updatedInsightList={this.state.updatedInsightList}
+                            insightsBlockLoading={
+                              this.state.insightsBlockLoading
+                            }
+                            chainLoader={this.state.chainLoader}
+                          />
+                        ) : null}
+                      </div>
+                    </Col>
+                    <Col style={{ width: "calc( 50% - 0rem )" }} md={6}>
+                      <div
+                        className="section-table"
+                        style={{
+                          height: "43rem",
+                          display: "flex",
+                          flexDirection: "column",
+                          minHeight: "43rem",
+                          marginBottom: 0,
+                        }}
+                      >
+                        <div className="section-table-toggle-container">
+                          <div className="section-table-toggle">
+                            <div
+                              className={`inter-display-medium section-table-toggle-element mr-1 ${
+                                this.state.blockFourSelectedItem === 1
+                                  ? "section-table-toggle-element-selected"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (this.state.blockFourSelectedItem === 1)
+                                  this.goToPriceGaugePage();
+                                else this.changeBlockFourItem(1);
+                              }}
+                            >
+                              Price gauge
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={
+                                  "Understand when these tokens were bought and sold"
+                                }
+                              >
+                                {/* <div className="info-icon-i">
+                                  i
+                                </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
+                              <Image
+                                className="homeTabArrowIcon"
+                                src={HomeTabArrowIcon}
+                              />
+                            </div>
+                            {/* <div
                             className={`inter-display-medium section-table-toggle-element ml-1 mr-1 ${
                               this.state.blockFourSelectedItem === 2
                                 ? "section-table-toggle-element-selected"
@@ -5995,7 +6086,7 @@ class Portfolio extends BaseReactComponent {
                               isText={true}
                               className={"fix-width"}
                               text={
-                                "Sort, filter, and dissect all your transactions from one place"
+                                "Sort, filter, and dissect all the transactions from one place"
                               }
                             >
                               <Image
@@ -6013,131 +6104,135 @@ class Portfolio extends BaseReactComponent {
                             />
                           </div> */}
 
-                          <div
-                            className={`inter-display-medium section-table-toggle-element ml-1 ${
-                              this.state.blockFourSelectedItem === 2
-                                ? "section-table-toggle-element-selected"
-                                : ""
-                            }`}
-                            onClick={() => {
-                              if (this.state.blockFourSelectedItem === 2) {
-                                this.goToInsightsPage();
-                              } else this.changeBlockFourItem(2);
-                            }}
-                          >
-                            Insights
-                            <CustomOverlay
-                              position="top"
-                              isIcon={false}
-                              isInfo={true}
-                              isText={true}
-                              className={"fix-width"}
-                              text={"Valuable insights based on your assets"}
+                            <div
+                              className={`inter-display-medium section-table-toggle-element ml-1 ${
+                                this.state.blockFourSelectedItem === 2
+                                  ? "section-table-toggle-element-selected"
+                                  : ""
+                              }`}
+                              onClick={() => {
+                                if (this.state.blockFourSelectedItem === 2) {
+                                  this.goToInsightsPage();
+                                } else this.changeBlockFourItem(2);
+                              }}
                             >
-                              {/* <div className="info-icon-i">
+                              Insights
+                              <CustomOverlay
+                                position="top"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                className={"fix-width"}
+                                text={"Valuable insights based on the assets"}
+                              >
+                                {/* <div className="info-icon-i">
                                   i
                                 </div> */}
+                                <Image
+                                  src={InfoIconI}
+                                  className="infoIcon info-icon-home"
+                                  style={{
+                                    cursor: "pointer",
+                                    height: "13px",
+                                  }}
+                                />
+                              </CustomOverlay>
                               <Image
-                                src={InfoIconI}
-                                className="infoIcon info-icon-home"
-                                style={{
-                                  cursor: "pointer",
-                                  height: "13px",
-                                }}
+                                className="homeTabArrowIcon"
+                                src={HomeTabArrowIcon}
                               />
-                            </CustomOverlay>
-                            <Image
-                              className="homeTabArrowIcon"
-                              src={HomeTabArrowIcon}
-                            />
+                            </div>
                           </div>
                         </div>
+
+                        {this.state.blockFourSelectedItem === 1 ? (
+                          <InflowOutflowPortfolioHome
+                            isHome
+                            switchPriceGaugeLoader={
+                              this.state.switchPriceGaugeLoader
+                            }
+                            openChartPage={this.goToPriceGaugePage}
+                            hideExplainer
+                            // isHomepage
+                            showEth
+                            userWalletList={this.state.userWalletList}
+                            lochToken={this.state.lochToken}
+                            callChildPriceGaugeApi={
+                              this.state.callChildPriceGaugeApi
+                            }
+                          />
+                        ) : // : this.state.blockFourSelectedItem === 2 ? (
+                        //   <div>
+                        //     <div
+                        //       className={`newHomeTableContainer freezeTheFirstColumn ${
+                        //         this.state.tableLoading || tableData?.length < 1
+                        //           ? ""
+                        //           : "tableWatermarkOverlay"
+                        //       } ${
+                        //         this.state.tableLoading
+                        //           ? "newHomeTableContainerLoading"
+                        //           : ""
+                        //       }`}
+                        //     >
+                        //       <TransactionTable
+                        //         xAxisScrollable={
+                        //           !this.state.tableLoading &&
+                        //           tableData?.length > 0
+                        //         }
+                        //         xAxisScrollableColumnWidth={5.1}
+                        //         noSubtitleBottomPadding
+                        //         disableOnLoading
+                        //         isMiniversion
+                        //         tableData={tableData}
+                        //         columnList={columnList}
+                        //         headerHeight={60}
+                        //         isArrow={true}
+                        //         isLoading={this.state.tableLoading}
+                        //         watermarkOnTop
+                        //         // addWatermark
+                        //         fakeWatermark
+                        //         yAxisScrollable={!this.state.tableLoading}
+                        //       />
+                        //     </div>
+                        //     {!this.state.tableLoading ? (
+                        //       <div className="inter-display-medium bottomExtraInfo">
+                        //         <div
+                        //           onClick={this.goToTransactionHistoryPage}
+                        //           className="bottomExtraInfoText"
+                        //         >
+                        //           {totalCount && totalCount > 10
+                        //             ? `Click here to see ${numToCurrency(
+                        //                 totalCount - 10,
+                        //                 true
+                        //               ).toLocaleString("en-US")}+ transaction${
+                        //                 totalCount - 10 > 1 ? "s" : ""
+                        //               }`
+                        //             : "Click here to see more"}
+                        //         </div>
+                        //       </div>
+                        //     ) : null}
+                        //   </div>
+                        // )
+                        this.state.blockFourSelectedItem === 2 ? (
+                          <PortfolioHomeInsightsBlock
+                            showBlurredInsights={this.showBlurredInsights}
+                            history={this.props.history}
+                            updatedInsightList={this.state.updatedInsightList}
+                            insightsBlockLoading={
+                              this.state.insightsBlockLoading
+                            }
+                            // isPremiumUser={this.state.isPremiumUser}
+                            isPremiumUser={this.state.isPremiumUser}
+                          />
+                        ) : null}
                       </div>
+                    </Col>
+                  </Row>
+                </div>
 
-                      {this.state.blockFourSelectedItem === 1 ? (
-                        <InflowOutflowPortfolioHome
-                          switchPriceGaugeLoader={
-                            this.state.switchPriceGaugeLoader
-                          }
-                          openChartPage={this.goToPriceGaugePage}
-                          hideExplainer
-                          // isHomepage
-                          showEth
-                          userWalletList={this.state.userWalletList}
-                          lochToken={this.state.lochToken}
-                          callChildPriceGaugeApi={
-                            this.state.callChildPriceGaugeApi
-                          }
-                        />
-                      ) : // : this.state.blockFourSelectedItem === 2 ? (
-                      //   <div>
-                      //     <div
-                      //       className={`newHomeTableContainer freezeTheFirstColumn ${
-                      //         this.state.tableLoading || tableData?.length < 1
-                      //           ? ""
-                      //           : "tableWatermarkOverlay"
-                      //       } ${
-                      //         this.state.tableLoading
-                      //           ? "newHomeTableContainerLoading"
-                      //           : ""
-                      //       }`}
-                      //     >
-                      //       <TransactionTable
-                      //         xAxisScrollable={
-                      //           !this.state.tableLoading &&
-                      //           tableData?.length > 0
-                      //         }
-                      //         xAxisScrollableColumnWidth={5.1}
-                      //         noSubtitleBottomPadding
-                      //         disableOnLoading
-                      //         isMiniversion
-                      //         tableData={tableData}
-                      //         columnList={columnList}
-                      //         headerHeight={60}
-                      //         isArrow={true}
-                      //         isLoading={this.state.tableLoading}
-                      //         watermarkOnTop
-                      //         // addWatermark
-                      //         fakeWatermark
-                      //         yAxisScrollable={!this.state.tableLoading}
-                      //       />
-                      //     </div>
-                      //     {!this.state.tableLoading ? (
-                      //       <div className="inter-display-medium bottomExtraInfo">
-                      //         <div
-                      //           onClick={this.goToTransactionHistoryPage}
-                      //           className="bottomExtraInfoText"
-                      //         >
-                      //           {totalCount && totalCount > 10
-                      //             ? `Click here to see ${numToCurrency(
-                      //                 totalCount - 10,
-                      //                 true
-                      //               ).toLocaleString("en-US")}+ transaction${
-                      //                 totalCount - 10 > 1 ? "s" : ""
-                      //               }`
-                      //             : "Click here to see more"}
-                      //         </div>
-                      //       </div>
-                      //     ) : null}
-                      //   </div>
-                      // )
-                      this.state.blockFourSelectedItem === 2 ? (
-                        <PortfolioHomeInsightsBlock
-                          showBlurredInsights={this.showBlurredInsights}
-                          history={this.props.history}
-                          updatedInsightList={this.state.updatedInsightList}
-                          insightsBlockLoading={this.state.insightsBlockLoading}
-                          // isPremiumUser={this.state.isPremiumUser}
-                          isPremiumUser={this.state.isPremiumUser}
-                        />
-                      ) : null}
-                    </div>
-                  </Col>
-                </Row>
+                {/* footer  */}
+                <Footer isWideScreen />
               </div>
-
-              {/* footer  */}
-              <Footer />
             </div>
           </div>
         )}
@@ -6146,8 +6241,8 @@ class Portfolio extends BaseReactComponent {
             show={this.state.fixModal}
             onHide={this.handleFixModal}
             //  modalIcon={AddWalletModalIcon}
-            title="Fix your wallet address"
-            subtitle="Add your wallet address to get started"
+            title="Fix this wallet address"
+            subtitle="Add a wallet address to get started"
             // fixWalletAddress={fixWalletAddress}
             btnText="Done"
             btnStatus={true}

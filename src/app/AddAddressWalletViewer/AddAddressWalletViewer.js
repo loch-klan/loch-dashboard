@@ -118,6 +118,8 @@ class AddAddressWalletViewer extends Component {
             className="portfolio-section"
             style={{
               minWidth: "85rem",
+              maxWidth: "120rem",
+              width: "120rem",
               marginTop: "11rem",
             }}
           ></div>
@@ -168,10 +170,10 @@ class AddAddressWalletViewer extends Component {
                     <div
                       className="m-r-16 section-table"
                       style={{
-                        height: "41rem",
+                        height: "43rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "41rem",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -245,7 +247,7 @@ class AddAddressWalletViewer extends Component {
                         }}
                         className="inter-display-medium"
                       >
-                        Understand your unrealized profit and loss per token
+                        Understand the unrealized profit and loss per token
                       </div>
                     </div>
                   </Col>
@@ -253,10 +255,10 @@ class AddAddressWalletViewer extends Component {
                     <div
                       className="section-table"
                       style={{
-                        height: "41rem",
+                        height: "43rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "41rem",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -355,7 +357,7 @@ class AddAddressWalletViewer extends Component {
                         }}
                         className="inter-display-medium"
                       >
-                        Understand your portfolio's net flows
+                        Understand this portfolio's net flows
                       </div>
                     </div>
                   </Col>
@@ -374,8 +376,8 @@ class AddAddressWalletViewer extends Component {
                       style={{
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "41rem",
-                        height: "41rem",
+                        minHeight: "43rem",
+                        height: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -468,7 +470,8 @@ class AddAddressWalletViewer extends Component {
                         }}
                         className="inter-display-medium"
                       >
-                        Understand where you’ve exchanged the most value
+                        Understand where this portfolio has exchanged the most
+                        value
                       </div>
                     </div>
                   </Col>
@@ -476,10 +479,10 @@ class AddAddressWalletViewer extends Component {
                     <div
                       className="section-table"
                       style={{
-                        height: "41rem",
+                        height: "43rem",
                         display: "flex",
                         flexDirection: "column",
-                        minHeight: "41rem",
+                        minHeight: "43rem",
                         marginBottom: 0,
                       }}
                     >
@@ -553,7 +556,7 @@ class AddAddressWalletViewer extends Component {
                         }}
                         className="inter-display-medium"
                       >
-                        Understand when this token was bought and sold
+                        Understand when these tokens were bought and sold
                       </div>
                     </div>
                   </Col>

@@ -1251,7 +1251,11 @@ class TopWalletAddressList extends Component {
 
                   <div
                     ref={this.props.buttonRef}
-                    className="topWalletAddressListFollowShareBtn ml-2"
+                    className={`topWalletAddressListFollowShareBtn ${
+                      this.state.showFollowingAddress && !this.props.hideShare
+                        ? "ml-2"
+                        : ""
+                    }`}
                     id="address-button"
                     // onClick={this.toggleShareModal}
                     onClick={this.handleSharePassFun}
@@ -1300,7 +1304,7 @@ class TopWalletAddressList extends Component {
           noHomeInPath={this.props.noHomeInPath}
         />
         {/* {this.props.showpath ? breadCrumb : ""} */}
-        <div className="topWalletAddressList">
+        <div className={`topWalletAddressList ${this.props.isWideScreen?"topWalletAddressListWide":""}`}>
           {this.state.followSignupModal ? (
             <FollowExitOverlay
               followedAddress={this.state.followedAddress}

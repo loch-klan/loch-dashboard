@@ -623,66 +623,68 @@ class PriceGauge extends Component {
           </div>
         </div>
         <div className="intelligence-page-section">
-          <div className="intelligence-section page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-              showpath
-              currentPage={"price-gauge"}
-            />
-            {this.state.upgradeModal && (
-              <UpgradeModal
-                show={this.state.upgradeModal}
-                onHide={this.upgradeModal}
+          <div className="intelligence-section page-scroll">
+            <div className="page-scroll-child">
+              <TopWalletAddressList
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                handleShare={this.handleShare}
+                showpath
+                currentPage={"price-gauge"}
+              />
+              {this.state.upgradeModal && (
+                <UpgradeModal
+                  show={this.state.upgradeModal}
+                  onHide={this.upgradeModal}
+                  history={this.props.history}
+                  isShare={window.localStorage.getItem("share_id")}
+                  isStatic={this.state.isStatic}
+                  triggerId={this.state.triggerId}
+                  pname="intelligence"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+              <div className="m-b-32">
+                <PageHeader
+                  title="Price gauge"
+                  subTitle="Understand when these tokens were bought and sold"
+                  currentPage="price-gauge"
+                  ShareBtn={true}
+                  handleShare={this.handleShare}
+                  updateTimer={this.updateTimer}
+                  hoverText={`This chart reflects the price for any token held by this portfolio ever. Understand if this trader can buy low and sell high.`}
+                />
+              </div>
+
+              <div
+                id="price"
+                style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
+              >
+                <InflowOutflowChart
+                  userWalletList={this.state.userWalletList}
+                  apiResponse={this.state.apiResponse}
+                />
+              </div>
+
+              <Footer />
+            </div>
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
                 history={this.props.history}
-                isShare={window.localStorage.getItem("share_id")}
-                isStatic={this.state.isStatic}
-                triggerId={this.state.triggerId}
-                pname="intelligence"
+                changeWalletList={this.handleChangeList}
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                from="intelligence"
                 updateTimer={this.updateTimer}
               />
             )}
-            <div className="m-b-32">
-              <PageHeader
-                title="Price gauge"
-                subTitle="Understand when this token was bought and sold"
-                currentPage="price-gauge"
-                ShareBtn={true}
-                handleShare={this.handleShare}
-                updateTimer={this.updateTimer}
-                hoverText={`This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high.`}
-              />
-            </div>
-
-            <div
-              id="price"
-              style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
-            >
-              <InflowOutflowChart
-                userWalletList={this.state.userWalletList}
-                apiResponse={this.state.apiResponse}
-              />
-            </div>
-
-            <Footer />
           </div>
-          {this.state.addModal && (
-            <FixAddModal
-              show={this.state.addModal}
-              onHide={this.handleAddModal}
-              modalIcon={AddWalletModalIcon}
-              title="Add wallet address"
-              subtitle="Add more wallet address here"
-              modalType="addwallet"
-              btnStatus={false}
-              btnText="Go"
-              history={this.props.history}
-              changeWalletList={this.handleChangeList}
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              from="intelligence"
-              updateTimer={this.updateTimer}
-            />
-          )}
         </div>
       </>
     );

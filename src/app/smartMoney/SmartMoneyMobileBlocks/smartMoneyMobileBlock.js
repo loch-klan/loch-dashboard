@@ -17,6 +17,7 @@ import {
   ArrowUpRightSmallIcon,
 } from "../../../assets/images/icons/index.js";
 import CheckboxCustomTable from "../../common/customCheckboxTable.js";
+import CustomTableBtn from "../../common/CustomTableBtn.js";
 
 class smartMoneyMobileBlock extends BaseReactComponent {
   constructor(props) {
@@ -24,21 +25,31 @@ class smartMoneyMobileBlock extends BaseReactComponent {
     this.state = {};
   }
   handleOnClick = (addItem) => {
-    if (!this.props.smartMoneyBlur && this.props.handleFollowUnfollow) {
-      this.props.handleFollowUnfollow(
-        this.props.mapData.account,
-        addItem,
-        this.props.mapData.tagName
-      );
+    if (this.props.justShowTable) {
+      // if (this.props.passedActionFun) {
+      this.props.passedActionFun(this.props.mapData.account);
+      // }
     } else {
-      if (this.props.openSignInOnclickModal) {
-        this.props.openSignInOnclickModal();
+      if (!this.props.smartMoneyBlur && this.props.handleFollowUnfollow) {
+        this.props.handleFollowUnfollow(
+          this.props.mapData.account,
+          addItem,
+          this.props.mapData.tagName
+        );
+      } else {
+        if (this.props.openSignInOnclickModal) {
+          this.props.openSignInOnclickModal();
+        }
       }
     }
   };
   render() {
     return (
-      <div className="mobileSmartMoneyBlock">
+      <div
+        className={`mobileSmartMoneyBlock ${
+          this.props.justShowTable ? "mobileSmartMoneyBlockCopyTrade" : ""
+        }`}
+      >
         <div className="msmbHeader">
           <div className="msmbHeaderLeft">
             {this.props.mapData.rank ? (
@@ -120,9 +131,18 @@ class smartMoneyMobileBlock extends BaseReactComponent {
           </div>
           {this.props.hideFollow ? null : (
             <div className="msmbBodyItem">
-              <div className="inter-display-medium msmbBITitle">Follow</div>
+              <div className="inter-display-medium msmbBITitle">Action</div>
               <div className={`inter-display-medium msmbBIAmount`}>
-                <CheckboxCustomTable
+                <CustomTableBtn
+                  isMobile
+                  isChecked={
+                    this.props.mapData.following && !this.props.smartMoneyBlur
+                  }
+                  handleOnClick={this.handleOnClick}
+                  checkedText={this.props.justShowTable ? "Copy" : "Following"}
+                  uncheckedText={this.props.justShowTable ? "Copy" : "Follow"}
+                />
+                {/* <CheckboxCustomTable
                   handleOnClick={this.handleOnClick}
                   isChecked={
                     this.props.mapData.following && !this.props.smartMoneyBlur
@@ -131,7 +151,7 @@ class smartMoneyMobileBlock extends BaseReactComponent {
                   dontSelectIt={
                     this.props.smartMoneyBlur || this.props.isNoUser
                   }
-                />
+                /> */}
               </div>
             </div>
           )}
