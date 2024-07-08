@@ -1,0 +1,305 @@
+.expert-person-page {
+  margin-top: 9rem;
+  padding: 9rem;
+  padding-top: 0;
+  padding-bottom: 7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 85rem;
+  position: relative;
+  .expert-person-page-block-top-gradient {
+    width: 100%;
+    height: 10%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: radial-gradient(
+      71.94% 131.12% at 48.88% 181.12%,
+      rgba(95, 51, 255, 0.6) 0%,
+      rgba(13, 56, 209, 0.108) 68%,
+      rgba(95, 51, 255, 0) 100%
+    );
+    transform: rotate(180deg);
+    z-index: 1;
+  }
+  .ep-expert-info {
+    z-index: 2;
+    width: 100%;
+    padding: 5rem 0rem;
+    margin-bottom: 5rem;
+    max-width: 120rem;
+    // background: radial-gradient(
+    //   71.94% 131.12% at 48.88% 181.12%,
+    //   rgba(95, 51, 255, 0.6) 0%,
+    //   rgba(13, 56, 209, 0.108) 68%,
+    //   rgba(95, 51, 255, 0) 100%
+    // );
+    border-bottom: 0.16rem solid var(--referallCopyBtn);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .ep-ei-data {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      .ep-ei-data-image {
+        height: 10rem;
+        width: 10rem;
+        border-radius: 50%;
+      }
+      .ep-ei-data-details {
+        align-self: stretch;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        .ep-ei-dd-nametag {
+          font-size: 20px;
+        }
+        .ep-ei-dd-acccount-amount {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-left: 0.3rem;
+          margin-top: 0.3rem;
+          .ep-ei-dd-acccount {
+            color: var(--greyb0b);
+            font-size: 13px;
+            cursor: pointer;
+            &:hover {
+              color: var(--primaryTextColor);
+            }
+          }
+          .ep-ei-dd-amount {
+            color: var(--expertsNetWorth);
+            font-size: 16px;
+          }
+        }
+        .ep-ei-dd-desc {
+          margin-left: 0.3rem;
+          margin-top: 1rem;
+          width: 30rem;
+          color: var(--referallUsedBtnText);
+          font-size: 13px;
+        }
+        .ep-expert-social {
+          width: 100%;
+          transform: translateY(1rem);
+
+          .ep-expert-social-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-left: 2px;
+            .ep-expert-social-links-item {
+              cursor: pointer;
+              width: 2rem;
+              filter: var(--invertColor);
+
+              &:hover {
+                opacity: 0.5;
+              }
+            }
+          }
+        }
+      }
+    }
+    .ep-ei-btn {
+      background-color: var(--primaryTextColor);
+      color: var(--cardBackgroud);
+      padding: 1.5rem 5.5rem;
+      border-radius: 1rem;
+      font-size: 13px;
+      border: none;
+      font-size: 16px;
+      &:hover {
+        background-color: var(--cardBackgroud);
+        color: var(--primaryTextColor);
+      }
+    }
+  }
+
+  .ep-about-expert {
+    width: 100%;
+    max-width: 120rem;
+    margin-bottom: 6rem;
+    .ep-about-expert-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .ep-aeh-title {
+        font-weight: 500;
+        font-size: 16px;
+      }
+      .ep-aeh-time {
+        font-weight: 500;
+        font-size: 13px;
+        color: var(--currenyConvertorText);
+      }
+    }
+    .ep-about-expert-data {
+      display: flex;
+      align-items: center;
+      margin-top: 2rem;
+      color: var(--black191);
+      gap: 1.5rem;
+      overflow-x: scroll;
+      &::-webkit-scrollbar {
+        height: 0rem;
+      }
+      .ep-about-expert-data-block {
+        background-color: var(--cardBackgroud);
+        padding: 2rem;
+        border-radius: 1.5rem;
+        flex: 1;
+        align-self: stretch;
+        min-width: 15rem;
+        .ep-exdb-image {
+          height: 3rem;
+          margin-bottom: 1.5rem;
+          filter: var(--invertColor);
+        }
+        .ep-exdb-title {
+          font-size: 13px;
+          margin-bottom: 0.3rem;
+          white-space: nowrap;
+        }
+        .ep-exdb-desc {
+          font-size: 24px;
+        }
+      }
+      .ep-about-expert-data-long-block {
+        flex: 2.5;
+        min-width: 25rem;
+      }
+    }
+  }
+  .ep-top-experts {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 120rem;
+    .ep-top-experts-heading {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+      .ep-te-image {
+        filter: var(--invertColor);
+        height: 20px;
+        margin-right: 0.6rem;
+      }
+      .ep-te-text {
+        font-weight: 500;
+        font-size: 16px;
+      }
+    }
+    .ep-te-scroll {
+      background-color: var(--primaryBackgroud);
+      display: flex;
+      align-items: flex-start;
+      // min-width: 120rem;
+      max-width: 120rem;
+      overflow-x: scroll;
+      gap: 1.5rem;
+      padding-bottom: 1rem;
+
+      &::-webkit-scrollbar {
+        height: 0rem;
+      }
+      .ep-te-expert-block {
+        background-color: var(--cardBackgroud);
+        box-shadow: 0px 3px 10px -6px var(--topExperctsBoxShadowColor);
+        align-self: stretch;
+        border-radius: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem;
+        padding-top: 2rem;
+        width: 20rem;
+        min-width: 20rem;
+        max-width: 20rem;
+        .ep-te-expert-block-data {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          .ep-te-b-image {
+            height: 6rem;
+            width: 6rem;
+            border-radius: 50%;
+            margin-bottom: 1.8rem;
+          }
+          .ep-te-b-address {
+            font-size: 16px;
+          }
+          .ep-te-b-networth {
+            font-size: 13px;
+            margin: 0.2rem 0;
+          }
+          .ep-te-b-nametag {
+            font-size: 13px;
+            color: var(--referallUsedBtnText);
+          }
+        }
+        .ep-te-b-consultbtn {
+          border: 0.1px solid var(--referallCopyBtn);
+          box-shadow: var(--boxShadowMd);
+          text-align: center;
+          background-color: transparent;
+          margin-top: 3.5rem;
+          padding: 1rem;
+          border-radius: 0.8rem;
+          font-size: 13px;
+          color: var(--black191);
+          &:hover {
+            color: var(--primaryBackgroud);
+            background-color: var(--primaryTextColor);
+          }
+        }
+      }
+    }
+  }
+}
+.expert-person-page-mobile {
+  width: 100%;
+  overflow: hidden;
+  margin-top: -2rem;
+  .expert-person-page {
+    margin-top: 0rem;
+    padding: 0rem;
+    padding-bottom: 0rem;
+    min-width: unset;
+    .ep-expert-info {
+      flex-direction: column;
+      padding: 3rem 2rem;
+      gap: 4rem;
+      margin-bottom: 1rem;
+      border-bottom: none;
+      .ep-ei-data {
+        width: 100%;
+        .ep-ei-data-image {
+          height: 8rem;
+          width: 8rem;
+        }
+      }
+      .ep-ei-btn {
+        width: 100%;
+        padding-top: 1.8rem;
+        padding-bottom: 1.8rem;
+      }
+    }
+    .ep-about-expert {
+      padding: 0rem 2rem;
+      margin-bottom: 4rem;
+      .ep-about-expert-data {
+        overflow: hidden;
+        flex-wrap: wrap;
+      }
+    }
+    .ep-top-experts {
+      padding: 2rem;
+      padding-top: 0rem;
+    }
+  }
+}
