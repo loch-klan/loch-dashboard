@@ -127,6 +127,7 @@ export { default as UserCreditScrollTopArrowIcon } from "./userCreditScrollTopAr
 export { default as AvailableCopyTradeCheckIcon } from "./availableCopyTradeCheck.svg";
 export { default as AvailableCopyTradeCrossIcon } from "./availableCopyTradeCross.svg";
 export { default as CopyTradePayWallIllustrationIcon } from "./copyTradePayWallIllustration.png";
+export { default as EmptyCopyTradeIllustrationIcon } from "./emptyCopyTradeIllustration.svg";
 export { default as LightBulbPaywallIcon } from "./lightBulbPaywall.svg";
 export { default as ChartDonutPaywallIcon } from "./chartDonutPaywall.svg";
 export { default as ChartLinePaywallIcon } from "./chartLinePaywall.svg";

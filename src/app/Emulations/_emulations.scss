@@ -35,6 +35,13 @@
             padding: 1.4rem 1rem;
           }
         }
+        .addWalletError {
+          font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
+          font-size: 1rem;
+          font-weight: normal;
+          color: #ea4e3c;
+          line-height: 19px;
+        }
         &:hover {
           .awInputWrapper {
             border-color: var(--primaryTextColor) !important;
@@ -464,7 +471,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--primaryTextColor);
+        color: var(--primarySubTextColor);
         padding: 0rem 3rem;
         text-align: center;
       }
