@@ -1347,6 +1347,7 @@ class Emulations extends Component {
           ) : null}
 
           <EmulationsMobile
+            passedActionFun={this.copyPopularAddress}
             title="Copy Trade"
             subTitle="Don’t be someone else’s exit liquidity. Use our copy trader to enter and exit safety"
             history={this.props.history}
@@ -1808,6 +1809,7 @@ class Emulations extends Component {
                           >
                             <HomeSmartMoneyPage
                               justShowTable
+                              passedActionFun={this.copyPopularAddress}
                               history={this.props.history}
                               location={this.props.location}
                             />

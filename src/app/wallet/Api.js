@@ -1,8 +1,13 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
 import { addLocalWalletList } from "../common/Api";
-import { getAllWalletList } from "./WalletAction";
+import { getAllWalletList, resetAllWalletList } from "./WalletAction";
 
+export const reserWalletList = () => {
+  return async function (dispatch) {
+    dispatch(resetAllWalletList());
+  };
+};
 export const getAllWalletListApi = (data, ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
