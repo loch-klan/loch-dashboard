@@ -51,6 +51,11 @@ import {
 import { addUserCredits } from "../profile/Api";
 import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from "./Api";
 import { mobileCheck } from "../../utils/ReusableFunctions";
+import {
+  UserCreditScrollLeftArrowIcon,
+  UserCreditScrollRightArrowIcon,
+} from "../../assets/images/icons";
+import ConnectWalletCustomSlider from "./ConnectWalletCustomSlider";
 class ConnectModal extends BaseReactComponent {
   constructor(props) {
     super(props);
@@ -87,77 +92,88 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>Binance</b> account on your computer
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={6}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>Binance</b> account on your computer
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click on <b>API Management</b> from your Profile icon
-                          dropdown menu on the top right
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click on <b>API Management</b> from your Profile icon
+                        dropdown menu on the top right
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          In <b>Give the API Key a Label</b> field type in what
-                          you want to call it, ex. <b>Loch Binance</b>, then
-                          click <b>Create</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        In <b>Give the API Key a Label</b> field type in what
+                        you want to call it, ex. <b>Loch Binance</b>, then click{" "}
+                        <b>Create</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Input your <b>Google Authentication Code</b> (2FA) for
-                          Binance
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Input your <b>Google Authentication Code</b> (2FA) for
+                        Binance
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Open your verification email Binance sent you and
-                          click <b>Confirm new API key</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Open your verification email Binance sent you and click{" "}
+                        <b>Confirm new API key</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 6
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          You can either scan the <b>QR code</b> with the{" "}
-                          <b>Loch</b> app by tapping <b>Scan QR Code</b> below
-                          and pointing the camera at the <b>QR code</b> on the
-                          screen, or manually copy/paste your <b>API</b> and{" "}
-                          <b>Secret Keys</b> into the app
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber6"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 6
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        You can either scan the <b>QR code</b> with the{" "}
+                        <b>Loch</b> app by tapping <b>Scan QR Code</b> below and
+                        pointing the camera at the <b>QR code</b> on the screen,
+                        or manually copy/paste your <b>API</b> and{" "}
+                        <b>Secret Keys</b> into the app
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
                 );
               },
             },
@@ -172,91 +188,101 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>Coinbase</b> account
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={8}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>Coinbase</b> account
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click on your <b>Profile icon</b> and go to the{" "}
-                          <b>Settings</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click on your <b>Profile icon</b> and go to the{" "}
+                        <b>Settings</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          In Settings open <b>API Tab</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        In Settings open <b>API Tab</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click on <b>New API Key</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click on <b>New API Key</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Enable the <b>2FA</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Enable the <b>2FA</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 6
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Set permissions for your account <b>API</b>, it's
-                          recommended to check all 'read' permission checkboxes
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber6"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 6
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Set permissions for your account <b>API</b>, it's
+                        recommended to check all 'read' permission checkboxes
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 7
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click <b>Create</b> on the bottom right corner
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber7"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 7
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click <b>Create</b> on the bottom right corner
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 8
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Copy/paste your <b>API</b> and <b>Secret Keys</b> into
-                          the app
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber8"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 8
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Copy/paste your <b>API</b> and <b>Secret Keys</b> into
+                        the app
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
+
+                  // {/* </Slider> */}
                 );
               },
             },
@@ -271,75 +297,85 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>Kraken</b> account on your computer
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={6}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>Kraken</b> account on your computer
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click on your <b>name</b> on the top rightof the
-                          screen
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click on your <b>name</b> on the top rightof the screen
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Select <b>API</b> from the Security dropdown menu,
-                          then click on the <b>Add key</b> button
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Select <b>API</b> from the Security dropdown menu, then
+                        click on the <b>Add key</b> button
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Grant permission to <b>Query Funds</b>,{" "}
-                          <b> Query Open Orders & Trades</b> and{" "}
-                          <b>Query Closed Orders & Trades</b> then click on the{" "}
-                          <b>Generate Key</b> button
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Grant permission to <b>Query Funds</b>,{" "}
+                        <b> Query Open Orders & Trades</b> and{" "}
+                        <b>Query Closed Orders & Trades</b> then click on the{" "}
+                        <b>Generate Key</b> button
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Your <b>API</b> and <b>Private Keys</b> will appear
-                          below the message Success: Created API key.
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Your <b>API</b> and <b>Private Keys</b> will appear
+                        below the message Success: Created API key.
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 6
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Copy and paste your API Key and API Secret (Private)
-                          into the Loch website and click <b>Connect</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber6"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 6
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Copy and paste your API Key and API Secret (Private)
+                        into the Loch website and click <b>Connect</b>
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
                 );
               },
             },
@@ -354,77 +390,88 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>KuCoin</b> account on your computer
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={6}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>KuCoin</b> account on your computer
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Hover over your profile icon on the top right of the
-                          screen and select <b>Api Management</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Hover over your profile icon on the top right of the
+                        screen and select <b>Api Management</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click <b>Create API</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click <b>Create API</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Fill in <b>API Name</b> (e.g. Loch Kucoin) and{" "}
-                          <b>API Passphrase</b> (the API Passphrase will be used
-                          to verify the API allocation, so make sure to record
-                          and backup it on paper or mobile terminal). Then click{" "}
-                          <b>Confirm</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Fill in <b>API Name</b> (e.g. Loch Kucoin) and{" "}
+                        <b>API Passphrase</b> (the API Passphrase will be used
+                        to verify the API allocation, so make sure to record and
+                        backup it on paper or mobile terminal). Then click{" "}
+                        <b>Confirm</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Go through Security Verification by entering your
-                          Trade Password, Email Verification Code, and Google
-                          Verification Code
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Go through Security Verification by entering your Trade
+                        Password, Email Verification Code, and Google
+                        Verification Code
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 6
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Copy and paste your <b>API Key</b>, <b>API Secret</b>,
-                          and <b>API Passphrase</b> into the Loch website and
-                          click <b>Connect</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber6"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 6
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Copy and paste your <b>API Key</b>, <b>API Secret</b>,
+                        and <b>API Passphrase</b> into the Loch website and
+                        click <b>Connect</b>
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
                 );
               },
             },
@@ -439,76 +486,86 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>OKX</b> account on your computer
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={6}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>OKX</b> account on your computer
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Hover over the <b>profile</b> icon on the top right of
-                          the screen and select <b>API</b> from the dropdown
-                          menu
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Hover over the <b>profile</b> icon on the top right of
+                        the screen and select <b>API</b> from the dropdown menu
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Select <b>+Create V5 API Key</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Select <b>+Create V5 API Key</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Select API Trading as your <b>Purpose</b>. Enter an{" "}
-                          <b>API Name</b> like “OKX - Loch” and enter a{" "}
-                          <b>passphrase</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Select API Trading as your <b>Purpose</b>. Enter an{" "}
+                        <b>API Name</b> like “OKX - Loch” and enter a{" "}
+                        <b>passphrase</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Only grant <b>Read</b> permissions and click{" "}
-                          <b>Confirm</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Only grant <b>Read</b> permissions and click{" "}
+                        <b>Confirm</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 6
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          After completing Two-factor authentication, copy and
-                          paste your <b>API Key</b>, <b>API Secret</b>, and{" "}
-                          <b>Passphrase</b> into the Loch website and click{" "}
-                          <b>Connect</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber6"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 6
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        After completing Two-factor authentication, copy and
+                        paste your <b>API Key</b>, <b>API Secret</b>, and{" "}
+                        <b>Passphrase</b> into the Loch website and click{" "}
+                        <b>Connect</b>
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
                 );
               },
             },
@@ -529,87 +586,93 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>Bitstamp</b> account on your
-                          computer
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={7}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>Bitstamp</b> account on your computer
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Hover over the <b>profile</b> icon on the top right of
-                          the screen and select <b>Settings</b> from the
-                          dropdown menu
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Hover over the <b>profile</b> icon on the top right of
+                        the screen and select <b>Settings</b> from the dropdown
+                        menu
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click <b>API access</b> under Account settings on the
-                          left
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click <b>API access</b> under Account settings on the
+                        left
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click <b>Create new API key</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click <b>Create new API key</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Only grant{" "}
-                          <b>Read main account and balance transactions</b>
-                          and click <b>Create new API key</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Only grant{" "}
+                        <b>Read main account and balance transactions</b>
+                        and click <b>Create new API key</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 6
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          After completing two-factor authentication, click{" "}
-                          <b>Activate API key</b> and click{" "}
-                          <b>Activate API Key</b> on the confirmation email
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber6"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 6
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        After completing two-factor authentication, click{" "}
+                        <b>Activate API key</b> and click{" "}
+                        <b>Activate API Key</b> on the confirmation email
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 7
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Copy and paste your <b>API Key</b>, <b>API Secret</b>{" "}
-                          into the Loch website and click <b>Connect</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber7"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 7
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Copy and paste your <b>API Key</b>, <b>API Secret</b>{" "}
+                        into the Loch website and click <b>Connect</b>
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
                 );
               },
             },
@@ -624,88 +687,94 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>Bybit</b> account on your computer
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={7}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>Bybit</b> account on your computer
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Hover over the <b>profile</b> icon on the top right of
-                          the screen and select <b>API</b> from the dropdown
-                          menu
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Hover over the <b>profile</b> icon on the top right of
+                        the screen and select <b>API</b> from the dropdown menu
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click <b>Create New Key</b> and select{" "}
-                          <b>System-generated API key</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click <b>Create New Key</b> and select{" "}
+                        <b>System-generated API key</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Set up <b>Two-Factor Authentication</b> if you haven’t
-                          already
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Set up <b>Two-Factor Authentication</b> if you haven’t
+                        already
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Select API Transaction as your <b>Purpose</b>. Enter
-                          an <b>API Name</b> like “Bybit - Loch” and grant{" "}
-                          <b>Read-Only</b> API Key permissions
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Select API Transaction as your <b>Purpose</b>. Enter an{" "}
+                        <b>API Name</b> like “Bybit - Loch” and grant{" "}
+                        <b>Read-Only</b> API Key permissions
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 6
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Select <b>No IP restriction</b>, click the check mark
-                          for all <b>Read</b> permissions, and select{" "}
-                          <b>Submit</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber6"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 6
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Select <b>No IP restriction</b>, click the check mark
+                        for all <b>Read</b> permissions, and select{" "}
+                        <b>Submit</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 7
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          After completing two-factor authentication, Copy and
-                          paste your <b>API Key</b> and <b>API Secret</b> into
-                          the Loch website and click <b>Connect</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber7"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 7
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        After completing two-factor authentication, Copy and
+                        paste your <b>API Key</b> and <b>API Secret</b> into the
+                        Loch website and click <b>Connect</b>
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
                 );
               },
             },
@@ -720,63 +789,68 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>Gemini</b> account on your computer
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={7}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>Gemini</b> account on your computer
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Select <b>API Settings</b> from the My Account
-                          dropdown on the top right of the screen
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Select <b>API Settings</b> from the My Account dropdown
+                        on the top right of the screen
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click on <b>Create A New Account API Key</b> and enter
-                          the code sent to you by SMS
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click on <b>Create A New Account API Key</b> and enter
+                        the code sent to you by SMS
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Name your API with any name you'd like (e.g. Loch
-                          Gemini), grant access to the Auditor, and store your
-                          Secret Key in a safe place
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Name your API with any name you'd like (e.g. Loch
+                        Gemini), grant access to the Auditor, and store your
+                        Secret Key in a safe place
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Copy and paste your API Key and API Secret into the
-                          Loch app, then click <b>Connect</b>
-                        </p>
-                      </div>
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Copy and paste your API Key and API Secret into the Loch
+                        app, then click <b>Connect</b>
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
                 );
               },
             },
@@ -791,74 +865,85 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>Huobi</b> account on your computer
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={6}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>Huobi</b> account on your computer
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Hover over the <b>profile</b> icon on the top right of
-                          the screen and select <b>API Management</b> from the
-                          dropdown menu
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Hover over the <b>profile</b> icon on the top right of
+                        the screen and select <b>API Management</b> from the
+                        dropdown menu
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Enter <b>Notes</b> like “Huobi - Loch”, select{" "}
-                          <b>read-only</b>, and click <b>Create</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Enter <b>Notes</b> like “Huobi - Loch”, select{" "}
+                        <b>read-only</b>, and click <b>Create</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Carefully read the Risk Reminder, select the check
-                          marks, and click <b>I understand</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Carefully read the Risk Reminder, select the check
+                        marks, and click <b>I understand</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Enter the verification code from your email
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Enter the verification code from your email
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 6
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Copy and paste your <b>API (Access) Key</b> and{" "}
-                          <b>Secret Key</b> into the Loch website and click{" "}
-                          <b>Connect</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber6"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 6
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Copy and paste your <b>API (Access) Key</b> and{" "}
+                        <b>Secret Key</b> into the Loch website and click{" "}
+                        <b>Connect</b>
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
                 );
               },
             },
@@ -873,61 +958,69 @@ class ConnectModal extends BaseReactComponent {
               connectionName: "",
               slider: () => {
                 return (
-                  <Slider {...this.state.settings}>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 1
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Log in to your <b>BitBNS</b> account from your desktop
-                        </p>
-                      </div>
+                  <ConnectWalletCustomSlider totalElements={6}>
+                    <div
+                      id="connectWalletSliderAccountNumber1"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 1
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Log in to your <b>BitBNS</b> account from your desktop
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 2
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Select <b>More</b> in the menu on the top and then
-                          click on <b>API Trading</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber2"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 2
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Select <b>More</b> in the menu on the top and then click
+                        on <b>API Trading</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 3
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Click <b>+ Get New Keys</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber3"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 3
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Click <b>+ Get New Keys</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 4
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Select <b>Read Only</b> and click{" "}
-                          <b>Create New Key</b>
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber4"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 4
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Select <b>Read Only</b> and click <b>Create New Key</b>
+                      </p>
                     </div>
-                    <div>
-                      <div className="steps">
-                        <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-                          STEP 5
-                        </h6>
-                        <p className="inter-display-medium f-s-14 lh-16">
-                          Copy/paste your <b>Public Key</b> and{" "}
-                          <b>Secret Key</b> into Loch
-                        </p>
-                      </div>
+
+                    <div
+                      id="connectWalletSliderAccountNumber5"
+                      className="steps"
+                    >
+                      <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+                        STEP 5
+                      </h6>
+                      <p className="inter-display-medium f-s-14 lh-16">
+                        Copy/paste your <b>Public Key</b> and <b>Secret Key</b>{" "}
+                        into Loch
+                      </p>
                     </div>
-                  </Slider>
+                  </ConnectWalletCustomSlider>
                 );
               },
             },
@@ -1071,6 +1164,14 @@ class ConnectModal extends BaseReactComponent {
     }
   };
   componentDidMount() {
+    let slickListDiv = document.getElementsByClassName("slick-list")[0];
+    if (slickListDiv) {
+      slickListDiv.addEventListener("wheel", (event) => {
+        event.preventDefault();
+        event.deltaY > 0 ? this.slider.slickNext() : this.slider.slickPrev();
+      });
+    }
+
     // set popup active
     window.localStorage.setItem("isPopupActive", true);
     this.applyWalletList();
@@ -1303,40 +1404,34 @@ class ConnectModal extends BaseReactComponent {
 
   showCoinbaseAuthSteps = () => {
     return (
-      <Slider {...this.state.settings}>
-        <div>
-          <div className="steps">
-            <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-              STEP 1
-            </h6>
-            <p className="inter-display-medium f-s-14 lh-16">
-              Click on Continue with <b>{this.state.selection.name}</b>. It will
-              lead you to your <b>{this.state.selection.name}</b> account
-            </p>
-          </div>
+      <ConnectWalletCustomSlider totalElements={3}>
+        <div id="connectWalletSliderAccountNumber1" className="steps">
+          <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+            STEP 1
+          </h6>
+          <p className="inter-display-medium f-s-14 lh-16">
+            Click on Continue with <b>{this.state.selection.name}</b>. It will
+            lead you to your <b>{this.state.selection.name}</b> account
+          </p>
         </div>
-        <div>
-          <div className="steps">
-            <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-              STEP 2
-            </h6>
-            <p className="inter-display-medium f-s-14 lh-16">
-              Log in to your <b>{this.state.selection.name}</b> account if you
-              are not logged in yet
-            </p>
-          </div>
+        <div id="connectWalletSliderAccountNumber2" className="steps">
+          <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+            STEP 2
+          </h6>
+          <p className="inter-display-medium f-s-14 lh-16">
+            Log in to your <b>{this.state.selection.name}</b> account if you are
+            not logged in yet
+          </p>
         </div>
-        <div>
-          <div className="steps">
-            <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
-              STEP 3
-            </h6>
-            <p className="inter-display-medium f-s-14 lh-16">
-              Click on the <b> Authorize</b> button
-            </p>
-          </div>
+        <div id="connectWalletSliderAccountNumber3" className="steps">
+          <h6 className="inter-display-semibold f-s-10 lh-12 grey-969">
+            STEP 3
+          </h6>
+          <p className="inter-display-medium f-s-14 lh-16">
+            Click on the <b> Authorize</b> button
+          </p>
         </div>
-      </Slider>
+      </ConnectWalletCustomSlider>
     );
   };
 
