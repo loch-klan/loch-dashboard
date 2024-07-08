@@ -47,6 +47,7 @@ import ScheduleAcallPage from "./app/ScheduleAcall/ScheduleAcallPage";
 import BecomeAnExpertCompletePage from "./app/BecomeAnExpertCompletePage/BecomeAnExpertCompletePage";
 import ScheduleAcallCompletePage from "./app/ScheduleAcallCompletePage/ScheduleAcallCompletePage";
 import ExpertCallFinishedPage from "./app/ExpertCallFinishedPage/ExpertCallFinishedPage";
+import ExpertCallPage from "./app/ExpertCallPage/ExpertCallPage";
 
 const routes = [
   {
@@ -315,13 +316,19 @@ const routes = [
   },
   {
     path: "/expert-call-finished/:id",
-    name: "Expert Schedule Call Booked",
+    name: "Expert Call Finished",
     type: PrivateRoute,
     component: ExpertCallFinishedPage,
   },
   {
+    path: "/expert-call/:id",
+    name: "Expert Call Running",
+    type: PrivateRoute,
+    component: ExpertCallPage,
+  },
+  {
     path: "/become-an-expert-complete",
-    name: "Expert Schedule Call Complete",
+    name: "Become An Expert Complete",
     type: PrivateRoute,
     component: BecomeAnExpertCompletePage,
   },
