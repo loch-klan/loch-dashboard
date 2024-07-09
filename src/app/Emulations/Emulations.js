@@ -35,6 +35,7 @@ import {
   ArrowUpRightSmallIcon,
   AvailableCopyTradeCheckIcon,
   AvailableCopyTradeCrossIcon,
+  EmptyCopyTradeIllustrationIcon,
   EmultionSidebarIcon,
   ExportIconWhite,
   FollowingSidebarIcon,
@@ -1865,6 +1866,9 @@ class Emulations extends Component {
                                 style={{ position: "relative" }}
                               >
                                 <TransactionTable
+                                  showImageForEmpty={
+                                    EmptyCopyTradeIllustrationIcon
+                                  }
                                   showHeaderOnEmpty
                                   message="Select a wallet above to copy trade to get started"
                                   noDataImage={NoCopyTradeTableIcon}
