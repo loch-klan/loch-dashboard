@@ -14,11 +14,13 @@ import {
   TransactionCardIcon,
 } from "../../assets/images/icons";
 import moment from "moment";
+import ExpertCallContentMobile from "./ExpertCallContentMobile";
 
 class ExpertCallContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isDarkMode: false,
       isMobile: mobileCheck(),
       callTranscript: [
         {
@@ -364,11 +366,21 @@ class ExpertCallContent extends Component {
       ],
     };
   }
+  componentDidMount() {}
 
   render() {
+    if (this.state.isMobile) {
+      return (
+        <ExpertCallContentMobile
+          allChats={this.state.allChats}
+          callTranscript={this.state.callTranscript}
+          isDarkMode={this.state.isDarkMode}
+        />
+      );
+    }
     return (
       <div className="exper-call-running-page">
-        {/* <div className="exper-call-finished-page-block-top-gradient" /> */}
+        <div className="exper-call-finished-page-block-top-gradient" />
         <div className="ecrp-block-container">
           <div className="ecrp-block ecrp-block-left">
             <div className="ecrp-b-left-header">
@@ -480,9 +492,6 @@ class ExpertCallContent extends Component {
             <div className="ecrp-b-right-transcript-input-message">
               <div className="ecrp-b-right-transcript-input">
                 <input
-                  style={{
-                    backgroundColor: "red",
-                  }}
                   placeholder="Send a message here"
                   className="ecrp-b-right-transcript-input-box"
                 />

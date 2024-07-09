@@ -196,3 +196,6 @@ export { default as SendChatMessageIcon } from "./sendChatMessage.svg";
 export { default as AudioCallExpertsIcon } from "./AudioCallExperts.svg";
 export { default as ExpertCallPhoneIcon } from "./ExpertCallPhone.svg";
 export { default as ExpertCallMuteMicIcon } from "./ExpertCallMuteMic.svg";
+export { default as TransactionCardPurpleIcon } from "./TransactionCardPurple.svg";
+export { default as TransactionCardPurpleDarkModeIcon } from "./TransactionCardPurpleDarkMode.svg";
+export { default as ChatExpertsPurpleIcon } from "./chatExpertsPurple.svg";
