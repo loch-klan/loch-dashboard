@@ -1,5 +1,5 @@
 .exper-call-running-page {
-  * {
+  div {
     color: var(--primaryTextColor);
     font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
     font-size: 13px;
@@ -23,6 +23,8 @@
     z-index: 1;
   }
   .ecrp-block-container {
+    position: relative;
+    z-index: 2;
     width: 100%;
     background-color: var(--cardBackgroud);
     border-radius: 16px;
@@ -211,6 +213,7 @@
         }
       }
     }
+
     .ecrp-block-right {
       box-shadow: 0px -4px 20px 0px #0000000a;
       overflow-y: scroll;
@@ -330,10 +333,6 @@
             outline: none;
             color: var(--sidebarTextColor);
             font-size: 14px;
-            // background-color: var(--greyCardBackgroud);
-          }
-          input {
-            background-color: purple !important;
           }
           .ecrp-b-right-transcript-input-icon {
             height: 18px;
@@ -358,7 +357,144 @@
     padding-bottom: 0rem;
     min-width: unset;
     .exper-call-finished-page-block-top-gradient {
-      top: 0rem;
+      top: 70px;
+    }
+    .ecrp-expert-container {
+      z-index: 2;
+      width: 100%;
+      background-color: var(--cardBackgroud);
+      box-shadow: 0px 4px 10px 0px #0000000a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 80px;
+      overflow-y: hidden;
+      position: absolute;
+      left: 0;
+      top: 0;
+      .ecrp-bc-title {
+        color: var(--referallUsedBtnText);
+        height: 15px;
+        font-size: 500;
+      }
+      .ecrp-bc-user {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        .ecrp-bc-u-dp {
+          height: 35px;
+          border-radius: 50%;
+        }
+        .ecrp-bc-u-name {
+          font-size: 17px;
+          font-weight: 500;
+        }
+      }
+    }
+    .ecrp-block-container {
+      margin-top: 90px;
+      flex-direction: column;
+      height: calc(100vh - 9rem - 90px);
+      .ecrp-block-top-mobile {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        padding-bottom: 0;
+        height: fit-content;
+
+        &::-webkit-scrollbar {
+          height: 0rem;
+          width: 0px;
+        }
+        .ecrp-bc-audio-call {
+          .ecrp-bc-audio-image {
+            height: 80px;
+          }
+        }
+        .ecrp-bc-items {
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+          .ecrp-bc-audio-btns {
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 0rem;
+            width: 100%;
+          }
+          .ecrp-bc-audio-call {
+          }
+        }
+      }
+      .ecrp-block-bottom-mobile-container {
+        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 50%;
+        .ecrp-block-bottom-mobile-header {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .ecrp-bb-mh-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+            min-width: 50%;
+            max-width: 50%;
+            border-bottom: 2px solid var(--cardSeperator);
+            padding: 10px;
+            gap: 5px;
+            div {
+              color: var(--primarySubTextColor);
+              font-size: 14px;
+            }
+          }
+          .ecrp-bb-mh-toggle-selected {
+            border-bottom-color: var(--purpleHighlight);
+            div {
+              color: var(--purpleHighlight);
+            }
+          }
+        }
+        .ecrp-block-bottom-mobile {
+          width: 100%;
+          min-width: 100%;
+          max-width: 100%;
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow-y: scroll;
+          .ecrp-block-left {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            .ecrp-b-left-header {
+              justify-content: center;
+              .ecrp-b-lh-icon-text-download {
+                background-color: var(--greyCardBackgroud);
+                padding: 8px 16px;
+                border-radius: 8px;
+                .ecrp-b-lh-icon {
+                  height: 12px;
+                }
+              }
+            }
+          }
+          .ecrp-block-right {
+            width: 100%;
+            min-width: 100%;
+            max-width: 100%;
+            .ecrp-b-right-transcript {
+            }
+          }
+        }
+      }
     }
   }
 }
