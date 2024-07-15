@@ -1,0 +1,363 @@
+.experts-page {
+  margin-top: 9rem;
+  padding: 9rem;
+  padding-bottom: 7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 85rem;
+  .ep-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+    // min-width: 120rem;
+    width: 100%;
+    max-width: 122rem;
+    padding-left: 2rem;
+    .ep-heading-title {
+      font-size: 32px;
+      line-height: 120%;
+      font-weight: 500;
+      background: linear-gradient(
+        20deg,
+        var(--blockOneHeaderGradMain) 28.03%,
+        var(--blockOneHeaderGradSecondary) 66.59%
+      );
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .ep-heading-subtitle {
+      font-size: 14px;
+      color: var(--blockOneDesc);
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+    .ep-heading-btn {
+      font-size: 14px;
+      color: var(--blockOneDesc);
+      font-weight: 500;
+      margin-top: 1.2rem;
+      background-color: black;
+      color: white;
+      border: 1px solid black;
+      border-radius: 10px;
+      padding: 8px 20px;
+      outline: none;
+      &:hover {
+        background-color: white;
+        color: black;
+        border-color: black;
+      }
+    }
+    .ep-heading-image {
+      height: 23rem;
+      transform: translateX(-30%);
+    }
+    background: radial-gradient(
+      71.94% 131.12% at 48.88% 181.12%,
+      rgba(95, 51, 255, 0.6) 0%,
+      rgba(13, 56, 209, 0.108) 68%,
+      rgba(95, 51, 255, 0) 100%
+    );
+  }
+  .ep-top-experts {
+    margin-top: -6rem;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    // min-width: 120rem;
+    max-width: 122rem;
+    .ep-top-experts-heading {
+      padding-left: 2rem;
+      display: flex;
+      align-items: center;
+      margin-bottom: 2rem;
+      .ep-te-image {
+        filter: var(--invertColor);
+        height: 20px;
+        margin-right: 0.7rem;
+      }
+      .ep-te-text {
+        font-weight: 500;
+        font-size: 20px;
+      }
+    }
+    .ep-te-scroll-container {
+      padding: 0rem 2rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ep-te-scroll {
+      background-color: var(--primaryBackgroud);
+      display: flex;
+      align-items: flex-start;
+      // min-width: 120rem;
+      max-width: 120rem;
+      overflow-x: scroll;
+      gap: 1.5rem;
+      padding-bottom: 1rem;
+
+      .ep-te-scroll-btn {
+        background-color: var(--cardBackgroud);
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 4.2rem;
+        width: 4.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1.2rem;
+        box-shadow: 2px 4px 12px -2px var(--topExperctsBoxShadowColor);
+        cursor: pointer;
+        .ep-te-scroll-btn-image {
+          transform: rotate(180deg);
+          height: 1.2rem;
+          filter: var(--invertColor);
+        }
+        &:hover {
+          background-color: var(--primaryTextColor);
+          .ep-te-scroll-btn-image {
+            filter: var(--invertColorHover);
+          }
+        }
+      }
+      .ep-te-scroll-btn-left {
+        left: 0;
+        .ep-te-scroll-btn-image {
+          transform: rotate(0deg);
+        }
+      }
+
+      &::-webkit-scrollbar {
+        height: 0rem;
+      }
+      .ep-te-expert-block {
+        background-color: var(--cardBackgroud);
+        box-shadow: 0px 3px 10px -6px var(--topExperctsBoxShadowColor);
+        align-self: stretch;
+        border-radius: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem;
+        padding-top: 2rem;
+        width: 20rem;
+        min-width: 20rem;
+        max-width: 20rem;
+        .ep-te-expert-block-data {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          .ep-te-b-image {
+            height: 6rem;
+            width: 6rem;
+            border-radius: 50%;
+            margin-bottom: 1.8rem;
+          }
+          .ep-te-b-address {
+            font-size: 16px;
+          }
+          .ep-te-b-networth {
+            font-size: 13px;
+            margin: 0.2rem 0;
+          }
+          .ep-te-b-nametag {
+            font-size: 13px;
+            color: var(--referallUsedBtnText);
+          }
+        }
+        .ep-te-b-consultbtn {
+          border: 0.1px solid var(--referallCopyBtn);
+          box-shadow: var(--boxShadowMd);
+          text-align: center;
+          background-color: transparent;
+          margin-top: 3.5rem;
+          padding: 1rem;
+          border-radius: 0.8rem;
+          font-size: 13px;
+          color: var(--black191);
+          &:hover {
+            color: var(--primaryBackgroud);
+            background-color: var(--primaryTextColor);
+          }
+        }
+      }
+    }
+  }
+  .ep-te-be-expert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4rem;
+    // min-width: 120rem;
+    width: 100%;
+    max-width: 122rem;
+    padding-left: 2rem;
+    padding-bottom: 4rem;
+    background: radial-gradient(
+        71.94% 131.12% at 48.88% 181.12%,
+        rgba(95, 51, 255, 0.6) 0%,
+        rgba(13, 56, 209, 0.108) 68%,
+        rgba(95, 51, 255, 0) 100%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+
+    .ep-te-be-expert-images {
+      display: flex;
+      align-items: center;
+      .ep-te-be-expert-image1 {
+        height: 20rem;
+      }
+      .ep-te-be-expert-image2 {
+        height: 28rem;
+        transform: translateX(-12rem) translateY(6rem);
+      }
+      .ep-te-be-expert-image3 {
+        transform: translateX(-25rem) translateY(12rem);
+      }
+    }
+    .ep-te-be-expert-items {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      transform: translateY(5rem);
+
+      .ep-te-be-expert-header {
+        font-size: 32px;
+        line-height: 100%;
+        font-weight: 500;
+        background: linear-gradient(
+          41.4deg,
+          #5f33ff 28.03%,
+          rgba(95, 51, 255, 0.7) 66.59%
+        );
+
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .ep-te-be-expert-desc {
+        font-size: 16px;
+        color: var(--blockOneDesc);
+        font-weight: 500;
+        margin: 1.25rem 0rem;
+        margin-bottom: 1.65rem;
+      }
+      .ep-te-be-expert-button {
+        width: fit-content;
+        text-align: center;
+        font-size: 16px;
+        background-color: var(--blockOneBtnBackground);
+        color: white;
+        font-weight: 500;
+        padding: 1.5rem 2.5rem;
+        border-radius: 0.8rem;
+        cursor: pointer;
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}
+.experts-page-mobile {
+  width: 100%;
+  overflow: hidden;
+  .experts-page {
+    margin-top: 0rem;
+    padding: 0rem;
+    padding-bottom: 0rem;
+    min-width: unset;
+    .ep-heading {
+      margin-top: 2rem;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0rem 2rem;
+      .ep-heading-text {
+        width: 100%;
+        text-align: center;
+        .ep-heading-title {
+          font-size: 28px;
+        }
+        .ep-heading-subtitle {
+          font-size: 16px;
+          margin-top: 0.5rem;
+        }
+      }
+      .ep-heading-image {
+        transform: unset;
+        height: 26rem;
+        margin-top: 2rem;
+      }
+      background: radial-gradient(
+        100% 131.12% at 48.88% 181.12%,
+        rgba(95, 51, 255, 0.6) 0%,
+        rgba(95, 51, 255, 0.5) 68%,
+        rgba(95, 51, 255, 0) 100%
+      );
+    }
+    .ep-top-experts {
+      margin-top: -4rem;
+      padding: 2rem;
+      background-color: var(--primaryBackgroud);
+      .ep-top-experts-heading {
+        .ep-te-image {
+          height: 21px;
+        }
+        .ep-te-text {
+          font-size: 21px;
+        }
+      }
+    }
+    .ep-te-be-expert {
+      margin-top: 5rem;
+      flex-direction: column-reverse;
+
+      .ep-te-be-expert-items {
+        transform: unset;
+        align-items: center;
+        text-align: center;
+
+        .ep-te-be-expert-desc {
+          margin-top: 0.5rem;
+          margin-bottom: 3rem;
+        }
+      }
+      .ep-te-be-expert-images {
+        padding-bottom: 13rem;
+        margin-top: 5rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 100%;
+        .ep-te-be-expert-image1 {
+          position: relative;
+        }
+        .ep-te-be-expert-image2 {
+          position: relative;
+          // transform: translateX(4rem) translateY(-18rem);
+          transform: unset;
+          position: absolute;
+          left: 50vw;
+          transform: translateX(-50%);
+          z-index: 2;
+        }
+        .ep-te-be-expert-image3 {
+          position: relative;
+          z-index: 1;
+          transform: translateY(13rem);
+        }
+      }
+    }
+  }
+}

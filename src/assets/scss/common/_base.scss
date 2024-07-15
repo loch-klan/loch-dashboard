@@ -2208,6 +2208,9 @@ form {
           // }
 
           &.no-hover {
+            span {
+              color: var(--secondaryDarkTextColor);
+            }
             &:hover {
               span {
                 color: var(--secondaryDarkTextColor);
@@ -2970,7 +2973,7 @@ input {
   filter: var(--hoverBrightnessValue) !important;
 }
 .overlay-tool-tip-container {
-  background-color: var(--cardBackground);
+  background-color: var(--cardBackgroud);
   color: var(--primaryTextColor);
 }
 .overlay-tool-tip-container-disabled {

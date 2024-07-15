@@ -41,6 +41,17 @@ import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalle
 import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
 import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
 import DexScreener from "./app/DexScreener/DexScreener";
+import ExpertsPage from "./app/ExpertsPage/ExpertsPage";
+import ExpertPersonPage from "./app/ExpertPersonPage/ExpertPersonPage";
+import BecomeAnExpertPage from "./app/BecomeAnExpertPage/BecomeAnExpertPage";
+import ScheduleAcallPage from "./app/ScheduleAcall/ScheduleAcallPage";
+import BecomeAnExpertCompletePage from "./app/BecomeAnExpertCompletePage/BecomeAnExpertCompletePage";
+import ScheduleAcallCompletePage from "./app/ScheduleAcallCompletePage/ScheduleAcallCompletePage";
+import ExpertCallFinishedPage from "./app/ExpertCallFinishedPage/ExpertCallFinishedPage";
+import ExpertCallPage from "./app/ExpertCallPage/ExpertCallPage";
+import ExpertCallLogs from "./app/ExpertCallLogs/ExpertCallLogs";
+import ExpertCallPrevPage from "./app/ExpertCallPage/ExpertCallPrevPage";
+
 const routes = [
   {
     path: "/",
@@ -281,6 +292,66 @@ const routes = [
     name: "Dex Screener",
     type: PublicSidebarRoute,
     component: DexScreener,
+  },
+  {
+    path: "/experts",
+    name: "Experts",
+    type: PrivateRoute,
+    component: ExpertsPage,
+  },
+  {
+    path: "/become-an-expert",
+    name: "Become an Expert",
+    type: PrivateRoute,
+    component: BecomeAnExpertPage,
+  },
+  {
+    path: "/expert/:id",
+    name: "Expert Person",
+    type: PrivateRoute,
+    component: ExpertPersonPage,
+  },
+  {
+    path: "/expert-schedule-call/:id",
+    name: "Expert Schedule Call",
+    type: PrivateRoute,
+    component: ScheduleAcallPage,
+  },
+  {
+    path: "/expert-schedule-call-booked/:id",
+    name: "Expert Schedule Call Booked",
+    type: PrivateRoute,
+    component: ScheduleAcallCompletePage,
+  },
+  {
+    path: "/expert-call-finished/:id",
+    name: "Expert Call Finished",
+    type: PrivateRoute,
+    component: ExpertCallFinishedPage,
+  },
+  {
+    path: "/expert-call/:id",
+    name: "Expert Call Running",
+    type: PrivateRoute,
+    component: ExpertCallPage,
+  },
+  {
+    path: "/expert-prev-call/:id",
+    name: "Expert Call Running",
+    type: PrivateRoute,
+    component: ExpertCallPrevPage,
+  },
+  {
+    path: "/become-an-expert-complete",
+    name: "Become An Expert Complete",
+    type: PrivateRoute,
+    component: BecomeAnExpertCompletePage,
+  },
+  {
+    path: "/experts/call-logs",
+    name: "Call history",
+    type: PrivateRoute,
+    component: ExpertCallLogs,
   },
 ];
 export default routes;

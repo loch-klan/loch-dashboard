@@ -19,7 +19,6 @@
   --primaryBoxShadowColor: rgba(24, 39, 75, 0.12);
   --primaryBoxShadowDarkerColor: rgba(0, 0, 0, 0.04);
   --swapContainer: #f4edfd;
-  --purpleHighlight: #5f33ff;
   --modalInput: white;
   --modalInputPlaceholder: #d4d4d4;
   --modalHeaderIcon: transparent;
@@ -125,6 +124,8 @@
   //buttons and badges
   --mainButtonBg: #fff;
   --mainButtonBgTwitter: #fff;
+  --badgeBlueBg: rgba(212, 208, 252, 0.5);
+  --badgeBluecolor: #313233;
   --badgeGreenBg: rgba(208, 252, 234, 0.5);
   --badgeGreencolor: #313233;
   --badgeRedBg: rgba(250, 219, 219, 0.5);
@@ -295,11 +296,18 @@
 
   // Mobile Add Address Signed out
   --mobileSearchInputShadow: rgba(255, 255, 255, 0.95);
+
+  //Experts
+  --expertsNetWorth: #505050;
+  --becomeExpertDesc: #606060;
+  --durationSelectedBack: #5f33ff33;
+  --topExperctsBoxShadowColor: rgb(42, 42, 42, 0.7);
   --tableFirstRowShadow: rgba(0, 0, 0, 0.04);
 
   // Dex screener
   --dexScreenerTableSuccess: #5abe7e;
   --dexScreenerTableError: #ed6668;
+  --expertsChat: #e5e5e633;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -323,7 +331,6 @@
   --primaryBoxShadowColor: #2a2a2a;
   --primaryBoxShadowDarkerColor: #2a2a2a;
   --swapContainer: rgba(86, 72, 107, 0.3);
-  --purpleHighlight: #be66ff;
   --modalInput: #202020;
   --modalInputPlaceholder: #cacbcc;
   --modalHeaderIcon: #303030;
@@ -412,7 +419,7 @@
   --sidebarBottomOptions: #96979a;
   --sidebarWalletAmount: #cacbcc;
   --sidebarHoverLink: #282828bd;
-  --sidebarHoverShadow: none;
+  --sidebarHoverShadow: 0px 8px 28px -6px rgba(255, 255, 255, 0.1);
   --sidebarSectional: #202020;
   --sidebarSectionalBOrder: #303030;
   --sidebarSectionalBOrderNoOpacity: #303030;
@@ -421,9 +428,11 @@
   //buttons and badges
   --mainButtonBg: #101010;
   --mainButtonBgTwitter: transparent;
-  --badgeGreenBg: rgba(208, 252, 234, 0.1);
+  --badgeBlueBg: rgba(212, 208, 252, 0.2);
+  --badgeBluecolor: rgba(212, 208, 252, 1);
+  --badgeGreenBg: rgba(208, 252, 234, 0.2);
   --badgeGreencolor: rgba(208, 252, 234, 1);
-  --badgeRedBg: rgba(250, 219, 219, 0.1);
+  --badgeRedBg: rgba(250, 219, 219, 0.2);
   --badgeRedcolor: rgba(250, 219, 219, 1);
 
   //Box shadow color
@@ -584,6 +593,12 @@
   --dummyHomePageBackground: url(../../images/DummyHomePageDark.png);
   --dummyProfileBackground: url(../../images/DummyProfilePageDark.png);
   --mobileSearchInputShadow: rgba(0, 0, 0, 0.95);
+
+  //Experts
+  --expertsNetWorth: #505050;
+  --becomeExpertDesc: rgb(153, 151, 151);
+  --durationSelectedBack: #5f33ff33;
+  --topExperctsBoxShadowColor: rgb(255, 255, 255, 0.3);
   --tableFirstRowShadow: rgba(255, 255, 255, 0.06);
 }
 [data-theme="dark2"] {

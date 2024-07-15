@@ -771,10 +771,11 @@ function Sidebar(props) {
   return (
     <>
       <div
-        style={{
-          zIndex: "0",
-          // position: "relative",
-        }}
+        style={
+          {
+            // position: "relative",
+          }
+        }
         className={`sidebar-section hide-scrollbar ${
           props.isSidebarClosed ? "sidebar-section-closed" : ""
         }`}

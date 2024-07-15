@@ -1,0 +1,169 @@
+.exper-call-finished-complete-page {
+  margin-top: 9rem;
+  padding: 9rem;
+  padding-top: 0rem;
+  padding-bottom: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 85rem;
+  .exper-call-finished-page-block-top-gradient {
+    width: 100%;
+    height: 20%;
+    position: absolute;
+    top: 9rem;
+    left: 0;
+
+    background: radial-gradient(
+      81.61% 163.22% at 50% 163.22%,
+      rgba(95, 51, 255, 0.6) 0%,
+      rgba(13, 56, 209, 0.108) 68%,
+      rgba(95, 51, 255, 0) 100%
+    );
+
+    transform: rotate(180deg);
+    z-index: 1;
+  }
+
+  .exper-call-finished-page-block {
+    max-width: 120rem;
+    padding-top: 14rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    z-index: 2;
+    .bae-pb-image {
+      height: 30px;
+      filter: var(--invertColor);
+      margin-bottom: 1rem;
+    }
+    .bae-pb-title {
+      font-size: 24px;
+      text-align: center;
+      margin: 1rem 0rem;
+    }
+    .bae-pb-desc {
+      font-size: 16px;
+      color: var(--becomeExpertDesc);
+      text-align: center;
+    }
+    .bae-pb-expert-block {
+      background-color: var(--cardBackgroud);
+      box-shadow: var(--sidebarHoverShadow);
+      padding: 2rem;
+      margin-top: 2rem;
+      border-radius: 2rem;
+      min-width: 43rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      .bae-pb-eb-image {
+        height: 6rem;
+        width: 6rem;
+        border-radius: 50%;
+      }
+      .bae-pb-eb-name {
+        font-size: 20px;
+        margin-top: 1rem;
+      }
+      .bae-pb-eb-date {
+        margin-top: 2rem;
+        font-size: 20px;
+      }
+      .bae-pb-eb-time {
+        font-size: 16px;
+        margin-top: 0.4rem;
+        color: var(--blockOneBtnBackground);
+      }
+      .bae-pb-eb-rate-title {
+        font-size: 16px;
+        margin-top: 3rem;
+        color: var(--becomeExpertDesc);
+      }
+      .bae-pb-eb-star-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+        gap: 1.5rem;
+        .bae-pb-eb-star {
+          height: 3.5rem;
+          cursor: pointer;
+        }
+        .bae-pb-eb-star-filled {
+          filter: var(--hoverBrightness);
+        }
+      }
+      .bae-pb-eb-container {
+        border: 1px solid var(--referallCopyBtn);
+        border-radius: 0.8rem;
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 2rem;
+        .bae-pb-eb-text-area {
+          border: none;
+          width: 100%;
+          padding: 0.5rem 1rem;
+          outline: none;
+          font-size: 15px;
+          box-shadow: none !important;
+          transition: none !important;
+          background-color: var(--cardBackgroud);
+          &::placeholder {
+            color: var(--modalInputPlaceholder);
+          }
+          height: 8rem;
+        }
+
+        &:hover {
+          border-color: var(--primaryTextColor);
+        }
+      }
+      .bae-pb-eb-btn {
+        margin-top: 3rem;
+        padding: 1.5rem 2rem;
+        border-radius: 0.8rem;
+        border: 1.5px solid var(--referallCopyBtn);
+        background-color: var(--cardBackgroud);
+        box-shadow: var(--boxShadowMd);
+        .bae-pb-eb-btn-text {
+          font-size: 16px;
+          color: var(--primaryTextColor);
+          text-shadow: 0.2px 0 var(--primaryTextColor);
+        }
+        &:hover {
+          background-color: var(--primaryTextColor);
+          border-color: var(--primaryTextColor);
+          .bae-pb-eb-btn-text {
+            color: var(--cardBackgroud);
+          }
+        }
+      }
+    }
+  }
+}
+.exper-call-finished-complete-page-mobile {
+  width: 100%;
+  overflow: hidden;
+  margin-top: -2rem;
+  .exper-call-finished-complete-page {
+    margin-top: 0rem;
+    padding: 1rem 2rem;
+    padding-bottom: 0rem;
+    min-width: unset;
+    .exper-call-finished-page-block-top-gradient {
+      top: 0rem;
+    }
+    .exper-call-finished-page-block {
+      padding: 8rem 0rem;
+      .bae-pb-expert-block {
+        width: 100%;
+        min-width: unset;
+      }
+    }
+  }
+}
