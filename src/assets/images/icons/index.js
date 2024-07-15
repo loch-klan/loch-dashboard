@@ -183,6 +183,7 @@ export { default as BecomeAnExpertCompleteHourGlassIcon } from "./becomeAnExpert
 export { default as ScheduleCallCheckIcon } from "./scheduleCallCheck.svg";
 export { default as ExpertCallFininsedStartIcon } from "./expertCallFininsedStart.svg";
 export { default as ExpertCallFininsedFilledStartIcon } from "./expertCallFininsedFilledStart.svg";
+export { default as ExpertCallFininsedFilledStarBlackIcon } from "./expertCallFininsedFilledStarBlack.svg";
 export { default as CopyTradeTopBarIcon } from "./copyTradeTopBar.svg";
 export { default as AboutExpertTwitterIcon } from "./aboutExpertTwitter.svg";
 export { default as AboutExpertLinkedInIcon } from "./aboutExpertLinkedIn.svg";

@@ -381,7 +381,11 @@ class ExpertCallContent extends Component {
     return (
       <div className="exper-call-running-page">
         <div className="exper-call-finished-page-block-top-gradient" />
-        <div className="ecrp-block-container">
+        <div
+          className={`ecrp-block-container ${
+            this.props.isPreviousCall ? "ecrp-block-prev-container" : ""
+          }`}
+        >
           <div className="ecrp-block ecrp-block-left">
             <div className="ecrp-b-left-header">
               <div className=" ecrp-b-lh-icon-text ecrp-b-lh-icon-text-transition">
@@ -423,7 +427,9 @@ class ExpertCallContent extends Component {
             </div>
           </div>
           <div className="ecrp-block ecrp-block-center">
-            <div className="ecrp-bc-title">On call with</div>
+            <div className="ecrp-bc-title">
+              {this.props.isPreviousCall ? "You had call with" : "On call with"}
+            </div>
             <div className="ecrp-bc-items">
               <div className="ecrp-bc-user">
                 <Image
@@ -439,21 +445,25 @@ class ExpertCallContent extends Component {
                 />
                 <div className="ecrp-bc-audio-text">12:30</div>
               </div>
-              <div className="ecrp-bc-audio-btns">
-                <div className="ecrp-bc-audio-mute-btn">
-                  <Image
-                    className="ecrp-bc-audio-mute-icon"
-                    src={ExpertCallMuteMicIcon}
-                  />
+              {this.props.isPreviousCall ? (
+                <div />
+              ) : (
+                <div className="ecrp-bc-audio-btns">
+                  <div className="ecrp-bc-audio-mute-btn">
+                    <Image
+                      className="ecrp-bc-audio-mute-icon"
+                      src={ExpertCallMuteMicIcon}
+                    />
+                  </div>
+                  <div className="ecrp-bc-audio-call-cut-btn">
+                    <Image
+                      className="ecrp-bc-audio-phone-icon"
+                      src={ExpertCallPhoneIcon}
+                    />
+                    <div className="ecrp-bc-audio-phone-text">Disconnect</div>
+                  </div>
                 </div>
-                <div className="ecrp-bc-audio-call-cut-btn">
-                  <Image
-                    className="ecrp-bc-audio-phone-icon"
-                    src={ExpertCallPhoneIcon}
-                  />
-                  <div className="ecrp-bc-audio-phone-text">Disconnect</div>
-                </div>
-              </div>
+              )}
             </div>
           </div>
           <div className="ecrp-block ecrp-block-right">

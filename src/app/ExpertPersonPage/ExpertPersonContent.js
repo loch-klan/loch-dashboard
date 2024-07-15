@@ -8,6 +8,7 @@ import {
   AboutExpertPhoneIcon,
   AboutExpertStockArrowIcon,
   AboutExpertThumbIcon,
+  BackArrowSmartMoneyIcon,
 } from "../../assets/images/icons";
 import {
   CurrencyType,
@@ -17,6 +18,7 @@ import {
 } from "../../utils/ReusableFunctions";
 import { getUser } from "../common/Api";
 import "./_expertPersonPage.scss";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class ExpertPersonContent extends Component {
   constructor(props) {

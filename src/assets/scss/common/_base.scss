@@ -2208,6 +2208,9 @@ form {
           // }
 
           &.no-hover {
+            span {
+              color: var(--secondaryDarkTextColor);
+            }
             &:hover {
               span {
                 color: var(--secondaryDarkTextColor);

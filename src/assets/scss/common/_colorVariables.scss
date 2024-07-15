@@ -124,6 +124,8 @@
   //buttons and badges
   --mainButtonBg: #fff;
   --mainButtonBgTwitter: #fff;
+  --badgeBlueBg: rgba(212, 208, 252, 0.5);
+  --badgeBluecolor: #313233;
   --badgeGreenBg: rgba(208, 252, 234, 0.5);
   --badgeGreencolor: #313233;
   --badgeRedBg: rgba(250, 219, 219, 0.5);
@@ -422,9 +424,11 @@
   //buttons and badges
   --mainButtonBg: #101010;
   --mainButtonBgTwitter: transparent;
-  --badgeGreenBg: rgba(208, 252, 234, 0.1);
+  --badgeBlueBg: rgba(212, 208, 252, 0.2);
+  --badgeBluecolor: rgba(212, 208, 252, 1);
+  --badgeGreenBg: rgba(208, 252, 234, 0.2);
   --badgeGreencolor: rgba(208, 252, 234, 1);
-  --badgeRedBg: rgba(250, 219, 219, 0.1);
+  --badgeRedBg: rgba(250, 219, 219, 0.2);
   --badgeRedcolor: rgba(250, 219, 219, 1);
 
   //Box shadow color

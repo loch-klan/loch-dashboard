@@ -1,0 +1,46 @@
+.expertCallLogs {
+  .expertCallLogs-star-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    .expertCallLogs-star {
+      height: 20px;
+      cursor: pointer;
+    }
+    .expertCallLogs-star-filled {
+      filter: var(--hoverBrightness);
+    }
+  }
+  .expert-call-expert {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .expert-call-log-status-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .expert-call-log-status {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      border-radius: 0.8rem;
+      padding: 0.9rem;
+    }
+    .expert-call-log-status-complete {
+      background: var(--badgeGreenBg);
+      color: var(--badgeGreencolor);
+    }
+    .expert-call-log-status-scheduled {
+      background: var(--badgeBlueBg);
+      color: var(--badgeBluecolor);
+    }
+    .expert-call-log-status-cancelled {
+      background: var(--badgeRedBg);
+      color: var(--badgeRedcolor);
+    }
+  }
+}

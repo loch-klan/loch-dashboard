@@ -93,35 +93,39 @@ class ExpertsPage extends Component {
   };
   scrollLeft = () => {
     var myElement = document.getElementById("topExpertsScrollBody");
-    var myElementWidth = document.getElementById(
-      "topExpertsScrollBody"
-    )?.clientWidth;
-    var myElementCurrentScrollPos = document.getElementById(
-      "topExpertsScrollBody"
-    )?.scrollLeft;
+    if (myElement) {
+      var myElementWidth = document.getElementById(
+        "topExpertsScrollBody"
+      )?.clientWidth;
+      var myElementCurrentScrollPos = document.getElementById(
+        "topExpertsScrollBody"
+      )?.scrollLeft;
 
-    const newPos = myElementCurrentScrollPos - myElementWidth;
-    myElement.scroll({
-      left: newPos,
-      behavior: "smooth",
-    });
-    this.scrollCalAlgo();
+      const newPos = myElementCurrentScrollPos - myElementWidth;
+      myElement.scroll({
+        left: newPos,
+        behavior: "smooth",
+      });
+      this.scrollCalAlgo();
+    }
   };
   scrollRight = () => {
     var myElement = document.getElementById("topExpertsScrollBody");
-    var myElementWidth = document.getElementById(
-      "topExpertsScrollBody"
-    )?.clientWidth;
-    var myElementCurrentScrollPos = document.getElementById(
-      "topExpertsScrollBody"
-    )?.scrollLeft;
+    if (myElement) {
+      var myElementWidth = document.getElementById(
+        "topExpertsScrollBody"
+      )?.clientWidth;
+      var myElementCurrentScrollPos = document.getElementById(
+        "topExpertsScrollBody"
+      )?.scrollLeft;
 
-    const newPos = myElementCurrentScrollPos + myElementWidth;
-    myElement.scroll({
-      left: newPos,
-      behavior: "smooth",
-    });
-    this.scrollCalAlgo();
+      const newPos = myElementCurrentScrollPos + myElementWidth;
+      myElement.scroll({
+        left: newPos,
+        behavior: "smooth",
+      });
+      this.scrollCalAlgo();
+    }
   };
   handleTopExpertsScroll = () => {
     if (this.timeout) {
@@ -144,7 +148,7 @@ class ExpertsPage extends Component {
         disableLeftArrow: false,
       });
     }
-    if (myDiv.offsetWidth + myDiv.scrollLeft >= myDiv.scrollWidth) {
+    if (myDiv.offsetWidth + myDiv.scrollLeft + 10 >= myDiv.scrollWidth) {
       this.setState({
         disableRightArrow: true,
       });

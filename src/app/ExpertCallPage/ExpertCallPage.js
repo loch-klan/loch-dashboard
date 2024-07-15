@@ -8,6 +8,7 @@ import MobileLayout from "../layout/MobileLayout";
 import ExpertCallContent from "./ExpertCallContent";
 import ExpertCallPageMobile from "./ExpertCallPageMobile";
 import "./_expertCallPage.scss";
+import PageHeader from "../common/PageHeader";
 
 class ExpertCallPage extends Component {
   constructor(props) {
@@ -60,7 +61,33 @@ class ExpertCallPage extends Component {
           </div>
           <div className="page-scroll">
             <div className="page-scroll-child">
-              <ExpertCallContent goToExpertsPage={this.goToExpertsPage} />
+              {this.props.isPreviousCall ? (
+                <div
+                  style={{
+                    zIndex: "2",
+                  }}
+                >
+                  <div
+                    style={{
+                      marginTop: "2rem",
+                    }}
+                  />
+                  <PageHeader
+                    title={"Transcript and Chat"}
+                    subTitle={
+                      "Browse Transcript and Chat of your previous calls with experts"
+                    }
+                    currentPage={"expertCallLogs"}
+                    history={this.props.history}
+                    ShareBtn={false}
+                    updateTimer={this.updateTimer}
+                  />
+                </div>
+              ) : null}
+              <ExpertCallContent
+                isPreviousCall={this.props.isPreviousCall}
+                goToExpertsPage={this.goToExpertsPage}
+              />
             </div>
           </div>
         </div>
