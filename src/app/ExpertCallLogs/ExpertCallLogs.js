@@ -214,7 +214,7 @@ class ExpertCallLogs extends BaseReactComponent {
         ),
         dataKey: "expert",
 
-        coumnWidth: 0.17,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "expert") {
@@ -246,7 +246,7 @@ class ExpertCallLogs extends BaseReactComponent {
         ),
         dataKey: "status",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "status") {
@@ -277,7 +277,7 @@ class ExpertCallLogs extends BaseReactComponent {
         ),
         dataKey: "time",
 
-        coumnWidth: 0.14,
+        coumnWidth: 0.12,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "time") {
@@ -314,7 +314,7 @@ class ExpertCallLogs extends BaseReactComponent {
         ),
         dataKey: "callLength",
 
-        coumnWidth: 0.1,
+        coumnWidth: 0.09,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "callLength") {
@@ -334,7 +334,7 @@ class ExpertCallLogs extends BaseReactComponent {
         ),
         dataKey: "review",
 
-        coumnWidth: 0.17,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "review") {
@@ -372,7 +372,7 @@ class ExpertCallLogs extends BaseReactComponent {
         ),
         dataKey: "rating",
 
-        coumnWidth: 0.16,
+        coumnWidth: 0.15,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "rating") {
@@ -399,7 +399,7 @@ class ExpertCallLogs extends BaseReactComponent {
         ),
         dataKey: "Action",
 
-        coumnWidth: 0.12,
+        coumnWidth: 0.11,
         isCell: true,
         cell: (rowData, dataKey, dataIndex) => {
           if (dataKey === "Action") {
@@ -416,8 +416,15 @@ class ExpertCallLogs extends BaseReactComponent {
               btnTitle = "Take call";
             }
             const onClickFun = () => {
+              console.log("rowData.status ", rowData.status);
               if (dataIndex === 0) {
                 this.props.history.push("/expert-call/2");
+              } else if (rowData.status === "Completed") {
+                this.props.history.push("/expert-schedule-call/" + dataIndex);
+              } else if (rowData.status === "Scheduled") {
+                this.props.history.push("/expert-schedule-call/" + dataIndex);
+              } else if (rowData.status === "Cancelled") {
+                this.props.history.push("/expert-schedule-call/" + dataIndex);
               }
             };
             return (
@@ -427,6 +434,41 @@ class ExpertCallLogs extends BaseReactComponent {
                 checkedText={btnTitle}
                 uncheckedText={btnTitle}
               />
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Chat</span>
+          </div>
+        ),
+        dataKey: "Action",
+
+        coumnWidth: 0.1,
+        isCell: true,
+        cell: (rowData, dataKey, dataIndex) => {
+          if (dataKey === "Action") {
+            let btnTitle = "See chat";
+
+            const onClickFun = () => {
+              this.props.history.push("/expert-prev-call/2");
+            };
+            if (rowData.status === "Completed") {
+              return (
+                <CustomTableBtn
+                  isChecked
+                  handleOnClick={onClickFun}
+                  checkedText={btnTitle}
+                  uncheckedText={btnTitle}
+                />
+              );
+            }
+            return (
+              <div className="inter-display-medium f-s-13 lh-16 table-data-font ellipsis-div">
+                -
+              </div>
             );
           }
         },
@@ -462,7 +504,6 @@ class ExpertCallLogs extends BaseReactComponent {
           >
             <div className="portfolio-section">
               <WelcomeCard
-                showTopSearchBar
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}
@@ -486,9 +527,9 @@ class ExpertCallLogs extends BaseReactComponent {
                 noHomeInPath
               />
               <PageHeader
-                title={"Expert Call Logs"}
+                title={"Call history"}
                 subTitle={
-                  "Browse all calls, including those made, scheduled, and cancelled."
+                  "Browse all calls, including those made, scheduled, and cancelled"
                 }
                 currentPage={"expertCallLogs"}
                 history={this.props.history}

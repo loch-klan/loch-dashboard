@@ -34,7 +34,7 @@ class ExpertCallLogsMobile extends BaseReactComponent {
           }}
           className="mobile-header-container"
         >
-          <h4>Expert Call Logs</h4>
+          <h4>Call history</h4>
           <p>
             Browse all calls, including those made, scheduled, and cancelled
           </p>

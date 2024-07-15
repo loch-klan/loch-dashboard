@@ -117,9 +117,10 @@ class ScheduleAcallContent extends Component {
                       </div>
                     </div>
                   </div>
-                  {/* {this.props.curStep !== 1 ? (
+                  {this.props.curStep === 2 ? (
                     <div className="bae-db-final">
-                      <div className="bae-db-final-left">
+                      <div />
+                      {/* <div className="bae-db-final-left">
                         <div className="bae-db-final-title">
                           {moment(this.props.curDateStartSelected).format(
                             "dddd DD MMM"
@@ -132,13 +133,13 @@ class ScheduleAcallContent extends Component {
                             "h:mm A"
                           )}`}
                         </div>
-                      </div>
+                      </div> */}
                       <div className="bae-db-final-right">
                         <div className="bae-db-final-title">$300</div>
                         <div className="bae-db-final-desc"> Per session</div>
                       </div>
                     </div>
-                  ) : null} */}
+                  ) : null}
                 </div>
               )}
               {this.props.curStep === 1 ? (
@@ -213,8 +214,13 @@ class ScheduleAcallContent extends Component {
                       );
                     })}
                   </div>
-                  {/* <div className="bae-db-final">
-                    <div className="bae-db-final-left">
+                  <div
+                    style={{
+                      marginTop: "2rem",
+                    }}
+                    className="bae-db-final"
+                  >
+                    {/* <div className="bae-db-final-left">
                       <div className="bae-db-final-title">
                         {moment(this.props.curDateStartSelected).format(
                           "dddd DD MMM"
@@ -228,12 +234,13 @@ class ScheduleAcallContent extends Component {
                         )}`}
 
                       </div>
-                    </div>
+                    </div> */}
+                    <div />
                     <div className="bae-db-final-right">
                       <div className="bae-db-final-title">$300</div>
                       <div className="bae-db-final-desc"> Per session</div>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
                 <div className="bae-data-btns">
                   <button
