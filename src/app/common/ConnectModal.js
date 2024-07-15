@@ -52,6 +52,7 @@ import { addUserCredits } from "../profile/Api";
 import { GetAuthUrl, setPageFlagDefault, updateAccessToken } from "./Api";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 import {
+  NewModalBackArrowIcon,
   UserCreditScrollLeftArrowIcon,
   UserCreditScrollRightArrowIcon,
 } from "../../assets/images/icons";
@@ -1602,22 +1603,34 @@ class ConnectModal extends BaseReactComponent {
         }
       >
         <Modal.Header>
-          {(selection !== null || this.props.ishome) &&
-            this.props.handleBackConnect && (
-              <Image
-                className="back-icon cp"
-                src={backIcon}
-                onClick={() => {
-                  if (this.props.ishome && !selection) {
-                    this.props.handleBackConnect(
-                      this.state.connectExchangesList
-                    );
-                  } else {
-                    this.handleBack();
-                  }
-                }}
-              />
-            )}
+          {/* <Image
+             className="back-icon cp"
+             src={backIcon}
+             onClick={() => {
+               if (this.props.ishome && !selection) {
+                 this.props.handleBackConnect(this.state.connectExchangesList);
+               } else {
+                 this.handleBack();
+               }
+             }}
+           /> */}
+          {selection !== null ? (
+            <div
+              className="closebtn"
+              style={{
+                left: "2.8rem",
+              }}
+              onClick={() => {
+                if (this.props.ishome && !selection) {
+                  this.props.handleBackConnect(this.state.connectExchangesList);
+                } else {
+                  this.handleBack();
+                }
+              }}
+            >
+              <Image src={NewModalBackArrowIcon} />
+            </div>
+          ) : null}
           {selection ? (
             <Image src={selection.icon} className="connect-icon" />
           ) : (
