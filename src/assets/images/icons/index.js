@@ -169,3 +169,7 @@ export { default as PremiumBannerLochIcon } from "./premiumBannerLoch.svg";
 export { default as WalletViewerSidebarIcon } from "./walletViewerSidebar.svg";
 export { default as CopyTradeSwapSidebarIcon } from "./copyTradeSwapSidebar.svg";
 export { default as CopyTradeTopBarIcon } from "./copyTradeTopBar.svg";
+export { default as DexScreenerTxnIcon } from "./dexScreenerTxn.svg";
+export { default as DexScreenerTelegramIcon } from "./DexScreenerTelegram.svg";
+export { default as DexScreenerTwitterIcon } from "./DexScreenerTwitter.svg";
+export { default as DexScreenerWebsiteIcon } from "./DexScreenerWebsite.svg";

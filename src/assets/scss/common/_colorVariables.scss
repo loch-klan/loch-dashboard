@@ -296,6 +296,10 @@
   // Mobile Add Address Signed out
   --mobileSearchInputShadow: rgba(255, 255, 255, 0.95);
   --tableFirstRowShadow: rgba(0, 0, 0, 0.04);
+
+  // Dex screener
+  --dexScreenerTableSuccess: #5abe7e;
+  --dexScreenerTableError: #ed6668;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
