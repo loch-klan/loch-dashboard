@@ -185,6 +185,10 @@ export { default as ExpertCallFininsedStartIcon } from "./expertCallFininsedStar
 export { default as ExpertCallFininsedFilledStartIcon } from "./expertCallFininsedFilledStart.svg";
 export { default as ExpertCallFininsedFilledStarBlackIcon } from "./expertCallFininsedFilledStarBlack.svg";
 export { default as CopyTradeTopBarIcon } from "./copyTradeTopBar.svg";
+export { default as DexScreenerTxnIcon } from "./dexScreenerTxn.svg";
+export { default as DexScreenerTelegramIcon } from "./DexScreenerTelegram.svg";
+export { default as DexScreenerTwitterIcon } from "./DexScreenerTwitter.svg";
+export { default as DexScreenerWebsiteIcon } from "./DexScreenerWebsite.svg";
 export { default as AboutExpertTwitterIcon } from "./aboutExpertTwitter.svg";
 export { default as AboutExpertLinkedInIcon } from "./aboutExpertLinkedIn.svg";
 export { default as AboutExpertYoutubeIcon } from "./aboutExpertYoutube.svg";

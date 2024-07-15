@@ -40,6 +40,7 @@ import PublicSidebarRoute from "./utils/PublicSidebarRoute";
 import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
 import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
 import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
+import DexScreener from "./app/DexScreener/DexScreener";
 import ExpertsPage from "./app/ExpertsPage/ExpertsPage";
 import ExpertPersonPage from "./app/ExpertPersonPage/ExpertPersonPage";
 import BecomeAnExpertPage from "./app/BecomeAnExpertPage/BecomeAnExpertPage";
@@ -285,6 +286,12 @@ const routes = [
     name: "Stripe Error",
     type: PublicSidebarRoute,
     component: ReplaceAddressPage,
+  },
+  {
+    path: "/dex-screener",
+    name: "Dex Screener",
+    type: PublicSidebarRoute,
+    component: DexScreener,
   },
   {
     path: "/experts",
