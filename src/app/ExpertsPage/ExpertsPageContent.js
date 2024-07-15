@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
   ExpertsGlobeImage,
@@ -44,6 +44,14 @@ class ExpertsPageContent extends Component {
             <div className="ep-heading-subtitle">
               Connect, talk, and grow together
             </div>
+            <button
+              onClick={() => {
+                this.props.history.push("/experts/call-logs");
+              }}
+              className="ep-heading-btn"
+            >
+              Call History
+            </button>
           </div>
           <Image src={ExpertsGlobeImage} className="ep-heading-image" />
         </div>

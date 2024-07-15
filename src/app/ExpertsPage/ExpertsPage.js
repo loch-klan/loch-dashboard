@@ -92,7 +92,7 @@ class ExpertsPage extends Component {
     this.props.history.push("/become-an-expert");
   };
   scrollLeft = () => {
-    var myElement = document.getElementById("topExpertsScrollBody");
+    var myElement = document.getElementById("Top expertsExpertsScrollBody");
     var myElementWidth = document.getElementById(
       "topExpertsScrollBody"
     )?.clientWidth;
