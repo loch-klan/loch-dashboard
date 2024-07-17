@@ -1,14 +1,12 @@
 import React from "react";
+import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
-  DefaultNftTableIconIcon,
   DexScreenerTelegramIcon,
   DexScreenerTwitterIcon,
   DexScreenerTxnIcon,
   DexScreenerWebsiteIcon,
-  UserCreditTelegramIcon,
-  XFormallyTwitterLogoIcon,
 } from "../../assets/images/icons";
 import {
   NFTPage,
@@ -37,17 +35,14 @@ import {
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api";
-import HandleBrokenImages from "../common/HandleBrokenImages";
 import PageHeader from "../common/PageHeader";
 import { getAvgCostBasis } from "../cost/Api";
-import TopWalletAddressList from "../header/TopWalletAddressList";
 import TransactionTable from "../intelligence/TransactionTable";
 import MobileLayout from "../layout/MobileLayout";
 import { getAllCoins } from "../onboarding/Api";
 import { getAllWalletListApi } from "../wallet/Api";
-import { Image } from "react-bootstrap";
-import "./_dexScreener.scss";
 import DexScreenerChart from "./DexScreenerChart";
+import "./_dexScreener.scss";
 
 class NFT extends BaseReactComponent {
   constructor(props) {
@@ -607,7 +602,6 @@ class NFT extends BaseReactComponent {
               >
                 <div className="portfolio-section ">
                   <WelcomeCard
-                    showTopSearchBar
                     openConnectWallet={this.props.openConnectWallet}
                     connectedWalletAddress={this.props.connectedWalletAddress}
                     connectedWalletevents={this.props.connectedWalletevents}

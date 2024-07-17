@@ -173,3 +173,8 @@ export { default as DexScreenerTxnIcon } from "./dexScreenerTxn.svg";
 export { default as DexScreenerTelegramIcon } from "./DexScreenerTelegram.svg";
 export { default as DexScreenerTwitterIcon } from "./DexScreenerTwitter.svg";
 export { default as DexScreenerWebsiteIcon } from "./DexScreenerWebsite.svg";
+export { default as DexScreenerClockIcon } from "./DexScreenerClock.svg";
+export { default as DexScreenerFireIcon } from "./DexScreenerFire.svg";
+export { default as DexScreenerGainersIcon } from "./DexScreenerGainers.svg";
+export { default as DexScreenerNewPairsIcon } from "./DexScreenerNewPairs.svg";
+export { default as DexScreenerTopIcon } from "./DexScreenerTop.svg";

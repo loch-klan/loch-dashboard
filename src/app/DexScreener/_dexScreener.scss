@@ -17,6 +17,9 @@
         .transaction-table-section {
           margin-bottom: 0rem;
           .table-wrapper {
+            .animation-wrapper {
+              height: 30.5rem;
+            }
             .ReactVirtualized__Table__headerRow {
               overflow: hidden;
             }
