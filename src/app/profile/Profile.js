@@ -338,7 +338,11 @@ class Profile extends Component {
   };
   goToMyReferralCodes = () => {
     if (this.state.lochUser && this.state.lochUser.email) {
-      this.props.history.push("/profile/referral-codes");
+      if (isPremiumUser()) {
+        this.props.history.push("/profile/referral-codes");
+      } else {
+        this.showPaymentModal();
+      }
     } else {
       window.localStorage.setItem("referralCodesSignInModal", true);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
