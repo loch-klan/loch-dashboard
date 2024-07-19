@@ -128,7 +128,7 @@ class ReplaceAddressPage extends Component {
                 isSidebarClosed={this.props.isSidebarClosed}
                 history={this.props.history}
               />
-              <div className="insights-section m-t-80">
+              <div className="insights-section">
                 <div className="insights-page page">
                   <div className="replace-address-body">
                     <Loading />

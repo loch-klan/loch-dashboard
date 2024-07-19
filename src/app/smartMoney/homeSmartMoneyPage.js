@@ -1329,7 +1329,7 @@ class HomeSmartMoneyPage extends BaseReactComponent {
             className={
               this.props.justShowTable
                 ? "history-table-section-full"
-                : `history-table-section m-t-80`
+                : `history-table-section`
             }
           >
             <div
