@@ -1,4 +1,7 @@
 .dex-screener-page {
+  * {
+    font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+  }
   .dex-screener-body {
     display: flex;
     align-items: flex-start;
@@ -6,28 +9,166 @@
     width: 100%;
     gap: 10px;
     .dex-screener-left {
-      width: 65%;
+      width: 66%;
       display: flex;
       align-items: stretch;
       flex-direction: column;
       gap: 10px;
       .transaction-history-table {
         min-height: unset !important;
+        .dex-screener-table-toggle-block {
+          background-color: var(--cardBackgroud);
+          border-radius: 1.2rem;
 
-        .transaction-table-section {
-          margin-bottom: 0rem;
-          .table-wrapper {
-            .animation-wrapper {
-              height: 30.5rem;
+          .dex-screener-table-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            .dex-screener-table-toggle-elements {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 25%;
+              border-bottom: 3px solid;
+              border-color: var(--cardBorder);
+              padding-top: 1.3rem;
+              padding-bottom: 1.3rem;
+              cursor: pointer;
+              background-color: var(--cardBackgroud);
+              gap: 4px;
+              &:hover {
+                filter: var(--hoverTableHeaderBrightness);
+              }
+              .dex-screener-table-toggle-elements-image {
+                opacity: 0.4;
+                height: 13px;
+              }
+              .dex-screener-table-toggle-elements-text {
+                font-size: 12px;
+                text-shadow: 0.1px 0 var(--primaryTextColor);
+                color: var(--primaryTextColor);
+                opacity: 0.4;
+              }
             }
-            .ReactVirtualized__Table__headerRow {
-              overflow: hidden;
+            .dex-screener-table-toggle-elements-selected {
+              border-color: var(--primaryTextColor);
+              pointer-events: none;
+              .dex-screener-table-toggle-elements-image {
+                opacity: 1;
+              }
+              .dex-screener-table-toggle-elements-text {
+                opacity: 1;
+              }
             }
-            .ReactVirtualized__Grid {
-              overflow-y: auto !important;
-              overflow-x: hidden !important;
-              max-height: 24.6rem !important;
-              padding-left: 0rem;
+            .dex-screener-table-toggle-elements-left-radius {
+              border-top-left-radius: 1.2rem;
+            }
+            .dex-screener-table-toggle-elements-right-radius {
+              border-top-right-radius: 1.2rem;
+            }
+          }
+          .transaction-table-section {
+            margin-bottom: 0rem;
+            .table-wrapper {
+              .animation-wrapper {
+                height: 30.5rem;
+              }
+              .ReactVirtualized__Table__headerRow {
+                overflow: hidden;
+              }
+              .ReactVirtualized__Grid {
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                max-height: 24.6rem !important;
+                padding-left: 0rem;
+              }
+
+              .ReactVirtualized__Table__headerRow {
+                height: unset !important;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                padding-right: 0rem !important;
+                border-bottom: none !important;
+                background-color: var(--cardSeperator);
+                color: var(--tableCostCommonColor);
+                .ReactVirtualized__Table__headerTruncatedText {
+                  opacity: 1;
+                  text-transform: uppercase;
+                  text-shadow: 0.1px 0 var(--primaryTextColor);
+                  span {
+                    font-size: 11px !important;
+                  }
+                }
+              }
+              .ReactVirtualized__Grid {
+                .ReactVirtualized__Grid__innerScrollContainer {
+                  .ReactVirtualized__Table__row {
+                    .ReactVirtualized__Table__rowColumn {
+                      height: 100%;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      border-bottom-width: 1px;
+                      padding: 0rem !important;
+                      text-shadow: 0.1px 0 var(--primaryTextColor);
+                      .ds-table-row {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 0px solid var(--descScreenerTableSeperator);
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      }
+                      .ds-right-border {
+                        // border-right-width: 1px;
+                      }
+                      .ds-bottom-border {
+                        // border-bottom-width: 1px;
+                      }
+                      .ds-image-text {
+                        gap: 5px;
+                        .ds-image-text-text {
+                          font-size: 13px;
+                          text-decoration: underline;
+                        }
+                        .ds-image-text-image {
+                          height: 14px !important;
+                          width: 14px !important;
+                          object-fit: cover;
+                          border-radius: 2px;
+                        }
+                      }
+                      .ds-main-sub {
+                        flex-direction: column;
+                        .ds-main-sub-main-text {
+                          font-size: 14px;
+                        }
+                        .ds-main-sub-sub-text {
+                          font-size: 11px;
+                          color: var(--sidebarBottomOptions);
+                          text-shadow: 0.1px 0 var(--sidebarBottomOptions);
+                        }
+                        .ds-main-sub-main-text-red {
+                          color: var(--dexScreenerTableLoss);
+                        }
+                        .ds-main-sub-main-text-green {
+                          color: var(--dexScreenerTableProfit);
+                        }
+                      }
+                      .ds-multi-line {
+                        text-wrap: wrap;
+                      }
+                      .dex-screener-light-font {
+                        color: var(--chartYAxis);
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -55,19 +196,11 @@
           }
         }
       }
-      .ReactVirtualized__Table__headerRow {
-        height: 60px !important;
-        border-bottom: none !important;
-        .ReactVirtualized__Table__headerTruncatedText {
-          color: #96979a !important;
-          opacity: 0.5;
-        }
-      }
     }
     .dex-screener-right {
-      width: 35%;
+      width: 34%;
       height: 100%;
-      font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+
       font-size: 14px;
       font-weight: 500;
       text-shadow: 0.1px 0 var(--primaryTextColor);

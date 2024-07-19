@@ -27,7 +27,7 @@ import { getCurrentUser } from "../../utils/ManageToken";
 import AuthModal from "../common/AuthModal";
 import ConnectModal from "../common/ConnectModal";
 import ExitOverlay from "../common/ExitOverlay";
-import { TopWalletExchangeBar } from "../header";
+import { DexScreenerSearch, TopWalletExchangeBar } from "../header";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
   const [manageWallet, setManageWallet] = React.useState(true);
@@ -336,6 +336,8 @@ export default function WelcomeCard(props) {
                 <span className="ml-2">Change</span>
               </div>
             </div>
+          ) : props.showDexScreenerSearch ? (
+            <DexScreenerSearch />
           ) : !props?.hideButton ? (
             <TopWalletExchangeBar
               showTopSearchBar={props.showTopSearchBar}

@@ -1343,6 +1343,7 @@ class DexScreenerTablePage extends Component {
             <div className="portfolio-section">
               {/* welcome card */}
               <WelcomeCard
+                showDexScreenerSearch
                 openConnectWallet={this.props.openConnectWallet}
                 connectedWalletAddress={this.props.connectedWalletAddress}
                 connectedWalletevents={this.props.connectedWalletevents}

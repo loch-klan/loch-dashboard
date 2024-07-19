@@ -1,8 +1,8 @@
 .dex-screener-table-page {
-  * {
-    box-sizing: border-box !important;
-  }
   .page-scroll-child {
+    * {
+      box-sizing: border-box !important;
+    }
     .dct-vol-txn-container {
       display: flex;
       align-items: center;
@@ -191,7 +191,7 @@
               box-sizing: border-box !important;
               color: var(--tableDataColor);
               text-shadow: 0.1px 0 var(--tableDataColor);
-              border-right: 1px solid var(--dexScreenerTableBorder);
+              // border-right: 1px solid var(--dexScreenerTableBorder);
             }
             .history-table-header-col-text-center {
               justify-content: center;
@@ -227,7 +227,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-right: 1px solid var(--dexScreenerTableBorder);
+            // border-right: 1px solid var(--dexScreenerTableBorder);
             box-sizing: border-box !important;
             // background-color: green;
           }
