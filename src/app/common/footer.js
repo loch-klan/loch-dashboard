@@ -146,7 +146,7 @@ class Footer extends Component {
                 ? ""
                 : "120rem",
             }}
-            className=" secondaryText inter-display-medium f-s-13 lh-16 m-b-40 footerText "
+            className=" secondaryText inter-display-medium f-s-13 lh-16 footerText "
           >
             The content made available on this web page and our mobile
             applications ("Platform") is for informational purposes only. You
