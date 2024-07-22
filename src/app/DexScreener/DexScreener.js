@@ -333,6 +333,21 @@ class DexScreener extends BaseReactComponent {
             curToken="curToken"
           />
         ) : null}
+        <div className="portfolio-page-section">
+          <div className="portfolio-section">
+            <WelcomeCard
+              showDexScreenerSearch
+              openConnectWallet={this.props.openConnectWallet}
+              connectedWalletAddress={this.props.connectedWalletAddress}
+              connectedWalletevents={this.props.connectedWalletevents}
+              disconnectWallet={this.props.disconnectWallet}
+              isSidebarClosed={this.props.isSidebarClosed}
+              apiResponse={(e) => this.CheckApiResponse(e)}
+              // history
+              history={this.props.history}
+            />
+          </div>
+        </div>
         <div className="history-table  page-scroll">
           <div className="page-scroll-child">
             <div className="portfolio-page-section">
@@ -341,17 +356,6 @@ class DexScreener extends BaseReactComponent {
                 style={{ overflow: "visible" }}
               >
                 <div className="portfolio-section ">
-                  <WelcomeCard
-                    showDexScreenerSearch
-                    openConnectWallet={this.props.openConnectWallet}
-                    connectedWalletAddress={this.props.connectedWalletAddress}
-                    connectedWalletevents={this.props.connectedWalletevents}
-                    disconnectWallet={this.props.disconnectWallet}
-                    isSidebarClosed={this.props.isSidebarClosed}
-                    apiResponse={(e) => this.CheckApiResponse(e)}
-                    // history
-                    history={this.props.history}
-                  />
                   <div className="dex-screener-page-header">
                     <PageHeader
                       title={"Scooby Doo"}
