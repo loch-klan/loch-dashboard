@@ -1,0 +1,489 @@
+.price-alerts-header-subheading-container {
+  display: flex;
+  align-items: center;
+  justify-content: "center";
+  gap: 4px;
+  .price-alerts-header-subheading-extra {
+    background-color: var(--dexScreenerTimeDefaultBlock);
+    font-size: 10px;
+    color: var(--primaryTextColor);
+    text-shadow: 0.1px 0 var(--primaryTextColor);
+    padding: 3px 5px;
+    border-radius: 4px;
+  }
+}
+.price-alerts-body {
+  margin-top: 3rem;
+  width: 100%;
+  * {
+    font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+  }
+  .price-alerts-new-old-toggle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    .ps-not-block {
+      width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--primaryTextColor);
+      color: var(--primaryTextColor);
+      text-shadow: 0.1px 0 var(--primaryTextColor);
+      font-size: 13px;
+      padding: 10px 0px;
+      opacity: 0.3;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+    .ps-not-block-selected {
+      opacity: 1;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+  .ps-not-new-alert-container {
+    padding: 30px;
+    // padding-bottom: 3rem;
+    .ps-not-new-alert {
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 2.5rem;
+      .ps-not-new-alert-block {
+        width: calc(50% - 10px);
+        .ps-not-nab-title {
+          font-size: 13px;
+          color: var(--primaryTextColor);
+          text-shadow: 0.1px 0 var(--primaryTextColor);
+          margin-bottom: 10px;
+        }
+        .ps-not-nab-dropdown {
+          margin-bottom: 1.6rem;
+        }
+        .ps-not-nab-toggles {
+          background-color: var(--greyCardBackgroud);
+          border-radius: 8px;
+          padding: 5px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 3px;
+          margin-bottom: 1.6rem;
+          .ps-not-nab-toggle-block {
+            color: var(--primaryTextColor);
+            text-shadow: 0.1px 0 var(--primaryTextColor);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            width: calc((100% / 3) - 6px);
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            opacity: 0.5;
+            &:hover {
+              background-color: var(--darkGreyCardBackgroud);
+            }
+          }
+          .ps-not-nab-toggle-block-selected {
+            background-color: var(--cardBackgroud);
+            box-shadow: var(--boxShadowMd);
+            opacity: 1;
+            cursor: default;
+            &:hover {
+              background-color: var(--cardBackgroud);
+            }
+          }
+        }
+        .ps-not-nab-input-container {
+          background-color: var(--cardBackgroud);
+          border-radius: 8px;
+          padding: 1px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          border: 1.5px solid var(--currenyConvertorBorder);
+          &:hover {
+            border-color: var(--primaryTextColor);
+          }
+          .ps-not-nab-input {
+            border-radius: 8px;
+            padding: 10px;
+            width: 100%;
+            outline: none;
+            border: none;
+            font-size: 13px;
+          }
+          .ps-not-nab-input-block {
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            .ps-not-nab-input-title {
+              font-size: 13px;
+              color: var(--primaryTextColor);
+              text-shadow: 0.1px 0 var(--primaryTextColor);
+            }
+            .ps-not-nab-input-field {
+              width: 100%;
+              background-color: var(--cardBackgroud);
+              border-radius: 8px;
+              padding: 10px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 10px;
+              .ps-not-nab-input-field-input {
+                width: 100%;
+                background-color: var(--cardBackgroud);
+                border: none;
+                color: var(--primaryTextColor);
+                text-shadow: 0.1px 0 var(--primaryTextColor);
+                font-size: 13px;
+                &:focus {
+                  outline: none;
+                }
+              }
+              .ps-not-nab-input-field-select {
+                width: 100%;
+                background-color: var(--cardBackgroud);
+                border: none;
+                color: var(--primaryTextColor);
+                text-shadow: 0.1px 0 var(--primaryTextColor);
+                font-size: 13px;
+                &:focus {
+                  outline: none;
+                }
+              }
+            }
+          }
+        }
+        .ps-not-nab-text-area-container {
+          height: 100px;
+          .ps-not-nab-input {
+            height: 100%;
+          }
+        }
+      }
+    }
+    .ps-not-new-alert-btn-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      // padding: 0px 30px;
+      // padding-top: 3rem;
+      .ps-not-new-alert-btn {
+        background-color: var(--greyCardBackgroud);
+        border: 1px solid transparent;
+        text-shadow: 0.1px 0 var(--primaryTextColor);
+        color: var(--primaryTextColor);
+        padding: 13px 25px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        &:hover {
+          background-color: var(--darkGreyCardBackgroud);
+        }
+      }
+      .ps-not-new-alert-btn-create-alert {
+        background-color: var(--cardBackgroud);
+        border-color: var(--currenyConvertorBorder);
+        &:hover {
+          background-color: var(--primaryTextColor);
+          border-color: var(--primaryTextColor);
+          color: var(--cardBackgroud);
+        }
+      }
+    }
+  }
+  .ps-not-existing-tab {
+    min-height: 340px;
+    max-height: 340px;
+    height: 340px;
+    overflow-y: scroll;
+    padding: 0px 30px;
+    &::-webkit-scrollbar {
+      width: 0rem;
+      height: 0rem;
+    }
+    .ps-not-et-block-conatainer {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      row-gap: 20px;
+      column-gap: 15px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 30px;
+      margin-bottom: 20px;
+      box-shadow: var(--boxShadowMd);
+      .ps-not-et-block {
+        background-color: var(--popularAccountsDataBlock);
+        padding: 10px 15px;
+        border-radius: 8px;
+        .ps-not-et-block-data {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 2px solid var(--currenyConvertorBorder);
+          padding-bottom: 5px;
+          .ps-not-et-bd-price {
+            .ps-not-et-bd-price-detail {
+              font-size: 12px;
+              color: var(--currenyConvertorText);
+              text-shadow: 0.1px 0 var(--currenyConvertorText);
+              .ps-not-et-bd-price-detail-type {
+                color: var(--primaryTextColor);
+              }
+            }
+            .ps-not-et-bd-price-amount {
+              font-size: 14px;
+              color: var(--primaryTextColor);
+              text-shadow: 0.1px 0 var(--primaryTextColor);
+            }
+          }
+          .ps-not-et-bd-active-disable {
+            background-color: var(--cardBackgroud);
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            .ps-not-et-bd-block {
+              padding: 6px 8px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: 13px;
+              text-shadow: 0.1px 0 var(--primaryTextColor);
+              color: var(--primaryTextColor);
+              cursor: pointer;
+              gap: 4px;
+              .ps-not-et-bd-circle {
+                height: 10px;
+                width: 10px;
+                border-radius: 50%;
+              }
+              .ps-not-et-bd-circle-green {
+                background-color: var(--dexScreenerTableSuccess);
+              }
+              .ps-not-et-bd-circle-red {
+                background-color: var(--dexScreenerTableError);
+              }
+              &:hover {
+                background-color: var(--darkGreyCardBackgroud);
+              }
+            }
+            .ps-not-et-bd-block-active {
+              cursor: default;
+              background-color: var(--dexScreenerModalActiveBtn);
+              &:hover {
+                background-color: var(--dexScreenerModalActiveBtn);
+              }
+            }
+            .ps-not-et-bd-block-disabled {
+              cursor: default;
+              background-color: var(--dexScreenerModalDisableBtn);
+              &:hover {
+                background-color: var(--dexScreenerModalDisableBtn);
+              }
+            }
+            .ps-not-et-bd-block-left {
+              border-top-left-radius: 8px;
+              border-bottom-left-radius: 8px;
+            }
+            .ps-not-et-bd-block-right {
+              border-top-right-radius: 8px;
+              border-bottom-right-radius: 8px;
+            }
+          }
+        }
+        .ps-not-et-block-footer {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 7px;
+          padding-top: 8px;
+          .ps-not-et-block-footer-icon {
+            height: 15px;
+            width: 15px;
+            object-fit: contain;
+            cursor: pointer;
+            filter: var(--invertColor);
+            &:hover {
+              opacity: 0.5;
+            }
+          }
+        }
+      }
+    }
+    .ps-not-et-blank {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      .ps-not-et-blank-image {
+        height: 70px;
+        width: 70px;
+        object-fit: contain;
+      }
+      .ps-not-et-blank-text {
+        color: var(--primarySubTextColor);
+        text-shadow: 0.1px 0 var(--primarySubTextColor);
+        text-align: center;
+        margin-top: 1rem;
+        font-size: 13px;
+        .ps-not-et-blank-text-here {
+          text-decoration: underline;
+          cursor: pointer;
+          &:hover {
+            color: var(--primaryTextColor);
+          }
+        }
+      }
+    }
+  }
+  .price-alerts-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    .price-alerts-header-image {
+      height: 16px;
+    }
+    .price-alerts-header-text {
+      font-size: 16px;
+      color: var(--primaryTextColor);
+      text-shadow: 0.1px 0 var(--primaryTextColor);
+    }
+  }
+  .pa-blocks-container {
+    margin-top: 3rem;
+    margin-bottom: 4rem;
+    padding: 0px 30px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 20px;
+    column-gap: 15px;
+    width: 100%;
+
+    .ds-sp-block {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      box-shadow: var(--boxShadowMd);
+      background-color: var(--cardBackground);
+      border-radius: 8px;
+      cursor: pointer;
+
+      .ds-sp-block-image {
+        height: 100%;
+        width: 60px;
+        object-fit: cover;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+      .ds-sp-block-image-bigger {
+        width: 80px;
+      }
+
+      .ds-sp-block-info {
+        height: 100%;
+        padding: 14px 12px;
+        padding-right: 0px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 0px;
+        flex: 1;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        background-color: var(--cardBackground);
+        .ds-sp-block-info-name {
+          color: var(--primaryTextColor);
+          text-shadow: 0.05px 0 var(--primaryTextColor);
+          font-size: 13px;
+          text-transform: uppercase;
+        }
+        .ds-sp-block-info-percentage {
+          color: var(--secondaryDarkTextColorNew);
+          font-size: 13px;
+        }
+        .ds-sp-block-info-platform {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
+          .ds-sp-block-info-platform-icon-container {
+            min-height: 15px;
+            min-width: 15px;
+            max-height: 15px;
+            max-width: 15px;
+            background-color: var(--darkGreyCardBackgroud);
+            border-radius: 4px;
+          }
+          .ds-sp-block-info-platform-icon {
+            min-height: 15px;
+            min-width: 15px;
+            max-height: 15px;
+            max-width: 15px;
+          }
+          .ds-sp-block-info-platform-text {
+            font-size: 11px;
+            text-shadow: 0.1px 0 var(--primaryTextColor);
+            text-transform: uppercase;
+          }
+        }
+        .ds-sp-block-info-platform-fat {
+          font-size: 10px;
+          text-shadow: 0.4px 0 var(--currenyConvertorText);
+          color: var(--currenyConvertorText);
+        }
+        .ds-sp-block-info-socials {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+          .ds-sp-block-info-social-icon {
+            height: 12px;
+            object-fit: contain;
+            filter: var(--invertColor);
+            &:hover {
+              opacity: 0.5;
+            }
+          }
+        }
+      }
+      .ds-sp-alert-add {
+        margin-left: 2px;
+        margin-right: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        padding: 4px 9px;
+        border-radius: 8px;
+        border: 0.5px solid var(--currenyConvertorBorder);
+        font-size: 10px;
+        color: var(--primaryTextColor);
+        text-shadow: 0.5px 0 var(--currenyConvertorText);
+        background-color: var(--cardBackgroud);
+      }
+      &:hover {
+        background-color: var(--greyCardBackgroud);
+        .ds-sp-alert-add {
+          filter: invert(1);
+        }
+      }
+    }
+  }
+}

@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
+  DexScreenerAlertModalPlusIcon,
   DexScreenerTelegramIcon,
   DexScreenerTwitterIcon,
   DexScreenerWebsiteIcon,
-  XFormallyTwitterLogoIcon,
 } from "../../../assets/images/icons";
 class DexScreenerSearchSuggestionBlock extends Component {
   constructor(props) {
@@ -30,8 +30,45 @@ class DexScreenerSearchSuggestionBlock extends Component {
     return "radial-gradient(at top left, " + c1.rgb + ", " + c2.rgb + ")";
   }
   render() {
+    if (this.props.alertBlock) {
+      return (
+        <div onClick={this.props.onClick} className="ds-sp-block">
+          {this.props.imageIcon ? (
+            <Image
+              className={`ds-sp-block-image ${
+                this.props.recentlyUpdatedTokens
+                  ? "ds-sp-block-image-bigger"
+                  : ""
+              }`}
+              src={this.props.imageIcon}
+            />
+          ) : (
+            <div
+              style={{
+                background: this.state.gradientColor,
+              }}
+              className={`ds-sp-block-image ${
+                this.props.recentlyUpdatedTokens
+                  ? "ds-sp-block-image-bigger"
+                  : ""
+              } ds-sp-block-gradient`}
+            />
+          )}
+          <div className="ds-sp-block-info">
+            <div className="ds-sp-block-info-name">{this.props.name}</div>
+            <div className="ds-sp-block-info-platform-fat">
+              {this.props.platform}
+            </div>
+          </div>
+          <div className="ds-sp-alert-add">
+            <Image src={DexScreenerAlertModalPlusIcon} />
+            <div>Add</div>
+          </div>
+        </div>
+      );
+    }
     return (
-      <div className="ds-sp-block">
+      <div onClick={this.props.onClick} className="ds-sp-block">
         {this.props.imageIcon ? (
           <Image
             className={`ds-sp-block-image ${

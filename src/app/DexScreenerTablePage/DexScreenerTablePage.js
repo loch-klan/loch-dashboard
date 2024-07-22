@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { getAllCoins } from "../onboarding/Api.js";
 
 import { Image } from "react-bootstrap";
-import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
 import CoinChip from "../wallet/CoinChip.js";
@@ -50,6 +49,7 @@ import {
   DexScreenerClockIcon,
   DexScreenerFireIcon,
   DexScreenerGainersIcon,
+  DexScreenerHeaderBellIcon,
   DexScreenerNewPairsIcon,
   DexScreenerTopIcon,
 } from "../../assets/images/icons/index.js";
@@ -76,17 +76,17 @@ import {
   setPageFlagDefault,
   updateWalletListFlag,
 } from "../common/Api.js";
-import Footer from "../common/footer.js";
 import MobileLayout from "../layout/MobileLayout.js";
 // import AssetUnrealizedProfitAndLossMobile from "./AssetUnrealizedProfitAndLossMobile.js";
-import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
 import PaywallModal from "../common/PaywallModal.js";
 import "./_dexScreenerTablePage.scss";
+import DexScreenerPriceAlertModal from "../DexScreener/DexScreenerPriceAlertModal/DexScreenerPriceAlertModal.js";
 
 class DexScreenerTablePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPriceAlertModal: false,
       isPremiumUser: false,
       isLochPaymentModal: false,
       Average_cost_basis_local: [],
@@ -603,6 +603,16 @@ class DexScreenerTablePage extends Component {
   hidePaymentModal = () => {
     this.setState({
       isLochPaymentModal: false,
+    });
+  };
+  showPriceAlertModal = () => {
+    this.setState({
+      isPriceAlertModal: true,
+    });
+  };
+  hidePriceAlertModal = () => {
+    this.setState({
+      isPriceAlertModal: false,
     });
   };
   render() {
@@ -1354,6 +1364,17 @@ class DexScreenerTablePage extends Component {
             </div>
           </div>
         </div>
+        {this.state.isPriceAlertModal ? (
+          <DexScreenerPriceAlertModal
+            hideOnblur
+            show
+            onHide={this.hidePriceAlertModal}
+            history={this.props.history}
+            modalType={"price_alert"}
+            hideSkip={true}
+            // curToken="curToken"
+          />
+        ) : null}
         <div className="cost-page-section">
           <div className="cost-section page-scroll">
             <div className="page-scroll-child">
@@ -1419,7 +1440,17 @@ class DexScreenerTablePage extends Component {
                       className="dct-tc-options-image"
                       src={DexScreenerNewPairsIcon}
                     />
-                    <div className="dct-tc-options-text">New Pairs </div>
+                    <div className="dct-tc-options-text">New Pairs</div>
+                  </div>
+                  <div
+                    onClick={this.showPriceAlertModal}
+                    className="dct-tc-options-block"
+                  >
+                    <Image
+                      className="dct-tc-options-image"
+                      src={DexScreenerHeaderBellIcon}
+                    />
+                    <div className="dct-tc-options-text">Set alerts</div>
                   </div>
                 </div>
               </div>

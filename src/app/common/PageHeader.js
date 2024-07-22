@@ -344,6 +344,7 @@ export default function PageHeader(props) {
             </div>
           </div>
         )}
+        {props.RightElement ? <props.RightElement /> : null}
 
         {props.viewMore && (
           <h3

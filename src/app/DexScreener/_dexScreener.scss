@@ -2,6 +2,36 @@
   * {
     font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
   }
+  .dex-screener-page-header {
+    .ds-ph-btns-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      .ds-ph-btn {
+        background-color: var(--cardBackgroud);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7px;
+        gap: 5px;
+        width: 150px;
+        cursor: pointer;
+        .ds-ph-btn-image {
+          height: 13px;
+        }
+        .ds-ph-btn-text {
+          font-size: 13px;
+          text-shadow: 0.1px 0 var(--primaryTextColor);
+          color: var(--primaryTextColor);
+        }
+        &:hover {
+          background-color: var(--greyCardBackgroud);
+        }
+      }
+    }
+  }
   .dex-screener-body {
     display: flex;
     align-items: flex-start;

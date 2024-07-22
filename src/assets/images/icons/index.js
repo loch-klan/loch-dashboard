@@ -185,3 +185,11 @@ export { default as DexScreenerTopTradersIcon } from "./DexScreenerTopTraders.sv
 export { default as DexScreenerTransactionTableIcon } from "./DexScreenerTransactionTable.svg";
 export { default as DexScreenerSearchTrendingIcon } from "./DexScreenerSearchTrending.svg";
 export { default as DexScreenrRecentlyUpdatenTokenIcon } from "./DexScreenrRecentlyUpdatenToken.svg";
+export { default as DexScreenerAlertModalPlusIcon } from "./DexScreenerAlertModalPlus.svg";
+export { default as DexScreenerManagePriceAlertBoxIcon } from "./DexScreenerManagePriceAlertBox.svg";
+export { default as DexScreenerAlertCrossIcon } from "./DexScreenerAlertCross.svg";
+export { default as DexScreenerAlertPencilIcon } from "./DexScreenerAlertPencil.svg";
+export { default as DexScreenerAlertRoundArrowIcon } from "./DexScreenerAlertRoundArrow.svg";
+export { default as DexScreenerHeaderPlusIcon } from "./DexScreenerHeaderPlus.svg";
+export { default as DexScreenerHeaderBellIcon } from "./DexScreenerHeaderBell.svg";
+export { default as ModalBellIcon } from "./ModalBell.svg";

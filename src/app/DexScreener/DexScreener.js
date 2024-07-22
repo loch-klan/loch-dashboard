@@ -22,7 +22,9 @@ import { getAllCoins } from "../onboarding/Api";
 import { getAllWalletListApi } from "../wallet/Api";
 import DexScreenerChart from "./DexScreenerChart";
 import DexScreenerFourTables from "./DexScreenerFourTables";
+import DexScreenerPriceAlertModal from "./DexScreenerPriceAlertModal/DexScreenerPriceAlertModal";
 import "./_dexScreener.scss";
+import DexScreenerHeaderBtns from "./DexScreenerHeaderBtns";
 
 class DexScreener extends BaseReactComponent {
   constructor(props) {
@@ -30,6 +32,7 @@ class DexScreener extends BaseReactComponent {
     this.state = {
       goToBottom: false,
       apiResponse: false,
+      isPriceAlertModal: false,
       transactionsTableData: [
         {
           date: "1m ago",
@@ -283,6 +286,16 @@ class DexScreener extends BaseReactComponent {
     }
     scrollToTop();
   }
+  showPriceAlertModal = () => {
+    this.setState({
+      isPriceAlertModal: true,
+    });
+  };
+  hidePriceAlertModal = () => {
+    this.setState({
+      isPriceAlertModal: false,
+    });
+  };
 
   render() {
     if (this.state.isMobileDevice) {
@@ -309,6 +322,17 @@ class DexScreener extends BaseReactComponent {
     }
     return (
       <div className="dex-screener-page history-table-section  m-t-80">
+        {this.state.isPriceAlertModal ? (
+          <DexScreenerPriceAlertModal
+            hideOnblur
+            show
+            onHide={this.hidePriceAlertModal}
+            history={this.props.history}
+            modalType={"price_alert"}
+            hideSkip={true}
+            curToken="curToken"
+          />
+        ) : null}
         <div className="history-table  page-scroll">
           <div className="page-scroll-child">
             <div className="portfolio-page-section">
@@ -328,15 +352,21 @@ class DexScreener extends BaseReactComponent {
                     // history
                     history={this.props.history}
                   />
-
-                  <PageHeader
-                    title={"Scooby Doo"}
-                    subTitle={""}
-                    currentPage={"nft"}
-                    history={this.props.history}
-                    ShareBtn={false}
-                    updateTimer={this.updateTimer}
-                  />
+                  <div className="dex-screener-page-header">
+                    <PageHeader
+                      title={"Scooby Doo"}
+                      subTitle={""}
+                      currentPage={"dex-screener"}
+                      history={this.props.history}
+                      ShareBtn={false}
+                      updateTimer={this.updateTimer}
+                      RightElement={() => (
+                        <DexScreenerHeaderBtns
+                          showPriceAlertModal={this.showPriceAlertModal}
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
