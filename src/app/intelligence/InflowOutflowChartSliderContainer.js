@@ -325,6 +325,13 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
     this.setState({ isChainSearchUsed: true });
   };
   render() {
+    console.log("this.state.assetList, ", this.state.assetList);
+    console.log("this.state.activeAssetTab", this.state.activeAssetTab);
+    console.log(
+      "this.state.activeAssetTabName ",
+      this.state.activeAssetTabName
+    );
+
     return (
       <div
         className={`welcome-card-section ${

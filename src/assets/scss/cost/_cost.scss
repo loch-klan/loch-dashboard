@@ -109,7 +109,7 @@
           .ReactVirtualized__Table__Grid {
             overflow-y: auto !important;
             overflow-x: hidden !important;
-            max-height: 47rem !important;
+            max-height: 47rem;
             padding-left: 0rem;
 
             &::-webkit-scrollbar {

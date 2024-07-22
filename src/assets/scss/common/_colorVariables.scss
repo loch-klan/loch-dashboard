@@ -6,7 +6,9 @@
   --cardBackgroudWithOpacity: rgba(255, 255, 255, 0);
   --cardBorder: #cacbcc;
   --greyCardBackgroud: #e5e5e680;
+  --darkGreyCardBackgroud: #d9d9d9;
   --cardSeperator: #e5e5e680;
+  --descScreenerTableSeperator: #e5e5e5;
   --lighterDarkIcons: 1;
   --primaryTextColor: #0d0d0d;
   --primaryTextColorGrey: #0d0d0d;
@@ -57,6 +59,7 @@
   --invertColor2: invert(100%);
   --brightInDarkMode: brightness(1);
   --hoverBrightness: brightness(50%);
+  --hoverTableHeaderBrightness: brightness(80%);
   --darkerBrightness: brightness(0);
   --hoverBrightnessValue: brightness(0);
   --hoverBrightnessValueInvert: brightness(20);
@@ -296,6 +299,16 @@
   // Mobile Add Address Signed out
   --mobileSearchInputShadow: rgba(255, 255, 255, 0.95);
   --tableFirstRowShadow: rgba(0, 0, 0, 0.04);
+
+  // Dex screener
+  --dexScreenerTableSuccess: #5abe7e;
+  --dexScreenerTableError: #ed6668;
+  --dexScreenerTableBorder: #0000001a;
+  --dexScreenerTimeDefaultBlock: #cacbcc80;
+  --dexScreenerTableLoss: #d94041;
+  --dexScreenerTableProfit: #08b669;
+  --dexScreenerModalActiveBtn: #e2fbeb;
+  --dexScreenerModalDisableBtn: #fad9d9;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -306,7 +319,9 @@
   --cardBackgroudWithOpacity: rgba(26, 26, 26, 0.9);
   --cardBorder: #313233;
   --greyCardBackgroud: #313233;
+  --darkGreyCardBackgroud: #595a5b;
   --cardSeperator: #313233;
+  --descScreenerTableSeperator: #313233;
   --lighterDarkIcons: 0.7;
   --primaryTextColor: white;
   --primaryTextColorGrey: #cacbcc;
@@ -352,6 +367,7 @@
   --invertColor2: invert(0%);
   --brightInDarkMode: brightness(2);
   --hoverBrightness: brightness(200%);
+  --hoverTableHeaderBrightness: brightness(200%);
   --darkerBrightness: brightness(1);
   --hoverBrightnessValue: brightness(20);
   --hoverBrightnessValueInvert: brightness(0);
@@ -426,7 +442,8 @@
   --boxShadowColorMd: rgba(255, 255, 255, 0.04);
   --profileHideMultiWallet: #101010;
 
-  --boxShadowMd: none;
+  --boxShadowMd: 0 2px 10px rgba(255, 255, 255, 0.06),
+    0 1px 1px rgba(255, 255, 255, 0.06);
   --topBarShadow: none;
   --inputShadow: none;
   --custmCheckboxShadow: 0px 0px 10px 2px rgba(255, 255, 255, 0.4);
@@ -581,6 +598,10 @@
   --dummyProfileBackground: url(../../images/DummyProfilePageDark.png);
   --mobileSearchInputShadow: rgba(0, 0, 0, 0.95);
   --tableFirstRowShadow: rgba(255, 255, 255, 0.06);
+  --dexScreenerTableBorder: rgba(255, 255, 255, 0.102);
+  --dexScreenerTimeDefaultBlock: #282829;
+  --dexScreenerTableLoss: #d94041;
+  --dexScreenerTableProfit: #08b669;
 }
 [data-theme="dark2"] {
   // UPDATED
