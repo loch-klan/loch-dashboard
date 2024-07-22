@@ -338,7 +338,11 @@ class Profile extends Component {
   };
   goToMyReferralCodes = () => {
     if (this.state.lochUser && this.state.lochUser.email) {
-      this.props.history.push("/profile/referral-codes");
+      if (isPremiumUser()) {
+        this.props.history.push("/profile/referral-codes");
+      } else {
+        this.showPaymentModal();
+      }
     } else {
       window.localStorage.setItem("referralCodesSignInModal", true);
       if (document.getElementById("sidebar-open-sign-in-btn")) {
@@ -501,7 +505,7 @@ class Profile extends Component {
             </div>
           </div>
         ) : null}
-        <div className="profile-page-section m-t-80">
+        <div className="profile-page-section">
           <div className="profile-section page-scroll">
             <div className="page-scroll-child">
               {this.state.addModal && (
@@ -810,7 +814,7 @@ class Profile extends Component {
 
               <div
                 className="profile-form-section"
-                style={{ marginBottom: "4rem" }}
+                style={{ marginBottom: "0rem" }}
               >
                 <Row>
                   <Col md={12}>

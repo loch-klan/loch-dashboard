@@ -153,7 +153,7 @@ class AddAddressProfile extends Component {
               </div>
             </div>
           </div>
-          <div className="profile-page-section m-t-80">
+          <div className="profile-page-section">
             <div className="profile-section page">
               <TopWalletAddressList apiResponse={(e) => null} hideFollow />
               <PageHeader
