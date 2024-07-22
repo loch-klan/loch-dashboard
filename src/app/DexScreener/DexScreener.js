@@ -321,7 +321,7 @@ class DexScreener extends BaseReactComponent {
       );
     }
     return (
-      <div className="dex-screener-page history-table-section  m-t-80">
+      <div className="dex-screener-page history-table-section">
         {this.state.isPriceAlertModal ? (
           <DexScreenerPriceAlertModal
             hideOnblur
