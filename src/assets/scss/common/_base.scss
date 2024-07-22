@@ -4032,25 +4032,25 @@ input[type="number"]::-webkit-outer-spin-button {
 //   }
 // }
 .exit-overlay-form {
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   background-color: transparent;
 }
 .confirm-leave-modal {
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.5);
 }
 .blurOnInputFocus {
   .sidebar-body {
-    filter: blur(6px);
+    filter: blur(10px);
   }
   .sidebar-footer {
-    filter: blur(6px);
+    filter: blur(10px);
   }
   .page-scroll {
-    filter: blur(6px);
+    filter: blur(10px);
   }
 }
