@@ -16,6 +16,18 @@ class DexScreenerSearch extends Component {
       dsSearchSuggestionItems: [],
     };
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.dsSearchSuggestion !== this.state.dsSearchSuggestion) {
+      const rootItem = document.getElementById("root");
+      if (rootItem) {
+        if (this.state.dsSearchSuggestion) {
+          rootItem.classList.add("blurOnInputFocus");
+        } else {
+          rootItem.classList.remove("blurOnInputFocus");
+        }
+      }
+    }
+  }
   hideDexScreenerSearchSuggestions = () => {
     this.setState({
       dsSearchSuggestion: false,
