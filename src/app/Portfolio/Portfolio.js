@@ -5106,68 +5106,65 @@ class Portfolio extends BaseReactComponent {
           <Loading />
         ) : (
           <div className="portfolio-page-section">
+            <div className="portfolio-section">
+              {/* welcome card */}
+              <WelcomeCard
+                isWideScreen
+                history={this.props.history}
+                showTopSearchBar
+                openConnectWallet={this.props.openConnectWallet}
+                connectedWalletAddress={this.props.connectedWalletAddress}
+                connectedWalletevents={this.props.connectedWalletevents}
+                disconnectWallet={this.props.disconnectWallet}
+                afterAddressFollowed={this.afterAddressFollowed}
+                isAddressFollowedCount={this.state.isAddressFollowedCount}
+                handleShare={this.handleShare}
+                isSidebarClosed={this.props.isSidebarClosed}
+                changeWalletList={this.handleChangeList}
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                // showNetworth={true}
+                // yesterday balance
+                yesterdayBalance={this.props.portfolioState.yesterdayBalance}
+                // toggleAddWallet={this.state.toggleAddWallet}
+                // handleToggleAddWallet={this.handleToggleAddWallet}
+
+                // decrement={true}
+
+                // total network and percentage calculate
+                assetTotal={getTotalAssetValue()}
+                // assetTotal={
+                //   this.props.portfolioState &&
+                //   this.props.portfolioState.walletTotal
+                //     ? this.props.portfolioState.walletTotal +
+                //       this.props.defiState.totalYield -
+                //       this.props.defiState.totalDebt
+                //     : 0 +
+                //       this.props.defiState.totalYield -
+                //       this.props.defiState.totalDebt
+                // }
+                // history
+                // add wallet address modal
+                handleAddModal={this.handleAddModal}
+                // net worth total
+                isLoading={this.state.isLoadingNet}
+                // walletTotal={
+                //   this.props.portfolioState.walletTotal +
+                //   this.state.totalYield -
+                //   this.state.totalDebt
+                // }
+
+                // manage wallet
+                handleManage={() => {
+                  this.props.history.push("/wallets");
+                  ManageWallets({
+                    session_id: getCurrentUser().id,
+                    email_address: getCurrentUser().email,
+                  });
+                }}
+              />
+            </div>
             <div className="portfolio-container page-scroll">
               <div className="page-scroll-child page-scroll-child-full-width">
-                <div className="portfolio-section">
-                  {/* welcome card */}
-                  <WelcomeCard
-                    isWideScreen
-                    history={this.props.history}
-                    showTopSearchBar
-                    openConnectWallet={this.props.openConnectWallet}
-                    connectedWalletAddress={this.props.connectedWalletAddress}
-                    connectedWalletevents={this.props.connectedWalletevents}
-                    disconnectWallet={this.props.disconnectWallet}
-                    afterAddressFollowed={this.afterAddressFollowed}
-                    isAddressFollowedCount={this.state.isAddressFollowedCount}
-                    handleShare={this.handleShare}
-                    isSidebarClosed={this.props.isSidebarClosed}
-                    changeWalletList={this.handleChangeList}
-                    apiResponse={(e) => this.CheckApiResponse(e)}
-                    // showNetworth={true}
-                    // yesterday balance
-                    yesterdayBalance={
-                      this.props.portfolioState.yesterdayBalance
-                    }
-                    // toggleAddWallet={this.state.toggleAddWallet}
-                    // handleToggleAddWallet={this.handleToggleAddWallet}
-
-                    // decrement={true}
-
-                    // total network and percentage calculate
-                    assetTotal={getTotalAssetValue()}
-                    // assetTotal={
-                    //   this.props.portfolioState &&
-                    //   this.props.portfolioState.walletTotal
-                    //     ? this.props.portfolioState.walletTotal +
-                    //       this.props.defiState.totalYield -
-                    //       this.props.defiState.totalDebt
-                    //     : 0 +
-                    //       this.props.defiState.totalYield -
-                    //       this.props.defiState.totalDebt
-                    // }
-                    // history
-                    // add wallet address modal
-                    handleAddModal={this.handleAddModal}
-                    // net worth total
-                    isLoading={this.state.isLoadingNet}
-                    // walletTotal={
-                    //   this.props.portfolioState.walletTotal +
-                    //   this.state.totalYield -
-                    //   this.state.totalDebt
-                    // }
-
-                    // manage wallet
-                    handleManage={() => {
-                      this.props.history.push("/wallets");
-                      ManageWallets({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                      });
-                    }}
-                  />
-                </div>
-
                 <div
                   className="portfolio-section"
                   style={{
