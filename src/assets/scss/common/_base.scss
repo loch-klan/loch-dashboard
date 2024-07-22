@@ -2009,10 +2009,11 @@ form {
 .page-scroll {
   padding: 0rem 1rem;
   padding-right: 2rem;
-  margin-top: 9.5rem;
-  padding-top: 1rem;
+  margin-top: 9rem;
+  padding-top: 3rem;
+  padding-bottom: 4rem;
   width: 100%;
-  height: calc(118vh - 12rem);
+  height: calc(118vh - 9.3rem);
   display: flex;
   align-items: center;
   overflow-x: scroll;
@@ -2027,7 +2028,7 @@ form {
     flex-direction: column;
     min-width: 120rem;
     width: 120rem;
-    height: 100%;
+    min-height: 100%;
   }
   .page-scroll-child-full-width {
     width: 100%;
@@ -3722,7 +3723,6 @@ input {
       border: none;
       padding: 0rem;
       margin-bottom: 2rem;
-      margin-top: 2rem;
       filter: var(--invertColor);
       // .breadcrumb{
       // }
@@ -3964,3 +3964,70 @@ input[type="number"]::-webkit-outer-spin-button {
     color: var(--primaryTextColor);
   }
 }
+.connect-modal-steps-scroll-container {
+  width: 100%;
+  .connect-modal-steps-scroll-item {
+    overflow-x: scroll;
+    width: 100%;
+    scroll-snap-type: x mandatory;
+    display: flex;
+    overflow-x: scroll;
+    align-items: flex-start;
+    scroll-behavior: smooth;
+    gap: 1rem;
+    cursor: default;
+    .steps {
+      width: 100%;
+      min-width: 100%;
+      margin: 0 !important;
+      scroll-snap-align: start;
+    }
+    &::-webkit-scrollbar {
+      width: 0rem;
+      height: 0rem;
+    }
+  }
+  .connect-modal-steps-scroll-navigator {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 1rem;
+    .connect-modal-steps-scroll-arrow {
+      cursor: pointer;
+      filter: var(--invertColor);
+
+      &:hover {
+        opacity: 0.2;
+      }
+    }
+    .connect-modal-steps-scroll-arrow-disabled {
+      cursor: default;
+      opacity: 0.5;
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+// .slick-list {
+//   .slick-track {
+//     transform: none !important;
+//     overflow-x: scroll !important;
+//     width: 100% !important;
+//     scroll-snap-type: x mandatory !important;
+
+//     display: flex;
+//     overflow-x: scroll;
+//     scroll-snap-type: x mandatory;
+//     scroll-behavior: smooth;
+//     .slick-slide {
+//       scroll-snap-align: start;
+//       min-width: 100%;
+//     }
+//     &::-webkit-scrollbar {
+//       height: 0rem;
+//     }
+//   }
+// }
