@@ -7,6 +7,7 @@ import {
   CloseIcon,
   EmultionSidebarIcon,
   SmartMoneyPaginationArrowRightIcon,
+  SmartMoneyPaginationArrowRightWhiteIcon,
 } from "../../assets/images/icons";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
@@ -816,7 +817,9 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                     buttonText={"Next"}
                     handleClick={this.btnClickFunctionPass}
                     isLoading={this.state.loadAddBtn}
-                    buttonAttachedImage={SmartMoneyPaginationArrowRightIcon}
+                    buttonAttachedImage={
+                      SmartMoneyPaginationArrowRightWhiteIcon
+                    }
                   />
                 </div>
               )}
