@@ -87,9 +87,9 @@
       .ctl-btn {
         width: 100%;
         margin: 0rem;
-        background-color: var(--cardBackgroud) !important;
-        border-color: var(--referallCopyBtn) !important;
-        color: var(--primaryTextColor) !important;
+        background-color: var(--primaryTextColor) !important;
+        border-color: var(--primaryTextColor) !important;
+        color: var(--cardBackgroud) !important;
         font-size: 1.5rem !important;
         padding: 1.4rem 1rem;
         box-shadow: 0px 4px 10px 0px var(--boxShadowColorMd);
@@ -98,10 +98,9 @@
         justify-content: center;
 
         &:hover {
-          box-shadow: none !important;
-          border-color: var(--primaryTextColor) !important;
-          background-color: var(--primaryTextColor) !important;
-          color: var(--cardBackgroud) !important;
+          background-color: var(--cardBackgroud) !important;
+          border-color: var(--cardBackgroud) !important;
+          color: var(--primaryTextColor) !important;
         }
       }
       .ctl-otp-btn {
@@ -115,9 +114,9 @@
       .ctl-btn-disabled {
         opacity: 0.5 !important;
         &:hover {
-          border-color: var(--referallCopyBtn) !important;
-          background-color: var(--cardBackgroud) !important;
-          color: var(--primaryTextColor) !important;
+          background-color: var(--primaryTextColor) !important;
+          border-color: var(--primaryTextColor) !important;
+          color: var(--cardBackgroud) !important;
         }
       }
     }
@@ -152,9 +151,9 @@
     justify-content: flex-end;
     .ct-go-btn {
       margin: 0rem;
-      background-color: var(--cardBackgroud) !important;
-      border-color: var(--referallCopyBtn) !important;
-      color: var(--primaryTextColor) !important;
+      background-color: var(--primaryTextColor) !important;
+      border-color: var(--primaryTextColor) !important;
+      color: var(--cardBackgroud) !important;
       font-size: 1.5rem !important;
       box-shadow: 0px 4px 10px 0px var(--boxShadowColorMd);
       display: flex;
@@ -162,10 +161,9 @@
       justify-content: center;
 
       &:hover {
-        box-shadow: none !important;
-        border-color: var(--primaryTextColor) !important;
-        background-color: var(--primaryTextColor) !important;
-        color: var(--cardBackgroud) !important;
+        background-color: var(--cardBackgroud) !important;
+        border-color: var(--cardBackgroud) !important;
+        color: var(--primaryTextColor) !important;
         .buttonAttachedImageCutomBtn {
           filter: var(--invertColorHover) !important;
         }
@@ -180,9 +178,9 @@
     .ct-go-btn-disabled {
       opacity: 0.5 !important;
       &:hover {
-        border-color: var(--referallCopyBtn) !important;
-        background-color: var(--cardBackgroud) !important;
-        color: var(--primaryTextColor) !important;
+        background-color: var(--primaryTextColor) !important;
+        border-color: var(--primaryTextColor) !important;
+        color: var(--cardBackgroud) !important;
         .buttonAttachedImageCutomBtn {
           filter: var(--invertColor) !important;
         }

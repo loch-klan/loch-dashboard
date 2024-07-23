@@ -99,6 +99,12 @@ export const getCopyTradeWalletShareLink = (walletList) => {
   }
   return "";
 };
+export const openSignUpPopUpDirectly = () => {
+  window.sessionStorage.setItem("dontOpenLoginPopup", true);
+  if (document.getElementById("sidebar-sign-up-btn")) {
+    document.getElementById("sidebar-sign-up-btn").click();
+  }
+};
 export const openLoginPopUp = () => {
   window.sessionStorage.setItem("dontOpenLoginPopup", true);
   if (document.getElementById("sidebar-open-sign-in-btn")) {
