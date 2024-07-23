@@ -16,6 +16,7 @@ const LoginMobile = ({
   email,
   handleSubmitEmail,
   smartMoneyLogin,
+  popupAnimation,
 }) => {
   const submitRef = React.useRef(null);
   const [showValidEmailErrorMessage, setShowValidEmailErrorMessage] =
@@ -43,6 +44,9 @@ const LoginMobile = ({
       setShowValidEmailErrorMessage(true);
     }
   };
+  const hideModal = () => {
+    toggleModal("");
+  };
   return (
     <Modal
       size="md"
@@ -51,20 +55,17 @@ const LoginMobile = ({
         "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top modal-new-welcome-v-top-mobile welcome-modal-mobile-dialogue"
       }
       show={show}
-      onHide={toggleModal}
+      onHide={hideModal}
       centered
       aria-labelledby="contained-modal-title-vcenter"
       backdropClassName="exitoverlaymodalNewWelcome"
       contentClassName="new-welcome-modal-content"
-      animation={false}
+      animation={popupAnimation}
     >
       <Modal.Body style={{ position: "relative" }}>
         {/* <div className="new-auth-mobile-wrap"> */}
         <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
-          <div
-            className="new-homepage-auth-content-close "
-            onClick={toggleModal}
-          >
+          <div className="new-homepage-auth-content-close " onClick={hideModal}>
             <Image
               src={CloseIconBlack}
               style={{

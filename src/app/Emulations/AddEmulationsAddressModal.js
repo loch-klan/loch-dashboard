@@ -33,6 +33,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
       copyTradeAmount: "",
       notificationEmailAddress: "",
       signInSignUpModal: false,
+      popupAnimation: mobileCheck() ? false : true,
       walletInput: [
         {
           id: `wallet1`,
@@ -76,6 +77,11 @@ class AddEmulationsAddressModal extends BaseReactComponent {
 
   componentDidUpdate(prevProps, prevState) {}
   componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        popupAnimation: false,
+      });
+    }, 1000);
     this.props.getAllCoins();
     this.props.getAllParentChains();
     // Set Metamask connected
@@ -451,7 +457,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
           centered
           aria-labelledby="contained-modal-title-vcenter"
           backdropClassName="exitoverlaymodal"
-          animation={false}
+          animation={this.state.popupAnimation}
         >
           <Modal.Header>
             {this.props.isMobile ? (

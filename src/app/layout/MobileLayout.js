@@ -35,6 +35,7 @@ import {
   dontOpenLoginPopup,
   hasUserAddedAddressesFun,
   isPremiumUser,
+  mobileCheck,
   removeBlurMethods,
   removeOpenModalAfterLogin,
   removeSignUpMethods,
@@ -78,6 +79,7 @@ class MobileLayout extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      popupAnimation: mobileCheck() ? false : true,
       isPremiumUser: false,
       isLochPaymentModal: false,
       authmodal: "",
@@ -787,9 +789,17 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   toggleAuthModal = (val = "") => {
+    this.setState({
+      popupAnimation: false,
+    });
     if (val !== "signup") {
       this.setState({
         isReferralCodeStep: false,
+      });
+    }
+    if (val !== "signup" && val !== "login" && val !== "verify") {
+      this.setState({
+        popupAnimation: true,
       });
     }
     this.setState({
@@ -849,7 +859,6 @@ class MobileLayout extends BaseReactComponent {
       }
     } else {
       const data = new URLSearchParams();
-      console.log("this.state.emailSignup ", this.state.emailSignup);
       data.append(
         "email",
         this.state.emailSignup ? this.state.emailSignup.toLowerCase() : ""
@@ -876,7 +885,6 @@ class MobileLayout extends BaseReactComponent {
     });
   };
   handleRedirection = () => {
-    // console.log("this", this.props);
     const signUpMethod = whichSignUpMethod();
     HomeSignedUpReferralCode({
       session_id: getCurrentUser().id,
@@ -1041,6 +1049,7 @@ class MobileLayout extends BaseReactComponent {
         ) : null}
         {this.state.authmodal === "login" ? (
           <LoginMobile
+            popupAnimation={this.state.popupAnimation}
             toggleModal={this.toggleAuthModal}
             isMobile
             email={this.state.email}
