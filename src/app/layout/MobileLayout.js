@@ -940,6 +940,11 @@ class MobileLayout extends BaseReactComponent {
       authmodal: "login",
     });
   };
+  openSignUpModal = () => {
+    this.setState({
+      authmodal: "signup",
+    });
+  };
   onVerifiedOtp = () => {
     this.setState({
       authmodal: "",
@@ -1029,6 +1034,7 @@ class MobileLayout extends BaseReactComponent {
           id="sidebar-closed-sign-in-btn-loch-points-profile"
         />
         <div onClick={this.openSignInModal} id="sidebar-closed-sign-in-btn" />
+        <div onClick={this.openSignUpModal} id="sidebar-sign-up-btn" />
 
         {this.state.confirmLeave ? (
           <SmartMoneyMobileSignOutModal
