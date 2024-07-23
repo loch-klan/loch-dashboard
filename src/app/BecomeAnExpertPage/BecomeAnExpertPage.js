@@ -192,6 +192,7 @@ class BecomeAnExpertPage extends Component {
           customeHomeClassName="mpcHomePageNoSidePadding"
         >
           <BecomeAnExpertPageMobile
+            history={this.props.history}
             curStep={this.state.curStep}
             userEmail={this.state.userEmail}
             userName={this.state.userName}
@@ -245,6 +246,7 @@ class BecomeAnExpertPage extends Component {
             </div>
           </div>
           <BecomeAnExpertContent
+            history={this.props.history}
             curStep={this.state.curStep}
             userEmail={this.state.userEmail}
             userName={this.state.userName}

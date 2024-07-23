@@ -30,7 +30,7 @@
     border-radius: 16px;
     box-shadow: 0px 4px 10px 0px #0000000a;
     display: flex;
-    height: calc(118vh - 13rem);
+    height: calc(118vh - 22rem);
     align-items: flex-start;
     overflow-y: hidden;
     .ecrp-block {
@@ -347,7 +347,7 @@
     }
   }
   .ecrp-block-prev-container {
-    height: calc(118vh - 22rem);
+    height: calc(118vh - 28rem);
   }
 }
 .exper-call-running-page-mobile {
@@ -397,9 +397,8 @@
       }
     }
     .ecrp-block-container {
-      margin-top: 90px;
       flex-direction: column;
-      height: calc(100vh - 9rem - 90px);
+      height: calc(100vh - 9rem - 150px);
       .ecrp-block-top-mobile {
         width: 100%;
         min-width: 100%;

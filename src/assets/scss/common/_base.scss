@@ -4031,3 +4031,38 @@ input[type="number"]::-webkit-outer-spin-button {
 //     }
 //   }
 // }
+.go-back-btn-container-page {
+  position: relative;
+  width: 100%;
+  max-width: 120rem;
+  padding-top: 0rem;
+  z-index: 100000;
+  margin-top: 32px;
+}
+.go-back-btn-container-page-mobile {
+  padding: 0rem 2rem;
+}
+.go-back-btn-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  z-index: 100000;
+  .go-back-btn {
+    cursor: pointer;
+    gap: 10px;
+    opacity: 0.3;
+    display: flex;
+    align-items: center;
+    .go-back-btn-text {
+      font-size: 17px;
+      color: var(--primaryTextColor);
+      text-shadow: 0.2px 0 var(--primaryTextColor);
+    }
+    .go-back-btn-image {
+      height: 13px;
+    }
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

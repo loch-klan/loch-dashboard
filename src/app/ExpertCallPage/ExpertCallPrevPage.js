@@ -12,7 +12,7 @@ class ExpertCallPrevPage extends Component {
   }
 
   render() {
-    return <ExpertCallPage isPreviousCall />;
+    return <ExpertCallPage history={this.props.history} isPreviousCall />;
   }
 }
 const mapStateToProps = (state) => ({});

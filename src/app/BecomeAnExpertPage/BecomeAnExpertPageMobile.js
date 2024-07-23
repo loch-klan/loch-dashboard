@@ -13,6 +13,7 @@ class ExpertsPageMobile extends Component {
     return (
       <div className="becomne-an-expert-page-mobile">
         <BecomeAnExpertContent
+          history={this.props.history}
           isMobile
           curStep={this.props.curStep}
           userEmail={this.props.userEmail}

@@ -16,6 +16,7 @@ class ExpertsPageMobile extends Component {
           socialMediaLinks={this.props.socialMediaLinks}
           expertsList={this.props.expertsList}
           goToScheduleACall={this.props.goToScheduleACall}
+          history={this.props.history}
         />
       </div>
     );

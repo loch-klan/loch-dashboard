@@ -232,6 +232,7 @@ class ScheduleAcallPage extends Component {
           customeHomeClassName="mpcHomePageNoSidePadding"
         >
           <ScheduleAcallPageMobile
+            history={this.props.history}
             onHide={this.onHide}
             totalSteps={this.state.totalSteps}
             curStep={this.state.curStep}
@@ -283,6 +284,7 @@ class ScheduleAcallPage extends Component {
             </div>
           </div>
           <ScheduleAcallContent
+            history={this.props.history}
             totalSteps={this.state.totalSteps}
             curStep={this.state.curStep}
             curDateStartSelected={this.state.curDateStartSelected}

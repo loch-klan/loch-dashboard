@@ -13,17 +13,36 @@ import {
 import { getUser } from "../common/Api";
 import CheckboxCustomTable from "../common/customCheckboxTable";
 import "./_becomeAnExpertPage.scss";
+import TopWalletAddressList from "../header/TopWalletAddressList";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class BecomeAnExpertContent extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isMobile: mobileCheck(),
+    };
   }
 
   render() {
     return (
       <div className="becomne-an-expert-page inter-display-medium">
         <div className="becomne-an-expert-page-block-top-gradient" />
+        <div
+          className={`go-back-btn-container-page ${
+            this.state.isMobile ? "go-back-btn-container-page-mobile" : ""
+          }`}
+        >
+          <TopWalletAddressList
+            history={this.props.history}
+            showBackBtn
+            apiResponse={(e) => () => {}}
+            showpath
+            currentPage={"schedule-a-call"}
+            hideShare
+            noHomeInPath
+          />
+        </div>
         <div className="becomne-an-expert-page-block">
           <div className="bae-info">
             <div className="bae-info-steps">

@@ -8,7 +8,6 @@ import {
   AboutExpertPhoneIcon,
   AboutExpertStockArrowIcon,
   AboutExpertThumbIcon,
-  BackArrowSmartMoneyIcon,
 } from "../../assets/images/icons";
 import {
   CurrencyType,
@@ -34,6 +33,21 @@ class ExpertPersonContent extends Component {
     return (
       <div className="expert-person-page inter-display-medium">
         <div className="expert-person-page-block-top-gradient" />
+        <div
+          className={`go-back-btn-container-page ${
+            this.state.isMobile ? "go-back-btn-container-page-mobile" : ""
+          }`}
+        >
+          <TopWalletAddressList
+            history={this.props.history}
+            showBackBtn
+            apiResponse={(e) => () => {}}
+            showpath
+            currentPage={"schedule-a-call"}
+            hideShare
+            noHomeInPath
+          />
+        </div>
         <div className="ep-expert-info">
           <div className="ep-ei-data">
             <Image

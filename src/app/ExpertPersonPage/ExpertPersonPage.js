@@ -131,6 +131,7 @@ class ExpertPersonPage extends Component {
           customeHomeClassName="mpcHomePageNoSidePadding"
         >
           <ExpertPersonPageMobile
+            history={this.props.history}
             expertsList={this.state.expertsList}
             socialMediaLinks={this.state.socialMediaLinks}
             goToScheduleACall={this.goToScheduleACall}
@@ -160,6 +161,7 @@ class ExpertPersonPage extends Component {
             </div>
           </div>
           <ExpertPersonContent
+            history={this.props.history}
             socialMediaLinks={this.state.socialMediaLinks}
             expertsList={this.state.expertsList}
             goToScheduleACall={this.goToScheduleACall}

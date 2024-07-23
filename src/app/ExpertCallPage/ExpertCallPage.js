@@ -9,6 +9,7 @@ import ExpertCallContent from "./ExpertCallContent";
 import ExpertCallPageMobile from "./ExpertCallPageMobile";
 import "./_expertCallPage.scss";
 import PageHeader from "../common/PageHeader";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class ExpertCallPage extends Component {
   constructor(props) {
@@ -33,6 +34,8 @@ class ExpertCallPage extends Component {
           customeHomeClassName="mpcHomePageNoSidePadding"
         >
           <ExpertCallPageMobile
+            isPreviousCall={this.props.isPreviousCall}
+            history={this.props.history}
             goToExpertsPage={this.goToExpertsPage}
             onHide={this.onHide}
           />
@@ -61,17 +64,21 @@ class ExpertCallPage extends Component {
           </div>
           <div className="page-scroll">
             <div className="page-scroll-child">
+              <TopWalletAddressList
+                history={this.props.history}
+                showBackBtn
+                apiResponse={(e) => () => {}}
+                showpath
+                currentPage={"call-logs"}
+                hideShare
+                noHomeInPath
+              />
               {this.props.isPreviousCall ? (
                 <div
                   style={{
                     zIndex: "2",
                   }}
                 >
-                  <div
-                    style={{
-                      marginTop: "2rem",
-                    }}
-                  />
                   <PageHeader
                     title={"Transcript and Chat"}
                     subTitle={

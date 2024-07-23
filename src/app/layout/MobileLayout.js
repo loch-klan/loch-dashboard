@@ -2,6 +2,7 @@ import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import {
+  BackBlackIcon,
   MobileNavCopyTraderIcon,
   MobileNavFollow,
   MobileNavLeaderboard,
@@ -996,6 +997,11 @@ class MobileLayout extends BaseReactComponent {
       this.props.history.push(item.path);
     }
   };
+  goBack = () => {
+    if (this.props.history) {
+      this.props.history.goBack();
+    }
+  };
   render() {
     let activeTab = window.location.pathname;
     const getTotalAssetValue = () => {
@@ -1180,12 +1186,24 @@ class MobileLayout extends BaseReactComponent {
                         : ""
                     }`}
                   >
-                    <Breadcrums
-                      showpath={this.props.showpath}
-                      currentPage={this.props.currentPage}
-                      noHomeInPath={this.props.noHomeInPath}
-                      isMobile
-                    />
+                    {this.props.showBackBtn ? (
+                      <div className="go-back-btn-container">
+                        <div onClick={this.goBack} className="go-back-btn">
+                          <Image
+                            className="go-back-btn-image"
+                            src={BackBlackIcon}
+                          />
+                          <div className="go-back-btn-text">Go back</div>
+                        </div>
+                      </div>
+                    ) : (
+                      <Breadcrums
+                        showpath={this.props.showpath}
+                        currentPage={this.props.currentPage}
+                        noHomeInPath={this.props.noHomeInPath}
+                        isMobile
+                      />
+                    )}
                     <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
                       {this.props.hideAddresses ? null : (
                         <WelcomeCard

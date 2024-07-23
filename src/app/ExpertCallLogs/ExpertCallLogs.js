@@ -43,7 +43,7 @@ class ExpertCallLogs extends BaseReactComponent {
         {
           expertName: "@smartestmoney_",
           expertImage:
-            "https://s3-alpha-sig.figma.com/img/df3e/6848/191f19342dc8a8a6ff1928adfa2af324?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=oR-6Do6UkmCPuws~lvVzSUVuJnTbOkAaHtC~gc0byauCOfOznwt2SOmR8gzryf03f-oHROx7ZNKUHUi417Sy11UptFd6CXGwMAJFGk6Ps0oIE2kjmLwfCEbo5W6m4O9Ss2eed~wb5FjgBFbm~9zInwPwGSVuy3T58hy7NQHIMUJeWDVg0YgXOPF-gOS6p~PXcv9s7o4JFjqeC9BECnYoq-oQ0VtyK07aCgksczui2P5F~6WLrCQNE8B41JWyOdOaWGlupgqsOI84Ll6OLcCl4VQgJSaYCzbKGBCcfdBuWK0EvJI7daw8XFVhHpewbGUOsEhiVqMvWIJex0S4Wquv4w__",
+            "https://qph.cf2.quoracdn.net/main-qimg-701f56c404d7167a05770eff23173cb4-lq",
           status: "Scheduled",
           dateTime: new Date(),
           callLength: "1hr",
@@ -53,7 +53,7 @@ class ExpertCallLogs extends BaseReactComponent {
         {
           expertName: "@smartestmoney_",
           expertImage:
-            "https://s3-alpha-sig.figma.com/img/df3e/6848/191f19342dc8a8a6ff1928adfa2af324?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=oR-6Do6UkmCPuws~lvVzSUVuJnTbOkAaHtC~gc0byauCOfOznwt2SOmR8gzryf03f-oHROx7ZNKUHUi417Sy11UptFd6CXGwMAJFGk6Ps0oIE2kjmLwfCEbo5W6m4O9Ss2eed~wb5FjgBFbm~9zInwPwGSVuy3T58hy7NQHIMUJeWDVg0YgXOPF-gOS6p~PXcv9s7o4JFjqeC9BECnYoq-oQ0VtyK07aCgksczui2P5F~6WLrCQNE8B41JWyOdOaWGlupgqsOI84Ll6OLcCl4VQgJSaYCzbKGBCcfdBuWK0EvJI7daw8XFVhHpewbGUOsEhiVqMvWIJex0S4Wquv4w__",
+            "https://qph.cf2.quoracdn.net/main-qimg-701f56c404d7167a05770eff23173cb4-lq",
           status: "Completed",
           dateTime: new Date(),
           callLength: "1hr 30min",
@@ -63,7 +63,7 @@ class ExpertCallLogs extends BaseReactComponent {
         {
           expertName: "@childmoney",
           expertImage:
-            "https://s3-alpha-sig.figma.com/img/b2d4/3287/b54d8cbfa3890b921fe78bb145922337?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Hqo5du5UiJKN~OQh94x-mORhA4jt58pbsIgkV7DfY3YMauYfwwy46eqEXNYy~jpVmq4u~c7J57145rEbXL~eEltmGHEQ321DYfFYRohT-b1wUxWK4POL1RUVZLGqFiK67vGvV~OF7MxOrAe0wh1zQMHwLqq~CVrkupQwsrqh132Nl7zv1oiOSfJYwPzgj5MZ-o-u-tZuFT-fvrO7GfOKF0a9rr2IpIC7eakgYIxrwBnDETM3iSgIRjCqY1rXEaISU4NjhaFoAIoTjs3~BDCjMv~SSmxu1eInv3mrNTWrDsipVkCSh6Tilgff7-SwODFCUob9bvsmeWHD0FJedmC5yA__",
+            "https://a.wattpad.com/useravatar/TexasKira2006.256.320104.jpg",
           status: "Completed",
           dateTime: new Date(),
           callLength: "1hr 30min",
@@ -73,7 +73,7 @@ class ExpertCallLogs extends BaseReactComponent {
         {
           expertName: "@childmoney",
           expertImage:
-            "https://s3-alpha-sig.figma.com/img/b2d4/3287/b54d8cbfa3890b921fe78bb145922337?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Hqo5du5UiJKN~OQh94x-mORhA4jt58pbsIgkV7DfY3YMauYfwwy46eqEXNYy~jpVmq4u~c7J57145rEbXL~eEltmGHEQ321DYfFYRohT-b1wUxWK4POL1RUVZLGqFiK67vGvV~OF7MxOrAe0wh1zQMHwLqq~CVrkupQwsrqh132Nl7zv1oiOSfJYwPzgj5MZ-o-u-tZuFT-fvrO7GfOKF0a9rr2IpIC7eakgYIxrwBnDETM3iSgIRjCqY1rXEaISU4NjhaFoAIoTjs3~BDCjMv~SSmxu1eInv3mrNTWrDsipVkCSh6Tilgff7-SwODFCUob9bvsmeWHD0FJedmC5yA__",
+            "https://a.wattpad.com/useravatar/TexasKira2006.256.320104.jpg",
           status: "Completed",
           dateTime: new Date(),
           callLength: "1hr 30min",
@@ -83,7 +83,7 @@ class ExpertCallLogs extends BaseReactComponent {
         {
           expertName: "@childmoney",
           expertImage:
-            "https://s3-alpha-sig.figma.com/img/b2d4/3287/b54d8cbfa3890b921fe78bb145922337?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Hqo5du5UiJKN~OQh94x-mORhA4jt58pbsIgkV7DfY3YMauYfwwy46eqEXNYy~jpVmq4u~c7J57145rEbXL~eEltmGHEQ321DYfFYRohT-b1wUxWK4POL1RUVZLGqFiK67vGvV~OF7MxOrAe0wh1zQMHwLqq~CVrkupQwsrqh132Nl7zv1oiOSfJYwPzgj5MZ-o-u-tZuFT-fvrO7GfOKF0a9rr2IpIC7eakgYIxrwBnDETM3iSgIRjCqY1rXEaISU4NjhaFoAIoTjs3~BDCjMv~SSmxu1eInv3mrNTWrDsipVkCSh6Tilgff7-SwODFCUob9bvsmeWHD0FJedmC5yA__",
+            "https://a.wattpad.com/useravatar/TexasKira2006.256.320104.jpg",
           status: "Completed",
           dateTime: new Date(),
           callLength: "1hr 30min",
@@ -93,7 +93,7 @@ class ExpertCallLogs extends BaseReactComponent {
         {
           expertName: "@smartestmoney_",
           expertImage:
-            "https://s3-alpha-sig.figma.com/img/df3e/6848/191f19342dc8a8a6ff1928adfa2af324?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=oR-6Do6UkmCPuws~lvVzSUVuJnTbOkAaHtC~gc0byauCOfOznwt2SOmR8gzryf03f-oHROx7ZNKUHUi417Sy11UptFd6CXGwMAJFGk6Ps0oIE2kjmLwfCEbo5W6m4O9Ss2eed~wb5FjgBFbm~9zInwPwGSVuy3T58hy7NQHIMUJeWDVg0YgXOPF-gOS6p~PXcv9s7o4JFjqeC9BECnYoq-oQ0VtyK07aCgksczui2P5F~6WLrCQNE8B41JWyOdOaWGlupgqsOI84Ll6OLcCl4VQgJSaYCzbKGBCcfdBuWK0EvJI7daw8XFVhHpewbGUOsEhiVqMvWIJex0S4Wquv4w__",
+            "https://qph.cf2.quoracdn.net/main-qimg-701f56c404d7167a05770eff23173cb4-lq",
           status: "Completed",
           dateTime: new Date(),
           callLength: "1hr 30min",
@@ -103,7 +103,7 @@ class ExpertCallLogs extends BaseReactComponent {
         {
           expertName: "@smartestmoney_",
           expertImage:
-            "https://s3-alpha-sig.figma.com/img/df3e/6848/191f19342dc8a8a6ff1928adfa2af324?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=oR-6Do6UkmCPuws~lvVzSUVuJnTbOkAaHtC~gc0byauCOfOznwt2SOmR8gzryf03f-oHROx7ZNKUHUi417Sy11UptFd6CXGwMAJFGk6Ps0oIE2kjmLwfCEbo5W6m4O9Ss2eed~wb5FjgBFbm~9zInwPwGSVuy3T58hy7NQHIMUJeWDVg0YgXOPF-gOS6p~PXcv9s7o4JFjqeC9BECnYoq-oQ0VtyK07aCgksczui2P5F~6WLrCQNE8B41JWyOdOaWGlupgqsOI84Ll6OLcCl4VQgJSaYCzbKGBCcfdBuWK0EvJI7daw8XFVhHpewbGUOsEhiVqMvWIJex0S4Wquv4w__",
+            "https://qph.cf2.quoracdn.net/main-qimg-701f56c404d7167a05770eff23173cb4-lq",
           status: "Completed",
           dateTime: new Date(),
           callLength: "1hr 30min",
@@ -113,7 +113,7 @@ class ExpertCallLogs extends BaseReactComponent {
         {
           expertName: "@smartestmoney_",
           expertImage:
-            "https://s3-alpha-sig.figma.com/img/df3e/6848/191f19342dc8a8a6ff1928adfa2af324?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=oR-6Do6UkmCPuws~lvVzSUVuJnTbOkAaHtC~gc0byauCOfOznwt2SOmR8gzryf03f-oHROx7ZNKUHUi417Sy11UptFd6CXGwMAJFGk6Ps0oIE2kjmLwfCEbo5W6m4O9Ss2eed~wb5FjgBFbm~9zInwPwGSVuy3T58hy7NQHIMUJeWDVg0YgXOPF-gOS6p~PXcv9s7o4JFjqeC9BECnYoq-oQ0VtyK07aCgksczui2P5F~6WLrCQNE8B41JWyOdOaWGlupgqsOI84Ll6OLcCl4VQgJSaYCzbKGBCcfdBuWK0EvJI7daw8XFVhHpewbGUOsEhiVqMvWIJex0S4Wquv4w__",
+            "https://qph.cf2.quoracdn.net/main-qimg-701f56c404d7167a05770eff23173cb4-lq",
           status: "Cancelled",
           dateTime: new Date(),
           callLength: "30min",
@@ -123,7 +123,7 @@ class ExpertCallLogs extends BaseReactComponent {
         {
           expertName: "@childmoney",
           expertImage:
-            "https://s3-alpha-sig.figma.com/img/b2d4/3287/b54d8cbfa3890b921fe78bb145922337?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Hqo5du5UiJKN~OQh94x-mORhA4jt58pbsIgkV7DfY3YMauYfwwy46eqEXNYy~jpVmq4u~c7J57145rEbXL~eEltmGHEQ321DYfFYRohT-b1wUxWK4POL1RUVZLGqFiK67vGvV~OF7MxOrAe0wh1zQMHwLqq~CVrkupQwsrqh132Nl7zv1oiOSfJYwPzgj5MZ-o-u-tZuFT-fvrO7GfOKF0a9rr2IpIC7eakgYIxrwBnDETM3iSgIRjCqY1rXEaISU4NjhaFoAIoTjs3~BDCjMv~SSmxu1eInv3mrNTWrDsipVkCSh6Tilgff7-SwODFCUob9bvsmeWHD0FJedmC5yA__",
+            "https://a.wattpad.com/useravatar/TexasKira2006.256.320104.jpg",
           status: "Cancelled",
           dateTime: new Date(),
           callLength: "1hr 30min",
@@ -486,6 +486,7 @@ class ExpertCallLogs extends BaseReactComponent {
             hideShare
             hideAddresses
             noHomeInPath
+            showBackBtn
           >
             <ExpertCallLogsMobile
               tableData={this.state.tableData}
@@ -516,10 +517,12 @@ class ExpertCallLogs extends BaseReactComponent {
             </div>
           </div>
         </div>
-        <div className="history-table-section m-t-80">
+        <div className="history-table-section">
           <div className="history-table page-scroll">
             <div className="page-scroll-child">
               <TopWalletAddressList
+                history={this.props.history}
+                showBackBtn
                 apiResponse={(e) => () => {}}
                 showpath
                 currentPage={"call-logs"}

@@ -16,6 +16,7 @@ import {
   TransactionCardPurpleIcon,
 } from "../../assets/images/icons";
 import { getUser } from "../common/Api";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class ExpertCallContent extends Component {
   constructor(props) {
@@ -36,11 +37,40 @@ class ExpertCallContent extends Component {
   };
 
   render() {
+    console.log("this.props.isPreviousCall ", this.props.isPreviousCall);
     return (
       <div className="exper-call-running-page">
         <div className="exper-call-finished-page-block-top-gradient" />
+        <div
+          style={{
+            marginTop: "100px",
+          }}
+          className={`go-back-btn-container-page ${
+            this.state.isMobile ? "go-back-btn-container-page-mobile" : ""
+          }`}
+        >
+          <TopWalletAddressList
+            history={this.props.history}
+            showBackBtn
+            apiResponse={(e) => () => {}}
+            showpath
+            currentPage={"schedule-a-call"}
+            hideShare
+            noHomeInPath
+          />
+        </div>
+        {this.props.isPreviousCall ? (
+          <div className="mobile-header-container">
+            <h4>Call history</h4>
+            <p>
+              Browse all calls, including those made, scheduled, and cancelled
+            </p>
+          </div>
+        ) : null}
         <div className="ecrp-expert-container">
-          <div className="ecrp-bc-title">On call with</div>
+          <div className="ecrp-bc-title">
+            {this.props.isPreviousCall ? "You had call with" : "On call with"}
+          </div>
           <div className="ecrp-bc-user">
             <Image
               src={this.props.allChats[0].image}
@@ -49,24 +79,34 @@ class ExpertCallContent extends Component {
             <div className="ecrp-bc-u-name">@smartestmoney_</div>
           </div>
         </div>
-        <div className="ecrp-block-container">
+        <div
+          style={{
+            height: this.props.isPreviousCall
+              ? "calc(100vh - 9rem - 230px)"
+              : "",
+          }}
+          className="ecrp-block-container"
+        >
           <div className="ecrp-block ecrp-block-center ecrp-block-top-mobile">
             <div className="ecrp-bc-items">
-              <div className="ecrp-bc-audio-btns">
-                <div className="ecrp-bc-audio-mute-btn">
-                  <Image
-                    className="ecrp-bc-audio-mute-icon"
-                    src={ExpertCallMuteMicIcon}
-                  />
+              {this.props.isPreviousCall ? null : (
+                <div className="ecrp-bc-audio-btns">
+                  <div className="ecrp-bc-audio-mute-btn">
+                    <Image
+                      className="ecrp-bc-audio-mute-icon"
+                      src={ExpertCallMuteMicIcon}
+                    />
+                  </div>
+                  <div className="ecrp-bc-audio-call-cut-btn">
+                    <Image
+                      className="ecrp-bc-audio-phone-icon"
+                      src={ExpertCallPhoneIcon}
+                    />
+                    <div className="ecrp-bc-audio-phone-text">Disconnect</div>
+                  </div>
                 </div>
-                <div className="ecrp-bc-audio-call-cut-btn">
-                  <Image
-                    className="ecrp-bc-audio-phone-icon"
-                    src={ExpertCallPhoneIcon}
-                  />
-                  <div className="ecrp-bc-audio-phone-text">Disconnect</div>
-                </div>
-              </div>
+              )}
+
               <div className="ecrp-bc-audio-call">
                 <Image
                   src={AudioCallExpertsIcon}
@@ -186,18 +226,20 @@ class ExpertCallContent extends Component {
                       );
                     })}
                   </div>
-                  <div className="ecrp-b-right-transcript-input-message">
-                    <div className="ecrp-b-right-transcript-input">
-                      <input
-                        placeholder="Send a message here"
-                        className="ecrp-b-right-transcript-input-box"
-                      />
-                      <Image
-                        src={SendChatMessageIcon}
-                        className="ecrp-b-right-transcript-input-icon"
-                      />
+                  {this.props.isPreviousCall ? null : (
+                    <div className="ecrp-b-right-transcript-input-message">
+                      <div className="ecrp-b-right-transcript-input">
+                        <input
+                          placeholder="Send a message here"
+                          className="ecrp-b-right-transcript-input-box"
+                        />
+                        <Image
+                          src={SendChatMessageIcon}
+                          className="ecrp-b-right-transcript-input-icon"
+                        />
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               )}
             </div>

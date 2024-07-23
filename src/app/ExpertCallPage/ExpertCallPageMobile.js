@@ -13,6 +13,8 @@ class ExpertCallPageMobile extends Component {
     return (
       <div className="exper-call-running-page-mobile">
         <ExpertCallContent
+          isPreviousCall={this.props.isPreviousCall}
+          history={this.props.history}
           isMobile
           goToExpertsPage={this.props.goToExpertsPage}
         />

@@ -13,6 +13,7 @@ class ScheduleAcallMobile extends Component {
     return (
       <div className="schedule-a-call-page-mobile">
         <ScheduleAcallContent
+          history={this.props.history}
           isMobile
           totalSteps={this.props.totalSteps}
           curStep={this.props.curStep}

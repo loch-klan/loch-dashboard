@@ -6,6 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   min-width: 85rem;
   .becomne-an-expert-page-block-top-gradient {
     width: 100%;
@@ -27,7 +28,7 @@
 
   .becomne-an-expert-page-block {
     max-width: 120rem;
-    padding-top: 7rem;
+    padding-top: 0rem;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
+  BackBlackIcon,
   CopyTradeSwapIcon,
   CopyTradeTopBarIcon,
   EmultionSidebarIcon,
@@ -1090,6 +1091,12 @@ class TopWalletAddressList extends Component {
       }
     }
   };
+  goBack = () => {
+    // console.log("this.props.history ", this.props.history);
+    if (this.props.history) {
+      this.props.history.goBack();
+    }
+  };
   render() {
     if (this.props.isMobile) {
       return (
@@ -1298,226 +1305,241 @@ class TopWalletAddressList extends Component {
     }
     return (
       <>
-        <Breadcrums
-          showpath={this.props.showpath}
-          currentPage={this.props.currentPage}
-          noHomeInPath={this.props.noHomeInPath}
-        />
-        {/* {this.props.showpath ? breadCrumb : ""} */}
-        <div className={`topWalletAddressList ${this.props.isWideScreen?"topWalletAddressListWide":""}`}>
-          {this.state.followSignupModal ? (
-            <FollowExitOverlay
-              followedAddress={this.state.followedAddress}
-              hideOnblur
-              showHiddenError
-              modalAnimation={false}
-              show={this.state.followSignupModal}
-              onHide={this.onCloseModal}
-              history={this.props.history}
-              modalType={"exitOverlay"}
-              handleRedirection={() => {
-                // resetUser();
-                // setTimeout(function () {
-                //   if (this.props.history) {
-                //     this.props.history.push("/welcome");
-                //   }
-                // }, 3000);
-              }}
-              signup={true}
-              goToSignIn={this.openSigninModal}
-            />
-          ) : null}
-          {this.state.walletList.length > 0 ? (
-            <div className="topWalletAddressListDropdownContainer maxWidth50">
-              <TopBarDropDown
-                deleteTheAddress={this.deleteTheAddress}
-                class="topWalletAddressListDropdown"
-                list={this.state.walletList}
-                showChecked={true}
-                relative={true}
-                buttonRef={this.props.buttonRef}
-                totalWallets={this.state.totalWallets}
-                firstWallet={this.state.firstWallet}
-                firstFullWallet={this.state.firstFullWallet}
-                fullWalletList={this.state.fullWalletList}
-                hideDeleteButton={this.state.hideDeleteButton}
-              />
+        {this.props.showBackBtn ? (
+          <div className="go-back-btn-container">
+            <div onClick={this.goBack} className="go-back-btn">
+              <Image className="go-back-btn-image" src={BackBlackIcon} />
+              <div className="go-back-btn-text">Go back</div>
             </div>
-          ) : (
-            <div />
-          )}
-
-          <div
-            className={`topWalletAddressListFollowShareContainer inter-display-medium`}
-          >
-            {this.props.showUpdatesJustNowBtn ? (
-              <h2
-                className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
-                onClick={this.RefreshButton}
-                style={{
-                  whiteSpace: "nowrap",
-                }}
-              >
-                <Image src={refreshIcon} />
-                Updated{" "}
-                <span
-                  style={{ marginLeft: "3px" }}
-                  className="inter-display-bold f-s-13 lh-15 grey-B0B"
-                >
-                  {this.state.timeNumber === null
-                    ? "3"
-                    : this.state.timeNumber === 0
-                    ? " just now"
-                    : this.state.timeNumber}
-                </span>
-                <span>
-                  {this.state.timeUnit !== "" && this.state.timeNumber !== 0
-                    ? this.state.timeUnit
-                    : this.state.timeNumber === 0
-                    ? ""
-                    : "h ago"}
-                </span>
-              </h2>
-            ) : null}
-            {this.state.showFollowingAddress && !this.props.hideShare ? (
-              <div
-                ref={this.props.buttonRef}
-                className="ml-3 topWalletAddressListFollowShareBtn"
-                id="address-button"
-                onClick={this.addAddressToWatchListFun}
-              >
-                <Image
-                  className="topWalletAddressListFollowShareBtnIcon"
-                  src={FollowTopBarIcon}
+          </div>
+        ) : (
+          <>
+            <Breadcrums
+              showpath={this.props.showpath}
+              currentPage={this.props.currentPage}
+              noHomeInPath={this.props.noHomeInPath}
+            />
+            <div
+              className={`topWalletAddressList ${
+                this.props.isWideScreen ? "topWalletAddressListWide" : ""
+              }`}
+            >
+              {this.state.followSignupModal ? (
+                <FollowExitOverlay
+                  followedAddress={this.state.followedAddress}
+                  hideOnblur
+                  showHiddenError
+                  modalAnimation={false}
+                  show={this.state.followSignupModal}
+                  onHide={this.onCloseModal}
+                  history={this.props.history}
+                  modalType={"exitOverlay"}
+                  handleRedirection={() => {
+                    // resetUser();
+                    // setTimeout(function () {
+                    //   if (this.props.history) {
+                    //     this.props.history.push("/welcome");
+                    //   }
+                    // }, 3000);
+                  }}
+                  signup={true}
+                  goToSignIn={this.openSigninModal}
                 />
-                <span className="dotDotText">
-                  {this.state.isFollowingAddress ? "Following" : "Follow"}
-                </span>
-              </div>
-            ) : null}
-            {!this.props.hideShare ? (
-              <div className="topWalletAddressListFollowShareBtnContainer">
-                <OutsideClickHandler onOutsideClick={this.hideShareModal}>
-                  {this.state.shareModal ? (
-                    <div className="topWalletAddressListFollowShareBtnPopUpContainer">
-                      <div className="topWalletAddressListFollowShareBtnPopUp">
-                        <div className="topWalletAddressListFollowShareBtnPopUpArrow" />
-                        <div className="TWALSFBPopUpCopyBlock TWALSFBPopUpCopyTradeBlock">
-                          <div className="TWALSFBPopUpHeading">
-                            <Image
-                              className="TWALSFBPopUpHeadingIcon"
-                              src={CopyTradeSwapIcon}
-                            />
-                            <div className="inter-display-medium">
-                              Link to copy trade this wallet
-                            </div>
-                          </div>
-                          <div className="TWALSFBPopUpCopy">
-                            <div className="TWALSFBPopUpCopyLink inter-display-medium">
-                              {this.state.copyTradeShareUrl}
-                            </div>
-                            <div
-                              onClick={this.copyCopyTradeUrl}
-                              className="TWALSFBPopUpCopyBtn inter-display-medium"
-                            >
-                              Copy
-                            </div>
-                          </div>
-                        </div>
-                        <div className="TWALSFBPopUpCopyBlock">
-                          <div className="TWALSFBPopUpHeading">
-                            <Image
-                              className="TWALSFBPopUpHeadingIcon"
-                              src={GlobeShareBlockIcon}
-                            />
-                            <div className="inter-display-medium">
-                              Public link to this wallet
-                            </div>
-                          </div>
-                          <div className="TWALSFBPopUpCopy">
-                            <div className="TWALSFBPopUpCopyLink inter-display-medium">
-                              {this.state.shareUrl}
-                            </div>
-                            <div
-                              onClick={this.copyPublicUrl}
-                              className="TWALSFBPopUpCopyBtn inter-display-medium"
-                            >
-                              Copy
-                            </div>
-                          </div>
-                        </div>
-                        <div className="TWALSFBPopUpShareBlock">
-                          <div className="TWALSFBPopUpShareDirect">
-                            <Image
-                              className="TWALSFBPopUpShareDirectIcon"
-                              src={ShareCopyBlockIcon}
-                            />
-                            <div>Or share directly</div>
-                          </div>
-                          <div className="TWALSFBPopUpShareBlockFlex">
-                            <div className="TWALSFBPopUpCopy">
-                              <div
-                                onClick={this.shareOnTwitter}
-                                className="TWALSFBPopUpCopyBtn inter-display-medium"
-                              >
-                                <div>Share on</div>
+              ) : null}
+              {this.state.walletList.length > 0 ? (
+                <div className="topWalletAddressListDropdownContainer maxWidth50">
+                  <TopBarDropDown
+                    deleteTheAddress={this.deleteTheAddress}
+                    class="topWalletAddressListDropdown"
+                    list={this.state.walletList}
+                    showChecked={true}
+                    relative={true}
+                    buttonRef={this.props.buttonRef}
+                    totalWallets={this.state.totalWallets}
+                    firstWallet={this.state.firstWallet}
+                    firstFullWallet={this.state.firstFullWallet}
+                    fullWalletList={this.state.fullWalletList}
+                    hideDeleteButton={this.state.hideDeleteButton}
+                  />
+                </div>
+              ) : (
+                <div />
+              )}
 
-                                <Image
-                                  className="TWALSFBPopUpCopyBtnIcon"
-                                  src={XFormallyTwitterLogoIcon}
-                                />
-                              </div>
-                            </div>
-                            <div className="TWALSFBPopUpCopy">
-                              <div
-                                onClick={this.shareOnTelegram}
-                                className="TWALSFBPopUpCopyBtn inter-display-medium"
-                              >
-                                <div>Share on Telegram</div>
-
-                                <Image
-                                  className="TWALSFBPopUpCopyBtnIcon"
-                                  src={UserCreditTelegramIcon}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : null}
-
+              <div
+                className={`topWalletAddressListFollowShareContainer inter-display-medium`}
+              >
+                {this.props.showUpdatesJustNowBtn ? (
+                  <h2
+                    className="inter-display-regular f-s-13 lh-15 grey-B0B cp refresh-btn"
+                    onClick={this.RefreshButton}
+                    style={{
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <Image src={refreshIcon} />
+                    Updated{" "}
+                    <span
+                      style={{ marginLeft: "3px" }}
+                      className="inter-display-bold f-s-13 lh-15 grey-B0B"
+                    >
+                      {this.state.timeNumber === null
+                        ? "3"
+                        : this.state.timeNumber === 0
+                        ? " just now"
+                        : this.state.timeNumber}
+                    </span>
+                    <span>
+                      {this.state.timeUnit !== "" && this.state.timeNumber !== 0
+                        ? this.state.timeUnit
+                        : this.state.timeNumber === 0
+                        ? ""
+                        : "h ago"}
+                    </span>
+                  </h2>
+                ) : null}
+                {this.state.showFollowingAddress && !this.props.hideShare ? (
                   <div
                     ref={this.props.buttonRef}
-                    className="topWalletAddressListFollowShareBtn ml-2"
+                    className="ml-3 topWalletAddressListFollowShareBtn"
                     id="address-button"
-                    // onClick={this.toggleShareModal}
-                    onClick={this.handleSharePassFun}
+                    onClick={this.addAddressToWatchListFun}
                   >
                     <Image
                       className="topWalletAddressListFollowShareBtnIcon"
-                      src={ShareTopBarIcon}
+                      src={FollowTopBarIcon}
                     />
-                    <span className="dotDotText">Share</span>
+                    <span className="dotDotText">
+                      {this.state.isFollowingAddress ? "Following" : "Follow"}
+                    </span>
                   </div>
-                </OutsideClickHandler>
+                ) : null}
+                {!this.props.hideShare ? (
+                  <div className="topWalletAddressListFollowShareBtnContainer">
+                    <OutsideClickHandler onOutsideClick={this.hideShareModal}>
+                      {this.state.shareModal ? (
+                        <div className="topWalletAddressListFollowShareBtnPopUpContainer">
+                          <div className="topWalletAddressListFollowShareBtnPopUp">
+                            <div className="topWalletAddressListFollowShareBtnPopUpArrow" />
+                            <div className="TWALSFBPopUpCopyBlock TWALSFBPopUpCopyTradeBlock">
+                              <div className="TWALSFBPopUpHeading">
+                                <Image
+                                  className="TWALSFBPopUpHeadingIcon"
+                                  src={CopyTradeSwapIcon}
+                                />
+                                <div className="inter-display-medium">
+                                  Link to copy trade this wallet
+                                </div>
+                              </div>
+                              <div className="TWALSFBPopUpCopy">
+                                <div className="TWALSFBPopUpCopyLink inter-display-medium">
+                                  {this.state.copyTradeShareUrl}
+                                </div>
+                                <div
+                                  onClick={this.copyCopyTradeUrl}
+                                  className="TWALSFBPopUpCopyBtn inter-display-medium"
+                                >
+                                  Copy
+                                </div>
+                              </div>
+                            </div>
+                            <div className="TWALSFBPopUpCopyBlock">
+                              <div className="TWALSFBPopUpHeading">
+                                <Image
+                                  className="TWALSFBPopUpHeadingIcon"
+                                  src={GlobeShareBlockIcon}
+                                />
+                                <div className="inter-display-medium">
+                                  Public link to this wallet
+                                </div>
+                              </div>
+                              <div className="TWALSFBPopUpCopy">
+                                <div className="TWALSFBPopUpCopyLink inter-display-medium">
+                                  {this.state.shareUrl}
+                                </div>
+                                <div
+                                  onClick={this.copyPublicUrl}
+                                  className="TWALSFBPopUpCopyBtn inter-display-medium"
+                                >
+                                  Copy
+                                </div>
+                              </div>
+                            </div>
+                            <div className="TWALSFBPopUpShareBlock">
+                              <div className="TWALSFBPopUpShareDirect">
+                                <Image
+                                  className="TWALSFBPopUpShareDirectIcon"
+                                  src={ShareCopyBlockIcon}
+                                />
+                                <div>Or share directly</div>
+                              </div>
+                              <div className="TWALSFBPopUpShareBlockFlex">
+                                <div className="TWALSFBPopUpCopy">
+                                  <div
+                                    onClick={this.shareOnTwitter}
+                                    className="TWALSFBPopUpCopyBtn inter-display-medium"
+                                  >
+                                    <div>Share on</div>
+
+                                    <Image
+                                      className="TWALSFBPopUpCopyBtnIcon"
+                                      src={XFormallyTwitterLogoIcon}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="TWALSFBPopUpCopy">
+                                  <div
+                                    onClick={this.shareOnTelegram}
+                                    className="TWALSFBPopUpCopyBtn inter-display-medium"
+                                  >
+                                    <div>Share on Telegram</div>
+
+                                    <Image
+                                      className="TWALSFBPopUpCopyBtnIcon"
+                                      src={UserCreditTelegramIcon}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : null}
+
+                      <div
+                        ref={this.props.buttonRef}
+                        className="topWalletAddressListFollowShareBtn ml-2"
+                        id="address-button"
+                        // onClick={this.toggleShareModal}
+                        onClick={this.handleSharePassFun}
+                      >
+                        <Image
+                          className="topWalletAddressListFollowShareBtnIcon"
+                          src={ShareTopBarIcon}
+                        />
+                        <span className="dotDotText">Share</span>
+                      </div>
+                    </OutsideClickHandler>
+                  </div>
+                ) : null}
+                {this.props.showUpdatesJustNowBtn ? (
+                  <div
+                    className="ml-2 topWalletAddressListFollowShareBtn topWalletAddressListFollowShareBtnBig"
+                    id="home-copy-trade-button"
+                    onClick={this.goToCopyTrade}
+                  >
+                    <Image
+                      className="topWalletAddressListFollowShareBtnIcon"
+                      src={CopyTradeTopBarIcon}
+                    />
+                    <span className="dotDotText">Copy Trade</span>
+                  </div>
+                ) : null}
               </div>
-            ) : null}
-            {this.props.showUpdatesJustNowBtn ? (
-              <div
-                className="ml-2 topWalletAddressListFollowShareBtn topWalletAddressListFollowShareBtnBig"
-                id="home-copy-trade-button"
-                onClick={this.goToCopyTrade}
-              >
-                <Image
-                  className="topWalletAddressListFollowShareBtnIcon"
-                  src={CopyTradeTopBarIcon}
-                />
-                <span className="dotDotText">Copy Trade</span>
-              </div>
-            ) : null}
-          </div>
-        </div>
+            </div>
+          </>
+        )}
+        {/* {this.props.showpath ? breadCrumb : ""} */}
       </>
     );
   }

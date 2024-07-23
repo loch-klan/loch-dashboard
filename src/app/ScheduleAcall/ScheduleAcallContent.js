@@ -12,15 +12,19 @@ import {
   CurrencyType,
   TruncateText,
   loadingAnimation,
+  mobileCheck,
   numToCurrency,
 } from "../../utils/ReusableFunctions";
 import { getUser } from "../common/Api";
 import "./_scheduleAcallPage.scss";
+import TopWalletAddressList from "../header/TopWalletAddressList";
 
 class ScheduleAcallContent extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isMobile: mobileCheck(),
+    };
   }
   isTimeSelected = (optionIndex, timeSlotIndex) => {
     for (let i = 0; i < this.props.selectedCallOption.length; i++) {
@@ -37,6 +41,21 @@ class ScheduleAcallContent extends Component {
     return (
       <div className="schedule-a-call-page inter-display-medium">
         <div className="becomne-an-expert-page-block-top-gradient" />
+        <div
+          className={`go-back-btn-container-page ${
+            this.state.isMobile ? "go-back-btn-container-page-mobile" : ""
+          }`}
+        >
+          <TopWalletAddressList
+            history={this.props.history}
+            showBackBtn
+            apiResponse={(e) => () => {}}
+            showpath
+            currentPage={"schedule-a-call"}
+            hideShare
+            noHomeInPath
+          />
+        </div>
         <div className="becomne-an-expert-page-block">
           <div className="bae-info">
             <div className="bae-info-steps">
