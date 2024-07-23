@@ -2,8 +2,6 @@
   display: flex;
 
   .history-table {
-    margin-top: 3rem;
-
     .ShowDust {
       text-align: left;
       margin-top: -42px;
@@ -312,7 +310,7 @@
     }
 
     .transaction-table-section {
-      margin-bottom: 7rem;
+      margin-bottom: 6rem;
       position: relative;
       .table-wrapper {
         background: var(--cardBackgroud);

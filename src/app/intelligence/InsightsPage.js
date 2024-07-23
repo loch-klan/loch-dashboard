@@ -602,7 +602,7 @@ class InsightsPage extends Component {
               </div>
             </div>
           </div>
-          <div className="insights-section m-t-80">
+          <div className="insights-section">
             <div className="insights-page page-scroll">
               <div className="page-scroll-child">
                 <TopWalletAddressList

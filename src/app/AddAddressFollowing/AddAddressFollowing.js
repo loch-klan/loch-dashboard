@@ -234,7 +234,7 @@ class AddAddressFollowing extends BaseReactComponent {
               </div>
             </div>
           </div>
-          <div className="history-table-section m-t-80">
+          <div className="history-table-section">
             <div className="history-table page">
               <PageHeader
                 title={"Following"}

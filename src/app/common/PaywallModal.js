@@ -39,6 +39,7 @@ class PaywallModal extends BaseReactComponent {
       show: props.show,
       onHide: this.props.onHide,
       userDetailsState: undefined,
+      popupAnimation: props.onGoBackPayModal || props.isMobile ? false : true,
       customerData: [
         {
           name: "0xKyle",
@@ -93,6 +94,11 @@ class PaywallModal extends BaseReactComponent {
     };
   }
   componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        popupAnimation: false,
+      });
+    }, 500);
     const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     this.setState({
       userDetailsState: userDetails,
@@ -228,7 +234,7 @@ class PaywallModal extends BaseReactComponent {
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
-        animation={false}
+        animation={this.state.popupAnimation}
         style={{
           opacity: this.state.isPayWallOptions ? 0 : 1,
         }}

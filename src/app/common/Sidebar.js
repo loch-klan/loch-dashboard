@@ -1724,6 +1724,10 @@ function Sidebar(props) {
                               }}
                             />
                             <div
+                              onClick={openSignupModalDirect}
+                              id="sidebar-sign-up-btn"
+                            />
+                            <div
                               onClick={() => {
                                 openSigninModal("lochPointsProfile");
                               }}
@@ -1889,6 +1893,10 @@ function Sidebar(props) {
                               }}
                             />
 
+                            <div
+                              onClick={openSignupModalDirect}
+                              id="sidebar-sign-up-btn"
+                            />
                             <div
                               onClick={openSigninModal}
                               className="sideBarFooterSignInContainer inter-display-medium f-s-13 lh-19 navbar-button"

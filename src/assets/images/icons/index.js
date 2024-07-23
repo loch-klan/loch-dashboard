@@ -192,4 +192,7 @@ export { default as DexScreenerAlertPencilIcon } from "./DexScreenerAlertPencil.
 export { default as DexScreenerAlertRoundArrowIcon } from "./DexScreenerAlertRoundArrow.svg";
 export { default as DexScreenerHeaderPlusIcon } from "./DexScreenerHeaderPlus.svg";
 export { default as DexScreenerHeaderBellIcon } from "./DexScreenerHeaderBell.svg";
+export { default as DexScreenerHeaderSearchIcon } from "./DexScreenerHeaderSearch.svg";
+export { default as DexScreenerDoubleArrowIcon } from "./DexScreenerDoubleArrow.svg";
 export { default as ModalBellIcon } from "./ModalBell.svg";
+export { default as SmartMoneyPaginationArrowRightWhiteIcon } from "./smartMoneyPaginationArrowRightWhite.svg";

@@ -655,10 +655,7 @@ class PriceGauge extends Component {
                 />
               </div>
 
-              <div
-                id="price"
-                style={{ paddingTop: "0.4rem", marginBottom: "3.5rem" }}
-              >
+              <div id="price" style={{ paddingTop: "0.4rem" }}>
                 <InflowOutflowChart
                   userWalletList={this.state.userWalletList}
                   apiResponse={this.state.apiResponse}

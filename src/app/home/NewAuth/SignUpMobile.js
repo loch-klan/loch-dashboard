@@ -81,7 +81,7 @@ const SignUpMobile = ({
     handleGoBackToSignUp();
   };
   const handleClosePassThrough = () => {
-    toggleModal();
+    toggleModal("");
     if (isReferralCodeStep) {
       if (isHome) {
         const signUpMethod = whichSignUpMethod();

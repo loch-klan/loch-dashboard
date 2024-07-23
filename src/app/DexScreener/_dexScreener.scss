@@ -2,42 +2,42 @@
   * {
     font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
   }
-  .dex-screener-page-header {
-    .ds-ph-btns-container {
+  .ds-ph-btns-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    .ds-ph-btn {
+      background-color: var(--cardBackgroud);
+      box-shadow: var(--boxShadowMd);
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      .ds-ph-btn {
-        background-color: var(--cardBackgroud);
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 7px;
-        gap: 5px;
-        width: 150px;
-        cursor: pointer;
-        .ds-ph-btn-image {
-          height: 13px;
-        }
-        .ds-ph-btn-text {
-          font-size: 13px;
-          text-shadow: 0.1px 0 var(--primaryTextColor);
-          color: var(--primaryTextColor);
-        }
-        &:hover {
-          background-color: var(--greyCardBackgroud);
-        }
+      padding: 10px;
+      gap: 5px;
+      width: 150px;
+      cursor: pointer;
+      .ds-ph-btn-image {
+        height: 13px;
+      }
+      .ds-ph-btn-text {
+        font-size: 13px;
+        text-shadow: 0.1px 0 var(--primaryTextColor);
+        color: var(--primaryTextColor);
+      }
+      &:hover {
+        background-color: var(--greyCardBackgroud);
       }
     }
   }
+
   .dex-screener-body {
     display: flex;
     align-items: flex-start;
     justify-content: center;
     width: 100%;
-    gap: 10px;
+    gap: 15px;
     .dex-screener-left {
       width: 66%;
       display: flex;
@@ -110,7 +110,7 @@
               .ReactVirtualized__Grid {
                 overflow-y: auto !important;
                 overflow-x: hidden !important;
-                max-height: 24.6rem !important;
+                max-height: 46.5rem !important;
                 padding-left: 0rem;
               }
 
@@ -204,7 +204,7 @@
         }
       }
       .dex-screener-chart-continaer {
-        height: 38rem;
+        height: 43rem;
         background-color: #161a23;
         width: 100%;
         border-radius: 1.2rem;
@@ -240,37 +240,70 @@
       gap: 10px;
       .dex-screener-image-banner {
         width: 100%;
+        height: 15rem;
+        position: relative;
+        // margin-bottom: 30px;
+        .dex-screener-image-data {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 100%;
+
+          .dex-screener-image-follow-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-top: 2rem;
+            padding-right: 2rem;
+            .dex-screener-image-follow {
+              background-color: var(--cardBackgroud);
+              color: var(--primaryTextColor);
+              border-radius: 7px;
+              padding: 7px 22px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              box-shadow: var(--boxShadowMd);
+              &:hover {
+                background-color: var(--cardBorder);
+              }
+            }
+          }
+        }
+
         .dex-screener-image {
           width: 100%;
+          height: 100%;
           border-radius: 8px;
+          object-fit: cover;
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 1;
         }
       }
-      .dex-screener-banners {
-        background-color: var(--cardBackgroud);
-        color: var(--primaryTextColor);
-        border-radius: 7px;
-        padding: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: var(--boxShadowMd);
-        &:hover {
-          opacity: 0.8;
-        }
-      }
-
       .dex-screener-blocks-container {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 15px;
+        transform: translateY(25px);
+
         .dex-screener-social-blocks {
           gap: 5px;
-          flex: 1;
+          height: 50px;
+          width: 50px;
+          border-radius: 50%;
           .dex-screener-sb-icon {
             height: 20px;
             filter: var(--invertColor);
+          }
+          &:hover {
+            background-color: var(--cardBorder);
+            opacity: 1;
           }
         }
         .dex-screener-data-banners {
@@ -293,10 +326,26 @@
           }
         }
       }
+      .dex-screener-banners {
+        background-color: var(--cardBackgroud);
+        color: var(--primaryTextColor);
+        border-radius: 7px;
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: var(--boxShadowMd);
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
       .dex-screener-data-points {
         padding: 0rem;
         flex-direction: column;
         cursor: default;
+        margin-top: 30px;
         &:hover {
           opacity: 1;
         }
@@ -406,6 +455,111 @@
                 }
               }
             }
+          }
+        }
+      }
+      .dex-screener-right-data-table {
+        margin-top: 1rem;
+        cursor: default;
+        font-size: 12px;
+        &:hover {
+          opacity: 1;
+        }
+        .dex-screener-right-data-rows {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 0.5px solid var(--sidebarBottomOptionsLight);
+          padding: 12px 0px;
+
+          .dex-screener-right-data-rows-title {
+            color: var(--sidebarBottomOptions);
+            text-shadow: none;
+            padding: 3px 0px;
+          }
+          .dex-screener-right-data-rows-dta-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            .dex-screener-right-data-rows-amount {
+              color: var(--primaryTextColor);
+              padding: 3px 0px;
+            }
+            .dex-screener-right-data-rows-btn {
+              color: var(--primaryTextColor);
+              background-color: var(--dexScreenerTimeDefaultBlock);
+              padding: 3px 8px;
+              border-radius: 5px;
+            }
+          }
+        }
+      }
+      .dex-screener-right-convertor-container {
+        .dex-screener-right-convertor {
+          height: 45px;
+          border: 2px solid var(--cardSeperator);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 8px;
+          .dex-screener-right-convertor-input {
+            flex: 1;
+            height: 100%;
+            background-color: var(--cardBackgroud);
+            border-top-left-radius: 7px;
+            border-bottom-left-radius: 7px;
+            .dex-screener-right-convertor-input-box {
+              border: none;
+              outline: none;
+              height: 100%;
+              width: 100%;
+              font-size: 13px;
+              border-top-left-radius: 7px;
+              border-bottom-left-radius: 7px;
+              color: var(--primaryTextColor);
+              text-shadow: 0.1px 0 var(--primaryTextColor);
+              padding: 0px 10px;
+            }
+          }
+          .dex-screener-right-convertor-right {
+            font-size: 13px;
+            color: var(--primaryTextColor);
+            text-shadow: 0.1px 0 var(--primaryTextColor);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 0px 10px;
+            .dex-screener-right-convertor-right-text {
+              background-color: var(--greyCardBackgroud);
+              padding: 2px 8px;
+              border-radius: 4px;
+              cursor: pointer;
+              &:hover {
+                background-color: var(--cardBackgroud);
+              }
+            }
+            .dex-screener-right-convertor-right-text-selected {
+              cursor: default;
+              background-color: var(--primaryTextColor);
+              color: var(--cardBackgroud);
+              text-shadow: 0.1px 0 var(--cardBackgroud);
+              &:hover {
+                background-color: var(--primaryTextColor);
+              }
+            }
+          }
+        }
+        .dex-screener-right-arrow {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 1.2rem 0rem;
+          .dex-screener-right-arrow-image {
+            height: 20px;
           }
         }
       }

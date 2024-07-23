@@ -2,6 +2,10 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import {
+  DexScreenerDoubleArrowIcon,
+  DexScreenerHeaderBellIcon,
+  DexScreenerHeaderPlusIcon,
+  DexScreenerHeaderSearchIcon,
   DexScreenerTelegramIcon,
   DexScreenerTwitterIcon,
   DexScreenerWebsiteIcon,
@@ -34,6 +38,69 @@ class DexScreener extends BaseReactComponent {
       apiResponse: false,
       isPriceAlertModal: false,
       transactionsTableData: [
+        {
+          date: "1m ago",
+          type: "Buy",
+          usd: "$0.66",
+          scooby: "$1.43",
+          sol: "0.004674",
+          price: "$0.4634",
+          maker: "mveKFw",
+        },
+        {
+          date: "1m ago",
+          type: "Buy",
+          usd: "$0.66",
+          scooby: "$1.43",
+          sol: "0.004674",
+          price: "$0.4634",
+          maker: "mveKFw",
+        },
+        {
+          date: "1m ago",
+          type: "Buy",
+          usd: "$0.66",
+          scooby: "$1.43",
+          sol: "0.004674",
+          price: "$0.4634",
+          maker: "mveKFw",
+        },
+        {
+          date: "1m ago",
+          type: "Buy",
+          usd: "$0.66",
+          scooby: "$1.43",
+          sol: "0.004674",
+          price: "$0.4634",
+          maker: "mveKFw",
+        },
+        {
+          date: "1m ago",
+          type: "Buy",
+          usd: "$0.66",
+          scooby: "$1.43",
+          sol: "0.004674",
+          price: "$0.4634",
+          maker: "mveKFw",
+        },
+        {
+          date: "1m ago",
+          type: "Buy",
+          usd: "$0.66",
+          scooby: "$1.43",
+          sol: "0.004674",
+          price: "$0.4634",
+          maker: "mveKFw",
+        },
+        {
+          date: "1m ago",
+          type: "Buy",
+          usd: "$0.66",
+          scooby: "$1.43",
+          sol: "0.004674",
+          price: "$0.4634",
+          maker: "mveKFw",
+        },
         {
           date: "1m ago",
           type: "Buy",
@@ -399,40 +466,46 @@ class DexScreener extends BaseReactComponent {
                 </div>
                 <div className="dex-screener-right">
                   <div className="dex-screener-image-banner">
+                    <div className="dex-screener-image-data">
+                      <div className="dex-screener-image-follow-container">
+                        <div className="dex-screener-image-follow">Follow</div>
+                      </div>
+                      <div className="dex-screener-blocks-container">
+                        <div className="dex-screener-banners dex-screener-social-blocks">
+                          <Image
+                            className="dex-screener-sb-icon"
+                            src={DexScreenerWebsiteIcon}
+                          />
+                          {/* <div className="dex-screener-sb-text">Website</div> */}
+                        </div>
+                        <div
+                          style={{
+                            gap: "8px",
+                          }}
+                          className="dex-screener-banners dex-screener-social-blocks"
+                        >
+                          <Image
+                            className="dex-screener-sb-icon"
+                            src={DexScreenerTwitterIcon}
+                          />
+                          {/* <div className="dex-screener-sb-text">Twitter</div> */}
+                        </div>
+                        <div className="dex-screener-banners dex-screener-social-blocks">
+                          <Image
+                            className="dex-screener-sb-icon"
+                            src={DexScreenerTelegramIcon}
+                          />
+                          {/* <div className="dex-screener-sb-text">Telegram</div> */}
+                        </div>
+                      </div>
+                    </div>
                     <Image
-                      src="https://s3-alpha-sig.figma.com/img/61f4/6930/32d6e879c01582b21f998446b608b17a?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=oaCCi~j6uKSN~Ph-VwI6GpQ03kJ1I-Tveuj-Wf9cqAK~XXsrEgWnRRz38UfU7r4J~eFU5zECA~2zESccW3xzQV08p87mdKLtySRZhydjgkcBPt4MWtdlT2GpptF9ApnWTYBEfsCrhvYelOlLoWgl7mW2-7f5cKLau1cECbmeiPzNIoZ2AlSkuZlvtMMTlOC2q23ebHQD8XNNWAV85eRMA2u9mYdldJbPuhecnt-H1BaSmG3hshiM6pXTJNv5q5DLsJEc9VjqS~~Zele4mnmuMXY16eHLjEthQzw35gN-NNdTqZu-yiKozQEK0nd0R7CalJpPTSnEfxYwyjvf0GbaGw__"
+                      src="https://i.pinimg.com/736x/60/0f/ba/600fba02995ea5fd7662216e5b54f736.jpg"
                       className="dex-screener-image"
+                      alt=""
                     />
                   </div>
-                  <div className="dex-screener-banners ">Follow Scooby</div>
-                  <div className="dex-screener-blocks-container">
-                    <div
-                      style={{
-                        gap: "8px",
-                      }}
-                      className="dex-screener-banners dex-screener-social-blocks"
-                    >
-                      <Image
-                        className="dex-screener-sb-icon"
-                        src={DexScreenerTwitterIcon}
-                      />
-                      <div className="dex-screener-sb-text">Twitter</div>
-                    </div>
-                    <div className="dex-screener-banners dex-screener-social-blocks">
-                      <Image
-                        className="dex-screener-sb-icon"
-                        src={DexScreenerTelegramIcon}
-                      />
-                      <div className="dex-screener-sb-text">Telegram</div>
-                    </div>
-                    <div className="dex-screener-banners dex-screener-social-blocks">
-                      <Image
-                        className="dex-screener-sb-icon"
-                        src={DexScreenerWebsiteIcon}
-                      />
-                      <div className="dex-screener-sb-text">Website</div>
-                    </div>
-                  </div>
+
                   <div className="dex-screener-blocks-container">
                     <div className="dex-screener-banners dex-screener-data-banners">
                       <div className="dex-screener-db-subtext">Price USD</div>
@@ -579,6 +652,150 @@ class DexScreener extends BaseReactComponent {
                             </div>
                             <div className="dex-screener-dp-bel-line dex-screener-dp-bel-loss-line" />
                           </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="dex-screener-right-data-table">
+                    <div
+                      style={{
+                        paddingTop: "0rem",
+                      }}
+                      className="dex-screener-right-data-rows"
+                    >
+                      <div className="dex-screener-right-data-rows-title">
+                        Pair created
+                      </div>
+                      <div className="dex-screener-right-data-rows-dta-container">
+                        <div className="dex-screener-right-data-rows-amount">
+                          10d 10h ago
+                        </div>
+                      </div>
+                    </div>
+                    <div className="dex-screener-right-data-rows">
+                      <div className="dex-screener-right-data-rows-title">
+                        Pooled SCHOOBY
+                      </div>
+                      <div className="dex-screener-right-data-rows-dta-container">
+                        <div className="dex-screener-right-data-rows-amount">
+                          339,344,568
+                        </div>
+                        <div className="dex-screener-right-data-rows-amount">
+                          $18K
+                        </div>
+                      </div>
+                    </div>
+                    <div className="dex-screener-right-data-rows">
+                      <div className="dex-screener-right-data-rows-title">
+                        Pooled SOL
+                      </div>
+                      <div className="dex-screener-right-data-rows-dta-container">
+                        <div className="dex-screener-right-data-rows-amount">
+                          118.39
+                        </div>
+                        <div className="dex-screener-right-data-rows-amount">
+                          $19K
+                        </div>
+                      </div>
+                    </div>
+                    <div className="dex-screener-right-data-rows">
+                      <div className="dex-screener-right-data-rows-title">
+                        Pair
+                      </div>
+                      <div className="dex-screener-right-data-rows-dta-container">
+                        <div className="dex-screener-right-data-rows-btn">
+                          UMVxG...xAUe
+                        </div>
+                        <div className="dex-screener-right-data-rows-title">
+                          EXP
+                        </div>
+                      </div>
+                    </div>
+                    <div className="dex-screener-right-data-rows">
+                      <div className="dex-screener-right-data-rows-title">
+                        SCHOOBY
+                      </div>
+                      <div className="dex-screener-right-data-rows-dta-container">
+                        <div className="dex-screener-right-data-rows-btn">
+                          scoob...wPHK
+                        </div>
+                        <div className="dex-screener-right-data-rows-title">
+                          EXP
+                        </div>
+                      </div>
+                    </div>
+                    <div className="dex-screener-right-data-rows">
+                      <div className="dex-screener-right-data-rows-title">
+                        SOL
+                      </div>
+                      <div className="dex-screener-right-data-rows-dta-container">
+                        <div className="dex-screener-right-data-rows-btn">
+                          So111...1112
+                        </div>
+                        <div className="dex-screener-right-data-rows-title">
+                          EXP
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      width: "100%",
+                      justifyContent: "space-between",
+                      margin: "1rem 0rem",
+                    }}
+                    className="ds-ph-btns-container"
+                  >
+                    <div
+                      style={{
+                        width: "calc( 50% - 5px)",
+                      }}
+                      className="ds-ph-btn"
+                    >
+                      <Image
+                        src={DexScreenerHeaderSearchIcon}
+                        className="ds-ph-btn-image"
+                      />
+                      <div className="ds-ph-btn-text">Search on Twitter</div>
+                    </div>
+                    <div
+                      style={{
+                        width: "calc( 50% - 5px)",
+                      }}
+                      className="ds-ph-btn"
+                    >
+                      <Image
+                        src={DexScreenerHeaderPlusIcon}
+                        className="ds-ph-btn-image"
+                      />
+                      <div className="ds-ph-btn-text">Other pairs</div>
+                    </div>
+                  </div>
+                  <div className="dex-screener-right-convertor-container">
+                    <div className="dex-screener-right-convertor">
+                      <div className="dex-screener-right-convertor-input">
+                        <input className="dex-screener-right-convertor-input-box" />
+                      </div>
+                      <div className="dex-screener-right-convertor-right">
+                        Scooby
+                      </div>
+                    </div>
+                    <div className="dex-screener-right-arrow">
+                      <Image
+                        className="dex-screener-right-arrow-image"
+                        src={DexScreenerDoubleArrowIcon}
+                      />
+                    </div>
+                    <div className="dex-screener-right-convertor">
+                      <div className="dex-screener-right-convertor-input">
+                        <input className="dex-screener-right-convertor-input-box" />
+                      </div>
+                      <div className="dex-screener-right-convertor-right">
+                        <div className="dex-screener-right-convertor-right-text dex-screener-right-convertor-right-text-selected">
+                          USD
+                        </div>
+                        <div className="dex-screener-right-convertor-right-text">
+                          SOL
                         </div>
                       </div>
                     </div>
