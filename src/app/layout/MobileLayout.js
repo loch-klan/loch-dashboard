@@ -79,7 +79,7 @@ class MobileLayout extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
-      popupAnimation: mobileCheck() ? false : true,
+      popupAnimation: false,
       isPremiumUser: false,
       isLochPaymentModal: false,
       authmodal: "",
@@ -799,7 +799,7 @@ class MobileLayout extends BaseReactComponent {
     }
     if (val !== "signup" && val !== "login" && val !== "verify") {
       this.setState({
-        popupAnimation: true,
+        popupAnimation: false,
       });
     }
     this.setState({
