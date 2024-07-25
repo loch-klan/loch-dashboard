@@ -32,7 +32,9 @@ const VerifyMobile = ({
       document.removeEventListener("keydown", listener);
     };
   }, []);
-
+  const hideModal = () => {
+    toggleModal("");
+  };
   return (
     <Modal
       size="md"
@@ -41,17 +43,14 @@ const VerifyMobile = ({
         "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top modal-new-welcome-v-top-mobile welcome-modal-mobile-dialogue"
       }
       show={show}
-      onHide={toggleModal}
+      onHide={hideModal}
       centered
       aria-labelledby="contained-modal-title-vcenter"
       backdropClassName="exitoverlaymodalNewWelcome"
     >
       <Modal.Body style={{ position: "relative" }}>
         <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
-          <div
-            className="new-homepage-auth-content-close "
-            onClick={toggleModal}
-          >
+          <div className="new-homepage-auth-content-close " onClick={hideModal}>
             <Image
               src={CloseIconBlack}
               style={{

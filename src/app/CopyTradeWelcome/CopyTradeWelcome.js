@@ -4,6 +4,7 @@ import {
   hasUserAddedAddressesFun,
   mobileCheck,
   openLoginPopUp,
+  openSignUpPopUpDirectly,
   scrollToTop,
 } from "../../utils/ReusableFunctions";
 import MobileLayout from "../layout/MobileLayout.js";
@@ -100,7 +101,8 @@ class CopyTradeWelcome extends Component {
       email_address: getCurrentUser().email,
     });
     window.localStorage.setItem("copyTradeWelcome", true);
-    openLoginPopUp();
+    openSignUpPopUpDirectly();
+    // openLoginPopUp();
   };
   funAfterUserCreate = () => {
     CopyTradeWelcomeAddressAdded({
