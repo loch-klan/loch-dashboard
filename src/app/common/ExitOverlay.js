@@ -1079,7 +1079,7 @@ class ExitOverlay extends BaseReactComponent {
                   />
                 </div>
               )}
-              {this.props.goToSignIn &&
+              {/* {this.props.goToSignIn &&
               !this.props.comingDirectly &&
               !this.state.showRedirection ? (
                 <Image
@@ -1091,7 +1091,7 @@ class ExitOverlay extends BaseReactComponent {
                       : this.props.goToSignIn
                   }
                 />
-              ) : null}
+              ) : null} */}
               <div
                 className="closebtn"
                 onClick={() => {
@@ -2082,7 +2082,12 @@ class ExitOverlay extends BaseReactComponent {
                         </div>
                       </>
                     )}
-
+                    <p
+                      onClick={this.props.goToSignIn}
+                      className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA m-r-5"
+                    >
+                      Already have an account? Click here to sign in.
+                    </p>
                     {this.state.isReferralCodeStep ||
                     this.state.showRedirection ? null : (
                       <div className="m-b-36 footer">
