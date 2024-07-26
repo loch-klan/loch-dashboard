@@ -287,7 +287,7 @@
       }
       .dex-screener-blocks-container {
         display: flex;
-        align-items: center;
+        align-items: stretch;
         justify-content: center;
         gap: 15px;
         transform: translateY(25px);
@@ -312,12 +312,14 @@
           flex-direction: column;
           background-color: var(--greyCardBackgroud);
           box-shadow: none;
+          justify-content: flex-start;
           &:hover {
             opacity: 1;
             cursor: default;
           }
           .dex-screener-db-text {
             font-size: 18px;
+            text-align: center;
           }
           .dex-screener-db-subtext {
             font-size: 14px;
@@ -498,25 +500,33 @@
       .dex-screener-right-convertor-container {
         .dex-screener-right-convertor {
           height: 45px;
-          border: 2px solid var(--cardSeperator);
           display: flex;
-          align-items: center;
+          align-items: stretch;
           justify-content: center;
           border-radius: 8px;
           .dex-screener-right-convertor-input {
             flex: 1;
             height: 100%;
             background-color: var(--cardBackgroud);
-            border-top-left-radius: 7px;
-            border-bottom-left-radius: 7px;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            border: 2px solid var(--cardSeperator);
+            border-right-color: var(--cardBackgroud);
+            &:hover {
+              border-color: var(--primaryTextColor);
+              border-radius: 8px;
+              .dex-screener-right-convertor-input-box {
+                border-radius: 8px;
+              }
+            }
             .dex-screener-right-convertor-input-box {
               border: none;
               outline: none;
               height: 100%;
               width: 100%;
               font-size: 13px;
-              border-top-left-radius: 7px;
-              border-bottom-left-radius: 7px;
+              border-top-left-radius: 8px;
+              border-bottom-left-radius: 8px;
               color: var(--primaryTextColor);
               text-shadow: 0.1px 0 var(--primaryTextColor);
               padding: 0px 10px;
@@ -531,7 +541,11 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin: 0px 10px;
+            padding: 0px 10px;
+            border: 2px solid var(--cardSeperator);
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-left-width: 0px;
             .dex-screener-right-convertor-right-text {
               background-color: var(--greyCardBackgroud);
               padding: 2px 8px;
@@ -551,6 +565,9 @@
               }
             }
           }
+          // &:hover {
+          //   border-color: var(--primaryTextColor);
+          // }
         }
         .dex-screener-right-arrow {
           width: 100%;
@@ -563,6 +580,19 @@
           }
         }
       }
+    }
+  }
+}
+.dex-screener-page-mobile {
+  .dex-screener-body {
+    flex-direction: column;
+    padding-bottom: 3rem;
+    .dex-screener-left {
+      width: 100%;
+      display: none;
+    }
+    .dex-screener-right {
+      width: 100%;
     }
   }
 }
