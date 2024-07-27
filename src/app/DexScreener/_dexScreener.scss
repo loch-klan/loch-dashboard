@@ -49,6 +49,7 @@
         .dex-screener-table-toggle-block {
           background-color: var(--cardBackgroud);
           border-radius: 1.2rem;
+          position: relative;
 
           .dex-screener-table-toggle {
             display: flex;
@@ -214,7 +215,6 @@
           left: 0;
           top: 0;
           padding: 1rem;
-          // background-color: red;
           width: 150%;
           height: 150%;
           scale: 0.665;
@@ -584,15 +584,87 @@
   }
 }
 .dex-screener-page-mobile {
+  .dex-screener-page-mobile-toggle {
+    background-color: var(--darkGreyCardBackgroud);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+    margin-bottom: 2rem;
+    margin-top: -1rem;
+    .dex-screener-page-mobile-toggle-block {
+      color: var(--black191);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 0.5rem;
+      border-radius: 0.4rem;
+      text-align: center;
+      white-space: nowrap;
+      flex: 1;
+      background-color: transparent;
+    }
+    .dex-screener-page-mobile-toggle-block-selected {
+      background-color: var(--cardBackgroud);
+    }
+  }
   .dex-screener-body {
     flex-direction: column;
     padding-bottom: 3rem;
     .dex-screener-left {
       width: 100%;
       display: none;
+      gap: 20px;
+      .transaction-history-table {
+        .dex-screener-table-toggle-block {
+          padding-bottom: 6px;
+          .dex-screener-table-toggle {
+            justify-content: flex-start;
+            overflow-x: scroll;
+            border-top-left-radius: 1.2rem;
+            border-top-right-radius: 1.2rem;
+            &::-webkit-scrollbar {
+              height: 0px;
+              width: 0px;
+            }
+            .dex-screener-table-toggle-elements {
+              width: 40%;
+              min-width: 40%;
+              flex-wrap: nowrap;
+              text-wrap: nowrap;
+              &:hover {
+                filter: none;
+              }
+            }
+          }
+          .transaction-table-section {
+            .table-wrapper {
+              .ReactVirtualized__Table {
+                .ReactVirtualized__Table__headerRow {
+                  background-color: transparent;
+                  padding: 0;
+                  .ReactVirtualized__Table__headerColumn {
+                    padding: 1rem 0rem;
+                    background-color: var(--primaryBackgroud);
+                  }
+                }
+              }
+              .ReactVirtualized__Grid {
+                overflow-y: unset !important;
+                overflow-x: unset !important;
+                padding: 0px 2px;
+              }
+            }
+          }
+        }
+      }
     }
     .dex-screener-right {
       width: 100%;
+      display: none;
+    }
+    .dex-screener-mobile-show {
+      display: flex;
     }
   }
 }

@@ -33,7 +33,11 @@ class DexScreenerContent extends BaseReactComponent {
         className="history-table-section"
       >
         <div className="dex-screener-body">
-          <div className="dex-screener-left">
+          <div
+            className={`dex-screener-left ${
+              this.props.selectedBlock === 2 ? "dex-screener-mobile-show" : ""
+            }`}
+          >
             <div className="dex-screener-chart-continaer">
               <div className="dex-screener-chart">
                 <DexScreenerChart />
@@ -47,9 +51,14 @@ class DexScreenerContent extends BaseReactComponent {
               liquidityProvidersTableData={
                 this.props.liquidityProvidersTableData
               }
+              isMobileDevice={this.state.isMobileDevice}
             />
           </div>
-          <div className="dex-screener-right">
+          <div
+            className={`dex-screener-right ${
+              this.props.selectedBlock === 1 ? "dex-screener-mobile-show" : ""
+            }`}
+          >
             <div className="dex-screener-image-banner">
               <div className="dex-screener-image-data">
                 <div className="dex-screener-image-follow-container">

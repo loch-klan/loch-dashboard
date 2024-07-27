@@ -20,6 +20,7 @@ import { getAvgCostBasis } from "../cost/Api";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getAllCoins } from "../onboarding/Api";
 import { getAllWalletListApi } from "../wallet/Api";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class DexScreenerFourTables extends BaseReactComponent {
   constructor(props) {
@@ -28,7 +29,7 @@ class DexScreenerFourTables extends BaseReactComponent {
       goToBottom: false,
       apiResponse: false,
       sort: [],
-      isMobile: false,
+      isMobile: mobileCheck(),
       isLoading: false,
       selectedTable: 1,
 
@@ -770,54 +771,118 @@ class DexScreenerFourTables extends BaseReactComponent {
               </div>
             </div>
           </div>
+
           {this.state.selectedTable === 1 ? (
-            <TransactionTable
-              noSubtitleBottomPadding
-              tableData={this.props.transactionsTableData}
-              columnList={this.state.transactionsColumnList}
-              message={"No transactions found"}
-              isLoading={false}
-              pageLimit={10}
-              addWatermark
-              paginationNew
-              hidePaginationRecords
-            />
+            <div
+              style={{
+                overflowX: this.state.isMobile ? "scroll" : "",
+              }}
+              className={`${
+                this.state.isMobile
+                  ? "freezeTheFirstColumn newHomeTableContainer hide-scrollbar"
+                  : ""
+              }`}
+            >
+              <TransactionTable
+                noSubtitleBottomPadding
+                tableData={this.props.transactionsTableData}
+                columnList={this.state.transactionsColumnList}
+                message={"No transactions found"}
+                isLoading={false}
+                pageLimit={10}
+                hidePaginationRecords
+                yAxisScrollable
+                addWatermark={!this.state.isMobile}
+                fakeWatermark={this.state.isMobile}
+                xAxisScrollable={this.state.isMobile}
+                xAxisScrollableColumnWidth={3.5}
+                isMiniversion={this.state.isMobile}
+              />
+            </div>
           ) : this.state.selectedTable === 2 ? (
-            <TransactionTable
-              noSubtitleBottomPadding
-              tableData={this.props.topTradersTableData}
-              columnList={this.state.topTradersColumnList}
-              message={"No transactions found"}
-              isLoading={false}
-              pageLimit={10}
-              addWatermark
-              paginationNew
-              hidePaginationRecords
-            />
+            <div
+              style={{
+                overflowX: this.state.isMobile ? "scroll" : "",
+              }}
+              className={`${
+                this.state.isMobile
+                  ? "freezeTheFirstColumn newHomeTableContainer hide-scrollbar"
+                  : ""
+              }`}
+            >
+              <TransactionTable
+                noSubtitleBottomPadding
+                tableData={this.props.topTradersTableData}
+                columnList={this.state.topTradersColumnList}
+                message={"No transactions found"}
+                isLoading={false}
+                pageLimit={10}
+                paginationNew
+                hidePaginationRecords
+                yAxisScrollable
+                addWatermark={!this.state.isMobile}
+                fakeWatermark={this.state.isMobile}
+                xAxisScrollable={this.state.isMobile}
+                xAxisScrollableColumnWidth={3.5}
+                isMiniversion={this.state.isMobile}
+              />
+            </div>
           ) : this.state.selectedTable === 3 ? (
-            <TransactionTable
-              noSubtitleBottomPadding
-              tableData={this.props.holdersTableData}
-              columnList={this.state.holdersColumnList}
-              message={"No transactions found"}
-              isLoading={false}
-              pageLimit={10}
-              addWatermark
-              paginationNew
-              hidePaginationRecords
-            />
+            <div
+              style={{
+                overflowX: this.state.isMobile ? "scroll" : "",
+              }}
+              className={`${
+                this.state.isMobile
+                  ? "freezeTheFirstColumn newHomeTableContainer hide-scrollbar"
+                  : ""
+              }`}
+            >
+              <TransactionTable
+                noSubtitleBottomPadding
+                tableData={this.props.holdersTableData}
+                columnList={this.state.holdersColumnList}
+                message={"No transactions found"}
+                isLoading={false}
+                pageLimit={10}
+                paginationNew
+                hidePaginationRecords
+                yAxisScrollable
+                addWatermark={!this.state.isMobile}
+                fakeWatermark={this.state.isMobile}
+                xAxisScrollable={this.state.isMobile}
+                xAxisScrollableColumnWidth={3.5}
+                isMiniversion={this.state.isMobile}
+              />
+            </div>
           ) : this.state.selectedTable === 4 ? (
-            <TransactionTable
-              noSubtitleBottomPadding
-              tableData={this.props.liquidityProvidersTableData}
-              columnList={this.state.liquidityPeovidersColumnList}
-              message={"No transactions found"}
-              isLoading={false}
-              pageLimit={10}
-              addWatermark
-              paginationNew
-              hidePaginationRecords
-            />
+            <div
+              style={{
+                overflowX: this.state.isMobile ? "scroll" : "",
+              }}
+              className={`${
+                this.state.isMobile
+                  ? "freezeTheFirstColumn newHomeTableContainer hide-scrollbar"
+                  : ""
+              }`}
+            >
+              <TransactionTable
+                noSubtitleBottomPadding
+                tableData={this.props.liquidityProvidersTableData}
+                columnList={this.state.liquidityPeovidersColumnList}
+                message={"No transactions found"}
+                isLoading={false}
+                pageLimit={10}
+                paginationNew
+                hidePaginationRecords
+                yAxisScrollable
+                addWatermark={!this.state.isMobile}
+                fakeWatermark={this.state.isMobile}
+                xAxisScrollable={this.state.isMobile}
+                xAxisScrollableColumnWidth={3.5}
+                isMiniversion={this.state.isMobile}
+              />
+            </div>
           ) : null}
         </div>
       </div>
