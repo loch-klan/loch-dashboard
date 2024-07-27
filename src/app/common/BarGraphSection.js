@@ -507,6 +507,7 @@ class BarGraphSection extends Component {
                                         maxDate={this.props.maxDate}
                                         minDate={this.props.minDate}
                                         defaultValue={this.props.fromDate}
+                                        selectRange
                                       />
                                     </div>
                                   ) : null}
