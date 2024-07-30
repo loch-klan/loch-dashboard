@@ -631,7 +631,7 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "Asset",
 
-        coumnWidth: 0.25,
+        coumnWidth: 0.2,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
@@ -709,7 +709,7 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "CurrentValue",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentValue") {
@@ -764,13 +764,14 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "PortfolioPercentage",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "PortfolioPercentage") {
-            const tempDataHolder = Number(
-              noExponents(rowData.weight.toFixed(2))
-            );
+            let tempDataHolder = 0;
+            if (rowData.weight) {
+              tempDataHolder = Number(noExponents(rowData.weight.toFixed(2)));
+            }
             return (
               <div className="full-width-table-row-block">
                 {" "}
@@ -821,7 +822,7 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "CurrentPrice",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CurrentPrice") {
@@ -873,7 +874,7 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "Amount",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Amount") {
@@ -922,7 +923,7 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "AverageCostPrice",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "AverageCostPrice") {
@@ -976,7 +977,7 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "CostBasis",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "CostBasis") {
@@ -1034,7 +1035,7 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "GainAmount",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainAmount") {
@@ -1108,13 +1109,14 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "GainLoss",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
-            const tempDataHolder = Number(
-              noExponents(rowData.GainLoss.toFixed(2))
-            );
+            let tempDataHolder = 0;
+            if (rowData.GainLoss) {
+              tempDataHolder = Number(noExponents(rowData.GainLoss.toFixed(2)));
+            }
             return (
               <div className="full-width-table-row-block ">
                 <div
@@ -1179,7 +1181,7 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "GainLoss",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
@@ -1250,7 +1252,7 @@ class DexScreenerTablePage extends Component {
         ),
         dataKey: "GainLoss",
 
-        coumnWidth: 0.075,
+        coumnWidth: 0.08,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
