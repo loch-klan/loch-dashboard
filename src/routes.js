@@ -42,6 +42,7 @@ import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
 import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
 import DexScreener from "./app/DexScreener/DexScreener";
 import DexScreenerTablePage from "./app/DexScreenerTablePage/DexScreenerTablePage";
+import DexScreenerAlertPage from "./app/DexScreenerAlertPage/DexScreenerAlertPage";
 const routes = [
   {
     path: "/",
@@ -288,6 +289,12 @@ const routes = [
     name: "Dex Screener",
     type: PublicSidebarRoute,
     component: DexScreenerTablePage,
+  },
+  {
+    path: "/dex-screener-alerts",
+    name: "Dex Screener",
+    type: PublicSidebarRoute,
+    component: DexScreenerAlertPage,
   },
 ];
 export default routes;

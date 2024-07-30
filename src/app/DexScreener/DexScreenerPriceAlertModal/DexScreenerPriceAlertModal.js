@@ -222,6 +222,7 @@ class DexScreenerPriceAlertModal extends BaseReactComponent {
                 />
               ) : this.state.curStep === 2 ? (
                 <DexScreenerPriceAlertModalAllAlerts
+                  hideExistingAlerts={this.props.hideExistingAlerts}
                   curAlerts={this.state.curAlerts}
                 />
               ) : null}

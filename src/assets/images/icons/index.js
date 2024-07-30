@@ -196,3 +196,4 @@ export { default as DexScreenerHeaderSearchIcon } from "./DexScreenerHeaderSearc
 export { default as DexScreenerDoubleArrowIcon } from "./DexScreenerDoubleArrow.svg";
 export { default as ModalBellIcon } from "./ModalBell.svg";
 export { default as SmartMoneyPaginationArrowRightWhiteIcon } from "./smartMoneyPaginationArrowRightWhite.svg";
+export { default as DexScreenerOrderByIcon } from "./DexScreenerOrderBy.svg";

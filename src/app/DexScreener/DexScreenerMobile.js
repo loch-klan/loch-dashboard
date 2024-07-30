@@ -7,7 +7,7 @@ class DexScreenerMobile extends BaseReactComponent {
     super(props);
     this.state = {
       search: "",
-      selectedBlock: 2,
+      selectedBlock: 1,
     };
   }
 

@@ -155,6 +155,16 @@ export default function PageHeader(props) {
                 }`}
               >
                 {props.title}
+                {props.subTitleInTitle ? (
+                  <span
+                    style={{
+                      color: "var(--greyb0b)",
+                    }}
+                    className="f-s-24 inter-display-medium ml-3"
+                  >
+                    {props.subTitleInTitle}
+                  </span>
+                ) : null}
               </h4>
               {props.showNetflowExplainers ? null : props.showExplainers &&
                 props.explainerText ? (

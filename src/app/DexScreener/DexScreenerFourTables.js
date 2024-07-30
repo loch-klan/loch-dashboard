@@ -10,6 +10,7 @@ import {
   DexScreenerTxnIcon,
 } from "../../assets/images/icons";
 import { BaseReactComponent } from "../../utils/form";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 import {
   GetAllPlan,
   getUser,
@@ -20,7 +21,6 @@ import { getAvgCostBasis } from "../cost/Api";
 import TransactionTable from "../intelligence/TransactionTable";
 import { getAllCoins } from "../onboarding/Api";
 import { getAllWalletListApi } from "../wallet/Api";
-import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class DexScreenerFourTables extends BaseReactComponent {
   constructor(props) {

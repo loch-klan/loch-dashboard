@@ -40,6 +40,7 @@
     }
     .ps-not-block-selected {
       opacity: 1;
+      cursor: default;
       &:hover {
         opacity: 1;
       }
@@ -225,103 +226,6 @@
       margin-top: 30px;
       margin-bottom: 20px;
       box-shadow: var(--boxShadowMd);
-      .ps-not-et-block {
-        background-color: var(--popularAccountsDataBlock);
-        padding: 10px 15px;
-        border-radius: 8px;
-        .ps-not-et-block-data {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          border-bottom: 2px solid var(--currenyConvertorBorder);
-          padding-bottom: 5px;
-          .ps-not-et-bd-price {
-            .ps-not-et-bd-price-detail {
-              font-size: 12px;
-              color: var(--currenyConvertorText);
-              text-shadow: 0.1px 0 var(--currenyConvertorText);
-              .ps-not-et-bd-price-detail-type {
-                color: var(--primaryTextColor);
-              }
-            }
-            .ps-not-et-bd-price-amount {
-              font-size: 14px;
-              color: var(--primaryTextColor);
-              text-shadow: 0.1px 0 var(--primaryTextColor);
-            }
-          }
-          .ps-not-et-bd-active-disable {
-            background-color: var(--cardBackgroud);
-            display: flex;
-            align-items: center;
-            border-radius: 8px;
-            .ps-not-et-bd-block {
-              padding: 6px 8px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 13px;
-              text-shadow: 0.1px 0 var(--primaryTextColor);
-              color: var(--primaryTextColor);
-              cursor: pointer;
-              gap: 4px;
-              .ps-not-et-bd-circle {
-                height: 10px;
-                width: 10px;
-                border-radius: 50%;
-              }
-              .ps-not-et-bd-circle-green {
-                background-color: var(--dexScreenerTableSuccess);
-              }
-              .ps-not-et-bd-circle-red {
-                background-color: var(--dexScreenerTableError);
-              }
-              &:hover {
-                background-color: var(--darkGreyCardBackgroud);
-              }
-            }
-            .ps-not-et-bd-block-active {
-              cursor: default;
-              background-color: var(--dexScreenerModalActiveBtn);
-              &:hover {
-                background-color: var(--dexScreenerModalActiveBtn);
-              }
-            }
-            .ps-not-et-bd-block-disabled {
-              cursor: default;
-              background-color: var(--dexScreenerModalDisableBtn);
-              &:hover {
-                background-color: var(--dexScreenerModalDisableBtn);
-              }
-            }
-            .ps-not-et-bd-block-left {
-              border-top-left-radius: 8px;
-              border-bottom-left-radius: 8px;
-            }
-            .ps-not-et-bd-block-right {
-              border-top-right-radius: 8px;
-              border-bottom-right-radius: 8px;
-            }
-          }
-        }
-        .ps-not-et-block-footer {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          gap: 7px;
-          padding-top: 8px;
-          .ps-not-et-block-footer-icon {
-            height: 15px;
-            width: 15px;
-            object-fit: contain;
-            cursor: pointer;
-            filter: var(--invertColor);
-            &:hover {
-              opacity: 0.5;
-            }
-          }
-        }
-      }
     }
     .ps-not-et-blank {
       display: flex;

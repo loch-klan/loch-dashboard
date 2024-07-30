@@ -19,6 +19,7 @@
       width: 150px;
       cursor: pointer;
       .ds-ph-btn-image {
+        filter: var(--invertColor);
         height: 13px;
       }
       .ds-ph-btn-text {
@@ -123,6 +124,9 @@
                 border-bottom: none !important;
                 background-color: var(--cardSeperator);
                 color: var(--tableCostCommonColor);
+                position: sticky;
+                top: 0;
+                z-index: 10;
                 .ReactVirtualized__Table__headerTruncatedText {
                   opacity: 1;
                   text-transform: uppercase;

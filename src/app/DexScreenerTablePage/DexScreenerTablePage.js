@@ -81,11 +81,14 @@ import MobileLayout from "../layout/MobileLayout.js";
 import PaywallModal from "../common/PaywallModal.js";
 import "./_dexScreenerTablePage.scss";
 import DexScreenerPriceAlertModal from "../DexScreener/DexScreenerPriceAlertModal/DexScreenerPriceAlertModal.js";
+import DexScreenerTablePageContent from "./DexScreenerTablePageContent.js";
+import DexScreenerTableMobilePage from "./DexScreenerTableMobilePage.js";
 
 class DexScreenerTablePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isMobilePage: mobileCheck(),
       isPriceAlertModal: false,
       isPremiumUser: false,
       isLochPaymentModal: false,
@@ -620,7 +623,7 @@ class DexScreenerTablePage extends Component {
       {
         labelName: (
           <div
-            className="cp history-table-header-col history-table-header-col-text-left history-table-header-col-curve-left table-header-font"
+            className="cp history-table-header-col history-table-header-col-curve-left table-header-font"
             id="Asset"
           >
             <span className="inter-display-medium f-s-12 lh-16">Token</span>
@@ -1309,24 +1312,21 @@ class DexScreenerTablePage extends Component {
       },
     ];
 
-    if (mobileCheck()) {
+    if (this.state.isMobilePage) {
       return (
         <MobileLayout
-          showTopSearchBar
-          handleShare={this.handleShare}
-          isSidebarClosed={this.props.isSidebarClosed}
+          currentPage={"dex-screener-table"}
+          hideFooter
           history={this.props.history}
-          showpath
-          currentPage={"assets"}
+          hideAddresses
+          hideShare
         >
-          {/* <AssetUnrealizedProfitAndLossMobile
+          <DexScreenerTableMobilePage
+            Average_cost_basis_local={this.state.Average_cost_basis_local}
             columnData={columnData}
-            handleShare={this.handleShare}
-            tableData={this.state.Average_cost_basis_local}
             AvgCostLoading={this.state.AvgCostLoading}
-            showHideDustFun={this.handleDust}
-            showHideDustVal={this.state.showDust}
-          /> */}
+            showPriceAlertModal={this.showPriceAlertModal}
+          />
           {this.state.isLochPaymentModal ? (
             <PaywallModal
               show={this.state.isLochPaymentModal}
@@ -1378,96 +1378,12 @@ class DexScreenerTablePage extends Component {
         <div className="cost-page-section">
           <div className="cost-section page-scroll">
             <div className="page-scroll-child">
-              <div className="dct-vol-txn-container">
-                <div className="dct-vol-txn-block">
-                  <div className="dct-vol-txn-block-sub-text">24H VOLUME</div>
-                  <div className="dct-vol-txn-block-text">$6.55B</div>
-                </div>
-                <div className="dct-vol-txn-block">
-                  <div className="dct-vol-txn-block-sub-text">24H TXNS</div>
-                  <div className="dct-vol-txn-block-text">$6.55B</div>
-                </div>
-              </div>
-              <div className="dct-toggles-container">
-                <div className="dct-tc-time-container">
-                  <div className="dct-tc-time-block dct-tc-time-block-solid">
-                    <Image
-                      className="dct-tc-time-block-image"
-                      src={DexScreenerClockIcon}
-                    />
-                    <div>Last</div>
-                  </div>
-                  <div className="dct-tc-time-block dct-tc-time-block-selected">
-                    24H
-                  </div>
-                  <div className="dct-tc-time-block">5M</div>
-                  <div className="dct-tc-time-block">1H</div>
-                  <div className="dct-tc-time-block">6H</div>
-                </div>
-                <div className="dct-tc-trending-container">
-                  <div className="dct-tc-trending-block dct-tc-trending-block-solid">
-                    <Image
-                      className="dct-tc-trending-block-image"
-                      src={DexScreenerFireIcon}
-                    />
-                    <div>Trending</div>
-                  </div>
-
-                  <div className="dct-tc-trending-block">5M</div>
-                  <div className="dct-tc-trending-block">1H</div>
-                  <div className="dct-tc-trending-block">6H</div>
-                  <div className="dct-tc-trending-block dct-tc-trending-block-selected">
-                    24H
-                  </div>
-                </div>
-                <div className="dct-tc-options-container">
-                  <div className="dct-tc-options-block">
-                    <Image
-                      className="dct-tc-options-image"
-                      src={DexScreenerTopIcon}
-                    />
-                    <div className="dct-tc-options-text">Top</div>
-                  </div>
-                  <div className="dct-tc-options-block">
-                    <Image
-                      className="dct-tc-options-image"
-                      src={DexScreenerGainersIcon}
-                    />
-                    <div className="dct-tc-options-text">Gainers</div>
-                  </div>
-                  <div className="dct-tc-options-block">
-                    <Image
-                      className="dct-tc-options-image"
-                      src={DexScreenerNewPairsIcon}
-                    />
-                    <div className="dct-tc-options-text">New Pairs</div>
-                  </div>
-                  <div
-                    onClick={this.showPriceAlertModal}
-                    className="dct-tc-options-block"
-                  >
-                    <Image
-                      className="dct-tc-options-image"
-                      src={DexScreenerHeaderBellIcon}
-                    />
-                    <div className="dct-tc-options-text">Set alerts</div>
-                  </div>
-                </div>
-              </div>
-              <div
-                style={{ marginBottom: "2.8rem" }}
-                className="cost-table-section"
-              >
-                <div style={{ position: "relative" }}>
-                  <TransactionTable
-                    message="No tokens found"
-                    tableData={this.state.Average_cost_basis_local}
-                    columnList={columnData}
-                    isLoading={this.state.AvgCostLoading}
-                    addWatermark
-                  />
-                </div>
-              </div>
+              <DexScreenerTablePageContent
+                Average_cost_basis_local={this.state.Average_cost_basis_local}
+                columnData={columnData}
+                AvgCostLoading={this.state.AvgCostLoading}
+                showPriceAlertModal={this.showPriceAlertModal}
+              />
             </div>
           </div>
         </div>

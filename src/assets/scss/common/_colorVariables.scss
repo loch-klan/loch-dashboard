@@ -310,6 +310,9 @@
   --dexScreenerTableProfit: #08b669;
   --dexScreenerModalActiveBtn: #e2fbeb;
   --dexScreenerModalDisableBtn: #fad9d9;
+  --dexScreenerAlertBlockTokenNameBackGround: #cacbcc4d;
+  --dexScreenerAlertBlockLastTriggerGreen: #e2fbeb80;
+  --dexScreenerAlertPageSubText: #b0b1b3;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -603,6 +606,7 @@
   --dexScreenerTimeDefaultBlock: #282829;
   --dexScreenerTableLoss: #d94041;
   --dexScreenerTableProfit: #08b669;
+  --dexScreenerAlertPageSubText: #cacbcc;
 }
 [data-theme="dark2"] {
   // UPDATED

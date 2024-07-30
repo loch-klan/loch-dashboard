@@ -358,8 +358,7 @@ class DexScreener extends BaseReactComponent {
     if (this.state.isMobileDevice) {
       return (
         <MobileLayout
-          handleShare={this.handleShare}
-          currentPage={"nft"}
+          currentPage={"dex-screener"}
           hideFooter
           history={this.props.history}
           hideAddresses
@@ -413,6 +412,7 @@ class DexScreener extends BaseReactComponent {
                   <div className="dex-screener-page-header">
                     <PageHeader
                       title={"Scooby Doo"}
+                      subTitleInTitle="SOL"
                       subTitle={""}
                       currentPage={"dex-screener"}
                       history={this.props.history}

@@ -1,14 +1,10 @@
 import React from "react";
-import { connect } from "react-redux";
-import BaseReactComponent from "../../../utils/form/BaseReactComponent.js";
 import { Image } from "react-bootstrap";
-import {
-  DexScreenerAlertCrossIcon,
-  DexScreenerAlertPencilIcon,
-  DexScreenerAlertRoundArrowIcon,
-  DexScreenerManagePriceAlertBoxIcon,
-} from "../../../assets/images/icons/index.js";
+import { connect } from "react-redux";
+import { DexScreenerManagePriceAlertBoxIcon } from "../../../assets/images/icons/index.js";
+import BaseReactComponent from "../../../utils/form/BaseReactComponent.js";
 import { CustomDropdownPrice } from "../../../utils/form/index.js";
+import DexScreenerAlertBlock from "../DexScreenerAlertBlock/DexScreenerAlertBlock.js";
 
 class DexScreenerPriceAlertModalAllAlerts extends BaseReactComponent {
   constructor(props) {
@@ -66,26 +62,34 @@ class DexScreenerPriceAlertModalAllAlerts extends BaseReactComponent {
   render() {
     return (
       <div>
-        <div className="price-alerts-new-old-toggle">
-          <div
-            onClick={this.goToStepOne}
-            className={`ps-not-block ${
-              this.state.curToggle === 1 ? "ps-not-block-selected" : ""
-            }`}
-          >
-            Set new alert
+        {this.props.hideExistingAlerts ? null : (
+          <div className="price-alerts-new-old-toggle">
+            <div
+              onClick={this.goToStepOne}
+              className={`ps-not-block ${
+                this.state.curToggle === 1 ? "ps-not-block-selected" : ""
+              }`}
+            >
+              Set new alert
+            </div>
+
+            <div
+              onClick={this.goToStepTwo}
+              className={`ps-not-block ${
+                this.state.curToggle === 2 ? "ps-not-block-selected" : ""
+              }`}
+            >
+              Existing Alerts
+            </div>
           </div>
-          <div
-            onClick={this.goToStepTwo}
-            className={`ps-not-block ${
-              this.state.curToggle === 2 ? "ps-not-block-selected" : ""
-            }`}
-          >
-            Existing Alerts
-          </div>
-        </div>
+        )}
         {this.state.curToggle === 1 ? (
-          <div className="ps-not-new-alert-container">
+          <div
+            style={{
+              paddingTop: this.props.hideExistingAlerts ? "0" : "",
+            }}
+            className="ps-not-new-alert-container"
+          >
             <div className="ps-not-new-alert">
               <div className="ps-not-new-alert-block ps-not-new-alert-left">
                 <div className="ps-not-nab-title">Alert me when</div>
@@ -161,61 +165,7 @@ class DexScreenerPriceAlertModalAllAlerts extends BaseReactComponent {
             {this.props.curAlerts && this.props.curAlerts.length > 0 ? (
               <div className="ps-not-et-block-conatainer">
                 {this.props.curAlerts.map((alertItem, index) => (
-                  <div key={index} className="ps-not-et-block">
-                    <div className="ps-not-et-block-data">
-                      <div className="ps-not-et-bd-price">
-                        <div className="ps-not-et-bd-price-detail">
-                          When the price{" "}
-                          <span className="ps-not-et-bd-price-detail-type">
-                            {alertItem.alertType}
-                          </span>
-                        </div>
-                        <div className="ps-not-et-bd-price-amount">
-                          {alertItem.amount}
-                        </div>
-                      </div>
-                      <div className="ps-not-et-bd-active-disable">
-                        <div
-                          className={`ps-not-et-bd-block ps-not-et-bd-block-left ${
-                            alertItem.isActive
-                              ? "ps-not-et-bd-block-active"
-                              : ""
-                          }`}
-                        >
-                          {alertItem.isActive ? (
-                            <div className="ps-not-et-bd-circle ps-not-et-bd-circle-green" />
-                          ) : null}
-                          <div className="ps-not-et-bd-text">Active</div>
-                        </div>
-                        <div
-                          className={`ps-not-et-bd-block ps-not-et-bd-block-right ${
-                            !alertItem.isActive
-                              ? "ps-not-et-bd-block-disabled"
-                              : ""
-                          }`}
-                        >
-                          {!alertItem.isActive ? (
-                            <div className="ps-not-et-bd-circle ps-not-et-bd-circle-red" />
-                          ) : null}
-                          <div className="ps-not-et-bd-text">Disable</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="ps-not-et-block-footer">
-                      <Image
-                        className="ps-not-et-block-footer-icon"
-                        src={DexScreenerAlertRoundArrowIcon}
-                      />
-                      <Image
-                        className="ps-not-et-block-footer-icon"
-                        src={DexScreenerAlertPencilIcon}
-                      />
-                      <Image
-                        className="ps-not-et-block-footer-icon"
-                        src={DexScreenerAlertCrossIcon}
-                      />
-                    </div>
-                  </div>
+                  <DexScreenerAlertBlock index={index} alertItem={alertItem} />
                 ))}
               </div>
             ) : (

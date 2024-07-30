@@ -11,7 +11,6 @@ import {
 } from "../../assets/images/icons";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 import { BaseReactComponent } from "../../utils/form";
-import MobileLayout from "../layout/MobileLayout";
 import DexScreenerChart from "./DexScreenerChart";
 import DexScreenerFourTables from "./DexScreenerFourTables";
 import "./_dexScreener.scss";
