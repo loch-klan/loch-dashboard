@@ -21,11 +21,23 @@ const TableCalendarFilter = (props) => {
 
   const onDateSelect = (date) => {
     if (date && date.length > 0 && props.setFromToFilterDate) {
-      props.setFromToFilterDate(date);
+      setFromDate(date[0]);
+      setToDate(date[1]);
+    }
+  };
+  const onApplyClick = () => {
+    if (props.setFromToFilterDate) {
+      props.setFromToFilterDate("SEARCH_BY_TIMESTAMP_IN", {
+        start_date: fromDate,
+        end_date: toDate,
+      });
       setIsCalendar(false);
     }
   };
-
+  const onClearDate = () => {
+    setFromDate(null);
+    setToDate(null);
+  };
   const hideCalendar = () => {
     setIsCalendar(false);
   };
@@ -65,6 +77,20 @@ const TableCalendarFilter = (props) => {
             maxDate={todayDate}
             selectRange
           />
+          <div className="intelligenceCalendarConfirmDeny">
+            <div
+              onClick={onClearDate}
+              className="intelligenceCalendarConfirmDenyBtn"
+            >
+              Clear
+            </div>
+            <div
+              onClick={onApplyClick}
+              className="intelligenceCalendarConfirmDenyBtn intelligenceCalendarConfirmDenyBtnApply"
+            >
+              Apply
+            </div>
+          </div>
         </div>
       ) : null}
     </OutsideClickHandler>

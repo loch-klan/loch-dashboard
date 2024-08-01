@@ -133,15 +133,15 @@ class TransactionHistoryPage extends BaseReactComponent {
       { key: SEARCH_BY_NOT_DUST, value: true },
     ];
     this.state = {
-      fromDateFilter: "",
-      toDateFilter: "",
       isLochPaymentModal: false,
       isMobileDevice: false,
       intelligenceStateLocal: {},
       minAmount: "1",
       maxAmount: "1000000000",
       isShowingAge: true,
-      selectedTimes: [],
+      fromDateFilter: "",
+      toDateFilter: "",
+      selectedTimes: {},
       selectedAssets: [],
       selectedMethods: [],
       selectedNetworks: [],
@@ -732,7 +732,16 @@ class TransactionHistoryPage extends BaseReactComponent {
         isSearchUsed: tempIsTimeUsed,
       });
       this.updateTimer();
-      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
+      // const tempSelectedTimes = {
+      //   start_date: moment(value.start_date).format("DD-MM-YYYY"),
+      //   end_date: moment(value.end_date).format("DD-MM-YYYY"),
+      // };
+      this.setState({
+        isTimeSearchUsed: false,
+        fromDateFilter: value.start_date,
+        toDateFilter: value.end_date,
+        // selectedTimes: tempSelectedTimes,
+      });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
       let assets = [];
 
@@ -777,7 +786,23 @@ class TransactionHistoryPage extends BaseReactComponent {
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
     );
-    if (
+    if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+      if (value && value.start_date && value.end_date) {
+        let obj = {};
+        const tempSelectedTimes = {
+          start_date: moment(value.start_date).format("DD-MM-YYYY"),
+          end_date: moment(value.end_date).format("DD-MM-YYYY"),
+        };
+        obj = {
+          key: key,
+          value: tempSelectedTimes,
+        };
+        arr.push(obj);
+      }
+    } else if (
       index !== -1 &&
       value !== "allAssets" &&
       value !== "allMethod" &&
@@ -1148,7 +1173,7 @@ class TransactionHistoryPage extends BaseReactComponent {
             id="time"
           >
             <TableCalendarFilter
-              setFromToFilterDate={this.setFromToFilterDate}
+              setFromToFilterDate={this.addCondition}
               fromDate={this.state.fromDateFilter}
               toDate={this.state.toDateFilter}
             />
