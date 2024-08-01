@@ -15,7 +15,7 @@ class RealizedProfitAndLossMobile extends Component {
       <div className="realized-profit-and-loss-expanded-mobile">
         <div className="mobile-header-container">
           <h4>Flows</h4>
-          <p>Understand your portfolio's net flows</p>
+          <p>Understand this portfolio's net flows</p>
         </div>
 
         <div
@@ -96,7 +96,7 @@ class RealizedProfitAndLossMobile extends Component {
             noSubtitleTopPadding
             loaderHeight={15.5}
             // headerTitle="Realized profit and loss"
-            // headerSubTitle="Understand your portfolio's net flows"
+            // headerSubTitle="Understand this portfolio's net flows"
             isArrow={true}
             // handleClick={() => {
             //   if (this.state.lochToken) {

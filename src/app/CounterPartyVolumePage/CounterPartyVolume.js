@@ -58,6 +58,7 @@ import MobileLayout from "../layout/MobileLayout.js";
 import CounterPartyVolumeMobile from "./CounterPartyVolumeMobile.js";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import CustomTableBtn from "../common/CustomTableBtn.js";
 
 class CounterPartyVolume extends Component {
   constructor(props) {
@@ -72,7 +73,7 @@ class CounterPartyVolume extends Component {
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
       exportHeaderTitle: "Download all unrealized profit and loss",
-      exportHeaderSubTitle: "Export your unrealized profit and loss from Loch",
+      exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -133,8 +134,7 @@ class CounterPartyVolume extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download unrealized profit and loss",
-        exportHeaderSubTitle:
-          "Export your unrealized profit and loss from Loch",
+        exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
         exportSelectExportOption: 4,
       },
       () => {
@@ -152,7 +152,7 @@ class CounterPartyVolume extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download all blockchain fees",
-        exportHeaderSubTitle: "Export your blockchain fees over time from Loch",
+        exportHeaderSubTitle: "Export the blockchain fees over time from Loch",
         exportSelectExportOption: 2,
       },
       () => {
@@ -174,7 +174,7 @@ class CounterPartyVolume extends Component {
       {
         exportHeaderTitle: "Download counterparty volume",
         exportHeaderSubTitle:
-          "Export your counterparty volume over time from Loch",
+          "Export the counterparty volume over time from Loch",
         exportSelectExportOption: 3,
       },
       () => {
@@ -534,12 +534,38 @@ class CounterPartyVolume extends Component {
       {
         labelName: (
           <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Rank</span>
+          </div>
+        ),
+        dataKey: "counterRank",
+
+        coumnWidth: 0.16666667,
+        isCell: true,
+        cell: (rowData, dataKey, dataIndex) => {
+          if (dataKey === "counterRank") {
+            return (
+              <span
+                style={{
+                  textDecoration: "none",
+                  pointerEvents: "none",
+                }}
+                className="top-account-address table-data-font"
+              >
+                {dataIndex + 1}
+              </span>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
             <span className="inter-display-medium f-s-13 lh-16 ">Account</span>
           </div>
         ),
         dataKey: "counterAddress",
 
-        coumnWidth: 0.33,
+        coumnWidth: 0.16666667,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "counterAddress") {
@@ -587,7 +613,7 @@ class CounterPartyVolume extends Component {
         ),
         dataKey: "counterVolume",
 
-        coumnWidth: 0.33,
+        coumnWidth: 0.16666667,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "counterVolume") {
@@ -625,7 +651,7 @@ class CounterPartyVolume extends Component {
         ),
         dataKey: "counterFees",
 
-        coumnWidth: 0.33,
+        coumnWidth: 0.16666667,
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "counterFees") {
@@ -651,6 +677,60 @@ class CounterPartyVolume extends Component {
                     : CurrencyType(false) + "0.00"}
                 </span>
               </CustomOverlay>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Count</span>
+          </div>
+        ),
+        dataKey: "counterCount",
+
+        coumnWidth: 0.16666667,
+        isCell: true,
+        cell: (rowData, dataKey, dataIndex) => {
+          if (dataKey === "counterCount") {
+            return (
+              <span className="inter-display-medium f-s-13 lh-16 table-data-font">
+                {rowData.total_fees_amount ? (dataIndex + 1) * 100 : "0"}
+              </span>
+            );
+          }
+        },
+      },
+      {
+        labelName: (
+          <div className="history-table-header-col no-hover" id="time">
+            <span className="inter-display-medium f-s-13 lh-16 ">Action</span>
+          </div>
+        ),
+        dataKey: "counterFollow",
+
+        coumnWidth: 0.16666667,
+        isCell: true,
+        cell: (rowData, dataKey, dataIndex) => {
+          if (dataKey === "counterFollow") {
+            const handleOnClick = (addItem) => {
+              // if (this.props.justShowTable) {
+              //   this.props.passedActionFun(rowData.account);
+              // } else {
+              //   this.handleFollowUnfollow(
+              //     rowData.account,
+              //     addItem,
+              //     rowData.tagName
+              //   );
+              // }
+            };
+            return (
+              <CustomTableBtn
+                isChecked={rowData.following}
+                handleOnClick={handleOnClick}
+                checkedText={"Following"}
+                uncheckedText={"Follow"}
+              />
             );
           }
         },
@@ -719,74 +799,76 @@ class CounterPartyVolume extends Component {
           ) : (
             ""
           )}
-          <div className="cost-section page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-              showpath
-              currentPage={"counterparty-volume"}
-            />
-            {this.state.exportModal ? (
-              <ExitOverlay
-                show={this.state.exportModal}
-                onHide={this.handleExportModal}
-                history={this.history}
-                headerTitle={this.state.exportHeaderTitle}
-                headerSubTitle={this.state.exportHeaderSubTitle}
-                modalType={"exportModal"}
-                iconImage={ExportIconWhite}
-                selectExportOption={this.state.exportSelectExportOption}
-              />
-            ) : null}
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
+          <div className="cost-section page-scroll">
+            <div className="page-scroll-child">
+              <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
-                from="cost"
+                handleShare={this.handleShare}
+                showpath
+                currentPage={"counterparty-volume"}
+              />
+              {this.state.exportModal ? (
+                <ExitOverlay
+                  show={this.state.exportModal}
+                  onHide={this.handleExportModal}
+                  history={this.history}
+                  headerTitle={this.state.exportHeaderTitle}
+                  headerSubTitle={this.state.exportHeaderSubTitle}
+                  modalType={"exportModal"}
+                  iconImage={ExportIconWhite}
+                  selectExportOption={this.state.exportSelectExportOption}
+                />
+              ) : null}
+              {this.state.addModal && (
+                <FixAddModal
+                  show={this.state.addModal}
+                  onHide={this.handleAddModal}
+                  modalIcon={AddWalletModalIcon}
+                  title="Add wallet address"
+                  subtitle="Add more wallet address here"
+                  modalType="addwallet"
+                  btnStatus={false}
+                  btnText="Go"
+                  history={this.props.history}
+                  changeWalletList={this.handleChangeList}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  from="cost"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+              <PageHeader
+                title="Counterparty volume over time"
+                subTitle="Understand where this portfolio has exchanged the most value"
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                currentPage={"counterparty-volume"}
+                ShareBtn={true}
+                ExportBtn
+                exportBtnTxt="Click to export counterparty volume"
+                handleExportModal={this.setCounterpartyVolumeExportModal}
+                handleShare={this.handleShare}
                 updateTimer={this.updateTimer}
               />
-            )}
-            <PageHeader
-              title="Counterparty volume over time"
-              subTitle="Understand where you’ve exchanged the most value"
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              currentPage={"counterparty-volume"}
-              ShareBtn={true}
-              ExportBtn
-              exportBtnTxt="Click to export counterparty volume"
-              handleExportModal={this.setCounterpartyVolumeExportModal}
-              handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
-            />
-            <div
-              style={{ marginBottom: "2.8rem" }}
-              className="cost-table-section"
-            >
-              <div style={{ position: "relative" }}>
-                <TransactionTable
-                  noSubtitleBottomPadding
-                  tableData={this.state.counterPartyDataLocal}
-                  columnList={columnList}
-                  message={"No counterparties found"}
-                  history={this.props.history}
-                  location={this.props.location}
-                  page={this.state.currentPage}
-                  isLoading={this.state.counterGraphLoading}
-                  addWatermark
-                />
+
+              <div
+                style={{ marginBottom: "2.8rem" }}
+                className="cost-table-section"
+              >
+                <div style={{ position: "relative" }}>
+                  <TransactionTable
+                    noSubtitleBottomPadding
+                    tableData={this.state.counterPartyDataLocal}
+                    columnList={columnList}
+                    message={"No counterparties found"}
+                    history={this.props.history}
+                    location={this.props.location}
+                    page={this.state.currentPage}
+                    isLoading={this.state.counterGraphLoading}
+                    addWatermark
+                  />
+                </div>
               </div>
-            </div>
-            {/* <div
+              {/* <div
               style={{
                 position: "relative",
                 // minHeight: "66.5rem",
@@ -828,7 +910,8 @@ class CounterPartyVolume extends Component {
                 isCounterPartyGasFeesPage
               />
             </div> */}
-            <Footer />
+              <Footer />
+            </div>
           </div>
         </div>
       </>

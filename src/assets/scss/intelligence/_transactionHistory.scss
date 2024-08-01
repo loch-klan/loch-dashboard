@@ -2,8 +2,6 @@
   display: flex;
 
   .history-table {
-    margin-top: 3rem;
-
     .ShowDust {
       text-align: left;
       margin-top: -42px;
@@ -20,6 +18,8 @@
 
     .fillter_tabs_section {
       min-width: 85rem;
+      max-width: 120rem;
+      width: 120rem;
       // display: flex;
       // align-items: center;
       padding: 1.2rem;
@@ -310,7 +310,7 @@
     }
 
     .transaction-table-section {
-      margin-bottom: 7rem;
+      margin-bottom: 6rem;
       position: relative;
       .table-wrapper {
         background: var(--cardBackgroud);
@@ -375,6 +375,8 @@
 }
 .transaction-history-table {
   min-width: 85rem;
+  max-width: 120rem;
+  width: 120rem;
   min-height: 40rem !important;
   .loadingSizeContainer {
     height: 50vh;
@@ -388,6 +390,10 @@
     height: 68rem;
   }
 }
+.transaction-history-table-wide {
+  max-width: unset;
+  width: 100%;
+}
 
 .transaction-table-section {
   position: relative;
@@ -399,7 +405,7 @@
     text-align: center;
   }
   .table-wrapper {
-    flex: 1;
+    // flex: 1;
     .not-found-wrapper {
       display: flex;
       justify-content: center;

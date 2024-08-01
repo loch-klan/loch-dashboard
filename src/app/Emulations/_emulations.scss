@@ -35,6 +35,13 @@
             padding: 1.4rem 1rem;
           }
         }
+        .addWalletError {
+          font-family: "Inter-Regular", Arial, Helvetica, sans-serif;
+          font-size: 1rem;
+          font-weight: normal;
+          color: #ea4e3c;
+          line-height: 19px;
+        }
         &:hover {
           .awInputWrapper {
             border-color: var(--primaryTextColor) !important;
@@ -80,9 +87,9 @@
       .ctl-btn {
         width: 100%;
         margin: 0rem;
-        background-color: var(--cardBackgroud) !important;
-        border-color: var(--referallCopyBtn) !important;
-        color: var(--primaryTextColor) !important;
+        background-color: var(--primaryTextColor) !important;
+        border-color: var(--primaryTextColor) !important;
+        color: var(--cardBackgroud) !important;
         font-size: 1.5rem !important;
         padding: 1.4rem 1rem;
         box-shadow: 0px 4px 10px 0px var(--boxShadowColorMd);
@@ -91,10 +98,9 @@
         justify-content: center;
 
         &:hover {
-          box-shadow: none !important;
-          border-color: var(--primaryTextColor) !important;
-          background-color: var(--primaryTextColor) !important;
-          color: var(--cardBackgroud) !important;
+          background-color: var(--cardBackgroud) !important;
+          border-color: var(--cardBackgroud) !important;
+          color: var(--primaryTextColor) !important;
         }
       }
       .ctl-otp-btn {
@@ -108,9 +114,9 @@
       .ctl-btn-disabled {
         opacity: 0.5 !important;
         &:hover {
-          border-color: var(--referallCopyBtn) !important;
-          background-color: var(--cardBackgroud) !important;
-          color: var(--primaryTextColor) !important;
+          background-color: var(--primaryTextColor) !important;
+          border-color: var(--primaryTextColor) !important;
+          color: var(--cardBackgroud) !important;
         }
       }
     }
@@ -145,9 +151,9 @@
     justify-content: flex-end;
     .ct-go-btn {
       margin: 0rem;
-      background-color: var(--cardBackgroud) !important;
-      border-color: var(--referallCopyBtn) !important;
-      color: var(--primaryTextColor) !important;
+      background-color: var(--primaryTextColor) !important;
+      border-color: var(--primaryTextColor) !important;
+      color: var(--cardBackgroud) !important;
       font-size: 1.5rem !important;
       box-shadow: 0px 4px 10px 0px var(--boxShadowColorMd);
       display: flex;
@@ -155,10 +161,9 @@
       justify-content: center;
 
       &:hover {
-        box-shadow: none !important;
-        border-color: var(--primaryTextColor) !important;
-        background-color: var(--primaryTextColor) !important;
-        color: var(--cardBackgroud) !important;
+        background-color: var(--cardBackgroud) !important;
+        border-color: var(--cardBackgroud) !important;
+        color: var(--primaryTextColor) !important;
         .buttonAttachedImageCutomBtn {
           filter: var(--invertColorHover) !important;
         }
@@ -173,9 +178,9 @@
     .ct-go-btn-disabled {
       opacity: 0.5 !important;
       &:hover {
-        border-color: var(--referallCopyBtn) !important;
-        background-color: var(--cardBackgroud) !important;
-        color: var(--primaryTextColor) !important;
+        background-color: var(--primaryTextColor) !important;
+        border-color: var(--primaryTextColor) !important;
+        color: var(--cardBackgroud) !important;
         .buttonAttachedImageCutomBtn {
           filter: var(--invertColor) !important;
         }
@@ -390,15 +395,17 @@
 .available-copy-trades-popular-accounts-container {
   display: flex;
   align-items: flex-start;
+  flex-direction: column;
   justify-content: space-between;
   min-width: 85rem;
-  margin-top: 2.5rem;
-
+  max-width: 120rem;
+  width: 120rem;
+  width: 100%;
+  // margin-top: 2.5rem;
+  gap: 2.5rem;
   .available-copy-trades-popular-accounts {
     background-color: var(--cardBackgroud);
-    width: calc(50% - 1rem);
-    min-width: calc(50% - 1rem);
-    max-width: calc(50% - 1rem);
+    width: 100%;
     border-radius: 1.2rem;
     box-shadow: 0rem 0.31549rem 0.47324rem -0.31549rem rgba(24, 39, 75, 0.12),
       0rem 0.63099rem 0.63099rem -0.31549rem rgba(24, 39, 75, 0.08);
@@ -462,7 +469,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #adadad;
+        color: var(--primarySubTextColor);
         padding: 0rem 3rem;
         text-align: center;
       }
@@ -593,6 +600,57 @@
         }
       }
     }
+    .actpacc-no-scroll-body {
+      padding-bottom: 4.5rem;
+      .ReactVirtualized__Table__headerRow {
+        border-bottom: none !important;
+      }
+      .homeSmartMoneyPage {
+        .smartMoneyTable {
+          .table-wrapper {
+            .custom-table {
+              .ReactVirtualized__Table__Grid {
+                max-height: 60rem !important;
+                overflow-y: scroll;
+              }
+            }
+          }
+        }
+      }
+      .actpacc-no-scroll-body-cw {
+        // overflow: auto;
+        overflow: hidden;
+        .table-wrapper {
+          .custom-table {
+            .ReactVirtualized__Table__Grid {
+              overflow-y: auto !important;
+              overflow-x: hidden !important;
+              max-height: 47rem !important;
+              padding-left: 0rem;
+
+              &::-webkit-scrollbar {
+                width: 0.4rem;
+                height: 0rem;
+              }
+
+              &::-webkit-scrollbar-thumb {
+                border-radius: 0.8rem;
+                background-color: $scrollBar-thumb;
+              }
+
+              &::-webkit-scrollbar-track {
+                background-color: rgba(229, 229, 230, 0.5);
+                // background-color: $grey-E5E;
+                border-radius: 0.8rem;
+              }
+            }
+          }
+        }
+      }
+      .smartMoneyPaginationAndLimitSelectorContainer {
+        padding: 0rem 3rem;
+      }
+    }
     .available-copy-trades-navigator {
       display: flex;
       align-items: center;
@@ -627,6 +685,7 @@
     }
   }
 }
+
 .available-copy-trades-popular-accounts-container-both-open {
   align-items: stretch;
 }
@@ -635,7 +694,7 @@
   flex-direction: column;
   // background-color: red;
   margin-top: 0rem;
-  margin-bottom: 2.5rem;
+  // margin-bottom: 2.5rem;
   .available-copy-trades-popular-accounts {
     width: 100%;
     min-width: 100%;
@@ -702,8 +761,11 @@
     }
   }
   .available-copy-trades-popular-accounts-second {
-    margin-top: 2rem;
+    // margin-top: 2rem;
   }
+}
+.available-copy-trades-popular-accounts-container-reversed {
+  flex-direction: column-reverse;
 }
 .copy-trade-pay-wall-modal {
   .modal-lg {

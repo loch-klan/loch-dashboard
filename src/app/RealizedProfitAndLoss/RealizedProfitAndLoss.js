@@ -835,139 +835,143 @@ class RealizedProfitAndLoss extends Component {
           </div>
         </div>
         <div className="intelligence-page-section">
-          <div className="intelligence-section page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-              showpath
-              currentPage={"realized-profit-and-loss"}
-            />
-            {this.state.isLochPaymentModal ? (
-              <PaywallModal
-                show={this.state.isLochPaymentModal}
-                onHide={this.hidePaymentModal}
-                redirectLink={BASE_URL_S3 + "/realized-profit-and-loss"}
-                title="Net Flows with Loch"
-                description="Unlimited wallets net flows"
-                hideBackBtn
+          <div className="intelligence-section page-scroll">
+            <div className="page-scroll-child">
+              <TopWalletAddressList
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                handleShare={this.handleShare}
+                showpath
+                currentPage={"realized-profit-and-loss"}
               />
-            ) : null}
-            {this.state.upgradeModal && (
-              <UpgradeModal
-                show={this.state.upgradeModal}
-                onHide={this.upgradeModal}
+              {this.state.isLochPaymentModal ? (
+                <PaywallModal
+                  show={this.state.isLochPaymentModal}
+                  onHide={this.hidePaymentModal}
+                  redirectLink={BASE_URL_S3 + "/realized-profit-and-loss"}
+                  title="Net Flows with Loch"
+                  description="Unlimited wallets net flows"
+                  hideBackBtn
+                />
+              ) : null}
+              {this.state.upgradeModal && (
+                <UpgradeModal
+                  show={this.state.upgradeModal}
+                  onHide={this.upgradeModal}
+                  history={this.props.history}
+                  isShare={window.localStorage.getItem("share_id")}
+                  isStatic={this.state.isStatic}
+                  triggerId={this.state.triggerId}
+                  pname="intelligence"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+
+              <div className="portfolio-bar-graph">
+                <div className="m-b-32">
+                  <PageHeader
+                    showNetflowExplainers
+                    title="Flows"
+                    subTitle="Understand this portfolio's net flows"
+                    currentPage="realized-profit-and-loss"
+                    ShareBtn={true}
+                    handleShare={this.handleShare}
+                    updateTimer={this.updateTimer}
+                  />
+                </div>
+
+                <div
+                  style={{
+                    position: "relative",
+                    minWidth: "85rem",
+                    maxWidth: "120rem",
+                    width: "120rem",
+                  }}
+                >
+                  {!this.state.netFlowLoading ? (
+                    <BarGraphSection
+                      showPremiumHover
+                      isPremiumUser={this.state.isPremiumUser}
+                      isBlurred={!this.state.isPremiumUser}
+                      goToPayModal={this.goToPayModal}
+                      dontShowAssets
+                      showToCalendar={this.showToCalendar}
+                      hideToCalendar={this.hideToCalendar}
+                      hideFromCalendar={this.hideFromCalendar}
+                      showFromCalendar={this.showFromCalendar}
+                      changeToDate={this.changeToDate}
+                      changeFromDate={this.changeFromDate}
+                      isFromCalendar={this.state.isFromCalendar}
+                      toDate={this.state.toDate}
+                      isToCalendar={this.state.isToCalendar}
+                      fromDate={this.state.fromDate}
+                      maxDate={this.state.maxDate}
+                      minDate={this.state.minDate}
+                      showFromAndTo
+                      isScrollVisible={false}
+                      data={null}
+                      options={null}
+                      coinsList={this.props.OnboardingState.coinsList}
+                      selectedActiveBadge={this.state.selectedActiveBadge}
+                      isSwitch={this.state.isSwitch}
+                      setSwitch={this.setSwitch}
+                      marginBottom="m-b-32"
+                      // showFooter={false}
+                      showFooterDropdown={false}
+                      // showFooter={true}
+                      showToken={true}
+                      activeTitle={this.state.title}
+                      assetList={this.state.AssetList}
+                      selectedAssets={this.state.selectedAssets}
+                      handleBadge={(activeBadgeList, activeFooter) =>
+                        this.handleBadge(activeBadgeList, activeFooter)
+                      }
+                      ProfitLossAsset={this.state.ProfitLossAssetLocal}
+                      handleAssetSelected={this.handleAssetSelected}
+                      getObj={true}
+                      isGraphLoading={this.state.netFlowLoading}
+                      chainSearchIsUsed={this.chainSearchIsUsed}
+                      assetSearchIsUsed={this.assetSearchIsUsed}
+                      showSwitch={false}
+                    />
+                  ) : (
+                    <div
+                      className="loading-wrapper"
+                      style={{
+                        height: "57.8rem",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Loading />
+                      <br />
+                      <br />
+                    </div>
+                  )}
+                </div>
+
+                {/* footer */}
+                <Footer />
+              </div>
+            </div>
+            {this.state.addModal && (
+              <FixAddModal
+                show={this.state.addModal}
+                onHide={this.handleAddModal}
+                modalIcon={AddWalletModalIcon}
+                title="Add wallet address"
+                subtitle="Add more wallet address here"
+                modalType="addwallet"
+                btnStatus={false}
+                btnText="Go"
                 history={this.props.history}
-                isShare={window.localStorage.getItem("share_id")}
-                isStatic={this.state.isStatic}
-                triggerId={this.state.triggerId}
-                pname="intelligence"
+                changeWalletList={this.handleChangeList}
+                apiResponse={(e) => this.CheckApiResponse(e)}
+                from="intelligence"
                 updateTimer={this.updateTimer}
               />
             )}
-
-            <div className="portfolio-bar-graph">
-              <div className="m-b-32">
-                <PageHeader
-                  showNetflowExplainers
-                  title="Flows"
-                  subTitle="Understand your portfolio's net flows"
-                  currentPage="realized-profit-and-loss"
-                  ShareBtn={true}
-                  handleShare={this.handleShare}
-                  updateTimer={this.updateTimer}
-                />
-              </div>
-
-              <div
-                style={{
-                  position: "relative",
-                  minWidth: "85rem",
-                }}
-              >
-                {!this.state.netFlowLoading ? (
-                  <BarGraphSection
-                    showPremiumHover
-                    isPremiumUser={this.state.isPremiumUser}
-                    isBlurred={!this.state.isPremiumUser}
-                    goToPayModal={this.goToPayModal}
-                    dontShowAssets
-                    showToCalendar={this.showToCalendar}
-                    hideToCalendar={this.hideToCalendar}
-                    hideFromCalendar={this.hideFromCalendar}
-                    showFromCalendar={this.showFromCalendar}
-                    changeToDate={this.changeToDate}
-                    changeFromDate={this.changeFromDate}
-                    isFromCalendar={this.state.isFromCalendar}
-                    toDate={this.state.toDate}
-                    isToCalendar={this.state.isToCalendar}
-                    fromDate={this.state.fromDate}
-                    maxDate={this.state.maxDate}
-                    minDate={this.state.minDate}
-                    showFromAndTo
-                    isScrollVisible={false}
-                    data={null}
-                    options={null}
-                    coinsList={this.props.OnboardingState.coinsList}
-                    selectedActiveBadge={this.state.selectedActiveBadge}
-                    isSwitch={this.state.isSwitch}
-                    setSwitch={this.setSwitch}
-                    marginBottom="m-b-32"
-                    // showFooter={false}
-                    showFooterDropdown={false}
-                    // showFooter={true}
-                    showToken={true}
-                    activeTitle={this.state.title}
-                    assetList={this.state.AssetList}
-                    selectedAssets={this.state.selectedAssets}
-                    handleBadge={(activeBadgeList, activeFooter) =>
-                      this.handleBadge(activeBadgeList, activeFooter)
-                    }
-                    ProfitLossAsset={this.state.ProfitLossAssetLocal}
-                    handleAssetSelected={this.handleAssetSelected}
-                    getObj={true}
-                    isGraphLoading={this.state.netFlowLoading}
-                    chainSearchIsUsed={this.chainSearchIsUsed}
-                    assetSearchIsUsed={this.assetSearchIsUsed}
-                    showSwitch={false}
-                  />
-                ) : (
-                  <div
-                    className="loading-wrapper"
-                    style={{
-                      height: "57.8rem",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Loading />
-                    <br />
-                    <br />
-                  </div>
-                )}
-              </div>
-
-              {/* footer */}
-              <Footer />
-            </div>
           </div>
-          {this.state.addModal && (
-            <FixAddModal
-              show={this.state.addModal}
-              onHide={this.handleAddModal}
-              modalIcon={AddWalletModalIcon}
-              title="Add wallet address"
-              subtitle="Add more wallet address here"
-              modalType="addwallet"
-              btnStatus={false}
-              btnText="Go"
-              history={this.props.history}
-              changeWalletList={this.handleChangeList}
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              from="intelligence"
-              updateTimer={this.updateTimer}
-            />
-          )}
         </div>
       </>
     );

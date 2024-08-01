@@ -70,6 +70,7 @@ import {
   goToTelegram,
   isPremiumUser,
   loadingAnimation,
+  mobileCheck,
   removeOpenModalAfterLogin,
   whichSignUpMethod,
 } from "../../utils/ReusableFunctions";
@@ -100,6 +101,7 @@ class ExitOverlay extends BaseReactComponent {
         : getCurrentUser().id;
 
     this.state = {
+      isMobile: mobileCheck(),
       isLochPaymentModal: false,
       isReferralCodeStep: false,
       referralCode: "",
@@ -964,7 +966,9 @@ class ExitOverlay extends BaseReactComponent {
         {!this.state.hidePrevModal && (
           <Modal
             show={this.state.show}
-            className="exit-overlay-form"
+            className={`exit-overlay-form ${
+              this.state.isMobile ? "" : "zoomedElements"
+            }`}
             // backdrop="static"
             onHide={this.onHidePassThrough}
             size="lg"
@@ -1075,7 +1079,7 @@ class ExitOverlay extends BaseReactComponent {
                   />
                 </div>
               )}
-              {this.props.goToSignIn &&
+              {/* {this.props.goToSignIn &&
               !this.props.comingDirectly &&
               !this.state.showRedirection ? (
                 <Image
@@ -1087,7 +1091,7 @@ class ExitOverlay extends BaseReactComponent {
                       : this.props.goToSignIn
                   }
                 />
-              ) : null}
+              ) : null} */}
               <div
                 className="closebtn"
                 onClick={() => {
@@ -1918,7 +1922,7 @@ class ExitOverlay extends BaseReactComponent {
                           ? "Add your referral code here to create an account"
                           : this.props.customDesc
                           ? this.props.customDesc
-                          : "Don’t let your hard work go to waste. Add your email so you can analyze your portfolio with superpowers"}
+                          : "Don’t let your hard work go to waste. Add your email so you can analyze this portfolio with superpowers"}
                         <p>
                           {this.state.showRedirection
                             ? "You can now close this tab."
@@ -2078,7 +2082,12 @@ class ExitOverlay extends BaseReactComponent {
                         </div>
                       </>
                     )}
-
+                    <p
+                      onClick={this.props.goToSignIn}
+                      className="goToSingUp m-b-36 inter-display-medium f-s-13 lh-16 grey-ADA m-r-5"
+                    >
+                      Already have an account? Click here to sign in.
+                    </p>
                     {this.state.isReferralCodeStep ||
                     this.state.showRedirection ? null : (
                       <div className="m-b-36 footer">

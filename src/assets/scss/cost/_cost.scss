@@ -1,9 +1,6 @@
 .cost-page-section {
   display: flex;
-  margin-top: 8rem;
   .cost-section {
-    margin-top: 3rem;
-    padding-bottom: 4rem;
     .bar-graph-section {
       width: 100%;
       min-height: 45rem;
@@ -15,6 +12,8 @@
 
     .cost-table-section {
       min-width: 85rem;
+      max-width: 120rem;
+      width: 120rem;
       background-color: var(--cardBackgroud);
       border-radius: 1.2rem;
       box-shadow: 0rem 0.315493rem 0.473239rem -0.315493rem rgba(24, 39, 75, 0.3),

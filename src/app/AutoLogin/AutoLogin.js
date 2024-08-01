@@ -4,8 +4,15 @@ import Loading from "../common/Loading.js";
 import { deleteToken } from "../../utils/ManageToken.js";
 import { autoLoginApi } from "./AutoLoginApi.js";
 import { setPageFlagDefault } from "../common/Api.js";
+import { mobileCheck } from "../../utils/ReusableFunctions.js";
 
 class AppFeature extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMobile: mobileCheck(),
+    };
+  }
   componentDidMount() {
     const search = this.props.location.search;
     const params = new URLSearchParams(search);
@@ -54,6 +61,7 @@ class AppFeature extends Component {
           height: "100vh",
           width: "100vw",
           zIndex: 999,
+          zoom: this.state.isMobile ? "" : "1.176",
         }}
       >
         <Loading />

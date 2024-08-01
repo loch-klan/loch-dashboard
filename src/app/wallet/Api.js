@@ -1,8 +1,13 @@
 import { toast } from "react-toastify";
 import { postLoginInstance } from "../../utils";
 import { addLocalWalletList } from "../common/Api";
-import { getAllWalletList } from "./WalletAction";
+import { getAllWalletList, resetAllWalletList } from "./WalletAction";
 
+export const reserWalletList = () => {
+  return async function (dispatch) {
+    dispatch(resetAllWalletList());
+  };
+};
 export const getAllWalletListApi = (data, ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
@@ -142,7 +147,7 @@ export const updateWalletApi = (ctx, data) => {
           <div className="custom-toast-msg">
             <div>{res.data.message}</div>
             <div className="inter-display-medium f-s-13 lh-16 grey-737 m-t-04">
-              You’ve sucessfully updated your wallet
+              You’ve successfully updated your wallet
             </div>
           </div>
         );

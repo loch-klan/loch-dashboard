@@ -68,7 +68,7 @@ class GasFeesPage extends Component {
       combinedUnrealizedGains: 0,
       combinedReturn: 0,
       exportHeaderTitle: "Download all unrealized profit and loss",
-      exportHeaderSubTitle: "Export your unrealized profit and loss from Loch",
+      exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
       exportSelectExportOption: 4,
       exportModal: false,
       callFeesOverTime: true,
@@ -129,8 +129,7 @@ class GasFeesPage extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download unrealized profit and loss",
-        exportHeaderSubTitle:
-          "Export your unrealized profit and loss from Loch",
+        exportHeaderSubTitle: "Export the unrealized profit and loss from Loch",
         exportSelectExportOption: 4,
       },
       () => {
@@ -151,7 +150,7 @@ class GasFeesPage extends Component {
     this.setState(
       {
         exportHeaderTitle: "Download all gas fees",
-        exportHeaderSubTitle: "Export your gas fees over time from Loch",
+        exportHeaderSubTitle: "Export the gas fees over time from Loch",
         exportSelectExportOption: 2,
       },
       () => {
@@ -688,107 +687,111 @@ class GasFeesPage extends Component {
           ) : (
             ""
           )}
-          <div className="cost-section page">
-            <TopWalletAddressList
-              apiResponse={(e) => this.CheckApiResponse(e)}
-              handleShare={this.handleShare}
-              showpath
-              currentPage={"gas-fees"}
-            />
-            {this.state.exportModal ? (
-              <ExitOverlay
-                show={this.state.exportModal}
-                onHide={this.handleExportModal}
-                history={this.history}
-                headerTitle={this.state.exportHeaderTitle}
-                headerSubTitle={this.state.exportHeaderSubTitle}
-                modalType={"exportModal"}
-                iconImage={ExportIconWhite}
-                selectExportOption={this.state.exportSelectExportOption}
-              />
-            ) : null}
-            {this.state.addModal && (
-              <FixAddModal
-                show={this.state.addModal}
-                onHide={this.handleAddModal}
-                modalIcon={AddWalletModalIcon}
-                title="Add wallet address"
-                subtitle="Add more wallet address here"
-                modalType="addwallet"
-                btnStatus={false}
-                btnText="Go"
-                history={this.props.history}
-                changeWalletList={this.handleChangeList}
+          <div className="cost-section page-scroll">
+            <div className="page-scroll-child">
+              <TopWalletAddressList
                 apiResponse={(e) => this.CheckApiResponse(e)}
-                from="cost"
+                handleShare={this.handleShare}
+                showpath
+                currentPage={"gas-fees"}
+              />
+              {this.state.exportModal ? (
+                <ExitOverlay
+                  show={this.state.exportModal}
+                  onHide={this.handleExportModal}
+                  history={this.history}
+                  headerTitle={this.state.exportHeaderTitle}
+                  headerSubTitle={this.state.exportHeaderSubTitle}
+                  modalType={"exportModal"}
+                  iconImage={ExportIconWhite}
+                  selectExportOption={this.state.exportSelectExportOption}
+                />
+              ) : null}
+              {this.state.addModal && (
+                <FixAddModal
+                  show={this.state.addModal}
+                  onHide={this.handleAddModal}
+                  modalIcon={AddWalletModalIcon}
+                  title="Add wallet address"
+                  subtitle="Add more wallet address here"
+                  modalType="addwallet"
+                  btnStatus={false}
+                  btnText="Go"
+                  history={this.props.history}
+                  changeWalletList={this.handleChangeList}
+                  apiResponse={(e) => this.CheckApiResponse(e)}
+                  from="cost"
+                  updateTimer={this.updateTimer}
+                />
+              )}
+              <PageHeader
+                title="Gas fees over time"
+                subTitle="Understand the gas costs"
+                // btnText={"Add wallet"}
+                // handleBtn={this.handleAddModal}
+                currentPage={"gas-fees"}
+                ShareBtn={true}
+                ExportBtn
+                exportBtnTxt="Click to export blockchain fees"
+                handleExportModal={this.setBlockChainFeesExportModal}
+                handleShare={this.handleShare}
                 updateTimer={this.updateTimer}
               />
-            )}
-            <PageHeader
-              title="Gas fees over time"
-              subTitle="Understand your gas costs"
-              // btnText={"Add wallet"}
-              // handleBtn={this.handleAddModal}
-              currentPage={"gas-fees"}
-              ShareBtn={true}
-              ExportBtn
-              exportBtnTxt="Click to export blockchain fees"
-              handleExportModal={this.setBlockChainFeesExportModal}
-              handleShare={this.handleShare}
-              updateTimer={this.updateTimer}
-            />
 
-            <div
-              style={{
-                position: "relative",
-                // minHeight: "66.25rem",
-                minWidth: "85rem",
-              }}
-              id="gasfeesspent"
-            >
-              <BarGraphSection
-                showPremiumHover={!this.state.isPremiumUser}
-                goToPayModal={this.goToPayModal}
-                isBlurred={!this.state.isPremiumUser}
-                data={
-                  this.state.graphfeeValueLocal &&
-                  this.state.graphfeeValueLocal[0]
-                }
-                options={
-                  this.state.graphfeeValueLocal &&
-                  this.state.graphfeeValueLocal[1]
-                }
-                options2={
-                  this.state.graphfeeValueLocal &&
-                  this.state.graphfeeValueLocal[2]
-                }
-                digit={this.state.GraphDigit}
-                coinsList={this.props.OnboardingState.coinsList}
-                selectedActiveBadge={this.state.selectedActiveBadgeLocal}
-                timeFunction={(e) => {
-                  this.getBlockchainFee(e);
+              <div
+                style={{
+                  position: "relative",
+                  // minHeight: "66.25rem",
+                  minWidth: "85rem",
+                  maxWidth: "120rem",
+                  width: "120rem",
                 }}
-                marginBottom="marginBot2point8"
-                showFooter={true}
-                showBadges={true}
-                isScrollVisible={false}
-                isScroll={true}
-                isLoading={this.state.gasFeesGraphLoading}
-                // isLoading={true}
-                handleBadge={(activeBadgeList) =>
-                  this.handleBadge(activeBadgeList, 1)
-                }
-                chainSearchIsUsed={this.feesChainSearchIsUsed}
-                oldBar
-                isCounterPartyGasFeesPage
-                floatingWatermark
-                // height={420}
-                // width={824}
-                // comingSoon={false}
-              />
-            </div>
+                id="gasfeesspent"
+              >
+                <BarGraphSection
+                  showPremiumHover={!this.state.isPremiumUser}
+                  goToPayModal={this.goToPayModal}
+                  isBlurred={!this.state.isPremiumUser}
+                  data={
+                    this.state.graphfeeValueLocal &&
+                    this.state.graphfeeValueLocal[0]
+                  }
+                  options={
+                    this.state.graphfeeValueLocal &&
+                    this.state.graphfeeValueLocal[1]
+                  }
+                  options2={
+                    this.state.graphfeeValueLocal &&
+                    this.state.graphfeeValueLocal[2]
+                  }
+                  digit={this.state.GraphDigit}
+                  coinsList={this.props.OnboardingState.coinsList}
+                  selectedActiveBadge={this.state.selectedActiveBadgeLocal}
+                  timeFunction={(e) => {
+                    this.getBlockchainFee(e);
+                  }}
+                  marginBottom="marginBot2point8"
+                  showFooter={true}
+                  showBadges={true}
+                  isScrollVisible={false}
+                  isScroll={true}
+                  isLoading={this.state.gasFeesGraphLoading}
+                  // isLoading={true}
+                  handleBadge={(activeBadgeList) =>
+                    this.handleBadge(activeBadgeList, 1)
+                  }
+                  chainSearchIsUsed={this.feesChainSearchIsUsed}
+                  oldBar
+                  isCounterPartyGasFeesPage
+                  floatingWatermark
+                  // height={420}
+                  // width={824}
+                  // comingSoon={false}
+                />
+              </div>
 
-            <Footer />
+              <Footer />
+            </div>
           </div>
         </div>
       </>

@@ -11,6 +11,7 @@ import "./_newAuth.scss";
 import {
   goToTelegram,
   loadingAnimation,
+  mobileCheck,
 } from "../../../utils/ReusableFunctions";
 import {
   WelcomeSignUpGetReferralCode,
@@ -82,10 +83,13 @@ const SignUp = ({
       setShowEmailError(true);
     }
   };
+  const [isMobile] = useState(mobileCheck());
   return (
     <Modal
       size="lg"
-      className="exit-overlay-form newWelcomePageTranlucentModal"
+      className={`exit-overlay-form newWelcomePageTranlucentModal ${
+        isMobile ? "" : "zoomedElements"
+      }`}
       dialogClassName={
         "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top"
       }
@@ -148,7 +152,7 @@ const SignUp = ({
                   style={{ textAlign: "center" }}
                 >
                   Don’t let your hard work go to waste. Add your email so <br />{" "}
-                  you can analyze your portfolio with superpowers
+                  you can analyze this portfolio with superpowers
                 </p>
               )}
             </div>

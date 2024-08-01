@@ -12,7 +12,7 @@ import { EyeIcon, CloseIcon, CheckIcon } from "../../assets/images/icons";
 import BaseReactComponent from "./../../utils/form/BaseReactComponent";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
-import { getPadding } from "../../utils/ReusableFunctions";
+import { getPadding, mobileCheck } from "../../utils/ReusableFunctions";
 import { addAddressToWatchList } from "./redux/WatchListApi";
 import { START_INDEX } from "../../utils/Constant";
 import { WatchlistAddAddress } from "../../utils/AnalyticsFunctions";
@@ -22,6 +22,7 @@ class AddWatchListAddressModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       show: props.show,
       onHide: this.props.onHide,
       loadAddBtn: false,
@@ -335,7 +336,9 @@ class AddWatchListAddressModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         onHide={this.state.onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal"}

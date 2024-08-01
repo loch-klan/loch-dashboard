@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, Modal } from "react-bootstrap";
 import "./_newAuth.scss";
 import logo from "./../../../image/Loch.svg";
@@ -16,9 +16,11 @@ const LoginMobile = ({
   email,
   handleSubmitEmail,
   smartMoneyLogin,
+  popupAnimation,
 }) => {
   const submitRef = React.useRef(null);
-
+  const [showValidEmailErrorMessage, setShowValidEmailErrorMessage] =
+    useState(false);
   useEffect(() => {
     const listener = (event) => {
       if (event.code === "Enter" || event.code === "NumpadEnter") {
@@ -31,7 +33,20 @@ const LoginMobile = ({
       document.removeEventListener("keydown", listener);
     };
   }, []);
+  useEffect(() => {
+    setShowValidEmailErrorMessage(false);
+  }, [email]);
 
+  const onLoginClick = () => {
+    if (validateEmail(email)) {
+      handleSubmitEmail();
+    } else {
+      setShowValidEmailErrorMessage(true);
+    }
+  };
+  const hideModal = () => {
+    toggleModal("");
+  };
   return (
     <Modal
       size="md"
@@ -40,20 +55,17 @@ const LoginMobile = ({
         "exit-overlay-modal exit-overlay-modal-new-welcome modal-new-welcome-v-top modal-new-welcome-v-top-mobile welcome-modal-mobile-dialogue"
       }
       show={show}
-      onHide={toggleModal}
+      onHide={hideModal}
       centered
       aria-labelledby="contained-modal-title-vcenter"
       backdropClassName="exitoverlaymodalNewWelcome"
       contentClassName="new-welcome-modal-content"
-      animation={false}
+      animation={popupAnimation}
     >
       <Modal.Body style={{ position: "relative" }}>
         {/* <div className="new-auth-mobile-wrap"> */}
         <div className="new-homepage-auth-content-close-container new-homepage-auth-content-close--mobile">
-          <div
-            className="new-homepage-auth-content-close "
-            onClick={toggleModal}
-          >
+          <div className="new-homepage-auth-content-close " onClick={hideModal}>
             <Image
               src={CloseIconBlack}
               style={{
@@ -78,6 +90,16 @@ const LoginMobile = ({
                   : "Sign in to access Loch’s Leaderboard"}
               </p>
             </div>
+            <div
+              style={{
+                opacity: showValidEmailErrorMessage ? 1 : 0,
+              }}
+              className="has-error-container has-error-container-mobile"
+            >
+              <div className="has-error custom-form-error form-text">
+                Please enter valid email id
+              </div>
+            </div>
             <div className="new-auth-content-input-holder new-auth-content-input-holder-mobile">
               <input
                 className="new-auth-content-input"
@@ -88,9 +110,7 @@ const LoginMobile = ({
               />
               <button
                 style={{ opacity: validateEmail(email) ? 1 : 0.5 }}
-                onClick={() => {
-                  if (validateEmail(email)) handleSubmitEmail();
-                }}
+                onClick={onLoginClick}
                 ref={submitRef}
                 className={`new-auth-content-button ${
                   validateEmail(email) ? "new-auth-content-button--hover" : ""

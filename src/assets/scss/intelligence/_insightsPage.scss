@@ -1,9 +1,6 @@
 .insights-section {
   display: flex;
-  margin-top: 8rem;
-  .insights-page {
-    margin-top: 3rem;
-  }
+
   .insights-image {
     img {
       width: 100%;
@@ -235,7 +232,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 0rem;
-    border-top: 1px solid var(--borderwhiteDarkLight);
+    // border-top: 1px solid var(--borderwhiteDarkLight);
 
     span img {
       position: relative;
@@ -343,7 +340,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.5rem 0rem;
-    border-top: 1px solid var(--borderwhiteDarkLight);
+    // border-top: 1px solid var(--borderwhiteDarkLight);
 
     span img {
       position: relative;

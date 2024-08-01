@@ -57,7 +57,7 @@ export const getGraphData = (apidata, parentCtx, isGasFeesMobile = false) => {
         // boxPadding: 5,
         bodyFont: {
           family: "Inter-Medium",
-          size: 13,
+          size: 11,
         },
         bodySpacing: 8,
         callbacks: {
@@ -380,7 +380,7 @@ export const getCounterGraphData = (arr, parentCtx, isHome = false) => {
         // boxPadding: 5,
         bodyFont: {
           family: "Inter-Medium",
-          size: 13,
+          size: 11,
         },
         bodySpacing: 8,
         callbacks: {

@@ -86,7 +86,9 @@ class EmulationsTradeModal extends BaseReactComponent {
       <Modal
         show={this.state.show}
         className={`exit-overlay-form execute-copy-trade-modal ${
-          this.props.isMobile ? "execute-copy-trade-modal-mobile" : ""
+          this.props.isMobile
+            ? "execute-copy-trade-modal-mobile"
+            : "zoomedElements"
         }`}
         onHide={this.state.onHide}
         size="lg"

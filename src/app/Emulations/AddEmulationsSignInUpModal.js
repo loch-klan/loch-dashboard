@@ -37,6 +37,7 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
       emailAddress: this.props.passedEmail ? this.props.passedEmail : "",
       otpCode: "",
       isAddBtnDisabled: this.props.passedEmail ? false : true,
+      showValidEmailErrorMessage: false,
       loadAddBtn: false,
       isVerifyOtpBtnDisabled: true,
       loadVerifyOtpBtn: false,
@@ -45,7 +46,13 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
     };
   }
 
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.emailAddress !== this.state.emailAddress) {
+      this.setState({
+        showValidEmailErrorMessage: false,
+      });
+    }
+  }
   componentDidMount() {
     CopyTradeSignIn({
       session_id: getCurrentUser().id,
@@ -127,25 +134,31 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
     }
   };
   sendOtp = (resend = false) => {
-    let data = new URLSearchParams();
-    data.append(
-      "email",
-      this.state.emailAddress ? this.state.emailAddress.toLowerCase() : ""
-    );
-
-    const signUpMethod = whichSignUpMethod();
-    this.setState({
-      loadAddBtn: true,
-    });
-
-    if (this.state.isSignUp) {
-    } else {
-      SignInModalEmailAdded({
-        session_id: getCurrentUser().id,
-        email_address: this.state.emailAddress,
-        signUpMethod: signUpMethod,
+    if (this.state.isAddBtnDisabled) {
+      this.setState({
+        showValidEmailErrorMessage: true,
       });
-      SendOtp(data, this, true, false, resend === true ? true : false);
+    } else {
+      let data = new URLSearchParams();
+      data.append(
+        "email",
+        this.state.emailAddress ? this.state.emailAddress.toLowerCase() : ""
+      );
+
+      const signUpMethod = whichSignUpMethod();
+      this.setState({
+        loadAddBtn: true,
+      });
+
+      if (this.state.isSignUp) {
+      } else {
+        SignInModalEmailAdded({
+          session_id: getCurrentUser().id,
+          email_address: this.state.emailAddress,
+          signUpMethod: signUpMethod,
+        });
+        SendOtp(data, this, true, false, resend === true ? true : false);
+      }
     }
   };
   showSignInOtpPage = () => {
@@ -161,7 +174,11 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
   };
   handleKeyDown = (e, type) => {
     if (e.key === "Enter") {
-      if (!this.state.isAddBtnDisabled) {
+      this.setState({
+        showValidEmailErrorMessage: true,
+      });
+      if (this.state.isAddBtnDisabled) {
+      } else {
         this.sendOtp();
       }
     }
@@ -216,7 +233,9 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
         show={this.state.show}
         className={`exit-overlay-form onTop copy-trade-sing-in-up-modal ${
           this.props.hiddenModal ? "zeroOpacity" : ""
-        } ${this.props.isMobile ? "mobile-add-copy-trade-modal" : ""}`}
+        } ${
+          this.props.isMobile ? "mobile-add-copy-trade-modal" : "zoomedElements"
+        }`}
         onHide={this.hideModal}
         size="lg"
         dialogClassName={`exit-overlay-modal ${
@@ -351,6 +370,13 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
                           </div>
                         </div>
                       </div>
+                      {this.state.showValidEmailErrorMessage ? (
+                        <div className="addWalletError">
+                          Please enter valid email id
+                        </div>
+                      ) : (
+                        false
+                      )}
                     </>
                   </div>
                 </div>
@@ -364,7 +390,6 @@ class AddEmulationsSignInUpModal extends BaseReactComponent {
                       this.state.isAddBtnDisabled ? "ctl-btn-disabled" : ""
                     } ${this.state.loadAddBtn ? "ctl-btn-loading" : ""}`}
                     type="submit"
-                    isDisabled={this.state.isAddBtnDisabled}
                     buttonText={"Verify email"}
                     isLoading={this.state.loadAddBtn}
                   />

@@ -7,11 +7,13 @@ import {
   CrossSmartMoneyIcon,
 } from "../../assets/images/icons";
 import { BaseReactComponent } from "../../utils/form";
+import { mobileCheck } from "../../utils/ReusableFunctions";
 
 class SmartMoneyHowItWorksModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       show: props.show,
       onHide: props.onHide,
     };
@@ -21,7 +23,9 @@ class SmartMoneyHowItWorksModal extends BaseReactComponent {
     return (
       <Modal
         show={this.state.show}
-        className="exit-overlay-form"
+        className={`exit-overlay-form ${
+          this.state.isMobile ? "" : "zoomedElements"
+        }`}
         onHide={this.state.onHide}
         size="lg"
         dialogClassName={"exit-overlay-modal"}
@@ -62,7 +66,7 @@ class SmartMoneyHowItWorksModal extends BaseReactComponent {
                 About Loch Leaderboard
               </h6>
               <p className="inter-display-medium f-s-16 grey-969 m-b-24 w-100 text-left">
-                The intelligent way to manage your portfolio
+                The intelligent way to manage a portfolio
               </p>
             </div>
             <div className="smartMoneyHowItWorksModalBodyScrollContainer">

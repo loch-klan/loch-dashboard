@@ -11,6 +11,8 @@ function TransactionTable(props) {
       style={{
         display: "flex",
         flexDirection: "column",
+        marginBottom:
+          props.tableData && props.tableData.length > 0 ? "" : "0rem",
       }}
       className="transaction-table-section h-100 "
     >
@@ -35,6 +37,9 @@ function TransactionTable(props) {
         ""
       )}
       <CustomTable
+        showImageForEmpty={props.showImageForEmpty}
+        passedWrapperClass={props.passedWrapperClass}
+        passedWrapperId={props.passedWrapperId}
         isPremiumUser={props.isPremiumUser}
         shouldBlurElements={props.shouldBlurElements}
         showBlurredItem={props.showBlurredItem}

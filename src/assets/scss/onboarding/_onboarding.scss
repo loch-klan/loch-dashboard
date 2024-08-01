@@ -1354,6 +1354,8 @@
   .new-homepage__header {
     padding: 28px 190px 75px 190px;
     min-width: 85rem;
+    max-width: 120rem;
+    width: 120rem;
     height: 350px;
     width: 100%;
     background: url("./../../../assets//images/new-home-bg.png") no-repeat
@@ -1421,6 +1423,8 @@
 
     .new-homepage__body-container {
       min-width: 85rem;
+      max-width: 120rem;
+      width: 120rem;
       position: relative;
       transform: translateY(-31px);
 

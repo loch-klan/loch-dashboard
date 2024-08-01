@@ -7,6 +7,7 @@ import {
   CloseIcon,
   EmultionSidebarIcon,
   SmartMoneyPaginationArrowRightIcon,
+  SmartMoneyPaginationArrowRightWhiteIcon,
 } from "../../assets/images/icons";
 import { CustomCoin } from "../../utils/commonComponent";
 import { CustomButton } from "../../utils/form";
@@ -16,7 +17,7 @@ import { detectNameTag } from "../common/Api";
 import validator from "validator";
 import { CopyTradeAdded } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser } from "../../utils/ManageToken";
-import { isPremiumUser } from "../../utils/ReusableFunctions";
+import { isPremiumUser, mobileCheck } from "../../utils/ReusableFunctions";
 import AddEmulationsSignInUpModal from "./AddEmulationsSignInUpModal";
 import { addCopyTrade } from "./EmulationsApi";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -26,12 +27,14 @@ class AddEmulationsAddressModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       show: props.show,
       onHide: this.props.onHide,
       loadAddBtn: false,
       copyTradeAmount: "",
       notificationEmailAddress: "",
       signInSignUpModal: false,
+      popupAnimation: mobileCheck() ? false : true,
       walletInput: [
         {
           id: `wallet1`,
@@ -75,6 +78,11 @@ class AddEmulationsAddressModal extends BaseReactComponent {
 
   componentDidUpdate(prevProps, prevState) {}
   componentDidMount() {
+    setTimeout(() => {
+      this.setState({
+        popupAnimation: false,
+      });
+    }, 1000);
     this.props.getAllCoins();
     this.props.getAllParentChains();
     // Set Metamask connected
@@ -437,7 +445,11 @@ class AddEmulationsAddressModal extends BaseReactComponent {
           show={this.state.show && !this.state.signInSignUpModal}
           className={`exit-overlay-form ${
             this.props.hiddenModal ? "zeroOpacity" : ""
-          } ${this.props.isMobile ? "mobile-add-copy-trade-modal" : ""}`}
+          } ${
+            this.props.isMobile
+              ? "mobile-add-copy-trade-modal"
+              : "zoomedElements"
+          }`}
           onHide={this.state.onHide}
           size="lg"
           dialogClassName={`exit-overlay-modal ${
@@ -446,7 +458,7 @@ class AddEmulationsAddressModal extends BaseReactComponent {
           centered
           aria-labelledby="contained-modal-title-vcenter"
           backdropClassName="exitoverlaymodal"
-          animation={false}
+          animation={this.state.popupAnimation}
         >
           <Modal.Header>
             {this.props.isMobile ? (
@@ -805,7 +817,9 @@ class AddEmulationsAddressModal extends BaseReactComponent {
                     buttonText={"Next"}
                     handleClick={this.btnClickFunctionPass}
                     isLoading={this.state.loadAddBtn}
-                    buttonAttachedImage={SmartMoneyPaginationArrowRightIcon}
+                    buttonAttachedImage={
+                      SmartMoneyPaginationArrowRightWhiteIcon
+                    }
                   />
                 </div>
               )}

@@ -368,6 +368,18 @@ class TopWalletExchangeBar extends Component {
     }
   }
   componentDidUpdate(prevProps, prevState) {
+    // if (
+    //   prevState.showTopBarHistoryItems !== this.state.showTopBarHistoryItems
+    // ) {
+    //   const rootItem = document.getElementById("root");
+    //   if (rootItem) {
+    //     if (this.state.showTopBarHistoryItems) {
+    //       rootItem.classList.add("blurOnInputFocus");
+    //     } else {
+    //       rootItem.classList.remove("blurOnInputFocus");
+    //     }
+    //   }
+    // }
     if (
       prevProps.connectedWalletAddress !== this.props.connectedWalletAddress &&
       this.state.canCallConnectWalletFun
@@ -656,6 +668,18 @@ class TopWalletExchangeBar extends Component {
         const passDataHeader = [...tempWalletListToPush];
         this.props.setHeaderReducer(passDataHeader);
       }
+    } else {
+      this.setState({
+        firstWallet: "",
+        firstFullWallet: "",
+        fullWalletList: "",
+        walletList: [],
+        exchangeList: [],
+        exchangeListImages: [],
+        firstExchange: "",
+        metamaskWalletConnected: "",
+        currentMetamaskWallet: {},
+      });
     }
   };
   applyTempWalletList = () => {

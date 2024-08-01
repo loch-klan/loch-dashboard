@@ -20,7 +20,7 @@ class InsightsPageMobile extends Component {
       <div className="insights-expanded-mobile">
         <div className="mobile-header-container">
           <h4>Insights</h4>
-          <p>Valuable insights based on your assets</p>
+          <p>Valuable insights based on the assets</p>
         </div>
 
         <div className="insights-wrapper">
@@ -221,7 +221,7 @@ class InsightsPageMobile extends Component {
                       position: "relative",
                     }}
                   >
-                    Add all your wallets and exchanges to gain more insights
+                    Add all of the wallets and exchanges to gain more insights
                   </h5>
                   <p
                     className="inter-display-medium f-s-13 lh-15 grey-7C7 text-center"

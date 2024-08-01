@@ -28,6 +28,7 @@ import {
 import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import {
   CurrencyType,
+  mobileCheck,
   openAddressInSameTab,
 } from "../../utils/ReusableFunctions";
 import { CustomOverlayUgradeToPremium } from "../../utils/commonComponent";
@@ -280,6 +281,7 @@ class BarGraphSection extends Component {
         : this.props.isMobileGraph
         ? "40rem"
         : "",
+      zoom: mobileCheck() ? "" : "1.176",
     };
     const NormalStyle = {
       width: "100%",
@@ -294,6 +296,7 @@ class BarGraphSection extends Component {
         : this.props.isMobileGraph
         ? "40rem"
         : "",
+      zoom: mobileCheck() ? "" : "1.176",
     };
     // console.log("options ", options);
     // console.log("data ", data);
@@ -675,7 +678,7 @@ class BarGraphSection extends Component {
                               isInfo={true}
                               isText={true}
                               heading="Inflows and Outflows might appear inflated if the same funds went in and out of a single wallet multiple times."
-                              subHeading="This chart is most accurate when all your wallet addresses are added to Loch. This way we don't double count funds."
+                              subHeading="This chart is most accurate when all the wallet addresses are added to Loch. This way we don't double count funds."
                               className={
                                 "fix-width tool-tip-container-bottom-arrow"
                               }
@@ -1009,9 +1012,11 @@ class BarGraphSection extends Component {
                                 ? {
                                     maxHeight: "35.55rem",
                                     overflow: "hidden",
+                                    zoom: mobileCheck() ? "" : "1.176",
                                   }
                                 : {
                                     overflow: "hidden",
+                                    zoom: mobileCheck() ? "" : "1.176",
                                   }
                             }
                           >
@@ -1047,10 +1052,12 @@ class BarGraphSection extends Component {
                                     maxHeight: "35.55rem",
                                     overflow: "hidden",
                                     cursor: "pointer",
+                                    zoom: mobileCheck() ? "" : "1.176",
                                   }
                                 : {
                                     overflow: "hidden",
                                     cursor: "pointer",
+                                    zoom: mobileCheck() ? "" : "1.176",
                                   }
                             }
                             onClick={this.goToPayModalPass}

@@ -901,52 +901,49 @@ class PortfolioMobile extends BaseReactComponent {
                     ) : null}
                   </div>
                 ) : this.props.blockOneSelectedItem === 5 ? (
-                  <div className="mobile-portfolio-blocks-content mobile-portfolio-blocks-content-with-padding portfolio-page-section portfolio-page-section-mobile">
+                  <div>
                     <div
-                      className="section-table section-table-mobile"
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        boxShadow: "none",
-                      }}
+                      className={`freezeTheFirstColumn newHomeTableContainer newHomeTableContainerMobile hide-scrollbar ${
+                        this.props.intelligenceState?.counterPartyData?.length <
+                        1
+                          ? ""
+                          : "tableWatermarkOverlay"
+                      } ${
+                        this.props.intelligenceState?.counterPartyData?.length
+                          ?.length <= 10
+                          ? ""
+                          : ""
+                      }`}
                     >
-                      <div className="profit-chart profit-chart-mobile">
-                        <div
-                          style={{
-                            position: "absolute",
-                            opacity: 0,
-                          }}
-                        >
-                          Loch
-                        </div>
-                        <BarGraphSection
-                          digit={this.props.counterGraphDigit}
-                          isFromHome
-                          openChartPage={this.props.goToCounterPartyVolumePage}
-                          data={
-                            this.props.homeCounterpartyVolumeData &&
-                            this.props.homeCounterpartyVolumeData[0]
-                          }
-                          options={
-                            this.props.homeCounterpartyVolumeData &&
-                            this.props.homeCounterpartyVolumeData[1]
-                          }
-                          options2={
-                            this.props.homeCounterpartyVolumeData &&
-                            this.props.homeCounterpartyVolumeData[2]
-                          }
-                          isScrollVisible={false}
-                          isScroll={true}
-                          isLoading={this.props.counterGraphLoading}
-                          oldBar
-                          noSubtitleBottomPadding
-                          newHomeSetup
-                          noSubtitleTopPadding
-                          floatingWatermark
-                          isMobileGraph
-                        />
-                      </div>
+                      <TransactionTable
+                        noSubtitleBottomPadding
+                        disableOnLoading
+                        isMiniversion
+                        message={"No counterparties found"}
+                        tableData={
+                          this.props.intelligenceState?.counterPartyData
+                        }
+                        showDataAtBottom
+                        columnList={this.props.CounterPartiesColumnData}
+                        headerHeight={60}
+                        isArrow={true}
+                        isLoading={this.props.counterGraphLoading}
+                        fakeWatermark
+                        xAxisScrollable
+                        yAxisScrollable
+                        xAxisScrollableColumnWidth={3.6}
+                      />
                     </div>
+                    {!this.props.counterGraphLoading ? (
+                      <div className="inter-display-medium bottomExtraInfo">
+                        <div
+                          onClick={this.props.goToCounterPartyVolumePage}
+                          className="bottomExtraInfoText"
+                        >
+                          See more
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 ) : null}
               </div>
@@ -1184,6 +1181,7 @@ class PortfolioMobile extends BaseReactComponent {
                     className="mobile-portfolio-blocks-content-price-gauge mobile-portfolio-blocks-content-with-padding"
                   >
                     <InflowOutflowPortfolioHome
+                      isHome
                       openChartPage={this.props.goToPriceGaugePage}
                       hideExplainer
                       showEth

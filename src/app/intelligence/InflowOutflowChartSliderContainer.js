@@ -327,7 +327,9 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
   render() {
     return (
       <div
-        className="welcome-card-section lineChartSlider"
+        className={`welcome-card-section ${
+          this.props.isHome ? "welcome-card-section-home" : ""
+        } lineChartSlider`}
         style={{
           boxShadow: this.props.hideTimeFilter ? "none" : "",
           paddingTop: this.props.hideTimeFilter ? "1rem" : "",
@@ -365,7 +367,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
             {!this.props.isPage && (
               <GraphHeader
                 title="Token value"
-                subtitle="Analyze your portfolio value over time"
+                subtitle="Analyze the portfolio value over time"
                 isArrow={true}
                 isAnalytics="Asset Value"
                 handleClick={this.props.handleClick}
@@ -631,7 +633,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                                   isText={true}
                                   className={"fix-width"}
                                   text={
-                                    "This chart reflects the price for any token held by this wallet ever. Understand if this trader can buy low and sell high."
+                                    "This chart reflects the price for any token held by this portfolio ever. Understand if this trader can buy low and sell high."
                                   }
                                 >
                                   <Image
@@ -746,7 +748,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                         isText={true}
                         isLeftText
                         className={"fix-width tool-tip-container-bottom-arrow"}
-                        heading="These are all the tokens ever owned by this wallet."
+                        heading="These are all the tokens ever owned by this portfolio."
                         subHeading="Red coordinates represent outflows / sells and green coordinates represent inflows / buys."
                       >
                         <Image
