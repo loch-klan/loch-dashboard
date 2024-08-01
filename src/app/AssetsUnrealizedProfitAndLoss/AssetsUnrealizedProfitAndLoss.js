@@ -32,6 +32,7 @@ import {
   SortByCurrentValue,
   SortByGainAmount,
   SortByGainLoss,
+  TransactionHistoryAssetFilter,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 
@@ -52,9 +53,14 @@ import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   ExportIconWhite,
+  FilterIcon,
 } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
+import {
+  BASE_URL_S3,
+  SEARCH_BY_ASSETS_IN,
+  SEARCH_BY_TEXT,
+} from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
@@ -70,6 +76,8 @@ import {
   scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
+import CustomDropdown from "../../utils/form/CustomDropdown.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -78,17 +86,21 @@ import {
   updateWalletListFlag,
 } from "../common/Api.js";
 import ExitOverlay from "../common/ExitOverlay.js";
+import PaywallModal from "../common/PaywallModal.js";
 import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import { getFilters } from "../intelligence/Api.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AssetUnrealizedProfitAndLossMobile from "./AssetUnrealizedProfitAndLossMobile.js";
-import PaywallModal from "../common/PaywallModal.js";
-import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
 
 class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedAssets: [],
+      isMobile: mobileCheck(),
+      condition: [],
+      isAssetSearchUsed: false,
       isPremiumUser: false,
       isLochPaymentModal: false,
       Average_cost_basis_local: [],
@@ -196,7 +208,20 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       });
     }
   };
+  callApi = () => {
+    this.setState({
+      AvgCostLoading: true,
+    });
+    let tempCond = [];
+    this.state.condition.forEach((tempEle) => {
+      tempCond.push(tempEle);
+    });
+    let tempData = new URLSearchParams();
+    tempData.append("conditions", JSON.stringify(tempCond));
+    this.props.getAvgCostBasis(this, tempData);
+  };
   componentDidMount() {
+    this.props.getFilters();
     this.checkPremium();
     // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     // if (userDetails && userDetails.email) {
@@ -225,7 +250,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     ) {
       this.props.getAllCoins();
 
-      this.props.getAvgCostBasis(this);
+      this.callApi();
       this.props.GetAllPlan();
       this.props.getUser();
     } else {
@@ -276,6 +301,9 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.condition !== this.state.condition) {
+      this.callApi();
+    }
     if (
       prevProps.intelligenceState.Average_cost_basis !==
       this.props.intelligenceState.Average_cost_basis
@@ -297,15 +325,17 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     if (prevState.apiResponse !== this.state.apiResponse) {
       this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
-
       this.props.getAllCoins();
-
-      this.props.getAvgCostBasis(this);
       this.setState({
         apiResponse: false,
       });
     }
     if (!this.props.commonState.assetsPage) {
+      this.setState({
+        selectedAssets: [],
+      });
+      this.props.getFilters();
+      this.callApi();
       this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
       let tempData = new URLSearchParams();
@@ -607,15 +637,120 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       isLochPaymentModal: false,
     });
   };
+  assetSearchIsUsed = () => {
+    this.setState({ isAssetSearchUsed: true });
+  };
+  addCondition = (key, value) => {
+    if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        TransactionHistoryAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false });
+        if (value === "allAssets") {
+          this.setState({
+            selectedAssets: [],
+          });
+        } else {
+          this.setState({
+            selectedAssets: value,
+          });
+        }
+      });
+    }
+
+    let index = this.state.condition.findIndex((e) => e.key === key);
+
+    let arr = [...this.state.condition];
+    let search_index = this.state.condition.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear" &&
+      value !== "allNetworks" &&
+      value !== "allAmounts"
+    ) {
+      arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear" ||
+      value === "allNetworks" ||
+      value === "allAmounts"
+    ) {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    this.setState({
+      condition: arr,
+    });
+  };
   render() {
     const columnData = [
       {
         labelName: (
           <div
-            className="cp history-table-header-col table-header-font"
-            id="Asset"
+            className={`cp history-table-header-col table-header-font ${
+              this.state.isMobile ? "move-dropdown-to-right-2" : ""
+            }`}
+            id="asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Token</span>
+            <CustomDropdown
+              filtername={
+                <div
+                  className="filter-image-container"
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image className="filter-image" src={FilterIcon} />
+                </div>
+              }
+              isIcon
+              options={this.props.intelligenceState.assetFilter}
+              action={SEARCH_BY_ASSETS_IN}
+              handleClick={(key, value) => this.addCondition(key, value)}
+              searchIsUsed={this.assetSearchIsUsed}
+              selectedTokens={this.state.selectedAssets}
+              transactionHistorySavedData
+            />
+            <span className="inter-display-medium f-s-13 lh-16 ">Token</span>
             <Image
               onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
@@ -1454,7 +1589,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               />
               <div
                 style={{ marginBottom: "2.8rem" }}
-                className="cost-table-section"
+                className="cost-table-section overflow-table-header-visible"
               >
                 <div style={{ position: "relative" }}>
                   <TransactionTable
@@ -1525,6 +1660,7 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   getUser,
   GetAllPlan,
+  getFilters,
 };
 
 export default connect(

@@ -49,11 +49,12 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
         </div>
         <div
           style={{
-            backgroundColor: "var(--cardBackgroud",
+            backgroundColor: "var(--cardBackgroud)",
             borderRadius: "1.2rem",
             padding: "0rem",
             paddingBottom: "0.5rem",
           }}
+          className="overflow-table-header-visible"
         >
           <div
             style={{
@@ -61,7 +62,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               padding: "0rem 0.5rem",
               paddingTop: "0.5rem",
             }}
-            className={`freezeTheFirstColumn newHomeTableContainer hide-scrollbar  ${
+            className={`minMobileTableHeight50vh freezeTheFirstColumn newHomeTableContainer hide-scrollbar  ${
               this.props.AvgCostLoading || this.props.tableData < 1
                 ? ""
                 : "tableWatermarkOverlay"

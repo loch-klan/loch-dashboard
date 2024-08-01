@@ -3819,6 +3819,22 @@ export const TransactionHistoryAssetFilter = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const TokensPageAssetFilter = ({
+  session_id,
+  email_address,
+  asset_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Assets: assets filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset selected": asset_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const CopyTradeTransactionHistoryAssetFilter = ({
   session_id,
   email_address,

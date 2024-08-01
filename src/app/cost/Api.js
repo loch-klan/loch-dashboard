@@ -246,12 +246,10 @@ export const getUserAccount = (data, ctx) => {
     });
 };
 
-export const getAvgCostBasis = (ctx) => {
+export const getAvgCostBasis = (ctx, passedData) => {
   return async function (dispatch, getState) {
-    let data = new URLSearchParams();
-
     postLoginInstance
-      .post("wallet/user-wallet/get-average-cost-basis", data)
+      .post("wallet/user-wallet/get-average-cost-basis", passedData)
       .then((res) => {
         if (!res.data.error) {
           let ApiResponse = res?.data.data?.assets;

@@ -4054,3 +4054,13 @@ input[type="number"]::-webkit-outer-spin-button {
 .modal-content {
   border: none;
 }
+.move-dropdown-to-right-2 {
+  .dropdown-content {
+    transform: translateX(2rem);
+  }
+}
+.minMobileTableHeight50vh {
+  .table-wrapper {
+    min-height: calc(100vh - 50rem);
+  }
+}
