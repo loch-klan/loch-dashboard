@@ -588,6 +588,13 @@
   }
 }
 .dex-screener-page-mobile {
+  .ds-ph-btns-container {
+    width: 100%;
+    margin-bottom: 2.3rem;
+    .ds-ph-btn {
+      width: calc(50% - 3px);
+    }
+  }
   .dex-screener-page-mobile-toggle {
     background-color: var(--darkGreyCardBackgroud);
     border-radius: 0.5rem;
@@ -596,7 +603,6 @@
     justify-content: center;
     padding: 0.4rem;
     margin-bottom: 2rem;
-    margin-top: -1rem;
     .dex-screener-page-mobile-toggle-block {
       color: var(--black191);
       font-size: 13px;
