@@ -212,12 +212,22 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     this.setState({
       AvgCostLoading: true,
     });
-    let tempCond = [];
+    let tempFilterAssetCondition = [];
     this.state.condition.forEach((tempEle) => {
-      tempCond.push(tempEle);
+      if (
+        tempEle.key === "SEARCH_BY_ASSETS_IN" &&
+        tempEle.value &&
+        tempEle.value.length > 0
+      ) {
+        tempFilterAssetCondition = tempEle.value.slice();
+      }
     });
     let tempData = new URLSearchParams();
-    tempData.append("conditions", JSON.stringify(tempCond));
+    // tempData.append("conditions", JSON.stringify(tempCond));
+    tempData.append(
+      "filtered_assets",
+      JSON.stringify(tempFilterAssetCondition)
+    );
     this.props.getAvgCostBasis(this, tempData);
   };
   componentDidMount() {
