@@ -97,6 +97,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      intelligenceStateLocal: {},
       selectedAssets: [],
       isMobile: mobileCheck(),
       condition: [],
@@ -209,6 +210,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     }
   };
   callApi = () => {
+    let isDefault = true;
     this.setState({
       AvgCostLoading: true,
     });
@@ -222,13 +224,21 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         tempFilterAssetCondition = tempEle.value.slice();
       }
     });
+    if (tempFilterAssetCondition.length > 0) {
+      isDefault = false;
+    }
     let tempData = new URLSearchParams();
     // tempData.append("conditions", JSON.stringify(tempCond));
     tempData.append(
       "filtered_assets",
       JSON.stringify(tempFilterAssetCondition)
     );
-    this.props.getAvgCostBasis(this, tempData);
+    this.props.getAvgCostBasis(this, tempData, isDefault);
+  };
+  setLocalAssetData = (passedData) => {
+    this.setState({
+      intelligenceStateLocal: passedData,
+    });
   };
   componentDidMount() {
     this.props.getFilters();
@@ -315,18 +325,18 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       this.callApi();
     }
     if (
-      prevProps.intelligenceState.Average_cost_basis !==
-      this.props.intelligenceState.Average_cost_basis
+      prevState.intelligenceStateLocal.Average_cost_basis !==
+      this.state.intelligenceStateLocal.Average_cost_basis
     ) {
       this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
       if (this.state.showDust) {
         this.trimAverageCostBasisLocally(
-          this.props.intelligenceState.Average_cost_basis
+          this.state.intelligenceStateLocal.Average_cost_basis
         );
       } else {
         this.updateAverageCostBasisLocally(
-          this.props.intelligenceState.Average_cost_basis
+          this.state.intelligenceStateLocal.Average_cost_basis
         );
       }
       this.combinedResults();
@@ -361,17 +371,18 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     let tempcombinedCurrentValue = 0;
     let tempcombinedUnrealizedGains = 0;
     let tempcombinedReturn = 0;
-    if (this.props.intelligenceState?.net_return) {
-      tempcombinedReturn = this.props.intelligenceState?.net_return;
+    if (this.state.intelligenceStateLocal?.net_return) {
+      tempcombinedReturn = this.state.intelligenceStateLocal?.net_return;
     }
-    if (this.props.intelligenceState?.total_bal) {
-      tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+    if (this.state.intelligenceStateLocal?.total_bal) {
+      tempcombinedCurrentValue = this.state.intelligenceStateLocal?.total_bal;
     }
-    if (this.props.intelligenceState?.total_cost) {
-      tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+    if (this.state.intelligenceStateLocal?.total_cost) {
+      tempcombinedCostBasis = this.state.intelligenceStateLocal?.total_cost;
     }
-    if (this.props.intelligenceState?.total_gain) {
-      tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
+    if (this.state.intelligenceStateLocal?.total_gain) {
+      tempcombinedUnrealizedGains =
+        this.state.intelligenceStateLocal?.total_gain;
     }
 
     this.setState({

@@ -246,7 +246,7 @@ export const getUserAccount = (data, ctx) => {
     });
 };
 
-export const getAvgCostBasis = (ctx, passedData) => {
+export const getAvgCostBasis = (ctx, passedData, isDefault = true) => {
   return async function (dispatch, getState) {
     postLoginInstance
       .post("wallet/user-wallet/get-average-cost-basis", passedData)
@@ -314,17 +314,29 @@ export const getAvgCostBasis = (ctx, passedData) => {
           //     ).toFixed(2);
 
           // console.log("Asset",AssetsList)
-          dispatch({
-            type: AVERAGE_COST_BASIS,
-            payload: {
+          if (isDefault) {
+            dispatch({
+              type: AVERAGE_COST_BASIS,
+              payload: {
+                Average_cost_basis: AssetsList,
+                totalPercentage: totalPercentage,
+                net_return: netReturn,
+                total_bal: totalBalance,
+                total_cost: totalCost,
+                total_gain: totalGain,
+              },
+            });
+          }
+          if (ctx.setLocalAssetData) {
+            ctx.setLocalAssetData({
               Average_cost_basis: AssetsList,
               totalPercentage: totalPercentage,
               net_return: netReturn,
               total_bal: totalBalance,
               total_cost: totalCost,
               total_gain: totalGain,
-            },
-          });
+            });
+          }
           if (window.localStorage.getItem("lochToken")) {
             postLoginInstance
               .post("wallet/user-wallet/add-yield-pools")
