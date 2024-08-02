@@ -30,7 +30,9 @@ class DexScreenerMobile extends BaseReactComponent {
         <div className="mobile-header-container">
           <h4>Scooby Doo</h4>
         </div>
-        <DexScreenerHeaderBtns />
+        <DexScreenerHeaderBtns
+          showPriceAlertModal={this.props.showPriceAlertModal}
+        />
         <div className="dex-screener-page-mobile-toggle">
           <div
             className={`dex-screener-page-mobile-toggle-block ${

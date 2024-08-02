@@ -364,7 +364,19 @@ class DexScreener extends BaseReactComponent {
           hideAddresses
           hideShare
         >
+          {this.state.isPriceAlertModal ? (
+            <DexScreenerPriceAlertModal
+              hideOnblur
+              show
+              onHide={this.hidePriceAlertModal}
+              history={this.props.history}
+              modalType={"price_alert"}
+              hideSkip={true}
+              curToken="curToken"
+            />
+          ) : null}
           <DexScreenerMobile
+            showPriceAlertModal={this.showPriceAlertModal}
             transactionsTableData={this.state.transactionsTableData}
             topTradersTableData={this.state.topTradersTableData}
             holdersTableData={this.state.holdersTableData}

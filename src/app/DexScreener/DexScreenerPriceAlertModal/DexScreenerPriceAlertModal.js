@@ -10,11 +10,13 @@ import { ModalBellIcon } from "../../../assets/images/icons/index.js";
 import DexScreenerPriceAlertModalPopularTokens from "./DexScreenerPriceAlertModalPopularTokens.js";
 import "./_dexScreenerPriceAlertModal.scss";
 import DexScreenerPriceAlertModalAllAlerts from "./DexScreenerPriceAlertModalAllAlerts.js";
+import { mobileCheck } from "../../../utils/ReusableFunctions.js";
 
 class DexScreenerPriceAlertModal extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       show: props.show,
       onHide: props.onHide,
       curTitle: "You haven’t set any alerts yet",
@@ -160,11 +162,13 @@ class DexScreenerPriceAlertModal extends BaseReactComponent {
       <Modal
         show={this.state.show}
         className={`exit-overlay-form ${
-          this.state.isMobile ? "" : "zoomedElements"
+          this.state.isMobile
+            ? "dex-screener-alert-modal-mobile"
+            : "zoomedElements"
         }`}
         onHide={this.state.onHide}
         size="lg"
-        dialogClassName={"exit-overlay-modal"}
+        dialogClassName={"exit-overlay-modal exit-overlay-modal-bottom"}
         centered
         aria-labelledby="contained-modal-title-vcenter"
         backdropClassName="exitoverlaymodal"
@@ -222,6 +226,7 @@ class DexScreenerPriceAlertModal extends BaseReactComponent {
                 />
               ) : this.state.curStep === 2 ? (
                 <DexScreenerPriceAlertModalAllAlerts
+                  onHide={this.state.onHide}
                   hideExistingAlerts={this.props.hideExistingAlerts}
                   curAlerts={this.state.curAlerts}
                 />

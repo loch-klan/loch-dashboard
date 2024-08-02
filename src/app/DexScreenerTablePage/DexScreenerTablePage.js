@@ -1329,7 +1329,17 @@ class DexScreenerTablePage extends Component {
             AvgCostLoading={this.state.AvgCostLoading}
             showPriceAlertModal={this.showPriceAlertModal}
           />
-          {this.state.isLochPaymentModal ? (
+          {this.state.isPriceAlertModal ? (
+            <DexScreenerPriceAlertModal
+              hideOnblur
+              show
+              onHide={this.hidePriceAlertModal}
+              history={this.props.history}
+              modalType={"price_alert"}
+              hideSkip={true}
+            />
+          ) : null}
+          {/* {this.state.isLochPaymentModal ? (
             <PaywallModal
               show={this.state.isLochPaymentModal}
               onHide={this.hidePaymentModal}
@@ -1339,7 +1349,7 @@ class DexScreenerTablePage extends Component {
               hideBackBtn
               isMobile
             />
-          ) : null}
+          ) : null} */}
         </MobileLayout>
       );
     }

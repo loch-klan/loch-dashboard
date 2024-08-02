@@ -152,7 +152,10 @@ class DexScreenerPriceAlertModalAllAlerts extends BaseReactComponent {
               </div>
             </div>
             <div className="ps-not-new-alert-btn-container">
-              <div className="ps-not-new-alert-btn ps-not-new-alert-btn-cancel">
+              <div
+                onClick={this.props.onHide}
+                className="ps-not-new-alert-btn ps-not-new-alert-btn-cancel"
+              >
                 Cancel
               </div>
               <div className="ps-not-new-alert-btn ps-not-new-alert-btn-create-alert">

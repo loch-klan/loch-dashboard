@@ -391,3 +391,63 @@
     }
   }
 }
+.dex-screener-alert-modal-mobile {
+  .modal-content {
+    min-width: 100vw !important;
+    width: 100vw !important;
+    // bottom: 0 !important;
+    border-bottom-left-radius: 0rem !important;
+    border-bottom-right-radius: 0rem !important;
+    // position: absolute;
+    .modal-header {
+      padding: 2rem !important;
+      padding-bottom: 1.7rem !important;
+    }
+    .price-alerts-header-subheading-container {
+      padding: 0rem 2rem;
+    }
+    .ps-not-new-alert-container {
+      .ps-not-new-alert {
+        flex-direction: column;
+        .ps-not-new-alert-block {
+          width: 100%;
+        }
+      }
+    }
+    .price-alerts-new-old-toggle {
+      .ps-not-block {
+        &:hover {
+          opacity: 0.3;
+        }
+      }
+      .ps-not-block-selected {
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+    .ps-not-existing-tab {
+      height: calc(100vh - 35rem);
+      min-height: calc(100vh - 35rem);
+      max-height: calc(100vh - 35rem);
+      .ps-not-et-block-conatainer {
+        grid-template-columns: 1fr;
+      }
+    }
+    .pa-blocks-container {
+      grid-template-columns: 1fr;
+      max-height: 42vh;
+      overflow-y: scroll;
+      margin-bottom: 0rem;
+      padding-bottom: 2rem;
+      .ds-sp-block {
+        &:hover {
+          background-color: var(--cardBackgroud);
+          .ds-sp-alert-add {
+            filter: invert(0);
+          }
+        }
+      }
+    }
+  }
+}
