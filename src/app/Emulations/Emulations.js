@@ -1970,10 +1970,14 @@ class Emulations extends Component {
                                         <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container ">
                                           Swap{" "}
                                           {numToCurrency(
-                                            curTradeData.valueFrom
+                                            curTradeData.valueFrom,
+                                            true
                                           )}{" "}
                                           {curTradeData.assetFrom} for{" "}
-                                          {numToCurrency(curTradeData.valueTo)}{" "}
+                                          {numToCurrency(
+                                            curTradeData.valueTo,
+                                            true
+                                          )}{" "}
                                           {curTradeData.assetTo}
                                           ? 
                                         </div>

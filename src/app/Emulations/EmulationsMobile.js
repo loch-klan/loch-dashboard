@@ -653,9 +653,15 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                                       </div>
                                       <div className="inter-display-medium f-s-16 available-copy-trades-transaction-container ">
                                         Swap{" "}
-                                        {numToCurrency(curTradeData.valueFrom)}{" "}
+                                        {numToCurrency(
+                                          curTradeData.valueFrom,
+                                          true
+                                        )}{" "}
                                         {curTradeData.assetFrom} for{" "}
-                                        {numToCurrency(curTradeData.valueTo)}{" "}
+                                        {numToCurrency(
+                                          curTradeData.valueTo,
+                                          true
+                                        )}{" "}
                                         {curTradeData.assetTo}
                                         ? 
                                       </div>
