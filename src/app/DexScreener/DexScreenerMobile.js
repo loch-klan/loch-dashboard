@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import { BaseReactComponent } from "../../utils/form";
 import DexScreenerContent from "./DexScreenerContent";
 import DexScreenerHeaderBtns from "./DexScreenerHeaderBtns";
+import WelcomeCard from "../Portfolio/WelcomeCard";
 
 class DexScreenerMobile extends BaseReactComponent {
   constructor(props) {

@@ -121,6 +121,11 @@ export default function WelcomeCard(props) {
     finalReturn = tempReturn;
   }
   if (props.isMobileRender) {
+    if (props.showDexScreenerSearch) {
+      console.log("Here here");
+
+      return <DexScreenerSearch />;
+    }
     return (
       <TopWalletExchangeBar
         showTopSearchBar={props.showTopSearchBar}

@@ -1323,6 +1323,7 @@ class DexScreenerTablePage extends Component {
           hideAddresses
           hideShare
         >
+          <WelcomeCard isMobileRender showDexScreenerSearch />
           <DexScreenerTableMobilePage
             Average_cost_basis_local={this.state.Average_cost_basis_local}
             columnData={columnData}

@@ -375,6 +375,8 @@ class DexScreener extends BaseReactComponent {
               curToken="curToken"
             />
           ) : null}
+
+          <WelcomeCard isMobileRender showDexScreenerSearch />
           <DexScreenerMobile
             showPriceAlertModal={this.showPriceAlertModal}
             transactionsTableData={this.state.transactionsTableData}

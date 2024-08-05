@@ -678,3 +678,96 @@
     }
   }
 }
+.dex-screener-search-box {
+  font-family: "Inter-Medium", Arial, Helvetica, sans-serif;
+  .dex-screener-search-box-overlay {
+    border-radius: 10px;
+    background-color: var(--cardBackgroud);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    .dex-screener-search-box-overlay-text {
+      font-size: 16px;
+      color: #7c7d81;
+    }
+    .dex-screener-search-box-overlay-image {
+      height: 13px;
+      filter: var(--invertColor);
+    }
+    &:hover {
+      .dex-screener-search-box-overlay-text {
+        color: var(--primaryTextColor);
+      }
+    }
+  }
+}
+.dex-screener-search-box-mobile {
+  z-index: 100;
+  margin-bottom: 2rem;
+  background-color: var(--cardBackgroud) !important;
+  .topBarHistory {
+    width: 100vw;
+    top: 0;
+
+    .dexScreenerSearchPopup {
+      // overflow: hidden;
+      .ds-sp-toggle-container {
+        justify-content: flex-start;
+        width: 100%;
+        overflow-x: scroll;
+        &::-webkit-scrollbar {
+          height: 0rem;
+          width: 0rem;
+        }
+        .ds-sp-toggle {
+          .ds-sp-toggle-item {
+            padding-left: 2rem !important;
+          }
+        }
+      }
+      .ds-sp-blocks-container {
+        grid-template-columns: repeat(1, 1fr);
+        max-height: 23vh;
+        overflow-y: scroll;
+        .ds-sp-block {
+          &:hover {
+            .ds-sp-block-info {
+              background-color: var(--cardBackgroud);
+            }
+          }
+        }
+        &::-webkit-scrollbar {
+          height: 0rem;
+          width: 0rem;
+        }
+      }
+    }
+  }
+  .topBarContainerRightBlock {
+    .topbar-btn {
+      background: var(--primaryTextColor);
+      color: var(--cardBackgroud);
+      border: 1px solid var(--topbarAdressAddBorder);
+      color: #ffffff;
+
+      border-radius: 8px;
+      padding: 0.7rem 1.3rem;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+    }
+  }
+}

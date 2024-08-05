@@ -4,12 +4,14 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { TopBarSearchIcon } from "../../../assets/images/icons";
 import DexScreenerSearchSuggestion from "./DexScreenerSearchSuggestion";
+import { mobileCheck } from "../../../utils/ReusableFunctions";
 import "./_dexScreenerSearch.scss";
 
 class DexScreenerSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isMobile: mobileCheck(),
       searchText: "",
       topBarHistoryItems: [],
       dsSearchSuggestion: false,
@@ -18,6 +20,14 @@ class DexScreenerSearch extends Component {
   }
   componentDidUpdate(prevProps, prevState) {
     if (prevState.dsSearchSuggestion !== this.state.dsSearchSuggestion) {
+      if (this.state.dsSearchSuggestion) {
+        const checkInputItem = document.getElementById(
+          "topBarContainerInputBlockInputId"
+        );
+        if (checkInputItem) {
+          checkInputItem.focus();
+        }
+      }
       const rootItem = document.getElementById("root");
       if (rootItem) {
         if (this.state.dsSearchSuggestion) {
@@ -60,7 +70,9 @@ class DexScreenerSearch extends Component {
               e.stopPropagation();
             }
           }}
-          className="topBarContainer dex-screener-search-box topBarContainerVisible"
+          className={`topBarContainer dex-screener-search-box topBarContainerVisible ${
+            this.state.isMobile ? "dex-screener-search-box-mobile" : ""
+          }`}
         >
           {this.state.dsSearchSuggestion ? (
             <DexScreenerSearchSuggestion
