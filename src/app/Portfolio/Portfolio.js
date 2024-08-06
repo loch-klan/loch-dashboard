@@ -14,6 +14,7 @@ import FixAddModal from "../common/FixAddModal";
 import {
   getAllInsightsApi,
   getAssetProfitLoss,
+  getFilters,
   getProfitAndLossApi,
   searchTransactionApi,
   updateAssetProfitLoss,
@@ -40,7 +41,12 @@ import {
   BASE_URL_S3,
   DEFAULT_PRICE,
   GROUP_BY_DATE,
+  SEARCH_BETWEEN_VALUE,
+  SEARCH_BY_ASSETS_IN,
+  SEARCH_BY_CHAIN_IN,
+  SEARCH_BY_METHOD_IN,
   SEARCH_BY_NOT_DUST,
+  SEARCH_BY_TEXT,
   SEARCH_BY_WALLET_ADDRESS_IN,
   SORT_BY_AMOUNT,
   SORT_BY_APY,
@@ -88,6 +94,9 @@ import {
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
+  HomeTransactionHistoryAssetFilter,
+  HomeTransactionHistoryNetworkFilter,
+  HomeTransactionHistoryYearFilter,
   InsightsEV,
   ManageWallets,
   NetflowSwitchHome,
@@ -108,6 +117,7 @@ import {
   TransactionHistoryHashHover,
   TransactionHistoryTo,
   TransactionHistoryWalletClicked,
+  TransactionHistoryYearFilter,
   VolumeTradeByCP,
   YieldOpportunitiesSortAPY,
   YieldOpportunitiesSortAsset,
@@ -162,6 +172,7 @@ import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   DefaultNftTableIconIcon,
+  FilterIcon,
   HomeTabArrowIcon,
   InfoIconI,
 } from "../../assets/images/icons/index.js";
@@ -177,6 +188,8 @@ import { getNFT } from "../nft/NftApi.js";
 import HandleBrokenImages from "../common/HandleBrokenImages.js";
 import PaywallModal from "../common/PaywallModal.js";
 import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
+import CustomDropdown from "../../utils/form/CustomDropdown.js";
+import CustomMinMaxDropdown from "../../utils/form/CustomMinMaxDropdown.js";
 
 class Portfolio extends BaseReactComponent {
   constructor(props) {
@@ -200,6 +213,11 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      intelligenceStateLocal: {},
+      isTransHistoryNetworkSearchUsed: false,
+      transactionHistoryCondition: [],
+      minTransHistoryAmount: "1",
+      maxTransHistoryAmount: "1000000000",
       isPremiumUser: isPremiumUser() ? true : false,
       isLochPaymentModal: false,
       payModalTitle: "",
@@ -903,6 +921,11 @@ class Portfolio extends BaseReactComponent {
     //YIELDOPP TAB
   };
   componentDidMount() {
+    if (this.props.intelligenceState) {
+      this.setState({
+        intelligenceStateLocal: this.props.intelligenceState,
+      });
+    }
     setTimeout(() => {
       this.setState({
         isPremiumUser: isPremiumUser(),
@@ -1222,6 +1245,12 @@ class Portfolio extends BaseReactComponent {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.transactionHistoryCondition !==
+      this.state.transactionHistoryCondition
+    ) {
+      this.getTableData();
+    }
     if (prevState.isShowingAge !== this.state.isShowingAge) {
       const tempElement = document.getElementById(
         "homeTransactionTableWrapper"
@@ -2083,6 +2112,14 @@ class Portfolio extends BaseReactComponent {
 
   // transaction history table data
   getTableData = () => {
+    let tempCond = [];
+    let isDefault = true;
+    this.state.transactionHistoryCondition.forEach((tempEle) => {
+      if (tempEle.key !== SEARCH_BY_WALLET_ADDRESS_IN) {
+        tempCond.push(tempEle);
+      }
+    });
+
     this.setState({ tableLoading: true });
     const arr = window.localStorage.getItem("addWallet")
       ? JSON.parse(window.localStorage.getItem("addWallet"))
@@ -2090,7 +2127,12 @@ class Portfolio extends BaseReactComponent {
     let address = arr?.map((wallet) => {
       return wallet.address;
     });
+    if (tempCond.length > 0) {
+      isDefault = false;
+    }
+
     let condition = [
+      ...tempCond,
       {
         key: SEARCH_BY_WALLET_ADDRESS_IN,
         value: address,
@@ -2106,7 +2148,23 @@ class Portfolio extends BaseReactComponent {
     data.append("limit", 10);
     data.append("sorts", JSON.stringify(this.state.sort));
     this.props.updateWalletListFlag("transactionHistory", true);
-    this.props.searchTransactionApi(data, this);
+
+    this.props.getFilters(this);
+    this.props.searchTransactionApi(data, this, 0, isDefault);
+  };
+  getAllTransactionHistoryLocal = (apiRes, apiPage) => {
+    const tempDataHolder = {
+      table: apiRes.results,
+      assetPriceList: apiRes.objects.asset_prices,
+      totalCount: apiRes.total_count,
+      totalPage: Math.ceil(apiRes.total_count / API_LIMIT),
+    };
+
+    this.setState({
+      intelligenceStateLocal: {
+        ...tempDataHolder,
+      },
+    });
   };
 
   // cost basis
@@ -2776,9 +2834,138 @@ class Portfolio extends BaseReactComponent {
       openLochPaymentModalWithOptions: false,
     });
   };
+  addTransactionHistoryCondition = (key, value) => {
+    if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      const tempIsTimeUsed = this.state.isTimeSearchUsed;
+      HomeTransactionHistoryYearFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        year_filter: value === "allYear" ? "All years" : value,
+        isSearchUsed: tempIsTimeUsed,
+      });
+      this.updateTimer();
+      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
+    } else if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        HomeTransactionHistoryAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false, selectedAssets: value });
+      });
+    } else if (key === "SEARCH_BY_METHOD_IN") {
+      this.setState({ selectedMethods: value });
+    } else if (key === "SEARCH_BY_CHAIN_IN") {
+      const tempIsNetworkUsed = this.state.isTransHistoryNetworkSearchUsed;
+      HomeTransactionHistoryNetworkFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        network_filter: value === "allNetworks" ? "All networks" : value,
+        isSearchUsed: tempIsNetworkUsed,
+      });
+      this.updateTimer();
+      this.setState({
+        isTransHistoryNetworkSearchUsed: false,
+        selectedNetworks: value,
+      });
+    }
+    let index = this.state.transactionHistoryCondition.findIndex(
+      (e) => e.key === key
+    );
+
+    let arr = [...this.state.transactionHistoryCondition];
+    let search_index = this.state.transactionHistoryCondition.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear" &&
+      value !== "allNetworks" &&
+      value !== "allAmounts"
+    ) {
+      arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear" ||
+      value === "allNetworks" ||
+      value === "allAmounts"
+    ) {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    // On Filter start from page 0
+    this.props.history.replace({
+      search: `?p=${START_INDEX}`,
+    });
+    this.setState({
+      transactionHistoryCondition: arr,
+    });
+  };
+  handleTransactionHistoryAmount = (min, max) => {
+    if (!isNaN(min) && !isNaN(max)) {
+      this.setState(
+        {
+          minTransHistoryAmount: min,
+          maxTransHistoryAmount: max,
+        },
+        () => {
+          const value = { min_value: Number(min), max_value: Number(max) };
+          this.addTransactionHistoryCondition(SEARCH_BETWEEN_VALUE, value);
+        }
+      );
+    }
+  };
+  handleTransHistoryFunction = (badge) => {
+    if (badge && badge.length > 0) {
+      const tempArr = [];
+      if (badge[0]?.name !== "All") {
+        badge.forEach((resData) => tempArr.push(resData.id));
+      }
+      this.addTransactionHistoryCondition(
+        SEARCH_BY_CHAIN_IN,
+        tempArr && tempArr.length > 0 ? tempArr : "allNetworks"
+      );
+    }
+  };
+  networkSearchIsUsed = () => {
+    this.setState({ isTransHistoryNetworkSearchUsed: true });
+  };
   render() {
     const { table, assetPriceList_home, totalCount } =
-      this.props.intelligenceState;
+      this.state.intelligenceStateLocal;
     const { userWalletList, currency } = this.state;
     //   "asset price state",
     //  this.state?.assetPrice? Object.keys(this.state?.assetPrice)?.length:""
@@ -2790,95 +2977,95 @@ class Portfolio extends BaseReactComponent {
     //  );
 
     // transaction history calculations
-    let tableData =
-      table &&
-      table?.map((row) => {
-        let walletFromData = null;
-        let walletToData = null;
+    let tableData = table
+      ? table?.map((row) => {
+          let walletFromData = null;
+          let walletToData = null;
 
-        this.state.walletList &&
-          this.state.walletList?.map((wallet) => {
-            if (
-              wallet.address?.toLowerCase() ===
-                row.from_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() ===
-                row.from_wallet.address?.toLowerCase()
-            ) {
-              walletFromData = {
-                wallet_metaData: wallet.wallet_metadata,
-                displayAddress: wallet.displayAddress,
-                nickname: wallet?.nickname,
-              };
-            }
-            if (
-              wallet.address?.toLowerCase() ==
-                row.to_wallet.address?.toLowerCase() ||
-              wallet.displayAddress?.toLowerCase() ==
-                row.to_wallet.address?.toLowerCase()
-            ) {
-              walletToData = {
-                wallet_metaData: wallet.wallet_metadata,
-                displayAddress: wallet.displayAddress,
-                nickname: wallet?.nickname,
-              };
-            }
-          });
+          this.state.walletList &&
+            this.state.walletList?.map((wallet) => {
+              if (
+                wallet.address?.toLowerCase() ===
+                  row.from_wallet.address?.toLowerCase() ||
+                wallet.displayAddress?.toLowerCase() ===
+                  row.from_wallet.address?.toLowerCase()
+              ) {
+                walletFromData = {
+                  wallet_metaData: wallet.wallet_metadata,
+                  displayAddress: wallet.displayAddress,
+                  nickname: wallet?.nickname,
+                };
+              }
+              if (
+                wallet.address?.toLowerCase() ==
+                  row.to_wallet.address?.toLowerCase() ||
+                wallet.displayAddress?.toLowerCase() ==
+                  row.to_wallet.address?.toLowerCase()
+              ) {
+                walletToData = {
+                  wallet_metaData: wallet.wallet_metadata,
+                  displayAddress: wallet.displayAddress,
+                  nickname: wallet?.nickname,
+                };
+              }
+            });
 
-        return {
-          time: row.timestamp,
-          age: row.age,
-          from: {
-            address: row.from_wallet.address,
-            metaData: walletFromData,
-            wallet_metaData: {
-              symbol: row.from_wallet?.wallet_metadata
-                ? row.from_wallet?.wallet_metadata?.symbol
-                : null,
-              text: row.from_wallet?.wallet_metadata
-                ? row.from_wallet?.wallet_metadata?.name
-                : null,
+          return {
+            time: row.timestamp,
+            age: row.age,
+            from: {
+              address: row.from_wallet.address,
+              metaData: walletFromData,
+              wallet_metaData: {
+                symbol: row.from_wallet?.wallet_metadata
+                  ? row.from_wallet?.wallet_metadata?.symbol
+                  : null,
+                text: row.from_wallet?.wallet_metadata
+                  ? row.from_wallet?.wallet_metadata?.name
+                  : null,
+              },
             },
-          },
-          to: {
-            address: row.to_wallet.address,
-            // wallet_metaData: row.to_wallet.wallet_metaData,
-            metaData: walletToData,
-            wallet_metaData: {
-              symbol: row.to_wallet?.wallet_metadata
-                ? row.to_wallet?.wallet_metadata?.symbol
-                : null,
-              text: row.to_wallet?.wallet_metadata
-                ? row.to_wallet?.wallet_metadata?.name
-                : null,
+            to: {
+              address: row.to_wallet.address,
+              // wallet_metaData: row.to_wallet.wallet_metaData,
+              metaData: walletToData,
+              wallet_metaData: {
+                symbol: row.to_wallet?.wallet_metadata
+                  ? row.to_wallet?.wallet_metadata?.symbol
+                  : null,
+                text: row.to_wallet?.wallet_metadata
+                  ? row.to_wallet?.wallet_metadata?.name
+                  : null,
+              },
             },
-          },
-          asset: {
-            code: row.asset?.code,
-            symbol: row.asset?.symbol,
-          },
-          amount: {
-            value: parseFloat(row.asset?.value),
-            id: row.asset?.id,
-          },
-          usdValueThen: {
-            value: row.asset?.value,
-            id: row.asset?.id,
-            assetPrice: row.asset_price,
-          },
-          usdValueToday: {
-            value: row.asset?.value,
-            id: row.asset?.id,
-          },
-          usdTransactionFee: {
-            value: row.transaction_fee,
-            id: row.asset?.id,
-          },
-          // method: row.transaction_type
-          method: row.method,
-          hash: row.transaction_id,
-          network: row.chain?.name,
-        };
-      });
+            asset: {
+              code: row.asset?.code,
+              symbol: row.asset?.symbol,
+            },
+            amount: {
+              value: parseFloat(row.asset?.value),
+              id: row.asset?.id,
+            },
+            usdValueThen: {
+              value: row.asset?.value,
+              id: row.asset?.id,
+              assetPrice: row.asset_price,
+            },
+            usdValueToday: {
+              value: row.asset?.value,
+              id: row.asset?.id,
+            },
+            usdTransactionFee: {
+              value: row.transaction_fee,
+              id: row.asset?.id,
+            },
+            // method: row.transaction_type
+            method: row.method,
+            hash: row.transaction_id,
+            network: row.chain?.name,
+          };
+        })
+      : [];
 
     const columnList = [
       {
@@ -3561,6 +3748,31 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="asset"
           >
+            {this.state.isMobileDevice ? null : (
+              <CustomDropdown
+                filtername={
+                  <div
+                    className="filter-image-container"
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Image className="filter-image" src={FilterIcon} />
+                  </div>
+                }
+                isIcon
+                options={this.props.intelligenceState.assetFilter}
+                action={SEARCH_BY_ASSETS_IN}
+                handleClick={(key, value) =>
+                  this.addTransactionHistoryCondition(key, value)
+                }
+                searchIsUsed={this.assetSearchIsUsed}
+                selectedTokens={this.state.selectedAssets}
+                transactionHistorySavedData
+              />
+            )}
             <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               src={sortByIcon}
@@ -3651,6 +3863,28 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="usdValueThen"
           >
+            {this.state.isMobileDevice ? null : (
+              <CustomMinMaxDropdown
+                filtername={
+                  <div
+                    className="filter-image-container"
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Image className="filter-image" src={FilterIcon} />
+                  </div>
+                }
+                isIcon
+                handleClick={(min, max) =>
+                  this.handleTransactionHistoryAmount(min, max)
+                }
+                minAmount={this.state.minTransHistoryAmount}
+                maxAmount={this.state.maxTransHistoryAmount}
+              />
+            )}
             <span className="inter-display-medium f-s-13 lh-16">{`${CurrencyType(
               true
             )} amount (then)`}</span>
@@ -3744,6 +3978,32 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="method"
           >
+            {this.state.isMobileDevice ? null : (
+              <CustomDropdown
+                isIcon
+                filtername={
+                  <div
+                    className="filter-image-container"
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Image className="filter-image" src={FilterIcon} />
+                  </div>
+                }
+                options={this.props.intelligenceState.methodFilter}
+                action={SEARCH_BY_METHOD_IN}
+                handleClick={(key, value) =>
+                  this.addTransactionHistoryCondition(key, value)
+                }
+                searchIsUsed={this.methodSearchIsUsed}
+                isCaptialised
+                selectedTokens={this.state.selectedMethods}
+                transactionHistorySavedData
+              />
+            )}
             <span className="inter-display-medium f-s-13 lh-16">Method</span>
             <Image
               onClick={() => this.handleTableSort("method")}
@@ -3793,6 +4053,31 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col  table-header-font"
             id="network"
           >
+            {this.state.isMobileDevice ? null : (
+              <CustomDropdown
+                isIcon
+                filtername={
+                  <div
+                    className="filter-image-container"
+                    style={{
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Image className="table-filter-icon" src={FilterIcon} />
+                  </div>
+                }
+                options={this.props.OnboardingState.coinsList}
+                action={SEARCH_BY_CHAIN_IN}
+                handleClick={this.handleTransHistoryFunction}
+                searchIsUsed={this.networkSearchIsUsed}
+                isCaptialised
+                isGreyChain
+                selectedTokens={this.state.selectedNetworks}
+                transactionHistorySavedData
+              />
+            )}
             <span className="inter-display-medium f-s-13 lh-16">Network</span>
             {/* <Image
               src={sortByIcon}
@@ -5404,11 +5689,9 @@ class Portfolio extends BaseReactComponent {
                               }`}
                             >
                               <TransactionTable
+                                showHeaderOnEmpty
                                 passedWrapperId="homeTransactionTableWrapper"
-                                xAxisScrollable={
-                                  !this.state.tableLoading &&
-                                  tableData?.length > 0
-                                }
+                                xAxisScrollable
                                 xAxisScrollableColumnWidth={5.1}
                                 noSubtitleBottomPadding
                                 disableOnLoading
@@ -6144,6 +6427,7 @@ class Portfolio extends BaseReactComponent {
 
                         {this.state.blockFourSelectedItem === 1 ? (
                           <InflowOutflowPortfolioHome
+                            isFromHomePage
                             isHome
                             switchPriceGaugeLoader={
                               this.state.switchPriceGaugeLoader
@@ -6345,6 +6629,7 @@ const mapDispatchToProps = {
   updateCounterParty,
   updateAssetProfitLoss,
   getNFT,
+  getFilters,
 };
 Portfolio.propTypes = {};
 

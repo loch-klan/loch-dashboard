@@ -42,7 +42,7 @@
   min-height: 4rem;
   user-select: none;
 
-  &.custom-dropdown-icon{
+  &.custom-dropdown-icon {
     border: none;
     min-height: auto;
   }
@@ -50,7 +50,7 @@
   &:hover {
     //  background-color: rgba(229, 229, 230, 0.35);
     border: 0.1rem solid var(--black191);
-    &.custom-dropdown-icon{
+    &.custom-dropdown-icon {
       border: none;
     }
   }
@@ -263,7 +263,7 @@
     }
   }
 
-  &.custom-dropdown-icon{
+  &.custom-dropdown-icon {
     .dropdown-content {
       top: 3rem;
       left: -2rem;
@@ -330,9 +330,15 @@
     @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     text-align: center;
     padding: 1rem;
+    .placeholderPriceDropdownChild {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     &.lineChartPlaceholder {
       @include font(var(--black191), "Inter-Medium", 1.3rem, 500, 1.6rem);
@@ -535,5 +541,47 @@
   }
   .hide {
     display: none;
+  }
+}
+.custom-dropdown-home {
+  border-radius: 0 !important;
+  margin-right: 4px !important;
+  &.lineChart {
+    min-height: unset;
+    border: none;
+    cursor: default;
+    .placeholderPriceDropdown {
+      width: fit-content;
+      min-width: 13rem;
+      justify-content: flex-end;
+      padding: 0;
+      color: var(--seeMoreColor);
+      font-size: 13px;
+      font-weight: 500;
+      .placeholderPriceDropdownChild {
+        cursor: pointer;
+        justify-content: center;
+        width: fit-content;
+        gap: 5px;
+        .dropdownFilterIconContainer {
+          svg {
+            height: 8px;
+          }
+        }
+        &:hover {
+          color: var(--primaryTextColor);
+          .dropdownFilterIconContainer {
+            svg {
+              path {
+                stroke: var(--primaryTextColor);
+              }
+            }
+          }
+        }
+      }
+    }
+    &:hover {
+      border: none;
+    }
   }
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Image } from "react-bootstrap";
 import SearchIcon from "../../assets/images/icons/dropdown-search.svg";
+import { FilterIcon } from "../../assets/images/icons";
 class CustomDropdown extends Component {
   constructor(props) {
     super(props);
@@ -481,7 +482,7 @@ class CustomDropdown extends Component {
             : this.props.isTopaccount
             ? "top-account-dropdown"
             : ""
-        }`}
+        } ${this.props.isFromHomePage ? "custom-dropdown-home" : ""}`}
         ref={this.dropDownRef}
         onBlur={this.handleClickOutside}
         style={{ position: "relative" }}
@@ -499,56 +500,92 @@ class CustomDropdown extends Component {
           }}
           onClick={this.dropdownClicked}
         >
-          {this.props.singleSelect
-            ? this.props.selectedTokenName
+          <div
+            style={{
+              lineHeight: "1",
+            }}
+            className="placeholderPriceDropdownChild"
+          >
+            {this.props.singleSelect
               ? this.props.selectedTokenName
-              : ""
-            : this.getSelected()?.length === 0
-            ? this.state.name
-            : this.props.isLineChart
-            ? this.getSelected()?.length + "/4 Selected"
-            : this.props.isChain
-            ? this.getSelected()?.length +
-              (this.getSelected()?.length > 1
-                ? " chains selected"
-                : " chain selected")
-            : this.props.placeholderName
-            ? this.getSelected()?.length +
-              (this.getSelected()?.length > 1
-                ? " " + this.props.placeholderName + "s selected"
-                : " " + this.props.placeholderName + " selected")
-            : this.getSelected()?.length + " Selected"}
+                ? this.props.selectedTokenName
+                : ""
+              : this.getSelected()?.length === 0
+              ? this.state.name
+              : this.props.isLineChart
+              ? this.getSelected()?.length + "/4 Selected"
+              : this.props.isChain
+              ? this.getSelected()?.length +
+                (this.getSelected()?.length > 1
+                  ? " chains selected"
+                  : " chain selected")
+              : this.props.placeholderName
+              ? this.getSelected()?.length +
+                (this.getSelected()?.length > 1
+                  ? " " + this.props.placeholderName + "s selected"
+                  : " " + this.props.placeholderName + " selected")
+              : this.getSelected()?.length + " Selected"}
 
-          {!this.props.isLineChart &&
-            !this.props.isChain &&
-            !this.props.LightTheme && (
-              <span>
+            {!this.props.isLineChart &&
+              !this.props.isChain &&
+              !this.props.LightTheme && (
+                <span>
+                  <svg
+                    height="20"
+                    width="20"
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
+                  </svg>
+                </span>
+              )}
+            {this.props.isFromHomePage ? (
+              <div className="dropdownFilterIconContainer">
                 <svg
-                  height="20"
-                  width="20"
-                  viewBox="0 0 20 20"
-                  aria-hidden="true"
-                  focusable="false"
+                  width="8"
+                  height="6"
+                  viewBox="0 0 8 6"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
+                  <path
+                    d="M2 2.8335H6"
+                    stroke="var(--seeMoreColor)"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M0.75 1H7.25"
+                    stroke="var(--seeMoreColor)"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M3.25 4.6665H4.75"
+                    stroke="var(--seeMoreColor)"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
-              </span>
-            )}
-          {(this.props.isLineChart ||
-            this.props.isChain ||
-            this.props.LightTheme) && (
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                // viewBox="0 0 20 20"
-              >
-                {/* <path fill="none" d="M0 0h24v24H0V0z" /> */}
-                <path fill="#000000" d="M7 7l4 4 4-4H7z" />
-              </svg>
-            </div>
-          )}
+              </div>
+            ) : this.props.isLineChart ||
+              this.props.isChain ||
+              this.props.LightTheme ? (
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  // viewBox="0 0 20 20"
+                >
+                  {/* <path fill="none" d="M0 0h24v24H0V0z" /> */}
+                  <path fill="#000000" d="M7 7l4 4 4-4H7z" />
+                </svg>
+              </div>
+            ) : null}
+          </div>
         </div>
         <div
           className={`dropdown-content-price input-noshadow-dark ${

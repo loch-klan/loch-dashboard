@@ -3756,6 +3756,68 @@ export const YieldOpportunitiesSearch = ({
 };
 
 // Transaction History: years filter - done
+export const HomeTransactionHistoryYearFilter = ({
+  session_id,
+  email_address,
+  year_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Home: Transaction History: years filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "year selected": year_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+// Transaction History: assets filter - done
+export const HomeTransactionHistoryAmountFilter = ({
+  session_id,
+  email_address,
+  amount_filter,
+}) => {
+  const event_name = "Home: Transaction History: amount filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "amount selected": amount_filter,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const HomeTransactionHistoryAssetFilter = ({
+  session_id,
+  email_address,
+  asset_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Home: Transaction History: assets filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset selected": asset_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const HomeTransactionHistoryNetworkFilter = ({
+  session_id,
+  email_address,
+  network_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Home: Transaction History: networks filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "networks selected": network_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
 export const TransactionHistoryYearFilter = ({
   session_id,
   email_address,
@@ -3772,23 +3834,6 @@ export const TransactionHistoryYearFilter = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
-export const CopyTradeTransactionHistoryYearFilter = ({
-  session_id,
-  email_address,
-  year_filter,
-  isSearchUsed,
-}) => {
-  const event_name = "Copy Trade: Transactions: years filter";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "year selected": year_filter,
-    "search used": isSearchUsed,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:intelligence menu");
-};
-
 // Transaction History: assets filter - done
 export const TransactionHistoryAmountFilter = ({
   session_id,
@@ -3819,6 +3864,39 @@ export const TransactionHistoryAssetFilter = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const TransactionHistoryNetworkFilter = ({
+  session_id,
+  email_address,
+  network_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Transaction History: networks filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "networks selected": network_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+export const CopyTradeTransactionHistoryYearFilter = ({
+  session_id,
+  email_address,
+  year_filter,
+  isSearchUsed,
+}) => {
+  const event_name = "Copy Trade: Transactions: years filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "year selected": year_filter,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Menu:intelligence menu");
+};
+
 export const CopyTradeTransactionHistoryAssetFilter = ({
   session_id,
   email_address,
@@ -3837,22 +3915,7 @@ export const CopyTradeTransactionHistoryAssetFilter = ({
 };
 
 // Transaction History: methods filter - done
-export const TransactionHistoryNetworkFilter = ({
-  session_id,
-  email_address,
-  network_filter,
-  isSearchUsed,
-}) => {
-  const event_name = "Transaction History: networks filter";
-  const eventProperties = {
-    "session id": session_id,
-    "email address": email_address,
-    "networks selected": network_filter,
-    "search used": isSearchUsed,
-  };
-  sendAmplitudeData(event_name, eventProperties);
-  //console.log("Menu:intelligence menu");
-};
+
 export const CopyTradeTransactionHistoryNetworkFilter = ({
   session_id,
   email_address,

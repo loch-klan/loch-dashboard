@@ -440,6 +440,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                   className="inflowOutflowChartTopInfo"
                   style={{
                     padding: this.props.hideTimeFilter ? "0rem" : "",
+                    alignItems: this.props.isMobileGraph ? "flex-start" : "",
                   }}
                 >
                   <div
@@ -451,12 +452,9 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           ? "visible"
                           : "hidden",
                       textOverflow: "ellipsis",
-                      alignItems:
-                        this.props.hideTimeFilter && this.props.showDropdown
-                          ? "center"
-                          : this.props.hideTimeFilter
-                          ? "flex-start"
-                          : "centre",
+                      alignItems: this.props.isMobileGraph
+                        ? "flex-start"
+                        : "center",
                       justifyContent: this.props.hideTimeFilter
                         ? "space-between"
                         : "",
@@ -526,7 +524,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           style={{
                             opacity: this.state.currentPriceDate ? 1 : 0,
                           }}
-                          className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
+                          className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
                         >
                           {this.state.currentPriceDate
                             ? this.state.currentPriceDate
@@ -597,7 +595,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                                 textOverflow: "ellipsis",
                               }}
                             >
-                              {this.props.showSelectedItem
+                              {/* {this.props.showSelectedItem
                                 ? this.props.showSelectedItem + " "
                                 : this.props.showEth
                                 ? "Ethereum "
@@ -605,7 +603,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                               {this.props.hideTimeFilter &&
                               this.state.activeAssetTabName
                                 ? ``
-                                : ""}
+                                : ""} */}
                               Price
                             </div>
                             <div
@@ -653,7 +651,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                             style={{
                               opacity: this.state.currentPriceDate ? 1 : 0,
                             }}
-                            className="inter-display-semi-bold f-s-10 lh-12 grey-7C7 line-chart-dropdown-y-axis"
+                            className="inter-display-semi-bold f-s-10 grey-7C7 line-chart-dropdown-y-axis"
                           >
                             {this.state.currentPriceDate
                               ? this.state.currentPriceDate
@@ -683,7 +681,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                         ) : null}
                       </div>
                     )}
-                    {this.props.openChartPage ? (
+                    {/* {this.props.openChartPage && this.props.isMobileGraph ? (
                       <div
                         className="d-flex"
                         style={{
@@ -694,7 +692,7 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                       >
                         <p
                           onClick={this.props.openChartPage}
-                          class="inter-display-medium f-s-10 lh-12 grey-7C7  custom-label"
+                          class="inter-display-medium f-s-10 grey-7C7  custom-label"
                         >
                           <div className="seeMoreBtn cp f-s-10 grey-7C7">
                             {this.props.isMobileGraph ? (
@@ -710,16 +708,21 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                           </div>
                         </p>
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </div>
 
-                  {!this.props.hideTimeFilter ? (
-                    <div
-                      style={{
-                        zIndex: 4,
-                      }}
-                    >
+                  {/* {this.props.isFromHomePage ? ( */}
+                  <div
+                    style={{
+                      zIndex: 4,
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    className="mobilePortfolioContainerNew"
+                  >
+                    {this.props.hidePriceDropDown ? null : (
                       <CustomDropdownPrice
+                        isFromHomePage={this.props.isFromHomePage}
                         isHomepage={this.props.isHomepage}
                         filtername="All chains selected"
                         options={this.state.assetList}
@@ -731,8 +734,49 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                         singleSelect
                         searchIsUsed={this.chainSearchIsUsed}
                       />
-                    </div>
-                  ) : null}
+                    )}
+                    {this.props.isFromHomePage ? (
+                      <div
+                        className="d-flex"
+                        style={{
+                          alignItems: "center",
+                          gap: "8px",
+                          marginTop: "",
+                        }}
+                      >
+                        <p
+                          onClick={this.props.openChartPage}
+                          class="inter-display-medium f-s-10 grey-7C7  custom-label"
+                        >
+                          <div className="seeMoreBtn cp f-s-10 grey-7C7">
+                            {this.props.isMobileGraph ? (
+                              <div
+                                style={{
+                                  lineHeight: "",
+                                }}
+                              >
+                                See more
+                              </div>
+                            ) : (
+                              <div
+                                style={{
+                                  lineHeight: "",
+                                }}
+                              >
+                                Click here to see more
+                              </div>
+                            )}
+
+                            <Image
+                              src={ChartSeeMoreArrowIcon}
+                              className="seeMoreBtnIcon"
+                            />
+                          </div>
+                        </p>
+                      </div>
+                    ) : null}
+                  </div>
+                  {/* ) : null} */}
                   {!this.props.hideTimeFilter ? (
                     <div
                       style={{
@@ -773,6 +817,28 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
                     />
                   </div> */}
                 </div>
+                {/* {this.props.isMobileGraph &&
+                this.props.showMobilePriceDropDownHome ? (
+                  <div
+                    style={{
+                      marginTop: "1rem",
+                    }}
+                    className="priceGaugeMobileExpandedPriceDropdownContainer"
+                  >
+                    <CustomDropdownPrice
+                      isHomepage={this.props.isHomepage}
+                      filtername="All chains selected"
+                      options={this.state.assetList}
+                      action={null}
+                      handleClick={this.handleAssetSelect}
+                      isChain={true}
+                      selectedTokens={[this.state.activeAssetTab]}
+                      selectedTokenName={this.state.activeAssetTabName}
+                      singleSelect
+                      searchIsUsed={this.chainSearchIsUsed}
+                    />
+                  </div>
+                ) : null} */}
 
                 <InflowOutflowChartSlider
                   changeThePriceTodefault={this.changeThePriceTodefault}

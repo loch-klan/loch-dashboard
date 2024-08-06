@@ -27,6 +27,7 @@ class PriceGuageMobile extends Component {
             }}
           >
             <InflowOutflowPortfolioHome
+              hidePriceDropDown
               isHome
               hideExplainer
               showEth
@@ -34,7 +35,6 @@ class PriceGuageMobile extends Component {
               lochToken={this.props.lochToken}
               callChildPriceGaugeApi={this.props.callChildPriceGaugeApi}
               isMobileGraph
-              isHomePage
               apiResponse={this.props.apiResponse}
               priceGuageExpandedMobile={true}
               showDropdown
