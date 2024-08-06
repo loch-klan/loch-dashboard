@@ -1971,12 +1971,16 @@ class Emulations extends Component {
                                           Swap{" "}
                                           {numToCurrency(
                                             curTradeData.valueFrom,
-                                            true
+                                            true,
+                                            false,
+                                            7
                                           )}{" "}
                                           {curTradeData.assetFrom} for{" "}
                                           {numToCurrency(
                                             curTradeData.valueTo,
-                                            true
+                                            true,
+                                            false,
+                                            7
                                           )}{" "}
                                           {curTradeData.assetTo}
                                           ? 

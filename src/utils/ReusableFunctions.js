@@ -498,11 +498,15 @@ export const compareDate = (dateTimeA, dateTimeB) => {
 export const numToCurrency = (
   num,
   noDefaultDecimals,
-  toFixedSmallerNumber = false
+  toFixedSmallerNumber = false,
+  upToDecimalPoint
 ) => {
   if (num < 1000 && noDefaultDecimals) {
     if (toFixedSmallerNumber) {
       return parseFloat(num).toFixed(2);
+    }
+    if (upToDecimalPoint) {
+      return num.toFixed(upToDecimalPoint);
     }
     return num;
   }
