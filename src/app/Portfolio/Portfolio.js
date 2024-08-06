@@ -3748,31 +3748,30 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="asset"
           >
-            {this.state.isMobileDevice ? null : (
-              <CustomDropdown
-                filtername={
-                  <div
-                    className="filter-image-container"
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Image className="filter-image" src={FilterIcon} />
-                  </div>
-                }
-                isIcon
-                options={this.props.intelligenceState.assetFilter}
-                action={SEARCH_BY_ASSETS_IN}
-                handleClick={(key, value) =>
-                  this.addTransactionHistoryCondition(key, value)
-                }
-                searchIsUsed={this.assetSearchIsUsed}
-                selectedTokens={this.state.selectedAssets}
-                transactionHistorySavedData
-              />
-            )}
+            <CustomDropdown
+              filtername={
+                <div
+                  className="filter-image-container"
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image className="filter-image" src={FilterIcon} />
+                </div>
+              }
+              isIcon
+              options={this.props.intelligenceState.assetFilter}
+              action={SEARCH_BY_ASSETS_IN}
+              handleClick={(key, value) =>
+                this.addTransactionHistoryCondition(key, value)
+              }
+              searchIsUsed={this.assetSearchIsUsed}
+              selectedTokens={this.state.selectedAssets}
+              transactionHistorySavedData
+            />
+
             <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
               src={sortByIcon}
@@ -3863,28 +3862,27 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="usdValueThen"
           >
-            {this.state.isMobileDevice ? null : (
-              <CustomMinMaxDropdown
-                filtername={
-                  <div
-                    className="filter-image-container"
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Image className="filter-image" src={FilterIcon} />
-                  </div>
-                }
-                isIcon
-                handleClick={(min, max) =>
-                  this.handleTransactionHistoryAmount(min, max)
-                }
-                minAmount={this.state.minTransHistoryAmount}
-                maxAmount={this.state.maxTransHistoryAmount}
-              />
-            )}
+            <CustomMinMaxDropdown
+              filtername={
+                <div
+                  className="filter-image-container"
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image className="filter-image" src={FilterIcon} />
+                </div>
+              }
+              isIcon
+              handleClick={(min, max) =>
+                this.handleTransactionHistoryAmount(min, max)
+              }
+              minAmount={this.state.minTransHistoryAmount}
+              maxAmount={this.state.maxTransHistoryAmount}
+            />
+
             <span className="inter-display-medium f-s-13 lh-16">{`${CurrencyType(
               true
             )} amount (then)`}</span>
@@ -3978,32 +3976,31 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="method"
           >
-            {this.state.isMobileDevice ? null : (
-              <CustomDropdown
-                isIcon
-                filtername={
-                  <div
-                    className="filter-image-container"
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Image className="filter-image" src={FilterIcon} />
-                  </div>
-                }
-                options={this.props.intelligenceState.methodFilter}
-                action={SEARCH_BY_METHOD_IN}
-                handleClick={(key, value) =>
-                  this.addTransactionHistoryCondition(key, value)
-                }
-                searchIsUsed={this.methodSearchIsUsed}
-                isCaptialised
-                selectedTokens={this.state.selectedMethods}
-                transactionHistorySavedData
-              />
-            )}
+            <CustomDropdown
+              isIcon
+              filtername={
+                <div
+                  className="filter-image-container"
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image className="filter-image" src={FilterIcon} />
+                </div>
+              }
+              options={this.props.intelligenceState.methodFilter}
+              action={SEARCH_BY_METHOD_IN}
+              handleClick={(key, value) =>
+                this.addTransactionHistoryCondition(key, value)
+              }
+              searchIsUsed={this.methodSearchIsUsed}
+              isCaptialised
+              selectedTokens={this.state.selectedMethods}
+              transactionHistorySavedData
+            />
+
             <span className="inter-display-medium f-s-13 lh-16">Method</span>
             <Image
               onClick={() => this.handleTableSort("method")}
@@ -4053,31 +4050,29 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col  table-header-font"
             id="network"
           >
-            {this.state.isMobileDevice ? null : (
-              <CustomDropdown
-                isIcon
-                filtername={
-                  <div
-                    className="filter-image-container"
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Image className="table-filter-icon" src={FilterIcon} />
-                  </div>
-                }
-                options={this.props.OnboardingState.coinsList}
-                action={SEARCH_BY_CHAIN_IN}
-                handleClick={this.handleTransHistoryFunction}
-                searchIsUsed={this.networkSearchIsUsed}
-                isCaptialised
-                isGreyChain
-                selectedTokens={this.state.selectedNetworks}
-                transactionHistorySavedData
-              />
-            )}
+            <CustomDropdown
+              isIcon
+              filtername={
+                <div
+                  className="filter-image-container"
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image className="table-filter-icon" src={FilterIcon} />
+                </div>
+              }
+              options={this.props.OnboardingState.coinsList}
+              action={SEARCH_BY_CHAIN_IN}
+              handleClick={this.handleTransHistoryFunction}
+              searchIsUsed={this.networkSearchIsUsed}
+              isCaptialised
+              isGreyChain
+              selectedTokens={this.state.selectedNetworks}
+              transactionHistorySavedData
+            />
             <span className="inter-display-medium f-s-13 lh-16">Network</span>
             {/* <Image
               src={sortByIcon}
