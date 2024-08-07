@@ -280,6 +280,7 @@ export const getAvgCostBasis = (ctx, passedData, isDefault = true) => {
             totalCostBasis = totalCostBasis + costBasis;
             totalCurrentValue = totalCurrentValue + current_price;
             AssetsList.push({
+              AssetInfo: item.asset,
               chain: item?.chain
                 ? {
                     name: item?.chain?.name,

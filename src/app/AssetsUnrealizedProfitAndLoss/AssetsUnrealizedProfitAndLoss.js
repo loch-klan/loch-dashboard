@@ -32,6 +32,7 @@ import {
   SortByCurrentValue,
   SortByGainAmount,
   SortByGainLoss,
+  TokensPageAssetFilter,
   TransactionHistoryAssetFilter,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
@@ -89,7 +90,6 @@ import ExitOverlay from "../common/ExitOverlay.js";
 import PaywallModal from "../common/PaywallModal.js";
 import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
-import { getFilters } from "../intelligence/Api.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AssetUnrealizedProfitAndLossMobile from "./AssetUnrealizedProfitAndLossMobile.js";
 
@@ -97,6 +97,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      localAssetFilter: [],
       intelligenceStateLocal: {},
       selectedAssets: [],
       isMobile: mobileCheck(),
@@ -240,8 +241,22 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       intelligenceStateLocal: passedData,
     });
   };
+  setAssetFilter = () => {
+    const tempAssetFilter = [{ value: "allAssets", label: "All tokens" }];
+
+    this.props.intelligenceState?.Average_cost_basis.forEach((element) => {
+      let tempObj = {
+        code: element.AssetInfo?.code ? element.AssetInfo.code : "",
+        label: element.AssetInfo?.name ? element.AssetInfo.name : "",
+        value: element.AssetInfo?.id ? element.AssetInfo.id : "",
+      };
+      tempAssetFilter.push(tempObj);
+    });
+    this.setState({
+      localAssetFilter: tempAssetFilter,
+    });
+  };
   componentDidMount() {
-    this.props.getFilters();
     this.checkPremium();
     // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
     // if (userDetails && userDetails.email) {
@@ -262,6 +277,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     // }
     scrollToTop();
     if (
+      this.props.intelligenceState?.Average_cost_basis &&
+      this.props.intelligenceState?.Average_cost_basis.length > 0
+    ) {
+      this.setAssetFilter();
+    }
+    if (
       !this.props.commonState.assetsPage ||
       !(
         this.props.intelligenceState?.Average_cost_basis &&
@@ -269,7 +290,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       )
     ) {
       this.props.getAllCoins();
-
       this.callApi();
       this.props.GetAllPlan();
       this.props.getUser();
@@ -321,6 +341,13 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.intelligenceState?.Average_cost_basis !==
+        this.props.intelligenceState?.Average_cost_basis &&
+      this.props.intelligenceState?.Average_cost_basis.length > 0
+    ) {
+      this.setAssetFilter();
+    }
     if (prevState.condition !== this.state.condition) {
       this.callApi();
     }
@@ -354,7 +381,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       this.setState({
         selectedAssets: [],
       });
-      this.props.getFilters();
       this.callApi();
       this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
@@ -678,7 +704,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         }),
       ]).then(() => {
         const tempIsAssetUsed = this.state.isAssetSearchUsed;
-        TransactionHistoryAssetFilter({
+        TokensPageAssetFilter({
           session_id: getCurrentUser().id,
           email_address: getCurrentUser().email,
           asset_filter: value === "allAssets" ? "All tokens" : assets,
@@ -764,7 +790,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
                 </div>
               }
               isIcon
-              options={this.props.intelligenceState.assetFilter}
+              options={this.state.localAssetFilter}
               action={SEARCH_BY_ASSETS_IN}
               handleClick={(key, value) => this.addCondition(key, value)}
               searchIsUsed={this.assetSearchIsUsed}
@@ -1614,6 +1640,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               >
                 <div style={{ position: "relative" }}>
                   <TransactionTable
+                    showHeaderOnEmpty
                     isPremiumUser={this.state.isPremiumUser}
                     shouldBlurElements={!this.state.isPremiumUser}
                     showBlurredItem={this.showBlurredItem}
@@ -1681,7 +1708,6 @@ const mapDispatchToProps = {
   getAllWalletListApi,
   getUser,
   GetAllPlan,
-  getFilters,
 };
 
 export default connect(

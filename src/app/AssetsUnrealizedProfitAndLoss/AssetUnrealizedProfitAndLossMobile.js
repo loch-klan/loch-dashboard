@@ -69,6 +69,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
             }`}
           >
             <TransactionTable
+              showHeaderOnEmpty
               noSubtitleBottomPadding
               disableOnLoading
               isMiniversion
