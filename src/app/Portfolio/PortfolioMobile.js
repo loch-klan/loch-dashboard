@@ -1184,6 +1184,8 @@ class PortfolioMobile extends BaseReactComponent {
                     className="mobile-portfolio-blocks-content-price-gauge mobile-portfolio-blocks-content-with-padding"
                   >
                     <InflowOutflowPortfolioHome
+                      isFromHomePage
+                      hidePriceDropDown={this.props.hidePriceDropDown}
                       isHome
                       openChartPage={this.props.goToPriceGaugePage}
                       hideExplainer
