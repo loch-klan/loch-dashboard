@@ -15,6 +15,7 @@ import Loading from "../common/Loading";
 
 import { Image } from "react-bootstrap";
 import {
+  HomePriceChartFilter,
   PriceChartFilter,
   PriceChartMax,
   PriceChartMonth,
@@ -312,12 +313,21 @@ class InflowOutflowChartSliderContainer extends BaseReactComponent {
     if (tempIndex !== -1) {
       tempName = this.state.assetList[tempIndex].asset?.name;
     }
-    PriceChartFilter({
-      session_id: getCurrentUser().id,
-      email_address: getCurrentUser().email,
-      filter_clicked: tempName,
-      isSearchUsed: tempIsSearchUsed,
-    });
+    if (this.props.isFromHomePage) {
+      HomePriceChartFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        filter_clicked: tempName,
+        isSearchUsed: tempIsSearchUsed,
+      });
+    } else {
+      PriceChartFilter({
+        session_id: getCurrentUser().id,
+        email_address: getCurrentUser().email,
+        filter_clicked: tempName,
+        isSearchUsed: tempIsSearchUsed,
+      });
+    }
     this.props.onAssetSelect(opt);
     this.setState({ isChainSearchUsed: false });
   };
