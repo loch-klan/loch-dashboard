@@ -763,9 +763,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "PortfolioPercentage") {
-            const tempDataHolder = Number(
-              noExponents(rowData.weight.toFixed(2))
-            );
+            let tempDataHolder = 0;
+            if (rowData.weight) {
+              tempDataHolder = Number(noExponents(rowData.weight.toFixed(2)));
+            }
             return (
               <div
                 onMouseEnter={() => {
@@ -1223,9 +1224,10 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "GainLoss") {
-            const tempDataHolder = Number(
-              noExponents(rowData.GainLoss.toFixed(2))
-            );
+            let tempDataHolder = 0;
+            if (rowData.GainLoss) {
+              tempDataHolder = Number(noExponents(rowData.GainLoss.toFixed(2)));
+            }
             return (
               <div
                 onMouseEnter={() => {
