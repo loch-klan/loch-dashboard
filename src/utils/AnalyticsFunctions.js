@@ -2146,6 +2146,22 @@ export const IntlAssetValueFilter = ({
   //console.log("Intelligence:asset value chart crypto asset filter");
 };
 
+export const HomePriceChartFilter = ({
+  session_id,
+  email_address,
+  filter_clicked,
+  isSearchUsed,
+}) => {
+  const event_name = "Home Page: price chart filter";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "filter clicked": filter_clicked,
+    "search used": isSearchUsed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+  //console.log("Intelligence:asset value chart crypto asset filter");
+};
 export const PriceChartFilter = ({
   session_id,
   email_address,
