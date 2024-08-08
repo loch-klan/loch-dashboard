@@ -3748,7 +3748,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="asset"
           >
-            <CustomDropdown
+            {/* <CustomDropdown
               filtername={
                 <div
                   className="filter-image-container"
@@ -3770,7 +3770,7 @@ class Portfolio extends BaseReactComponent {
               searchIsUsed={this.assetSearchIsUsed}
               selectedTokens={this.state.selectedAssets}
               transactionHistorySavedData
-            />
+            /> */}
 
             <span className="inter-display-medium f-s-13 lh-16">Token</span>
             <Image
@@ -3862,7 +3862,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="usdValueThen"
           >
-            <CustomMinMaxDropdown
+            {/* <CustomMinMaxDropdown
               filtername={
                 <div
                   className="filter-image-container"
@@ -3881,7 +3881,7 @@ class Portfolio extends BaseReactComponent {
               }
               minAmount={this.state.minTransHistoryAmount}
               maxAmount={this.state.maxTransHistoryAmount}
-            />
+            /> */}
 
             <span className="inter-display-medium f-s-13 lh-16">{`${CurrencyType(
               true
@@ -3976,7 +3976,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="method"
           >
-            <CustomDropdown
+            {/* <CustomDropdown
               isIcon
               filtername={
                 <div
@@ -3999,7 +3999,7 @@ class Portfolio extends BaseReactComponent {
               isCaptialised
               selectedTokens={this.state.selectedMethods}
               transactionHistorySavedData
-            />
+            /> */}
 
             <span className="inter-display-medium f-s-13 lh-16">Method</span>
             <Image
@@ -4050,7 +4050,7 @@ class Portfolio extends BaseReactComponent {
             className="cp history-table-header-col  table-header-font"
             id="network"
           >
-            <CustomDropdown
+            {/* <CustomDropdown
               isIcon
               filtername={
                 <div
@@ -4072,7 +4072,7 @@ class Portfolio extends BaseReactComponent {
               isGreyChain
               selectedTokens={this.state.selectedNetworks}
               transactionHistorySavedData
-            />
+            /> */}
             <span className="inter-display-medium f-s-13 lh-16">Network</span>
             {/* <Image
               src={sortByIcon}
