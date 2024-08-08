@@ -33,27 +33,7 @@
             }
           }
         }
-        .seeMoreBtn {
-          margin-left: 1rem;
-          display: flex;
-          align-items: center;
-          color: var(--seeMoreColor);
-          font-size: 13px;
-          font-weight: 500;
-          // transition-duration: 300ms;
-          .seeMoreBtnIcon {
-            // transition-duration: 300ms;
-            filter: brightness(0.5);
-            height: 9px;
-            margin-left: 0.5rem;
-          }
-          &:hover {
-            color: var(--primaryTextColor);
-            .seeMoreBtnIcon {
-              filter: var(--hoverBrightnessValue);
-            }
-          }
-        }
+
         .ioPriceContainer {
           padding-left: 5rem;
           .ioPrice {
@@ -61,6 +41,28 @@
           }
           .ioDate {
             font-size: 1rem;
+          }
+        }
+      }
+      .seeMoreBtn {
+        margin-left: 1rem;
+        display: flex;
+        align-items: center;
+        color: var(--seeMoreColor);
+        font-size: 13px;
+        font-weight: 500;
+        white-space: nowrap;
+        // transition-duration: 300ms;
+        .seeMoreBtnIcon {
+          // transition-duration: 300ms;
+          filter: brightness(0.5);
+          height: 9px;
+          margin-left: 0.5rem;
+        }
+        &:hover {
+          color: var(--primaryTextColor);
+          .seeMoreBtnIcon {
+            filter: var(--hoverBrightnessValue);
           }
         }
       }
