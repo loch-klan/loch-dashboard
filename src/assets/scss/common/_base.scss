@@ -3579,6 +3579,7 @@ input {
                 height: 100%;
                 width: 100%;
                 display: flex;
+                overflow: hidden;
                 align-items: center;
                 justify-content: center;
                 background-color: var(--cardBackgroud);

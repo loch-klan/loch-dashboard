@@ -8,6 +8,7 @@ import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
 import CoinChip from "../wallet/CoinChip.js";
+import "./_assetUnrealizedProfitAndLoss.scss";
 
 import {
   AssetsPageTimeSpentMP,
@@ -55,6 +56,7 @@ import {
   ArrowUpRightSmallIcon,
   ExportIconWhite,
   FilterIcon,
+  MinusCircleIcon,
 } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
 import {
@@ -243,7 +245,6 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   };
   setAssetFilter = () => {
     const tempAssetFilter = [{ value: "allAssets", label: "All tokens" }];
-
     this.props.intelligenceState?.Average_cost_basis.forEach((element) => {
       let tempObj = {
         code: element.AssetInfo?.code ? element.AssetInfo.code : "",
@@ -323,8 +324,11 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     let tempList = [];
     if (sortedList) {
       tempList = sortedList;
-    } else {
-      tempList = [...this.state.Average_cost_basis_local];
+    } else if (
+      this.state.intelligenceStateLocal &&
+      this.state.intelligenceStateLocal?.Average_cost_basis
+    ) {
+      tempList = [...this.state.intelligenceStateLocal.Average_cost_basis];
     }
 
     if (tempList.length > 0 && this.state.showDust) {
@@ -623,7 +627,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       },
       () => {
         this.trimAverageCostBasisLocally(
-          this.props.intelligenceState?.Average_cost_basis
+          this.state.intelligenceStateLocal?.Average_cost_basis
         );
         CostHideDust({
           session_id: getCurrentUser().id,
@@ -686,6 +690,39 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   };
   assetSearchIsUsed = () => {
     this.setState({ isAssetSearchUsed: true });
+  };
+  removeThisAssetFromTable = (passedAsset) => {
+    let tempCondArr = [];
+    let removeAssetId = -1;
+    if (passedAsset && passedAsset.AssetInfo && passedAsset.AssetInfo.id) {
+      removeAssetId = passedAsset.AssetInfo.id;
+    }
+    if (removeAssetId === -1) {
+      return;
+    }
+    if (this.state.selectedAssets.length === 0) {
+      this.state.localAssetFilter.forEach((curLocalAssetFilter) => {
+        if (
+          curLocalAssetFilter.value &&
+          curLocalAssetFilter.value !== removeAssetId &&
+          curLocalAssetFilter.value !== "allAssets"
+        ) {
+          tempCondArr.push(curLocalAssetFilter.value);
+        }
+      });
+    } else {
+      this.state.localAssetFilter.forEach((curLocalAssetFilter) => {
+        if (
+          curLocalAssetFilter.value &&
+          curLocalAssetFilter.value !== removeAssetId &&
+          this.state.selectedAssets.includes(curLocalAssetFilter.value)
+        ) {
+          tempCondArr.push(curLocalAssetFilter.value);
+        }
+      });
+    }
+
+    this.addCondition("SEARCH_BY_ASSETS_IN", tempCondArr);
   };
   addCondition = (key, value) => {
     if (key === "SEARCH_BY_ASSETS_IN") {
@@ -811,54 +848,68 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
+            const removeThisAssetFromTablePass = () => {
+              this.removeThisAssetFromTable(rowData);
+            };
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  (rowData.AssetCode ? rowData.AssetCode : "") +
-                  " [" +
-                  rowData?.chain?.name +
-                  "]"
-                }
-              >
-                <div
-                  onMouseEnter={() => {
-                    CostAssetHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      asset_hover: rowData.AssetCode,
-                    });
-                  }}
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  className="dotDotText"
+              <div className="asset-undrealized-asset-col">
+                <Image
+                  onClick={removeThisAssetFromTablePass}
+                  className={`asset-undrealized-asset-col-minus ${
+                    this.state.isMobile
+                      ? "asset-undrealized-asset-col-minus-mobile"
+                      : ""
+                  }`}
+                  src={MinusCircleIcon}
+                />
+                <CustomOverlay
+                  position="top"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={
+                    (rowData.AssetCode ? rowData.AssetCode : "") +
+                    " [" +
+                    rowData?.chain?.name +
+                    "]"
+                  }
                 >
-                  <div>
-                    <CoinChip
-                      coin_img_src={rowData.Asset}
-                      coin_code={rowData.AssetCode}
-                      chain={rowData?.chain}
-                      hideText={true}
-                    />
-                  </div>
-                  {rowData.Asset ? (
-                    <div
-                      className="dotDotText"
-                      style={{
-                        marginLeft: "1rem",
-                      }}
-                    >
-                      {rowData.AssetCode ? rowData.AssetCode : ""}
+                  <div
+                    onMouseEnter={() => {
+                      CostAssetHover({
+                        session_id: getCurrentUser().id,
+                        email_address: getCurrentUser().email,
+                        asset_hover: rowData.AssetCode,
+                      });
+                    }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    className="dotDotText asset-undrealized-asset-col-content"
+                  >
+                    <div>
+                      <CoinChip
+                        coin_img_src={rowData.Asset}
+                        coin_code={rowData.AssetCode}
+                        chain={rowData?.chain}
+                        hideText={true}
+                      />
                     </div>
-                  ) : null}
-                </div>
-              </CustomOverlay>
+                    {rowData.Asset ? (
+                      <div
+                        className="dotDotText"
+                        style={{
+                          marginLeft: "1rem",
+                        }}
+                      >
+                        {rowData.AssetCode ? rowData.AssetCode : ""}
+                      </div>
+                    ) : null}
+                  </div>
+                </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1556,7 +1607,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             </div>
           </div>
         </div>
-        <div className="cost-page-section">
+        <div className="asset-undrealized-page cost-page-section">
           {this.state.connectModal ? (
             <ConnectModal
               show={this.state.connectModal}

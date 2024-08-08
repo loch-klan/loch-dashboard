@@ -12,7 +12,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
 
   render() {
     return (
-      <div className="assets-expanded-mobile">
+      <div className="asset-undrealized-page assets-expanded-mobile">
         <div
           style={{
             marginBottom: "0rem",
@@ -83,7 +83,7 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
               fakeWatermark
               xAxisScrollable
               yAxisScrollable
-              xAxisScrollableColumnWidth={3.5}
+              xAxisScrollableColumnWidth={2.5}
             />
           </div>
         </div>
