@@ -852,63 +852,75 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               this.removeThisAssetFromTable(rowData);
             };
             return (
-              <div className="asset-undrealized-asset-col">
-                <Image
-                  onClick={removeThisAssetFromTablePass}
-                  className={`asset-undrealized-asset-col-minus ${
-                    this.state.isMobile
-                      ? "asset-undrealized-asset-col-minus-mobile"
-                      : ""
-                  }`}
-                  src={MinusCircleIcon}
-                />
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    (rowData.AssetCode ? rowData.AssetCode : "") +
-                    " [" +
-                    rowData?.chain?.name +
-                    "]"
-                  }
-                >
-                  <div
-                    onMouseEnter={() => {
-                      CostAssetHover({
-                        session_id: getCurrentUser().id,
-                        email_address: getCurrentUser().email,
-                        asset_hover: rowData.AssetCode,
-                      });
-                    }}
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                    className="dotDotText asset-undrealized-asset-col-content"
+              <div
+                className={`asset-undrealized-asset-col ${
+                  this.state.isMobile
+                    ? "asset-undrealized-asset-col-mobile"
+                    : ""
+                }`}
+              >
+                <div className="asset-undrealized-asset-col-container">
+                  <Image
+                    onClick={removeThisAssetFromTablePass}
+                    className={`asset-undrealized-asset-col-minus ${
+                      this.state.isMobile
+                        ? "asset-undrealized-asset-col-minus-mobile"
+                        : ""
+                    }`}
+                    src={MinusCircleIcon}
+                  />
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      (rowData.AssetCode ? rowData.AssetCode : "") +
+                      " [" +
+                      rowData?.chain?.name +
+                      "]"
+                    }
                   >
-                    <div>
-                      <CoinChip
-                        coin_img_src={rowData.Asset}
-                        coin_code={rowData.AssetCode}
-                        chain={rowData?.chain}
-                        hideText={true}
-                      />
-                    </div>
-                    {rowData.Asset ? (
-                      <div
-                        className="dotDotText"
-                        style={{
-                          marginLeft: "1rem",
-                        }}
-                      >
-                        {rowData.AssetCode ? rowData.AssetCode : ""}
+                    <div
+                      onMouseEnter={() => {
+                        CostAssetHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          asset_hover: rowData.AssetCode,
+                        });
+                      }}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      className={`dotDotText asset-undrealized-asset-col-content ${
+                        this.state.isMobile
+                          ? "asset-undrealized-asset-col-content-mobile"
+                          : ""
+                      }`}
+                    >
+                      <div>
+                        <CoinChip
+                          coin_img_src={rowData.Asset}
+                          coin_code={rowData.AssetCode}
+                          chain={rowData?.chain}
+                          hideText={true}
+                        />
                       </div>
-                    ) : null}
-                  </div>
-                </CustomOverlay>
+                      {rowData.Asset ? (
+                        <div
+                          className="dotDotText"
+                          style={{
+                            marginLeft: "1rem",
+                          }}
+                        >
+                          {rowData.AssetCode ? rowData.AssetCode : ""}
+                        </div>
+                      ) : null}
+                    </div>
+                  </CustomOverlay>
+                </div>
               </div>
             );
           }
