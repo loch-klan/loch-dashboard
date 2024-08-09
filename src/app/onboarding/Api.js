@@ -275,6 +275,25 @@ export const getAllCoins = (handleShareLinkUser = null) => {
           platform_id: "linea",
           symbol: "https://media.loch.one/loch-linea.svg",
         },
+        {
+          active: true,
+          code: "BASE",
+          color: "#0052ff",
+          created_on: {
+            $numberLong: "1693227246539",
+          },
+          default_asset_code: "ETH",
+          default_asset_id: "ethereum",
+          is_evm: true,
+          modified_on: {
+            $numberLong: "1693227246539",
+          },
+          name: "Base",
+          parent: "63887912cc085bc89fb65646",
+          platform_code: "BASE",
+          platform_id: "base",
+          symbol: "https://media.loch.one/loch-base.svg",
+        },
       ],
     });
     handleShareLinkUser && handleShareLinkUser();
@@ -568,6 +587,25 @@ export const getAllParentChains = () => {
           platform_code: "LINEA",
           platform_id: "linea",
           symbol: "https://media.loch.one/loch-linea.svg",
+        },
+        {
+          active: true,
+          code: "BASE",
+          color: "#0052ff",
+          created_on: {
+            $numberLong: "1693227246539",
+          },
+          default_asset_code: "ETH",
+          default_asset_id: "ethereum",
+          is_evm: true,
+          modified_on: {
+            $numberLong: "1693227246539",
+          },
+          name: "Base",
+          parent: "63887912cc085bc89fb65646",
+          platform_code: "BASE",
+          platform_id: "base",
+          symbol: "https://media.loch.one/loch-base.svg",
         },
       ],
     });
