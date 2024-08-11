@@ -92,6 +92,7 @@ import {
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
+  HomeTokensPageAssetFilter,
   HomeTransactionHistoryAssetFilter,
   HomeTransactionHistoryNetworkFilter,
   HomeTransactionHistoryYearFilter,
@@ -532,12 +533,12 @@ class Portfolio extends BaseReactComponent {
         }),
       ]).then(() => {
         const tempIsAssetUsed = this.state.isAssetSearchUsed;
-        // TokensPageAssetFilter({
-        //   session_id: getCurrentUser().id,
-        //   email_address: getCurrentUser().email,
-        //   asset_filter: value === "allAssets" ? "All tokens" : assets,
-        //   isSearchUsed: tempIsAssetUsed,
-        // });
+        HomeTokensPageAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
         this.updateTimer();
         this.setState({ isAssetSearchUsed: false });
         if (value === "allAssets") {
