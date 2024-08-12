@@ -3579,6 +3579,7 @@ input {
                 height: 100%;
                 width: 100%;
                 display: flex;
+                overflow: hidden;
                 align-items: center;
                 justify-content: center;
                 background-color: var(--cardBackgroud);
@@ -4053,4 +4054,58 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .modal-content {
   border: none;
+}
+.move-dropdown-to-right-2 {
+  .dropdown-content {
+    transform: translateX(2rem);
+  }
+}
+.minMobileTableHeight50vh {
+  .table-wrapper {
+    min-height: calc(100vh - 50rem);
+  }
+}
+.asset-undrealized-asset-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding-left: 18px;
+  width: 100%;
+  .asset-undrealized-asset-col-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .asset-undrealized-asset-col-minus {
+    opacity: 0;
+    position: absolute;
+    left: -20px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .asset-undrealized-asset-col-minus-mobile {
+    display: none;
+  }
+  .asset-undrealized-asset-col-content {
+    flex: 1;
+    padding-right: 18px;
+  }
+  .asset-undrealized-asset-col-content-mobile {
+    padding-right: 0;
+  }
+  &:hover {
+    .asset-undrealized-asset-col-minus {
+      display: flex;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+.asset-undrealized-asset-col-mobile {
+  padding-left: 0px;
 }

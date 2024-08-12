@@ -8,6 +8,7 @@ import sortByIcon from "../../assets/images/icons/triangle-down.svg";
 import TransactionTable from "../intelligence/TransactionTable.js";
 import { getAllWalletListApi } from "../wallet/Api.js";
 import CoinChip from "../wallet/CoinChip.js";
+import "./_assetUnrealizedProfitAndLoss.scss";
 
 import {
   AssetsPageTimeSpentMP,
@@ -32,6 +33,9 @@ import {
   SortByCurrentValue,
   SortByGainAmount,
   SortByGainLoss,
+  TokensPageAssetFilter,
+  TokensPageAssetRemove,
+  TransactionHistoryAssetFilter,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
 
@@ -52,9 +56,15 @@ import {
   ArrowDownLeftSmallIcon,
   ArrowUpRightSmallIcon,
   ExportIconWhite,
+  FilterIcon,
+  MinusCircleIcon,
 } from "../../assets/images/icons/index.js";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import { BASE_URL_S3 } from "../../utils/Constant.js";
+import {
+  BASE_URL_S3,
+  SEARCH_BY_ASSETS_IN,
+  SEARCH_BY_TEXT,
+} from "../../utils/Constant.js";
 import {
   CurrencyType,
   amountFormat,
@@ -70,6 +80,8 @@ import {
   scrollToTop,
 } from "../../utils/ReusableFunctions.js";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay.js";
+import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
+import CustomDropdown from "../../utils/form/CustomDropdown.js";
 import WelcomeCard from "../Portfolio/WelcomeCard.js";
 import {
   GetAllPlan,
@@ -78,17 +90,22 @@ import {
   updateWalletListFlag,
 } from "../common/Api.js";
 import ExitOverlay from "../common/ExitOverlay.js";
+import PaywallModal from "../common/PaywallModal.js";
 import Footer from "../common/footer.js";
 import TopWalletAddressList from "../header/TopWalletAddressList.js";
 import MobileLayout from "../layout/MobileLayout.js";
 import AssetUnrealizedProfitAndLossMobile from "./AssetUnrealizedProfitAndLossMobile.js";
-import PaywallModal from "../common/PaywallModal.js";
-import CustomOverlayUgradeToPremium from "../../utils/commonComponent/CustomOverlayUgradeToPremium.js";
 
 class AssetsUnrealizedProfitAndLoss extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      localAssetFilter: [],
+      intelligenceStateLocal: {},
+      selectedAssets: [],
+      isMobile: mobileCheck(),
+      condition: [],
+      isAssetSearchUsed: false,
       isPremiumUser: false,
       isLochPaymentModal: false,
       Average_cost_basis_local: [],
@@ -196,6 +213,51 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       });
     }
   };
+  callApi = () => {
+    let isDefault = true;
+    this.setState({
+      AvgCostLoading: true,
+    });
+    let tempFilterAssetCondition = [];
+    this.state.condition.forEach((tempEle) => {
+      if (
+        tempEle.key === "SEARCH_BY_ASSETS_IN" &&
+        tempEle.value &&
+        tempEle.value.length > 0
+      ) {
+        tempFilterAssetCondition = tempEle.value.slice();
+      }
+    });
+    if (tempFilterAssetCondition.length > 0) {
+      isDefault = false;
+    }
+    let tempData = new URLSearchParams();
+    // tempData.append("conditions", JSON.stringify(tempCond));
+    tempData.append(
+      "filtered_assets",
+      JSON.stringify(tempFilterAssetCondition)
+    );
+    this.props.getAvgCostBasis(this, tempData, isDefault);
+  };
+  setLocalAssetData = (passedData) => {
+    this.setState({
+      intelligenceStateLocal: passedData,
+    });
+  };
+  setAssetFilter = () => {
+    const tempAssetFilter = [{ value: "allAssets", label: "All tokens" }];
+    this.props.intelligenceState?.Average_cost_basis.forEach((element) => {
+      let tempObj = {
+        code: element.AssetInfo?.code ? element.AssetInfo.code : "",
+        label: element.AssetInfo?.name ? element.AssetInfo.name : "",
+        value: element.AssetInfo?.id ? element.AssetInfo.id : "",
+      };
+      tempAssetFilter.push(tempObj);
+    });
+    this.setState({
+      localAssetFilter: tempAssetFilter,
+    });
+  };
   componentDidMount() {
     this.checkPremium();
     // const userDetails = JSON.parse(window.localStorage.getItem("lochUser"));
@@ -217,6 +279,12 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     // }
     scrollToTop();
     if (
+      this.props.intelligenceState?.Average_cost_basis &&
+      this.props.intelligenceState?.Average_cost_basis.length > 0
+    ) {
+      this.setAssetFilter();
+    }
+    if (
       !this.props.commonState.assetsPage ||
       !(
         this.props.intelligenceState?.Average_cost_basis &&
@@ -224,8 +292,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       )
     ) {
       this.props.getAllCoins();
-
-      this.props.getAvgCostBasis(this);
+      this.callApi();
       this.props.GetAllPlan();
       this.props.getUser();
     } else {
@@ -258,8 +325,11 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     let tempList = [];
     if (sortedList) {
       tempList = sortedList;
-    } else {
-      tempList = [...this.state.Average_cost_basis_local];
+    } else if (
+      this.state.intelligenceStateLocal &&
+      this.state.intelligenceStateLocal?.Average_cost_basis
+    ) {
+      tempList = [...this.state.intelligenceStateLocal.Average_cost_basis];
     }
 
     if (tempList.length > 0 && this.state.showDust) {
@@ -277,18 +347,28 @@ class AssetsUnrealizedProfitAndLoss extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevProps.intelligenceState.Average_cost_basis !==
-      this.props.intelligenceState.Average_cost_basis
+      prevProps.intelligenceState?.Average_cost_basis !==
+        this.props.intelligenceState?.Average_cost_basis &&
+      this.props.intelligenceState?.Average_cost_basis.length > 0
+    ) {
+      this.setAssetFilter();
+    }
+    if (prevState.condition !== this.state.condition) {
+      this.callApi();
+    }
+    if (
+      prevState.intelligenceStateLocal.Average_cost_basis !==
+      this.state.intelligenceStateLocal.Average_cost_basis
     ) {
       this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
       if (this.state.showDust) {
         this.trimAverageCostBasisLocally(
-          this.props.intelligenceState.Average_cost_basis
+          this.state.intelligenceStateLocal.Average_cost_basis
         );
       } else {
         this.updateAverageCostBasisLocally(
-          this.props.intelligenceState.Average_cost_basis
+          this.state.intelligenceStateLocal.Average_cost_basis
         );
       }
       this.combinedResults();
@@ -297,15 +377,16 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     if (prevState.apiResponse !== this.state.apiResponse) {
       this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
-
       this.props.getAllCoins();
-
-      this.props.getAvgCostBasis(this);
       this.setState({
         apiResponse: false,
       });
     }
     if (!this.props.commonState.assetsPage) {
+      this.setState({
+        selectedAssets: [],
+      });
+      this.callApi();
       this.checkPremium();
       this.props.updateWalletListFlag("assetsPage", true);
       let tempData = new URLSearchParams();
@@ -321,17 +402,18 @@ class AssetsUnrealizedProfitAndLoss extends Component {
     let tempcombinedCurrentValue = 0;
     let tempcombinedUnrealizedGains = 0;
     let tempcombinedReturn = 0;
-    if (this.props.intelligenceState?.net_return) {
-      tempcombinedReturn = this.props.intelligenceState?.net_return;
+    if (this.state.intelligenceStateLocal?.net_return) {
+      tempcombinedReturn = this.state.intelligenceStateLocal?.net_return;
     }
-    if (this.props.intelligenceState?.total_bal) {
-      tempcombinedCurrentValue = this.props.intelligenceState?.total_bal;
+    if (this.state.intelligenceStateLocal?.total_bal) {
+      tempcombinedCurrentValue = this.state.intelligenceStateLocal?.total_bal;
     }
-    if (this.props.intelligenceState?.total_cost) {
-      tempcombinedCostBasis = this.props.intelligenceState?.total_cost;
+    if (this.state.intelligenceStateLocal?.total_cost) {
+      tempcombinedCostBasis = this.state.intelligenceStateLocal?.total_cost;
     }
-    if (this.props.intelligenceState?.total_gain) {
-      tempcombinedUnrealizedGains = this.props.intelligenceState?.total_gain;
+    if (this.state.intelligenceStateLocal?.total_gain) {
+      tempcombinedUnrealizedGains =
+        this.state.intelligenceStateLocal?.total_gain;
     }
 
     this.setState({
@@ -546,7 +628,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       },
       () => {
         this.trimAverageCostBasisLocally(
-          this.props.intelligenceState?.Average_cost_basis
+          this.state.intelligenceStateLocal?.Average_cost_basis
         );
         CostHideDust({
           session_id: getCurrentUser().id,
@@ -607,15 +689,160 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       isLochPaymentModal: false,
     });
   };
+  assetSearchIsUsed = () => {
+    this.setState({ isAssetSearchUsed: true });
+  };
+  removeThisAssetFromTable = (passedAsset) => {
+    let tempCondArr = [];
+    let removeAssetId = -1;
+    let removeAssetName = "";
+    if (passedAsset && passedAsset.AssetInfo && passedAsset.AssetInfo.id) {
+      removeAssetId = passedAsset.AssetInfo.id;
+      removeAssetName = passedAsset.AssetInfo.name;
+    }
+    if (removeAssetId === -1) {
+      return;
+    }
+    TokensPageAssetRemove({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      asset_removed: removeAssetName,
+    });
+    if (this.state.selectedAssets.length === 0) {
+      this.state.localAssetFilter.forEach((curLocalAssetFilter) => {
+        if (
+          curLocalAssetFilter.value &&
+          curLocalAssetFilter.value !== removeAssetId &&
+          curLocalAssetFilter.value !== "allAssets"
+        ) {
+          tempCondArr.push(curLocalAssetFilter.value);
+        }
+      });
+    } else {
+      this.state.localAssetFilter.forEach((curLocalAssetFilter) => {
+        if (
+          curLocalAssetFilter.value &&
+          curLocalAssetFilter.value !== removeAssetId &&
+          this.state.selectedAssets.includes(curLocalAssetFilter.value)
+        ) {
+          tempCondArr.push(curLocalAssetFilter.value);
+        }
+      });
+    }
+
+    this.addCondition("SEARCH_BY_ASSETS_IN", tempCondArr);
+  };
+  addCondition = (key, value) => {
+    if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        TokensPageAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false });
+        if (value === "allAssets") {
+          this.setState({
+            selectedAssets: [],
+          });
+        } else {
+          this.setState({
+            selectedAssets: value,
+          });
+        }
+      });
+    }
+
+    let index = this.state.condition.findIndex((e) => e.key === key);
+
+    let arr = [...this.state.condition];
+    let search_index = this.state.condition.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear" &&
+      value !== "allNetworks" &&
+      value !== "allAmounts"
+    ) {
+      arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear" ||
+      value === "allNetworks" ||
+      value === "allAmounts"
+    ) {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    this.setState({
+      condition: arr,
+    });
+  };
   render() {
     const columnData = [
       {
         labelName: (
           <div
-            className="cp history-table-header-col table-header-font"
-            id="Asset"
+            className={`cp history-table-header-col table-header-font ${
+              this.state.isMobile ? "move-dropdown-to-right-2" : ""
+            }`}
+            id="asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Token</span>
+            <CustomDropdown
+              filtername={
+                <div
+                  className="filter-image-container"
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image className="filter-image" src={FilterIcon} />
+                </div>
+              }
+              isIcon
+              options={this.state.localAssetFilter}
+              action={SEARCH_BY_ASSETS_IN}
+              handleClick={(key, value) => this.addCondition(key, value)}
+              searchIsUsed={this.assetSearchIsUsed}
+              selectedTokens={this.state.selectedAssets}
+              transactionHistorySavedData
+            />
+            <span className="inter-display-medium f-s-13 lh-16 ">Token</span>
             <Image
               onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
@@ -629,54 +856,80 @@ class AssetsUnrealizedProfitAndLoss extends Component {
         isCell: true,
         cell: (rowData, dataKey) => {
           if (dataKey === "Asset") {
+            const removeThisAssetFromTablePass = () => {
+              this.removeThisAssetFromTable(rowData);
+            };
             return (
-              <CustomOverlay
-                position="top"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  (rowData.AssetCode ? rowData.AssetCode : "") +
-                  " [" +
-                  rowData?.chain?.name +
-                  "]"
-                }
+              <div
+                className={`asset-undrealized-asset-col ${
+                  this.state.isMobile
+                    ? "asset-undrealized-asset-col-mobile"
+                    : ""
+                }`}
               >
-                <div
-                  onMouseEnter={() => {
-                    CostAssetHover({
-                      session_id: getCurrentUser().id,
-                      email_address: getCurrentUser().email,
-                      asset_hover: rowData.AssetCode,
-                    });
-                  }}
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  className="dotDotText"
-                >
-                  <div>
-                    <CoinChip
-                      coin_img_src={rowData.Asset}
-                      coin_code={rowData.AssetCode}
-                      chain={rowData?.chain}
-                      hideText={true}
-                    />
-                  </div>
-                  {rowData.Asset ? (
+                <div className="asset-undrealized-asset-col-container">
+                  <Image
+                    onClick={removeThisAssetFromTablePass}
+                    className={`asset-undrealized-asset-col-minus ${
+                      this.state.isMobile
+                        ? "asset-undrealized-asset-col-minus-mobile"
+                        : ""
+                    }`}
+                    src={MinusCircleIcon}
+                  />
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      (rowData.AssetCode ? rowData.AssetCode : "") +
+                      " [" +
+                      rowData?.chain?.name +
+                      "]"
+                    }
+                  >
                     <div
-                      className="dotDotText"
-                      style={{
-                        marginLeft: "1rem",
+                      onMouseEnter={() => {
+                        CostAssetHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          asset_hover: rowData.AssetCode,
+                        });
                       }}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      className={`dotDotText asset-undrealized-asset-col-content ${
+                        this.state.isMobile
+                          ? "asset-undrealized-asset-col-content-mobile"
+                          : ""
+                      }`}
                     >
-                      {rowData.AssetCode ? rowData.AssetCode : ""}
+                      <div>
+                        <CoinChip
+                          coin_img_src={rowData.Asset}
+                          coin_code={rowData.AssetCode}
+                          chain={rowData?.chain}
+                          hideText={true}
+                        />
+                      </div>
+                      {rowData.Asset ? (
+                        <div
+                          className="dotDotText"
+                          style={{
+                            marginLeft: "1rem",
+                          }}
+                        >
+                          {rowData.AssetCode ? rowData.AssetCode : ""}
+                        </div>
+                      ) : null}
                     </div>
-                  ) : null}
+                  </CustomOverlay>
                 </div>
-              </CustomOverlay>
+              </div>
             );
           }
         },
@@ -1374,7 +1627,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
             </div>
           </div>
         </div>
-        <div className="cost-page-section">
+        <div className="asset-undrealized-page cost-page-section">
           {this.state.connectModal ? (
             <ConnectModal
               show={this.state.connectModal}
@@ -1454,10 +1707,11 @@ class AssetsUnrealizedProfitAndLoss extends Component {
               />
               <div
                 style={{ marginBottom: "2.8rem" }}
-                className="cost-table-section"
+                className="cost-table-section overflow-table-header-visible"
               >
                 <div style={{ position: "relative" }}>
                   <TransactionTable
+                    showHeaderOnEmpty
                     isPremiumUser={this.state.isPremiumUser}
                     shouldBlurElements={!this.state.isPremiumUser}
                     showBlurredItem={this.showBlurredItem}
