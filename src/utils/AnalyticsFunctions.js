@@ -3896,6 +3896,32 @@ export const HomeTokensPageAssetFilter = ({
   sendAmplitudeData(event_name, eventProperties);
   //console.log("Menu:intelligence menu");
 };
+export const HomeTokensPageAssetRemove = ({
+  session_id,
+  email_address,
+  asset_removed,
+}) => {
+  const event_name = "Home: Assets: assets remove from table";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset removed": asset_removed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
+export const TokensPageAssetRemove = ({
+  session_id,
+  email_address,
+  asset_removed,
+}) => {
+  const event_name = "Assets: assets remove from table";
+  const eventProperties = {
+    "session id": session_id,
+    "email address": email_address,
+    "asset removed": asset_removed,
+  };
+  sendAmplitudeData(event_name, eventProperties);
+};
 export const TokensPageAssetFilter = ({
   session_id,
   email_address,

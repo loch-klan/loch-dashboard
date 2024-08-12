@@ -34,6 +34,7 @@ import {
   SortByGainAmount,
   SortByGainLoss,
   TokensPageAssetFilter,
+  TokensPageAssetRemove,
   TransactionHistoryAssetFilter,
 } from "../../utils/AnalyticsFunctions.js";
 import { getCurrentUser } from "../../utils/ManageToken.js";
@@ -694,12 +695,19 @@ class AssetsUnrealizedProfitAndLoss extends Component {
   removeThisAssetFromTable = (passedAsset) => {
     let tempCondArr = [];
     let removeAssetId = -1;
+    let removeAssetName = "";
     if (passedAsset && passedAsset.AssetInfo && passedAsset.AssetInfo.id) {
       removeAssetId = passedAsset.AssetInfo.id;
+      removeAssetName = passedAsset.AssetInfo.name;
     }
     if (removeAssetId === -1) {
       return;
     }
+    TokensPageAssetRemove({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      asset_removed: removeAssetName,
+    });
     if (this.state.selectedAssets.length === 0) {
       this.state.localAssetFilter.forEach((curLocalAssetFilter) => {
         if (

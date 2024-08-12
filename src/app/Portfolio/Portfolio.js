@@ -93,6 +93,7 @@ import {
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
   HomeTokensPageAssetFilter,
+  HomeTokensPageAssetRemove,
   HomeTransactionHistoryAssetFilter,
   HomeTransactionHistoryNetworkFilter,
   HomeTransactionHistoryYearFilter,
@@ -486,12 +487,20 @@ class Portfolio extends BaseReactComponent {
   removeThisAssetFromTable = (passedAsset) => {
     let tempCondArr = [];
     let removeAssetId = -1;
+    let removeAssetName = "";
     if (passedAsset && passedAsset.AssetInfo && passedAsset.AssetInfo.id) {
       removeAssetId = passedAsset.AssetInfo.id;
+      removeAssetName = passedAsset.AssetInfo.name;
     }
     if (removeAssetId === -1) {
       return;
     }
+
+    HomeTokensPageAssetRemove({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      asset_removed: removeAssetName,
+    });
     if (this.state.tokensSelectedAssets.length === 0) {
       this.state.localAssetFilter.forEach((curLocalAssetFilter) => {
         if (
