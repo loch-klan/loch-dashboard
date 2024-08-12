@@ -4766,31 +4766,27 @@ class Portfolio extends BaseReactComponent {
             }`}
             id="asset"
           >
-            {this.state.isMobileDevice ? null : (
-              <CustomDropdown
-                filtername={
-                  <div
-                    className="filter-image-container"
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Image className="filter-image" src={FilterIcon} />
-                  </div>
-                }
-                isIcon
-                options={this.state.localAssetFilter}
-                action={SEARCH_BY_ASSETS_IN}
-                handleClick={(key, value) =>
-                  this.addAssetsCondition(key, value)
-                }
-                searchIsUsed={this.assetSearchIsUsed}
-                selectedTokens={this.state.tokensSelectedAssets}
-                transactionHistorySavedData
-              />
-            )}
+            <CustomDropdown
+              filtername={
+                <div
+                  className="filter-image-container"
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image className="filter-image" src={FilterIcon} />
+                </div>
+              }
+              isIcon
+              options={this.state.localAssetFilter}
+              action={SEARCH_BY_ASSETS_IN}
+              handleClick={(key, value) => this.addAssetsCondition(key, value)}
+              searchIsUsed={this.assetSearchIsUsed}
+              selectedTokens={this.state.tokensSelectedAssets}
+              transactionHistorySavedData
+            />
             <span className="inter-display-medium f-s-13 lh-16 ">Token</span>
             <Image
               onClick={() => this.handleSort(this.state.sortBy[0])}
