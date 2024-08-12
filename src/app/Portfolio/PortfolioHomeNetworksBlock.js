@@ -80,7 +80,7 @@ class PortfolioHomeNetworksBlock extends Component {
             whiteSpace: "nowrap",
             textOverflow: "ellipsis",
             position: "relative",
-            height: "34rem",
+            height: "37rem",
             padding: "0rem 0.5rem",
             paddingRight: "1rem",
           }}
