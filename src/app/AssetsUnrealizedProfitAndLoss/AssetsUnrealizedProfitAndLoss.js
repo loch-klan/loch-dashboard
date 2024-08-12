@@ -283,6 +283,7 @@ class AssetsUnrealizedProfitAndLoss extends Component {
       this.props.intelligenceState?.Average_cost_basis.length > 0
     ) {
       this.setAssetFilter();
+      this.setLocalAssetData(this.props.intelligenceState);
     }
     if (
       !this.props.commonState.assetsPage ||
