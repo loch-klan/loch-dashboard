@@ -284,6 +284,7 @@ export const getAllCoins = (handleShareLinkUser = null) => {
           },
           default_asset_code: "ETH",
           default_asset_id: "ethereum",
+          id: "66bb4f6748ee64fce81e1c31",
           is_evm: true,
           modified_on: {
             $numberLong: "1693227246539",
@@ -597,6 +598,7 @@ export const getAllParentChains = () => {
           },
           default_asset_code: "ETH",
           default_asset_id: "ethereum",
+          id: "66bb4f6748ee64fce81e1c31",
           is_evm: true,
           modified_on: {
             $numberLong: "1693227246539",
