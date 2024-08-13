@@ -246,12 +246,10 @@ export const getUserAccount = (data, ctx) => {
     });
 };
 
-export const getAvgCostBasis = (ctx) => {
+export const getAvgCostBasis = (ctx, passedData, isDefault = true) => {
   return async function (dispatch, getState) {
-    let data = new URLSearchParams();
-
     postLoginInstance
-      .post("wallet/user-wallet/get-average-cost-basis", data)
+      .post("wallet/user-wallet/get-average-cost-basis", passedData)
       .then((res) => {
         if (!res.data.error) {
           let ApiResponse = res?.data.data?.assets;
@@ -282,6 +280,7 @@ export const getAvgCostBasis = (ctx) => {
             totalCostBasis = totalCostBasis + costBasis;
             totalCurrentValue = totalCurrentValue + current_price;
             AssetsList.push({
+              AssetInfo: item.asset,
               chain: item?.chain
                 ? {
                     name: item?.chain?.name,
@@ -316,17 +315,29 @@ export const getAvgCostBasis = (ctx) => {
           //     ).toFixed(2);
 
           // console.log("Asset",AssetsList)
-          dispatch({
-            type: AVERAGE_COST_BASIS,
-            payload: {
+          if (isDefault) {
+            dispatch({
+              type: AVERAGE_COST_BASIS,
+              payload: {
+                Average_cost_basis: AssetsList,
+                totalPercentage: totalPercentage,
+                net_return: netReturn,
+                total_bal: totalBalance,
+                total_cost: totalCost,
+                total_gain: totalGain,
+              },
+            });
+          }
+          if (ctx.setLocalAssetData) {
+            ctx.setLocalAssetData({
               Average_cost_basis: AssetsList,
               totalPercentage: totalPercentage,
               net_return: netReturn,
               total_bal: totalBalance,
               total_cost: totalCost,
               total_gain: totalGain,
-            },
-          });
+            });
+          }
           if (window.localStorage.getItem("lochToken")) {
             postLoginInstance
               .post("wallet/user-wallet/add-yield-pools")
