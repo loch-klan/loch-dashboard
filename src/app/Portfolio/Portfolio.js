@@ -1,6 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import SignInIcon from "../../assets/images/icons/ActiveProfileIcon.svg";
 import nextIcon from "../../assets/images/icons/next-arrow.svg";
 import prevIcon from "../../assets/images/icons/prev-arrow.svg";
 import BaseReactComponent from "../../utils/form/BaseReactComponent";
@@ -8,7 +7,6 @@ import WelcomeCard from "./WelcomeCard";
 
 import { Col, Image, Row } from "react-bootstrap";
 import AddWalletModalIcon from "../../assets/images/icons/wallet-icon.svg";
-import InfoIcon from "../../assets/images/icons/info-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import FixAddModal from "../common/FixAddModal";
 import {
@@ -94,6 +92,8 @@ import {
   HomeSortByCostBasis,
   HomeSortByCurrentValue,
   HomeSortByGainLoss,
+  HomeTokensPageAssetFilter,
+  HomeTokensPageAssetRemove,
   HomeTransactionHistoryAssetFilter,
   HomeTransactionHistoryNetworkFilter,
   HomeTransactionHistoryYearFilter,
@@ -175,6 +175,7 @@ import {
   FilterIcon,
   HomeTabArrowIcon,
   InfoIconI,
+  MinusCircleIcon,
 } from "../../assets/images/icons/index.js";
 import InflowOutflowPortfolioHome from "../intelligence/InflowOutflowPortfolioHome.js";
 import { addUserCredits } from "../profile/Api.js";
@@ -213,7 +214,11 @@ class Portfolio extends BaseReactComponent {
     };
 
     this.state = {
+      assetsCondition: [],
+      localAssetFilter: [],
+      tokensSelectedAssets: [],
       intelligenceStateLocal: {},
+      intelligenceAssetStateLocal: {},
       isTransHistoryNetworkSearchUsed: false,
       transactionHistoryCondition: [],
       minTransHistoryAmount: "1",
@@ -465,6 +470,140 @@ class Portfolio extends BaseReactComponent {
       waitForMixpannelCall: false,
     };
   }
+  setAssetFilter = () => {
+    const tempAssetFilter = [{ value: "allAssets", label: "All tokens" }];
+    this.props.intelligenceState?.Average_cost_basis.forEach((element) => {
+      let tempObj = {
+        code: element.AssetInfo?.code ? element.AssetInfo.code : "",
+        label: element.AssetInfo?.name ? element.AssetInfo.name : "",
+        value: element.AssetInfo?.id ? element.AssetInfo.id : "",
+      };
+      tempAssetFilter.push(tempObj);
+    });
+    this.setState({
+      localAssetFilter: tempAssetFilter,
+    });
+  };
+  removeThisAssetFromTable = (passedAsset) => {
+    let tempCondArr = [];
+    let removeAssetId = -1;
+    let removeAssetName = "";
+    if (passedAsset && passedAsset.AssetInfo && passedAsset.AssetInfo.id) {
+      removeAssetId = passedAsset.AssetInfo.id;
+      removeAssetName = passedAsset.AssetInfo.name;
+    }
+    if (removeAssetId === -1) {
+      return;
+    }
+
+    HomeTokensPageAssetRemove({
+      session_id: getCurrentUser().id,
+      email_address: getCurrentUser().email,
+      asset_removed: removeAssetName,
+    });
+    if (this.state.tokensSelectedAssets.length === 0) {
+      this.state.localAssetFilter.forEach((curLocalAssetFilter) => {
+        if (
+          curLocalAssetFilter.value &&
+          curLocalAssetFilter.value !== removeAssetId &&
+          curLocalAssetFilter.value !== "allAssets"
+        ) {
+          tempCondArr.push(curLocalAssetFilter.value);
+        }
+      });
+    } else {
+      this.state.localAssetFilter.forEach((curLocalAssetFilter) => {
+        if (
+          curLocalAssetFilter.value &&
+          curLocalAssetFilter.value !== removeAssetId &&
+          this.state.tokensSelectedAssets.includes(curLocalAssetFilter.value)
+        ) {
+          tempCondArr.push(curLocalAssetFilter.value);
+        }
+      });
+    }
+
+    this.addAssetsCondition("SEARCH_BY_ASSETS_IN", tempCondArr);
+  };
+  addAssetsCondition = (key, value) => {
+    if (key === "SEARCH_BY_ASSETS_IN") {
+      let assets = [];
+
+      Promise.all([
+        new Promise((resolve) => {
+          if (value !== "allAssets") {
+            this.props.intelligenceState?.assetFilter?.map((e) => {
+              if (value?.includes(e.value)) {
+                assets.push(e.label);
+              }
+            });
+          }
+          resolve(); // Resolve the promise once the code execution is finished
+        }),
+      ]).then(() => {
+        const tempIsAssetUsed = this.state.isAssetSearchUsed;
+        HomeTokensPageAssetFilter({
+          session_id: getCurrentUser().id,
+          email_address: getCurrentUser().email,
+          asset_filter: value === "allAssets" ? "All tokens" : assets,
+          isSearchUsed: tempIsAssetUsed,
+        });
+        this.updateTimer();
+        this.setState({ isAssetSearchUsed: false });
+        if (value === "allAssets") {
+          this.setState({
+            tokensSelectedAssets: [],
+          });
+        } else {
+          this.setState({
+            tokensSelectedAssets: value,
+          });
+        }
+      });
+    }
+
+    let index = this.state.assetsCondition.findIndex((e) => e.key === key);
+
+    let arr = [...this.state.assetsCondition];
+    let search_index = this.state.assetsCondition.findIndex(
+      (e) => e.key === SEARCH_BY_TEXT
+    );
+    if (
+      index !== -1 &&
+      value !== "allAssets" &&
+      value !== "allMethod" &&
+      value !== "allYear" &&
+      value !== "allNetworks" &&
+      value !== "allAmounts"
+    ) {
+      arr[index].value = value;
+    } else if (
+      value === "allAssets" ||
+      value === "allMethod" ||
+      value === "allYear" ||
+      value === "allNetworks" ||
+      value === "allAmounts"
+    ) {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+    } else {
+      let obj = {};
+      obj = {
+        key: key,
+        value: value,
+      };
+      arr.push(obj);
+    }
+    if (search_index !== -1) {
+      if (value === "" && key === SEARCH_BY_TEXT) {
+        arr.splice(search_index, 1);
+      }
+    }
+    this.setState({
+      assetsCondition: arr,
+    });
+  };
   changeBlockOneItem = (itemNum) => {
     let tempToken = getToken();
     if (tempToken && tempToken !== "jsk") {
@@ -860,7 +999,6 @@ class Portfolio extends BaseReactComponent {
       let clientWidth = document.getElementById(
         "homeTokenTableWrapper"
       ).clientWidth;
-      console.log("clientWidth is ", clientWidth);
       const css =
         "#homeTokenTableWrapper::-webkit-scrollbar-track{ margin-left: " +
         clientWidth * (22.5 / 100) +
@@ -882,7 +1020,6 @@ class Portfolio extends BaseReactComponent {
       let clientWidth = document.getElementById(
         "homeTransactionTableWrapper"
       ).clientWidth;
-      console.log("clientWidth is ", clientWidth);
       const css =
         "#homeTransactionTableWrapper::-webkit-scrollbar-track{ margin-left: " +
         clientWidth * (marginSize / 100) +
@@ -903,7 +1040,6 @@ class Portfolio extends BaseReactComponent {
       let clientWidth = document.getElementById(
         "homeYieldOppTableWrapper"
       ).clientWidth;
-      console.log("clientWidth is ", clientWidth);
       const css =
         "#homeYieldOppTableWrapper::-webkit-scrollbar-track{ margin-left: " +
         clientWidth * (22.5 / 100) +
@@ -921,6 +1057,15 @@ class Portfolio extends BaseReactComponent {
     //YIELDOPP TAB
   };
   componentDidMount() {
+    if (
+      this.props.intelligenceState?.Average_cost_basis &&
+      this.props.intelligenceState?.Average_cost_basis.length > 0
+    ) {
+      this.setState({
+        intelligenceAssetStateLocal: this.props.intelligenceState,
+      });
+      this.setAssetFilter();
+    }
     if (this.props.intelligenceState) {
       this.setState({
         intelligenceStateLocal: this.props.intelligenceState,
@@ -1042,6 +1187,7 @@ class Portfolio extends BaseReactComponent {
     ) {
       if (this.props.commonState.assetsPage) {
         this.setState({
+          tokensSelectedAssets: [],
           AvgCostLoading: false,
         });
       } else {
@@ -1050,7 +1196,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallAssetsAvgCostBasisApi: false,
           AvgCostLoading: true,
         });
-        this.props.getAvgCostBasis(this);
+        this.callAssetsApi();
       }
     }
     if (
@@ -1243,8 +1389,49 @@ class Portfolio extends BaseReactComponent {
       });
     }
   };
+  setLocalAssetData = (passedData) => {
+    this.setState({
+      intelligenceAssetStateLocal: passedData,
+    });
+  };
+  callAssetsApi = () => {
+    let isDefault = true;
+    this.setState({
+      AvgCostLoading: true,
+    });
+    let tempFilterAssetCondition = [];
+    this.state.assetsCondition.forEach((tempEle) => {
+      if (
+        tempEle.key === "SEARCH_BY_ASSETS_IN" &&
+        tempEle.value &&
+        tempEle.value.length > 0
+      ) {
+        tempFilterAssetCondition = tempEle.value.slice();
+      }
+    });
+    if (tempFilterAssetCondition.length > 0) {
+      isDefault = false;
+    }
+    let tempData = new URLSearchParams();
+    // tempData.append("conditions", JSON.stringify(tempCond));
+    tempData.append(
+      "filtered_assets",
+      JSON.stringify(tempFilterAssetCondition)
+    );
+    this.props.getAvgCostBasis(this, tempData, isDefault);
+  };
 
   componentDidUpdate(prevProps, prevState) {
+    if (prevState.assetsCondition !== this.state.assetsCondition) {
+      this.callAssetsApi();
+    }
+    if (
+      prevProps.intelligenceState?.Average_cost_basis !==
+        this.props.intelligenceState?.Average_cost_basis &&
+      this.props.intelligenceState?.Average_cost_basis.length > 0
+    ) {
+      this.setAssetFilter();
+    }
     if (
       prevState.transactionHistoryCondition !==
       this.state.transactionHistoryCondition
@@ -1364,7 +1551,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallAssetsAvgCostBasisApi: false,
           AvgCostLoading: true,
         });
-        this.props.getAvgCostBasis(this);
+        this.callAssetsApi();
       }
       // Transaction table
 
@@ -1702,7 +1889,7 @@ class Portfolio extends BaseReactComponent {
           shouldCallAssetsAvgCostBasisApi: false,
           AvgCostLoading: true,
         });
-        this.props.getAvgCostBasis(this);
+        this.callAssetsApi();
       }
 
       if (
@@ -2375,8 +2562,10 @@ class Portfolio extends BaseReactComponent {
   };
 
   sortArray = (key, order) => {
-    let array = this.props.intelligenceState?.Average_cost_basis; //all data
-    let sortedList = array.sort((a, b) => {
+    let tempArr = [
+      ...this.state.intelligenceAssetStateLocal?.Average_cost_basis,
+    ]; //all data
+    let sortedList = tempArr.sort((a, b) => {
       let valueA = a[key];
       let valueB = b[key];
       if (key === "AssetCode") {
@@ -2395,11 +2584,17 @@ class Portfolio extends BaseReactComponent {
         return valueB - valueA;
       }
     });
+    this.setState({
+      intelligenceAssetStateLocal: {
+        ...this.state.intelligenceAssetStateLocal,
+        Average_cost_basis: sortedList,
+      },
+    });
 
     // this.setState({
     //   sortedList,
     // });
-    this.props.updateAverageCostBasis(sortedList, this);
+    // this.props.updateAverageCostBasis(sortedList, this);
   };
   // sort
   handleSort = (e) => {
@@ -4180,8 +4375,9 @@ class Portfolio extends BaseReactComponent {
     ];
 
     // Cost basis
-    let tableDataCostBasis = this.props.intelligenceState?.Average_cost_basis
-      ? this.props.intelligenceState.Average_cost_basis.filter(
+    let tableDataCostBasis = this.state.intelligenceAssetStateLocal
+      ?.Average_cost_basis
+      ? this.state.intelligenceAssetStateLocal.Average_cost_basis.filter(
           (e) => e.CurrentValue >= 1
         )
       : [];
@@ -4565,10 +4761,33 @@ class Portfolio extends BaseReactComponent {
       {
         labelName: (
           <div
-            className="cp history-table-header-col table-header-font"
-            id="Asset"
+            className={`cp history-table-header-col table-header-font ${
+              this.state.isMobileDevice ? "move-dropdown-to-right-2" : ""
+            }`}
+            id="asset"
           >
-            <span className="inter-display-medium f-s-13 lh-16">Token</span>
+            <CustomDropdown
+              filtername={
+                <div
+                  className="filter-image-container"
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Image className="filter-image" src={FilterIcon} />
+                </div>
+              }
+              isIcon
+              options={this.state.localAssetFilter}
+              action={SEARCH_BY_ASSETS_IN}
+              handleClick={(key, value) => this.addAssetsCondition(key, value)}
+              searchIsUsed={this.assetSearchIsUsed}
+              selectedTokens={this.state.tokensSelectedAssets}
+              transactionHistorySavedData
+            />
+            <span className="inter-display-medium f-s-13 lh-16 ">Token</span>
             <Image
               onClick={() => this.handleSort(this.state.sortBy[0])}
               src={sortByIcon}
@@ -4585,42 +4804,105 @@ class Portfolio extends BaseReactComponent {
             return null;
           }
           if (dataKey === "Asset") {
+            const removeThisAssetFromTablePass = () => {
+              this.removeThisAssetFromTable(rowData);
+            };
             return (
               <div
-                onMouseEnter={() => {
-                  CostAssetHover({
-                    session_id: getCurrentUser().id,
-                    email_address: getCurrentUser().email,
-                    asset_hover: rowData.AssetCode,
-                  });
-                }}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
+                className={`asset-undrealized-asset-col ${
+                  this.state.isMobileDevice
+                    ? "asset-undrealized-asset-col-mobile"
+                    : ""
+                }`}
               >
-                <CustomOverlay
-                  position="top"
-                  isIcon={false}
-                  isInfo={true}
-                  isText={true}
-                  text={
-                    (rowData.AssetCode ? rowData.AssetCode : "") +
-                    " [" +
-                    rowData?.chain?.name +
-                    "]"
-                  }
-                >
-                  <div>
-                    <CoinChip
-                      coin_img_src={rowData.Asset}
-                      coin_code={rowData.AssetCode}
-                      chain={rowData?.chain}
-                      hideText={true}
-                    />
-                  </div>
-                </CustomOverlay>
+                <div className="asset-undrealized-asset-col-container">
+                  <Image
+                    onClick={removeThisAssetFromTablePass}
+                    className={`asset-undrealized-asset-col-minus ${
+                      this.state.isMobileDevice
+                        ? "asset-undrealized-asset-col-minus-mobile"
+                        : ""
+                    }`}
+                    src={MinusCircleIcon}
+                  />
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      (rowData.AssetCode ? rowData.AssetCode : "") +
+                      " [" +
+                      rowData?.chain?.name +
+                      "]"
+                    }
+                  >
+                    <div
+                      onMouseEnter={() => {
+                        CostAssetHover({
+                          session_id: getCurrentUser().id,
+                          email_address: getCurrentUser().email,
+                          asset_hover: rowData.AssetCode,
+                        });
+                      }}
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                      className={`dotDotText asset-undrealized-asset-col-content ${
+                        this.state.isMobile
+                          ? "asset-undrealized-asset-col-content-mobile"
+                          : ""
+                      }`}
+                    >
+                      <div>
+                        <CoinChip
+                          coin_img_src={rowData.Asset}
+                          coin_code={rowData.AssetCode}
+                          chain={rowData?.chain}
+                          hideText={true}
+                        />
+                      </div>
+                    </div>
+                  </CustomOverlay>
+                </div>
               </div>
+              // <div
+              //   onMouseEnter={() => {
+              //     CostAssetHover({
+              //       session_id: getCurrentUser().id,
+              //       email_address: getCurrentUser().email,
+              //       asset_hover: rowData.AssetCode,
+              //     });
+              //   }}
+              //   style={{
+              //     display: "flex",
+              //     justifyContent: "center",
+              //   }}
+              // >
+              //   <CustomOverlay
+              //     position="top"
+              //     isIcon={false}
+              //     isInfo={true}
+              //     isText={true}
+              //     text={
+              //       (rowData.AssetCode ? rowData.AssetCode : "") +
+              //       " [" +
+              //       rowData?.chain?.name +
+              //       "]"
+              //     }
+              //   >
+              //     <div>
+              //       <CoinChip
+              //         coin_img_src={rowData.Asset}
+              //         coin_code={rowData.AssetCode}
+              //         chain={rowData?.chain}
+              //         hideText={true}
+              //       />
+              //     </div>
+              //   </CustomOverlay>
+              // </div>
             );
           }
         },
@@ -5621,7 +5903,7 @@ class Portfolio extends BaseReactComponent {
                                   !this.state.AvgCostLoading &&
                                   tableDataCostBasis?.length > 0
                                 }
-                                xAxisScrollableColumnWidth={4.4}
+                                xAxisScrollableColumnWidth={4.5}
                                 tableData={
                                   tableDataCostBasis
                                     ? tableDataCostBasis.slice(0, 10)
