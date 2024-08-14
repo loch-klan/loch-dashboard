@@ -1421,6 +1421,14 @@ class Portfolio extends BaseReactComponent {
     this.props.getAvgCostBasis(this, tempData, isDefault);
   };
 
+  callNetworkApiPass = () => {
+    let getItem = window.localStorage.getItem("callTheUpdateAPI");
+    if (getItem === "true") {
+      this.callNetworksApi(true);
+    } else {
+      this.callNetworksApi();
+    }
+  };
   componentDidUpdate(prevProps, prevState) {
     if (prevState.assetsCondition !== this.state.assetsCondition) {
       this.callAssetsApi();
@@ -1832,12 +1840,13 @@ class Portfolio extends BaseReactComponent {
         JSON.parse(tempAddWall) &&
         JSON.parse(tempAddWall)?.length > 0
       ) {
-        let getItem = window.localStorage.getItem("callTheUpdateAPI");
-        if (getItem === "true") {
-          this.callNetworksApi(true);
-        } else {
-          this.callNetworksApi();
+        if (this.callNetworkApiTimeout) {
+          clearTimeout(this.callNetworkApiTimeout);
         }
+        // callNetworkApiTimeout;
+        this.callNetworkApiTimeout = setTimeout(() => {
+          this.callNetworkApiPass();
+        }, 5000);
       } else {
         // Resetting the user wallet list, total and chain wallet
         this.props.settingDefaultValues(this);

@@ -82,6 +82,7 @@ class CopyTradeWelcome extends Component {
     }
   };
   componentDidMount() {
+    window.localStorage.setItem("callTheUpdateAPI", true);
     scrollToTop();
     let tempToken = getToken();
     if (tempToken && tempToken !== "jsk") {
