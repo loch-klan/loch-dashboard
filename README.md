@@ -16,13 +16,25 @@ To get started with the Loch Dashboard, follow these steps:
 2. Install the required dependencies: npm install
 3. Start the development server: npm start
 4. Open the dashboard in your web browser: http://localhost:3000
+(has this been tested? @aditya)
 
 
-### Contributing
-We welcome contributions from the community! 
+## Basic structure of the app 
+src
+app
 
-## License
+## Dependencies
+Open Source Libraries
+- highcharts
 
-The Loch Dashboard is licensed under the MIT License.
+3rd Party APIs/ Libraries
+- react version
+- redux version 
+
+
+
+
+
+
 
 
