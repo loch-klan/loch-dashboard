@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Image, Row } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import searchIcon from "../../assets/images/icons/search-icon.svg";
 import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
@@ -71,7 +71,6 @@ import {
   convertNtoNumber,
   dontOpenLoginPopup,
   mobileCheck,
-  noExponents,
   numToCurrency,
   openAddressInSameTab,
   openSignInModalFromAnywhere,
@@ -87,7 +86,6 @@ import {
   Form,
   FormElement,
 } from "../../utils/form";
-import { Form as BootstrapForm } from "react-bootstrap";
 import CustomDropdown from "../../utils/form/CustomDropdown";
 import FixAddModal from "../common/FixAddModal";
 import Loading from "../common/Loading";
@@ -108,14 +106,14 @@ import {
   updateWalletListFlag,
 } from "../common/Api";
 import ExitOverlay from "../common/ExitOverlay";
-import UpgradeModal from "../common/upgradeModal";
-import { getAllCoins } from "../onboarding/Api.js";
-import TopWalletAddressList from "../header/TopWalletAddressList.js";
-import { isEqual } from "lodash";
-import MobileLayout from "../layout/MobileLayout.js";
-import TransactionHistoryPageMobile from "./TransactionHistoryPageMobile.js";
-import CheckboxCustomTable from "../common/customCheckboxTable.js";
 import PaywallModal from "../common/PaywallModal.js";
+import CheckboxCustomTable from "../common/customCheckboxTable.js";
+import UpgradeModal from "../common/upgradeModal";
+import TopWalletAddressList from "../header/TopWalletAddressList.js";
+import MobileLayout from "../layout/MobileLayout.js";
+import { getAllCoins } from "../onboarding/Api.js";
+import TransactionHistoryPageMobile from "./TransactionHistoryPageMobile.js";
+import TableCalendarFilter from "../common/TableCalendarFilter.js";
 
 class TransactionHistoryPage extends BaseReactComponent {
   constructor(props) {
@@ -141,7 +139,9 @@ class TransactionHistoryPage extends BaseReactComponent {
       minAmount: "1",
       maxAmount: "1000000000",
       isShowingAge: true,
-      selectedTimes: [],
+      fromDateFilter: "",
+      toDateFilter: "",
+      selectedTimes: {},
       selectedAssets: [],
       selectedMethods: [],
       selectedNetworks: [],
@@ -732,7 +732,16 @@ class TransactionHistoryPage extends BaseReactComponent {
         isSearchUsed: tempIsTimeUsed,
       });
       this.updateTimer();
-      this.setState({ isTimeSearchUsed: false, selectedTimes: value });
+      // const tempSelectedTimes = {
+      //   start_date: moment(value.start_date).format("DD-MM-YYYY"),
+      //   end_date: moment(value.end_date).format("DD-MM-YYYY"),
+      // };
+      this.setState({
+        isTimeSearchUsed: false,
+        fromDateFilter: value.start_date,
+        toDateFilter: value.end_date,
+        // selectedTimes: tempSelectedTimes,
+      });
     } else if (key === "SEARCH_BY_ASSETS_IN") {
       let assets = [];
 
@@ -777,7 +786,23 @@ class TransactionHistoryPage extends BaseReactComponent {
     let search_index = this.state.condition.findIndex(
       (e) => e.key === SEARCH_BY_TEXT
     );
-    if (
+    if (key === "SEARCH_BY_TIMESTAMP_IN") {
+      if (index !== -1) {
+        arr.splice(index, 1);
+      }
+      if (value && value.start_date && value.end_date) {
+        let obj = {};
+        const tempSelectedTimes = {
+          start_date: moment(value.start_date).format("DD-MM-YYYY"),
+          end_date: moment(value.end_date).format("DD-MM-YYYY"),
+        };
+        obj = {
+          key: key,
+          value: tempSelectedTimes,
+        };
+        arr.push(obj);
+      }
+    } else if (
       index !== -1 &&
       value !== "allAssets" &&
       value !== "allMethod" &&
@@ -1040,6 +1065,12 @@ class TransactionHistoryPage extends BaseReactComponent {
       },
     });
   };
+  setFromToFilterDate = (passedDate) => {
+    this.setState({
+      fromDateFilter: passedDate[0],
+      toDateFilter: passedDate[1],
+    });
+  };
   render() {
     const { table, totalPage, totalCount, currentPage, assetPriceList } =
       this.state.intelligenceStateLocal;
@@ -1141,7 +1172,12 @@ class TransactionHistoryPage extends BaseReactComponent {
             className="cp history-table-header-col table-header-font"
             id="time"
           >
-            <CustomDropdown
+            <TableCalendarFilter
+              setFromToFilterDate={this.addCondition}
+              fromDate={this.state.fromDateFilter}
+              toDate={this.state.toDateFilter}
+            />
+            {/* <CustomDropdown
               isIcon
               filtername={
                 <div
@@ -1161,7 +1197,7 @@ class TransactionHistoryPage extends BaseReactComponent {
               searchIsUsed={this.timeSearchIsUsed}
               selectedTokens={this.state.selectedTimes}
               transactionHistorySavedData
-            />
+            /> */}
             {this.state.isMobileDevice ? (
               <span
                 onClick={() => {
