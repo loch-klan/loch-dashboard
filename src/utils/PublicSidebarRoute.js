@@ -14,6 +14,9 @@ import { mobileCheck } from "./ReusableFunctions";
 const PublicSidebarRoute = ({ component: Component, ...rest }) => {
   const [isSidebarClosed, setIsSidebarClosed] = useState(false);
   const [isMobile] = useState(mobileCheck());
+  useEffect(() => {
+    window.dispatchEvent(new Event("resize"));
+  }, [isSidebarClosed]);
   const toggleSideBar = () => {
     window.sessionStorage.setItem("isSidebarClosed", !isSidebarClosed);
     setIsSidebarClosed(!isSidebarClosed);

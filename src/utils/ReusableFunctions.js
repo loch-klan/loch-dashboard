@@ -1,12 +1,135 @@
+import moment from "moment";
 import React from "react";
 import { Image } from "react-bootstrap";
-import { API_LIMIT, BASE_URL_S3 } from "./Constant";
-import moment from "moment";
-import { DARK_MODE } from "../app/intelligence/ActionTypes";
-import { SwitchDarkMode } from "../app/common/Api";
 import { toast } from "react-toastify";
+import {
+  StrategyBuilderAssetBtcIcon,
+  StrategyBuilderAssetEthIcon,
+  StrategyBuilderAssetUsdtIcon,
+} from "../assets/images/icons";
+import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import { getCurrentUser, getToken } from "./ManageToken";
 
+export const strategyByilderChartWhichSymbol = (passedItem) => {
+  if (passedItem === "CUMULATIVE_RETURN" || passedItem === "MAX_DRAWDOWN") {
+    return "%";
+  }
+  return "$";
+};
+export const strategyByilderChartShouldShowDate = (passedItem) => {
+  if (
+    passedItem === "MOVING_AVERAGE_PRICE" ||
+    passedItem === "MOVING_AVERAGE_RETURN" ||
+    passedItem === "EXPONENTIAL_MOVING_AVERAGE"
+  ) {
+    return true;
+  }
+  return false;
+};
+export const strategyByilderChartLineColorByIndexLowOpacity = (passedIndex) => {
+  if (passedIndex === 0) {
+    return "rgba(128, 67, 243,0.1)";
+  } else if (passedIndex === 1) {
+    return "rgba(162, 220, 0,0.1)";
+  } else if (passedIndex === 2) {
+    return "rgba(43, 127, 255,0.1)";
+  }
+  return "black";
+};
+export const strategyByilderChartLineColorByIndex = (passedIndex) => {
+  if (passedIndex === 0) {
+    return "#8043F3";
+  } else if (passedIndex === 1) {
+    return "#A2DC00";
+  } else if (passedIndex === 2) {
+    return "#2B7FFF";
+  }
+  return "black";
+};
+
+export const strategyByilderAssetList = () => {
+  return [
+    {
+      name: "BTC",
+      icon: StrategyBuilderAssetBtcIcon,
+      color: "#F7931A",
+    },
+    {
+      name: "ETH",
+      icon: StrategyBuilderAssetEthIcon,
+      color: "#627EEA",
+    },
+    {
+      name: "USDT",
+      icon: StrategyBuilderAssetUsdtIcon,
+      color: "#26A17B",
+    },
+  ];
+};
+export const strategyByilderAssetDetailFromName = (passedItem) => {
+  const curAssetList = strategyByilderAssetList();
+  return curAssetList.find((element) => element.name === passedItem);
+};
+export const strategyByilderTypeConvertorSymbolToText = (passedItem) => {
+  if (passedItem === "CURRENT_PRICE") {
+    return "Current price";
+  } else if (passedItem === "CUMULATIVE_RETURN") {
+    return "Cumulative return";
+  } else if (passedItem === "EXPONENTIAL_MOVING_AVERAGE") {
+    return "Exponential moving average of price";
+  } else if (passedItem === "MAX_DRAWDOWN") {
+    return "Max drawdown";
+  } else if (passedItem === "MOVING_AVERAGE_PRICE") {
+    return "Moving average of price";
+  } else if (passedItem === "MOVING_AVERAGE_RETURN") {
+    return "Moving average return";
+  }
+  return "";
+};
+export const strategyByilderTypeConvertorTextToSymbol = (passedItem) => {
+  if (passedItem === "Current price") {
+    return "CURRENT_PRICE";
+  } else if (passedItem === "Cumulative return") {
+    return "CUMULATIVE_RETURN";
+  } else if (passedItem === "Exponential moving average of price") {
+    return "EXPONENTIAL_MOVING_AVERAGE";
+  } else if (passedItem === "Max drawdown") {
+    return "MAX_DRAWDOWN";
+  } else if (passedItem === "Moving average of price") {
+    return "MOVING_AVERAGE_PRICE";
+  } else if (passedItem === "Moving average return") {
+    return "MOVING_AVERAGE_RETURN";
+  }
+  return "";
+};
+export const strategyByilderOperatorConvertorSymbolToText = (passedItem) => {
+  if (passedItem === ">") {
+    return "greater than";
+  } else if (passedItem === "<") {
+    return "less than";
+  } else if (passedItem === "=") {
+    return "equals to";
+  } else if (passedItem === "+") {
+    return "increase by";
+  } else if (passedItem === "-") {
+    return "decrease by";
+  }
+  return "";
+};
+export const strategyByilderOperatorConvertorTextToSymbol = (passedItem) => {
+  if (passedItem === "greater than") {
+    return ">";
+  } else if (passedItem === "less than") {
+    return "<";
+  } else if (passedItem === "equals to") {
+    return "=";
+  } else if (passedItem === "increase by") {
+    return "+";
+  } else if (passedItem === "decrease by") {
+    return "-";
+  }
+  return "";
+};
 export const scrollToBottomAfterPageChange = () => {
   if (mobileCheck()) {
     const itemItem = document.getElementById("mobileLayoutScrollContainer");

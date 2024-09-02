@@ -40,6 +40,7 @@ import PublicSidebarRoute from "./utils/PublicSidebarRoute";
 import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
 import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
 import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
+import BackTestPage from "./app/BackTest/BackTestPage";
 const routes = [
   {
     path: "/",
@@ -274,6 +275,12 @@ const routes = [
     name: "Stripe Error",
     type: PublicSidebarRoute,
     component: ReplaceAddressPage,
+  },
+  {
+    path: "/back-test",
+    name: "BackTest Page",
+    type: PublicSidebarRoute,
+    component: BackTestPage,
   },
 ];
 export default routes;

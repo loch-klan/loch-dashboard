@@ -171,3 +171,17 @@ export { default as CopyTradeSwapSidebarIcon } from "./copyTradeSwapSidebar.svg"
 export { default as CopyTradeTopBarIcon } from "./copyTradeTopBar.svg";
 export { default as SmartMoneyPaginationArrowRightWhiteIcon } from "./smartMoneyPaginationArrowRightWhite.svg";
 export { default as MinusCircleIcon } from "./minusCircle.svg";
+export { default as StrategyBuilderBlockImage } from "./StrategyBuilderBlock.png";
+export { default as StrategyBuilderSidebarIcon } from "./StrategyBuilderSidebar.svg";
+export { default as StrategyBuilderAssetIcon } from "./StrategyBuilderAsset.svg";
+export { default as StrategyBuilderConditionIcon } from "./StrategyBuilderCondition.svg";
+export { default as StrategyBuilderSortIcon } from "./StrategyBuilderSort.svg";
+export { default as StrategyBuilderWeightIcon } from "./StrategyBuilderWeight.svg";
+export { default as StrategyBuilderDeleteIcon } from "./StrategyBuilderDelete.svg";
+export { default as StrategyBuilderPencilIcon } from "./StrategyBuilderPencil.svg";
+export { default as StrategyBuilderPopUpCloseIcon } from "./StrategyBuilderPopUpClose.svg";
+export { default as StrategyBuilderDropdownArrowIcon } from "./StrategyBuilderDropdownArrow.svg";
+export { default as StrategyBuilderAssetUsdtIcon } from "./StrategyBuilderAssetUsdt.svg";
+export { default as StrategyBuilderAssetEthIcon } from "./StrategyBuilderAssetEth.svg";
+export { default as StrategyBuilderAssetBtcIcon } from "./StrategyBuilderAssetBtc.svg";
+export { default as StrategyBuilderBackgroundDotIcon } from "./strategyBuilderBackgroundDot.svg";

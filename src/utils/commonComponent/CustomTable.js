@@ -191,85 +191,87 @@ class CustomTable extends BaseReactComponent {
               {tableData && tableData.length > 0 ? (
                 <>
                   <AutoSizer disableHeight>
-                    {({ width }) => (
-                      <Table
-                        width={
-                          this.props.xAxisScrollable
-                            ? width *
-                              (columnList.length /
-                                (this.props.xAxisScrollableColumnWidth
-                                  ? this.props.xAxisScrollableColumnWidth
-                                  : 3.5))
-                            : width
-                        }
-                        height={
-                          (this.props.showDataAtBottom && this.props.moreData
-                            ? 58
-                            : 60) *
-                            (tableData ? tableData.length + 1 : 1) -
-                          10
-                        }
-                        headerHeight={headerHeight ? headerHeight : 80}
-                        rowHeight={
-                          this.props.showDataAtBottom && this.props.moreData
-                            ? 58
-                            : 60
-                        }
-                        rowCount={tableData ? tableData.length : 0}
-                        rowGetter={({ index }) => tableData[index]}
-                        className={`custom-table ${className}`}
-                        gridClassName={`${
-                          this.props.addWatermark
-                            ? "tableWatermark"
-                            : this.props.fakeWatermark &&
-                              tableData &&
-                              tableData.length > 1
-                            ? "tableWatermarkFake"
-                            : ""
-                        } ${
-                          this.props.bottomCombiedValues
-                            ? "topMarginForCombiedValues"
-                            : ""
-                        } ${
-                          this.props.addWatermarkMoveUp
-                            ? "tableWatermarkMoveUp"
-                            : ""
-                        }`}
-                      >
-                        {columnList &&
-                          columnList.length > 0 &&
-                          columnList.map((item, key) => {
-                            return (
-                              <Column
-                                key={key}
-                                // width={item.coumnWidth}
-                                width={
-                                  this.props.xAxisScrollable
-                                    ? width *
-                                      item.coumnWidth *
-                                      (columnList.length /
-                                        (this.props.xAxisScrollableColumnWidth
-                                          ? this.props
-                                              .xAxisScrollableColumnWidth
-                                          : 3.5))
-                                    : width * item.coumnWidth
-                                }
-                                className={item.className}
-                                label={item.labelName}
-                                dataKey={item.dataKey}
-                                cellRenderer={({ rowData, rowIndex }) => {
-                                  return item.cell(
-                                    rowData,
-                                    item.dataKey,
-                                    rowIndex
-                                  );
-                                }}
-                                headerClassName={item.headerClassName}
-                              />
-                            );
-                          })}
-                      </Table>
-                    )}
+                    {({ width }) => {
+                      return (
+                        <Table
+                          width={
+                            this.props.xAxisScrollable
+                              ? width *
+                                (columnList.length /
+                                  (this.props.xAxisScrollableColumnWidth
+                                    ? this.props.xAxisScrollableColumnWidth
+                                    : 3.5))
+                              : width
+                          }
+                          height={
+                            (this.props.showDataAtBottom && this.props.moreData
+                              ? 58
+                              : 60) *
+                              (tableData ? tableData.length + 1 : 1) -
+                            10
+                          }
+                          headerHeight={headerHeight ? headerHeight : 80}
+                          rowHeight={
+                            this.props.showDataAtBottom && this.props.moreData
+                              ? 58
+                              : 60
+                          }
+                          rowCount={tableData ? tableData.length : 0}
+                          rowGetter={({ index }) => tableData[index]}
+                          className={`custom-table ${className}`}
+                          gridClassName={`${
+                            this.props.addWatermark
+                              ? "tableWatermark"
+                              : this.props.fakeWatermark &&
+                                tableData &&
+                                tableData.length > 1
+                              ? "tableWatermarkFake"
+                              : ""
+                          } ${
+                            this.props.bottomCombiedValues
+                              ? "topMarginForCombiedValues"
+                              : ""
+                          } ${
+                            this.props.addWatermarkMoveUp
+                              ? "tableWatermarkMoveUp"
+                              : ""
+                          }`}
+                        >
+                          {columnList &&
+                            columnList.length > 0 &&
+                            columnList.map((item, key) => {
+                              return (
+                                <Column
+                                  key={key}
+                                  // width={item.coumnWidth}
+                                  width={
+                                    this.props.xAxisScrollable
+                                      ? width *
+                                        item.coumnWidth *
+                                        (columnList.length /
+                                          (this.props.xAxisScrollableColumnWidth
+                                            ? this.props
+                                                .xAxisScrollableColumnWidth
+                                            : 3.5))
+                                      : width * item.coumnWidth
+                                  }
+                                  className={item.className}
+                                  label={item.labelName}
+                                  dataKey={item.dataKey}
+                                  cellRenderer={({ rowData, rowIndex }) => {
+                                    return item.cell(
+                                      rowData,
+                                      item.dataKey,
+                                      rowIndex
+                                    );
+                                  }}
+                                  headerClassName={item.headerClassName}
+                                />
+                              );
+                            })}
+                        </Table>
+                      );
+                    }}
                   </AutoSizer>
                   {/* {this.props.smartMoneyBlur ? (
                   <div className="smartMoneyBlurContainer">

@@ -27,6 +27,7 @@ import {
   lightModeIcon,
   CopyTradeSwapSidebarIcon,
   XFormallyTwitterLogoLightIcon,
+  StrategyBuilderSidebarIcon,
 } from "../../assets/images/icons";
 import { default as SignInIcon } from "../../assets/images/icons/ActiveProfileIcon.svg";
 import ApiModalIcon from "../../assets/images/icons/ApiModalIcon.svg";
@@ -914,6 +915,34 @@ function Sidebar(props) {
                                 isIcon={false}
                                 isInfo={true}
                                 isText={true}
+                                text={"Strategy Builder"}
+                              >
+                                <NavLink
+                                  exact={true}
+                                  className="nav-link nav-link-closed"
+                                  to="/back-test"
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={StrategyBuilderSidebarIcon}
+                                    style={
+                                      activeTab === "/back-test"
+                                        ? {
+                                            filter: "var(--sidebarActiveIcon)",
+                                          }
+                                        : {}
+                                    }
+                                  />
+                                </NavLink>
+                              </CustomOverlay>
+                            </li>
+                            <li>
+                              <CustomOverlay
+                                className="tool-tip-container-right-arrow"
+                                position="right"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
                                 text={"Wallet Viewer"}
                               >
                                 <NavLink
@@ -1323,6 +1352,26 @@ function Sidebar(props) {
                         <>
                           {haveUserAddedAddress ? (
                             <>
+                              <li>
+                                <NavLink
+                                  exact={true}
+                                  className="nav-link"
+                                  to="/back-test"
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={StrategyBuilderSidebarIcon}
+                                    style={
+                                      activeTab === "/back-test"
+                                        ? {
+                                            filter: "var(--sidebarActiveIcon)",
+                                          }
+                                        : {}
+                                    }
+                                  />
+                                  Strategy Builder
+                                </NavLink>
+                              </li>
                               <li>
                                 <NavLink
                                   exact={true}

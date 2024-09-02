@@ -39,6 +39,11 @@ import DarkModeReducer from "../app/intelligence/darkMode";
 import { NFTReducer } from "../app/nft/NftReducer";
 import { EmulationsReducer } from "../app/Emulations/EmulationsReducer";
 import { ReferralCodesReducer } from "../app/ReferralCodes/ReferralCodesReducer";
+import {
+  BackTestChartReducer,
+  BackTestQueryReducer,
+  BackTestTableReducer,
+} from "../app/BackTest/Api/BackTestReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -51,6 +56,9 @@ export default combineReducers({
   YieldOpportunitiesState: YieldOpportunitiesReducer,
   YieldPoolState: YieldPoolReducer,
   CommonState: CommonReducer,
+  BackTestChartState: BackTestChartReducer,
+  BackTestTableState: BackTestTableReducer,
+  BackTestQueryState: BackTestQueryReducer,
   UserPaymentState: UserPaymentReducer,
   LochUserState: LochUserReducer,
   HomeState: HomeReducer,

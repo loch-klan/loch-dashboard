@@ -9,16 +9,16 @@ import {
   Home_CE_OAuthCompleted,
   LP_CE_OAuthCompleted,
   LochPointsSignInPopupEmailVerified,
-  SignInModalEmailAdded,
   SignInModalOTPverified,
   UpgradeSignInPopupEmailAdded,
   Wallet_CE_OAuthCompleted,
-  WhaleCreateAccountEmailVerified,
   WhalePopupEmailVerified,
   signInUser,
   signUpProperties,
 } from "../../utils/AnalyticsFunctions";
 import { getCurrentUser, setLocalStoraage } from "../../utils/ManageToken";
+import { whichSignUpMethod } from "../../utils/ReusableFunctions";
+import { DARK_MODE } from "../intelligence/ActionTypes";
 import { YIELD_POOLS } from "../yieldOpportunities/ActionTypes";
 import postLoginInstance from "./../../utils/PostLoginAxios";
 import {
@@ -28,11 +28,6 @@ import {
   TOP_SET_DEFAULT_VALUE,
   WALLET_LIST_UPDATED,
 } from "./ActionTypes";
-import { DARK_MODE } from "../intelligence/ActionTypes";
-import {
-  isPremiumUser,
-  whichSignUpMethod,
-} from "../../utils/ReusableFunctions";
 
 export const loginApi = (ctx, data) => {
   preLoginInstance

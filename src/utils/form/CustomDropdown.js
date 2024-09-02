@@ -6,6 +6,7 @@ class CustomDropdown extends Component {
     super(props);
 
     this.state = {
+      disableApplyBtn: false,
       showMenu: false,
       options: [],
       name: this.props.filtername,
@@ -370,8 +371,14 @@ class CustomDropdown extends Component {
     ) {
       if (this.state.options[0].isSelected) {
         this.selectedAll(false);
+        this.setState({
+          disableApplyBtn: true,
+        });
       } else {
         this.selectedAll(true);
+        this.setState({
+          disableApplyBtn: false,
+        });
       }
     } else {
       let updatedOptions = this.state.options.map((e) => {
@@ -401,6 +408,18 @@ class CustomDropdown extends Component {
         },
         () => {
           this.copyToFilteredItems();
+          const tempSelectedHolder = this.getSelected();
+          console.log("tempSelectedHolder ", tempSelectedHolder);
+          if (tempSelectedHolder.length === 0) {
+            this.setState({
+              disableApplyBtn: true,
+            });
+          } else {
+            this.setState({
+              disableApplyBtn: false,
+            });
+          }
+
           if (
             !this.props.isLineChart &&
             this.state.options?.length - 1 ===
@@ -626,6 +645,12 @@ class CustomDropdown extends Component {
             : this.props.isChain
             ? this.getSelected()?.length +
               (this.getSelected()?.length > 1 ? " chains" : " chain")
+            : this.props.singleSelectedItemName &&
+              this.props.multipleSelectedItemName
+            ? this.getSelected()?.length +
+              (this.getSelected()?.length > 1
+                ? " " + this.props.multipleSelectedItemName
+                : " " + this.props.singleSelectedItemName)
             : this.props.placeholderName
             ? this.getSelected()?.length +
               (this.getSelected()?.length > 1
@@ -802,7 +827,7 @@ class CustomDropdown extends Component {
               </span>
               <span
                 className="primary-btn dropdown-btn btn-bg-black hover-bg-white-outline-black"
-                onClick={this.Apply}
+                onClick={this.state.disableApplyBtn ? null : this.Apply}
                 onMouseEnter={() => {
                   this.setState({
                     apply: true,
@@ -812,6 +837,10 @@ class CustomDropdown extends Component {
                   this.setState({
                     apply: false,
                   });
+                }}
+                style={{
+                  opacity: this.state.disableApplyBtn ? 0.5 : 1,
+                  pointerEvents: this.state.disableApplyBtn ? "none" : "auto",
                 }}
               >
                 {this.props.isLineChart ? (

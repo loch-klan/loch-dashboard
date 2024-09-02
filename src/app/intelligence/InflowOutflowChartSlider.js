@@ -415,7 +415,7 @@ class InflowOutflowChartSlider extends BaseReactComponent {
         },
 
         categories: this.state.formattedXAxis ? this.state.formattedXAxis : [],
-        type: "category",
+        // type: "category",
         labels: {
           formatter: function () {
             if (parent.props.hideTimeFilter) {

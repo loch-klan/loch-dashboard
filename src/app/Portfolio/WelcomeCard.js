@@ -28,6 +28,9 @@ import AuthModal from "../common/AuthModal";
 import ConnectModal from "../common/ConnectModal";
 import ExitOverlay from "../common/ExitOverlay";
 import { TopWalletExchangeBar } from "../header";
+import Loading from "../common/Loading";
+import ContentLoader from "react-content-loader";
+import { LoaderIcon } from "../../assets/images/icons";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
   const [manageWallet, setManageWallet] = React.useState(true);
@@ -272,178 +275,213 @@ export default function WelcomeCard(props) {
           props.isSidebarClosed ? "welcome-card-topbar-closed" : ""
         } ${props.isBlurred ? "welcome-card-topbar-blurred" : ""}`}
       >
-        <div
-          className={`row-div ${
-            props.isBlurred ? "welcome-card-topbar-input-blurred" : ""
-          }`}
-          style={{
-            display: "flex",
-            flex: 1,
-            minWidth: "85rem",
-            maxWidth: props.isWideScreen ? "" : "120rem",
-            width: props.isWideScreen ? "" : "120rem",
-            margin: "auto",
-            // marginRight: "1.7rem",
-            // width: "calc(60% - 3rem)",
-            // position: "absolute",
-            // left: "calc(50% - 13rem)",
-            // transform: "translateX(-50%)",
-          }}
-        >
-          {props?.isPreviewing ? (
-            <div
-              className="Preview-topbar-btn"
-              style={{
-                marginRight: "1.7rem",
-                // marginLeft: "11rem"
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-              // onClick={handleConnectModal}
-            >
-              <div className="account-detail">
-                <Image src={EyeIcon} />
-                <div>Previewing</div>
-                <div className="accounNameId">
-                  <span className="account-name grey-313">
-                    {TruncateText(
-                      JSON.parse(window.localStorage.getItem("previewAddress"))
-                        ?.address
-                    )}
-                  </span>
-                  {JSON.parse(window.localStorage.getItem("previewAddress"))
-                    ?.nameTag ? (
-                    <span className="grey-313">
-                      {" "}
-                      (
-                      {
-                        JSON.parse(
-                          window.localStorage.getItem("previewAddress")
-                        )?.nameTag
-                      }
-                      )
-                    </span>
-                  ) : null}
-                </div>
+        {props.isSaveInvestStrategy ? (
+          <div className="welcome-card-strategy-builder">
+            <div className="welcome-card-strategy-builder-title">
+              Draft Strategy
+            </div>
+            <div className="welcome-card-strategy-builder-btns-container">
+              <div
+                onClick={props.saveStrategyClicked}
+                className={`welcome-card-strategy-builder-btn ${
+                  props.loadingSaveInvestStrategyBtn
+                    ? "welcome-card-strategy-builder-btn-loading"
+                    : ""
+                }`}
+              >
+                Save
               </div>
               <div
-                className="account-detail-change cp change-text"
-                onClick={changeCurrentAccount}
+                onClick={props.investStrategyClicked}
+                className={`welcome-card-strategy-builder-btn welcome-card-strategy-builder-btn-highlighted ${
+                  props.loadingSaveInvestStrategyBtn
+                    ? "welcome-card-strategy-builder-btn-loading"
+                    : ""
+                }`}
               >
-                <Image src={ChangeIcon} />
-                <span className="ml-2">Change</span>
+                Invest
               </div>
             </div>
-          ) : !props?.hideButton ? (
-            <TopWalletExchangeBar
-              showTopSearchBar={props.showTopSearchBar}
-              shouldGoToHomeAfterReplace={props.shouldGoToHomeAfterReplace}
-              goToPageAfterLogin={props.goToPageAfterLogin}
-              funAfterUserCreate={props.funAfterUserCreate}
-              isAddNewAddress={props.isAddNewAddress}
-              isAddNewAddressLoggedIn={props.isAddNewAddressLoggedIn}
-              hideFocusedInput={props.hideFocusedInput}
-              focusOriginalInputBar={props.focusOriginalInputBar}
-              isBlurred={props.isBlurred}
-              connectedWalletAddress={props.connectedWalletAddress}
-              connectedWalletevents={props.connectedWalletevents}
-              updateOnFollow={props.updateOnFollow}
-              afterAddressFollowed={props.afterAddressFollowed}
-              isAddressFollowedCount={props.isAddressFollowedCount}
-              handleShare={props.handleShare}
-              changeWalletList={props.changeWalletList}
-              apiResponse={props.apiResponse}
-              history={history}
-              buttonRef={buttonRef}
-              handleAddWalletClick={handleAddWalletClick}
-              handleConnectModal={handleConnectModal}
-              handleUpdate={props.handleUpdate}
-              hideShare={props.hideShare}
-              openConnectWallet={props.openConnectWallet}
-              disconnectWallet={props.disconnectWallet}
-            />
-          ) : // <div className="topBarContainer">
-          //   <div
-          //     className="topbar-btn"
-          //     onClick={handleAddWalletClick}
-          //     ref={buttonRef}
-          //     id="address-button"
-          //   >
-          //     <Image src={AddWalletAddress} />
-          //     Add wallet address
-          //   </div>
-          //   <div className="topbar-btn ml-2" onClick={handleConnectModal}>
-          //     <Image className="connect-exchange-img" src={LinkIconBtn} />
-          //     Connect exchange
-          //   </div>
-          // </div>
-          null}
-        </div>
-        {props.showNetworth && (
-          <div
-            className="row-div"
-            style={
-              {
+          </div>
+        ) : (
+          <>
+            <div
+              className={`row-div ${
+                props.isBlurred ? "welcome-card-topbar-input-blurred" : ""
+              }`}
+              style={{
+                display: "flex",
+                flex: 1,
+                minWidth: "85rem",
+                maxWidth: props.isWideScreen ? "" : "120rem",
+                width: props.isWideScreen ? "" : "120rem",
+                margin: "auto",
+                // marginRight: "1.7rem",
+                // width: "calc(60% - 3rem)",
                 // position: "absolute",
-                // // left: "50%",
-                // // transform: "translateX(-50%)",
-                // right: 0,
-                // marginRight: !lochUser ? "8.2rem" : "0rem",
-              }
-            }
-          >
-            <CustomOverlay
-              position="bottom"
-              isIcon={false}
-              isInfo={true}
-              isText={true}
-              text={tempFullReturn}
-              className="tool-tip-container-bottom-arrow"
+                // left: "calc(50% - 13rem)",
+                // transform: "translateX(-50%)",
+              }}
             >
-              <div
-                className={`growth-div inter-display-medium f-s-13 lh-15 grey-313 ${
-                  difference < 0 ? "downfall" : ""
-                }`}
-                style={{
-                  marginRight: "1.2rem",
-                  whiteSpace: "nowrap",
-                  cursor: "pointer",
-                }}
-              >
-                <Image src={difference < 0 ? arrowDownRight : arrowUpRight} />
-                {finalReturn}
-              </div>
-            </CustomOverlay>
-            {props.assetTotal !== null && !props.isLoading ? (
-              <CustomOverlay
-                position="bottom"
-                isIcon={false}
-                isInfo={true}
-                isText={true}
-                text={
-                  CurrencyType(false) +
-                  amountFormat(props.assetTotal, "en-US", "USD") +
-                  CurrencyType(true)
-                }
-                className="tool-tip-container-bottom-arrow"
-              >
-                <h3
-                  style={{ whiteSpace: "nowrap", cursor: "pointer" }}
-                  className="space-grotesk-medium wallet-amount"
+              {props?.isPreviewing ? (
+                <div
+                  className="Preview-topbar-btn"
+                  style={{
+                    marginRight: "1.7rem",
+                    // marginLeft: "11rem"
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                  // onClick={handleConnectModal}
                 >
-                  {CurrencyType(false)}
-                  {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
-                  {numToCurrency(props?.assetTotal)} {CurrencyType(true)}
-                </h3>
-              </CustomOverlay>
-            ) : (
-              <div style={{ position: "relative", top: "0.6rem" }}>
-                <CustomLoader loaderType="text" />
+                  <div className="account-detail">
+                    <Image src={EyeIcon} />
+                    <div>Previewing</div>
+                    <div className="accounNameId">
+                      <span className="account-name grey-313">
+                        {TruncateText(
+                          JSON.parse(
+                            window.localStorage.getItem("previewAddress")
+                          )?.address
+                        )}
+                      </span>
+                      {JSON.parse(window.localStorage.getItem("previewAddress"))
+                        ?.nameTag ? (
+                        <span className="grey-313">
+                          {" "}
+                          (
+                          {
+                            JSON.parse(
+                              window.localStorage.getItem("previewAddress")
+                            )?.nameTag
+                          }
+                          )
+                        </span>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div
+                    className="account-detail-change cp change-text"
+                    onClick={changeCurrentAccount}
+                  >
+                    <Image src={ChangeIcon} />
+                    <span className="ml-2">Change</span>
+                  </div>
+                </div>
+              ) : !props?.hideButton ? (
+                <TopWalletExchangeBar
+                  showTopSearchBar={props.showTopSearchBar}
+                  shouldGoToHomeAfterReplace={props.shouldGoToHomeAfterReplace}
+                  goToPageAfterLogin={props.goToPageAfterLogin}
+                  funAfterUserCreate={props.funAfterUserCreate}
+                  isAddNewAddress={props.isAddNewAddress}
+                  isAddNewAddressLoggedIn={props.isAddNewAddressLoggedIn}
+                  hideFocusedInput={props.hideFocusedInput}
+                  focusOriginalInputBar={props.focusOriginalInputBar}
+                  isBlurred={props.isBlurred}
+                  connectedWalletAddress={props.connectedWalletAddress}
+                  connectedWalletevents={props.connectedWalletevents}
+                  updateOnFollow={props.updateOnFollow}
+                  afterAddressFollowed={props.afterAddressFollowed}
+                  isAddressFollowedCount={props.isAddressFollowedCount}
+                  handleShare={props.handleShare}
+                  changeWalletList={props.changeWalletList}
+                  apiResponse={props.apiResponse}
+                  history={history}
+                  buttonRef={buttonRef}
+                  handleAddWalletClick={handleAddWalletClick}
+                  handleConnectModal={handleConnectModal}
+                  handleUpdate={props.handleUpdate}
+                  hideShare={props.hideShare}
+                  openConnectWallet={props.openConnectWallet}
+                  disconnectWallet={props.disconnectWallet}
+                />
+              ) : // <div className="topBarContainer">
+              //   <div
+              //     className="topbar-btn"
+              //     onClick={handleAddWalletClick}
+              //     ref={buttonRef}
+              //     id="address-button"
+              //   >
+              //     <Image src={AddWalletAddress} />
+              //     Add wallet address
+              //   </div>
+              //   <div className="topbar-btn ml-2" onClick={handleConnectModal}>
+              //     <Image className="connect-exchange-img" src={LinkIconBtn} />
+              //     Connect exchange
+              //   </div>
+              // </div>
+              null}
+            </div>
+            {props.showNetworth && (
+              <div
+                className="row-div"
+                style={
+                  {
+                    // position: "absolute",
+                    // // left: "50%",
+                    // // transform: "translateX(-50%)",
+                    // right: 0,
+                    // marginRight: !lochUser ? "8.2rem" : "0rem",
+                  }
+                }
+              >
+                <CustomOverlay
+                  position="bottom"
+                  isIcon={false}
+                  isInfo={true}
+                  isText={true}
+                  text={tempFullReturn}
+                  className="tool-tip-container-bottom-arrow"
+                >
+                  <div
+                    className={`growth-div inter-display-medium f-s-13 lh-15 grey-313 ${
+                      difference < 0 ? "downfall" : ""
+                    }`}
+                    style={{
+                      marginRight: "1.2rem",
+                      whiteSpace: "nowrap",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Image
+                      src={difference < 0 ? arrowDownRight : arrowUpRight}
+                    />
+                    {finalReturn}
+                  </div>
+                </CustomOverlay>
+                {props.assetTotal !== null && !props.isLoading ? (
+                  <CustomOverlay
+                    position="bottom"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      CurrencyType(false) +
+                      amountFormat(props.assetTotal, "en-US", "USD") +
+                      CurrencyType(true)
+                    }
+                    className="tool-tip-container-bottom-arrow"
+                  >
+                    <h3
+                      style={{ whiteSpace: "nowrap", cursor: "pointer" }}
+                      className="space-grotesk-medium wallet-amount"
+                    >
+                      {CurrencyType(false)}
+                      {/* {props.assetTotal.toLocaleString(undefined, { maximumFractionDigits: 2 })} */}
+                      {numToCurrency(props?.assetTotal)} {CurrencyType(true)}
+                    </h3>
+                  </CustomOverlay>
+                ) : (
+                  <div style={{ position: "relative", top: "0.6rem" }}>
+                    <CustomLoader loaderType="text" />
+                  </div>
+                )}
               </div>
             )}
-          </div>
+          </>
         )}
       </div>
       {connectModal ? (

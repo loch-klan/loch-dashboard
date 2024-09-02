@@ -1,0 +1,113 @@
+.back-test-asset-popup-container {
+  position: relative;
+  .back-test-asset-popup {
+    background-color: var(--cardBackgroud);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(2rem, 0rem);
+    padding: 1rem;
+    box-shadow: var(--boxShadowMd);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 2;
+    border: 1px solid var(--strategyBuilderPopUpAssetBorder);
+    .back-test-asset-popup-search-close-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 50rem;
+      .back-test-asset-popup-search {
+        flex: 1;
+        border: 1px solid var(--strategyBuilderPopUpAssetBorder);
+        border-radius: 10px;
+        .back-test-asset-popup-search-input {
+          border-radius: 10px;
+          height: calc(4rem - 1px);
+          padding: 0rem 1rem;
+          border: none;
+          outline: none;
+          width: 100%;
+        }
+        &:hover {
+          border: 1px solid var(--blockOneHeaderGradSecondary);
+        }
+      }
+      .back-test-asset-popup-close {
+        cursor: pointer;
+        background-color: var(--strategyBuilderLightGrey);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 4rem;
+        width: 4rem;
+        border-radius: 10px;
+        .back-test-asset-popup-close-icon {
+          height: 1.5rem;
+          width: 1.5rem;
+          filter: var(--invertColor);
+        }
+        &:hover {
+          background-color: var(--primaryTextColor);
+          .back-test-asset-popup-close-icon {
+            filter: var(--invertColorHover);
+          }
+        }
+      }
+    }
+    .back-test-asset-popup-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0rem 1rem;
+      height: 4rem;
+      border: 1px solid var(--strategyBuilderPopUpAssetBorder);
+      width: 50rem;
+      border-radius: 10px;
+      cursor: pointer;
+      .back-test-asset-popup-item-check-icon {
+        height: 12px;
+      }
+      .back-test-asset-popup-item-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .back-test-asset-popup-item-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 6px;
+
+          height: 2rem;
+          width: 2rem;
+          .back-test-asset-popup-item-icon-image {
+            height: 1.3rem;
+            width: 1.3rem;
+          }
+        }
+        .back-test-asset-popup-item-name {
+          text-shadow: 0.1px 0 var(--primaryTextColor);
+        }
+      }
+      &:hover {
+        background-color: var(--greyCardBackgroud);
+      }
+      &:active {
+        background-color: var(--primaryTextColor);
+        color: var(--cardBackgroud);
+      }
+    }
+    .back-test-asset-popup-item-selected {
+      background-color: var(--strategyBuilderDropdownSelected);
+      cursor: default;
+      &:hover {
+        background-color: var(--strategyBuilderDropdownSelected);
+      }
+    }
+  }
+}

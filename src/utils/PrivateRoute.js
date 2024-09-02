@@ -19,6 +19,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     setIsSidebarClosed(!isSidebarClosed);
   };
   useEffect(() => {
+    window.dispatchEvent(new Event("resize"));
+  }, [isSidebarClosed]);
+
+  useEffect(() => {
     const isSidebarClosed = window.localStorage.getItem("isSidebarClosed");
     if (isSidebarClosed === "true") {
       setIsSidebarClosed(true);

@@ -296,6 +296,40 @@
   // Mobile Add Address Signed out
   --mobileSearchInputShadow: rgba(255, 255, 255, 0.95);
   --tableFirstRowShadow: rgba(0, 0, 0, 0.04);
+
+  // Back Test
+  --strategyBuilderBuilderBackGround: #ebebeb;
+
+  --strategyBuilderChartBackGround: #101010;
+  --strategyBuilderMainBlockBackground: #00000014;
+
+  --strategyBuilderLighterPurple: #e8bce0;
+  --strategyBuilderLighterYellow: #e0ef67;
+  --strategyBuilderLighterBlue: #d9dbeb;
+
+  --strategyBuilderLightGreen: #adcdc0;
+  --strategyBuilderLightGreenHover: #deebe6;
+  --strategyBuilderLightPurple: #e5e1f9;
+  --strategyBuilderLightPurpleHover: #f6e4f3;
+  --strategyBuilderLightYellow: #f3f9c2;
+  --strategyBuilderLightYellowHover: #f3f9c2;
+  --strategyBuilderLightBlue: #d4eff6;
+  --strategyBuilderLightBlueHover: #f0f1f7;
+
+  --strategyBuilderDarkPurple: #b3a3ff;
+  --strategyBuilderDarkYellow: #cbffa2;
+  --strategyBuilderDarkBlue: #99ceff;
+
+  --strategyBuilderLightGrey: #f3f3f3;
+  --strategyBuilderDarkGrey: #d9d9d9;
+  --strategyBuilderLightRed: #fef2f2;
+  --strategyBuilderDarkRed: #fac5c5;
+
+  --strategyBuilderPopUpAssetBorder: #f1f1f1;
+
+  --strategyBuilderDropdownSelected: #cbf45880;
+
+  --strategyBuilderBorder: #0000000d;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -581,6 +615,12 @@
   --dummyProfileBackground: url(../../images/DummyProfilePageDark.png);
   --mobileSearchInputShadow: rgba(0, 0, 0, 0.95);
   --tableFirstRowShadow: rgba(255, 255, 255, 0.06);
+
+  //Back Test
+  --strategyBuilderChartBackGround: #191919;
+  --strategyBuilderMainBlockBackground: #00000014;
+
+  --strategyBuilderLightGrey: #303030;
 }
 [data-theme="dark2"] {
   // UPDATED

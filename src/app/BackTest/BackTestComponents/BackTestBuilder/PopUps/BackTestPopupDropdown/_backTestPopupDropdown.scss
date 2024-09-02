@@ -1,0 +1,80 @@
+.back-test-pop-up-dropdown-container {
+  position: relative;
+
+  .back-test-pop-up-dropdown {
+    border: 1px solid var(--strategyBuilderPopUpAssetBorder);
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    &:hover {
+      background-color: var(--strategyBuilderPopUpAssetBorder);
+    }
+    // background-color: var(--strategyBuilderLightGrey);
+  }
+  .back-test-pop-up-dropdown-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    position: absolute;
+    border: 1px solid var(--strategyBuilderPopUpAssetBorder);
+    background-color: var(--cardBackgroud);
+    padding: 0.8rem 0rem;
+    border-radius: 6px;
+    top: 0;
+    right: 0;
+    transform: translateX(calc(100% + 0.4rem));
+    width: 20rem;
+    z-index: 10;
+    .back-test-popup-search-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: calc(100% - 2rem);
+      margin: 0rem 1rem;
+      .back-test-popup-search {
+        flex: 1;
+        border: 1px solid var(--strategyBuilderPopUpAssetBorder);
+        border-radius: 6px;
+        .back-test-popup-search-input {
+          border-radius: 5px;
+          height: calc(3.5rem - 1px);
+          padding: 0rem 0.8rem;
+          border: none;
+          outline: none;
+          width: 100%;
+        }
+        &:hover {
+          border: 1px solid var(--blockOneHeaderGradSecondary);
+        }
+      }
+    }
+    .back-test-popup-list-item {
+      height: calc(3.5rem - 1px);
+      margin: 0rem 0.2rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0rem 1rem;
+      cursor: pointer;
+      .back-test-popup-list-item-check-icon {
+        height: 12px;
+      }
+      &:hover {
+        background-color: var(--greyCardBackgroud);
+      }
+    }
+    .back-test-popup-list-item-selected {
+      background-color: var(--strategyBuilderDropdownSelected);
+      cursor: default;
+      &:hover {
+        background-color: var(--strategyBuilderDropdownSelected);
+      }
+    }
+  }
+}

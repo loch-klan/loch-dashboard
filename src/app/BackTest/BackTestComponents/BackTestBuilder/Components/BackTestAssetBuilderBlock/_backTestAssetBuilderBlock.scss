@@ -1,0 +1,28 @@
+.back-test-asset-builder {
+  height: 100%;
+  padding-left: 1.5rem;
+  font-size: 13px;
+  text-shadow: 0.4px 0 var(--primaryTextColor);
+  .back-test-asset-popup-item-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .back-test-asset-popup-item-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+
+      height: 2rem;
+      width: 2rem;
+      .back-test-asset-popup-item-icon-image {
+        height: 1.3rem;
+        width: 1.3rem;
+      }
+    }
+    .back-test-asset-popup-item-name {
+      text-shadow: 0.1px 0 var(--primaryTextColor);
+    }
+  }
+}

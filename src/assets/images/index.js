@@ -15,3 +15,15 @@ export { default as PaywallSuccessLochLogoImage } from "./PaywallSuccessLochLogo
 export { default as PaywallSuccessLochLogoMobileImage } from "./PaywallSuccessLochLogoMobile.png";
 export { default as DummyHomePageImage } from "./DummyHomePage.png";
 export { default as DummyProfilePageImage } from "./DummyProfilePage.png";
+export { default as GraphLogo } from "./graph-logo.svg";
+export { default as GraphLogoDark } from "./graph-logo-dark.svg";
+export { default as GraphHandle } from "./handle.svg";
+export { default as FakeStrategyImage } from "./FakeStrategy.png";
+export { default as FakeStrategy2Image } from "./FakeStrategy2.png";
+export { default as FakeStrategy3Image } from "./FakeStrategy3.png";
+export { default as FakeStrategy4Image } from "./FakeStrategy4.png";
+export { default as FakeStrategy5Image } from "./FakeStrategy5.png";
+export { default as FakeStrategy6Image } from "./FakeStrategy6.png";
+export { default as FakeStrategyBackgroundImage } from "./FakeStrategyBackground.png";
+export { default as FakeStrategyBackground2Image } from "./FakeStrategyBackground2.png";
+export { default as BackTestGraphHandleIcon } from "./BackTestGraphHandle.svg";
