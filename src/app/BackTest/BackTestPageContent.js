@@ -4,18 +4,15 @@
 
 import React from "react";
 
+import moment from "moment";
+import Calendar from "react-calendar";
+import OutsideClickHandler from "react-outside-click-handler";
 import { connect } from "react-redux";
 import { BaseReactComponent } from "../../utils/form";
 import { mobileCheck } from "../../utils/ReusableFunctions";
 import TransactionTable from "../intelligence/TransactionTable";
-import BackTestChart from "./BackTestComponents/BackTestChart/BackTestChart";
 import BackTestBuilder from "./BackTestComponents/BackTestBuilder/BackTestBuilder";
-import { Button } from "react-bootstrap";
-import OutsideClickHandler from "react-outside-click-handler";
-import moment from "moment";
-import Calendar from "react-calendar";
-import CustomDropdown from "../../utils/form/CustomDropdownPrice";
-import { StrategyBuilderBackgroundDotIcon } from "../../assets/images/icons";
+import BackTestChart from "./BackTestComponents/BackTestChart/BackTestChart";
 
 class BackTestPageContent extends BaseReactComponent {
   constructor(props) {
@@ -33,12 +30,7 @@ class BackTestPageContent extends BaseReactComponent {
           <div className="btpcb-title btpcb-chart-header">
             <div>Strategy Builder</div>
           </div>
-          <div
-            style={{
-              backgroundImage: `url(${StrategyBuilderBackgroundDotIcon})`,
-            }}
-            className="btpcb-left-block"
-          >
+          <div className="btpcb-left-block">
             <BackTestBuilder
               saveStrategyCheck={this.props.saveStrategyCheck}
               showSaveStrategy={this.props.showSaveStrategy}
@@ -56,6 +48,7 @@ class BackTestPageContent extends BaseReactComponent {
         </div>
         <div className="back-test-page-content-block">
           <BackTestChart
+            calcChartData={this.props.calcChartData}
             performanceVisualizationGraphLoading={
               this.props.performanceVisualizationGraphLoading
             }
@@ -80,9 +73,10 @@ class BackTestPageContent extends BaseReactComponent {
             style={{
               marginTop: "2rem",
               display: "flex",
-              alignItems: "center",
+              alignItems: this.state.isMobile ? "flex-start" : "center",
               justifyContent: "flex-start",
-              gap: "10px",
+              flexDirection: this.state.isMobile ? "column" : "row",
+              gap: this.state.isMobile ? "5px" : "10px",
             }}
             className="btpcb-title"
           >
@@ -189,7 +183,7 @@ class BackTestPageContent extends BaseReactComponent {
                 addWatermark={!this.state.isMobile}
                 fakeWatermark={this.state.isMobile}
                 xAxisScrollable={this.state.isMobile}
-                xAxisScrollableColumnWidth={4.5}
+                xAxisScrollableColumnWidth={3.5}
                 isMiniversion={this.state.isMobile}
               />
             </div>

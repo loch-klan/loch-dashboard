@@ -2,14 +2,17 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import {
   RoundedArrowDownIcon,
+  StrategyBuilderAddIcon,
   StrategyBuilderAssetIcon,
   StrategyBuilderConditionIcon,
   StrategyBuilderWeightIcon,
 } from "../../../../../../assets/images/icons";
 import { BaseReactComponent } from "../../../../../../utils/form";
 import { mobileCheck } from "../../../../../../utils/ReusableFunctions";
+import BackTestAddItems from "../../BuildingBlocks/BackTestAddItems/BackTestAddItems";
 import BackTestEditDelete from "../../BuildingBlocks/BackTestEditDelete/BackTestEditDelete";
 import "./_backTestBuilderBlock.scss";
+import BackTestAddItemsBellow from "../../BuildingBlocks/BackTestAddItemsBellow/BackTestAddItemsBellow";
 
 class BackTestBuilderBlock extends BaseReactComponent {
   constructor(props) {
@@ -22,6 +25,8 @@ class BackTestBuilderBlock extends BaseReactComponent {
       titleClassName: "",
       editBtnClicked: false,
       deleteBtnClicked: false,
+      isOptionsOpenToggle: false,
+      isOptionsOpenToggleBellow: false,
     };
   }
   componentDidMount() {
@@ -49,12 +54,21 @@ class BackTestBuilderBlock extends BaseReactComponent {
         titleIcon: StrategyBuilderWeightIcon,
         titleClassName: "sbb-title-weight",
       });
+    } else if (this.props.blockType === "weight percentage") {
+      this.setState({
+        titleIcon: StrategyBuilderWeightIcon,
+        titleClassName: "sbb-title-weight",
+      });
+    } else if (this.props.blockType === "add item") {
+      this.setState({
+        titleName: "Add a block",
+        titleIcon: StrategyBuilderAddIcon,
+        // titleClassName: "sbb-title-weight",
+      });
     }
   }
   onDeleteClick = () => {
     this.setState({ deleteBtnClicked: !this.state.deleteBtnClicked });
-    console.log("path ", this.props.path);
-    console.log("strategyBuilderString ", this.props.strategyBuilderString);
 
     let itemToBeChangedOriginal = structuredClone(
       this.props.strategyBuilderString
@@ -63,21 +77,54 @@ class BackTestBuilderBlock extends BaseReactComponent {
     this.props.path.forEach((element) => {
       itemToBeChanged = itemToBeChanged[element];
     });
-    if (this.props.blockType === "asset") {
-      itemToBeChanged.splice(this.props.assetIndex, 1);
-    } else if (this.props.blockType === "weight") {
-      itemToBeChanged.asset = {};
-    } else if (this.props.blockType === "condition if") {
-      itemToBeChanged.condition = {};
-    } else if (this.props.blockType === "condition else") {
-      console.log("itemToBeChanged ", itemToBeChanged);
+    if (
+      this.props.blockType === "asset" ||
+      this.props.blockType === "condition if" ||
+      this.props.blockType === "weight percentage"
+    ) {
+      if (this.props.weightPath.length >= 0 && this.props.weightIndex !== -1) {
+        let weightItemToBeChanged = itemToBeChangedOriginal;
+        this.props.weightPath.forEach((element) => {
+          weightItemToBeChanged = weightItemToBeChanged[element];
+        });
+        weightItemToBeChanged = weightItemToBeChanged.weight.weight_item;
+        let arrLength = weightItemToBeChanged.length;
+        arrLength = arrLength - 1;
+        let equalWeight = 100 / arrLength;
+        equalWeight = Math.round(equalWeight * 100) / 100;
+        weightItemToBeChanged.splice(this.props.weightIndex, 1);
 
+        let tempWeightItemToBeChanged = weightItemToBeChanged.map(
+          (item, index) => {
+            return {
+              ...item,
+              percentage: equalWeight,
+            };
+          }
+        );
+        weightItemToBeChanged.splice(0, weightItemToBeChanged.length);
+        tempWeightItemToBeChanged.forEach((item) => {
+          weightItemToBeChanged.push(item);
+        });
+      }
+    } else if (this.props.blockType === "weight") {
+      delete itemToBeChanged.weight;
+    } else if (this.props.blockType === "condition else") {
       itemToBeChanged.failed = {};
     }
     if (this.props.changeStrategyBuilderString) {
       this.props.changeStrategyBuilderString(itemToBeChangedOriginal);
-      console.log("itemToBeChangedOriginal ", itemToBeChangedOriginal);
     }
+  };
+  onAddClick = () => {
+    this.setState({
+      isOptionsOpenToggle: !this.state.isOptionsOpenToggle,
+    });
+  };
+  onAddBellowClick = () => {
+    this.setState({
+      isOptionsOpenToggleBellow: !this.state.isOptionsOpenToggleBellow,
+    });
   };
   onEditClick = () => {
     this.setState({ editBtnClicked: !this.state.editBtnClicked });
@@ -94,44 +141,102 @@ class BackTestBuilderBlock extends BaseReactComponent {
     );
     return (
       <div
-        className={`strategy-builder-block-container ${this.props.passedClass}`}
+        className={`strategy-builder-block-container ${
+          this.props.isError ? "strategy-builder-block-container-error" : ""
+        } ${this.props.passedClass}`}
       >
         <div
           style={{
             width: this.props.blockLevel * 4 + "rem",
+            minWidth: this.props.blockLevel * 4 + "rem",
           }}
         />
-
-        <div
-          className={`strategy-builder-block ${
-            this.props.blockType !== "condition if" &&
-            this.props.blockType !== "asset"
-              ? "strategy-builder-block-no-hover"
-              : ""
-          }`}
-        >
-          <div className={`sbb-title ${this.state.titleClassName}`}>
-            <div className="sbb-title-image-container">
-              <Image className="sbb-title-image" src={this.state.titleIcon} />
-            </div>
-            <div className="sbb-title-text">{this.state.titleName}</div>
-          </div>
-          <div className="sbb-dropdown-children">{ChildrenWithProps}</div>
-          {this.props.showDropDown ? (
-            <div className="sbb-dropdown-container">
-              <div>:</div>
-              <div className="sbb-dropdown">
-                <Image
-                  className="sbb-dropdown-arrow"
-                  src={RoundedArrowDownIcon}
-                />
+        {this.props.blockType === "add item" ? (
+          <div
+            className={`strategy-builder-block strategy-builder-block-no-hover`}
+            onClick={this.onAddClick}
+          >
+            <div className={`sbb-title ${this.state.titleClassName}`}>
+              <div className="sbb-title-image-container">
+                <Image className="sbb-title-image" src={this.state.titleIcon} />
               </div>
+              {this.state.titleName ? (
+                <div className="sbb-title-text">{this.state.titleName}</div>
+              ) : null}
             </div>
-          ) : null}
-        </div>
-        <BackTestEditDelete
-          onEditClick={this.onEditClick}
-          onDeleteClick={this.onDeleteClick}
+          </div>
+        ) : (
+          <>
+            <div className={`strategy-builder-block `}>
+              <div className={`sbb-title ${this.state.titleClassName}`}>
+                <div
+                  onClick={this.onAddClick}
+                  className="sbb-title-image-container"
+                >
+                  <Image
+                    className="sbb-title-image"
+                    src={this.state.titleIcon}
+                  />
+                </div>
+                {this.state.titleName ? (
+                  <div className="sbb-title-text">{this.state.titleName}</div>
+                ) : null}
+              </div>
+              {ChildrenWithProps ? (
+                <div className="sbb-dropdown-children">{ChildrenWithProps}</div>
+              ) : null}
+              {this.props.showDropDown ? (
+                <div className="sbb-dropdown-container">
+                  <div>:</div>
+                  <div className="sbb-dropdown">
+                    <Image
+                      className="sbb-dropdown-arrow"
+                      src={RoundedArrowDownIcon}
+                    />
+                  </div>
+                </div>
+              ) : null}
+            </div>
+            <BackTestEditDelete
+              onEditClick={this.onEditClick}
+              onDeleteClick={this.onDeleteClick}
+              onAddClick={this.onAddBellowClick}
+              hideAddBtn={
+                this.props.blockType === "weight percentage" ? true : false
+              }
+              hideDeleteBtn={
+                this.props.blockType === "weight percentage" ? true : false
+              }
+            />
+
+            <BackTestAddItemsBellow
+              //WEIGHT
+              weightPath={this.props.weightPath}
+              weightIndex={this.props.weightIndex}
+              //WEIGHT
+              blockType={this.props.blockType}
+              path={this.props.path}
+              assetIndex={this.props.assetIndex}
+              strategyBuilderString={this.props.strategyBuilderString}
+              changeStrategyBuilderString={
+                this.props.changeStrategyBuilderString
+              }
+              isOptionsOpenToggle={this.state.isOptionsOpenToggleBellow}
+            />
+          </>
+        )}
+
+        <BackTestAddItems
+          //WEIGHT
+          weightPath={this.props.weightPath}
+          weightIndex={this.props.weightIndex}
+          //WEIGHT
+          blockType={this.props.blockType}
+          path={this.props.path}
+          assetIndex={this.props.assetIndex}
+          strategyBuilderString={this.props.strategyBuilderString}
+          changeStrategyBuilderString={this.props.changeStrategyBuilderString}
+          isOptionsOpenToggle={this.state.isOptionsOpenToggle}
         />
       </div>
     );

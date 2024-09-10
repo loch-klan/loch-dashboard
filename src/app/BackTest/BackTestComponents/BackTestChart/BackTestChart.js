@@ -23,6 +23,8 @@ class BackTestChart extends BaseReactComponent {
     this.state = {
       isMobile: mobileCheck(),
       todayDate: new Date(),
+      prevMinRange: -1,
+      prevMaxRange: -1,
     };
   }
   graphContainerSetting = {
@@ -167,6 +169,8 @@ class BackTestChart extends BaseReactComponent {
                     itemStyle: {
                       color: "var(--primaryTextColor)",
                       textTransform: "uppercase",
+                      fontWeight: "500",
+                      textShadow: "0.1px 0 var(--primaryTextColor)",
                     },
                   },
                   title: {
@@ -217,7 +221,11 @@ class BackTestChart extends BaseReactComponent {
                           }
                           return `<div class="back-test-chart-tool-tip">
                               <div>${itemTitle}</div>
-                              <div>${point.y}%</div>
+                              <div>${amountFormat(
+                                point.y,
+                                "en-US",
+                                "USD"
+                              )}%</div>
                               <div class="back-test-chart-tool-tip-amount">${
                                 CurrencyType(false) +
                                 amountFormat(itemAmount, "en-US", "USD")
@@ -267,32 +275,69 @@ class BackTestChart extends BaseReactComponent {
                         const chart = this;
                         let startIndex = 0;
                         let endIndex = 0;
+                        let selectedItem = 0;
+                        let selectedItemIndex = 0;
+                        if (
+                          parent &&
+                          parent.props &&
+                          parent.props.performanceVisualizationGraphData &&
+                          parent.props.performanceVisualizationGraphData
+                            .length > 0
+                        ) {
+                          parent.props.performanceVisualizationGraphData.forEach(
+                            (curItem, curItemIndex) => {
+                              if (
+                                curItem.data &&
+                                curItem.data[0] &&
+                                curItem.data[0][0] &&
+                                curItem.data[0][0] > selectedItem
+                              ) {
+                                selectedItem = curItem.data[0][0];
+                                selectedItemIndex = curItemIndex;
+                              }
+                            }
+                          );
+                        }
 
                         if (
                           parent &&
                           parent.props &&
                           parent.props.performanceVisualizationGraphData &&
-                          parent.props.performanceVisualizationGraphData[0] &&
-                          parent.props.performanceVisualizationGraphData[0]
-                            .data &&
-                          parent.props.performanceVisualizationGraphData[0].data
-                            .length > 9
+                          parent.props.performanceVisualizationGraphData[
+                            selectedItemIndex
+                          ] &&
+                          parent.props.performanceVisualizationGraphData[
+                            selectedItemIndex
+                          ].data &&
+                          parent.props.performanceVisualizationGraphData[
+                            selectedItemIndex
+                          ].data.length > 0
                         ) {
                           if (
-                            parent.props.performanceVisualizationGraphData[0]
-                              .data[0]
+                            parent.props.performanceVisualizationGraphData[
+                              selectedItemIndex
+                            ].data[0]
                           ) {
                             startIndex =
-                              parent.props.performanceVisualizationGraphData[0]
-                                .data[0][0];
+                              parent.props.performanceVisualizationGraphData[
+                                selectedItemIndex
+                              ].data[0][0];
                           }
+
+                          let quaterLength =
+                            parent.props.performanceVisualizationGraphData[
+                              selectedItemIndex
+                            ].data.length;
+                          quaterLength = Math.round(quaterLength / 3);
                           if (
-                            parent.props.performanceVisualizationGraphData[0]
-                              .data[9]
+                            parent.props.performanceVisualizationGraphData[
+                              selectedItemIndex
+                            ].data[quaterLength]
                           ) {
                             endIndex =
-                              parent.props.performanceVisualizationGraphData[0]
-                                .data[9][0];
+                              parent.props.performanceVisualizationGraphData[
+                                selectedItemIndex
+                              ].data[quaterLength][0];
                           }
                         }
                         chart.xAxis[0].setExtremes(startIndex, endIndex);
@@ -326,7 +371,7 @@ class BackTestChart extends BaseReactComponent {
                     : [],
                   yAxis: {
                     opposite: false,
-                    gridLineColor: "#E5E5E6",
+                    gridLineColor: "var(--strategyBuilderGraphGrid)",
                     gridLineWidth: 1,
                     tickAmount: 8,
                     labels: {
@@ -337,8 +382,20 @@ class BackTestChart extends BaseReactComponent {
                   xAxis: {
                     tickAmount: 8,
                     lineWidth: 0,
-                    gridLineColor: "#E5E5E6",
+                    gridLineColor: "var(--strategyBuilderGraphGrid)",
                     gridLineWidth: 1,
+                    events: {
+                      afterSetExtremes: function (e) {
+                        let minEle = moment(e.min).format("DD MM YYYY");
+                        let maxEle = moment(e.max).format("DD MM YYYY");
+                        if (this.reDraw) {
+                          clearTimeout(this.reDraw);
+                        }
+                        this.reDraw = setTimeout(() => {
+                          parent.props.calcChartData(minEle, maxEle);
+                        }, 500);
+                      },
+                    },
                     labels: {
                       formatter: function () {
                         return `<div class="back-test-chart-xaxis-lable">${moment(
@@ -350,9 +407,9 @@ class BackTestChart extends BaseReactComponent {
                   navigator: {
                     margin: 10,
                     height: 25,
-                    outlineColor: "#B3B4B7",
+                    outlineColor: "var(--strategyBuilderGraphNavigatorOuline)",
                     outlineWidth: 1,
-                    maskFill: "#CACBCC80",
+                    maskFill: "var(--strategyBuilderGraphNavigatorMaskFill)",
                     stickToMax: false,
 
                     handles: {
@@ -374,7 +431,8 @@ class BackTestChart extends BaseReactComponent {
                         {
                           from: -100000000000,
                           to: 10000000000000000,
-                          color: "#E5E5E680",
+                          color:
+                            "var(--strategyBuilderGraphNavigatorMaskBackground)",
                         },
                       ],
                     },

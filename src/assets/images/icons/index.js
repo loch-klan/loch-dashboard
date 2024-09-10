@@ -185,3 +185,5 @@ export { default as StrategyBuilderAssetUsdtIcon } from "./StrategyBuilderAssetU
 export { default as StrategyBuilderAssetEthIcon } from "./StrategyBuilderAssetEth.svg";
 export { default as StrategyBuilderAssetBtcIcon } from "./StrategyBuilderAssetBtc.svg";
 export { default as StrategyBuilderBackgroundDotIcon } from "./strategyBuilderBackgroundDot.svg";
+export { default as StrategyBuilderAddIcon } from "./strategyBuilderAdd.svg";
+export { default as StrategyBuilderEmptyIcon } from "./strategyBuilderEmpty.svg";

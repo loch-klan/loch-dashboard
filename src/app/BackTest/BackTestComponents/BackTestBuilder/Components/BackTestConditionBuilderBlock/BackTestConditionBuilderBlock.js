@@ -156,13 +156,13 @@ class BackTestConditionBuilderBlock extends BaseReactComponent {
       <>
         <div className="sbb-content">
           <div className="back-test-condition-builder">
-            <div>
+            <div className="dotDotText">
               {this.state.shouldShowDays ? (
                 <>
                   {this.state.selectedDaysConditions
                     ? this.state.selectedDaysConditions
                     : "0"}
-                  d{" "}
+                  d{"  "}
                 </>
               ) : null}
               <span className="back-test-condition-builder-grey-text">

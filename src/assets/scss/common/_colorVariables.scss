@@ -132,6 +132,7 @@
 
   //Box shadow color
   --boxShadowColorMd: rgba(0, 0, 0, 0.04);
+  --boxShadowColorLg: rgba(0, 0, 0, 0.04);
   --profileHideMultiWallet: #f2f2f2;
 
   --boxShadowMd: 0 2px 10px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.04);
@@ -298,9 +299,17 @@
   --tableFirstRowShadow: rgba(0, 0, 0, 0.04);
 
   // Back Test
-  --strategyBuilderBuilderBackGround: #ebebeb;
+  --strategyBuilderBackGroundImage: url(../../images/icons/strategyBuilderBackgroundDot.svg);
+  --strategyBuilderBackGround: #ebebeb;
+  --strategyBuilderTableHeader: #f2f2f2;
+  --strategyBuilderGraphGrid: #e5e5e6;
+  --strategyBuilderGraphNavigatorOuline: #b3b4b7;
+  --strategyBuilderGraphNavigatorMaskFill: #cacbcc80;
+  --strategyBuilderGraphNavigatorMaskBackground: #e5e5e680;
+  --strategyBuilderGraphOne: #8043f3;
+  --strategyBuilderGraphTwo: #a2dc00;
+  --strategyBuilderGraphThree: #2b7fff;
 
-  --strategyBuilderChartBackGround: #101010;
   --strategyBuilderMainBlockBackground: #00000014;
 
   --strategyBuilderLighterPurple: #e8bce0;
@@ -330,6 +339,10 @@
   --strategyBuilderDropdownSelected: #cbf45880;
 
   --strategyBuilderBorder: #0000000d;
+
+  --strategyBuilderAddBackground: #303030;
+
+  --strategyBuilderEmptyText: #8d8d8d;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -458,6 +471,7 @@
 
   //Box shadow color
   --boxShadowColorMd: rgba(255, 255, 255, 0.04);
+  --boxShadowColorLg: rgba(255, 255, 255, 0.1);
   --profileHideMultiWallet: #101010;
 
   --boxShadowMd: none;
@@ -617,10 +631,20 @@
   --tableFirstRowShadow: rgba(255, 255, 255, 0.06);
 
   //Back Test
-  --strategyBuilderChartBackGround: #191919;
   --strategyBuilderMainBlockBackground: #00000014;
 
   --strategyBuilderLightGrey: #303030;
+
+  --strategyBuilderBackGroundImage: url(../../images/icons/strategyBuilderBackgroundDotDark.svg);
+  --strategyBuilderBackGround: #1a1a1a;
+  --strategyBuilderTableHeader: #0f0f0f;
+  --strategyBuilderGraphGrid: #343333;
+  --strategyBuilderGraphNavigatorOuline: #343333;
+  --strategyBuilderGraphNavigatorMaskFill: #5c5c5c80;
+  --strategyBuilderGraphNavigatorMaskBackground: #343333;
+  --strategyBuilderGraphOne: rgba(128, 67, 243, 0.6);
+  --strategyBuilderGraphTwo: rgba(162, 220, 0, 0.6);
+  --strategyBuilderGraphThree: rgba(43, 127, 255, 0.6);
 }
 [data-theme="dark2"] {
   // UPDATED

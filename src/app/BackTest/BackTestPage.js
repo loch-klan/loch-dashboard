@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { BaseReactComponent } from "../../utils/form";
 
 import moment from "moment";
-import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 import {
   mobileCheck,
   numToCurrency,
@@ -16,6 +15,7 @@ import WelcomeCard from "../Portfolio/WelcomeCard";
 import "./_backTest.scss";
 import { getBackTestChart, getBackTestTable } from "./Api/BackTestApi";
 import BackTestPageContent from "./BackTestPageContent";
+import BackTestPageMobile from "./BackTestPageMobile";
 
 class BackTestPage extends BaseReactComponent {
   constructor(props) {
@@ -27,7 +27,7 @@ class BackTestPage extends BaseReactComponent {
       toDate: new Date(),
       fromDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
       fromAndToDate: "",
-      isSaveInvestStrategy: false,
+      isSaveInvestStrategy: true,
       saveStrategyCheck: false,
       loadingSaveInvestStrategyBtn: false,
       strategiesOptions: [
@@ -56,7 +56,11 @@ class BackTestPage extends BaseReactComponent {
               className="history-table-header-col no-hover history-table-header-col-curve-left"
               id="time"
             >
-              <span className="inter-display-medium f-s-11 "></span>
+              <span className="inter-display-medium f-s-11 zeroOpacity">
+                Strategy
+                <br />
+                name
+              </span>
             </div>
           ),
           dataKey: "strategy",
@@ -162,9 +166,9 @@ class BackTestPage extends BaseReactComponent {
           labelName: (
             <div className="history-table-header-col no-hover" id="time">
               <span className="inter-display-medium f-s-11 ">
-                ANNUAL
+                Annual
                 <br />
-                RETURN
+                return
               </span>
             </div>
           ),
@@ -207,9 +211,9 @@ class BackTestPage extends BaseReactComponent {
           labelName: (
             <div className="history-table-header-col no-hover" id="time">
               <span className="inter-display-medium f-s-11 ">
-                MAX 1D
+                Max 1d
                 <br />
-                DRAWDOWN
+                drawdown
               </span>
             </div>
           ),
@@ -253,9 +257,9 @@ class BackTestPage extends BaseReactComponent {
           labelName: (
             <div className="history-table-header-col no-hover" id="time">
               <span className="inter-display-medium f-s-11 ">
-                MAX 1W
+                Max 1w
                 <br />
-                DRAWDOWN
+                drawdown
               </span>
             </div>
           ),
@@ -299,9 +303,9 @@ class BackTestPage extends BaseReactComponent {
           labelName: (
             <div className="history-table-header-col no-hover" id="time">
               <span className="inter-display-medium f-s-11 ">
-                MAX 1M
+                Max 1m
                 <br />
-                DRAWDOWN
+                drawdown
               </span>
             </div>
           ),
@@ -398,12 +402,10 @@ class BackTestPage extends BaseReactComponent {
   };
 
   showSaveStrategy = () => {
-    if (!this.state.isSaveInvestStrategy) {
-      this.setState({
-        isSaveInvestStrategy: true,
-        loadingSaveInvestStrategyBtn: false,
-      });
-    }
+    this.setState({
+      isSaveInvestStrategy: true,
+      loadingSaveInvestStrategyBtn: false,
+    });
   };
   hideSaveStrategy = () => {
     if (this.state.isSaveInvestStrategy) {
@@ -440,7 +442,7 @@ class BackTestPage extends BaseReactComponent {
       if (item === "eth" || item === "btc") {
         tempTokenList.push(item);
       } else {
-        tempApiData.append("query_id", item);
+        tempApiData.append("strategy_id", item);
         tempApiData.append("current_portfolio_balance", 20000);
       }
     });
@@ -454,7 +456,9 @@ class BackTestPage extends BaseReactComponent {
   };
   getDataForGraph = async (passedAssets, passedColor) => {
     let tempToDate = new Date();
-    let tempFromDate = new Date(new Date().setMonth(new Date().getMonth() - 1));
+    let tempFromDate = new Date(
+      new Date().setFullYear(new Date().getFullYear() - 10)
+    );
     let tempApiData = new URLSearchParams();
     let tempTokenList = [];
 
@@ -462,7 +466,7 @@ class BackTestPage extends BaseReactComponent {
       if (item === "eth" || item === "btc") {
         tempTokenList.push(item);
       } else {
-        tempApiData.append("query_id", item);
+        tempApiData.append("strategy_id", item);
         tempApiData.append("current_portfolio_balance", 20000);
       }
     });
@@ -619,100 +623,7 @@ class BackTestPage extends BaseReactComponent {
       }
     }
     if (prevProps.BackTestChartState !== this.props.BackTestChartState) {
-      let tempBtChartData = this.props.BackTestChartState;
-
-      if (tempBtChartData) {
-        let tempRangeDateHolder = "";
-        this.setState({
-          performanceVisualizationGraphLoading: false,
-        });
-
-        let allGraphListItems = [];
-        tempBtChartData.forEach((curItem, curIndex) => {
-          for (var key in curItem) {
-            let tempRangeDate = "";
-            if (curItem.hasOwnProperty(key)) {
-              let itemFound = curItem[key];
-              if (itemFound && itemFound.constructor === Array) {
-                let chartDataPointHolder = itemFound.map((item, mapIndex) => {
-                  if (mapIndex === 0 && curIndex === 0) {
-                    tempRangeDate =
-                      tempRangeDate +
-                      moment(item[0]).format("MMM DD YYYY") +
-                      " to ";
-                  }
-                  if (
-                    mapIndex === tempBtChartData.length - 1 &&
-                    curIndex === 0
-                  ) {
-                    tempRangeDate =
-                      tempRangeDate + moment(item[0]).format("MMM DD YYYY");
-                  }
-
-                  const dateObj = new Date(item[0]);
-                  const timestamp = dateObj.getTime();
-
-                  let tempValueHolder = 0;
-                  if (mapIndex > 0 && item[1] && itemFound[0][1]) {
-                    tempValueHolder = parseFloat(
-                      (
-                        ((item[1] - itemFound[0][1]) / itemFound[0][1]) *
-                        100
-                      ).toFixed(2)
-                    );
-                  }
-                  let tempHolder = [
-                    timestamp,
-                    tempValueHolder,
-                    parseFloat(item[1]).toFixed(2),
-                  ];
-                  return tempHolder;
-                });
-
-                const tempGraphOptions = {
-                  name: key,
-                  data: chartDataPointHolder,
-                  type: "area",
-                  fillOpacity: 0,
-                  // fillColor:
-                  //   curIndex === 0
-                  //     ? {
-                  //         linearGradient: [0, 0, 0, 200],
-
-                  //         stops: [
-                  //           [0, "rgba(128, 67, 243,0.5)"],
-                  //           [1, "transparent"],
-                  //         ],
-                  //       }
-                  //     : curIndex === 1
-                  //     ? {
-                  //         linearGradient: [0, 0, 0, 200],
-                  //         stops: [
-                  //           [0, "rgba(86, 185, 182,0.5)"],
-                  //           [1, "transparent"],
-                  //         ],
-                  //       }
-                  //     : {
-                  //         linearGradient: [0, 0, 0, 200],
-                  //         stops: [
-                  //           [0, "rgba(43, 127, 255,0.5)"],
-                  //           [1, "transparent"],
-                  //         ],
-                  //       },
-                  color: strategyByilderChartLineColorByIndex(curIndex),
-                };
-                allGraphListItems.push(tempGraphOptions);
-                tempRangeDateHolder = tempRangeDate;
-              }
-            }
-          }
-        });
-
-        this.setState({
-          performanceVisualizationGraphData: allGraphListItems,
-          fromAndToDate: tempRangeDateHolder,
-        });
-      }
+      this.calcChartData();
     }
     if (
       prevState.selectedStrategiesOptions !==
@@ -734,6 +645,107 @@ class BackTestPage extends BaseReactComponent {
       }
     }
   }
+  calcChartData = (minRange = 0, maxRange) => {
+    let tempBtChartData = this.props.BackTestChartState;
+
+    if (tempBtChartData && tempBtChartData.length > 0) {
+      let tempRangeDateHolder = "";
+      this.setState({
+        performanceVisualizationGraphLoading: false,
+      });
+
+      let allGraphListItems = [];
+      tempBtChartData.forEach((curItem, curIndex) => {
+        for (var key in curItem) {
+          let tempRangeDate = "";
+          if (curItem.hasOwnProperty(key)) {
+            let itemFound = curItem[key];
+            if (itemFound && itemFound.constructor === Array) {
+              let tempInitialValueHolder = itemFound[0][1];
+
+              let chartDataPointHolder = itemFound.map((item, mapIndex) => {
+                if (mapIndex === 0 && curIndex === 0) {
+                  tempRangeDate =
+                    tempRangeDate +
+                    moment(item[0]).format("MMM DD YYYY") +
+                    " to ";
+                }
+                if (mapIndex === tempBtChartData.length - 1 && curIndex === 0) {
+                  tempRangeDate =
+                    tempRangeDate + moment(item[0]).format("MMM DD YYYY");
+                }
+
+                const dateObj = new Date(item[0]);
+                const timestamp = dateObj.getTime();
+
+                const convertedDate = moment(dateObj).format("DD MM YYYY");
+                if (convertedDate === minRange) {
+                  tempInitialValueHolder = itemFound[mapIndex][1];
+                }
+
+                let tempValueHolder = 0;
+                if (mapIndex > 0 && item[1] && tempInitialValueHolder) {
+                  tempValueHolder = parseFloat(
+                    (
+                      ((item[1] - tempInitialValueHolder) /
+                        tempInitialValueHolder) *
+                      100
+                    ).toFixed(2)
+                  );
+                }
+                let tempHolder = [
+                  timestamp,
+                  tempValueHolder,
+                  parseFloat(item[1]).toFixed(2),
+                ];
+                return tempHolder;
+              });
+
+              const tempGraphOptions = {
+                name: key,
+                data: chartDataPointHolder,
+                type: "line",
+                fillOpacity: 0,
+                // fillColor:
+                //   curIndex === 0
+                //     ? {
+                //         linearGradient: [0, 0, 0, 200],
+
+                //         stops: [
+                //           [0, "rgba(128, 67, 243,0.5)"],
+                //           [1, "transparent"],
+                //         ],
+                //       }
+                //     : curIndex === 1
+                //     ? {
+                //         linearGradient: [0, 0, 0, 200],
+                //         stops: [
+                //           [0, "rgba(86, 185, 182,0.5)"],
+                //           [1, "transparent"],
+                //         ],
+                //       }
+                //     : {
+                //         linearGradient: [0, 0, 0, 200],
+                //         stops: [
+                //           [0, "rgba(43, 127, 255,0.5)"],
+                //           [1, "transparent"],
+                //         ],
+                //       },
+                color: strategyByilderChartLineColorByIndex(curIndex),
+              };
+              allGraphListItems.push(tempGraphOptions);
+              tempRangeDateHolder = tempRangeDate;
+            }
+          }
+        }
+      });
+
+      this.setState({
+        performanceVisualizationGraphData: allGraphListItems,
+        fromAndToDate: tempRangeDateHolder,
+      });
+    }
+  };
   changeToDate = (date) => {
     this.hideToCalendar();
     this.setState(
@@ -792,7 +804,38 @@ class BackTestPage extends BaseReactComponent {
           hideFooter
           hideAddresses
           hideShare
-        ></MobileLayout>
+        >
+          <BackTestPageMobile
+            saveStrategyCheck={this.state.saveStrategyCheck}
+            showSaveStrategy={this.showSaveStrategy}
+            hideSaveStrategy={this.hideSaveStrategy}
+            fromAndToDate={this.state.fromAndToDate}
+            performanceVisualizationGraphLoading={
+              this.state.performanceVisualizationGraphLoading
+            }
+            performanceMetricTableLoading={
+              this.state.performanceMetricTableLoading
+            }
+            selectStrategies={this.selectStrategies}
+            strategiesOptions={this.state.strategiesOptions}
+            selectedStrategiesOptions={this.state.selectedStrategiesOptions}
+            performanceMetricColumnList={this.state.performanceMetricColumnList}
+            performanceMetricTableData={this.state.performanceMetricTableData}
+            performanceVisualizationGraphData={
+              this.state.performanceVisualizationGraphData
+            }
+            hideToCalendar={this.hideToCalendar}
+            hideFromCalendar={this.hideFromCalendar}
+            showFromCalendar={this.showFromCalendar}
+            showToCalendar={this.showToCalendar}
+            isFromCalendar={this.state.isFromCalendar}
+            isToCalendar={this.state.isToCalendar}
+            changeFromDate={this.changeFromDate}
+            changeToDate={this.changeToDate}
+            fromDate={this.state.fromDate}
+            toDate={this.state.toDate}
+          />
+        </MobileLayout>
       );
     }
     return (
@@ -863,6 +906,7 @@ class BackTestPage extends BaseReactComponent {
                 isToCalendar={this.state.isToCalendar}
                 changeFromDate={this.changeFromDate}
                 changeToDate={this.changeToDate}
+                calcChartData={this.calcChartData}
                 fromDate={this.state.fromDate}
                 toDate={this.state.toDate}
               />

@@ -547,8 +547,8 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
                               isAnalytics="average cost basis"
                               fakeWatermark
                               xAxisScrollable
-                              yAxisScrollable
                               xAxisScrollableColumnWidth={3.5}
+                              yAxisScrollable
                             />
                           </div>
                         </div>

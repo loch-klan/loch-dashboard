@@ -10,6 +10,28 @@ import {
 import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import { getCurrentUser, getToken } from "./ManageToken";
 
+export const strategyBuilderWeightTypeToEnum = (passedItem) => {
+  console.log("passedItem is ", passedItem);
+
+  if (passedItem.toUpperCase() === "EQUAL") {
+    return "EQUAL";
+  } else if (passedItem.toUpperCase() === "SPECIFIED") {
+    return "SPECIFIED";
+  }
+  return "";
+};
+export const isArrayInArrayOfArrays = (arr1, arrOfArr) => {
+  // Convert both arrays to strings to compare easily
+  const arr1Str = JSON.stringify(arr1);
+
+  for (let i = 0; i < arrOfArr.length; i++) {
+    if (JSON.stringify(arrOfArr[i]) === arr1Str) {
+      return true; // Found a match
+    }
+  }
+
+  return false; // No match found
+};
 export const strategyByilderChartWhichSymbol = (passedItem) => {
   if (passedItem === "CUMULATIVE_RETURN" || passedItem === "MAX_DRAWDOWN") {
     return "%";
@@ -20,7 +42,8 @@ export const strategyByilderChartShouldShowDate = (passedItem) => {
   if (
     passedItem === "MOVING_AVERAGE_PRICE" ||
     passedItem === "MOVING_AVERAGE_RETURN" ||
-    passedItem === "EXPONENTIAL_MOVING_AVERAGE"
+    passedItem === "EXPONENTIAL_MOVING_AVERAGE" ||
+    passedItem === "MAX_DRAWDOWN"
   ) {
     return true;
   }
@@ -38,13 +61,13 @@ export const strategyByilderChartLineColorByIndexLowOpacity = (passedIndex) => {
 };
 export const strategyByilderChartLineColorByIndex = (passedIndex) => {
   if (passedIndex === 0) {
-    return "#8043F3";
+    return "var(--strategyBuilderGraphOne)";
   } else if (passedIndex === 1) {
-    return "#A2DC00";
+    return "var(--strategyBuilderGraphTwo)";
   } else if (passedIndex === 2) {
-    return "#2B7FFF";
+    return "var(--strategyBuilderGraphThree)";
   }
-  return "black";
+  return "var(--primaryTextColor)";
 };
 
 export const strategyByilderAssetList = () => {

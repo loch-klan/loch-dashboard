@@ -49,8 +49,7 @@ class BackTestAssetBuilderBlock extends BaseReactComponent {
     this.props.path.forEach((element) => {
       itemToBeChanged = itemToBeChanged[element];
     });
-
-    itemToBeChanged.token = passedItem.name;
+    itemToBeChanged.asset = passedItem.name;
     if (this.props.changeStrategyBuilderString) {
       this.props.changeStrategyBuilderString(itemToBeChangedOriginal);
       this.closePopUp();

@@ -72,10 +72,17 @@ class BackTestPopupDropdown extends BaseReactComponent {
       if (isNaN(tempText)) {
         return;
       }
-
-      this.setState({ inputValue: passedInput.target.value }, () => {
-        this.itemSelected(finalItem, 0);
-      });
+      if (this.props.limitAmounTo) {
+        if (this.props.limitAmounTo >= tempText) {
+          this.setState({ inputValue: passedInput.target.value }, () => {
+            this.itemSelected(finalItem, 0);
+          });
+        }
+      } else {
+        this.setState({ inputValue: passedInput.target.value }, () => {
+          this.itemSelected(finalItem, 0);
+        });
+      }
     } else {
       this.setState({ inputValue: tempText });
     }
@@ -107,7 +114,7 @@ class BackTestPopupDropdown extends BaseReactComponent {
                   <input
                     placeholder={
                       this.props.selectedAmountSymbol
-                        ? this.props.selectedAmountSymbol
+                        ? "100" + this.props.selectedAmountSymbol
                         : this.props.selectedOption
                     }
                     className="back-test-popup-search-input"

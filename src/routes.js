@@ -23,9 +23,16 @@ import homeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import SmartMoneyPage from "./app/smartMoney/smartMoneyPage";
 import YieldOpportunitiesPage from "./app/yieldOpportunities/YieldOpportunitiesPage";
 
+import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
+import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
+import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
 import AutoLogin from "./app/AutoLogin/AutoLogin";
+import BackTestPage from "./app/BackTest/BackTestPage";
+import CopyTradeWelcome from "./app/CopyTradeWelcome/CopyTradeWelcome";
+import CryptoSuccessPage from "./app/CryptoSuccessPage/CryptoSuccessPage";
 import Emulations from "./app/Emulations/Emulations";
 import ReferralCodesPage from "./app/ReferralCodes/ReferralCodesPage";
+import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
 import StripeErrorPage from "./app/StripeErrorPage/StripeErrorPage";
 import StripeSuccessPage from "./app/StripeSuccessPage/StripeSuccessPage";
 import VerifyEmailWelcome from "./app/common/VerifyEmailWelcome";
@@ -33,14 +40,7 @@ import NewWelcome from "./app/home/NewWelcome";
 import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import PublicRoute from "./utils/PublicRoute";
-import CopyTradeWelcome from "./app/CopyTradeWelcome/CopyTradeWelcome";
-import ReplaceAddressPage from "./app/ReplaceAddress/ReplaceAddressPage";
-import CryptoSuccessPage from "./app/CryptoSuccessPage/CryptoSuccessPage";
 import PublicSidebarRoute from "./utils/PublicSidebarRoute";
-import AddAddressWalletViewer from "./app/AddAddressWalletViewer/AddAddressWalletViewer";
-import AddAddressProfile from "./app/AddAddressProfile/AddAddressProfile";
-import AddAddressFollowing from "./app/AddAddressFollowing/AddAddressFollowing";
-import BackTestPage from "./app/BackTest/BackTestPage";
 const routes = [
   {
     path: "/",

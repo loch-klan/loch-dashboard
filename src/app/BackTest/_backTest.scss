@@ -203,9 +203,10 @@
       }
 
       .btpcb-left-block {
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
+        box-shadow: inset 0 0 10px var(--boxShadowColorLg);
         padding: 2rem;
-        background-color: var(--strategyBuilderBuilderBackGround);
+        background-color: var(--strategyBuilderBackGround);
+        background-image: var(--strategyBuilderBackGroundImage);
         border-radius: 12px;
         flex: 1;
         position: relative;
@@ -270,18 +271,18 @@
                 height: 100%;
                 .history-table-header-col {
                   height: 100%;
-                  background-color: var(--primaryBackgroud);
+                  background-color: var(--strategyBuilderTableHeader);
+                  // opacity: 0.5;
                   display: flex;
                   align-items: center;
                   justify-content: center;
                   padding: 1rem;
-                  text-transform: uppercase;
                   box-sizing: border-box !important;
                   overflow: hidden;
                   color: var(--tableDataColor);
                   text-shadow: 0.05px 0 var(--tableDataColor);
-                  text-transform: uppercase;
                   text-align: center;
+                  pointer-events: none;
                 }
 
                 .history-table-header-col-curve-left {
@@ -297,10 +298,6 @@
             }
           }
           .ReactVirtualized__Table__Grid {
-            max-height: 35rem !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important;
-            padding-left: 0;
             &::-webkit-scrollbar {
               width: 0.4rem;
               height: 0rem;
@@ -327,6 +324,21 @@
       align-self: stretch;
       max-height: 100%;
       width: calc(55% - 1rem);
+    }
+  }
+}
+.back-test-page-mobile {
+  .back-test-page-content {
+    flex-direction: column;
+    gap: 20px;
+    .back-test-page-content-block-left {
+      height: calc(100vh - 15em);
+    }
+    .back-test-page-content-block {
+      width: 100%;
+      .btpcb-right-table-container {
+        padding: 2px;
+      }
     }
   }
 }

@@ -9,13 +9,13 @@ import {
 export const getBackTestQueries = (ctx) => {
   return async function (dispatch, getState) {
     postLoginInstance
-      .post("strategy/backtest/get-queries")
+      .post("strategy/backtest/get-strategies")
       .then((res) => {
         if (!res.data.error) {
           if (res.data.data) {
             dispatch({
               type: GET_BACK_TEST_QUERIES,
-              payload: res.data.data.query_list,
+              payload: res.data.data.strategy_list,
             });
           }
         }
@@ -55,6 +55,7 @@ export const getBackTestChart = (passedData, ctx) => {
                 strategy: res.data.data.condition_results,
               });
             }
+
             dispatch({
               type: GET_BACK_TEST_CHART_DATA,
               // payload: res.data.data.chart_data,
@@ -110,7 +111,7 @@ export const getBackTestTable = (passedData, ctx) => {
 export const createBackTestQuery = (passedData, ctx, afterQueryCreation) => {
   return async function (dispatch, getState) {
     postLoginInstance
-      .post("strategy/backtest/create-query", passedData)
+      .post("strategy/backtest/create-strategy", passedData)
       .then((res) => {
         if (!res.data.error) {
           if (afterQueryCreation) {
