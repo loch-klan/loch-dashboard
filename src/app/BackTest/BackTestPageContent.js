@@ -20,18 +20,48 @@ class BackTestPageContent extends BaseReactComponent {
 
     this.state = {
       isMobile: mobileCheck(),
+      prevHeight: 0,
     };
   }
+  handleHeightChange = (entries) => {
+    for (let entry of entries) {
+      let curHeight = entry.contentRect.height;
 
+      if (curHeight !== entry.target.offsetHeight) {
+        if (curHeight !== this.state.prevHeight) {
+          const left = document.getElementById(
+            "back-test-page-content-block-left"
+          );
+
+          left.style.maxHeight = `${curHeight}px`;
+          this.setState({
+            prevHeight: curHeight,
+          });
+        }
+      }
+    }
+  };
+  componentDidMount() {
+    const element = document.querySelector(
+      "#back-test-page-content-block-right"
+    );
+    const resizeObserver = new ResizeObserver(this.handleHeightChange);
+    resizeObserver.observe(element);
+  }
   render() {
     return (
       <div className="back-test-page-content">
-        <div className="back-test-page-content-block back-test-page-content-block-left">
+        <div
+          id="back-test-page-content-block-left"
+          className="back-test-page-content-block back-test-page-content-block-left"
+        >
           <div className="btpcb-title btpcb-chart-header">
             <div>Strategy Builder</div>
           </div>
           <div className="btpcb-left-block">
             <BackTestBuilder
+              passedStrategyList={this.props.passedStrategyList}
+              saveStrategyName={this.props.saveStrategyName}
               saveStrategyCheck={this.props.saveStrategyCheck}
               showSaveStrategy={this.props.showSaveStrategy}
               hideSaveStrategy={this.props.hideSaveStrategy}
@@ -46,7 +76,10 @@ class BackTestPageContent extends BaseReactComponent {
             /> */}
           </div>
         </div>
-        <div className="back-test-page-content-block">
+        <div
+          id="back-test-page-content-block-right"
+          className="back-test-page-content-block"
+        >
           <BackTestChart
             calcChartData={this.props.calcChartData}
             performanceVisualizationGraphLoading={
@@ -57,6 +90,9 @@ class BackTestPageContent extends BaseReactComponent {
             selectStrategies={this.props.selectStrategies}
             performanceVisualizationGraphData={
               this.props.performanceVisualizationGraphData
+            }
+            performanceVisualizationGraphDataOriginal={
+              this.props.performanceVisualizationGraphDataOriginal
             }
             hideToCalendar={this.props.hideToCalendar}
             hideFromCalendar={this.props.hideFromCalendar}

@@ -920,13 +920,41 @@ function Sidebar(props) {
                                 <NavLink
                                   exact={true}
                                   className="nav-link nav-link-closed"
-                                  to="/back-test"
+                                  to="/strategy-builder"
                                   activeclassname="active"
                                 >
                                   <Image
                                     src={StrategyBuilderSidebarIcon}
                                     style={
-                                      activeTab === "/back-test"
+                                      activeTab === "/strategy-builder"
+                                        ? {
+                                            filter: "var(--sidebarActiveIcon)",
+                                          }
+                                        : {}
+                                    }
+                                  />
+                                </NavLink>
+                              </CustomOverlay>
+                            </li>
+                            <li>
+                              <CustomOverlay
+                                className="tool-tip-container-right-arrow"
+                                position="right"
+                                isIcon={false}
+                                isInfo={true}
+                                isText={true}
+                                text={"Strategy Discovery"}
+                              >
+                                <NavLink
+                                  exact={true}
+                                  className="nav-link nav-link-closed"
+                                  to="/strategy-discovery"
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={StrategyBuilderSidebarIcon}
+                                    style={
+                                      activeTab === "/strategy-discovery"
                                         ? {
                                             filter: "var(--sidebarActiveIcon)",
                                           }
@@ -1356,13 +1384,13 @@ function Sidebar(props) {
                                 <NavLink
                                   exact={true}
                                   className="nav-link"
-                                  to="/back-test"
+                                  to="/strategy-builder"
                                   activeclassname="active"
                                 >
                                   <Image
                                     src={StrategyBuilderSidebarIcon}
                                     style={
-                                      activeTab === "/back-test"
+                                      activeTab === "/strategy-builder"
                                         ? {
                                             filter: "var(--sidebarActiveIcon)",
                                           }
@@ -1370,6 +1398,26 @@ function Sidebar(props) {
                                     }
                                   />
                                   Strategy Builder
+                                </NavLink>
+                              </li>
+                              <li>
+                                <NavLink
+                                  exact={true}
+                                  className="nav-link"
+                                  to="/strategy-discovery"
+                                  activeclassname="active"
+                                >
+                                  <Image
+                                    src={StrategyBuilderSidebarIcon}
+                                    style={
+                                      activeTab === "/strategy-discovery"
+                                        ? {
+                                            filter: "var(--sidebarActiveIcon)",
+                                          }
+                                        : {}
+                                    }
+                                  />
+                                  Strategy Discovery
                                 </NavLink>
                               </li>
                               <li>

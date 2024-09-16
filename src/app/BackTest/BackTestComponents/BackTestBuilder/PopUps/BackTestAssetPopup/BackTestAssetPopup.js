@@ -39,43 +39,45 @@ class BackTestAssetPopup extends BaseReactComponent {
               />
             </div>
           </div>
-          {this.state.assetList.map((asset, index) => {
-            return (
-              <div
-                onClick={() => {
-                  this.onAssetSelect(asset);
-                }}
-                className={`back-test-asset-popup-item ${
-                  asset.name === this.props.selectedOption
-                    ? "back-test-asset-popup-item-selected"
-                    : ""
-                }`}
-              >
-                <div className="back-test-asset-popup-item-content">
-                  <div
-                    style={{
-                      backgroundColor: asset.color,
-                    }}
-                    className="back-test-asset-popup-item-icon"
-                  >
+          <div className="back-test-asset-popup-item-container">
+            {this.state.assetList.map((asset, index) => {
+              return (
+                <div
+                  onClick={() => {
+                    this.onAssetSelect(asset);
+                  }}
+                  className={`back-test-asset-popup-item ${
+                    asset.name === this.props.selectedOption
+                      ? "back-test-asset-popup-item-selected"
+                      : ""
+                  }`}
+                >
+                  <div className="back-test-asset-popup-item-content">
+                    <div
+                      style={{
+                        backgroundColor: asset.color,
+                      }}
+                      className="back-test-asset-popup-item-icon"
+                    >
+                      <Image
+                        className="back-test-asset-popup-item-icon-image"
+                        src={asset.icon}
+                      />
+                    </div>
+                    <div className="back-test-asset-popup-item-name">
+                      {asset.name}
+                    </div>
+                  </div>
+                  {asset.name === this.props.selectedOption ? (
                     <Image
-                      className="back-test-asset-popup-item-icon-image"
-                      src={asset.icon}
+                      className="back-test-asset-popup-item-check-icon"
+                      src={CheckIcon}
                     />
-                  </div>
-                  <div className="back-test-asset-popup-item-name">
-                    {asset.name}
-                  </div>
+                  ) : null}
                 </div>
-                {asset.name === this.props.selectedOption ? (
-                  <Image
-                    className="back-test-asset-popup-item-check-icon"
-                    src={CheckIcon}
-                  />
-                ) : null}
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
     );

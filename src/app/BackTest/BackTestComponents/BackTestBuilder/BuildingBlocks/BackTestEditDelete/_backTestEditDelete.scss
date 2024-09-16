@@ -4,10 +4,10 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding-left: 7px;
+  padding: 0px 7px;
   right: 0;
   opacity: 0;
-  pointer-events: none;
+  // pointer-events: none;
 
   .sbb-edit-delete-options-block {
     display: flex;

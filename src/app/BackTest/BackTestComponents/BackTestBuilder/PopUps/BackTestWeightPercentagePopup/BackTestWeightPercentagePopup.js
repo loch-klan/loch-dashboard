@@ -7,6 +7,7 @@ import {
 import { BaseReactComponent } from "../../../../../../utils/form";
 import BackTestPopupDropdown from "../BackTestPopupDropdown/BackTestPopupDropdown";
 import "./_backTestWeightPercentagePopup.scss";
+import BackTestPopupInput from "../BackTestPopupInput/BackTestPopupInput";
 
 class BackTestWeightPercentagePopup extends BaseReactComponent {
   constructor(props) {
@@ -56,7 +57,7 @@ class BackTestWeightPercentagePopup extends BaseReactComponent {
                   Weight allocated
                 </div>
 
-                <BackTestPopupDropdown
+                <BackTestPopupInput
                   selectedOption={this.state.selectedWeightPercentage}
                   isInputDropDown
                   selectedAmountSymbol="%"

@@ -41,9 +41,11 @@ import { EmulationsReducer } from "../app/Emulations/EmulationsReducer";
 import { ReferralCodesReducer } from "../app/ReferralCodes/ReferralCodesReducer";
 import {
   BackTestChartReducer,
+  BackTestLatestStrategyReducer,
   BackTestQueryReducer,
   BackTestTableReducer,
 } from "../app/BackTest/Api/BackTestReducer";
+import { StrategyDiscoveryTableReducer } from "../app/StrategyDiscovery/Api/StrategyDiscoveryReducer";
 
 export default combineReducers({
   /* PLOP_INJECT_REDUCER */
@@ -58,7 +60,9 @@ export default combineReducers({
   CommonState: CommonReducer,
   BackTestChartState: BackTestChartReducer,
   BackTestTableState: BackTestTableReducer,
+  StrategyDiscoveryTableState: StrategyDiscoveryTableReducer,
   BackTestQueryState: BackTestQueryReducer,
+  BackTestLatestStrategyState: BackTestLatestStrategyReducer,
   UserPaymentState: UserPaymentReducer,
   LochUserState: LochUserReducer,
   HomeState: HomeReducer,

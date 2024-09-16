@@ -1,0 +1,11 @@
+.strategy-builder-block-container-parent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+.strategy-builder-block-container-parent-collapsed {
+  display: none;
+}

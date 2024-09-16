@@ -41,6 +41,7 @@ import Nft from "./app/nft/Nft";
 import HomeSmartMoneyPage from "./app/smartMoney/homeSmartMoneyPage";
 import PublicRoute from "./utils/PublicRoute";
 import PublicSidebarRoute from "./utils/PublicSidebarRoute";
+import StrategyDiscovery from "./app/StrategyDiscovery/StrategyDiscovery";
 const routes = [
   {
     path: "/",
@@ -277,10 +278,16 @@ const routes = [
     component: ReplaceAddressPage,
   },
   {
-    path: "/back-test",
-    name: "BackTest Page",
+    path: "/strategy-builder",
+    name: "Strategy Builder Page",
     type: PublicSidebarRoute,
     component: BackTestPage,
+  },
+  {
+    path: "/strategy-discovery",
+    name: "Strategy Discovery Page",
+    type: PublicSidebarRoute,
+    component: StrategyDiscovery,
   },
 ];
 export default routes;

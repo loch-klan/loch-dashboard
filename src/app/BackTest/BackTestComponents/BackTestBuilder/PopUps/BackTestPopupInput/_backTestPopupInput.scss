@@ -1,0 +1,26 @@
+.back-test-pop-up-input-container {
+  position: relative;
+  .back-test-popup-search {
+    flex: 1;
+    border: 1px solid var(--strategyBuilderPopUpAssetBorder);
+    border-radius: 6px;
+    .back-test-popup-search-input {
+      border-radius: 5px;
+      height: calc(3.5rem - 1px);
+      padding: 0rem 0.8rem;
+      border: none;
+      outline: none;
+      width: 100px;
+    }
+    &:hover {
+      border: 1px solid var(--blockOneHeaderGradSecondary);
+    }
+  }
+}
+.back-test-pop-up-input-smaller-container {
+  .back-test-popup-search {
+    .back-test-popup-search-input {
+      width: 38px;
+    }
+  }
+}

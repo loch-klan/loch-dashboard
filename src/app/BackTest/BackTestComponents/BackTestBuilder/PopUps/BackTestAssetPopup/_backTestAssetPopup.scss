@@ -5,7 +5,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    transform: translate(0rem, 1rem);
+    transform: translate(-10.5rem, 1rem);
     padding: 1rem;
     box-shadow: var(--boxShadowMd);
     border-radius: 12px;
@@ -19,7 +19,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      width: 50rem;
+      width: 40rem;
       .back-test-asset-popup-search {
         flex: 1;
         border: 1px solid var(--strategyBuilderPopUpAssetBorder);
@@ -58,6 +58,28 @@
         }
       }
     }
+    .back-test-asset-popup-item-container {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 30rem;
+      overflow-y: scroll;
+      &::-webkit-scrollbar {
+        width: 0.4rem;
+        height: 0rem;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 0.8rem;
+        background-color: #cacbcc;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: rgba(229, 229, 230, 0.5);
+        border-radius: 0.8rem;
+      }
+    }
     .back-test-asset-popup-item {
       width: 100%;
       display: flex;
@@ -65,8 +87,9 @@
       justify-content: space-between;
       padding: 0rem 1rem;
       height: 4rem;
+      min-height: 4rem;
       border: 1px solid var(--strategyBuilderPopUpAssetBorder);
-      width: 50rem;
+      width: 40rem;
       border-radius: 10px;
       cursor: pointer;
       .back-test-asset-popup-item-check-icon {

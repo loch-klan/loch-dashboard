@@ -306,9 +306,18 @@
   --strategyBuilderGraphNavigatorOuline: #b3b4b7;
   --strategyBuilderGraphNavigatorMaskFill: #cacbcc80;
   --strategyBuilderGraphNavigatorMaskBackground: #e5e5e680;
-  --strategyBuilderGraphOne: #8043f3;
-  --strategyBuilderGraphTwo: #a2dc00;
-  --strategyBuilderGraphThree: #2b7fff;
+
+  --strategyBuilderGraph1: rgb(247, 147, 26);
+  --strategyBuilderGraph2: rgb(128, 67, 243);
+  --strategyBuilderGraph3: rgb(43, 127, 255);
+  --strategyBuilderGraph4: rgb(43, 127, 255);
+  --strategyBuilderGraph5: rgb(86, 185, 182);
+
+  --strategyBuilderGraphLowOpacity1: rgba(247, 147, 26, 0.1);
+  --strategyBuilderGraphLowOpacity2: rgba(128, 67, 243, 0.1);
+  --strategyBuilderGraphLowOpacity3: rgba(43, 127, 255, 0.1);
+  --strategyBuilderGraphLowOpacity4: rgba(43, 127, 255, 0.1);
+  --strategyBuilderGraphLowOpacity5: rgba(86, 185, 182, 0.1);
 
   --strategyBuilderMainBlockBackground: #00000014;
 
@@ -343,6 +352,11 @@
   --strategyBuilderAddBackground: #303030;
 
   --strategyBuilderEmptyText: #8d8d8d;
+
+  --strategyDiscoveryTableHeader: #f7f7f7;
+  --strategyDiscoveryTableColHover: #f2f2f2;
+  --strategyDiscoveryTableSeperator: #f9f9f9;
+  --strategyDiscoveryTableTitleColor: #262626;
 }
 [data-theme="dark"] {
   --w3m-z-index: 1000 !important;
@@ -642,9 +656,11 @@
   --strategyBuilderGraphNavigatorOuline: #343333;
   --strategyBuilderGraphNavigatorMaskFill: #5c5c5c80;
   --strategyBuilderGraphNavigatorMaskBackground: #343333;
-  --strategyBuilderGraphOne: rgba(128, 67, 243, 0.6);
-  --strategyBuilderGraphTwo: rgba(162, 220, 0, 0.6);
-  --strategyBuilderGraphThree: rgba(43, 127, 255, 0.6);
+  --strategyBuilderGraph1: rgba(247, 147, 26, 0.7);
+  --strategyBuilderGraph2: rgba(128, 67, 243, 0.7);
+  --strategyBuilderGraph3: rgba(43, 127, 255, 0.7);
+  --strategyBuilderGraph4: rgba(43, 127, 255, 0.7);
+  --strategyBuilderGraph5: rgba(86, 185, 182, 0.7);
 }
 [data-theme="dark2"] {
   // UPDATED

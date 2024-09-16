@@ -1,23 +1,19 @@
 import Highcharts from "highcharts/highstock";
 import { BaseReactComponent } from "../../../../utils/form";
 import {
-  isArrayInArrayOfArrays,
   mobileCheck,
   strategyByilderOperatorConvertorTextToSymbol,
   strategyByilderTypeConvertorTextToSymbol,
 } from "../../../../utils/ReusableFunctions";
 import "./_backTestBuilder.scss";
-import BackTestBuilderBlock from "./Components/BackTestBuilderBlock/BackTestBuilderBlock";
 
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
 import { StrategyBuilderEmptyIcon } from "../../../../assets/images/icons";
 import { createBackTestQuery, getBackTestQueries } from "../../Api/BackTestApi";
-import BackTestAssetBuilderBlock from "./Components/BackTestAssetBuilderBlock/BackTestAssetBuilderBlock";
-import BackTestConditionBuilderBlock from "./Components/BackTestConditionBuilderBlock/BackTestConditionBuilderBlock";
-import BackTestWeightBuilderBlock from "./Components/BackTestWeightBuilderBlock/BackTestWeightBuilderBlock";
-import BackTestWeightPercentageBlock from "./Components/BackTestWeightPercentageBlock/BackTestWeightPercentageBlock";
+import BackTestBuilderMainBlock from "./BackTestBuilderMainBlock/BackTestBuilderMainBlock";
+import BackTestAddingOptions from "./Components/BackTestAddingOptions/BackTestAddingOptions";
 
 require("highcharts/modules/annotations")(Highcharts);
 
@@ -29,97 +25,8 @@ class BackTestBuilder extends BaseReactComponent {
       emptyItems: [],
       isMobile: mobileCheck(),
       canUpdateBuilder: false,
-      isStrategyEmpty: false,
-      strategyBuilderString: {
-        weight: {
-          // SPECIFIED
-          weight_type: "EQUAL",
-          weight_item: [],
-          //   {
-          //     percentage: "33.3",
-          //     item: {
-          //       condition: {
-          //         type: "CURRENT_PRICE",
-          //         token: "BTC",
-          //         operator: ">",
-          //         amount: "10000",
-          //         time_period: "4",
-          //         success: {
-          //           weight: {
-          //             weight_type: "SPECIFIED",
-          //             weight_item: [
-          //               {
-          //                 percentage: "100",
-          //                 item: {
-          //                   asset: "BTC",
-          //                 },
-          //               },
-          //             ],
-          //           },
-          //         },
-          //         failed: {
-          //           weight: {
-          //             weight_type: "EQUAL",
-          //             weight_item: [
-          //               {
-          //                 percentage: "100",
-          //                 item: {
-          //                   condition: {
-          //                     type: "CURRENT_PRICE",
-          //                     token: "BTC",
-          //                     operator: ">",
-          //                     amount: "10000",
-          //                     time_period: "4",
-          //                     success: {
-          //                       weight: {
-          //                         weight_type: "EQUAL",
-          //                         weight_item: [
-          //                           {
-          //                             percentage: "100",
-          //                             item: {
-          //                               asset: "BTC",
-          //                             },
-          //                           },
-          //                         ],
-          //                       },
-          //                     },
-          //                     failed: {
-          //                       weight: {
-          //                         weight_type: "EQUAL",
-          //                         weight_item: [
-          //                           {
-          //                             percentage: "100",
-          //                             item: {
-          //                               asset: "USDT",
-          //                             },
-          //                           },
-          //                         ],
-          //                       },
-          //                     },
-          //                   },
-          //                 },
-          //               },
-          //             ],
-          //           },
-          //         },
-          //       },
-          //     },
-          //   },
-          //   {
-          //     percentage: "33.3",
-          //     item: {
-          //       asset: "BTC",
-          //     },
-          //   },
-          //   {
-          //     percentage: "33.3",
-          //     item: {
-          //       asset: "USDT",
-          //     },
-          //   },
-          // ],
-        },
-      },
+      isStrategyEmpty: true,
+      strategyBuilderString: {},
     };
   }
   changeStrategyBuilderString = (passedString) => {
@@ -128,7 +35,23 @@ class BackTestBuilder extends BaseReactComponent {
     });
   };
   getStrategiesQueries = () => {
-    this.props.getBackTestQueries();
+    let tempApiData = new URLSearchParams();
+    let setStrategy = false;
+    if (
+      this.props.passedStrategyList &&
+      this.props.passedStrategyList.length > 0
+    ) {
+      tempApiData.append(
+        "strategy_list",
+        JSON.stringify([...this.props.passedStrategyList])
+      );
+      setStrategy = true;
+    }
+    // tempApiData.append(
+    //   "user_list",
+    //   JSON.stringify(["66cc01184d9fe2be2b11806d"])
+    // );
+    this.props.getBackTestQueries(tempApiData, setStrategy);
   };
   afterQueryCreation = (isApiPassed) => {
     if (isApiPassed) {
@@ -139,8 +62,6 @@ class BackTestBuilder extends BaseReactComponent {
     }
   };
   strategyByilderIsQueryValid = (obj, path, emptyHolderArr) => {
-    console.log("obj is ", obj);
-
     if ("weight" in obj) {
       let totalWeight = 0;
       if (obj.weight && obj.weight.weight_item) {
@@ -192,6 +113,19 @@ class BackTestBuilder extends BaseReactComponent {
     }
   };
   componentDidUpdate(prevProps, prevState) {
+    if (prevProps.BackTestQueryState !== this.props.BackTestQueryState) {
+      const passedQueryData = this.props.BackTestQueryState;
+      console.log("passedQueryData is ", passedQueryData);
+
+      if (passedQueryData.length > 0 && passedQueryData[0].strategy) {
+        this.setState({
+          strategyBuilderString: passedQueryData[0].strategy,
+        });
+      }
+    }
+    if (prevProps.passedStrategyList !== this.props.passedStrategyList) {
+      this.getStrategiesQueries();
+    }
     if (prevState.strategyBuilderString !== this.state.strategyBuilderString) {
       if (
         this.state.strategyBuilderString &&
@@ -227,13 +161,16 @@ class BackTestBuilder extends BaseReactComponent {
           "strategy_payload",
           JSON.stringify(this.state.strategyBuilderString)
         );
+        if (this.props.saveStrategyName) {
+          tempApiData.append("strategy_name", this.props.saveStrategyName);
+        }
         this.props.createBackTestQuery(
           tempApiData,
           this,
           this.afterQueryCreation
         );
       } else {
-        toast.error("Please review and fix the issues in the strategy");
+        toast.error("Please fix all the issues with the strategy");
         this.setState({
           emptyItems: emptyHolderArr,
         });
@@ -261,7 +198,7 @@ class BackTestBuilder extends BaseReactComponent {
         canUpdateBuilder: true,
       });
     }, 1000);
-    this.getStrategiesQueries();
+    // this.getStrategiesQueries();
     const strategyBuilderStringLocal = window.localStorage.getItem(
       "strategyBuilderStringLocal"
     );
@@ -321,223 +258,100 @@ class BackTestBuilder extends BaseReactComponent {
       },
     });
   };
-  renderBlocks = (
-    blocks,
-    path = [],
-    blockLevel = 0,
-    weightPath = [],
-    weightIndex = -1
-  ) => {
-    return Object.entries(blocks).map(([key, block]) => {
-      let tempWeightPath = [];
-      if (key === "weight") {
-        tempWeightPath = [...path];
 
-        return (
-          <>
-            <BackTestBuilderBlock
-              //WEIGHT
-              weightPath={tempWeightPath}
-              weightIndex={weightIndex}
-              //WEIGHT
-
-              passedClass="strategy-builder-block-container-weight"
-              blockLevel={blockLevel}
-              blockType="weight"
-              showDropDown
-              path={[...path]}
-              strategyBuilderString={this.state.strategyBuilderString}
-              changeStrategyBuilderString={this.changeStrategyBuilderString}
-              isError={isArrayInArrayOfArrays(
-                [...path, key],
-                this.state.emptyItems
-              )}
-            >
-              {/* <BackTestWeightBuilderBlock
-                path={[...path]}
-                strategyBuilderString={this.state.strategyBuilderString}
-                changeStrategyBuilderString={this.changeStrategyBuilderString}
-                weightType={block.weight_type}
-              /> */}
-            </BackTestBuilderBlock>
-            {blocks?.weight?.weight_item?.map((curItem, curItemIndex) => (
-              <>
-                {/* {block.weight_type === "SPECIFIED" ? ( */}
-                <BackTestBuilderBlock
-                  //WEIGHT
-                  weightPath={tempWeightPath}
-                  weightIndex={weightIndex}
-                  //WEIGHT
-                  passedClass="strategy-builder-block-container-weight"
-                  blockLevel={blockLevel + 1}
-                  blockType="weight percentage"
-                  path={[...path]}
-                  strategyBuilderString={this.state.strategyBuilderString}
-                  changeStrategyBuilderString={this.changeStrategyBuilderString}
-                >
-                  <BackTestWeightPercentageBlock
-                    path={[...path, key, "weight_item", curItemIndex]}
-                    strategyBuilderString={this.state.strategyBuilderString}
-                    changeStrategyBuilderString={
-                      this.changeStrategyBuilderString
-                    }
-                    weightPercentage={curItem.percentage}
-                  />
-                </BackTestBuilderBlock>
-                {/* ) : null} */}
-                {this.renderBlocks(
-                  curItem.item,
-                  [...path, key, "weight_item", curItemIndex, "item"],
-                  blockLevel + 2,
-                  tempWeightPath,
-                  curItemIndex
-                )}
-              </>
-            ))}
-            {/* <BackTestBuilderBlock
-              //WEIGHT
-              weightPath={tempWeightPath}
-              weightIndex={weightIndex}
-              //WEIGHT
-
-              passedClass="strategy-builder-block-container-add-item"
-              blockLevel={blockLevel}
-              blockType="add item"
-              path={[...path]}
-              strategyBuilderString={this.state.strategyBuilderString}
-              changeStrategyBuilderString={this.changeStrategyBuilderString}
-            /> */}
-          </>
-        );
-      } else if (key === "asset") {
-        return (
-          <BackTestBuilderBlock
-            //WEIGHT
-            weightPath={weightPath}
-            weightIndex={weightIndex}
-            //WEIGHT
-
-            passedClass="strategy-builder-block-container-asset"
-            blockLevel={blockLevel}
-            blockType="asset"
-            parentPath={path}
-            path={[...path, key]}
-            strategyBuilderString={this.state.strategyBuilderString}
-            changeStrategyBuilderString={this.changeStrategyBuilderString}
-            tokenList={block.tokenList}
-          >
-            <BackTestAssetBuilderBlock
-              tokenList={block.tokenList}
-              strategyBuilderString={this.state.strategyBuilderString}
-              changeStrategyBuilderString={this.changeStrategyBuilderString}
-              path={[...path]}
-              selectedAsset={blocks.asset}
-            />
-          </BackTestBuilderBlock>
-        );
-      } else if (key === "condition") {
-        return (
-          <>
-            <>
-              <BackTestBuilderBlock
-                //WEIGHT
-                weightPath={weightPath}
-                weightIndex={weightIndex}
-                //WEIGHT
-                passedClass="strategy-builder-block-container-condition-if"
-                blockLevel={blockLevel}
-                blockType="condition if"
-                showDropDown
-                strategyBuilderString={this.state.strategyBuilderString}
-                path={[...path]}
-                changeStrategyBuilderString={this.changeStrategyBuilderString}
-                isError={isArrayInArrayOfArrays(
-                  [...path, key, "success"],
-                  this.state.emptyItems
-                )}
-              >
-                <BackTestConditionBuilderBlock
-                  amount={block.amount}
-                  operator={block.operator}
-                  time_period={block.time_period}
-                  token={block.token}
-                  type={block.type}
-                  path={[...path, key]}
-                  strategyBuilderString={this.state.strategyBuilderString}
-                  changeStrategyBuilderString={this.changeStrategyBuilderString}
-                />
-              </BackTestBuilderBlock>
-              {block.success && Object.keys(block.success).length > 0 ? (
-                <>
-                  {this.renderBlocks(
-                    block.success,
-                    [...path, key, "success"],
-                    blockLevel + 1,
-                    tempWeightPath,
-                    weightIndex
-                  )}
-                </>
-              ) : null}
-            </>
-
-            <>
-              <BackTestBuilderBlock
-                //WEIGHT
-                weightPath={tempWeightPath}
-                weightIndex={weightIndex}
-                //WEIGHT
-                passedClass="strategy-builder-block-container-condition-else"
-                blockLevel={blockLevel}
-                blockType="condition else"
-                path={[...path, key]}
-                strategyBuilderString={this.state.strategyBuilderString}
-                changeStrategyBuilderString={this.changeStrategyBuilderString}
-                isError={isArrayInArrayOfArrays(
-                  [...path, key, "failed"],
-                  this.state.emptyItems
-                )}
-              />
-              {block.failed && Object.keys(block.failed).length > 0 ? (
-                <>
-                  {this.renderBlocks(
-                    block.failed,
-                    [...path, key, "failed"],
-                    blockLevel + 1,
-                    tempWeightPath,
-                    weightIndex
-                  )}
-                </>
-              ) : null}
-            </>
-          </>
-        );
-      } else {
-        return null;
-      }
+  onAddAssetInEmptyClick = () => {
+    this.setState({
+      strategyBuilderString: {
+        weight: {
+          weight_type: "EQUAL",
+          weight_item: [
+            {
+              percentage: "100",
+              item: {
+                asset: "BTC",
+              },
+            },
+          ],
+        },
+      },
+    });
+  };
+  onAddConditionInEmptyClick = () => {
+    this.setState({
+      strategyBuilderString: {
+        weight: {
+          weight_type: "EQUAL",
+          weight_item: [
+            {
+              percentage: "100",
+              item: {
+                condition: {
+                  type: "CURRENT_PRICE",
+                  token: "BTC",
+                  operator: ">",
+                  amount: "10000",
+                  time_period: "4",
+                  success: {},
+                  failed: {},
+                },
+              },
+            },
+          ],
+        },
+      },
     });
   };
   render() {
-    return (
-      <div className="strategy-builder-container">
-        {this.state.isStrategyEmpty ? (
-          <div className="sbc-empty">
-            <Image className="sbc-empty-image" src={StrategyBuilderEmptyIcon} />
-            <div className="sbc-empty-text">
-              Start building by
-              <br />
-              adding a block below
+    if (this.state.isStrategyEmpty) {
+      return (
+        <div className="strategy-builder-container strategy-builder-container-empty">
+          <div className="sbc-empty-container">
+            <div className="sbc-empty">
+              <Image
+                className="sbc-empty-image"
+                src={StrategyBuilderEmptyIcon}
+              />
+              <div className="sbc-empty-text">
+                Start building by
+                <br />
+                adding a block below
+              </div>
+            </div>
+            <div className="sbc-empty-options-container-container">
+              <div className="sbc-empty-options-container">
+                <BackTestAddingOptions
+                  closeOptions={() => null}
+                  onAddAssetClick={this.onAddAssetInEmptyClick}
+                  onAddConditionClick={this.onAddConditionInEmptyClick}
+                />
+              </div>
             </div>
           </div>
-        ) : (
-          <div className="sbc-logic-container">
-            {this.renderBlocks(this.state.strategyBuilderString)}
-          </div>
-        )}
+        </div>
+      );
+    }
+    return (
+      <div className="strategy-builder-container">
+        <div className="sbc-logic-container">
+          {/* {this.renderBlocks(this.state.strategyBuilderString)} */}
+          <BackTestBuilderMainBlock
+            emptyItems={this.state.emptyItems}
+            strategyBuilderString={this.state.strategyBuilderString}
+            changeStrategyBuilderString={this.changeStrategyBuilderString}
+            blocks={this.state.strategyBuilderString}
+            path={[]}
+            blockLevel={0}
+            weightPath={[]}
+            weightIndex={-1}
+          />
+        </div>
       </div>
     );
   }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  BackTestQueryState: state.BackTestQueryState,
+});
 const mapDispatchToProps = { createBackTestQuery, getBackTestQueries };
 export default connect(mapStateToProps, mapDispatchToProps)(BackTestBuilder);

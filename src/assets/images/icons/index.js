@@ -187,3 +187,14 @@ export { default as StrategyBuilderAssetBtcIcon } from "./StrategyBuilderAssetBt
 export { default as StrategyBuilderBackgroundDotIcon } from "./strategyBuilderBackgroundDot.svg";
 export { default as StrategyBuilderAddIcon } from "./strategyBuilderAdd.svg";
 export { default as StrategyBuilderEmptyIcon } from "./strategyBuilderEmpty.svg";
+export { default as StrategyBuilderAssetBnbIcon } from "./StrategyBuilderAssetBnb.svg";
+export { default as StrategyBuilderAssetSolIcon } from "./StrategyBuilderAssetSol.svg";
+export { default as StrategyBuilderAssetDogeIcon } from "./StrategyBuilderAssetDoge.svg";
+export { default as StrategyBuilderAssetXrpIcon } from "./StrategyBuilderAssetXrp.svg";
+export { default as StrategyBuilderAssetTonIcon } from "./StrategyBuilderAssetTon.svg";
+export { default as StrategyBuilderAssetTrxIcon } from "./StrategyBuilderAssetTrx.svg";
+export { default as StrategyBuilderAssetAdaIcon } from "./StrategyBuilderAssetAda.svg";
+export { default as StrategyBuilderAssetAvaxIcon } from "./StrategyBuilderAssetAvax.svg";
+export { default as StrategyDiscoveryDownGreenArrowIcon } from "./StrategyDiscoveryDownGreenArrow.svg";
+export { default as StrategyDiscoveryDownRedArrowIcon } from "./StrategyDiscoveryDownRedArrow.svg";
+export { default as StrategyDiscoveryHeadingArrowIcon } from "./StrategyDiscoveryHeadingArrow.svg";

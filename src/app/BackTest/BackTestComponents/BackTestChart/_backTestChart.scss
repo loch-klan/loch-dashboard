@@ -54,6 +54,15 @@
       }
     }
   }
+  .highcharts-legend-item path {
+    display: none;
+  }
+  .strategy-builder-chart-legend-text {
+    text-transform: uppercase;
+    &:hover {
+      opacity: 0.5;
+    }
+  }
 
   .back-test-chart-xaxis-lable {
     fill: var(--cardBorder);

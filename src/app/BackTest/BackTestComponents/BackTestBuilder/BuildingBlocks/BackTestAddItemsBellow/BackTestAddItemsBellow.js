@@ -16,6 +16,9 @@ class BackTestAddItemsBellow extends BaseReactComponent {
     this.setState({ isOptionsOpen: false });
   };
   onAddAssetClick = () => {
+    if (this.props.openCollapse) {
+      this.props.openCollapse();
+    }
     let itemToBeChangedOriginal = structuredClone(
       this.props.strategyBuilderString
     );
@@ -150,6 +153,9 @@ class BackTestAddItemsBellow extends BaseReactComponent {
     this.closeOptions();
   };
   onAddConditionClick = () => {
+    if (this.props.openCollapse) {
+      this.props.openCollapse();
+    }
     let itemToBeChangedOriginal = structuredClone(
       this.props.strategyBuilderString
     );

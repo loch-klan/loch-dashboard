@@ -570,6 +570,24 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
+          gap: 2rem;
+          .welcome-card-strategy-builder-title-input {
+            flex: 1;
+            font-size: 16px;
+            color: var(--referallUsedBtnText);
+            text-shadow: 0.1px 0 var(--referallUsedBtnText);
+            border: none;
+            outline: none;
+            border-radius: 8px;
+            padding: 0.8rem;
+            border: 1px solid transparent;
+            &:hover {
+              border: 1px solid var(--strategyBuilderPopUpAssetBorder);
+            }
+            &::placeholder {
+              opacity: 0.3;
+            }
+          }
           .welcome-card-strategy-builder-title {
             color: var(--referallUsedBtnText);
             text-shadow: 0.1px 0 var(--referallUsedBtnText);
@@ -580,7 +598,7 @@
             justify-content: center;
             gap: 10px;
             .welcome-card-strategy-builder-btn {
-              border: 0.5px solid var(--strategyBuilderBorder);
+              border: 2px solid var(--strategyBuilderBorder);
               box-shadow: var(--boxShadowMd);
               border-radius: 10px;
               height: 45px;

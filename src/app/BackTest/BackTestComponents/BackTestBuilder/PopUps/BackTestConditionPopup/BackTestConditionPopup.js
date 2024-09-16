@@ -7,6 +7,8 @@ import {
 import { BaseReactComponent } from "../../../../../../utils/form";
 import BackTestPopupDropdown from "../BackTestPopupDropdown/BackTestPopupDropdown";
 import "./_backTestConditionPopup.scss";
+import BackTestPopupInput from "../BackTestPopupInput/BackTestPopupInput";
+import { strategyByilderAssetList } from "../../../../../../utils/ReusableFunctions";
 
 class BackTestConditionPopup extends BaseReactComponent {
   constructor(props) {
@@ -16,17 +18,26 @@ class BackTestConditionPopup extends BaseReactComponent {
       allPriceConditions: [
         "Current price",
         "Cumulative return",
-        "Exponential moving average of price",
+        "Exponential moving average",
         "Max drawdown",
-        "Moving average of price",
+        "Moving average price",
         "Moving average return",
+        "Relative strength index",
+        "Standard deviation of price",
+        "Standard deviation of return",
+        "Money flow index",
+        "Moving average convergence divergence",
+        "Bollinger band",
+        "Volume",
+        "Market capitalization",
+        "Open high low close",
       ],
       selectedPriceConditions: this.props.selectedPriceConditions
         ? this.props.selectedPriceConditions
         : "",
 
       //Asset condition
-      allAssetConditions: ["BTC", "ETH", "Tether", "BNB", "Solana"],
+      allAssetConditions: ["BTC", "ETH"],
       selectedAssetConditions: this.props.selectedAssetConditions
         ? this.props.selectedAssetConditions
         : "",
@@ -49,7 +60,7 @@ class BackTestConditionPopup extends BaseReactComponent {
         ? "" + this.props.selectedAmountConditions
         : "",
       selectedDaysConditions: this.props.selectedDaysConditions
-        ? "" + this.props.selectedDaysConditions
+        ? this.props.selectedDaysConditions
         : "",
       shouldUpdateText: false,
     };
@@ -84,6 +95,16 @@ class BackTestConditionPopup extends BaseReactComponent {
       });
     }
   }
+  componentDidMount() {
+    let tempItem = strategyByilderAssetList();
+    let tempHolder = [];
+    for (let i = 0; i < tempItem.length; i++) {
+      tempHolder.push(tempItem[i].name);
+    }
+    this.setState({
+      allAssetConditions: tempHolder,
+    });
+  }
 
   render() {
     return (
@@ -115,13 +136,19 @@ class BackTestConditionPopup extends BaseReactComponent {
                 </div>
                 {this.props.shouldShowDays ? (
                   <>
-                    <BackTestPopupDropdown
+                    <BackTestPopupInput
+                      smallerInput
                       selectedOption={this.state.selectedDaysConditions}
                       isInputDropDown
                       onOptionSelect={this.changeDaysConditions}
                     />
-                    <div className="back-test-condition-popup-body-colored-text">
-                      {this.state.selectedDaysConditions === "1"
+                    <div className="back-test-condition-popup-body-colored-text ">
+                      {this.state.selectedPriceConditions ===
+                      "Market capitalization"
+                        ? this.state.selectedDaysConditions === "1"
+                          ? "outstanding share for"
+                          : "outstanding shares for"
+                        : this.state.selectedDaysConditions === "1"
                         ? "day"
                         : "days"}
                     </div>
@@ -151,7 +178,7 @@ class BackTestConditionPopup extends BaseReactComponent {
                   onOptionSelect={this.changeOperatorConditions}
                 />
 
-                <BackTestPopupDropdown
+                <BackTestPopupInput
                   updatedText={this.state.shouldUpdateText}
                   selectedOption={this.state.selectedAmountConditions}
                   isInputDropDown

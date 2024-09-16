@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Image } from "react-bootstrap";
 import arrowUpRight from "../../assets/images/icons/green-arrow.svg";
 import LinkIcon from "../../assets/images/icons/link.svg";
@@ -28,11 +28,9 @@ import AuthModal from "../common/AuthModal";
 import ConnectModal from "../common/ConnectModal";
 import ExitOverlay from "../common/ExitOverlay";
 import { TopWalletExchangeBar } from "../header";
-import Loading from "../common/Loading";
-import ContentLoader from "react-content-loader";
-import { LoaderIcon } from "../../assets/images/icons";
 export default function WelcomeCard(props) {
   const buttonRef = useRef(null);
+  const [strategyName, setStrategyName] = useState("Strategy");
   const [manageWallet, setManageWallet] = React.useState(true);
   const [AddWallet, setAddWallet] = React.useState(true);
   const [connectModal, setconnectModal] = React.useState(false);
@@ -44,7 +42,12 @@ export default function WelcomeCard(props) {
     props?.handleAddModal && props?.handleAddModal();
   }
   const history = useHistory();
-
+  const changeStragegyName = (e) => {
+    setStrategyName(e.target.value);
+  };
+  const saveStrategyClickedPass = () => {
+    props.saveStrategyClicked(strategyName);
+  };
   const handleSigninModal = () => {
     setSigninModal(!signinModal);
 
@@ -277,14 +280,18 @@ export default function WelcomeCard(props) {
       >
         {props.isSaveInvestStrategy ? (
           <div className="welcome-card-strategy-builder">
-            <div className="welcome-card-strategy-builder-title">
-              Draft Strategy
-            </div>
+            <input
+              placeholder="Draft Strategy"
+              value={strategyName}
+              onChange={changeStragegyName}
+              className="welcome-card-strategy-builder-title-input"
+            />
+
             <div className="welcome-card-strategy-builder-btns-container">
               <div
-                onClick={props.saveStrategyClicked}
+                onClick={saveStrategyClickedPass}
                 className={`welcome-card-strategy-builder-btn ${
-                  props.loadingSaveInvestStrategyBtn
+                  props.loadingSaveInvestStrategyBtn || strategyName === ""
                     ? "welcome-card-strategy-builder-btn-loading"
                     : ""
                 }`}
@@ -294,7 +301,7 @@ export default function WelcomeCard(props) {
               <div
                 onClick={props.investStrategyClicked}
                 className={`welcome-card-strategy-builder-btn welcome-card-strategy-builder-btn-highlighted ${
-                  props.loadingSaveInvestStrategyBtn
+                  props.loadingSaveInvestStrategyBtn || strategyName === ""
                     ? "welcome-card-strategy-builder-btn-loading"
                     : ""
                 }`}

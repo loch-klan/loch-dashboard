@@ -3,9 +3,16 @@ import React from "react";
 import { Image } from "react-bootstrap";
 import { toast } from "react-toastify";
 import {
+  StrategyBuilderAssetAdaIcon,
+  StrategyBuilderAssetAvaxIcon,
+  StrategyBuilderAssetBnbIcon,
   StrategyBuilderAssetBtcIcon,
+  StrategyBuilderAssetDogeIcon,
   StrategyBuilderAssetEthIcon,
-  StrategyBuilderAssetUsdtIcon,
+  StrategyBuilderAssetSolIcon,
+  StrategyBuilderAssetTonIcon,
+  StrategyBuilderAssetTrxIcon,
+  StrategyBuilderAssetXrpIcon,
 } from "../assets/images/icons";
 import { API_LIMIT, BASE_URL_S3 } from "./Constant";
 import { getCurrentUser, getToken } from "./ManageToken";
@@ -33,15 +40,25 @@ export const isArrayInArrayOfArrays = (arr1, arrOfArr) => {
   return false; // No match found
 };
 export const strategyByilderChartWhichSymbol = (passedItem) => {
-  if (passedItem === "CUMULATIVE_RETURN" || passedItem === "MAX_DRAWDOWN") {
+  if (
+    passedItem === "CUMULATIVE_RETURN" ||
+    passedItem === "MAX_DRAWDOWN" ||
+    passedItem === "VOLUME" ||
+    passedItem === "MARKET_CAPITALIZATION" ||
+    passedItem === "MOVING_AVERAGE_CONVERGENCE_DIVERGENCE"
+  ) {
     return "%";
   }
   return "$";
 };
 export const strategyByilderChartShouldShowDate = (passedItem) => {
   if (
-    passedItem === "MOVING_AVERAGE_PRICE" ||
+    passedItem === "MARKET_CAPITALIZATION" ||
+    passedItem === "BOLLINGER_BAND" ||
+    passedItem === "MOVING_AVERAGE_CONVERGENCE_DIVERGENCE" ||
+    passedItem === "RELATIVE_STRENGTH_INDEX" ||
     passedItem === "MOVING_AVERAGE_RETURN" ||
+    passedItem === "MOVING_AVERAGE_PRICE" ||
     passedItem === "EXPONENTIAL_MOVING_AVERAGE" ||
     passedItem === "MAX_DRAWDOWN"
   ) {
@@ -50,24 +67,18 @@ export const strategyByilderChartShouldShowDate = (passedItem) => {
   return false;
 };
 export const strategyByilderChartLineColorByIndexLowOpacity = (passedIndex) => {
-  if (passedIndex === 0) {
-    return "rgba(128, 67, 243,0.1)";
-  } else if (passedIndex === 1) {
-    return "rgba(162, 220, 0,0.1)";
-  } else if (passedIndex === 2) {
-    return "rgba(43, 127, 255,0.1)";
-  }
-  return "black";
+  // if (passedIndex === 0) {
+  //   return "rgba(128, 67, 243,0.1)";
+  // } else if (passedIndex === 1) {
+  //   return "rgba(162, 220, 0,0.1)";
+  // } else if (passedIndex === 2) {
+  //   return "rgba(43, 127, 255,0.1)";
+  // }
+  // return "black";
+  return `var(--strategyBuilderGraphLowOpacity${passedIndex + 1})`;
 };
 export const strategyByilderChartLineColorByIndex = (passedIndex) => {
-  if (passedIndex === 0) {
-    return "var(--strategyBuilderGraphOne)";
-  } else if (passedIndex === 1) {
-    return "var(--strategyBuilderGraphTwo)";
-  } else if (passedIndex === 2) {
-    return "var(--strategyBuilderGraphThree)";
-  }
-  return "var(--primaryTextColor)";
+  return `var(--strategyBuilderGraph${passedIndex + 1})`;
 };
 
 export const strategyByilderAssetList = () => {
@@ -83,9 +94,44 @@ export const strategyByilderAssetList = () => {
       color: "#627EEA",
     },
     {
-      name: "USDT",
-      icon: StrategyBuilderAssetUsdtIcon,
-      color: "#26A17B",
+      name: "BNB",
+      icon: StrategyBuilderAssetBnbIcon,
+      color: "#F0B90A",
+    },
+    {
+      name: "SOL",
+      icon: StrategyBuilderAssetSolIcon,
+      color: "#9F99D8",
+    },
+    {
+      name: "DOGE",
+      icon: StrategyBuilderAssetDogeIcon,
+      color: "#FDA523",
+    },
+    {
+      name: "XRP",
+      icon: StrategyBuilderAssetXrpIcon,
+      color: "#00AAE5",
+    },
+    {
+      name: "TON",
+      icon: StrategyBuilderAssetTonIcon,
+      color: "#0098EA",
+    },
+    {
+      name: "TRX",
+      icon: StrategyBuilderAssetTrxIcon,
+      color: "#FE0001",
+    },
+    {
+      name: "ADA",
+      icon: StrategyBuilderAssetAdaIcon,
+      color: "#3468D1",
+    },
+    {
+      name: "AVAX",
+      icon: StrategyBuilderAssetAvaxIcon,
+      color: "#E84142",
     },
   ];
 };
@@ -99,14 +145,33 @@ export const strategyByilderTypeConvertorSymbolToText = (passedItem) => {
   } else if (passedItem === "CUMULATIVE_RETURN") {
     return "Cumulative return";
   } else if (passedItem === "EXPONENTIAL_MOVING_AVERAGE") {
-    return "Exponential moving average of price";
+    return "Exponential moving average";
   } else if (passedItem === "MAX_DRAWDOWN") {
     return "Max drawdown";
   } else if (passedItem === "MOVING_AVERAGE_PRICE") {
-    return "Moving average of price";
+    return "Moving average price";
   } else if (passedItem === "MOVING_AVERAGE_RETURN") {
     return "Moving average return";
+  } else if (passedItem === "RELATIVE_STRENGTH_INDEX") {
+    return "Relative strength index";
+  } else if (passedItem === "STANDARD_DEVIATION_OF_PRICE") {
+    return "Standard deviation of price";
+  } else if (passedItem === "STANDARD_DEVIATION_OF_RETURN") {
+    return "Standard deviation of return";
+  } else if (passedItem === "MONEY_FLOW_INDEX") {
+    return "Money flow index";
+  } else if (passedItem === "MOVING_AVERAGE_CONVERGENCE_DIVERGENCE") {
+    return "Moving average convergence divergence";
+  } else if (passedItem === "BOLLINGER_BAND") {
+    return "Bollinger band";
+  } else if (passedItem === "VOLUME") {
+    return "Volume";
+  } else if (passedItem === "MARKET_CAPITALIZATION") {
+    return "Market capitalization";
+  } else if (passedItem === "OPEN_HIGH_LOW_CLOSE") {
+    return "Open high low close";
   }
+
   return "";
 };
 export const strategyByilderTypeConvertorTextToSymbol = (passedItem) => {
@@ -114,15 +179,34 @@ export const strategyByilderTypeConvertorTextToSymbol = (passedItem) => {
     return "CURRENT_PRICE";
   } else if (passedItem === "Cumulative return") {
     return "CUMULATIVE_RETURN";
-  } else if (passedItem === "Exponential moving average of price") {
+  } else if (passedItem === "Exponential moving average") {
     return "EXPONENTIAL_MOVING_AVERAGE";
   } else if (passedItem === "Max drawdown") {
     return "MAX_DRAWDOWN";
-  } else if (passedItem === "Moving average of price") {
+  } else if (passedItem === "Moving average price") {
     return "MOVING_AVERAGE_PRICE";
   } else if (passedItem === "Moving average return") {
     return "MOVING_AVERAGE_RETURN";
+  } else if (passedItem === "Relative strength index") {
+    return "RELATIVE_STRENGTH_INDEX";
+  } else if (passedItem === "Standard deviation of price") {
+    return "STANDARD_DEVIATION_OF_PRICE";
+  } else if (passedItem === "Standard deviation of return") {
+    return "STANDARD_DEVIATION_OF_RETURN";
+  } else if (passedItem === "Money flow index") {
+    return "MONEY_FLOW_INDEX";
+  } else if (passedItem === "Moving average convergence divergence") {
+    return "MOVING_AVERAGE_CONVERGENCE_DIVERGENCE";
+  } else if (passedItem === "Bollinger band") {
+    return "BOLLINGER_BAND";
+  } else if (passedItem === "Volume") {
+    return "VOLUME";
+  } else if (passedItem === "Market capitalization") {
+    return "MARKET_CAPITALIZATION";
+  } else if (passedItem === "Open high low close") {
+    return "OPEN_HIGH_LOW_CLOSE";
   }
+
   return "";
 };
 export const strategyByilderOperatorConvertorSymbolToText = (passedItem) => {

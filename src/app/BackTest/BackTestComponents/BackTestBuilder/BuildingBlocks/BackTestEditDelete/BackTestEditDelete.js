@@ -16,15 +16,17 @@ class BackTestEditDelete extends BaseReactComponent {
   render() {
     return (
       <div className={`sbb-edit-delete-options`}>
-        <div
-          onClick={this.props.onEditClick}
-          className="sbb-edit-delete-options-block sbb-edit-delete-options-edit"
-        >
-          <Image
-            className="sbb-edit-delete-options-block-image sbb-edit-delete-options-edit-image"
-            src={StrategyBuilderPencilIcon}
-          />
-        </div>
+        {this.props.hideEditBtn ? null : (
+          <div
+            onClick={this.props.onEditClick}
+            className="sbb-edit-delete-options-block sbb-edit-delete-options-edit"
+          >
+            <Image
+              className="sbb-edit-delete-options-block-image sbb-edit-delete-options-edit-image"
+              src={StrategyBuilderPencilIcon}
+            />
+          </div>
+        )}
         {this.props.hideDeleteBtn ? null : (
           <div
             onClick={this.props.onDeleteClick}

@@ -52,8 +52,6 @@ class BackTestPopupDropdown extends BaseReactComponent {
       prevProps.selectedOption !== this.props.selectedOption ||
       prevProps.updatedText !== this.props.updatedText
     ) {
-      console.log("Not changed?");
-
       this.setSelectedOptionText();
     }
   }
@@ -123,29 +121,31 @@ class BackTestPopupDropdown extends BaseReactComponent {
                   />
                 </div>
               </div>
-              {this.props.allOptions
-                ? this.props.allOptions.map((option, index) => (
-                    <div
-                      className={`back-test-popup-list-item ${
-                        option === this.props.selectedOption
-                          ? "back-test-popup-list-item-selected"
-                          : ""
-                      }`}
-                      onClick={() => {
-                        this.itemSelected(option, index);
-                      }}
-                      key={option + index}
-                    >
-                      <div>{option}</div>
-                      {option === this.props.selectedOption ? (
-                        <Image
-                          className="back-test-popup-list-item-check-icon"
-                          src={CheckIcon}
-                        />
-                      ) : null}
-                    </div>
-                  ))
-                : null}
+              <div className="back-test-popup-item-container">
+                {this.props.allOptions
+                  ? this.props.allOptions.map((option, index) => (
+                      <div
+                        className={`back-test-popup-list-item ${
+                          option === this.props.selectedOption
+                            ? "back-test-popup-list-item-selected"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          this.itemSelected(option, index);
+                        }}
+                        key={option + index}
+                      >
+                        <div>{option}</div>
+                        {option === this.props.selectedOption ? (
+                          <Image
+                            className="back-test-popup-list-item-check-icon"
+                            src={CheckIcon}
+                          />
+                        ) : null}
+                      </div>
+                    ))
+                  : null}
+              </div>
             </div>
           ) : null}
         </div>

@@ -10,9 +10,9 @@ import {
 import { BaseReactComponent } from "../../../../../../utils/form";
 import { mobileCheck } from "../../../../../../utils/ReusableFunctions";
 import BackTestAddItems from "../../BuildingBlocks/BackTestAddItems/BackTestAddItems";
+import BackTestAddItemsBellow from "../../BuildingBlocks/BackTestAddItemsBellow/BackTestAddItemsBellow";
 import BackTestEditDelete from "../../BuildingBlocks/BackTestEditDelete/BackTestEditDelete";
 import "./_backTestBuilderBlock.scss";
-import BackTestAddItemsBellow from "../../BuildingBlocks/BackTestAddItemsBellow/BackTestAddItemsBellow";
 
 class BackTestBuilderBlock extends BaseReactComponent {
   constructor(props) {
@@ -25,6 +25,7 @@ class BackTestBuilderBlock extends BaseReactComponent {
       titleClassName: "",
       editBtnClicked: false,
       deleteBtnClicked: false,
+
       isOptionsOpenToggle: false,
       isOptionsOpenToggleBellow: false,
     };
@@ -144,72 +145,17 @@ class BackTestBuilderBlock extends BaseReactComponent {
         className={`strategy-builder-block-container ${
           this.props.isError ? "strategy-builder-block-container-error" : ""
         } ${this.props.passedClass}`}
+        style={{
+          // transform: `translateX(${this.props.blockLevel * 4}rem)`,
+          marginLeft: this.props.blockLevel * 4 + "rem",
+        }}
       >
-        <div
-          style={{
-            width: this.props.blockLevel * 4 + "rem",
-            minWidth: this.props.blockLevel * 4 + "rem",
-          }}
-        />
-        {this.props.blockType === "add item" ? (
-          <div
-            className={`strategy-builder-block strategy-builder-block-no-hover`}
-            onClick={this.onAddClick}
-          >
-            <div className={`sbb-title ${this.state.titleClassName}`}>
-              <div className="sbb-title-image-container">
-                <Image className="sbb-title-image" src={this.state.titleIcon} />
-              </div>
-              {this.state.titleName ? (
-                <div className="sbb-title-text">{this.state.titleName}</div>
-              ) : null}
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className={`strategy-builder-block `}>
-              <div className={`sbb-title ${this.state.titleClassName}`}>
-                <div
-                  onClick={this.onAddClick}
-                  className="sbb-title-image-container"
-                >
-                  <Image
-                    className="sbb-title-image"
-                    src={this.state.titleIcon}
-                  />
-                </div>
-                {this.state.titleName ? (
-                  <div className="sbb-title-text">{this.state.titleName}</div>
-                ) : null}
-              </div>
-              {ChildrenWithProps ? (
-                <div className="sbb-dropdown-children">{ChildrenWithProps}</div>
-              ) : null}
-              {this.props.showDropDown ? (
-                <div className="sbb-dropdown-container">
-                  <div>:</div>
-                  <div className="sbb-dropdown">
-                    <Image
-                      className="sbb-dropdown-arrow"
-                      src={RoundedArrowDownIcon}
-                    />
-                  </div>
-                </div>
-              ) : null}
-            </div>
-            <BackTestEditDelete
-              onEditClick={this.onEditClick}
-              onDeleteClick={this.onDeleteClick}
-              onAddClick={this.onAddBellowClick}
-              hideAddBtn={
-                this.props.blockType === "weight percentage" ? true : false
-              }
-              hideDeleteBtn={
-                this.props.blockType === "weight percentage" ? true : false
-              }
-            />
+        <div />
 
+        <>
+          <div className={`strategy-builder-block `}>
             <BackTestAddItemsBellow
+              openCollapse={this.props.openCollapse}
               //WEIGHT
               weightPath={this.props.weightPath}
               weightIndex={this.props.weightIndex}
@@ -223,8 +169,49 @@ class BackTestBuilderBlock extends BaseReactComponent {
               }
               isOptionsOpenToggle={this.state.isOptionsOpenToggleBellow}
             />
-          </>
-        )}
+
+            <div className={`sbb-title ${this.state.titleClassName}`}>
+              <div
+                onClick={this.onAddClick}
+                className="sbb-title-image-container"
+              >
+                <Image className="sbb-title-image" src={this.state.titleIcon} />
+              </div>
+              {this.state.titleName ? (
+                <div className="sbb-title-text">{this.state.titleName}</div>
+              ) : null}
+            </div>
+            {ChildrenWithProps ? (
+              <div className="sbb-dropdown-children">{ChildrenWithProps}</div>
+            ) : null}
+            {this.props.showDropDown ? (
+              <div className="sbb-dropdown-container">
+                <div>:</div>
+                <div
+                  onClick={this.props.toggleCollapse}
+                  className="sbb-dropdown"
+                >
+                  <Image
+                    className={`sbb-dropdown-arrow ${
+                      this.props.isItemCollapsed
+                        ? "sbb-dropdown-arrow-reversed"
+                        : ""
+                    }`}
+                    src={RoundedArrowDownIcon}
+                  />
+                </div>
+              </div>
+            ) : null}
+          </div>
+          <BackTestEditDelete
+            onEditClick={this.onEditClick}
+            onDeleteClick={this.onDeleteClick}
+            onAddClick={this.onAddBellowClick}
+            hideEditBtn={this.props.blockType === "weight"}
+            hideAddBtn={this.props.blockType === "weight percentage"}
+            hideDeleteBtn={this.props.blockType === "weight percentage"}
+          />
+        </>
 
         <BackTestAddItems
           //WEIGHT

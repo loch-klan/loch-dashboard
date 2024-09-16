@@ -162,7 +162,11 @@ class BackTestConditionBuilderBlock extends BaseReactComponent {
                   {this.state.selectedDaysConditions
                     ? this.state.selectedDaysConditions
                     : "0"}
-                  d{"  "}
+                  {this.state.selectedPriceConditions ===
+                  "Market capitalization"
+                    ? " outstanding shares for "
+                    : "d "}
+                  {"  "}
                 </>
               ) : null}
               <span className="back-test-condition-builder-grey-text">

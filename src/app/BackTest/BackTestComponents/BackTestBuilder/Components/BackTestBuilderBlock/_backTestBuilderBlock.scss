@@ -18,6 +18,7 @@
     padding: 5px;
     padding-right: 8px;
     position: relative;
+
     .sbb-content {
       flex: 1;
     }
@@ -70,6 +71,9 @@
         .sbb-dropdown-arrow {
           height: 5px;
         }
+        .sbb-dropdown-arrow-reversed {
+          transform: rotate(180deg);
+        }
         &:hover {
           background-color: var(--strategyBuilderDarkGrey);
         }
@@ -107,10 +111,7 @@
         display: none;
       }
     }
-    .sbb-add-options-bellow {
-      opacity: 1;
-      pointer-events: unset;
-    }
+
     .sbb-add-options {
       opacity: 1;
       pointer-events: unset;

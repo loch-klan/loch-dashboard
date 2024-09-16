@@ -16,20 +16,23 @@ import "./_backTest.scss";
 import { getBackTestChart, getBackTestTable } from "./Api/BackTestApi";
 import BackTestPageContent from "./BackTestPageContent";
 import BackTestPageMobile from "./BackTestPageMobile";
+import CustomOverlay from "../../utils/commonComponent/CustomOverlay";
 
 class BackTestPage extends BaseReactComponent {
   constructor(props) {
     super(props);
 
     this.state = {
+      passedStrategyList: [],
       isFromCalendar: false,
       isToCalendar: false,
       toDate: new Date(),
       fromDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
       fromAndToDate: "",
-      isSaveInvestStrategy: true,
+      isSaveInvestStrategy: false,
       saveStrategyCheck: false,
       loadingSaveInvestStrategyBtn: false,
+      saveStrategyName: "",
       strategiesOptions: [
         {
           label: "All",
@@ -45,6 +48,7 @@ class BackTestPage extends BaseReactComponent {
       selectedStrategiesOptions: [],
 
       performanceVisualizationGraphData: [],
+      performanceVisualizationGraphDataOriginal: {},
 
       performanceMetricTableData: [],
       performanceVisualizationGraphLoading: false,
@@ -56,7 +60,7 @@ class BackTestPage extends BaseReactComponent {
               className="history-table-header-col no-hover history-table-header-col-curve-left"
               id="time"
             >
-              <span className="inter-display-medium f-s-11 zeroOpacity">
+              <span className="inter-display-medium f-s-12 zeroOpacity">
                 Strategy
                 <br />
                 name
@@ -70,49 +74,49 @@ class BackTestPage extends BaseReactComponent {
           cell: (rowData, dataKey, dataIndex) => {
             if (dataKey === "strategy") {
               return (
-                // <CustomOverlay
-                //   position="top"
-                //   isIcon={false}
-                //   isInfo={true}
-                //   isText={true}
-                //   text={
-                //     rowData.strategy_name
-                //       ? rowData.strategy_name.toUpperCase()
-                //       : ""
-                //   }
-                // >
                 <div className="strategy-builder-table-strategy-name-container">
-                  <div
-                    style={{
-                      backgroundColor:
-                        strategyByilderChartLineColorByIndexLowOpacity(
-                          dataIndex
-                        ),
-                    }}
-                    className="strategy-builder-table-strategy-name dotDotText inter-display-medium text-uppercase f-s-12"
+                  <CustomOverlay
+                    position="top"
+                    isIcon={false}
+                    isInfo={true}
+                    isText={true}
+                    text={
+                      rowData.strategy_name
+                        ? rowData.strategy_name.toUpperCase()
+                        : ""
+                    }
                   >
-                    <svg
-                      width="5"
-                      height="6"
-                      viewBox="0 0 5 6"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="strategy-builder-table-strategy-name-circle"
+                    <div
+                      style={{
+                        backgroundColor:
+                          strategyByilderChartLineColorByIndexLowOpacity(
+                            dataIndex
+                          ),
+                      }}
+                      className="strategy-builder-table-strategy-name dotDotText inter-display-medium text-uppercase f-s-12"
                     >
-                      <circle
-                        cx="2.5"
-                        cy="3"
-                        r="2.5"
-                        fill={strategyByilderChartLineColorByIndex(dataIndex)}
-                      />
-                    </svg>
+                      <svg
+                        width="5"
+                        height="6"
+                        viewBox="0 0 5 6"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="strategy-builder-table-strategy-name-circle"
+                      >
+                        <circle
+                          cx="2.5"
+                          cy="3"
+                          r="2.5"
+                          fill={strategyByilderChartLineColorByIndex(dataIndex)}
+                        />
+                      </svg>
 
-                    <div className="strategy-builder-table-strategy-name-text">
-                      {rowData.strategy_name}
+                      <div className="strategy-builder-table-strategy-name-text dotDotText">
+                        {rowData.strategy_name}
+                      </div>
                     </div>
-                  </div>
+                  </CustomOverlay>
                 </div>
-                //  </CustomOverlay>
               );
             }
           },
@@ -120,10 +124,10 @@ class BackTestPage extends BaseReactComponent {
         {
           labelName: (
             <div className="history-table-header-col no-hover" id="time">
-              <span className="inter-display-medium f-s-11 ">
+              <span className="inter-display-medium f-s-12 ">
                 Cumulative
                 <br />
-                return
+                Return
               </span>
             </div>
           ),
@@ -134,20 +138,10 @@ class BackTestPage extends BaseReactComponent {
           cell: (rowData, dataKey) => {
             if (dataKey === "cumret") {
               return (
-                // <CustomOverlay
-                //   position="top"
-                //   isIcon={false}
-                //   isInfo={true}
-                //   isText={true}
-                //   text={
-                //     rowData.cumulative_return
-                //       ? rowData.cumulative_return + "%"
-                //       : "0.00%"
-                //   }
-                // >
                 <div className="inter-display-medium f-s-12">
                   {rowData.cumulative_return ? (
                     <span>
+                      {rowData.cumulative_return < 0 ? "-" : ""}
                       {numToCurrency(rowData.cumulative_return).toLocaleString(
                         "en-US"
                       )}
@@ -157,7 +151,6 @@ class BackTestPage extends BaseReactComponent {
                     "0.00%"
                   )}
                 </div>
-                //  </CustomOverlay>
               );
             }
           },
@@ -165,10 +158,10 @@ class BackTestPage extends BaseReactComponent {
         {
           labelName: (
             <div className="history-table-header-col no-hover" id="time">
-              <span className="inter-display-medium f-s-11 ">
+              <span className="inter-display-medium f-s-12 ">
                 Annual
                 <br />
-                return
+                Return
               </span>
             </div>
           ),
@@ -193,6 +186,7 @@ class BackTestPage extends BaseReactComponent {
                 <div className="inter-display-medium f-s-12">
                   {rowData.annual_return ? (
                     <span>
+                      {rowData.annual_return < 0 ? "-" : ""}
                       {numToCurrency(rowData.annual_return).toLocaleString(
                         "en-US"
                       )}
@@ -210,10 +204,10 @@ class BackTestPage extends BaseReactComponent {
         {
           labelName: (
             <div className="history-table-header-col no-hover" id="time">
-              <span className="inter-display-medium f-s-11 ">
+              <span className="inter-display-medium f-s-12 ">
                 Max 1d
                 <br />
-                drawdown
+                Drawdown
               </span>
             </div>
           ),
@@ -238,7 +232,7 @@ class BackTestPage extends BaseReactComponent {
                 <div className="inter-display-medium f-s-12">
                   {rowData.max_1d_drawdown ? (
                     <span>
-                      -
+                      {rowData.max_1d_drawdown < 0 ? "-" : ""}
                       {numToCurrency(rowData.max_1d_drawdown).toLocaleString(
                         "en-US"
                       )}
@@ -256,10 +250,10 @@ class BackTestPage extends BaseReactComponent {
         {
           labelName: (
             <div className="history-table-header-col no-hover" id="time">
-              <span className="inter-display-medium f-s-11 ">
+              <span className="inter-display-medium f-s-12 ">
                 Max 1w
                 <br />
-                drawdown
+                Drawdown
               </span>
             </div>
           ),
@@ -284,7 +278,7 @@ class BackTestPage extends BaseReactComponent {
                 <div className="inter-display-medium f-s-12">
                   {rowData.max_1w_drawdown ? (
                     <span>
-                      -
+                      {rowData.max_1w_drawdown < 0 ? "-" : ""}
                       {numToCurrency(rowData.max_1w_drawdown).toLocaleString(
                         "en-US"
                       )}
@@ -302,10 +296,10 @@ class BackTestPage extends BaseReactComponent {
         {
           labelName: (
             <div className="history-table-header-col no-hover" id="time">
-              <span className="inter-display-medium f-s-11 ">
+              <span className="inter-display-medium f-s-12 ">
                 Max 1m
                 <br />
-                drawdown
+                Drawdown
               </span>
             </div>
           ),
@@ -330,7 +324,7 @@ class BackTestPage extends BaseReactComponent {
                 <div className="inter-display-medium f-s-12">
                   {rowData.max_1m_drawdown ? (
                     <span>
-                      -
+                      {rowData.max_1m_drawdown < 0 ? "-" : ""}
                       {numToCurrency(rowData.max_1m_drawdown).toLocaleString(
                         "en-US"
                       )}
@@ -351,10 +345,10 @@ class BackTestPage extends BaseReactComponent {
               className="history-table-header-col no-hover history-table-header-col-curve-right"
               id="time"
             >
-              <span className="inter-display-medium f-s-11 ">
+              <span className="inter-display-medium f-s-12 ">
                 Sharpe
                 <br />
-                ratio
+                Ratio
               </span>
             </div>
           ),
@@ -377,10 +371,10 @@ class BackTestPage extends BaseReactComponent {
                 <div className="inter-display-medium f-s-12">
                   {rowData.sharpe_ratio ? (
                     <span>
+                      {rowData.sharpe_ratio < 0 ? "-" : ""}
                       {numToCurrency(rowData.sharpe_ratio).toLocaleString(
                         "en-US"
                       )}
-                      %
                     </span>
                   ) : (
                     "0.00%"
@@ -394,11 +388,17 @@ class BackTestPage extends BaseReactComponent {
       ],
     };
   }
-  saveStrategyClicked = () => {
-    this.setState({
-      saveStrategyCheck: !this.state.saveStrategyCheck,
-      loadingSaveInvestStrategyBtn: true,
-    });
+  saveStrategyClicked = (passedName) => {
+    this.setState(
+      {
+        saveStrategyName: passedName,
+      },
+      this.setState({
+        saveStrategyCheck: !this.state.saveStrategyCheck,
+
+        loadingSaveInvestStrategyBtn: true,
+      })
+    );
   };
 
   showSaveStrategy = () => {
@@ -442,10 +442,16 @@ class BackTestPage extends BaseReactComponent {
       if (item === "eth" || item === "btc") {
         tempTokenList.push(item);
       } else {
-        tempApiData.append("strategy_id", item);
+        tempApiData.append("strategy_list", JSON.stringify([item]));
         tempApiData.append("current_portfolio_balance", 20000);
       }
     });
+    // if (this.state.passedStrategyList.length > 0) {
+    //   tempApiData.append(
+    //     "strategy_list",
+    //     JSON.stringify(this.state.passedStrategyList)
+    //   );
+    // }
     tempApiData.append("token_list", JSON.stringify(tempTokenList));
     tempApiData.append(
       "start_datetime",
@@ -504,6 +510,7 @@ class BackTestPage extends BaseReactComponent {
     } else {
       this.setState({
         performanceVisualizationGraphData: [],
+        performanceVisualizationGraphDataOriginal: {},
         performanceMetricTableData: [],
         performanceVisualizationGraphLoading: true,
         performanceMetricTableLoading: true,
@@ -514,13 +521,63 @@ class BackTestPage extends BaseReactComponent {
   };
 
   componentDidMount() {
-    const lastStrategy = window.localStorage.getItem("lastStrategyId");
-    if (lastStrategy) {
+    const { state } = this.props.location;
+    if (state && state.passedStrategyId) {
+      this.setState(
+        {
+          passedStrategyList: [state.passedStrategyId],
+        },
+        () => {
+          const tempItem = [
+            ...this.state.strategiesOptions,
+            { label: "strategy", value: state.passedStrategyId },
+          ];
+          this.getAssetData(tempItem);
+        }
+      );
+    } else {
+      this.getAssetData(this.state.strategiesOptions);
+    }
+
+    // const lastStrategy = window.localStorage.getItem("lastStrategyId");
+    // if (lastStrategy) {
+    //   let tempStrategiesOption = {
+    //     label: "Strategy",
+    //     value: lastStrategy,
+    //   };
+
+    //   this.setState(
+    //     {
+    //       strategiesOptions: [
+    //         {
+    //           label: "All",
+    //           value: "all",
+    //         },
+    //         {
+    //           label: "BTC",
+    //           value: "btc",
+    //           color: "gold",
+    //         },
+    //         { label: "ETH", value: "eth", color: "blue" },
+    //         tempStrategiesOption,
+    //       ],
+    //     },
+    //     () => {
+    //       this.getAssetData(this.state.strategiesOptions);
+    //     }
+    //   );
+    // } else {
+    // }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevProps.BackTestLatestStrategyState !==
+      this.props.BackTestLatestStrategyState
+    ) {
       let tempStrategiesOption = {
         label: "Strategy",
-        value: lastStrategy,
+        value: this.props.BackTestLatestStrategyState,
       };
-
       this.setState(
         {
           strategiesOptions: [
@@ -536,58 +593,55 @@ class BackTestPage extends BaseReactComponent {
             { label: "ETH", value: "eth", color: "blue" },
             tempStrategiesOption,
           ],
+          selectedStrategiesOptions: [],
         },
         () => {
           this.getAssetData(this.state.strategiesOptions);
         }
       );
-    } else {
-      this.getAssetData(this.state.strategiesOptions);
     }
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.BackTestQueryState !== this.props.BackTestQueryState) {
-      let currentQueryItem = 0;
-      if (this.props.BackTestQueryState.length > 0) {
-        currentQueryItem =
-          this.props.BackTestQueryState[
-            this.props.BackTestQueryState.length - 1
-          ].id;
-        let tempStrategiesOption = {
-          label: "Strategy",
-          value: currentQueryItem,
-        };
-        const previousLastStrategyId = window.localStorage.getItem(
-          "lastStrategyId",
-          currentQueryItem
-        );
-        if (previousLastStrategyId !== currentQueryItem) {
-          window.localStorage.setItem("lastStrategyId", currentQueryItem);
+    // if (prevProps.BackTestQueryState !== this.props.BackTestQueryState) {
+    //   let currentQueryItem = 0;
+    //   if (this.props.BackTestQueryState.length > 0) {
+    //     currentQueryItem =
+    //       this.props.BackTestQueryState[
+    //         this.props.BackTestQueryState.length - 1
+    //       ].id;
+    //     let tempStrategiesOption = {
+    //       label: "Strategy",
+    //       value: currentQueryItem,
+    //     };
+    //     const previousLastStrategyId = window.localStorage.getItem(
+    //       "lastStrategyId",
+    //       currentQueryItem
+    //     );
+    //     if (previousLastStrategyId !== currentQueryItem) {
+    //       window.localStorage.setItem("lastStrategyId", currentQueryItem);
 
-          this.setState(
-            {
-              strategiesOptions: [
-                {
-                  label: "All",
-                  value: "all",
-                },
-                {
-                  label: "BTC",
-                  value: "btc",
-                  color: "gold",
-                },
-                { label: "ETH", value: "eth", color: "blue" },
-                tempStrategiesOption,
-              ],
-              selectedStrategiesOptions: [],
-            },
-            () => {
-              this.getAssetData(this.state.strategiesOptions);
-            }
-          );
-        }
-      }
-    }
+    //       this.setState(
+    //         {
+    //           strategiesOptions: [
+    //             {
+    //               label: "All",
+    //               value: "all",
+    //             },
+    //             {
+    //               label: "BTC",
+    //               value: "btc",
+    //               color: "gold",
+    //             },
+    //             { label: "ETH", value: "eth", color: "blue" },
+    //             tempStrategiesOption,
+    //           ],
+    //           selectedStrategiesOptions: [],
+    //         },
+    //         () => {
+    //           this.getAssetData(this.state.strategiesOptions);
+    //         }
+    //       );
+    //     }
+    //   }
+    // }
     if (prevProps.BackTestTableState !== this.props.BackTestTableState) {
       let tempBtTableData = this.props.BackTestTableState;
 
@@ -602,13 +656,13 @@ class BackTestPage extends BaseReactComponent {
               let itemFound = curItem[key];
               if (itemFound) {
                 let tempHolder = {
-                  annual_return: itemFound.annual_return,
-                  calmar_ratio: itemFound.calmar_ratio,
-                  cumulative_return: itemFound.cumulative_return,
-                  max_1d_drawdown: itemFound.max_1d_drawdown,
-                  max_1w_drawdown: itemFound.max_1w_drawdown,
-                  max_1m_drawdown: itemFound.max_1m_drawdown,
-                  sharpe_ratio: itemFound.sharpe_ratio,
+                  annual_return: itemFound.data.annual_return,
+                  calmar_ratio: itemFound.data.calmar_ratio,
+                  cumulative_return: itemFound.data.cumulative_return,
+                  max_1d_drawdown: itemFound.data.max_1d_drawdown,
+                  max_1w_drawdown: itemFound.data.max_1w_drawdown,
+                  max_1m_drawdown: itemFound.data.max_1m_drawdown,
+                  sharpe_ratio: itemFound.data.sharpe_ratio,
                   strategy_name: key,
                 };
                 tempArr.push(tempHolder);
@@ -625,29 +679,32 @@ class BackTestPage extends BaseReactComponent {
     if (prevProps.BackTestChartState !== this.props.BackTestChartState) {
       this.calcChartData();
     }
-    if (
-      prevState.selectedStrategiesOptions !==
-      this.state.selectedStrategiesOptions
-    ) {
-      if (this.state.selectedStrategiesOptions.length === 0) {
-        this.getAssetData(this.state.strategiesOptions);
-      } else {
-        let filteredAssets = [];
-        this.state.strategiesOptions.forEach((item) => {
-          if (
-            this.state.selectedStrategiesOptions.includes(item.label) ||
-            this.state.selectedStrategiesOptions.includes(item.value)
-          ) {
-            filteredAssets.push(item);
-          }
-        });
-        this.getAssetData(filteredAssets);
-      }
-    }
+    // if (
+    //   prevState.selectedStrategiesOptions !==
+    //   this.state.selectedStrategiesOptions
+    // ) {
+    //   if (this.state.selectedStrategiesOptions.length === 0) {
+    //     this.getAssetData(this.state.strategiesOptions);
+    //   } else {
+    //     let filteredAssets = [];
+    //     this.state.strategiesOptions.forEach((item) => {
+    //       if (
+    //         this.state.selectedStrategiesOptions.includes(item.label) ||
+    //         this.state.selectedStrategiesOptions.includes(item.value)
+    //       ) {
+    //         filteredAssets.push(item);
+    //       }
+    //     });
+    //     this.getAssetData(filteredAssets);
+    //   }
+    // }
   }
-  calcChartData = (minRange = 0, maxRange) => {
-    let tempBtChartData = this.props.BackTestChartState;
-
+  calcChartData = (minRange = 0, minTimeFormat = 0) => {
+    let tempBtChartData = this.props.BackTestChartState.chartData;
+    let tempBtChartDataOriginal = this.props.BackTestChartState
+      .chartDataOriginal
+      ? this.props.BackTestChartState.chartDataOriginal
+      : [];
     if (tempBtChartData && tempBtChartData.length > 0) {
       let tempRangeDateHolder = "";
       this.setState({
@@ -661,7 +718,7 @@ class BackTestPage extends BaseReactComponent {
           if (curItem.hasOwnProperty(key)) {
             let itemFound = curItem[key];
             if (itemFound && itemFound.constructor === Array) {
-              let tempInitialValueHolder = itemFound[0][1];
+              let tempInitialValueHolder = 0;
 
               let chartDataPointHolder = itemFound.map((item, mapIndex) => {
                 if (mapIndex === 0 && curIndex === 0) {
@@ -680,6 +737,9 @@ class BackTestPage extends BaseReactComponent {
 
                 const convertedDate = moment(dateObj).format("DD MM YYYY");
                 if (convertedDate === minRange) {
+                  tempInitialValueHolder = itemFound[mapIndex][1];
+                }
+                if (mapIndex === 0 && moment(minTimeFormat).isBefore(item[0])) {
                   tempInitialValueHolder = itemFound[mapIndex][1];
                 }
 
@@ -742,6 +802,7 @@ class BackTestPage extends BaseReactComponent {
 
       this.setState({
         performanceVisualizationGraphData: allGraphListItems,
+        performanceVisualizationGraphDataOriginal: tempBtChartDataOriginal,
         fromAndToDate: tempRangeDateHolder,
       });
     }
@@ -806,6 +867,7 @@ class BackTestPage extends BaseReactComponent {
           hideShare
         >
           <BackTestPageMobile
+            saveStrategyName={this.state.saveStrategyName}
             saveStrategyCheck={this.state.saveStrategyCheck}
             showSaveStrategy={this.showSaveStrategy}
             hideSaveStrategy={this.hideSaveStrategy}
@@ -823,6 +885,9 @@ class BackTestPage extends BaseReactComponent {
             performanceMetricTableData={this.state.performanceMetricTableData}
             performanceVisualizationGraphData={
               this.state.performanceVisualizationGraphData
+            }
+            performanceVisualizationGraphDataOriginal={
+              this.state.performanceVisualizationGraphDataOriginal
             }
             hideToCalendar={this.hideToCalendar}
             hideFromCalendar={this.hideFromCalendar}
@@ -876,6 +941,8 @@ class BackTestPage extends BaseReactComponent {
           <div className=" page-scroll">
             <div className="page-scroll-child page-scroll-child-full-width">
               <BackTestPageContent
+                passedStrategyList={this.state.passedStrategyList}
+                saveStrategyName={this.state.saveStrategyName}
                 saveStrategyCheck={this.state.saveStrategyCheck}
                 showSaveStrategy={this.showSaveStrategy}
                 hideSaveStrategy={this.hideSaveStrategy}
@@ -897,6 +964,9 @@ class BackTestPage extends BaseReactComponent {
                 }
                 performanceVisualizationGraphData={
                   this.state.performanceVisualizationGraphData
+                }
+                performanceVisualizationGraphDataOriginal={
+                  this.state.performanceVisualizationGraphDataOriginal
                 }
                 hideToCalendar={this.hideToCalendar}
                 hideFromCalendar={this.hideFromCalendar}
@@ -922,6 +992,7 @@ const mapStateToProps = (state) => ({
   BackTestChartState: state.BackTestChartState,
   BackTestTableState: state.BackTestTableState,
   BackTestQueryState: state.BackTestQueryState,
+  BackTestLatestStrategyState: state.BackTestLatestStrategyState,
 });
 const mapDispatchToProps = {
   getBackTestChart,

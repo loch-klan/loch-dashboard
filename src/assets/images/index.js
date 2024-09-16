@@ -27,3 +27,4 @@ export { default as FakeStrategy6Image } from "./FakeStrategy6.png";
 export { default as FakeStrategyBackgroundImage } from "./FakeStrategyBackground.png";
 export { default as FakeStrategyBackground2Image } from "./FakeStrategyBackground2.png";
 export { default as BackTestGraphHandleIcon } from "./BackTestGraphHandle.svg";
+export { default as StrategyDiscoveryHeadingFloatingBlocks } from "./StrategyDiscoveryHeadingFloatingBlocks.svg";

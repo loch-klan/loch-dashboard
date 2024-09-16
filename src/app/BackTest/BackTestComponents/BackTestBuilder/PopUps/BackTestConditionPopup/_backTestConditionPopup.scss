@@ -6,7 +6,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    transform: translate(0rem, 1rem);
+    transform: translate(-5.7rem, 1rem);
     padding: 1rem;
     box-shadow: var(--boxShadowMd);
     border-radius: 12px;
@@ -71,6 +71,10 @@
           border: 1px solid var(--strategyBuilderLightGrey);
           border-radius: 6px;
           background-color: var(--strategyBuilderLightGrey);
+        }
+        .back-test-condition-popup-body-colored-text {
+          white-space: nowrap;
+          overflow: hidden;
         }
       }
     }

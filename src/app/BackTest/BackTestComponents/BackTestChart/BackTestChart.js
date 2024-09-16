@@ -166,11 +166,16 @@ class BackTestChart extends BaseReactComponent {
                   legend: {
                     enabled: true,
                     verticalAlign: "bottom",
-                    itemStyle: {
-                      color: "var(--primaryTextColor)",
-                      textTransform: "uppercase",
-                      fontWeight: "500",
-                      textShadow: "0.1px 0 var(--primaryTextColor)",
+                    symbolWidth: 0,
+                    symbolHeight: 0,
+                    symbolRadius: 0,
+                    useHTML: true,
+                    labelFormatter: function () {
+                      return `<span class="strategy-builder-chart-legend-text" style="color: ${
+                        this.color
+                      }; opacity:${this.visible ? 1 : 0.5}">${
+                        this.name
+                      }</span>`;
                     },
                   },
                   title: {
@@ -198,34 +203,46 @@ class BackTestChart extends BaseReactComponent {
                           let itemTitle = "";
                           let itemColor = "";
                           let itemAmount = "";
+                          let itemPercentage = amountFormat(
+                            point.y,
+                            "en-US",
+                            "USD"
+                          );
+                          if (
+                            parent.props
+                              .performanceVisualizationGraphDataOriginal &&
+                            parent.props
+                              .performanceVisualizationGraphDataOriginal[
+                              pointIndex
+                            ] &&
+                            parent.props
+                              .performanceVisualizationGraphDataOriginal[
+                              pointIndex
+                            ]
+                          ) {
+                            itemAmount =
+                              parent.props
+                                .performanceVisualizationGraphDataOriginal[
+                                pointIndex
+                              ][point.x];
+                          }
                           if (point.series && point.series.userOptions) {
                             itemTitle = point.series.userOptions.name;
                             itemColor = point.series.userOptions.color;
 
-                            if (
-                              point.series.userOptions.data &&
-                              point.series.userOptions.data[
-                                point.point.index
-                              ] &&
-                              point.series.userOptions.data[
-                                point.point.index
-                              ][2]
-                            ) {
-                              itemAmount =
-                                point.series.userOptions.data[
-                                  point.point.index
-                                ][2];
-                            }
-
                             itemTitle = itemTitle.toUpperCase();
                           }
+                          if (itemAmount === undefined || itemAmount === null) {
+                            itemAmount = 0;
+                            itemPercentage = 0;
+                            if (point?.series?.userOptions?.data[0][2]) {
+                              itemAmount = point.series.userOptions.data[0][2];
+                            }
+                          }
+
                           return `<div class="back-test-chart-tool-tip">
-                              <div>${itemTitle}</div>
-                              <div>${amountFormat(
-                                point.y,
-                                "en-US",
-                                "USD"
-                              )}%</div>
+                              <div style="color:${itemColor}" >${itemTitle}</div>
+                              <div>${itemPercentage}%</div>
                               <div class="back-test-chart-tool-tip-amount">${
                                 CurrencyType(false) +
                                 amountFormat(itemAmount, "en-US", "USD")
@@ -324,20 +341,20 @@ class BackTestChart extends BaseReactComponent {
                               ].data[0][0];
                           }
 
-                          let quaterLength =
+                          let fullLength =
                             parent.props.performanceVisualizationGraphData[
                               selectedItemIndex
-                            ].data.length;
-                          quaterLength = Math.round(quaterLength / 3);
+                            ].data.length - 1;
+
                           if (
                             parent.props.performanceVisualizationGraphData[
                               selectedItemIndex
-                            ].data[quaterLength]
+                            ].data[fullLength]
                           ) {
                             endIndex =
                               parent.props.performanceVisualizationGraphData[
                                 selectedItemIndex
-                              ].data[quaterLength][0];
+                              ].data[fullLength][0];
                           }
                         }
                         chart.xAxis[0].setExtremes(startIndex, endIndex);
@@ -355,6 +372,7 @@ class BackTestChart extends BaseReactComponent {
 
                   scrollbar: {
                     enabled: true,
+                    liveRedraw: false,
                     height: 0,
                     barBackgroundColor: "transparent",
                     barBorderRadius: 4,
@@ -387,13 +405,13 @@ class BackTestChart extends BaseReactComponent {
                     events: {
                       afterSetExtremes: function (e) {
                         let minEle = moment(e.min).format("DD MM YYYY");
-                        let maxEle = moment(e.max).format("DD MM YYYY");
+                        // let maxEle = moment(e.max).format("DD MM YYYY");
                         if (this.reDraw) {
                           clearTimeout(this.reDraw);
                         }
                         this.reDraw = setTimeout(() => {
-                          parent.props.calcChartData(minEle, maxEle);
-                        }, 500);
+                          parent.props.calcChartData(minEle, e.min);
+                        }, 1000);
                       },
                     },
                     labels: {
@@ -411,7 +429,6 @@ class BackTestChart extends BaseReactComponent {
                     outlineWidth: 1,
                     maskFill: "var(--strategyBuilderGraphNavigatorMaskFill)",
                     stickToMax: false,
-
                     handles: {
                       lineWidth: 0,
                       width: 7,
