@@ -24,6 +24,7 @@ class BackTestPage extends BaseReactComponent {
 
     this.state = {
       passedStrategyList: [],
+      passedUserList: [],
       isFromCalendar: false,
       isToCalendar: false,
       toDate: new Date(),
@@ -526,6 +527,7 @@ class BackTestPage extends BaseReactComponent {
       this.setState(
         {
           passedStrategyList: [state.passedStrategyId],
+          passedUserList: [state.passedUserId],
         },
         () => {
           const tempItem = [
@@ -942,6 +944,7 @@ class BackTestPage extends BaseReactComponent {
             <div className="page-scroll-child page-scroll-child-full-width">
               <BackTestPageContent
                 passedStrategyList={this.state.passedStrategyList}
+                passedUserList={this.state.passedUserList}
                 saveStrategyName={this.state.saveStrategyName}
                 saveStrategyCheck={this.state.saveStrategyCheck}
                 showSaveStrategy={this.showSaveStrategy}

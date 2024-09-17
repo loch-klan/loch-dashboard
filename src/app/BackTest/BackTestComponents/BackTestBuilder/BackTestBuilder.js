@@ -45,6 +45,16 @@ class BackTestBuilder extends BaseReactComponent {
         "strategy_list",
         JSON.stringify([...this.props.passedStrategyList])
       );
+      if (this.props.passedUserList && this.props.passedUserList.length > 0) {
+        tempApiData.append(
+          "user_list",
+          JSON.stringify([...this.props.passedUserList])
+        );
+      }
+      // tempApiData.append(
+      //   "user_list",
+      //   JSON.stringify(["64dcc25ffd5e77c52e0fddf6"])
+      // );
       setStrategy = true;
     }
     // tempApiData.append(

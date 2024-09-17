@@ -553,7 +553,10 @@ class StrategyDiscovery extends BaseReactComponent {
     if (passedItem.strategy_id) {
       this.props.history.push({
         pathname: "/strategy-builder",
-        state: { passedStrategyId: passedItem.strategy_id },
+        state: {
+          passedStrategyId: passedItem.strategy_id,
+          passedUserId: passedItem.user_id,
+        },
       });
     } else {
       this.props.history.push("/strategy-builder");

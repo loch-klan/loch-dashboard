@@ -61,6 +61,7 @@ class BackTestPageContent extends BaseReactComponent {
           <div className="btpcb-left-block">
             <BackTestBuilder
               passedStrategyList={this.props.passedStrategyList}
+              passedUserList={this.props.passedUserList}
               saveStrategyName={this.props.saveStrategyName}
               saveStrategyCheck={this.props.saveStrategyCheck}
               showSaveStrategy={this.props.showSaveStrategy}
