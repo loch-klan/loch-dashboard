@@ -74,6 +74,7 @@ import { addUserCredits, updateUser } from "../profile/Api";
 import SmartMoneyMobileSignOutModal from "../smartMoney/SmartMoneyMobileBlocks/smartMoneyMobileSignOutModal.js";
 import { getAllWalletListApi } from "../wallet/Api";
 import "./_mobileLayout.scss";
+import BackTestNameSave from "../BackTest/BackTestComponents/BackTestBuilder/Components/BackTestNameSave/BackTestNameSave.js";
 
 class MobileLayout extends BaseReactComponent {
   constructor(props) {
@@ -1125,6 +1126,20 @@ class MobileLayout extends BaseReactComponent {
           {/* Search Bar */}
           <div
             className={`mpcMobileSearch ${
+              this.props.isSaveInvestStrategy ? "mpcMobileSearchVisible" : ""
+            } input-noshadow-dark`}
+          >
+            <div className="mpcMobileSearchInput">
+              <BackTestNameSave
+                saveStrategyClicked={this.props.saveStrategyClicked}
+                loadingSaveInvestStrategyBtn={
+                  this.props.loadingSaveInvestStrategyBtn
+                }
+              />
+            </div>
+          </div>
+          <div
+            className={`mpcMobileSearch ${
               this.props.showTopSearchBar ? "mpcMobileSearchVisible" : ""
             } input-noshadow-dark`}
           >
@@ -1179,7 +1194,7 @@ class MobileLayout extends BaseReactComponent {
           <div
             id="portfolio-mobile-layout-children-id"
             className={`portfolio-mobile-layout-children ${
-              this.props.showTopSearchBar
+              this.props.showTopSearchBar || this.props.isSaveInvestStrategy
                 ? "portfolio-mobile-layout-children-visible"
                 : ""
             }`}
@@ -1197,6 +1212,13 @@ class MobileLayout extends BaseReactComponent {
                     <MobileDarkModeWrapper hideBtn={this.props.hideAddresses}>
                       {this.props.hideAddresses ? null : (
                         <WelcomeCard
+                          //Save invest
+                          loadingSaveInvestStrategyBtn={
+                            this.props.loadingSaveInvestStrategyBtn
+                          }
+                          saveStrategyClicked={this.props.saveStrategyClicked}
+                          isSaveInvestStrategy={this.props.isSaveInvestStrategy}
+                          //Save invest
                           isAddNewAddressLoggedIn={
                             this.props.isAddNewAddressLoggedIn
                           }

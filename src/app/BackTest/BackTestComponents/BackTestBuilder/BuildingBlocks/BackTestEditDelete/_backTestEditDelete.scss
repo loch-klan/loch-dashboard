@@ -34,3 +34,11 @@
     }
   }
 }
+.sbb-edit-delete-options-mobile {
+  opacity: 1;
+  .sbb-edit-delete-options-block {
+    &:hover {
+      background-color: var(--strategyBuilderLightGrey);
+    }
+  }
+}

@@ -144,7 +144,9 @@ class BackTestBuilderBlock extends BaseReactComponent {
       <div
         className={`strategy-builder-block-container ${
           this.props.isError ? "strategy-builder-block-container-error" : ""
-        } ${this.props.passedClass}`}
+        } ${this.props.passedClass} ${
+          this.state.isMobile ? "strategy-builder-block-container-mobile" : ""
+        }`}
         style={{
           // transform: `translateX(${this.props.blockLevel * 4}rem)`,
           marginLeft: this.props.blockLevel * 4 + "rem",
@@ -207,7 +209,10 @@ class BackTestBuilderBlock extends BaseReactComponent {
             onEditClick={this.onEditClick}
             onDeleteClick={this.onDeleteClick}
             onAddClick={this.onAddBellowClick}
-            hideEditBtn={this.props.blockType === "weight"}
+            hideEditBtn={
+              this.props.blockType === "weight" ||
+              this.props.blockType === "condition else"
+            }
             hideAddBtn={this.props.blockType === "weight percentage"}
             hideDeleteBtn={this.props.blockType === "weight percentage"}
           />

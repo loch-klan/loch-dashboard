@@ -8,13 +8,14 @@ import { BaseReactComponent } from "../../../../../../utils/form";
 import BackTestPopupDropdown from "../BackTestPopupDropdown/BackTestPopupDropdown";
 import "./_backTestWeightPercentagePopup.scss";
 import BackTestPopupInput from "../BackTestPopupInput/BackTestPopupInput";
+import { mobileCheck } from "../../../../../../utils/ReusableFunctions";
 
 class BackTestWeightPercentagePopup extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
       //Price condition
-
+      isMobile: mobileCheck(),
       selectedWeightPercentage: this.props.selectedOption
         ? this.props.selectedOption
         : "0",
@@ -30,7 +31,13 @@ class BackTestWeightPercentagePopup extends BaseReactComponent {
 
   render() {
     return (
-      <div className="back-test-weight-percentage-popup-container">
+      <div
+        className={`back-test-weight-percentage-popup-container ${
+          this.state.isMobile
+            ? "back-test-weight-percentage-popup-container-mobile"
+            : ""
+        }`}
+      >
         <OutsideClickHandler onOutsideClick={this.props.closePopUp}>
           <div className="back-test-weight-percentage-popup">
             <div className="back-test-weight-percentage-popup-header-container">

@@ -17,6 +17,8 @@ class AssetUnrealizedProfitAndLossMobile extends Component {
         className="back-test-page back-test-page-mobile"
       >
         <BackTestPageContent
+          saveStrategyName={this.props.saveStrategyName}
+          calcChartData={this.props.calcChartData}
           saveStrategyCheck={this.props.saveStrategyCheck}
           showSaveStrategy={this.props.showSaveStrategy}
           hideSaveStrategy={this.props.hideSaveStrategy}

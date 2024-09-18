@@ -722,7 +722,14 @@ class BackTestPage extends BaseReactComponent {
             if (itemFound && itemFound.constructor === Array) {
               let tempInitialValueHolder = 0;
 
-              let chartDataPointHolder = itemFound.map((item, mapIndex) => {
+              let chartDataPointHolder = [];
+              itemFound.forEach((item, mapIndex) => {
+                const dateObj = new Date(item[0]);
+                const timestamp = dateObj.getTime();
+                const tempDateHolder = moment(dateObj);
+                if (tempDateHolder.isSame(moment(), "day")) {
+                  return;
+                }
                 if (mapIndex === 0 && curIndex === 0) {
                   tempRangeDate =
                     tempRangeDate +
@@ -733,10 +740,6 @@ class BackTestPage extends BaseReactComponent {
                   tempRangeDate =
                     tempRangeDate + moment(item[0]).format("MMM DD YYYY");
                 }
-
-                const dateObj = new Date(item[0]);
-                const timestamp = dateObj.getTime();
-
                 const convertedDate = moment(dateObj).format("DD MM YYYY");
                 if (convertedDate === minRange) {
                   tempInitialValueHolder = itemFound[mapIndex][1];
@@ -760,7 +763,8 @@ class BackTestPage extends BaseReactComponent {
                   tempValueHolder,
                   parseFloat(item[1]).toFixed(2),
                 ];
-                return tempHolder;
+                chartDataPointHolder.push(tempHolder);
+                // return tempHolder;
               });
 
               const tempGraphOptions = {
@@ -867,6 +871,12 @@ class BackTestPage extends BaseReactComponent {
           hideFooter
           hideAddresses
           hideShare
+          // showTopSearchBar
+          // Save Invest
+          loadingSaveInvestStrategyBtn={this.state.loadingSaveInvestStrategyBtn}
+          saveStrategyClicked={this.saveStrategyClicked}
+          isSaveInvestStrategy={this.state.isSaveInvestStrategy}
+          // Save Invest
         >
           <BackTestPageMobile
             saveStrategyName={this.state.saveStrategyName}
@@ -899,6 +909,7 @@ class BackTestPage extends BaseReactComponent {
             isToCalendar={this.state.isToCalendar}
             changeFromDate={this.changeFromDate}
             changeToDate={this.changeToDate}
+            calcChartData={this.calcChartData}
             fromDate={this.state.fromDate}
             toDate={this.state.toDate}
           />

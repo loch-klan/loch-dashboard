@@ -8,13 +8,17 @@ import { BaseReactComponent } from "../../../../../../utils/form";
 import BackTestPopupDropdown from "../BackTestPopupDropdown/BackTestPopupDropdown";
 import "./_backTestConditionPopup.scss";
 import BackTestPopupInput from "../BackTestPopupInput/BackTestPopupInput";
-import { strategyByilderAssetList } from "../../../../../../utils/ReusableFunctions";
+import {
+  mobileCheck,
+  strategyByilderAssetList,
+} from "../../../../../../utils/ReusableFunctions";
 
 class BackTestConditionPopup extends BaseReactComponent {
   constructor(props) {
     super(props);
     this.state = {
       //Price condition
+      isMobile: mobileCheck(),
       allPriceConditions: [
         "Current price",
         "Cumulative return",
@@ -108,7 +112,13 @@ class BackTestConditionPopup extends BaseReactComponent {
 
   render() {
     return (
-      <div className="back-test-condition-popup-container">
+      <div
+        className={`back-test-condition-popup-container ${
+          this.state.isMobile
+            ? "back-test-condition-popup-container-mobile"
+            : ""
+        }`}
+      >
         <OutsideClickHandler onOutsideClick={this.props.closePopUp}>
           <div className="back-test-condition-popup">
             <div className="back-test-condition-popup-header-container">

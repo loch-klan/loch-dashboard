@@ -12,7 +12,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 8px;
+    // gap: 8px;
     z-index: 2;
     border: 1px solid var(--strategyBuilderPopUpAssetBorder);
     .back-test-asset-popup-search-close-container {
@@ -46,8 +46,8 @@
         width: 4rem;
         border-radius: 10px;
         .back-test-asset-popup-close-icon {
-          height: 1.5rem;
-          width: 1.5rem;
+          height: 13px;
+          width: 13px;
           filter: var(--invertColor);
         }
         &:hover {
@@ -130,6 +130,18 @@
       cursor: default;
       &:hover {
         background-color: var(--strategyBuilderDropdownSelected);
+      }
+    }
+  }
+}
+.back-test-asset-popup-container-mobile {
+  .back-test-asset-popup {
+    .back-test-asset-popup-search-close-container {
+      width: 30rem;
+    }
+    .back-test-asset-popup-item-container {
+      .back-test-asset-popup-item {
+        width: 30rem;
       }
     }
   }

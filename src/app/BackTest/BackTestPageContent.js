@@ -55,19 +55,15 @@ class BackTestPageContent extends BaseReactComponent {
           id="back-test-page-content-block-left"
           className="back-test-page-content-block back-test-page-content-block-left"
         >
-          <div className="btpcb-title btpcb-chart-header">
-            <div>Strategy Builder</div>
-          </div>
-          <div className="btpcb-left-block">
-            <BackTestBuilder
-              passedStrategyList={this.props.passedStrategyList}
-              passedUserList={this.props.passedUserList}
-              saveStrategyName={this.props.saveStrategyName}
-              saveStrategyCheck={this.props.saveStrategyCheck}
-              showSaveStrategy={this.props.showSaveStrategy}
-              hideSaveStrategy={this.props.hideSaveStrategy}
-            />
-            {/* <Image
+          <BackTestBuilder
+            passedStrategyList={this.props.passedStrategyList}
+            passedUserList={this.props.passedUserList}
+            saveStrategyName={this.props.saveStrategyName}
+            saveStrategyCheck={this.props.saveStrategyCheck}
+            showSaveStrategy={this.props.showSaveStrategy}
+            hideSaveStrategy={this.props.hideSaveStrategy}
+          />
+          {/* <Image
               className="btpcb-left-block-items"
               src={FakeStrategy6Image}
             />
@@ -75,7 +71,6 @@ class BackTestPageContent extends BaseReactComponent {
               className="btpcb-left-block-background"
               src={FakeStrategyBackground2Image}
             /> */}
-          </div>
         </div>
         <div
           id="back-test-page-content-block-right"
@@ -167,7 +162,9 @@ class BackTestPageContent extends BaseReactComponent {
               </div>
               <div
                 id="3"
-                class="inter-display-medium f-s-13 lh-16 time-cal-badge"
+                class={`inter-display-medium f-s-13 lh-16 time-cal-badge ${
+                  this.state.isMobile ? "time-cal-badge-right-cal" : ""
+                }`}
               >
                 <OutsideClickHandler onOutsideClick={this.props.hideToCalendar}>
                   <div className="btpcb-chart-calendar-Container">

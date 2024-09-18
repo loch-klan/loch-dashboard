@@ -121,6 +121,17 @@
     }
   }
 }
+.strategy-builder-block-container-mobile {
+  .strategy-builder-block {
+    .sbb-dropdown-container {
+      .sbb-dropdown {
+        &:hover {
+          background-color: var(--greyCardBackgroud);
+        }
+      }
+    }
+  }
+}
 .strategy-builder-block-container-error {
   background-color: var(--strategyBuilderDarkRed);
   border-radius: 8px;

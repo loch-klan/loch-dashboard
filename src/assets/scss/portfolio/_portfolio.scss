@@ -562,78 +562,11 @@
         .downfall {
           background-color: $red-FFE;
         }
-        .welcome-card-strategy-builder {
-          font-size: 16px;
-          width: 100%;
-          margin-left: 4.3rem;
-          margin-right: 5.1rem;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 2rem;
-          .welcome-card-strategy-builder-title-input {
-            flex: 1;
-            font-size: 16px;
-            color: var(--referallUsedBtnText);
-            text-shadow: 0.1px 0 var(--referallUsedBtnText);
-            border: none;
-            outline: none;
-            border-radius: 8px;
-            padding: 0.8rem;
-            border: 1px solid transparent;
-            &:hover {
-              border: 1px solid var(--strategyBuilderPopUpAssetBorder);
-            }
-            &::placeholder {
-              opacity: 0.3;
-            }
-          }
-          .welcome-card-strategy-builder-title {
-            color: var(--referallUsedBtnText);
-            text-shadow: 0.1px 0 var(--referallUsedBtnText);
-          }
-          .welcome-card-strategy-builder-btns-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            .welcome-card-strategy-builder-btn {
-              border: 2px solid var(--strategyBuilderBorder);
-              box-shadow: var(--boxShadowMd);
-              border-radius: 10px;
-              height: 45px;
-              width: 180px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              cursor: pointer;
-              color: var(--primaryTextColor);
-              text-shadow: 0.1px 0 var(--primaryTextColor);
-              &:hover {
-                background-color: var(--strategyBuilderDarkGrey);
-              }
-            }
-            .welcome-card-strategy-builder-btn-highlighted {
-              background-color: #cbf458;
-              &:hover {
-                background-color: var(--primaryTextColor);
-                color: var(--cardBackgroud);
-              }
-            }
-            .welcome-card-strategy-builder-btn-loading {
-              opacity: 0.5;
-              pointer-events: none;
-            }
-          }
-        }
       }
       .welcome-card-topbar-closed {
         padding-left: 1.5rem;
         padding-right: 17.5rem;
         background-color: var(--cardBackgroud);
-        .welcome-card-strategy-builder {
-          margin: 0;
-        }
       }
       .welcome-card-topbar-blurred {
         background-color: var(--outOfFocusTopBar);

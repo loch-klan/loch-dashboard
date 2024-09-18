@@ -10,10 +10,15 @@ import "./_backTestBuilder.scss";
 import { Image } from "react-bootstrap";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import { StrategyBuilderEmptyIcon } from "../../../../assets/images/icons";
+import {
+  StrategyBuilderEmptyIcon,
+  StrategyBuilderRedoIcon,
+  StrategyBuilderUndoIcon,
+} from "../../../../assets/images/icons";
 import { createBackTestQuery, getBackTestQueries } from "../../Api/BackTestApi";
 import BackTestBuilderMainBlock from "./BackTestBuilderMainBlock/BackTestBuilderMainBlock";
 import BackTestAddingOptions from "./Components/BackTestAddingOptions/BackTestAddingOptions";
+import { cloneDeep } from "lodash";
 
 require("highcharts/modules/annotations")(Highcharts);
 
@@ -27,13 +32,64 @@ class BackTestBuilder extends BaseReactComponent {
       canUpdateBuilder: false,
       isStrategyEmpty: true,
       strategyBuilderString: {},
+      history: [],
+      currentHistoryIndex: -1,
     };
   }
-  changeStrategyBuilderString = (passedString) => {
-    this.setState({
-      strategyBuilderString: passedString,
+  updateStrategyBuilderString = (newStrategyBuilderString) => {
+    this.setState((prevState) => {
+      const newHistory = prevState.history.slice(
+        0,
+        prevState.currentHistoryIndex + 1
+      );
+      newHistory.push(cloneDeep(newStrategyBuilderString));
+
+      return {
+        strategyBuilderString: newStrategyBuilderString,
+        history: newHistory,
+        currentHistoryIndex: newHistory.length - 1,
+      };
     });
   };
+
+  undo = () => {
+    if (this.state.currentHistoryIndex <= 0) {
+      return;
+    }
+    this.setState((prevState) => {
+      if (prevState.currentHistoryIndex > 0) {
+        const newIndex = prevState.currentHistoryIndex - 1;
+        return {
+          strategyBuilderString: cloneDeep(prevState.history[newIndex]),
+          currentHistoryIndex: newIndex,
+        };
+      }
+      return null;
+    });
+  };
+
+  redo = () => {
+    if (this.state.currentHistoryIndex >= this.state.history.length - 1) {
+      return;
+    }
+    this.setState((prevState) => {
+      if (prevState.currentHistoryIndex < prevState.history.length - 1) {
+        const newIndex = prevState.currentHistoryIndex + 1;
+        return {
+          strategyBuilderString: cloneDeep(prevState.history[newIndex]),
+          currentHistoryIndex: newIndex,
+        };
+      }
+      return null;
+    });
+  };
+
+  // Update all methods that modify strategyBuilderString to use updateStrategyBuilderString
+  // For example:
+  changeStrategyBuilderString = (passedString) => {
+    this.updateStrategyBuilderString(passedString);
+  };
+
   getStrategiesQueries = () => {
     let tempApiData = new URLSearchParams();
     let setStrategy = false;
@@ -128,9 +184,10 @@ class BackTestBuilder extends BaseReactComponent {
       console.log("passedQueryData is ", passedQueryData);
 
       if (passedQueryData.length > 0 && passedQueryData[0].strategy) {
-        this.setState({
-          strategyBuilderString: passedQueryData[0].strategy,
-        });
+        // this.setState({
+        //   strategyBuilderString: passedQueryData[0].strategy,
+        // });
+        this.updateStrategyBuilderString(passedQueryData[0].strategy);
       }
     }
     if (prevProps.passedStrategyList !== this.props.passedStrategyList) {
@@ -209,9 +266,9 @@ class BackTestBuilder extends BaseReactComponent {
       });
     }, 1000);
     // this.getStrategiesQueries();
-    const strategyBuilderStringLocal = window.localStorage.getItem(
-      "strategyBuilderStringLocal"
-    );
+    // const strategyBuilderStringLocal = window.localStorage.getItem(
+    //   "strategyBuilderStringLocal"
+    // );
     // if (strategyBuilderStringLocal) {
     //   this.setState({
     //     strategyBuilderString: JSON.parse(strategyBuilderStringLocal),
@@ -237,11 +294,8 @@ class BackTestBuilder extends BaseReactComponent {
       ...this.state.strategyBuilderString.condition,
       token: passedToken,
     };
-    this.setState({
-      strategyBuilderString: {
-        condition: itemItem,
-      },
-    });
+
+    this.updateStrategyBuilderString(itemItem);
   };
   changeOperator = (passedOperator) => {
     let operatorSymbol = "";
@@ -251,111 +305,132 @@ class BackTestBuilder extends BaseReactComponent {
       ...this.state.strategyBuilderString.condition,
       operator: operatorSymbol,
     };
-    this.setState({
-      strategyBuilderString: {
-        condition: itemItem,
-      },
-    });
+    this.updateStrategyBuilderString(itemItem);
   };
   changeAmount = (passedAmount) => {
     let itemItem = {
       ...this.state.strategyBuilderString.condition,
       amount: passedAmount,
     };
-    this.setState({
-      strategyBuilderString: {
-        condition: itemItem,
-      },
-    });
+    this.updateStrategyBuilderString(itemItem);
   };
 
   onAddAssetInEmptyClick = () => {
-    this.setState({
-      strategyBuilderString: {
-        weight: {
-          weight_type: "EQUAL",
-          weight_item: [
-            {
-              percentage: "100",
-              item: {
-                asset: "BTC",
-              },
+    this.updateStrategyBuilderString({
+      weight: {
+        weight_type: "EQUAL",
+        weight_item: [
+          {
+            percentage: "100",
+            item: {
+              asset: "BTC",
             },
-          ],
-        },
+          },
+        ],
       },
     });
   };
   onAddConditionInEmptyClick = () => {
-    this.setState({
-      strategyBuilderString: {
-        weight: {
-          weight_type: "EQUAL",
-          weight_item: [
-            {
-              percentage: "100",
-              item: {
-                condition: {
-                  type: "CURRENT_PRICE",
-                  token: "BTC",
-                  operator: ">",
-                  amount: "10000",
-                  time_period: "4",
-                  success: {},
-                  failed: {},
-                },
+    this.updateStrategyBuilderString({
+      weight: {
+        weight_type: "EQUAL",
+        weight_item: [
+          {
+            percentage: "100",
+            item: {
+              condition: {
+                type: "CURRENT_PRICE",
+                token: "BTC",
+                operator: ">",
+                amount: "10000",
+                time_period: "4",
+                success: {},
+                failed: {},
               },
             },
-          ],
-        },
+          },
+        ],
       },
     });
   };
   render() {
     if (this.state.isStrategyEmpty) {
       return (
-        <div className="strategy-builder-container strategy-builder-container-empty">
-          <div className="sbc-empty-container">
-            <div className="sbc-empty">
-              <Image
-                className="sbc-empty-image"
-                src={StrategyBuilderEmptyIcon}
-              />
-              <div className="sbc-empty-text">
-                Start building by
-                <br />
-                adding a block below
-              </div>
-            </div>
-            <div className="sbc-empty-options-container-container">
-              <div className="sbc-empty-options-container">
-                <BackTestAddingOptions
-                  closeOptions={() => null}
-                  onAddAssetClick={this.onAddAssetInEmptyClick}
-                  onAddConditionClick={this.onAddConditionInEmptyClick}
-                />
+        <>
+          <div className="btpcb-title btpcb-builder-title">
+            <div>Strategy Builder</div>
+          </div>
+          <div className="btpcb-left-block">
+            <div className="strategy-builder-container strategy-builder-container-empty">
+              <div className="sbc-empty-container">
+                <div className="sbc-empty">
+                  <Image
+                    className="sbc-empty-image"
+                    src={StrategyBuilderEmptyIcon}
+                  />
+                  <div className="sbc-empty-text">
+                    Start building by
+                    <br />
+                    adding a block below
+                  </div>
+                </div>
+                <div className="sbc-empty-options-container-container">
+                  <div className="sbc-empty-options-container">
+                    <BackTestAddingOptions
+                      closeOptions={() => null}
+                      onAddAssetClick={this.onAddAssetInEmptyClick}
+                      onAddConditionClick={this.onAddConditionInEmptyClick}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </>
       );
     }
     return (
-      <div className="strategy-builder-container">
-        <div className="sbc-logic-container">
-          {/* {this.renderBlocks(this.state.strategyBuilderString)} */}
-          <BackTestBuilderMainBlock
-            emptyItems={this.state.emptyItems}
-            strategyBuilderString={this.state.strategyBuilderString}
-            changeStrategyBuilderString={this.changeStrategyBuilderString}
-            blocks={this.state.strategyBuilderString}
-            path={[]}
-            blockLevel={0}
-            weightPath={[]}
-            weightIndex={-1}
-          />
+      <>
+        <div className="btpcb-title btpcb-builder-title">
+          <div>Strategy Builder</div>
+          <div className="btpcb-builder-title-undo-redo-container">
+            <Image
+              onClick={this.undo}
+              className={`btpcb-builder-title-undo-redo-icon ${
+                this.state.currentHistoryIndex <= 0
+                  ? "btpcb-builder-title-undo-redo-icon-disabled"
+                  : ""
+              }`}
+              src={StrategyBuilderUndoIcon}
+            />
+            <Image
+              onClick={this.redo}
+              className={`btpcb-builder-title-undo-redo-icon ${
+                this.state.currentHistoryIndex >= this.state.history.length - 1
+                  ? "btpcb-builder-title-undo-redo-icon-disabled"
+                  : ""
+              }`}
+              src={StrategyBuilderRedoIcon}
+            />
+          </div>
         </div>
-      </div>
+        <div className="btpcb-left-block">
+          <div className="strategy-builder-container">
+            <div className="sbc-logic-container">
+              <BackTestBuilderMainBlock
+                emptyItems={this.state.emptyItems}
+                strategyBuilderString={this.state.strategyBuilderString}
+                changeStrategyBuilderString={this.changeStrategyBuilderString}
+                blocks={this.state.strategyBuilderString}
+                path={[]}
+                blockLevel={0}
+                weightPath={[]}
+                weightIndex={-1}
+              />
+            </div>
+          </div>
+        </div>
+      </>
     );
   }
 }

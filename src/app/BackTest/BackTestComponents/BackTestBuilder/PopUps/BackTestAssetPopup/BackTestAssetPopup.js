@@ -4,7 +4,10 @@ import {
   StrategyBuilderPopUpCloseIcon,
 } from "../../../../../../assets/images/icons";
 import { BaseReactComponent } from "../../../../../../utils/form";
-import { strategyByilderAssetList } from "../../../../../../utils/ReusableFunctions";
+import {
+  mobileCheck,
+  strategyByilderAssetList,
+} from "../../../../../../utils/ReusableFunctions";
 import "./_backTestAssetPopup.scss";
 
 class BackTestAssetPopup extends BaseReactComponent {
@@ -13,20 +16,44 @@ class BackTestAssetPopup extends BaseReactComponent {
 
     this.state = {
       assetList: strategyByilderAssetList(),
+      searchOptions: [],
+      searchAssetList: [],
+      searchVal: "",
+      isMobile: mobileCheck(),
     };
   }
   onAssetSelect = (selectedAsset) => {
     this.props.onOptionSelect(selectedAsset);
   };
+  setSearchValue = (e) => {
+    this.setState({ searchVal: e.target.value });
+  };
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.searchVal !== this.state.searchVal) {
+      const searchAssetList = this.state.assetList.filter((asset) => {
+        return asset.name
+          .toLowerCase()
+          .includes(this.state.searchVal.toLowerCase());
+      });
+
+      this.setState({ searchAssetList });
+    }
+  }
   render() {
     return (
-      <div className="back-test-asset-popup-container">
+      <div
+        className={`back-test-asset-popup-container ${
+          this.state.isMobile ? "back-test-asset-popup-container-mobile" : ""
+        }`}
+      >
         <div className="back-test-asset-popup">
           <div className="back-test-asset-popup-search-close-container">
             <div className="back-test-asset-popup-search">
               <input
                 placeholder="Search for assets to add"
                 className="back-test-asset-popup-search-input"
+                value={this.state.searchVal}
+                onChange={this.setSearchValue}
               />
             </div>
             <div
@@ -40,43 +67,87 @@ class BackTestAssetPopup extends BaseReactComponent {
             </div>
           </div>
           <div className="back-test-asset-popup-item-container">
-            {this.state.assetList.map((asset, index) => {
-              return (
-                <div
-                  onClick={() => {
-                    this.onAssetSelect(asset);
-                  }}
-                  className={`back-test-asset-popup-item ${
-                    asset.name === this.props.selectedOption
-                      ? "back-test-asset-popup-item-selected"
-                      : ""
-                  }`}
-                >
-                  <div className="back-test-asset-popup-item-content">
+            {this.state.searchVal.length > 0
+              ? this.state.searchAssetList.map((asset, index) => {
+                  return (
                     <div
-                      style={{
-                        backgroundColor: asset.color,
+                      onClick={() => {
+                        this.onAssetSelect(asset);
                       }}
-                      className="back-test-asset-popup-item-icon"
+                      className={`back-test-asset-popup-item ${
+                        asset.name === this.props.selectedOption
+                          ? "back-test-asset-popup-item-selected"
+                          : ""
+                      }`}
+                      style={{
+                        marginTop: index === 0 ? "8px" : "0px",
+                      }}
                     >
-                      <Image
-                        className="back-test-asset-popup-item-icon-image"
-                        src={asset.icon}
-                      />
+                      <div className="back-test-asset-popup-item-content">
+                        <div
+                          style={{
+                            backgroundColor: asset.color,
+                          }}
+                          className="back-test-asset-popup-item-icon"
+                        >
+                          <Image
+                            className="back-test-asset-popup-item-icon-image"
+                            src={asset.icon}
+                          />
+                        </div>
+                        <div className="back-test-asset-popup-item-name">
+                          {asset.name}
+                        </div>
+                      </div>
+                      {asset.name === this.props.selectedOption ? (
+                        <Image
+                          className="back-test-asset-popup-item-check-icon"
+                          src={CheckIcon}
+                        />
+                      ) : null}
                     </div>
-                    <div className="back-test-asset-popup-item-name">
-                      {asset.name}
+                  );
+                })
+              : this.state.assetList.map((asset, index) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        this.onAssetSelect(asset);
+                      }}
+                      className={`back-test-asset-popup-item ${
+                        asset.name === this.props.selectedOption
+                          ? "back-test-asset-popup-item-selected"
+                          : ""
+                      }`}
+                      style={{
+                        marginTop: index === 0 ? "8px" : "0px",
+                      }}
+                    >
+                      <div className="back-test-asset-popup-item-content">
+                        <div
+                          style={{
+                            backgroundColor: asset.color,
+                          }}
+                          className="back-test-asset-popup-item-icon"
+                        >
+                          <Image
+                            className="back-test-asset-popup-item-icon-image"
+                            src={asset.icon}
+                          />
+                        </div>
+                        <div className="back-test-asset-popup-item-name">
+                          {asset.name}
+                        </div>
+                      </div>
+                      {asset.name === this.props.selectedOption ? (
+                        <Image
+                          className="back-test-asset-popup-item-check-icon"
+                          src={CheckIcon}
+                        />
+                      ) : null}
                     </div>
-                  </div>
-                  {asset.name === this.props.selectedOption ? (
-                    <Image
-                      className="back-test-asset-popup-item-check-icon"
-                      src={CheckIcon}
-                    />
-                  ) : null}
-                </div>
-              );
-            })}
+                  );
+                })}
           </div>
         </div>
       </div>

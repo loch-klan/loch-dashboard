@@ -60,10 +60,16 @@
   .strategy-builder-chart-legend-text {
     text-transform: uppercase;
     &:hover {
-      opacity: 0.5;
+      opacity: 0.5 !important;
     }
   }
-
+  .highcharts-legend-item-hidden {
+    .strategy-builder-chart-legend-text {
+      &:hover {
+        opacity: 1 !important;
+      }
+    }
+  }
   .back-test-chart-xaxis-lable {
     fill: var(--cardBorder);
     text-shadow: 0.3px 0 var(--cardBorder);
@@ -311,6 +317,20 @@
     }
     .highcharts-background {
       fill: var(--cardBackgroud);
+    }
+  }
+}
+.btpcb-right-chart-container-mobile {
+  .strategy-builder-chart-legend-text {
+    &:hover {
+      opacity: unset !important;
+    }
+  }
+  .highcharts-legend-item-hidden {
+    .strategy-builder-chart-legend-text {
+      &:hover {
+        opacity: 0.5 !important;
+      }
     }
   }
 }

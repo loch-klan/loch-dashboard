@@ -62,7 +62,11 @@ class BackTestChart extends BaseReactComponent {
             </div>
           </div>
         ) : (
-          <div className="btpcb-right-chart-container">
+          <div
+            className={`btpcb-right-chart-container ${
+              this.state.isMobile ? "btpcb-right-chart-container-mobile" : ""
+            }`}
+          >
             {/* <div className="btpcb-chart-dropdown-container">
             <div />
             <div class="btpcb-chart-time-range ">

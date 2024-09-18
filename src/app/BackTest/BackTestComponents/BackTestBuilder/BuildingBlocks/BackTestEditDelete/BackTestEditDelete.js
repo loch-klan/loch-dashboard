@@ -6,16 +6,23 @@ import {
   StrategyBuilderPencilIcon,
   StrategyBuilderAddIcon,
 } from "../../../../../../assets/images/icons";
+import { mobileCheck } from "../../../../../../utils/ReusableFunctions";
 
 class BackTestEditDelete extends BaseReactComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isMobile: mobileCheck(),
+    };
   }
 
   render() {
     return (
-      <div className={`sbb-edit-delete-options`}>
+      <div
+        className={`sbb-edit-delete-options ${
+          this.state.isMobile ? "sbb-edit-delete-options-mobile" : ""
+        }`}
+      >
         {this.props.hideEditBtn ? null : (
           <div
             onClick={this.props.onEditClick}

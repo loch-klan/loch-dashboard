@@ -1,4 +1,5 @@
 import { BaseReactComponent } from "../../../../../../utils/form";
+import { mobileCheck } from "../../../../../../utils/ReusableFunctions";
 import BackTestAddingOptions from "../../Components/BackTestAddingOptions/BackTestAddingOptions";
 import "./_backTestAddItemsBellow.scss";
 
@@ -7,6 +8,7 @@ class BackTestAddItemsBellow extends BaseReactComponent {
     super(props);
     this.state = {
       isOptionsOpen: false,
+      isMobile: mobileCheck(),
     };
   }
   toggleOptions = () => {
@@ -355,7 +357,11 @@ class BackTestAddItemsBellow extends BaseReactComponent {
 
   render() {
     return (
-      <div className={`sbb-add-options-bellow`}>
+      <div
+        className={`sbb-add-options-bellow ${
+          this.state.isMobile ? "sbb-add-options-bellow-mobile" : ""
+        }`}
+      >
         {/* <div className="sbb-add-options-bar">
           <div
             onClick={this.toggleOptions}

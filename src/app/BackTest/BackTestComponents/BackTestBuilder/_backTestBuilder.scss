@@ -5,8 +5,7 @@
   user-select: none;
   overflow-y: scroll;
   // overflow-x: scroll;
-  padding-top: 2rem;
-  padding-left: 2rem;
+  padding: 2rem;
   &::-webkit-scrollbar {
     width: 0rem;
     height: 0rem;
@@ -14,7 +13,7 @@
   &:hover {
     &::-webkit-scrollbar {
       width: 0.4rem;
-      height: 0rem;
+      height: 0.4rem;
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 0.8rem;
@@ -23,8 +22,8 @@
     &::-webkit-scrollbar-track {
       background-color: rgba(229, 229, 230, 0.5);
       border-radius: 0.8rem;
-      margin-top: 2rem;
-      margin-bottom: 2rem;
+      margin: 2rem;
+      // margin-bottom: 2rem;
     }
   }
 
@@ -61,7 +60,6 @@
         padding: 12px;
         border-radius: 12px;
         margin-bottom: 2rem;
-        padding-right: 2rem;
       }
     }
   }
@@ -80,6 +78,57 @@
     &::-webkit-scrollbar {
       width: 0rem;
       height: 0rem;
+    }
+  }
+}
+.btpcb-builder-title-undo-redo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  .btpcb-builder-title-undo-redo-icon {
+    cursor: pointer;
+    height: 22px;
+    width: 22px;
+    filter: var(--invertColor);
+    &:hover {
+      opacity: 0.8;
+    }
+    &:active {
+      opacity: 0.6;
+    }
+  }
+  .btpcb-builder-title-undo-redo-icon-disabled {
+    opacity: 0.5;
+    cursor: default;
+    &:hover {
+      opacity: 0.5;
+    }
+    &:active {
+      opacity: 0.5;
+    }
+  }
+}
+.strategy-builder-container-mobile {
+  padding-bottom: 20rem;
+}
+.strategy-builder-empty-container-mobile {
+  padding: 1rem;
+  .sbc-empty-container {
+    .sbc-empty-options-container-container {
+      .sbc-empty-options-container {
+        margin-bottom: 0rem;
+      }
+    }
+  }
+}
+.btpcb-builder-title-undo-redo-container-mobile {
+  .btpcb-builder-title-undo-redo-icon {
+    &:hover {
+      opacity: 1;
+    }
+    &:active {
+      opacity: 1;
     }
   }
 }

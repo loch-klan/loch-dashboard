@@ -535,6 +535,7 @@ class StrategyDiscovery extends BaseReactComponent {
                   sharpe_ratio: itemFound.data.sharpe_ratio,
                   strategy_name: key,
                   strategy_id: itemFound.strategy_id,
+                  user_id: itemFound.created_by,
                 };
                 tempArr.push(tempHolder);
               }

@@ -15,6 +15,7 @@ class BackTestPopupDropdown extends BaseReactComponent {
       isDropdownOpen: false,
       inputValue: "",
       selectedOptionText: "",
+      searchOptions: [],
     };
   }
 
@@ -47,7 +48,18 @@ class BackTestPopupDropdown extends BaseReactComponent {
     }
     this.setSelectedOptionText();
   }
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.inputValue !== this.state.inputValue &&
+      this.props.allOptions &&
+      this.props.allOptions.length > 0
+    ) {
+      const searchOptions = this.props.allOptions.filter((item) => {
+        return item.toLowerCase().includes(this.state.inputValue.toLowerCase());
+      });
+
+      this.setState({ searchOptions });
+    }
     if (
       prevProps.selectedOption !== this.props.selectedOption ||
       prevProps.updatedText !== this.props.updatedText
@@ -122,7 +134,32 @@ class BackTestPopupDropdown extends BaseReactComponent {
                 </div>
               </div>
               <div className="back-test-popup-item-container">
-                {this.props.allOptions
+                {this.state.inputValue.length > 0
+                  ? this.state.searchOptions.map((option, index) => (
+                      <div
+                        className={`back-test-popup-list-item ${
+                          option === this.props.selectedOption
+                            ? "back-test-popup-list-item-selected"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          this.itemSelected(option, index);
+                        }}
+                        style={{
+                          marginTop: index === 0 ? "8px" : "0px",
+                        }}
+                        key={option + index}
+                      >
+                        <div>{option}</div>
+                        {option === this.props.selectedOption ? (
+                          <Image
+                            className="back-test-popup-list-item-check-icon"
+                            src={CheckIcon}
+                          />
+                        ) : null}
+                      </div>
+                    ))
+                  : this.props.allOptions
                   ? this.props.allOptions.map((option, index) => (
                       <div
                         className={`back-test-popup-list-item ${
@@ -132,6 +169,9 @@ class BackTestPopupDropdown extends BaseReactComponent {
                         }`}
                         onClick={() => {
                           this.itemSelected(option, index);
+                        }}
+                        style={{
+                          marginTop: index === 0 ? "8px" : "0px",
                         }}
                         key={option + index}
                       >

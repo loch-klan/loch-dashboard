@@ -198,3 +198,5 @@ export { default as StrategyBuilderAssetAvaxIcon } from "./StrategyBuilderAssetA
 export { default as StrategyDiscoveryDownGreenArrowIcon } from "./StrategyDiscoveryDownGreenArrow.svg";
 export { default as StrategyDiscoveryDownRedArrowIcon } from "./StrategyDiscoveryDownRedArrow.svg";
 export { default as StrategyDiscoveryHeadingArrowIcon } from "./StrategyDiscoveryHeadingArrow.svg";
+export { default as StrategyBuilderRedoIcon } from "./StrategyBuilderRedo.svg";
+export { default as StrategyBuilderUndoIcon } from "./StrategyBuilderUndo.svg";
