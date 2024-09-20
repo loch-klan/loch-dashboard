@@ -27,7 +27,7 @@ class BackTestPage extends BaseReactComponent {
       passedUserList: [],
       isFromCalendar: false,
       isToCalendar: false,
-      toDate: new Date(),
+      toDate: new Date(new Date().setDate(new Date().getDate() - 1)),
       fromDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
       fromAndToDate: "",
       isSaveInvestStrategy: false,
@@ -35,10 +35,6 @@ class BackTestPage extends BaseReactComponent {
       loadingSaveInvestStrategyBtn: false,
       saveStrategyName: "",
       strategiesOptions: [
-        {
-          label: "All",
-          value: "all",
-        },
         {
           label: "BTC",
           value: "btc",
@@ -584,10 +580,6 @@ class BackTestPage extends BaseReactComponent {
         {
           strategiesOptions: [
             {
-              label: "All",
-              value: "all",
-            },
-            {
               label: "BTC",
               value: "btc",
               color: "gold",
@@ -813,6 +805,26 @@ class BackTestPage extends BaseReactComponent {
       });
     }
   };
+  afterChangeDate = () => {
+    if (this.state.strategiesOptions.length > 2) {
+      let filteredAssets = [];
+      this.state.strategiesOptions.forEach((item) => {
+        filteredAssets.push(item);
+      });
+      this.getAssetData(filteredAssets, true);
+    } else {
+      const { state } = this.props.location;
+      if (state && state.passedStrategyId) {
+        const tempItem = [
+          ...this.state.strategiesOptions,
+          { label: "strategy", value: state.passedStrategyId },
+        ];
+        this.getAssetData(tempItem, true);
+      } else {
+        this.getAssetData(this.state.strategiesOptions, true);
+      }
+    }
+  };
   changeToDate = (date) => {
     this.hideToCalendar();
     this.setState(
@@ -820,20 +832,7 @@ class BackTestPage extends BaseReactComponent {
         toDate: date,
       },
       () => {
-        if (this.state.selectedStrategiesOptions.length === 0) {
-          this.getAssetData(this.state.strategiesOptions, true);
-        } else {
-          let filteredAssets = [];
-          this.state.strategiesOptions.forEach((item) => {
-            if (
-              this.state.selectedStrategiesOptions.includes(item.label) ||
-              this.state.selectedStrategiesOptions.includes(item.value)
-            ) {
-              filteredAssets.push(item);
-            }
-          });
-          this.getAssetData(filteredAssets, true);
-        }
+        this.afterChangeDate();
       }
     );
   };
@@ -844,20 +843,7 @@ class BackTestPage extends BaseReactComponent {
         fromDate: date,
       },
       () => {
-        if (this.state.selectedStrategiesOptions.length === 0) {
-          this.getAssetData(this.state.strategiesOptions, true);
-        } else {
-          let filteredAssets = [];
-          this.state.strategiesOptions.forEach((item) => {
-            if (
-              this.state.selectedStrategiesOptions.includes(item.label) ||
-              this.state.selectedStrategiesOptions.includes(item.value)
-            ) {
-              filteredAssets.push(item);
-            }
-          });
-          this.getAssetData(filteredAssets, true);
-        }
+        this.afterChangeDate();
       }
     );
   };

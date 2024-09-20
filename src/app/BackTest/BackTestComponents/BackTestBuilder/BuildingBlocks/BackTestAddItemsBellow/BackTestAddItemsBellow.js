@@ -70,7 +70,7 @@ class BackTestAddItemsBellow extends BaseReactComponent {
       ) {
         itemToBeChanged.condition.success = {
           weight: {
-            weight_type: "EQUAL",
+            weight_type: "SPECIFIED",
             weight_item: [
               {
                 percentage: "100",
@@ -112,7 +112,7 @@ class BackTestAddItemsBellow extends BaseReactComponent {
       ) {
         itemToBeChanged.failed = {
           weight: {
-            weight_type: "EQUAL",
+            weight_type: "SPECIFIED",
             weight_item: [
               {
                 percentage: "100",
@@ -229,7 +229,7 @@ class BackTestAddItemsBellow extends BaseReactComponent {
       ) {
         itemToBeChanged.condition.success = {
           weight: {
-            weight_type: "EQUAL",
+            weight_type: "SPECIFIED",
             weight_item: [
               {
                 percentage: "100",
@@ -289,7 +289,7 @@ class BackTestAddItemsBellow extends BaseReactComponent {
       ) {
         itemToBeChanged.failed = {
           weight: {
-            weight_type: "EQUAL",
+            weight_type: "SPECIFIED",
             weight_item: [
               {
                 percentage: "100",

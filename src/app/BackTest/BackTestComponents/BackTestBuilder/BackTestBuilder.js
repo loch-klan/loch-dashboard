@@ -318,7 +318,7 @@ class BackTestBuilder extends BaseReactComponent {
   onAddAssetInEmptyClick = () => {
     this.updateStrategyBuilderString({
       weight: {
-        weight_type: "EQUAL",
+        weight_type: "SPECIFIED",
         weight_item: [
           {
             percentage: "100",
@@ -333,7 +333,7 @@ class BackTestBuilder extends BaseReactComponent {
   onAddConditionInEmptyClick = () => {
     this.updateStrategyBuilderString({
       weight: {
-        weight_type: "EQUAL",
+        weight_type: "SPECIFIED",
         weight_item: [
           {
             percentage: "100",

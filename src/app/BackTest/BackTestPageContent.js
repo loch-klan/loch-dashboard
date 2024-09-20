@@ -21,6 +21,7 @@ class BackTestPageContent extends BaseReactComponent {
     this.state = {
       isMobile: mobileCheck(),
       prevHeight: 0,
+      todayDate: new Date(new Date().setDate(new Date().getDate() - 1)),
     };
   }
   handleHeightChange = (entries) => {

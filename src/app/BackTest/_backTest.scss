@@ -79,8 +79,16 @@
                   .react-calendar__navigation__arrow {
                     border-radius: 0.8rem;
                     border: 1px solid var(--sidebarSectionalBOrder) !important;
-                    color: #19191a;
+                    color: var(--primaryTextColor);
                     filter: var(--invertColor);
+                    &:hover {
+                      color: var(--cardBackgroud);
+                    }
+                    &:disabled {
+                      &:hover {
+                        color: var(--primaryTextColor);
+                      }
+                    }
                   }
                   .react-calendar__navigation__label {
                     pointer-events: none;

@@ -72,6 +72,7 @@ class BackTestConditionBuilderBlock extends BaseReactComponent {
         selectedPriceConditions: strategyByilderTypeConvertorSymbolToText(
           this.props.type
         ),
+        selectedAmountConditions: this.props.amount,
         shouldShowDays: strategyByilderChartShouldShowDate(this.props.type),
         selectedAmountSymbol: strategyByilderChartWhichSymbol(this.props.type),
       });
@@ -93,6 +94,8 @@ class BackTestConditionBuilderBlock extends BaseReactComponent {
     });
 
     itemToBeChanged.type = strategyByilderTypeConvertorTextToSymbol(passedItem);
+    itemToBeChanged.amount = 100;
+
     if (this.props.changeStrategyBuilderString) {
       this.props.changeStrategyBuilderString(itemToBeChangedOriginal);
     }

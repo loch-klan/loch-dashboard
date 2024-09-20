@@ -41,11 +41,10 @@ export const isArrayInArrayOfArrays = (arr1, arrOfArr) => {
 };
 export const strategyByilderChartWhichSymbol = (passedItem) => {
   if (
-    passedItem === "CUMULATIVE_RETURN" ||
-    passedItem === "MAX_DRAWDOWN" ||
+    passedItem === "MOVING_AVERAGE_CONVERGENCE_DIVERGENCE" ||
     passedItem === "VOLUME" ||
     passedItem === "MARKET_CAPITALIZATION" ||
-    passedItem === "MOVING_AVERAGE_CONVERGENCE_DIVERGENCE"
+    passedItem === "MAX_DRAWDOWN"
   ) {
     return "%";
   }

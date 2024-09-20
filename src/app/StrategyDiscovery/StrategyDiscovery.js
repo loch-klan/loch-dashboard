@@ -31,10 +31,6 @@ class StrategyDiscovery extends BaseReactComponent {
       fromDate: new Date(new Date().setMonth(new Date().getMonth() - 1)),
       strategiesOptions: [
         {
-          label: "All",
-          value: "all",
-        },
-        {
           label: "BTC",
           value: "btc",
           color: "gold",

@@ -29,12 +29,9 @@ class BackTestConditionPopup extends BaseReactComponent {
         "Relative strength index",
         "Standard deviation of price",
         "Standard deviation of return",
-        "Money flow index",
         "Moving average convergence divergence",
-        "Bollinger band",
         "Volume",
         "Market capitalization",
-        "Open high low close",
       ],
       selectedPriceConditions: this.props.selectedPriceConditions
         ? this.props.selectedPriceConditions
@@ -47,13 +44,7 @@ class BackTestConditionPopup extends BaseReactComponent {
         : "",
 
       // Operator condition
-      allOperatorConditions: [
-        "greater than",
-        "less than",
-        "equals to",
-        "increase by",
-        "decrease by",
-      ],
+      allOperatorConditions: ["greater than", "less than", "equals to"],
       selectedOperatorConditions: this.props.selectedOperatorConditions
         ? this.props.selectedOperatorConditions
         : "",
@@ -70,7 +61,10 @@ class BackTestConditionPopup extends BaseReactComponent {
     };
   }
   changePriceConditions = (item, index) => {
-    this.setState({ selectedPriceConditions: item });
+    this.setState({
+      selectedPriceConditions: item,
+      selectedAmountConditions: 100,
+    });
     this.props.changePriceConditions(item);
   };
   changeAssetConditions = (item, index) => {
@@ -189,6 +183,9 @@ class BackTestConditionPopup extends BaseReactComponent {
                 />
 
                 <BackTestPopupInput
+                  limitAmounTo={
+                    this.props.selectedAmountSymbol === "%" ? 100 : null
+                  }
                   updatedText={this.state.shouldUpdateText}
                   selectedOption={this.state.selectedAmountConditions}
                   isInputDropDown
